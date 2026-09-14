@@ -3,3 +3,17 @@
 
 # Microsoft Office lock files
 ~$*
+
+# Raw captures - large, and third-party brand assets we do not redistribute
+data/raw/
+data/processed/
+
+# Generated analysis outputs
+outputs/
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/

@@ -1,0 +1,8 @@
+# Pinned so the pipeline is reproducible by a third party (NFR-01).
+pandas==2.3.3
+numpy==2.3.4
+scipy==1.16.3
+scikit-learn==1.7.2
+matplotlib==3.10.7
+PyYAML==6.0.3
+pytest==8.4.2

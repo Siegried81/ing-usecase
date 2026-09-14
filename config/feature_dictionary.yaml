@@ -1,0 +1,940 @@
+# =============================================================================
+# Banking Campaigns Comparator - Feature Dictionary
+# =============================================================================
+# This file is the SINGLE SOURCE OF TRUTH for the campaign dataset.
+# The dataset schema, the validator and the generated documentation are all
+# derived from it, so they cannot drift apart.
+#
+# PRD reference: FR-06 (maintain a feature dictionary), D-03 (deliverable).
+# Plan reference: Stephane, Day 1 (draft) -> Day 2 (freeze with Dan).
+#
+# FREEZE RULE (Project Plan section 3.2): after the Day 2 freeze, columns may be
+# ADDED but never renamed or removed without all three team members agreeing,
+# because the analysis code depends on them.
+# =============================================================================
+
+meta:
+  name: Banking Campaigns Comparator - Feature Dictionary
+  version: 0.1.0
+  status: draft
+  date: 2026-09-14
+  owner: Stephane (Analysis & Generative AI Lead)
+  contributors:
+    - Dan (automatic extraction)
+    - Siegried (rubric definitions, marketing principles)
+  prd_reference: FR-06, FR-07, D-03, D-04
+  freeze_target: End of Day 2 - Tuesday 15 September 2026
+  grain: One row per campaign page per capture date.
+
+# -----------------------------------------------------------------------------
+# How a feature value is produced. Determines how much it can be trusted and who
+# owns it (Project Plan section 4.2).
+# -----------------------------------------------------------------------------
+extraction_methods:
+  automatic:
+    description: Computed by code, deterministic, reproducible exactly.
+    trust: high
+    owner: Dan
+  rubric:
+    description: Scored by a human against a written scale with defined levels.
+    trust: medium
+    owner: Siegried
+    requirement: Scored independently by >=2 people on a sample; disagreement reported (NFR-05).
+  model_assisted:
+    description: Produced by an LLM or vision model with the prompt and model version recorded.
+    trust: medium
+    owner: Stephane
+    requirement: Validated against human labels on a sample; agreement reported (FR-18).
+  derived:
+    description: Computed from other features in this dictionary. Never entered by hand.
+    trust: high
+    owner: Stephane
+
+# -----------------------------------------------------------------------------
+# How far a feature travels. This is the answer to risk R-06 (language) and
+# R-05 (campaigns change mid-project) in the PRD.
+# -----------------------------------------------------------------------------
+comparability:
+  cross_language:
+    description: Comparable across NL / FR / EN pages without adjustment.
+  within_language:
+    description: >
+      Only comparable between pages in the SAME language. Text-length and
+      readability metrics are language-specific; comparing a Dutch word count to
+      a French one measures the language, not the bank.
+  within_capture_window:
+    description: >
+      Only comparable between pages captured in the same window. Valid for the
+      capture date only (DR-05).
+
+# -----------------------------------------------------------------------------
+# Tiers. 'core' is the Day 6 MVP minimum - the chain must work end to end on
+# these. 'extended' is added only once core is complete (Plan section 2.3).
+# -----------------------------------------------------------------------------
+tiers:
+  core: Required for the MVP. A row missing a core feature is incomplete.
+  extended: Added after the Day 6 gate passes. Nice to have, never blocking.
+
+dimensions:
+  provenance:
+    label: Provenance & compliance
+    prd_ref: DR-02, DR-05, LC-01
+  tone_messaging:
+    label: Tone & messaging
+    prd_ref: PRD section 11 - "Is it formal, simple, persuasive?"
+  topics_value_prop:
+    label: Topics & value proposition
+    prd_ref: PRD section 11 - "What is being offered? How is it framed?"
+  visuals:
+    label: Visuals & illustrations
+    prd_ref: PRD section 11 - "What kind of images are used? What do they show?"
+  colours_design:
+    label: Colours & design
+    prd_ref: PRD section 11 - "How is attention guided? What stands out?"
+  layout_structure:
+    label: Layout & structure
+    prd_ref: PRD section 11 - "Is the page easy to read? How is it organised?"
+  marketing_principles:
+    label: Marketing principles
+    prd_ref: Plan section 4.3 - AIDA, Cialdini, feature-advantage-benefit
+
+# =============================================================================
+# FEATURES
+# =============================================================================
+features:
+
+  # --- Provenance & compliance ------------------------------------------------
+  - name: page_id
+    dimension: provenance
+    definition: Unique key for the page-capture. Format {bank}_{product_family}_{language}_{nn}.
+    type: string
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    primary_key: true
+
+  - name: bank
+    dimension: provenance
+    definition: Bank whose page this is.
+    type: categorical
+    values: [ing, kbc, bnp_paribas_fortis, argenta, crelan, belfius, revolut, n26, bunq]
+    extraction: automatic
+    source: manual
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: bank_category
+    dimension: provenance
+    definition: Traditional incumbent or digital challenger. The axis BO-02 asks about.
+    type: categorical
+    values: [traditional, challenger]
+    extraction: automatic
+    source: manual
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: product_family
+    dimension: provenance
+    definition: Product family the page promotes. Comparisons are only valid within one family (DR-04).
+    type: categorical
+    values: [term_account, current_account_pack, savings_account, mortgage, investment, other]
+    extraction: automatic
+    source: manual
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: page_role
+    dimension: provenance
+    definition: What the page is for within the funnel.
+    type: categorical
+    values: [campaign_landing, product_detail, comparison, other]
+    extraction: automatic
+    source: manual
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: url
+    dimension: provenance
+    definition: Full source URL as fetched.
+    type: string
+    extraction: automatic
+    source: url
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: language
+    dimension: provenance
+    definition: Language of the page version captured.
+    type: categorical
+    values: [nl, fr, en]
+    extraction: automatic
+    source: html
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: Controls every within_language feature. Fixing one language is decision 2 in the plan.
+
+  - name: captured_at
+    dimension: provenance
+    definition: UTC timestamp of the fetch. Every conclusion is valid for this date only.
+    type: datetime
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: collection_method
+    dimension: provenance
+    definition: How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02).
+    type: categorical
+    values: [static_fetch, headless_render]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: robots_allowed
+    dimension: provenance
+    definition: >
+      Whether robots.txt allowed this path for the user agent used, checked before fetching.
+      Carried in the row so compliance evidence travels with the data (LC-01).
+    type: boolean
+    extraction: automatic
+    source: url
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: A row with robots_allowed = false must never exist. The validator treats it as a hard error.
+
+  - name: snapshot_html_path
+    dimension: provenance
+    definition: Relative path to the stored raw HTML snapshot.
+    type: string
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: screenshot_path
+    dimension: provenance
+    definition: Relative path to the stored full-page screenshot.
+    type: string
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: data_source
+    dimension: provenance
+    definition: >
+      Whether the row is a real capture or a synthetic fixture row. Guards against
+      fixture data reaching a finding.
+    type: categorical
+    values: [real, synthetic_fixture, llm_generated]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: llm_generated marks a campaign produced in the stretch step, scored by the same extractor.
+
+  # --- Tone & messaging -------------------------------------------------------
+  - name: word_count
+    dimension: tone_messaging
+    definition: Visible words in the page body, excluding navigation, footer and cookie banner.
+    type: integer
+    unit: words
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: core
+    required: true
+    nullable: false
+    notes: The deck calls Belfius "pretty verbose" and Revolut "very few text". This is the test.
+
+  - name: sentence_count
+    dimension: tone_messaging
+    definition: Number of sentences in the page body.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: avg_sentence_length
+    dimension: tone_messaging
+    definition: Mean words per sentence.
+    type: float
+    unit: words
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: readability_score
+    dimension: tone_messaging
+    definition: Readability index of the body text. Higher means easier.
+    type: float
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: core
+    required: true
+    nullable: true
+    notes: >
+      Formula differs per language - see readability_formula. Raw scores are NOT
+      comparable across languages; use readability_band for cross-language work.
+
+  - name: readability_formula
+    dimension: tone_messaging
+    definition: Which readability formula produced readability_score.
+    type: categorical
+    values: [flesch_douma_nl, kandel_moles_fr, flesch_reading_ease_en]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: readability_band
+    dimension: tone_messaging
+    definition: Readability score bucketed into language-neutral bands, so it can cross languages.
+    type: categorical
+    values: [very_easy, easy, medium, hard, very_hard]
+    extraction: derived
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: second_person_ratio
+    dimension: tone_messaging
+    definition: Share of personal pronouns that address the reader (je/u/jij, vous/tu, you).
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: core
+    required: true
+    nullable: true
+    notes: Direct address is a known challenger-bank marker. Cheap to compute, high signal.
+
+  - name: first_person_plural_count
+    dimension: tone_messaging
+    definition: Occurrences of bank-as-we pronouns (wij/we, nous, we/our).
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: question_count
+    dimension: tone_messaging
+    definition: Number of question marks in body text.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: urgency_marker_count
+    dimension: tone_messaging
+    definition: >
+      Occurrences of scarcity or deadline language, matched against a per-language
+      term list (only until, limited offer, nog tot, offre limitee, ...).
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: The ING term-account promo in the deck carries "This offer is only available until 13/10/2025".
+
+  - name: numeric_claim_count
+    dimension: tone_messaging
+    definition: Count of numeric claims in body text (percentages, amounts, durations).
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: formality_score
+    dimension: tone_messaging
+    definition: How formal the register is. 1 = conversational, 5 = institutional.
+    type: integer
+    range: [1, 5]
+    extraction: rubric
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    rubric:
+      1: Speaks like a friend. Contractions, slang, direct address throughout.
+      2: Informal but composed. Direct address, short sentences, no jargon.
+      3: Neutral business register.
+      4: Formal. Full forms of address, product and regulatory vocabulary.
+      5: Institutional and legalistic. Reads like a product sheet.
+
+  - name: clarity_score
+    dimension: tone_messaging
+    definition: How easily a first-time reader grasps the offer. 1 = opaque, 5 = immediate.
+    type: integer
+    range: [1, 5]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # --- Topics & value proposition ---------------------------------------------
+  - name: primary_product
+    dimension: topics_value_prop
+    definition: The specific product named on the page, in the page's own words.
+    type: string
+    extraction: model_assisted
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: rate_shown
+    dimension: topics_value_prop
+    definition: Whether an interest rate or price is displayed on the page.
+    type: boolean
+    extraction: automatic
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: rate_value_pct
+    dimension: topics_value_prop
+    definition: The headline rate as a percentage, when one is shown.
+    type: float
+    unit: percent
+    range: [0, null]
+    extraction: automatic
+    source: html_text
+    comparability: within_capture_window
+    tier: core
+    required: false
+    nullable: true
+    notes: Rates move. Only comparable between pages captured in the same window.
+
+  - name: rate_prominence
+    dimension: topics_value_prop
+    definition: Where the rate sits in the visual hierarchy.
+    type: categorical
+    values: [hero, above_fold, below_fold, absent]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: benefit_framing
+    dimension: topics_value_prop
+    definition: Whether the offer is argued with figures, with feelings, or both.
+    type: categorical
+    values: [rational, emotional, mixed]
+    extraction: rubric
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: fab_level
+    dimension: topics_value_prop
+    definition: >
+      Dominant level of the feature-advantage-benefit ladder. "3.2% gross annual"
+      is a feature; "your money works while you sleep" is a benefit.
+    type: categorical
+    values: [feature, advantage, benefit]
+    extraction: rubric
+    source: html_text
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: value_prop_clarity
+    dimension: topics_value_prop
+    definition: How clearly the page states what is offered, to whom, against which alternative.
+    type: integer
+    range: [1, 5]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: disclaimer_present
+    dimension: topics_value_prop
+    definition: Whether legal or risk disclaimers appear on the page.
+    type: boolean
+    extraction: automatic
+    source: html_text
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: disclaimer_word_share
+    dimension: topics_value_prop
+    definition: Share of body words that sit inside disclaimer blocks.
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: html_text
+    comparability: within_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # --- Visuals & illustrations ------------------------------------------------
+  - name: image_count
+    dimension: visuals
+    definition: Number of content images, excluding icons under 32px and tracking pixels.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: dom
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: hero_image_present
+    dimension: visuals
+    definition: Whether a single large image occupies the top of the page.
+    type: boolean
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: The deck says Fortis and ING both lead with "1 very large picture on the top".
+
+  - name: hero_image_area_ratio
+    dimension: visuals
+    definition: Hero image area as a share of the above-the-fold viewport.
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: total_image_area_ratio
+    dimension: visuals
+    definition: Combined image area as a share of total page area.
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: Tests the deck's "large images everywhere" claim about Revolut.
+
+  - name: animated_asset_count
+    dimension: visuals
+    definition: Number of animated assets (GIF, video, Lottie, CSS keyframe animation).
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: dom
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: has_animation
+    dimension: visuals
+    definition: Whether the page contains any motion at all.
+    type: boolean
+    extraction: derived
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: >
+      The deck's sharpest ING-vs-peers claim - ING has "partially animated figures
+      and blinging gif" while the other three traditional banks are "static pictures".
+
+  - name: dominant_image_type
+    dimension: visuals
+    definition: The visual register of the imagery.
+    type: categorical
+    values: [photo, illustration, render_3d, icon_only, none]
+    extraction: model_assisted
+    source: assets
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: Revolut is described as "3D Animated pictures" - render_3d should separate it from the incumbents.
+
+  - name: people_present
+    dimension: visuals
+    definition: Whether any image shows people.
+    type: boolean
+    extraction: model_assisted
+    source: assets
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: imagery_register
+    dimension: visuals
+    definition: What the imagery depicts.
+    type: categorical
+    values: [lifestyle, product, abstract, mixed, none]
+    extraction: model_assisted
+    source: assets
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # --- Colours & design -------------------------------------------------------
+  - name: dominant_colour_hex
+    dimension: colours_design
+    definition: Most frequent non-neutral colour in the rendered page.
+    type: string
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: palette_hex
+    dimension: colours_design
+    definition: Top five colours by pixel share, most frequent first.
+    type: list[string]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: brand_colour_share
+    dimension: colours_design
+    definition: Share of coloured pixels within tolerance of the bank's primary brand colour.
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: The deck's claim that ING uses "not only orange" is measurable here.
+
+  - name: accent_colour_count
+    dimension: colours_design
+    definition: Number of distinct accent colours used for emphasis.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: accent_locations
+    dimension: colours_design
+    definition: Where the brand accent actually appears.
+    type: list[string]
+    values: [text, icons, imagery, background, buttons]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: >
+      Directly tests the deck's distinction - Fortis uses green "in text and icons,
+      not in pictures", Belfius uses red "in text and pictures".
+
+  - name: background_luminance
+    dimension: colours_design
+    definition: Mean relative luminance of the page background. 0 = black, 1 = white.
+    type: float
+    range: [0, 1]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: Separates dark-themed challengers (Revolut "deep blue and dark") from white incumbent pages.
+
+  - name: cta_contrast_ratio
+    dimension: colours_design
+    definition: WCAG contrast ratio between the primary call-to-action and its background.
+    type: float
+    range: [1, 21]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # --- Layout & structure -----------------------------------------------------
+  - name: page_height_px
+    dimension: layout_structure
+    definition: Full rendered page height at a fixed 1440x900 viewport.
+    type: integer
+    unit: pixels
+    range: [0, null]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+    notes: Viewport must be identical for every capture or this feature is meaningless.
+
+  - name: section_count
+    dimension: layout_structure
+    definition: Number of distinct content blocks on the page.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: dom
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: cta_count
+    dimension: layout_structure
+    definition: Number of distinct call-to-action buttons or links.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: dom
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: cta_above_fold
+    dimension: layout_structure
+    definition: Whether at least one call to action is visible without scrolling.
+    type: boolean
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: false
+
+  - name: text_image_adjacent
+    dimension: layout_structure
+    definition: >
+      Whether the dominant pattern places text and image side by side, rather than
+      stacking them vertically.
+    type: boolean
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: >
+      The single observation the deck repeats for every bank. ING is called out as
+      the one where "text and picture not anymore next to each other".
+
+  - name: text_to_image_ratio
+    dimension: layout_structure
+    definition: Text area divided by image area in the rendered page.
+    type: float
+    range: [0, null]
+    extraction: automatic
+    source: screenshot
+    comparability: within_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: above_fold_element_count
+    dimension: layout_structure
+    definition: Number of distinct interactive or content elements visible without scrolling.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: screenshot
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: has_comparison_table
+    dimension: layout_structure
+    definition: Whether the page contains a product comparison table.
+    type: boolean
+    extraction: automatic
+    source: dom
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  - name: layout_archetype
+    dimension: layout_structure
+    definition: Overall structural pattern of the page.
+    type: categorical
+    values: [hero_stacked, split_columns, card_grid, long_form]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  # --- Marketing principles ---------------------------------------------------
+  - name: aida_attention
+    dimension: marketing_principles
+    definition: Does the page open with something that stops the reader?
+    type: boolean
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: aida_interest
+    dimension: marketing_principles
+    definition: Does it give a reason to keep reading beyond the headline?
+    type: boolean
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: aida_desire
+    dimension: marketing_principles
+    definition: Does it make the offer feel worth having, not just understood?
+    type: boolean
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: aida_action
+    dimension: marketing_principles
+    definition: Is there an unmistakable next step?
+    type: boolean
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: aida_coverage_score
+    dimension: marketing_principles
+    definition: How many of the four AIDA stages the page covers.
+    type: integer
+    range: [0, 4]
+    extraction: derived
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+
+  - name: persuasion_levers
+    dimension: marketing_principles
+    definition: Which of Cialdini's six persuasion principles are used on the page.
+    type: list[string]
+    values: [reciprocity, commitment, social_proof, authority, liking, scarcity]
+    extraction: rubric
+    source: screenshot
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true
+    notes: Turns the vague word "persuasive" into a closed, countable list.
+
+  - name: persuasion_lever_count
+    dimension: marketing_principles
+    definition: Number of distinct persuasion levers detected.
+    type: integer
+    range: [0, 6]
+    extraction: derived
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: true
+    nullable: true

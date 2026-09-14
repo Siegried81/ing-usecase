@@ -1,0 +1,168 @@
+#!/usr/bin/env python3
+"""End-to-end analysis skeleton: dataset in, profiles / comparisons / charts out.
+
+    python3 scripts/run_analysis.py                     # runs on the synthetic fixture
+    python3 scripts/run_analysis.py --dataset data/processed/campaigns.csv
+
+This is the chain the Day 6 gate asks about (Project Plan section 6): a dataset
+becomes a positioned, profiled, charted comparison with no manual step in between.
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+from pathlib import Path
+
+import _bootstrap  # noqa: F401
+
+import pandas as pd
+
+from comparator import load_dictionary
+from comparator.analysis import (
+    category_comparison,
+    check_deck_claims,
+    cluster_banks,
+    ing_vs_peers,
+    lever_frequency,
+    nearest_neighbours,
+    positioning_axis,
+    similarity_matrix,
+)
+from comparator.charts import (
+    category_effect_chart,
+    deviation_chart,
+    positioning_chart,
+    similarity_heatmap,
+)
+from comparator.profiles import build_all, render_all_markdown
+from comparator.schema import read_dataset
+
+DEFAULT_DATASET = Path("data/fixtures/synthetic_sample.csv")
+DEFAULT_OUTDIR = Path("outputs")
+SYNTHETIC_BANNER = (
+    "=" * 78 + "\n"
+    "  SYNTHETIC DATA — every value below is invented. These are NOT findings.\n"
+    "  Replace with Dan's real captures before anything here reaches a deck.\n"
+    + "=" * 78
+)
+
+
+def _header(text: str) -> None:
+    print(f"\n{text}\n{'-' * len(text)}")
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
+    parser.add_argument("--outdir", type=Path, default=DEFAULT_OUTDIR)
+    parser.add_argument("--focus", default="ing")
+    parser.add_argument("--clusters", type=int, default=2)
+    parser.add_argument("--top-n", type=int, default=12)
+    args = parser.parse_args()
+
+    fd = load_dictionary()
+    args.outdir.mkdir(parents=True, exist_ok=True)
+
+    # --- 1. load and validate ------------------------------------------------
+    _header(f"1. Dataset — {args.dataset}")
+    df, report = read_dataset(args.dataset, fd, tier="core", strict=True)
+    print(report.render())
+
+    synthetic = "data_source" in df and (df["data_source"] == "synthetic_fixture").any()
+    if synthetic:
+        print(f"\n{SYNTHETIC_BANNER}")
+    note = "SYNTHETIC FIXTURE DATA — not findings" if synthetic else None
+
+    # LLM-generated rows are scored, never mixed into the bank comparison.
+    banks_df = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
+    print(f"\n{len(banks_df)} page(s) · {banks_df['bank'].nunique()} banks · "
+          f"{banks_df['product_family'].nunique()} product family/families")
+
+    # --- 2. bank profiles (Plan, Appendix A) ---------------------------------
+    _header("2. Bank profiles")
+    profiles = build_all(banks_df, fd)
+    markdown = render_all_markdown(profiles, fd)
+    (args.outdir / "bank_profiles.md").write_text(
+        (f"> **{note}**\n\n" if note else "") + "# Bank profile cards\n\n" + markdown,
+        encoding="utf-8",
+    )
+    (args.outdir / "bank_profiles.json").write_text(json.dumps(profiles, indent=2, default=str), encoding="utf-8")
+    for bank, profile in profiles.items():
+        signature = ", ".join(f"{n} {z:+.1f}SD" for n, z in profile["signature"])
+        print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
+
+    # --- 3. BO-02 positioning ------------------------------------------------
+    _header("3. Positioning on the traditional ↔ challenger axis (BO-02)")
+    positioning = positioning_axis(banks_df, fd, focus=args.focus)
+    for bank, score in positioning.scores.items():
+        marker = "  <-- focus" if bank == args.focus else ""
+        print(f"  {bank:<20} {score:6.2f}{marker}")
+    print(f"\n  {args.focus.upper()} scores {positioning.focus_score:.2f} — {positioning.verdict}.")
+    print(f"  (0 = traditional centroid, 1 = challenger centroid, {positioning.n_features} features)")
+
+    categories = banks_df.drop_duplicates("bank").set_index("bank")["bank_category"]
+    positioning_chart(positioning, categories, args.outdir / "01_positioning.png", note=note)
+
+    # --- 4. BO-01 ING vs peers -----------------------------------------------
+    _header(f"4. {args.focus.upper()} against its peers (BO-01)")
+    deviations = ing_vs_peers(banks_df, fd, focus=args.focus)
+    print(deviations.head(args.top_n).to_string(
+        index=False,
+        columns=["feature", "dimension", f"{args.focus}_value", "peer_mean", "gap_sd"],
+        float_format=lambda v: f"{v:,.2f}",
+    ))
+    deviations.to_csv(args.outdir / "ing_vs_peers.csv", index=False)
+    deviation_chart(deviations, args.outdir / "02_ing_vs_peers.png", focus=args.focus, top_n=args.top_n, note=note)
+
+    # --- 5. traditional vs challenger ----------------------------------------
+    _header("5. Traditional vs challenger")
+    comparison = category_comparison(banks_df, fd)
+    print(comparison.head(args.top_n).to_string(
+        index=False,
+        columns=["feature", "traditional_mean", "challenger_mean", "effect_size_d"],
+        float_format=lambda v: f"{v:,.2f}",
+    ))
+    comparison.to_csv(args.outdir / "category_comparison.csv", index=False)
+    category_effect_chart(comparison, args.outdir / "03_category_separation.png", top_n=args.top_n, note=note)
+
+    # --- 6. BO-03 similarity -------------------------------------------------
+    _header("6. Which banks communicate alike (BO-03)")
+    distances = similarity_matrix(banks_df, fd)
+    clusters = cluster_banks(banks_df, fd, n_clusters=args.clusters)
+    for label in sorted(clusters.unique()):
+        members = ", ".join(clusters[clusters == label].index)
+        print(f"  cluster {label}: {members}")
+    print(f"\n  nearest to {args.focus}:")
+    for bank, distance in nearest_neighbours(banks_df, fd, focus=args.focus).items():
+        print(f"    {bank:<20} {distance:.2f}")
+    distances.to_csv(args.outdir / "similarity_matrix.csv")
+    similarity_heatmap(distances, args.outdir / "04_similarity.png", note=note)
+
+    # --- 7. FR-14 deck claims ------------------------------------------------
+    _header("7. Kickoff-deck observations, tested (FR-14)")
+    claims = check_deck_claims(banks_df, fd)
+    if synthetic:
+        print("  CIRCULAR ON FIXTURE DATA: the fixture archetypes were built FROM these\n"
+              "  claims, so they will always come back supported. This section only means\n"
+              "  something against real captures.\n")
+    print(claims.to_string(index=False, columns=["id", "claim", "verdict", "evidence"]))
+    claims.to_csv(args.outdir / "deck_claims.csv", index=False)
+
+    # --- 8. persuasion levers ------------------------------------------------
+    _header("8. Persuasion levers by category")
+    levers = lever_frequency(banks_df)
+    if not levers.empty:
+        print(levers.to_string())
+        levers.to_csv(args.outdir / "persuasion_levers.csv")
+
+    _header("Done")
+    for path in sorted(args.outdir.iterdir()):
+        print(f"  {path}")
+    if synthetic:
+        print(f"\n{SYNTHETIC_BANNER}")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
