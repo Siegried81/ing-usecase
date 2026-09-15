@@ -18,7 +18,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from comparator.analysis import Positioning
+from comparator.analysis import Positioning, render_accounting
 
 SYNTHETIC_WARNING = (
     "> ### These numbers are not findings\n"
@@ -247,6 +247,7 @@ def build_chart_report(
     n_pages: int = 0,
     n_banks: int = 0,
     synthetic: bool = False,
+    accounting: dict | None = None,
 ) -> str:
     """Build the markdown companion for the four charts."""
     lines = [
@@ -262,6 +263,35 @@ def build_chart_report(
     ]
     if synthetic:
         lines += [SYNTHETIC_WARNING, ""]
+
+    if accounting:
+        lines += ["---", "", "## Why the charts use fewer features than the dictionary has", "",
+                  "The dictionary defines "
+                  f"{accounting['dictionary_total']} features. The comparisons here use "
+                  f"**{accounting['n_used']}**. Nothing is thrown away quietly — this is the "
+                  "whole reduction:",
+                  "", "```", render_accounting(accounting), "```", ""]
+        if not accounting["categorical_included"]:
+            lines += [
+                f"**The line worth arguing about is the {len(accounting['categorical'])} "
+                "categorical and list features.** They are not free text and not redundant — "
+                "things like `benefit_framing`, `fab_level`, `layout_archetype`, "
+                "`dominant_image_type`, `persuasion_levers`, and seven of the banking-domain "
+                "dimensions. A euclidean distance cannot take a raw category, so they sit out "
+                "of every distance and positioning calculation today.",
+                "",
+                "They *can* be included (`include_categorical=True`), one-hot encoded with each "
+                "feature's indicators scaled by 1/√k so a 5-value category does not silently "
+                "outweigh five numbers. It is off by default because switching it on moves "
+                "every number in the analysis, which is a team decision rather than a default.",
+                "",
+            ]
+        lines += [
+            "The four bands (`word_count_band` and friends) are excluded on purpose: each is a "
+            "coarser view of a number already in the matrix, so counting both would double the "
+            "weight of that signal.",
+            "",
+        ]
 
     lines += ["---", ""]
     lines += _positioning_section(positioning, categories)
