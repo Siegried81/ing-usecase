@@ -16,7 +16,7 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from comparator.dictionary import load_dictionary  # noqa: E402
+from comparator.dictionary import REPO_ROOT, load_dictionary  # noqa: E402
 from comparator.fixtures import build_fixture  # noqa: E402
 from comparator.schema import coerce_types, format_list, parse_list, validate  # noqa: E402
 
@@ -49,6 +49,19 @@ def test_categorical_features_declare_their_values(fd):
 
 def test_required_features_are_core(fd):
     assert all(f.tier == "core" for f in fd.features if f.required)
+
+
+# sieg 15/09: config/feature_dictionary.yaml is the single source of truth
+# (CLAUDE.md) - this guards it against silent drift. Any change must also
+# update the frozen copy on purpose, in the same PR, so nobody's edit to a
+# type/tier/comparability slips in unreviewed.
+def test_dictionary_matches_frozen_snapshot():
+    current = (REPO_ROOT / "config" / "feature_dictionary.yaml").read_text()
+    frozen = (REPO_ROOT / "config" / "feature_dictionary.frozen.yaml").read_text()
+    assert current == frozen, (
+        "config/feature_dictionary.yaml differs from config/feature_dictionary.frozen.yaml. "
+        "If the change is intentional, update the frozen copy too."
+    )
 
 
 def test_judgement_based_features_are_identifiable(fd):
@@ -89,6 +102,15 @@ def test_fixture_is_deterministic(fd):
     a = build_fixture(fd, seed=7)
     b = build_fixture(fd, seed=7)
     pd.testing.assert_frame_equal(a, b)
+
+
+def test_fixture_readability_formula_matches_language(fd):
+    # sieg 14/09: was hardcoded to the Dutch formula regardless of `language`;
+    # a fixture built with language="fr" or "en" silently claimed Dutch scoring.
+    expected = {"nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en"}
+    for lang, formula in expected.items():
+        df = build_fixture(fd, language=lang, pages_per_bank=1)
+        assert set(df["readability_formula"]) == {formula}, lang
 
 
 # --- the validator actually catches things -----------------------------------

@@ -18,6 +18,7 @@ from datetime import datetime, timezone
 import numpy as np
 import pandas as pd
 
+from comparator import bands
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.schema import format_list
 
@@ -90,6 +91,15 @@ ARCHETYPES: dict[str, dict] = {
     ),
 }
 
+# sieg 14/09: was hardcoded to "flesch_douma_nl" regardless of the `language`
+# argument below, so a fixture built with language="fr" or "en" silently
+# claimed Dutch-formula scoring. Table added so build_fixture() can look up
+# the right formula per language instead.
+_READABILITY_FORMULA = {
+    "nl": "flesch_douma_nl",
+    "fr": "kandel_moles_fr",
+    "en": "flesch_reading_ease_en",
+}
 _BAND_EDGES = [(90, "very_easy"), (70, "easy"), (50, "medium"), (30, "hard")]
 
 
@@ -131,6 +141,15 @@ def build_fixture(
                 "aida_action": bool(rng.random() > 0.1),
             }
             levers = a["levers"]
+            # sieg 14/09: pulled out of the dict literal below so each value is
+            # drawn exactly once and reused for both the raw field and its
+            # _band equivalent - inlining the same rng.normal(...) call twice
+            # would draw two different numbers and make the band disagree
+            # with the raw value it's supposed to describe.
+            second_person_ratio_value = round(float(np.clip(rng.normal(a["second_person"], 0.05), 0, 1)), 3)
+            first_person_plural_value = int(max(0, rng.normal(6, 3)))
+            disclaimer_word_share_value = round(float(np.clip(rng.normal(0.18 if a["category"] == "traditional" else 0.07, 0.04), 0, 1)), 3)
+            text_to_image_ratio_value = round(float(max(0.1, rng.normal(*a["text_img_ratio"]))), 2)
             rows.append(
                 {
                     "page_id": f"{bank}_{product_family}_{language}_{i + 1:02d}",
@@ -148,13 +167,18 @@ def build_fixture(
                     "data_source": "synthetic_fixture",
                     # tone
                     "word_count": words,
+                    "word_count_band": bands.word_count_band(words),  # sieg 14/09
                     "sentence_count": sentences,
+                    "sentence_count_band": bands.sentence_count_band(sentences),  # sieg 14/09
                     "avg_sentence_length": round(words / sentences, 2),
+                    "avg_sentence_length_band": bands.avg_sentence_length_band(words / sentences),  # sieg 14/09
                     "readability_score": round(readability, 1),
-                    "readability_formula": "flesch_douma_nl",
+                    "readability_formula": _READABILITY_FORMULA[language],  # sieg 14/09: was hardcoded to nl
                     "readability_band": _band(readability),
-                    "second_person_ratio": round(float(np.clip(rng.normal(a["second_person"], 0.05), 0, 1)), 3),
-                    "first_person_plural_count": int(max(0, rng.normal(6, 3))),
+                    "second_person_ratio": second_person_ratio_value,
+                    "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio_value),  # sieg 14/09
+                    "first_person_plural_count": first_person_plural_value,
+                    "first_person_plural_band": bands.first_person_plural_band(first_person_plural_value),  # sieg 14/09
                     "question_count": int(max(0, rng.normal(2, 1.5))),
                     "urgency_marker_count": max(0, int(rng.normal(*a["urgency"]))),
                     "numeric_claim_count": int(max(0, rng.normal(9 if a["category"] == "traditional" else 4, 2))),
@@ -169,7 +193,8 @@ def build_fixture(
                     "fab_level": "feature" if a["category"] == "traditional" else "benefit",
                     "value_prop_clarity": int(np.clip(rng.normal(3.5, 0.7), 1, 5)),
                     "disclaimer_present": True,
-                    "disclaimer_word_share": round(float(np.clip(rng.normal(0.18 if a["category"] == "traditional" else 0.07, 0.04), 0, 1)), 3),
+                    "disclaimer_word_share": disclaimer_word_share_value,
+                    "disclaimer_word_share_band": bands.disclaimer_word_share_band(disclaimer_word_share_value),  # sieg 14/09
                     # visuals
                     "image_count": images,
                     "hero_image_present": a["hero"],
@@ -194,7 +219,8 @@ def build_fixture(
                     "cta_count": int(max(1, rng.normal(4 if a["category"] == "traditional" else 7, 1.5))),
                     "cta_above_fold": bool(rng.random() > (0.4 if a["category"] == "traditional" else 0.05)),
                     "text_image_adjacent": a["adjacent"],
-                    "text_to_image_ratio": round(float(max(0.1, rng.normal(*a["text_img_ratio"]))), 2),
+                    "text_to_image_ratio": text_to_image_ratio_value,
+                    "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio_value),  # sieg 14/09
                     "above_fold_element_count": int(max(1, rng.normal(6, 2))),
                     "has_comparison_table": bool(rng.random() > 0.5),
                     "layout_archetype": a["layout"],
@@ -203,6 +229,58 @@ def build_fixture(
                     "aida_coverage_score": sum(aida.values()),
                     "persuasion_levers": format_list(levers),
                     "persuasion_lever_count": len(levers),
+                    # banking-domain (sieg 14/09) - grounded in the same discussion that
+                    # produced these dimensions, not random: traditional = bancassurance
+                    # bundle / branch network / base-rate framing / retention posture;
+                    # challenger = self-service / capped-teaser rate / acquisition posture.
+                    # belfius and ing get one deliberate, documented exception each below.
+                    # SAME CAVEAT AS THE REST OF THIS FILE: this is fixture data, testing
+                    # against it will always "confirm" the hypothesis it was built from.
+                    "audience_segment": "retail",
+                    "is_bundled_offer": a["category"] == "traditional",
+                    # sieg 15/09: a challenger can be is_bundled_offer=False (no bundle
+                    # PUSHED in this funnel) and still be partner_addon_digital here (it
+                    # HAS a travel/purchase-protection add-on via a third party elsewhere
+                    # in the app) - that gap between the two fields is deliberate, it is
+                    # exactly the nuance the 15/09 discussion flagged: bancassurance
+                    # (own product, dedicated advisor) vs a distributed digital add-on
+                    # are not the same thing even when both count as "some cross-sell".
+                    "cross_sell_delivery_model": "internal_advisor_led" if a["category"] == "traditional" else "partner_addon_digital",
+                    "rate_framing": "base_rate" if a["category"] == "traditional" else "capped_tiered",
+                    "primary_cta_type": "book_advisor_or_branch" if a["category"] == "traditional" else "self_service_online",
+                    "switching_framing": "retention_reassurance" if a["category"] == "traditional" else "acquisition_encouragement",
+                    "regulatory_disclosure_prominence": "prominent" if a["category"] == "traditional" else "present_not_prominent",
+                    "hidden_conditions_behind_free_claim": a["category"] == "challenger",
+                    "esg_claim_specificity": "backed_by_reference_or_figure" if bank == "ing" else ("vague_adjective_only" if a["category"] == "traditional" else "no_claim"),
+                    "green_product_specific_benefit": bool(bank == "ing" and rng.random() > 0.5),
+                    "mentions_loyalty_or_referral": a["category"] == "challenger",
+                    "images_have_alt_text": bool(rng.random() > 0.3),
+                    "meta_title": f"{bank.replace('_', ' ').title()} - {product_family.replace('_', ' ')} - {language.upper()}",
+                    # institutional_trust_signal_present: belfius is 100% Belgian-State-owned,
+                    # a safety argument no other bank in scope can make the same way.
+                    "institutional_trust_signal_present": bank == "belfius",
+                    "youth_student_targeting": bool(rng.random() > (0.6 if a["category"] == "challenger" else 0.8)),
+                    "secondary_bank_positioning": a["category"] == "challenger",
+                    # expat_cross_border_targeting: ING's historical reputation with expats/
+                    # cross-border workers in Belgium.
+                    "expat_cross_border_targeting": bank == "ing",
+                    "branch_network_cited_as_benefit": a["category"] == "traditional",
+                    # sieg 15/09: fast digital onboarding is a challenger-side claim in
+                    # this archetype set - traditional banks route account opening
+                    # through an advisor/branch step more often (see primary_cta_type above).
+                    "fast_digital_onboarding_claim": a["category"] == "challenger",
+                    # sieg 15/09: challengers lead with low/no-minimum, self-service
+                    # investing (round-ups, robo style); traditional banks route a
+                    # first-time investor to an advisor instead of a beginner page.
+                    "first_time_investor_targeting": a["category"] == "challenger",
+                    # sieg 15/09: pension/succession framing is a traditional-bank
+                    # posture in this archetype set - challengers skew toward a
+                    # younger customer base and don't lead with this angle.
+                    "senior_preretirement_targeting": a["category"] == "traditional",
+                    # sieg 15/09: mirrors the "dark, 3D/illustrated, card_grid" visual
+                    # register already encoded per-archetype above (img_type/layout) -
+                    # challengers use the same card-grid, tap-friendly register here.
+                    "mobile_first_design_signal": a["layout"] == "card_grid",
                 }
             )
 

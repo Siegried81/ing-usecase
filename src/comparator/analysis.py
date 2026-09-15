@@ -198,6 +198,15 @@ def positioning_axis(
 ) -> Positioning:
     """Project every bank onto the traditional-challenger axis (BO-02)."""
     fd = fd or load_dictionary()
+    # sieg 14/09: dropna(axis=1, how="any") drops a feature from EVERY bank's
+    # vector the moment even one bank is missing it. Invisible on the fixture
+    # (nothing is ever missing), but with Dan's real captures a single gap on
+    # one page can silently shrink the comparable feature set for everyone.
+    # not fixing this alone - a defensible design choice (no imputation =
+    # honest) - but flagging for Stephane: at minimum this should log/warn how
+    # many features got dropped and why, rather than doing it silently.
+    # same comment applies to similarity_matrix() and profiles._distinctive()
+    # below, which share this exact pattern.
     vectors = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
     categories = df.drop_duplicates("bank").set_index("bank")["bank_category"]
 
@@ -225,6 +234,7 @@ def similarity_matrix(
 ) -> pd.DataFrame:
     """Pairwise euclidean distance between banks in standardised feature space."""
     fd = fd or load_dictionary()
+    # sieg 14/09: see the dropna(axis=1, how="any") note in positioning_axis() above.
     vectors = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
     banks = vectors.index.tolist()
     data = vectors.to_numpy()
@@ -246,10 +256,68 @@ def cluster_banks(
     return pd.Series(labels, index=dist.index, name="cluster")
 
 
-def nearest_neighbours(df: pd.DataFrame, fd: FeatureDictionary | None = None, *, focus: str = FOCUS_BANK, k: int = 3) -> pd.Series:
+def nearest_neighbours(
+    df: pd.DataFrame,
+    fd: FeatureDictionary | None = None,
+    *,
+    focus: str = FOCUS_BANK,
+    k: int = 3,
+    tier: str | None = None,
+) -> pd.Series:
     """The k banks whose communication most resembles the focus bank."""
-    dist = similarity_matrix(df, fd)
+    dist = similarity_matrix(df, fd, tier=tier)
     return dist.loc[focus].drop(index=focus).sort_values().head(k)
+
+
+# -----------------------------------------------------------------------------
+# BO-04 - recurring patterns across the whole market
+# -----------------------------------------------------------------------------
+# sieg 15/09: new function. Unlike category_comparison (traditional vs
+# challenger) or cluster_banks (which BANKS resemble each other), BO-04 asks
+# for patterns in how campaigns are built regardless of who built them -
+# "pages with X tend to also have Y", market-wide. Pairwise correlation is the
+# simplest honest way to surface that without claiming causation or
+# significance - same descriptive-only posture as the rest of this module
+# (PRD risk R-03, see module docstring).
+def recurring_patterns(
+    df: pd.DataFrame,
+    fd: FeatureDictionary | None = None,
+    *,
+    tier: str | None = None,
+    min_abs_corr: float = 0.5,
+) -> pd.DataFrame:
+    """Strongest pairwise correlations among comparable features, market-wide (BO-04).
+
+    Correlation, not causation, and no p-value - a description of co-occurrence
+    across every bank, not a claim about why it happens.
+    """
+    fd = fd or load_dictionary()
+    cols = comparable_features(fd, df, tier=tier)
+    corr = _numeric_frame(df, cols).corr(numeric_only=True)
+
+    rows = []
+    seen: set[tuple[str, str]] = set()
+    for a in corr.columns:
+        for b in corr.columns:
+            if a == b or (b, a) in seen:
+                continue
+            seen.add((a, b))
+            value = corr.loc[a, b]
+            if pd.isna(value) or abs(value) < min_abs_corr:
+                continue
+            rows.append(
+                {
+                    "feature_a": a,
+                    "feature_b": b,
+                    "correlation": float(value),
+                    "direction": "move together" if value > 0 else "move opposite",
+                }
+            )
+
+    out = pd.DataFrame(rows)
+    if out.empty:
+        return out
+    return out.reindex(out["correlation"].abs().sort_values(ascending=False).index).reset_index(drop=True)
 
 
 # -----------------------------------------------------------------------------
@@ -300,9 +368,12 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
                 evidence = f"{bank}={value:.1f}; lowest is {winner}={series.min():.1f}"
             elif test == "lowest_traditional":
                 sub = series.loc[[b for b in traditional if b in series.index]]
-                winner = sub.idxmin()
-                verdict = "supported" if winner == bank else "not supported"
-                evidence = f"{bank}={value:.1f}; lowest traditional is {winner}={sub.min():.1f}"
+                if sub.empty:
+                    verdict, evidence = "not testable", "no traditional banks with this feature in the dataset"
+                else:
+                    winner = sub.idxmin()
+                    verdict = "supported" if winner == bank else "not supported"
+                    evidence = f"{bank}={value:.1f}; lowest traditional is {winner}={sub.min():.1f}"
             elif test == "only_traditional_true":
                 others = [b for b in traditional if b != bank and b in series.index]
                 others_true = [b for b in others if series[b] > 0]
@@ -316,6 +387,47 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
                      "verdict": verdict, "evidence": evidence})
 
     return pd.DataFrame(rows)
+
+
+# -----------------------------------------------------------------------------
+# FR-10 / BO-06 - insights and recommendations
+# -----------------------------------------------------------------------------
+# sieg 15/09: this was the one PRD deliverable (FR-10, priority M - mandatory,
+# not S/C) with no function behind it. ing_vs_peers already ranks every gap;
+# this only filters it to the ones big enough to argue from and attaches the
+# focus bank's own page_ids that show the gap, so every candidate is
+# "traceable to specific features and source pages" per FR-10's own wording.
+# It does NOT write the insight - "well-argued" is a human judgement call
+# (Siegried's), this only makes sure nothing is argued without evidence behind it.
+def insight_candidates(
+    df: pd.DataFrame,
+    fd: FeatureDictionary | None = None,
+    *,
+    focus: str = FOCUS_BANK,
+    tier: str | None = None,
+    top_n: int = 5,
+    min_gap_sd: float = 0.5,
+) -> pd.DataFrame:
+    """Rank the focus bank's largest, best-evidenced gaps as insight candidates.
+
+    Each row cites the page_id(s) whose value on that feature drove the gap, so
+    a reader can go look at the actual page rather than trust the number alone.
+    """
+    fd = fd or load_dictionary()
+    gaps = ing_vs_peers(df, fd, focus=focus, tier=tier)
+    candidates = gaps[gaps["gap_sd"].abs() >= min_gap_sd].head(top_n).copy()
+
+    def example_pages(feature: str, direction: str) -> list[str]:
+        rows = df[(df["bank"] == focus) & df[feature].notna()] if feature in df.columns else df.iloc[0:0]
+        if rows.empty or "page_id" not in rows.columns:
+            return []
+        ascending = direction == "below peers"
+        return rows.sort_values(feature, ascending=ascending)["page_id"].head(2).tolist()
+
+    candidates["example_page_ids"] = [
+        example_pages(row["feature"], row["direction"]) for _, row in candidates.iterrows()
+    ]
+    return candidates.reset_index(drop=True)
 
 
 def lever_frequency(df: pd.DataFrame) -> pd.DataFrame:

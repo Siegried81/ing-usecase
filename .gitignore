@@ -4,6 +4,9 @@
 # Microsoft Office lock files
 ~$*
 
+# sieg 14/09
+.env
+
 # Raw captures - large, and third-party brand assets we do not redistribute
 data/raw/
 data/processed/
@@ -17,3 +20,6 @@ __pycache__/
 .pytest_cache/
 .venv/
 venv/
+
+# sieg 15/09: local-only working file, not for the shared repo
+CLAUDE.md

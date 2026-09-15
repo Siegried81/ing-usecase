@@ -1,0 +1,17 @@
+# sieg 14/09 - example only, copy to collection_targets.yaml and fill in the
+# REAL scope the team agrees on (PRD FR-01: justify a limited scope, don't
+# just copy this). One entry per page to collect.
+pages:
+  - bank: ing
+    bank_category: traditional
+    product_family: term_account
+    page_role: campaign_landing
+    url: "https://www.ing.be/REPLACE-with-the-real-campaign-url"
+    language: en
+
+  - bank: revolut
+    bank_category: challenger
+    product_family: term_account
+    page_role: campaign_landing
+    url: "https://www.revolut.com/REPLACE-with-the-real-campaign-url"
+    language: en
