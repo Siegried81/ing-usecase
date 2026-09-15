@@ -36,6 +36,7 @@ from comparator.charts import (
     similarity_heatmap,
 )
 from comparator.profiles import build_all, render_all_markdown
+from comparator.report import build_chart_report
 from comparator.schema import read_dataset
 
 DEFAULT_DATASET = Path("data/fixtures/synthetic_sample.csv")
@@ -149,7 +150,22 @@ def main() -> int:
     print(claims.to_string(index=False, columns=["id", "claim", "verdict", "evidence"]))
     claims.to_csv(args.outdir / "deck_claims.csv", index=False)
 
-    # --- 8. persuasion levers ------------------------------------------------
+    # --- 8. the chart companion ----------------------------------------------
+    # steph 15/09: every figure ships with the mechanic behind it and its limits,
+    # generated from the same objects the charts are drawn from so the prose
+    # cannot drift away from the picture.
+    _header("8. Chart companion")
+    companion = build_chart_report(
+        positioning=positioning, categories=categories, deviations=deviations,
+        comparison=comparison, distances=distances, clusters=clusters, claims=claims,
+        focus=args.focus, dataset_path=str(args.dataset),
+        n_pages=len(banks_df), n_banks=int(banks_df["bank"].nunique()),
+        synthetic=synthetic,
+    )
+    (args.outdir / "charts.md").write_text(companion, encoding="utf-8")
+    print(f"  wrote {args.outdir / 'charts.md'} ({len(companion.splitlines())} lines)")
+
+    # --- 9. persuasion levers ------------------------------------------------
     _header("8. Persuasion levers by category")
     levers = lever_frequency(banks_df)
     if not levers.empty:

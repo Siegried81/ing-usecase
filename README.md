@@ -40,8 +40,13 @@ python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.m
 python3 -m pytest tests/ -q               # 115 tests
 ```
 
-Outputs land in `outputs/`: four charts, the profile cards as markdown and JSON,
-and a CSV per analysis step.
+Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
+measures and what it cannot support, the profile cards as markdown and JSON, and
+a CSV per analysis step.
+
+`charts.md` is generated, not written by hand — `outputs/` is wiped on every run,
+and the "what this run shows" paragraphs are built from the same objects the
+charts are drawn from, so the prose cannot drift away from the picture.
 
 ## The feature dictionary is the contract
 
@@ -124,6 +129,7 @@ scripts/
   build_feature_docs.py          YAML -> markdown
   freeze.py                      the Day 2 freeze rule, enforced semantically
   generation.py                  step 5: targets, brief, rendering, scoring
+  report.py                      the generated chart companion
   collection/                    Dan + Siegried: compliance, scraper, LLM, visuals
 tests/                           115 tests
 data/fixtures/                   synthetic sample (committed)
