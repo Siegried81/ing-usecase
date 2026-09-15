@@ -37,3 +37,15 @@ pages:
     page_role: campaign_landing
     url: "https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire"
     language: fr
+
+  # sieg 15/09: added for the deck-claims work (C3/C4/C9 need Revolut).
+  # robots.txt checked - no Disallow rule covers /fr-BE/bank-account/ (no
+  # query string, not under /api/, not one of the blocked send-money/
+  # currency-converter paths). assert_can_fetch() re-checks live at fetch time
+  # regardless, this is just documenting why the URL was picked.
+  - bank: revolut
+    bank_category: challenger
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.revolut.com/fr-BE/bank-account/"
+    language: fr
