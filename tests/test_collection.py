@@ -94,6 +94,18 @@ def test_extract_counts_ctas_by_keyword():
     assert result["cta_count"] == 2  # "Discover more", "Open an account"
 
 
+def test_extract_counts_french_imperative_ctas():
+    # sieg 15/09: regression - verified live on kbc.be, real buttons say
+    # "Ouvrez un compte à vue" (imperative), not "ouvrir" (infinitive, the
+    # only form that used to be in _CTA_KEYWORDS) - scored cta_count=0.
+    html = """<html><body><p>Texte.</p>
+    <a href="#">Ouvrez un compte à vue</a>
+    <a href="#">Découvrez nos offres</a>
+    </body></html>"""
+    result = extract(html, language="fr")
+    assert result["cta_count"] == 2
+
+
 def test_extract_detects_comparison_table():
     result = extract(SAMPLE_HTML, language="en")
     assert result["has_comparison_table"] is True

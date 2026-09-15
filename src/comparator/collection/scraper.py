@@ -68,6 +68,13 @@ _LOYALTY_REFERRAL_TERMS = [
 _CTA_KEYWORDS = (
     "discover", "open", "apply", "get started", "sign up", "learn more",
     "decouvrir", "découvrir", "ouvrir", "demander", "en savoir plus",
+    # sieg 15/09: FIXED - verified live on kbc.be, this list only had the FR
+    # infinitives, so real buttons ("Ouvrez un compte à vue", "Ouvrez dès
+    # maintenant...") scored cta_count=0. Banking CTAs are near-universally
+    # the imperative in French, not the infinitive ("ouvrir" is not a
+    # substring of "ouvrez") - added the imperative forms actually seen,
+    # per this module's own "extend as real pages surface terms these miss".
+    "ouvrez", "découvrez", "decouvrez", "demandez", "profitez", "simulez", "calculez",
     "ontdek", "openen", "aanvragen", "meer weten",
 )
 

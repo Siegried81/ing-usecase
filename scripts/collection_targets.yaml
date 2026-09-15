@@ -1,0 +1,39 @@
+# sieg 15/09: live pipeline test, not the final team scope (Dan owns that
+# decision, FR-01) - just 5 URLs already checked against robots.txt this
+# session, used to prove the real chain (compliance -> scrape -> colours ->
+# validate) works end to end before Dan hits it tomorrow.
+pages:
+  - bank: kbc
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.kbc.be/particuliers/fr/produits/paiements/comptes-a-vue/ouvrir-un-compte-de-base.html"
+    language: fr
+
+  - bank: n26
+    bank_category: challenger
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://n26.com/fr-fr/compte-bancaire-gratuit"
+    language: fr
+
+  - bank: belfius
+    bank_category: traditional
+    product_family: other
+    page_role: campaign_landing
+    url: "https://www.belfius.be/retail/fr/moments-cles/pension/index.aspx"
+    language: fr
+
+  - bank: ing
+    bank_category: traditional
+    product_family: savings_account
+    page_role: campaign_landing
+    url: "https://www.ing.be/fr/particuliers/epargner"
+    language: fr
+
+  - bank: bnp_paribas_fortis
+    bank_category: traditional
+    product_family: mortgage
+    page_role: campaign_landing
+    url: "https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire"
+    language: fr

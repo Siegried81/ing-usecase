@@ -99,6 +99,18 @@ def test_narrowing_a_range_is_breaking():
     assert not compare(frozen, current).ok
 
 
+# sieg 15/09: new test - freeze.py used to only check narrowing of an
+# EXISTING range, so adding a range to a feature that had none before slipped
+# through unchecked even though it is itself a narrowing (values already
+# recorded outside the new range become invalid).
+def test_adding_a_range_where_none_existed_is_breaking():
+    frozen = _dictionary([_feature("count", type="integer")])
+    current = _dictionary([_feature("count", type="integer", range=[0, 100])])
+    report = compare(frozen, current)
+    assert not report.ok
+    assert any("range added" in b for b in report.breaking)
+
+
 def test_demoting_a_core_feature_is_breaking():
     frozen = _dictionary([_feature("word_count", tier="core")])
     current = _dictionary([_feature("word_count", tier="extended", required=False)])
