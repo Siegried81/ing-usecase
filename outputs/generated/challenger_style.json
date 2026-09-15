@@ -1,0 +1,35 @@
+{
+  "headline": "Your money, your terms \u2014 no fine print surprises",
+  "subheading": "A fixed term account built around you, not the bank.",
+  "body_paragraphs": [
+    "You set the term. You pick the length. You decide when your money works harder.",
+    "Open an account in minutes from your phone. No branch visit, no paperwork, no waiting on hold.",
+    "Your rate is locked for the term you choose, so you always know what you're getting.",
+    "Join thousands of savers who switched to a simpler way to grow their money.",
+    "Get started today and see how easy it is to put your savings to work."
+  ],
+  "cta_label": "Open your account",
+  "additional_cta_labels": [
+    "Discover your rate",
+    "Get started in minutes",
+    "Apply online today",
+    "Sign up now",
+    "Learn more about terms"
+  ],
+  "layout_archetype": "split_columns",
+  "background_style": "light",
+  "accent_colour_hex": "#ff6200",
+  "image_briefs": [
+    "A smartphone held in one hand showing a clean savings dashboard with a large balance figure and a term selector, bright natural light, shallow depth of field, warm orange accent on the primary button.",
+    "A young professional at a kitchen table with a laptop and coffee, relaxed and smiling while completing an online application, soft morning light, candid documentary style.",
+    "An abstract close-up of a calendar with a highlighted term length and a subtle upward line graph overlay, minimal composition, orange accent line, light background.",
+    "A split-screen lifestyle image: left side a person tapping 'open account' on a phone, right side a calm, confident expression, both in the same warm colour grade, no text overlays.",
+    "A simple icon set illustration: a lock, a clock, and a rising chart, arranged in a row, flat vector style, orange and neutral tones, plenty of white space."
+  ],
+  "disclaimer_placeholder": "[Legal disclaimer: rates and terms subject to eligibility and product conditions. Your capital is at risk. Terms and conditions apply.]",
+  "persuasion_levers_used": [
+    "authority",
+    "commitment",
+    "social_proof"
+  ]
+}

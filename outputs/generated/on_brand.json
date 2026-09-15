@@ -1,0 +1,32 @@
+{
+  "headline": "Put your savings to work with a term account",
+  "subheading": "A straightforward way to grow your money over a fixed period, with a rate you know upfront.",
+  "body_paragraphs": [
+    "You work hard for your money. So when you set some aside, you want to know it's doing something useful. A term account does exactly that: you put in a lump sum, choose how long you're happy to leave it, and you earn interest at a rate we agree with you from day one.",
+    "It's simple by design. You decide the amount and the term that suit your plans. We show you the rate before you commit, so there are no surprises later. Your money stays put for the period you've chosen, and at the end you get your original amount back plus the interest you've earned.",
+    "You don't need to be a financial expert to open one. If you can use our app, you can open a term account. You'll see the key details in plain language, and you can check everything at your own pace before you decide.",
+    "Maybe you're saving for a specific goal, or you simply want a home for money you won't need for a while. Either way, a term account gives you a clear, predictable way to earn a return without watching the markets every day.",
+    "You stay in control. You choose the term, you choose the amount, and you can see exactly what you'll earn. When your term ends, you decide what happens next. No jargon, no pressure, just a straightforward product that does what it says.",
+    "Rates and terms vary, so it's worth checking the current offer. You'll find all the details on our website, and you can open an account in a few minutes if it looks right for you."
+  ],
+  "cta_label": "Open a term account",
+  "additional_cta_labels": [
+    "Discover our rates",
+    "Learn more about term accounts",
+    "Get started online"
+  ],
+  "layout_archetype": "hero_stacked",
+  "background_style": "light",
+  "accent_colour_hex": "#ff6200",
+  "image_briefs": [
+    "A warm, natural-light photograph of a person in their thirties sitting at a kitchen table, calmly reviewing something on a smartphone. The scene feels relaxed and everyday, not staged. Soft neutral tones with a subtle orange accent in the background, perhaps a mug or a notebook. The person's expression is quietly confident, suggesting ease and control.",
+    "A close-up, softly focused image of hands holding a simple paper statement or a phone showing a clean, minimal interface. The emphasis is on clarity and simplicity, with no readable numbers or text. Warm, inviting light and a shallow depth of field. A hint of orange in the environment, like a chair or a plant pot.",
+    "An abstract, calm composition of geometric shapes in soft beige, white, and a single orange element, evoking stability and growth over time. Could be interpreted as a stylised timeline or a series of blocks stacking gently upward. Minimal, modern, and reassuring, with plenty of negative space for overlaying text."
+  ],
+  "disclaimer_placeholder": "[Legal disclaimer: terms, conditions, and risk information to be inserted by compliance]",
+  "persuasion_levers_used": [
+    "authority",
+    "commitment",
+    "liking"
+  ]
+}

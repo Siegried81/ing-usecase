@@ -1,0 +1,9 @@
+feature,target,actual,measured,result,rationale
+disclaimer_word_share,disclaimer_word_share between 0.12 and 0.22,0.036,True,miss,ing's own current level (0.17)
+second_person_ratio,second_person_ratio between 0.38 and 0.71,0.875,True,miss,ing's own current level (0.55)
+sentence_count,sentence_count between 24 and 45,20,True,miss,ing's own current level (34.50)
+word_count,word_count between 335 and 622,331,True,miss,ing's own current level (478.50)
+text_to_image_ratio,text_to_image_ratio between 49 and 90,110.33,True,miss,ing's own current level (69.47)
+cta_count,cta_count between 2.45 and 4.55,4,True,hit,ing's own current level (3.50)
+cta_above_fold,cta_above_fold = True,True,True,hit,AIDA 'action' - the next step must be visible without scrolling
+disclaimer_present,disclaimer_present = True,True,True,hit,guardrail - a disclaimer placeholder is never omitted

@@ -11,9 +11,6 @@
 data/raw/
 data/processed/
 
-# Generated analysis outputs
-outputs/
-
 # Python
 __pycache__/
 *.py[cod]
