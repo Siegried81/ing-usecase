@@ -139,6 +139,24 @@ def test_extract_meta_title():
     assert result["meta_title"] == "ING - Savings - EN"
 
 
+# sieg 15/09: regression - verified live on belfius.be, whose hero image has
+# no og:image and falls back to a RELATIVE <img src>. That used to be handed
+# straight to requests.get() in extract_colours(), which raised MissingSchema
+# (silently swallowed there) - the row just got null colours, no error.
+def test_hero_image_url_is_resolved_to_absolute():
+    html = '<html><body><img src="/images/hero.jpg"></body></html>'
+    result = extract(html, language="en", page_url="https://example.com/page")
+    assert result["_hero_image_url"] == "https://example.com/images/hero.jpg"
+
+
+def test_hero_image_url_without_a_page_url_stays_relative():
+    """No page_url (e.g. a direct extract() call in a test) - can't resolve, so
+    the raw value is returned unchanged rather than guessed at."""
+    html = '<html><body><img src="/images/hero.jpg"></body></html>'
+    result = extract(html, language="en")
+    assert result["_hero_image_url"] == "/images/hero.jpg"
+
+
 def test_extract_leaves_render_dependent_fields_none():
     # sieg 14/09: these need a headless viewport - must stay None, not guessed
     result = extract(SAMPLE_HTML, language="en")

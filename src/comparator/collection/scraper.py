@@ -32,6 +32,7 @@ from __future__ import annotations
 
 import re
 from datetime import datetime, timezone
+from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -147,12 +148,24 @@ def _has_animation(soup: BeautifulSoup, html: str) -> bool:
     return "@keyframes" in html or "animation:" in html
 
 
-def _hero_image_url(soup: BeautifulSoup):
+def _hero_image_url(soup: BeautifulSoup, page_url: str | None = None):
+    """sieg 15/09: FIXED - verified live on belfius.be, whose hero has no
+    og:image and falls back to the first <img src>, which is a RELATIVE path
+    ("/common/FR/.../BD-Pension.jpg"). That was handed straight to
+    requests.get() in visual_features.extract_colours(), which raised
+    MissingSchema - silently swallowed there (never crashes a row on
+    purpose), so the row just got null colours with no error to notice.
+    Resolved against page_url with urljoin now. page_url is optional so
+    direct extract()/tests without a source URL keep working - only real
+    scrape() calls, which always have one, get the fix."""
     og_image = soup.find("meta", property="og:image")
-    if og_image and og_image.get("content"):
-        return og_image["content"]
-    first_img = soup.find("img", src=True)
-    return first_img["src"] if first_img else None
+    url = og_image["content"] if og_image and og_image.get("content") else None
+    if url is None:
+        first_img = soup.find("img", src=True)
+        url = first_img["src"] if first_img else None
+    if url and page_url:
+        url = urljoin(page_url, url)
+    return url
 
 
 def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, float]:
@@ -173,8 +186,12 @@ def _rate(text: str):
     return True, value
 
 
-def extract(html: str, *, language: str) -> dict:
-    """Parse fetched HTML into every automatic feature this module covers."""
+def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
+    """Parse fetched HTML into every automatic feature this module covers.
+
+    page_url is optional (only scrape() always has one) so a hero image
+    given as a relative path can be resolved to an absolute URL - see
+    _hero_image_url()."""
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -186,7 +203,7 @@ def extract(html: str, *, language: str) -> dict:
     readability_score, readability_formula, readability_band = _readability(text, language)
 
     image_count = len(soup.find_all("img"))
-    hero_url = _hero_image_url(soup)
+    hero_url = _hero_image_url(soup, page_url)
     animated = _has_animation(soup, html)
     cta_count, cta_above_fold_guess = _count_ctas(soup)
     disclaimer_present, disclaimer_word_share = _disclaimer_share(soup, word_count)
@@ -269,7 +286,7 @@ def extract(html: str, *, language: str) -> dict:
 def scrape(url: str, *, language: str) -> dict:
     """Compliant fetch + full automatic extraction for one page."""
     html = _fetch_html(url)
-    features = extract(html, language=language)
+    features = extract(html, language=language, page_url=url)
     features["_html"] = html
     features["collection_method"] = "static_fetch"
     features["robots_allowed"] = True  # reaching this line means assert_can_fetch already passed
