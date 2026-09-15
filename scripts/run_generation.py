@@ -72,8 +72,18 @@ def main() -> int:
     fd = load_dictionary()
     args.outdir.mkdir(parents=True, exist_ok=True)
 
-    df, report = read_dataset(args.dataset, fd, tier="core", strict=True)
+    # sieg 15/09: fixed - strict=True made read_dataset() raise BEFORE this
+    # function got (df, report) back, so the print(report.render()) below was
+    # dead code on any validation failure - the user got a raw traceback
+    # instead, the exact thing run_collection.py already avoids on purpose.
+    # Not hypothetical: Dan's real captures are still missing the
+    # headless-render-only fields, so this WILL fail once someone points
+    # --dataset at them instead of the fixture.
+    df, report = read_dataset(args.dataset, fd, tier="core", strict=False)
     print(report.render())
+    if not report.ok:
+        print("\ndataset failed core validation - fix it before generating targets from it.")
+        return 1
     if "data_source" in df and (df["data_source"] == "synthetic_fixture").any():
         print("\nNOTE: targets are derived from FIXTURE data, so they are shaped like\n"
               "real targets but are not real ones.")
