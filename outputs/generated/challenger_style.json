@@ -1,35 +1,34 @@
 {
-  "headline": "Your money, your terms \u2014 no fine print surprises",
-  "subheading": "A fixed term account built around you, not the bank.",
+  "headline": "Your money, your terms \u2014 a fixed rate you can actually see",
+  "subheading": "Open a term account in minutes and watch your savings grow on a schedule you set.",
   "body_paragraphs": [
-    "You set the term. You pick the length. You decide when your money works harder.",
-    "Open an account in minutes from your phone. No branch visit, no paperwork, no waiting on hold.",
-    "Your rate is locked for the term you choose, so you always know what you're getting.",
-    "Join thousands of savers who switched to a simpler way to grow their money.",
-    "Get started today and see how easy it is to put your savings to work."
+    "You work hard for your money. So why let it sit in an account that pays you next to nothing? A term account locks in your rate for the length of time you choose, so you always know what you're getting.",
+    "You pick the term. You pick the amount. You get a clear rate from day one \u2014 no tiers, no small print surprises, no branch appointment required.",
+    "You can open your account online in minutes, track it in the app, and add to it whenever it suits you. Your money stays yours, and your rate stays put.",
+    "Join thousands of savers who've already made the switch. See your rate before you commit, and get started today."
   ],
-  "cta_label": "Open your account",
+  "cta_label": "Open your term account",
   "additional_cta_labels": [
     "Discover your rate",
-    "Get started in minutes",
-    "Apply online today",
-    "Sign up now",
+    "Get started online",
+    "Apply in minutes",
+    "Sign up today",
     "Learn more about terms"
   ],
   "layout_archetype": "split_columns",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A smartphone held in one hand showing a clean savings dashboard with a large balance figure and a term selector, bright natural light, shallow depth of field, warm orange accent on the primary button.",
-    "A young professional at a kitchen table with a laptop and coffee, relaxed and smiling while completing an online application, soft morning light, candid documentary style.",
-    "An abstract close-up of a calendar with a highlighted term length and a subtle upward line graph overlay, minimal composition, orange accent line, light background.",
-    "A split-screen lifestyle image: left side a person tapping 'open account' on a phone, right side a calm, confident expression, both in the same warm colour grade, no text overlays.",
-    "A simple icon set illustration: a lock, a clock, and a rising chart, arranged in a row, flat vector style, orange and neutral tones, plenty of white space."
+    "A close-up of a smartphone screen showing a simple savings dashboard with a rising graph and a clearly visible rate figure, held by a hand against a soft neutral background.",
+    "A split-screen illustration: on the left, a person relaxing with a coffee; on the right, a clean interface showing a term account summary with a rate and term length.",
+    "An animated sequence of a progress bar filling up over time, with small milestone markers labelled 'month 1', 'month 6', 'maturity' \u2014 designed as a looping motion graphic.",
+    "A friendly, diverse group of three people in a bright, modern setting, each glancing at their own phone with a satisfied expression, suggesting everyday savers.",
+    "A simple icon set arranged in a grid: a calendar, a lock, a percentage sign, and a checkmark, each in the brand accent colour on a white background."
   ],
-  "disclaimer_placeholder": "[Legal disclaimer: rates and terms subject to eligibility and product conditions. Your capital is at risk. Terms and conditions apply.]",
+  "disclaimer_placeholder": "[Legal disclaimer: rates are subject to change; terms and conditions apply; capital at risk.]",
   "persuasion_levers_used": [
-    "authority",
     "commitment",
-    "social_proof"
+    "social_proof",
+    "authority"
   ]
 }

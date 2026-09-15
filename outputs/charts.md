@@ -66,7 +66,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.11 a
 | total_image_area_ratio | visuals | 0.20 | 0.39 | -1.79 |
 | section_count | layout_structure | 5.50 | 7.50 | -1.63 |
 | page_height_px | layout_structure | 4,092 | 4,823 | -1.33 |
-| has_animation | visuals | 1.00 | 0.38 | 1.29 |
+| youth_student_targeting | banking_domain | 0.00 | 0.31 | -1.29 |
 
 **What it cannot tell you.** With 8 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 

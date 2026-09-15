@@ -37,18 +37,32 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger(__name__)
 
 
-def collect_one(target: dict, page_index: int) -> dict | None:
+def collect_one(
+    target: dict, page_index: int, *, method: str = "auto", raw_dir: Path = Path("data/raw")
+) -> dict | None:
     bank, product_family, language = target["bank"], target["product_family"], target["language"]
     page_id = f"{bank}_{product_family}_{language}_{page_index:02d}"
 
+    # steph 15/09: the snapshot IS the reproducibility guarantee (DR-03, DR-06) -
+    # feature extraction has to be re-runnable without re-fetching anyone's site.
+    # snapshot_html_path is core, required and not nullable, so a row without it
+    # fails validation anyway.
+    bank_dir = raw_dir / bank
+    html_path = bank_dir / f"{product_family}_{language}_{page_index:02d}.html"
+    shot_path = bank_dir / f"{product_family}_{language}_{page_index:02d}.png"
+
     try:
-        scraped = scrape(target["url"], language=language)
+        scraped = scrape(target["url"], language=language, method=method,
+                         screenshot_path=shot_path)
     except ScrapingNotAllowed as exc:
         logger.warning("skipping %s: %s", page_id, exc)
         return None
     except Exception as exc:  # noqa: BLE001 - network/parsing failures shouldn't kill the run
         logger.error("scrape failed for %s: %s", page_id, exc)
         return None
+
+    bank_dir.mkdir(parents=True, exist_ok=True)
+    html_path.write_text(scraped["_html"], encoding="utf-8")
 
     colours = extract_colours(scraped.get("_hero_image_url"), bank=bank)
 
@@ -74,8 +88,8 @@ def collect_one(target: dict, page_index: int) -> dict | None:
         "collection_method": scraped["collection_method"],
         "robots_allowed": scraped["robots_allowed"],
         "captured_at": scraped["captured_at"],
-        "snapshot_html_path": "",  # sieg 14/09: TODO - Dan, write scraped["_html"] to data/raw/ and set this
-        "screenshot_path": "",     # TODO - only fillable once headless_render exists
+        "snapshot_html_path": str(html_path),
+        "screenshot_path": str(shot_path) if shot_path.exists() else None,
         "data_source": "real",
         "extraction_model": extraction_model,
         **{k: v for k, v in scraped.items() if not k.startswith("_")},
@@ -88,6 +102,13 @@ def collect_one(target: dict, page_index: int) -> dict | None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--method", default="auto", choices=["auto", "headless", "static"],
+        help="auto: render if possible, else static (and say so). headless: require a "
+             "browser. static: never launch one - leaves the five geometry features "
+             "empty, which fails strict validation.",
+    )
+    parser.add_argument("--raw-dir", type=Path, default=Path("data/raw"))
     parser.add_argument("--config", required=True, help="YAML file listing pages to collect")
     parser.add_argument("--out", default="data/processed/real_captures.csv")
     args = parser.parse_args()
@@ -99,7 +120,7 @@ def main() -> None:
     counters: dict[str, int] = {}
     for target in targets:
         counters[target["bank"]] = counters.get(target["bank"], 0) + 1
-        row = collect_one(target, counters[target["bank"]])
+        row = collect_one(target, counters[target["bank"]], method=args.method, raw_dir=args.raw_dir)
         if row:
             rows.append(row)
 
