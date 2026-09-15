@@ -22,6 +22,117 @@ from comparator.schema import parse_list
 PROVENANCE = {"provenance"}
 FOCUS_BANK = "ing"
 
+# steph 15/09, after Sieg asked why the chart said "50 features" when the
+# dictionary has 97. It is a fair question and the answer was nowhere in the
+# output, so the accounting below is now computed and printed rather than
+# reconstructed by hand.
+BAND_SUFFIX = "_band"
+
+# Free text and identifiers. Two pages never share a meta_title, so a distance
+# over them measures nothing about how a bank communicates.
+FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "readability_formula"}
+
+
+def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
+    """`X_band` features whose underlying `X` already enters the comparison.
+
+    Siegried's bands exist to make a within_language number cross-language. They
+    are a coarser view of a value already in the matrix, so including both would
+    count the same signal twice and quietly double the weight of word length.
+    """
+    numeric = {f.name for f in fd.features if (f.is_numeric or f.is_boolean) and f.name in df.columns}
+    return sorted(
+        f.name for f in fd.features
+        if f.name.endswith(BAND_SUFFIX) and f.name[: -len(BAND_SUFFIX)] in numeric
+    )
+
+
+def encodable_categoricals(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
+    """Categorical and list features that carry real signal and could be encoded.
+
+    Excludes provenance, free text, and bands already represented by their raw
+    number. What is left is genuinely informative and currently unused - see
+    feature_accounting().
+    """
+    redundant = set(band_redundant_features(fd, df))
+    out = []
+    for f in fd.features:
+        if f.dimension in PROVENANCE or f.name not in df.columns:
+            continue
+        if f.name in FREE_TEXT_FEATURES or f.name in redundant:
+            continue
+        if f.is_categorical or f.is_list:
+            out.append(f.name)
+    return sorted(out)
+
+
+def feature_accounting(
+    df: pd.DataFrame,
+    fd: FeatureDictionary | None = None,
+    *,
+    include_categorical: bool = False,
+) -> dict:
+    """Where the dictionary's features go, and why, for one comparison.
+
+    Every number the charts quote comes out of this, so it is computed once and
+    reported rather than left for a reader to reverse-engineer.
+    """
+    fd = fd or load_dictionary()
+    provenance = [f.name for f in fd.select(dimension="provenance")]
+    free_text = sorted(n for n in FREE_TEXT_FEATURES if n in fd)
+    bands = band_redundant_features(fd, df)
+    categoricals = encodable_categoricals(fd, df)
+
+    matrix = bank_vectors(df, fd, include_categorical=include_categorical)
+    incomplete = sorted(c for c in matrix.columns if matrix[c].isna().any())
+    complete = matrix.dropna(axis=1, how="any")
+    used = standardise(complete)
+    constant = sorted(c for c in complete.columns if c not in used.columns)
+
+    return {
+        "dictionary_total": len(fd),
+        "provenance": provenance,
+        "free_text": free_text,
+        "band_redundant": bands,
+        "categorical": categoricals,
+        "categorical_included": bool(include_categorical),
+        "incomplete": incomplete,
+        "constant": constant,
+        "used": list(used.columns),
+        "n_used": used.shape[1],
+    }
+
+
+def render_accounting(accounting: dict) -> str:
+    """One readable block explaining the reduction."""
+    lines = [f"{accounting['dictionary_total']} features in the dictionary"]
+
+    def row(label: str, names: list[str], why: str) -> None:
+        if names:
+            lines.append(f"  -{len(names):>3}  {label:<26} {why}")
+
+    row("provenance", accounting["provenance"], "identify a page, do not describe a campaign")
+    row("free text / identifiers", accounting["free_text"], "no two pages share them")
+    row("bands of a number already in", accounting["band_redundant"], "would double-count the same signal")
+    if accounting["categorical_included"]:
+        lines.append(
+            f"  +{len(accounting['categorical']):>3}  categorical / list         "
+            "one-hot encoded, each weighted 1/sqrt(k)"
+        )
+    else:
+        row("categorical / list", accounting["categorical"], "not encoded - see note below")
+    row("missing for some bank", accounting["incomplete"], "cannot compare what one bank lacks")
+    row("no variation across banks", accounting["constant"], "identical everywhere, carries no signal")
+
+    unit = "columns" if accounting["categorical_included"] else "features"
+    lines.append(f"  ={accounting['n_used']:>3}  {unit} used in this comparison")
+    if accounting["categorical_included"]:
+        lines.append(
+            "        (a categorical with k values becomes k columns, so this counts "
+            "columns, not features)"
+        )
+    return "\n".join(lines)
+
 
 def comparable_features(
     fd: FeatureDictionary,
@@ -45,16 +156,59 @@ def _numeric_frame(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:
     return out
 
 
+def _one_hot(df: pd.DataFrame, fd: FeatureDictionary, columns: list[str]) -> pd.DataFrame:
+    """Encode categorical and list features as indicators, weight-normalised.
+
+    Indicators only - the weighting happens AFTER standardisation, in
+    comparison_matrix(). Scaling here would be pointless: standardise() z-scores
+    every column, which erases any constant applied beforehand. (It was written
+    that way first; measured, and every dummy still came out at unit variance.)
+    """
+    frames = []
+    for name in columns:
+        feature = fd[name]
+        if feature.is_list:
+            members = sorted({m for cell in df[name].dropna() for m in parse_list(cell)})
+            if not members:
+                continue
+            data = pd.DataFrame(
+                {f"{name}={m}": df[name].map(lambda c, m=m: float(m in parse_list(c))) for m in members},
+                index=df.index,
+            )
+        else:
+            values = sorted(str(v) for v in df[name].dropna().unique())
+            if len(values) < 2:  # constant - no signal, and _standardise would drop it anyway
+                continue
+            data = pd.DataFrame(
+                {f"{name}={v}": (df[name].astype("string") == v).astype("float64") for v in values},
+                index=df.index,
+            )
+        frames.append(data)
+    return pd.concat(frames, axis=1) if frames else pd.DataFrame(index=df.index)
+
+
 def bank_vectors(
     df: pd.DataFrame,
     fd: FeatureDictionary | None = None,
     *,
     tier: str | None = None,
+    include_categorical: bool = False,
 ) -> pd.DataFrame:
-    """One row per bank: the mean of its pages, on comparable features."""
+    """One row per bank: the mean of its pages, on comparable features.
+
+    include_categorical adds one-hot encoded categorical and list features. It is
+    OFF by default: turning it on moves every number in the analysis, so it is a
+    team decision, not a default. feature_accounting() reports what is excluded
+    either way.
+    """
     fd = fd or load_dictionary()
     cols = comparable_features(fd, df, tier=tier)
     numeric = _numeric_frame(df, cols)
+
+    if include_categorical:
+        encoded = _one_hot(df, fd, encodable_categoricals(fd, df))
+        numeric = pd.concat([numeric, encoded], axis=1)
+
     numeric["bank"] = df["bank"].values
     return numeric.groupby("bank", observed=True).mean(numeric_only=True)
 
@@ -64,6 +218,47 @@ def standardise(matrix: pd.DataFrame) -> pd.DataFrame:
     std = matrix.std(ddof=0)
     keep = std[std > 1e-9].index
     return (matrix[keep] - matrix[keep].mean()) / std[keep]
+
+
+def comparison_matrix(
+    df: pd.DataFrame,
+    fd: FeatureDictionary | None = None,
+    *,
+    tier: str | None = None,
+    include_categorical: bool = False,
+) -> pd.DataFrame:
+    """Bank vectors, standardised and weighted - the one input every distance uses.
+
+    steph 15/09. positioning_axis() and similarity_matrix() each built this
+    inline, which is how the weighting bug below survived: fixing it in one
+    place would have left the other wrong.
+
+    THE WEIGHTING. A categorical with k values becomes k columns. After
+    standardisation each of those columns has unit variance, so the feature
+    weighs k times as much as a single number - 19 categoricals became 55
+    columns here and collectively outvoted all 50 numeric features. Each
+    feature's block is therefore scaled by 1/sqrt(k) AFTER standardising, which
+    makes its contribution to a squared distance comparable to one numeric
+    column. Scaling before standardising does nothing at all; z-scoring erases
+    it.
+    """
+    fd = fd or load_dictionary()
+    vectors = bank_vectors(df, fd, tier=tier, include_categorical=include_categorical)
+    z = standardise(vectors.dropna(axis=1, how="any"))
+    if not include_categorical:
+        return z
+
+    categorical = set(encodable_categoricals(fd, df))
+    blocks: dict[str, list[str]] = {}
+    for column in z.columns:
+        stem = column.split("=")[0]
+        if stem in categorical:
+            blocks.setdefault(stem, []).append(column)
+
+    weighted = z.copy()
+    for columns in blocks.values():
+        weighted[columns] = weighted[columns] / np.sqrt(len(columns))
+    return weighted
 
 
 # -----------------------------------------------------------------------------
@@ -195,6 +390,7 @@ def positioning_axis(
     *,
     focus: str = FOCUS_BANK,
     tier: str | None = None,
+    include_categorical: bool = False,
 ) -> Positioning:
     """Project every bank onto the traditional-challenger axis (BO-02)."""
     fd = fd or load_dictionary()
@@ -207,7 +403,13 @@ def positioning_axis(
     # many features got dropped and why, rather than doing it silently.
     # same comment applies to similarity_matrix() and profiles._distinctive()
     # below, which share this exact pattern.
-    vectors = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
+    #
+    # steph 15/09: answered. feature_accounting() / render_accounting() above
+    # now report every reduction with its reason, run_analysis.py prints the
+    # block, and outputs/charts.md carries it next to the figure - which is what
+    # prompted the question in the first place ("50 features... and with 97?").
+    # Still no imputation: a dropped feature is reported, never guessed.
+    vectors = comparison_matrix(df, fd, tier=tier, include_categorical=include_categorical)
     categories = df.drop_duplicates("bank").set_index("bank")["bank_category"]
 
     trad_centroid = vectors.loc[categories[categories == "traditional"].index].mean()
@@ -231,11 +433,12 @@ def similarity_matrix(
     fd: FeatureDictionary | None = None,
     *,
     tier: str | None = None,
+    include_categorical: bool = False,
 ) -> pd.DataFrame:
     """Pairwise euclidean distance between banks in standardised feature space."""
     fd = fd or load_dictionary()
     # sieg 14/09: see the dropna(axis=1, how="any") note in positioning_axis() above.
-    vectors = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
+    vectors = comparison_matrix(df, fd, tier=tier, include_categorical=include_categorical)
     banks = vectors.index.tolist()
     data = vectors.to_numpy()
     dist = np.linalg.norm(data[:, None, :] - data[None, :, :], axis=-1)

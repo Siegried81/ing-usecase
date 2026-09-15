@@ -9,6 +9,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
@@ -188,3 +189,101 @@ def test_profile_renders_to_markdown(df, fd):
 def test_profile_for_unknown_bank_fails_loudly(df, fd):
     with pytest.raises(ValueError, match="no rows for bank"):
         build_profile(df, "not_a_bank", fd)
+
+
+# --- feature accounting (steph 15/09, after Sieg's "50 features... and with 97?") ---
+def test_accounting_adds_up_to_the_whole_dictionary(df, fd):
+    """Every feature must land in exactly one bucket, or the explanation is wrong."""
+    from comparator.analysis import feature_accounting
+
+    a = feature_accounting(df, fd)
+    buckets = (a["provenance"] + a["free_text"] + a["band_redundant"]
+               + a["categorical"] + a["incomplete"] + a["constant"] + a["used"])
+    assert len(buckets) == len(set(buckets)), "a feature is counted in two buckets"
+    assert len(buckets) == a["dictionary_total"] == len(fd)
+
+
+def test_accounting_matches_what_positioning_actually_used(df, fd):
+    from comparator.analysis import feature_accounting
+
+    assert feature_accounting(df, fd)["n_used"] == positioning_axis(df, fd).n_features
+
+
+def test_bands_are_excluded_as_redundant_not_silently_lost(df, fd):
+    from comparator.analysis import band_redundant_features, feature_accounting
+
+    bands = band_redundant_features(fd, df)
+    assert "word_count_band" in bands, "its raw word_count is already in the matrix"
+    assert set(bands) <= set(feature_accounting(df, fd)["band_redundant"])
+
+
+def test_free_text_never_enters_a_distance(df, fd):
+    from comparator.analysis import feature_accounting
+
+    assert "meta_title" in feature_accounting(df, fd)["free_text"]
+
+
+def test_banking_domain_features_do_reach_the_comparison(df, fd):
+    """Sieg's contribution must not be quietly sitting the analysis out."""
+    from comparator.analysis import feature_accounting
+
+    used = set(feature_accounting(df, fd)["used"])
+    banking = {f.name for f in fd.select(dimension="banking_domain")}
+    assert len(used & banking) >= 10, "most banking-domain features should be in play"
+
+
+def test_including_categoricals_adds_columns_without_changing_the_verdict(df, fd):
+    """The robustness check: the answer must not hinge on the encoding choice."""
+    plain = positioning_axis(df, fd)
+    encoded = positioning_axis(df, fd, include_categorical=True)
+    assert encoded.n_features > plain.n_features
+    assert encoded.verdict == plain.verdict
+
+
+def test_a_categorical_weighs_the_same_as_one_number(df, fd):
+    """A k-value categorical becomes k unit-variance columns after standardising,
+    so without correction it would outvote k numeric features. 19 categoricals
+    became 55 columns here and outweighed all 50 numerics - hence the 1/sqrt(k)
+    correction, which only works AFTER standardisation."""
+    from comparator.analysis import comparison_matrix, encodable_categoricals
+
+    z = comparison_matrix(df, fd, include_categorical=True)
+    categorical = set(encodable_categoricals(fd, df))
+
+    numeric_cols = [c for c in z.columns if c.split("=")[0] not in categorical]
+    blocks: dict[str, list[str]] = {}
+    for column in z.columns:
+        stem = column.split("=")[0]
+        if stem in categorical:
+            blocks.setdefault(stem, []).append(column)
+
+    per_numeric = float((z[numeric_cols] ** 2).to_numpy().sum()) / len(numeric_cols)
+    per_categorical = sum(float((z[cols] ** 2).to_numpy().sum()) for cols in blocks.values()) / len(blocks)
+    assert per_categorical == pytest.approx(per_numeric, rel=0.02)
+
+
+def test_pre_standardisation_scaling_would_not_have_worked(df, fd):
+    """Guards the reasoning: z-scoring erases any constant applied beforehand."""
+    from comparator.analysis import _one_hot, encodable_categoricals, standardise
+
+    raw = _one_hot(df, fd, encodable_categoricals(fd, df))
+    scaled = raw / 7.0  # any constant at all
+    pd.testing.assert_frame_equal(standardise(raw), standardise(scaled))
+
+
+def test_both_distance_consumers_share_one_matrix(df, fd):
+    """positioning_axis and similarity_matrix built this inline, which is how the
+    weighting bug survived in one and not the other."""
+    from comparator.analysis import comparison_matrix
+
+    z = comparison_matrix(df, fd)
+    assert positioning_axis(df, fd).n_features == z.shape[1]
+    assert similarity_matrix(df, fd).shape[0] == z.shape[0]
+
+
+def test_render_accounting_names_a_reason_for_every_reduction(df, fd):
+    from comparator.analysis import feature_accounting, render_accounting
+
+    text = render_accounting(feature_accounting(df, fd))
+    for reason in ("identify a page", "double-count", "carries no signal"):
+        assert reason in text
