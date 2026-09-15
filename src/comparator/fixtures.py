@@ -218,7 +218,13 @@ def build_fixture(
                     "section_count": int(max(2, rng.normal(7, 2))),
                     "cta_count": int(max(1, rng.normal(4 if a["category"] == "traditional" else 7, 1.5))),
                     "cta_above_fold": bool(rng.random() > (0.4 if a["category"] == "traditional" else 0.05)),
-                    "text_image_adjacent": a["adjacent"],
+                    # sieg 15/09: text_image_adjacent (boolean) -> text_image_layout
+                    # (categorical) - "stacked" for ing specifically (the deck claim
+                    # H4 is "no longer next to picture", not "overlaid" like the
+                    # challengers below), "overlaid" for the other non-beside banks,
+                    # matching the real N26/Revolut hero screenshots (full-bleed
+                    # photo, headline written on top).
+                    "text_image_layout": "beside" if a["adjacent"] else ("stacked" if bank == "ing" else "overlaid"),
                     "text_to_image_ratio": text_to_image_ratio_value,
                     "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio_value),  # sieg 14/09
                     "above_fold_element_count": int(max(1, rng.normal(6, 2))),
