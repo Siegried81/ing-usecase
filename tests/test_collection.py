@@ -139,6 +139,52 @@ def test_extract_meta_title():
     assert result["meta_title"] == "ING - Savings - EN"
 
 
+# sieg 15/09: regression - verified live on belfius.be, whose hero image has
+# no og:image and falls back to a RELATIVE <img src>. That used to be handed
+# straight to requests.get() in extract_colours(), which raised MissingSchema
+# (silently swallowed there) - the row just got null colours, no error.
+def test_hero_image_url_is_resolved_to_absolute():
+    html = '<html><body><img src="/images/hero.jpg"></body></html>'
+    result = extract(html, language="en", page_url="https://example.com/page")
+    assert result["_hero_image_url"] == "https://example.com/images/hero.jpg"
+
+
+def test_hero_image_url_without_a_page_url_stays_relative():
+    """No page_url (e.g. a direct extract() call in a test) - can't resolve, so
+    the raw value is returned unchanged rather than guessed at."""
+    html = '<html><body><img src="/images/hero.jpg"></body></html>'
+    result = extract(html, language="en")
+    assert result["_hero_image_url"] == "/images/hero.jpg"
+
+
+# sieg 15/09: regression - verified live on n26.com, which has no
+# disclaimer/legal-classed element but uses real footnotes (<sup>N</sup> in
+# the body, a matching "N ..." paragraph elsewhere) - the class/id heuristic
+# alone scored disclaimer_present=False despite real disclosure text present.
+def test_disclaimer_detected_from_footnote_markers():
+    html = """<html><body>
+    <p>Deux retraits sans frais par mois<sup>1</sup>, carte physique en option<sup>2</sup>.</p>
+    <p>1 N26 Standard inclut deux retraits mensuels sans frais.</p>
+    <p>2 Des frais de 10 euros s'appliquent pour la carte physique.</p>
+    </body></html>"""
+    result = extract(html, language="fr")
+    assert result["disclaimer_present"] is True
+    assert result["disclaimer_word_share"] > 0
+
+
+def test_footnote_heuristic_does_not_fire_on_an_ordinary_numbered_list():
+    """No <sup> markers at all here - a numbered list must not be mistaken
+    for footnotes just because its items start with a digit."""
+    html = """<html><body>
+    <p>How it works</p>
+    <p>1 Open the app and sign up.</p>
+    <p>2 Verify your identity.</p>
+    <p>3 Start using your account.</p>
+    </body></html>"""
+    result = extract(html, language="en")
+    assert result["disclaimer_present"] is False
+
+
 def test_extract_leaves_render_dependent_fields_none():
     # sieg 14/09: these need a headless viewport - must stay None, not guessed
     result = extract(SAMPLE_HTML, language="en")

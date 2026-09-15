@@ -35,6 +35,7 @@ from pathlib import Path
 
 import re
 from datetime import datetime, timezone
+from urllib.parse import urljoin
 
 import requests
 from bs4 import BeautifulSoup
@@ -153,18 +154,52 @@ def _has_animation(soup: BeautifulSoup, html: str) -> bool:
     return "@keyframes" in html or "animation:" in html
 
 
-def _hero_image_url(soup: BeautifulSoup):
+def _hero_image_url(soup: BeautifulSoup, page_url: str | None = None):
+    """sieg 15/09: FIXED - verified live on belfius.be, whose hero has no
+    og:image and falls back to the first <img src>, which is a RELATIVE path
+    ("/common/FR/.../BD-Pension.jpg"). That was handed straight to
+    requests.get() in visual_features.extract_colours(), which raised
+    MissingSchema - silently swallowed there (never crashes a row on
+    purpose), so the row just got null colours with no error to notice.
+    Resolved against page_url with urljoin now. page_url is optional so
+    direct extract()/tests without a source URL keep working - only real
+    scrape() calls, which always have one, get the fix."""
     og_image = soup.find("meta", property="og:image")
-    if og_image and og_image.get("content"):
-        return og_image["content"]
-    first_img = soup.find("img", src=True)
-    return first_img["src"] if first_img else None
+    url = og_image["content"] if og_image and og_image.get("content") else None
+    if url is None:
+        first_img = soup.find("img", src=True)
+        url = first_img["src"] if first_img else None
+    if url and page_url:
+        url = urljoin(page_url, url)
+    return url
 
 
 def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, float]:
-    # heuristic: elements whose class/id mentions disclaimer/legal/small-print
+    # heuristic 1: elements whose class/id mentions disclaimer/legal/small-print
     candidates = soup.find_all(attrs={"class": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
     candidates += soup.find_all(attrs={"id": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
+
+    # heuristic 2, sieg 15/09: FIXED - verified live on n26.com, which has
+    # neither (0 matches on heuristic 1) but uses real footnotes: <sup>1</sup>
+    # markers in the body referencing paragraphs elsewhere that start with
+    # "1 ...". Restricted to <sup> whose own text is 1-2 digits only (a
+    # footnote marker, not e.g. a "TM" superscript) so this can't fire on an
+    # unrelated page, and to <p>/<div>/<li> with NO block-level descendant
+    # (a true leaf) so a large wrapper that merely starts with a number can't
+    # match and get double-counted through a nested tag.
+    footnote_numbers = {
+        s.get_text(strip=True) for s in soup.find_all("sup")
+        if s.get_text(strip=True).isdigit() and len(s.get_text(strip=True)) <= 2
+    }
+    if footnote_numbers:
+        for tag in soup.find_all(["p", "div", "li"]):
+            if tag.find(["p", "div", "li"]):
+                continue
+            text = tag.get_text(strip=True)
+            match = re.match(r"^(\d{1,2})[\s.]", text)
+            if match and match.group(1) in footnote_numbers and 5 < len(text) < 400:
+                candidates.append(tag)
+
     if not candidates or total_words == 0:
         return False, 0.0
     disclaimer_words = sum(len(c.get_text(strip=True).split()) for c in candidates)
@@ -179,8 +214,12 @@ def _rate(text: str):
     return True, value
 
 
-def extract(html: str, *, language: str) -> dict:
-    """Parse fetched HTML into every automatic feature this module covers."""
+def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
+    """Parse fetched HTML into every automatic feature this module covers.
+
+    page_url is optional (only scrape() always has one) so a hero image
+    given as a relative path can be resolved to an absolute URL - see
+    _hero_image_url()."""
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()
@@ -192,7 +231,7 @@ def extract(html: str, *, language: str) -> dict:
     readability_score, readability_formula, readability_band = _readability(text, language)
 
     image_count = len(soup.find_all("img"))
-    hero_url = _hero_image_url(soup)
+    hero_url = _hero_image_url(soup, page_url)
     animated = _has_animation(soup, html)
     cta_count, cta_above_fold_guess = _count_ctas(soup)
     disclaimer_present, disclaimer_word_share = _disclaimer_share(soup, word_count)
@@ -295,6 +334,11 @@ def scrape(
 
     The rendered DOM is also what gets parsed, so a JavaScript-built page is read
     as a reader sees it rather than as an empty shell (PRD risk R-02).
+
+    sieg 15/09: merge with steph's render path kept page_url=url on BOTH
+    branches below - render.py doesn't resolve relative asset URLs itself,
+    so a headless-rendered page can still hand back a relative hero <img src>
+    just like a static one did on belfius.be (see _hero_image_url()).
     """
     if method not in {"auto", "headless", "static"}:
         raise ValueError(f"unknown method {method!r}")
@@ -314,12 +358,12 @@ def scrape(
 
     if rendered is not None:
         html = rendered.html
-        features = extract(html, language=language)
+        features = extract(html, language=language, page_url=url)
         features.update(rendered.features)  # geometry overrides the None placeholders
         features["collection_method"] = "headless_render"
     else:
         html = _fetch_html(url)
-        features = extract(html, language=language)
+        features = extract(html, language=language, page_url=url)
         features["collection_method"] = "static_fetch"
 
     features["_html"] = html
