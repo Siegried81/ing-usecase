@@ -166,17 +166,18 @@
 | `section_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct content blocks on the page. |
 | `cta_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct call-to-action buttons or links. |
 | `cta_above_fold` | boolean | automatic | cross_language | core | Whether at least one call to action is visible without scrolling. |
-| `text_image_adjacent` | boolean | rubric | cross_language | core | Whether the dominant pattern places text and image side by side, rather than stacking them vertically.<br>*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other".* |
+| `text_image_layout` | categorical<br>`beside` · `stacked` · `overlaid` | rubric | cross_language | core | How the dominant pattern relates text and image: side by side (beside), one above the other (stacked), or text written directly on top of the image (overlaid, e.g. a full-bleed hero photo with a headline over it).<br>*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other".* |
 | `text_to_image_ratio` | float<br>[0, ∞] | automatic | within_language | core | Text area divided by image area in the rendered page. |
 | `above_fold_element_count` | integer<br>[0, ∞] | automatic | cross_language | extended | Number of distinct interactive or content elements visible without scrolling. |
 | `has_comparison_table` | boolean | automatic | cross_language | extended | Whether the page contains a product comparison table. |
 | `layout_archetype` | categorical<br>`hero_stacked` · `split_columns` · `card_grid` · `long_form` | rubric | cross_language | core | Overall structural pattern of the page. |
 | `mobile_first_design_signal` | boolean | rubric | cross_language | extended | Whether the page's visual design reads as built mobile-first (single-column cards, large tap targets, minimal above-fold density) rather than desktop-first (multi-column, hover-dependent, dense), judged from the desktop screenshot. Not a responsive/viewport measurement - this project only captures one fixed viewport. |
 
-### Rubric — `text_image_adjacent`
+### Rubric — `text_image_layout`
 
-- **False** — Text and images are stacked vertically, or images stand alone without adjacent text.
-- **True** — The dominant pattern places a block of text directly beside an image, on the same visual row.
+- **beside** — Text and image sit side by side, both fully visible (e.g. photo left, text block right).
+- **overlaid** — Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it).
+- **stacked** — Image and text follow each other vertically, not overlapping.
 
 ### Rubric — `layout_archetype`
 
@@ -221,8 +222,9 @@
 
 ### Rubric — `aida_action`
 
-- **False** — No clear call to action, or several competing ones that dilute the next step.
-- **True** — There is one unmistakable next step - a clear, singular call to action.
+- **False** — No clear call to action, or several CTAs competing for the same visitor with no clear way to tell which applies.
+- **True** — There is one unmistakable next step - a single call to action, or several CTAs clearly segmented by audience/situation so each visitor still has exactly one obvious path (e.g. "not retired yet" vs "already retired").
+
 
 ### Rubric — `persuasion_levers`
 

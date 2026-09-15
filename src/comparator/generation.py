@@ -158,12 +158,23 @@ def build_targets(
     focus_row = vectors.loc[focus] if focus in vectors.index else None
     challengers = banks[banks["bank_category"] == "challenger"]
 
+    # sieg 15/09: fixed - cta_above_fold and disclaimer_present are ALSO
+    # unconditionally appended below as rubric-driven fixes. On the current
+    # fixture neither lands in the top_n movable features, so this was never
+    # triggered, but cta_above_fold in particular is a real traditional/
+    # challenger differentiator (see fixtures.py ARCHETYPES) and could easily
+    # land there on real data - which would add it to specs twice, double-
+    # counting it in the scorecard and hit_rate(). Excluded here the same way
+    # GUARDRAIL_BLOCKED_FEATURES already excludes features handled elsewhere.
+    _RUBRIC_FIXED_FEATURES = {"cta_above_fold", "disclaimer_present"}
+
     # The features that actually separate the two groups, restricted to the ones
     # a text-and-DOM generation can genuinely move.
     movable = [
         f for f in separation["feature"]
         if f in MEASURED_FEATURES and f in vectors.columns
         and f not in GUARDRAIL_BLOCKED_FEATURES
+        and f not in _RUBRIC_FIXED_FEATURES
     ][:top_n]
 
     on_brand_specs: list[TargetSpec] = []

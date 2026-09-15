@@ -17,11 +17,12 @@ WHAT THIS DOES NOT DO, ON PURPOSE (read before trusting a row):
     image_count) as a stand-in for the real text-area/image-area ratio the
     dictionary defines - close in spirit, not the same number. Flagged in
     the returned row so it isn't mistaken for the real thing.
-  - readability_score is a best-effort implementation of the three formulas
-    the dictionary names (Flesch/Kandel-Moles/Flesch-Douma). I'm not 100%
-    certain the coefficients below match the published originals exactly -
-    verify against a citable source (or a maintained library) before this
-    number goes in front of Diego/Victor.
+  - readability_score implements the three formulas the dictionary names
+    (Flesch/Kandel-Moles/Flesch-Douma). sieg 15/09: VERIFIED against
+    published sources - Flesch Reading Ease (en): 206.835 - 1.015*ASL -
+    84.6*ASW; Kandel-Moles (fr, 1958): 207 - 1.015*ASL - 73.6*ASW;
+    Flesch-Douma (nl, 1960): 206.84 - 0.93*ASL - 77*ASW. All three match the
+    coefficients below exactly.
 
 Next step for Dan: add a headless_render path (e.g. playwright) that fills
 the four fields above and replaces the text_to_image_ratio approximation
@@ -71,12 +72,13 @@ _CTA_KEYWORDS = (
 )
 
 # Standard-form readability coefficients (words/sentence, syllables/word).
-# sieg 14/09: VERIFY these against a citable source before trusting the
-# output for real analysis - written from memory, not copied from a spec.
+# sieg 15/09: VERIFIED against published sources (see module docstring) -
+# these are the exact Flesch / Kandel-Moles / Flesch-Douma coefficients, not
+# an approximation.
 _READABILITY_COEFFS = {
     "en": dict(base=206.835, per_word=1.015, per_syllable=84.6),
-    "fr": dict(base=207.0, per_word=1.015, per_syllable=73.6),   # Kandel-Moles approximation
-    "nl": dict(base=206.84, per_word=0.93, per_syllable=77.0),   # Flesch-Douma approximation
+    "fr": dict(base=207.0, per_word=1.015, per_syllable=73.6),   # Kandel-Moles (1958)
+    "nl": dict(base=206.84, per_word=0.93, per_syllable=77.0),   # Flesch-Douma (1960)
 }
 _READABILITY_FORMULA_NAME = {
     "nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en",

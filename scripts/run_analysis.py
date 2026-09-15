@@ -166,7 +166,7 @@ def main() -> int:
     print(f"  wrote {args.outdir / 'charts.md'} ({len(companion.splitlines())} lines)")
 
     # --- 9. persuasion levers ------------------------------------------------
-    _header("8. Persuasion levers by category")
+    _header("9. Persuasion levers by category")  # sieg 15/09: was still "8." after step 8 (chart companion) was inserted above
     levers = lever_frequency(banks_df)
     if not levers.empty:
         print(levers.to_string())

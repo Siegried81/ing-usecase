@@ -1,11 +1,16 @@
 """Fills the model_assisted fields with ONE structured call per page.
 
 sieg 14/09, new module - answers "will you use my .env.example?": yes, same
-provider order and same env-var names (GROQ_API_KEY[_2/_3] -> OPENROUTER_API_KEY
--> CEREBRAS_API_KEY -> SAMBANOVA_API_KEY -> OLLAMA_HOST), because it's already
-a working pattern and there's no reason to invent a second one for this
-project. Only the LLM section of your .env.example is relevant here - the
-market-data/news/academic keys belong to portfolio_forecasting, not this repo.
+env-var names, because it's already a working pattern and there's no reason to
+invent a second one for this project. Only the LLM section of your
+.env.example is relevant here - the market-data/news/academic keys belong to
+portfolio_forecasting, not this repo.
+
+sieg 15/09: provider ORDER is now DEEPSEEK_API_KEY -> GROQ_API_KEY[_2/_3] ->
+OPENROUTER_API_KEY -> CEREBRAS_API_KEY -> SAMBANOVA_API_KEY -> OLLAMA_HOST,
+not the Groq-first order this paragraph used to describe - DeepSeek is now
+first per steph's Decision 6 below (pinned labelling model, docs/decisions.md).
+Updated here so the docstring doesn't silently disagree with _PROVIDERS.
 
 WHY ONE CALL, NOT AN AGENT: same reasoning as the rest of this project (see
 README "why a chain, not an agent"). Every page gets the same fixed prompt and
@@ -14,9 +19,13 @@ autonomous tool use. This is a feature-extraction call, nothing decides
 anything here.
 
 Providers are called via their OpenAI-compatible chat-completions endpoint
-directly (requests), so this needs no per-provider SDK. VERIFY the base URLs
-below against each provider's current docs before relying on the fallbacks -
-Groq and OpenRouter are ones I'm confident about, Cerebras/SambaNova less so.
+directly (requests), so this needs no per-provider SDK.
+
+sieg 15/09: the default model names for OpenRouter/Cerebras/SambaNova were
+originally guessed and flagged as unverified - replaced with the values from
+Sieg's own portfolio_forecasting .env.example (qwen/qwen3-4b:free / gpt-oss-120b
+/ gpt-oss-120b), which are known to work. Base URLs are still worth a quick
+check against each provider's current docs if a call starts failing.
 """
 from __future__ import annotations
 
@@ -155,9 +164,16 @@ class LLMExtractionError(Exception):
 _PROVIDERS = [
     ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-chat"),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "openai/gpt-oss-120b:free"),
-    ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "llama-3.3-70b"),
-    ("sambanova", "SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "Meta-Llama-3.3-70B-Instruct"),
+    # sieg 15/09: kept steph's provider-tuple structure (name + deepseek pin,
+    # decision 6) but fixed the default model ids for these three fallbacks -
+    # they were unverified guesses (old docstring: "VERIFY... Cerebras/
+    # SambaNova less so"). now verified against each provider's live model
+    # listing: openrouter serves qwen/qwen3-4b:free, cerebras and sambanova
+    # both serve gpt-oss-120b - matches Sieg's own portfolio_forecasting
+    # .env.example, which is known to work.
+    ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "qwen/qwen3-4b:free"),
+    ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "gpt-oss-120b"),
+    ("sambanova", "SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "gpt-oss-120b"),
 ]
 
 DEEPSEEK_DEFAULT_BASE_URL = "https://api.deepseek.com"

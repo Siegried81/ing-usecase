@@ -556,7 +556,9 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       1: Can't tell what's being offered without reading twice.
       2: Vague - the product is named but the offer itself (rate, benefit, condition) is unclear.
@@ -612,7 +614,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       hero: The rate is the largest or most visually dominant element on the page.
       above_fold: The rate is visible without scrolling, but is not the dominant visual element.
@@ -656,7 +660,9 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       1: No stated value proposition - reads like a product description, not an offer.
       2: What is offered is named, but who it is for and the alternative are absent.
@@ -858,7 +864,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       text: Accent colour used on headlines or body text.
       icons: Accent colour used on icons or small graphic markers.
@@ -944,22 +952,33 @@ features:
     required: true
     nullable: false
 
-  - name: text_image_adjacent
+  # sieg 15/09: FIXED - was boolean (beside vs not), which forced a real 3rd
+  # pattern into a false it doesn't belong in: text written directly ON TOP of
+  # a full-bleed image (N26's hero, confirmed from a real screenshot) is
+  # neither "beside" nor "stacked", and conflating it with "stacked" would
+  # have erased a genuine traditional/challenger design signal. Renamed from
+  # text_image_adjacent since "adjacent" no longer describes a 3-value field.
+  - name: text_image_layout
     dimension: layout_structure
     definition: >
-      Whether the dominant pattern places text and image side by side, rather than
-      stacking them vertically.
-    type: boolean
+      How the dominant pattern relates text and image: side by side (beside),
+      one above the other (stacked), or text written directly on top of the
+      image (overlaid, e.g. a full-bleed hero photo with a headline over it).
+    type: categorical
+    values: [beside, stacked, overlaid]
     extraction: rubric
     source: screenshot
     comparability: cross_language
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
-      true: The dominant pattern places a block of text directly beside an image, on the same visual row.
-      false: Text and images are stacked vertically, or images stand alone without adjacent text.
+      beside: Text and image sit side by side, both fully visible (e.g. photo left, text block right).
+      stacked: Image and text follow each other vertically, not overlapping.
+      overlaid: Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it).
     notes: >
       The single observation the deck repeats for every bank. ING is called out as
       the one where "text and picture not anymore next to each other".
@@ -1010,7 +1029,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       hero_stacked: One large hero visual at the top, content stacked vertically below it.
       split_columns: The page is organised into two or more side-by-side columns throughout.
@@ -1034,7 +1055,9 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       true: Single-column, card-like blocks, large tap-friendly buttons, minimal density above the fold.
       false: Multi-column layout, dense information, hover-dependent interactions.
@@ -1050,7 +1073,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       true: Something on the first screen (headline, visual, number) is genuinely arresting, not generic.
       false: The opening is generic enough that skipping it would lose nothing.
@@ -1065,7 +1090,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       true: There is a reason to keep reading beyond the headline - a specific detail, a question, a hinted benefit.
       false: The page front-loads everything, or gives no reason to continue past the first line.
@@ -1080,7 +1107,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       true: The offer is made to feel worth having - concrete benefit, social proof or emotional payoff, not only a spec sheet.
       false: The page states facts (rate, features) without making the reader want the outcome.
@@ -1095,10 +1124,21 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
+    # sieg 15/09: clarified after the Belfius pension case (2 CTAs: "not yet
+    # retired" vs "already retired") - multiple CTAs are still true when they
+    # are clearly segmented by audience, so each visitor sees exactly one
+    # obvious path. false is reserved for CTAs that genuinely compete for the
+    # SAME visitor with no clear way to tell which applies.
     rubric:
-      true: There is one unmistakable next step - a clear, singular call to action.
-      false: No clear call to action, or several competing ones that dilute the next step.
+      true: >
+        There is one unmistakable next step - a single call to action, or
+        several CTAs clearly segmented by audience/situation so each visitor
+        still has exactly one obvious path (e.g. "not retired yet" vs
+        "already retired").
+      false: No clear call to action, or several CTAs competing for the same visitor with no clear way to tell which applies.
 
   - name: aida_coverage_score
     dimension: marketing_principles
@@ -1123,7 +1163,9 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: DRAFT rubric proposal - Siegried to review/refine before Day 5 scoring, not final.
+    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # (account, savings, pension, investment, mortgage, insurance, card) - refined
+    # where real examples exposed a gap (see git history for the reasoning).
     rubric:
       reciprocity: The page offers something free or upfront before asking for commitment.
       commitment: The page asks for a small first step that implies a larger one.
