@@ -21,6 +21,8 @@ import pandas as pd
 from comparator import load_dictionary
 from comparator.analysis import (
     category_comparison,
+    feature_accounting,
+    render_accounting,
     check_deck_claims,
     cluster_banks,
     ing_vs_peers,
@@ -93,8 +95,16 @@ def main() -> int:
         signature = ", ".join(f"{n} {z:+.1f}SD" for n, z in profile["signature"])
         print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
 
-    # --- 3. BO-02 positioning ------------------------------------------------
-    _header("3. Positioning on the traditional ↔ challenger axis (BO-02)")
+    # --- 3. where the dictionary's features go -------------------------------
+    # steph 15/09, after Sieg asked why a chart said "50 features" with 97 in the
+    # dictionary. The reduction was legitimate but invisible; now it is printed
+    # on every run and carried next to the figure in charts.md.
+    _header("3. Feature accounting")
+    accounting = feature_accounting(banks_df, fd)
+    print(render_accounting(accounting))
+
+    # --- 4. BO-02 positioning ------------------------------------------------
+    _header("4. Positioning on the traditional ↔ challenger axis (BO-02)")
     positioning = positioning_axis(banks_df, fd, focus=args.focus)
     for bank, score in positioning.scores.items():
         marker = "  <-- focus" if bank == args.focus else ""
@@ -105,8 +115,8 @@ def main() -> int:
     categories = banks_df.drop_duplicates("bank").set_index("bank")["bank_category"]
     positioning_chart(positioning, categories, args.outdir / "01_positioning.png", note=note)
 
-    # --- 4. BO-01 ING vs peers -----------------------------------------------
-    _header(f"4. {args.focus.upper()} against its peers (BO-01)")
+    # --- 5. BO-01 ING vs peers -----------------------------------------------
+    _header(f"5. {args.focus.upper()} against its peers (BO-01)")
     deviations = ing_vs_peers(banks_df, fd, focus=args.focus)
     print(deviations.head(args.top_n).to_string(
         index=False,
@@ -116,8 +126,8 @@ def main() -> int:
     deviations.to_csv(args.outdir / "ing_vs_peers.csv", index=False)
     deviation_chart(deviations, args.outdir / "02_ing_vs_peers.png", focus=args.focus, top_n=args.top_n, note=note)
 
-    # --- 5. traditional vs challenger ----------------------------------------
-    _header("5. Traditional vs challenger")
+    # --- 6. traditional vs challenger ----------------------------------------
+    _header("6. Traditional vs challenger")
     comparison = category_comparison(banks_df, fd)
     print(comparison.head(args.top_n).to_string(
         index=False,
@@ -127,8 +137,8 @@ def main() -> int:
     comparison.to_csv(args.outdir / "category_comparison.csv", index=False)
     category_effect_chart(comparison, args.outdir / "03_category_separation.png", top_n=args.top_n, note=note)
 
-    # --- 6. BO-03 similarity -------------------------------------------------
-    _header("6. Which banks communicate alike (BO-03)")
+    # --- 7. BO-03 similarity -------------------------------------------------
+    _header("7. Which banks communicate alike (BO-03)")
     distances = similarity_matrix(banks_df, fd)
     clusters = cluster_banks(banks_df, fd, n_clusters=args.clusters)
     for label in sorted(clusters.unique()):
@@ -140,8 +150,8 @@ def main() -> int:
     distances.to_csv(args.outdir / "similarity_matrix.csv")
     similarity_heatmap(distances, args.outdir / "04_similarity.png", note=note)
 
-    # --- 7. FR-14 deck claims ------------------------------------------------
-    _header("7. Kickoff-deck observations, tested (FR-14)")
+    # --- 8. FR-14 deck claims ------------------------------------------------
+    _header("8. Kickoff-deck observations, tested (FR-14)")
     claims = check_deck_claims(banks_df, fd)
     if synthetic:
         print("  CIRCULAR ON FIXTURE DATA: the fixture archetypes were built FROM these\n"
@@ -150,23 +160,23 @@ def main() -> int:
     print(claims.to_string(index=False, columns=["id", "claim", "verdict", "evidence"]))
     claims.to_csv(args.outdir / "deck_claims.csv", index=False)
 
-    # --- 8. the chart companion ----------------------------------------------
+    # --- 9. the chart companion ----------------------------------------------
     # steph 15/09: every figure ships with the mechanic behind it and its limits,
     # generated from the same objects the charts are drawn from so the prose
     # cannot drift away from the picture.
-    _header("8. Chart companion")
+    _header("9. Chart companion")
     companion = build_chart_report(
         positioning=positioning, categories=categories, deviations=deviations,
         comparison=comparison, distances=distances, clusters=clusters, claims=claims,
         focus=args.focus, dataset_path=str(args.dataset),
         n_pages=len(banks_df), n_banks=int(banks_df["bank"].nunique()),
-        synthetic=synthetic,
+        synthetic=synthetic, accounting=accounting,
     )
     (args.outdir / "charts.md").write_text(companion, encoding="utf-8")
     print(f"  wrote {args.outdir / 'charts.md'} ({len(companion.splitlines())} lines)")
 
-    # --- 9. persuasion levers ------------------------------------------------
-    _header("9. Persuasion levers by category")  # sieg 15/09: was still "8." after step 8 (chart companion) was inserted above
+    # --- 10. persuasion levers ------------------------------------------------
+    _header("10. Persuasion levers by category")
     levers = lever_frequency(banks_df)
     if not levers.empty:
         print(levers.to_string())

@@ -15,6 +15,28 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 ---
 
+## Why the charts use fewer features than the dictionary has
+
+The dictionary defines 97 features. The comparisons here use **50**. Nothing is thrown away quietly — this is the whole reduction:
+
+```
+97 features in the dictionary
+  - 14  provenance                 identify a page, do not describe a campaign
+  -  4  free text / identifiers    no two pages share them
+  -  6  bands of a number already in would double-count the same signal
+  - 19  categorical / list         not encoded - see note below
+  -  4  no variation across banks  identical everywhere, carries no signal
+  = 50  features used in this comparison
+```
+
+**The line worth arguing about is the 19 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
+
+They *can* be included (`include_categorical=True`), one-hot encoded with each feature's indicators scaled by 1/√k so a 5-value category does not silently outweigh five numbers. It is off by default because switching it on moves every number in the analysis, which is a team decision rather than a default.
+
+The four bands (`word_count_band` and friends) are excluded on purpose: each is a coarser view of a number already in the matrix, so counting both would double the weight of that signal.
+
+---
+
 ## 1. Where does ING sit?
 
 ![Banks positioned on the traditional-challenger axis](01_positioning.png)
@@ -66,7 +88,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.11 a
 | total_image_area_ratio | visuals | 0.20 | 0.39 | -1.79 |
 | section_count | layout_structure | 5.50 | 7.50 | -1.63 |
 | page_height_px | layout_structure | 4,092 | 4,823 | -1.33 |
-| has_animation | visuals | 1.00 | 0.38 | 1.29 |
+| youth_student_targeting | banking_domain | 0.00 | 0.31 | -1.29 |
 
 **What it cannot tell you.** With 8 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 

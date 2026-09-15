@@ -1,35 +1,34 @@
 {
   "headline": "Your money, your terms \u2014 no fine print surprises",
-  "subheading": "A fixed term account built around you, not the bank.",
+  "subheading": "A term account built around you, not the bank.",
   "body_paragraphs": [
-    "You set the term. You pick the length. You decide when your money works harder.",
-    "Open an account in minutes from your phone. No branch visit, no paperwork, no waiting on hold.",
-    "Your rate is locked for the term you choose, so you always know what you're getting.",
-    "Join thousands of savers who switched to a simpler way to grow their money.",
-    "Get started today and see how easy it is to put your savings to work."
+    "You work hard for your money. So when you put it aside for a fixed term, you should know exactly what you're getting \u2014 and exactly what you're giving up.",
+    "With our term account, you choose how long you lock in. You see the rate up front. You decide what happens when the term ends. No branch visit, no paperwork chase, no waiting on hold.",
+    "Open it in minutes from your phone. Track it in the same app you already use. Move money in when it suits you, and let it sit until you're ready.",
+    "You get a clear rate, a clear end date, and a clear next step. That's it."
   ],
-  "cta_label": "Open your account",
+  "cta_label": "Open your term account",
   "additional_cta_labels": [
-    "Discover your rate",
-    "Get started in minutes",
-    "Apply online today",
-    "Sign up now",
-    "Learn more about terms"
+    "Discover the rate",
+    "Get started in the app",
+    "Learn more about terms",
+    "Sign up for updates",
+    "Apply online today"
   ],
   "layout_archetype": "split_columns",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A smartphone held in one hand showing a clean savings dashboard with a large balance figure and a term selector, bright natural light, shallow depth of field, warm orange accent on the primary button.",
-    "A young professional at a kitchen table with a laptop and coffee, relaxed and smiling while completing an online application, soft morning light, candid documentary style.",
-    "An abstract close-up of a calendar with a highlighted term length and a subtle upward line graph overlay, minimal composition, orange accent line, light background.",
-    "A split-screen lifestyle image: left side a person tapping 'open account' on a phone, right side a calm, confident expression, both in the same warm colour grade, no text overlays.",
-    "A simple icon set illustration: a lock, a clock, and a rising chart, arranged in a row, flat vector style, orange and neutral tones, plenty of white space."
+    "A close-up of a hand holding a phone showing a simple term-account dashboard with a large rate figure and a progress bar for the term; soft daylight, minimal background, brand accent colour used only on the progress bar.",
+    "A split-screen lifestyle shot: left side a person relaxed on a sofa with a coffee, right side the same person tapping 'open account' on a phone; warm, natural light, no visible text on screen.",
+    "An abstract animated loop of a calendar page turning into a stack of coins, then into a checkmark; flat vector style, brand accent colour as the only bright colour, loopable 3-second animation.",
+    "A simple icon set in a row: a lock, a calendar, a phone, a checkmark \u2014 each in outline style with the brand accent colour as the single fill colour, arranged on a light background.",
+    "A short animated sequence showing a rate figure ticking up once and then holding steady, with a subtle 'locked' padlock icon appearing; minimal, no numbers visible, just the motion pattern."
   ],
-  "disclaimer_placeholder": "[Legal disclaimer: rates and terms subject to eligibility and product conditions. Your capital is at risk. Terms and conditions apply.]",
+  "disclaimer_placeholder": "[Legal/risk disclaimer placeholder: terms, conditions, rate and eligibility details to be inserted by compliance.]",
   "persuasion_levers_used": [
-    "authority",
     "commitment",
-    "social_proof"
+    "authority",
+    "liking"
   ]
 }
