@@ -20,7 +20,7 @@ robots.txt review clears each domain.
 
 | Deliverable | State |
 | --- | --- |
-| Feature dictionary v0.1 (D-03) | drafted, 67 features — **awaiting the Day 2 freeze** |
+| Feature dictionary v0.1 (D-03) | drafted, 97 features — **awaiting the Day 2 freeze tag** |
 | Dataset schema + validator (D-04) | built and tested |
 | Analysis skeleton (D-05) | runs end to end on fixture data |
 | Bank profile cards | generated, 9 banks |
@@ -37,7 +37,7 @@ python3 scripts/run_generation.py         # step 5: generate 2 variants and scor
 python3 scripts/run_generation.py --dry-run   # ...without calling a model
 python3 scripts/check_schema_freeze.py    # enforce the Day 2 freeze rule
 python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
-python3 -m pytest tests/ -q               # 115 tests
+python3 -m pytest tests/ -q               # 124 tests
 ```
 
 Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
@@ -123,15 +123,19 @@ src/comparator/
   profiles.py                    bank profile cards
   analysis.py                    positioning, group comparison, similarity
   charts.py                      the four charts
+  freeze.py                      the Day 2 freeze rule, enforced semantically
+  generation.py                  step 5: targets, brief, rendering, scoring
+  generation_guardrails.py       step 5 safety checklist (Appendix B.2)
+  report.py                      the generated chart companion
+  collection/                    Dan + Siegried: compliance, scraper, LLM, visuals
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain
+  run_collection.py              real captures: compliance -> scrape -> extract -> validate
+  run_generation.py              CLI for step 5 (generation.py)
+  check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
-  freeze.py                      the Day 2 freeze rule, enforced semantically
-  generation.py                  step 5: targets, brief, rendering, scoring
-  report.py                      the generated chart companion
-  collection/                    Dan + Siegried: compliance, scraper, LLM, visuals
-tests/                           115 tests
+tests/                           124 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — gitignored
@@ -156,8 +160,14 @@ warns, and `run_analysis.py` prints a banner on every run.
 | Where does ING stand vs competitors? | `ing_vs_peers` | BO-01, FR-09 |
 | Traditional or challenger? | `positioning_axis` | BO-02 |
 | Which banks communicate alike? | `similarity_matrix`, `cluster_banks` | BO-03 |
+| What recurring patterns cross the whole market? | `recurring_patterns` | BO-04 |
 | What separates the two groups? | `category_comparison` | FR-08 |
+| Which gaps are worth arguing from, with evidence? | `insight_candidates` | BO-06, FR-10 |
 | Do the deck's observations hold? | `check_deck_claims` | FR-14 |
+
+BO-05 (reusable feature framework) isn't a function - it's demonstrated by
+adding a bank via config, not code (FR-16). BO-07 (compliant, reproducible
+method) lives in `collection/compliance.py` and `schema.py`, not here.
 
 Sample sizes are small by design (PRD risk R-03). Nothing here computes a p-value
 or claims significance — Cohen's d is reported as a description of separation, not

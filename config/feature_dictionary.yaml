@@ -513,7 +513,7 @@ features:
     tier: core
     required: true
     nullable: true
-    notes: The ING term-account promo in the deck carries "This offer is only available until 13/10/2025".
+    notes: sieg 15/09 - year corrected. The ING term-account promo carries "This offer is only available until 13/10/2026".
 
   - name: numeric_claim_count
     dimension: tone_messaging
@@ -1326,7 +1326,11 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - ties directly to the kickoff deck's own top-NPS-irritator finding about ING's communications.
+    notes: >
+      sieg 15/09 - not the deck's NPS-irritator finding (p.11's irritator is
+      ad volume/frequency across channels, not hidden conditions behind a
+      "free" claim, and isn't measurable from one page anyway). Stands on
+      its own as a common banking dark pattern.
 
   - name: esg_claim_specificity
     dimension: banking_domain

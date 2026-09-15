@@ -20,7 +20,7 @@
 | image area share | 0.27 |
 | archetype | long_form |
 | hero image | no |
-| text image adjacent | yes (all pages) |
+| text image layout | beside |
 | page height px | 4,294 |
 | cta count | 4 |
 | cta above fold | 50% of pages |
@@ -58,7 +58,7 @@
 | image area share | 0.32 |
 | archetype | split_columns |
 | hero image | no |
-| text image adjacent | yes (all pages) |
+| text image layout | beside |
 | page height px | 4,421 |
 | cta count | 2.5 |
 | cta above fold | 50% of pages |
@@ -96,7 +96,7 @@
 | image area share | 0.33 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
-| text image adjacent | yes (all pages) |
+| text image layout | beside |
 | page height px | 4,754 |
 | cta count | 4.5 |
 | cta above fold | 50% of pages |
@@ -134,7 +134,7 @@
 | image area share | 0.51 |
 | archetype | card_grid |
 | hero image | yes (all pages) |
-| text image adjacent | no |
+| text image layout | overlaid |
 | page height px | 5,430 |
 | cta count | 8 |
 | cta above fold | yes (all pages) |
@@ -172,7 +172,7 @@
 | image area share | 0.32 |
 | archetype | long_form |
 | hero image | no |
-| text image adjacent | yes (all pages) |
+| text image layout | beside |
 | page height px | 4,158 |
 | cta count | 2 |
 | cta above fold | 50% of pages |
@@ -210,7 +210,7 @@
 | image area share | 0.2 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
-| text image adjacent | no |
+| text image layout | stacked |
 | page height px | 4,092 |
 | cta count | 3.5 |
 | cta above fold | 50% of pages |
@@ -248,7 +248,7 @@
 | image area share | 0.32 |
 | archetype | split_columns |
 | hero image | no |
-| text image adjacent | yes (all pages) |
+| text image layout | beside |
 | page height px | 4,451 |
 | cta count | 5 |
 | cta above fold | yes (all pages) |
@@ -286,7 +286,7 @@
 | image area share | 0.48 |
 | archetype | card_grid |
 | hero image | yes (all pages) |
-| text image adjacent | no |
+| text image layout | overlaid |
 | page height px | 5,548 |
 | cta count | 6 |
 | cta above fold | yes (all pages) |
@@ -324,7 +324,7 @@
 | image area share | 0.58 |
 | archetype | card_grid |
 | hero image | yes (all pages) |
-| text image adjacent | no |
+| text image layout | overlaid |
 | page height px | 5,527 |
 | cta count | 6 |
 | cta above fold | yes (all pages) |

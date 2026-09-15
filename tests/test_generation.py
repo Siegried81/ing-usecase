@@ -69,6 +69,19 @@ def test_both_variants_are_built(df, fd):
     assert targets["on_brand"].specs and targets["challenger_style"].specs
 
 
+# sieg 15/09: new test - cta_above_fold/disclaimer_present are unconditionally
+# appended as rubric-driven specs, but were not excluded from the data-derived
+# "movable" list. Didn't trigger on the fixture (neither landed in the top_n),
+# but real data could put cta_above_fold there (it's a real traditional/
+# challenger differentiator), which would score it twice in the scorecard.
+def test_no_target_feature_is_named_twice(df, fd):
+    for variant, target in build_targets(df, fd).items():
+        features = [s.feature for s in target.specs]
+        assert len(features) == len(set(features)), (
+            f"{variant}: duplicate target spec(s) for {[f for f in features if features.count(f) > 1]}"
+        )
+
+
 def test_targets_only_name_measurable_features(df, fd):
     for target in build_targets(df, fd).values():
         for spec in target.specs:

@@ -29,7 +29,7 @@
     "layout": {
       "archetype": "long_form",
       "hero_image": 0.0,
-      "text_image_adjacent": 1.0,
+      "text_image_layout": "beside",
       "page_height_px": 4294.0,
       "cta_count": 4.0,
       "cta_above_fold": 0.5
@@ -100,7 +100,7 @@
     "layout": {
       "archetype": "split_columns",
       "hero_image": 0.0,
-      "text_image_adjacent": 1.0,
+      "text_image_layout": "beside",
       "page_height_px": 4421.0,
       "cta_count": 2.5,
       "cta_above_fold": 0.5
@@ -171,7 +171,7 @@
     "layout": {
       "archetype": "split_columns",
       "hero_image": 1.0,
-      "text_image_adjacent": 1.0,
+      "text_image_layout": "beside",
       "page_height_px": 4754.0,
       "cta_count": 4.5,
       "cta_above_fold": 0.5
@@ -244,7 +244,7 @@
     "layout": {
       "archetype": "card_grid",
       "hero_image": 1.0,
-      "text_image_adjacent": 0.0,
+      "text_image_layout": "overlaid",
       "page_height_px": 5429.5,
       "cta_count": 8.0,
       "cta_above_fold": 1.0
@@ -316,7 +316,7 @@
     "layout": {
       "archetype": "long_form",
       "hero_image": 0.0,
-      "text_image_adjacent": 1.0,
+      "text_image_layout": "beside",
       "page_height_px": 4157.5,
       "cta_count": 2.0,
       "cta_above_fold": 0.5
@@ -390,7 +390,7 @@
     "layout": {
       "archetype": "hero_stacked",
       "hero_image": 1.0,
-      "text_image_adjacent": 0.0,
+      "text_image_layout": "stacked",
       "page_height_px": 4091.5,
       "cta_count": 3.5,
       "cta_above_fold": 0.5
@@ -462,7 +462,7 @@
     "layout": {
       "archetype": "split_columns",
       "hero_image": 0.0,
-      "text_image_adjacent": 1.0,
+      "text_image_layout": "beside",
       "page_height_px": 4451.0,
       "cta_count": 5.0,
       "cta_above_fold": 1.0
@@ -533,7 +533,7 @@
     "layout": {
       "archetype": "card_grid",
       "hero_image": 1.0,
-      "text_image_adjacent": 0.0,
+      "text_image_layout": "overlaid",
       "page_height_px": 5548.0,
       "cta_count": 6.0,
       "cta_above_fold": 1.0
@@ -606,7 +606,7 @@
     "layout": {
       "archetype": "card_grid",
       "hero_image": 1.0,
-      "text_image_adjacent": 0.0,
+      "text_image_layout": "overlaid",
       "page_height_px": 5527.0,
       "cta_count": 6.0,
       "cta_above_fold": 1.0

@@ -25,19 +25,19 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 **How to read it.** Left is traditional, right is challenger. Colour carries the bank's declared category, so a dot far from its own colour's cluster is the interesting case. ING is ringed and bold.
 
-**What this run shows.** ING scores **0.12** — clearly with the traditional banks. Computed over 51 features.
+**What this run shows.** ING scores **0.10** — clearly with the traditional banks. Computed over 50 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.12 and the most traditional challenger at 0.96, a gap of 0.84. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.11 and the most traditional challenger at 0.95, a gap of 0.85. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| crelan | traditional | -0.10 |
-| argenta | traditional | -0.08 |
-| belfius | traditional | -0.06 |
-| bnp_paribas_fortis | traditional | 0.01 |
-| kbc | traditional | 0.10 |
-| ing **(focus)** | traditional | 0.12 |
-| n26 | challenger | 0.96 |
+| crelan | traditional | -0.09 |
+| argenta | traditional | -0.07 |
+| belfius | traditional | -0.05 |
+| bnp_paribas_fortis | traditional | 0.02 |
+| ing **(focus)** | traditional | 0.10 |
+| kbc | traditional | 0.11 |
+| n26 | challenger | 0.95 |
 | bunq | challenger | 0.99 |
 | revolut | challenger | 1.06 |
 
@@ -109,7 +109,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.12 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **bnp_paribas_fortis** (8.9), **crelan** (9.2), **kbc** (9.3).
+**What this run shows.** The banks closest to ING are **bnp_paribas_fortis** (8.7), **crelan** (8.9), **kbc** (9.0).
 
 | Cluster | Banks |
 | --- | --- |
@@ -133,7 +133,7 @@ Not a chart, but the same discipline: the deck's five eyeball observations, test
 | H1 | Belfius is pretty verbose | supported | belfius=769.0; highest is belfius=769.0 |
 | H2 | KBC is straight to the point | supported | kbc=381.5; lowest traditional is kbc=381.5 |
 | H3 | ING is the only traditional bank using animation | supported | ing=1.00; other traditional banks above zero: none |
-| H4 | ING no longer places text next to picture | supported | ing=0.00 (0 = never adjacent, 1 = always) |
+| H4 | ING no longer places text next to picture | supported | ing's most common text_image_layout: 'stacked' (claim: not 'beside') |
 | H5 | Revolut uses very little text | supported | revolut=162.5; lowest is revolut=162.5 |
 
 ---
