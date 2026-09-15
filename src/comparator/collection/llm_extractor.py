@@ -141,15 +141,34 @@ class LLMExtractionError(Exception):
     """Raised when every provider fails or the response can't be validated."""
 
 
-# (env var prefix, chat-completions URL, model env var, default model)
+# (provider name, env var prefix, chat-completions URL, model env var, default model)
 # sieg 14/09: same order as .env.example - Groq first (with key rotation),
 # then hosted fallbacks, then local Ollama for dev.
+#
+# steph 15/09, Decision 6 (mine, due Day 2): DEEPSEEK IS THE PINNED MODEL for
+# this project - one model, named, so every bank is labelled by the same judge.
+# Stephane has the key, so it is the one we can actually run today. Sieg's chain
+# stays underneath as a fallback for when DeepSeek is down, because losing a
+# night of collection to one provider outage is worse than a mixed dataset - but
+# a fallback is now RECORDED in extraction_model rather than silent, and
+# schema.validate() warns when a dataset mixes models. See docs/decisions.md.
 _PROVIDERS = [
-    ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "openai/gpt-oss-120b:free"),
-    ("CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "llama-3.3-70b"),
-    ("SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "Meta-Llama-3.3-70B-Instruct"),
+    ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-chat"),
+    ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
+    ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "openai/gpt-oss-120b:free"),
+    ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "llama-3.3-70b"),
+    ("sambanova", "SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "Meta-Llama-3.3-70B-Instruct"),
 ]
+
+DEEPSEEK_DEFAULT_BASE_URL = "https://api.deepseek.com"
+
+
+def _provider_url(name: str, url: str | None) -> str:
+    """DeepSeek's base URL is configurable, so it is resolved at call time."""
+    if name == "deepseek":
+        base = os.getenv("DEEPSEEK_BASE_URL", DEEPSEEK_DEFAULT_BASE_URL).rstrip("/")
+        return f"{base}/chat/completions"
+    return url
 
 
 def _groq_keys() -> list[str]:
@@ -157,14 +176,14 @@ def _groq_keys() -> list[str]:
     return [k for k in keys if k]
 
 
-def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str) -> str:
+def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> str:
     response = requests.post(
         url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
         json={
             "model": model,
             "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
             "temperature": 0,
@@ -175,7 +194,7 @@ def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str
     return response.json()["choices"][0]["message"]["content"]
 
 
-def _call_ollama(user_prompt: str) -> str:
+def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> str:
     host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     model = os.getenv("OLLAMA_MODEL", "llama3.1")
     response = requests.post(
@@ -183,7 +202,7 @@ def _call_ollama(user_prompt: str) -> str:
         json={
             "model": model,
             "messages": [
-                {"role": "system", "content": SYSTEM_PROMPT},
+                {"role": "system", "content": system_prompt},
                 {"role": "user", "content": user_prompt},
             ],
             "temperature": 0,
@@ -194,28 +213,32 @@ def _call_ollama(user_prompt: str) -> str:
     return response.json()["choices"][0]["message"]["content"]
 
 
-def _call_llm(user_prompt: str) -> str:
-    """Try Groq (with key rotation on failure), then each hosted fallback in
-    order, then local Ollama last. Raises only if every option fails."""
+def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> tuple[str, str]:
+    """Try each provider in order; return (response_text, "provider/model").
+
+    steph 15/09: now returns WHICH model answered, so the caller can record it
+    (Decision 6). Previously the fallback was invisible - a run that started on
+    one provider and finished on another produced a dataset that looked
+    uniformly labelled but was not.
+    """
     errors: list[str] = []
 
-    for key in _groq_keys():
-        try:
-            return _call_openai_compatible(_PROVIDERS[0][1], key, os.getenv("GROQ_MODEL", _PROVIDERS[0][3]), user_prompt)
-        except requests.RequestException as exc:  # noqa: PERF203 - rotation needs the loop
-            errors.append(f"groq: {exc}")
-
-    for env_key, url, model_env, default_model in _PROVIDERS[1:]:
-        api_key = os.getenv(env_key)
-        if not api_key:
+    for name, env_key, url, model_env, default_model in _PROVIDERS:
+        keys = _groq_keys() if name == "groq" else [os.getenv(env_key)]
+        keys = [k for k in keys if k]
+        if not keys:
             continue
-        try:
-            return _call_openai_compatible(url, api_key, os.getenv(model_env, default_model), user_prompt)
-        except requests.RequestException as exc:
-            errors.append(f"{env_key}: {exc}")
+        model = os.getenv(model_env, default_model)
+        resolved_url = _provider_url(name, url)
+        for key in keys:
+            try:
+                text = _call_openai_compatible(resolved_url, key, model, user_prompt, system_prompt=system_prompt)
+                return text, f"{name}/{model}"
+            except requests.RequestException as exc:  # noqa: PERF203 - key rotation needs the loop
+                errors.append(f"{name}: {exc}")
 
     try:
-        return _call_ollama(user_prompt)
+        return _call_ollama(user_prompt, system_prompt=system_prompt), f"ollama/{os.getenv('OLLAMA_MODEL', 'llama3.1')}"
     except requests.RequestException as exc:
         errors.append(f"ollama: {exc}")
 
@@ -237,13 +260,35 @@ def extract_model_assisted(
         f"Contains animation/video: {has_animation}\n"
         f"Product family: {product_family}"
     )
+    fields, _model = extract_model_assisted_with_provenance(
+        page_text, image_count=image_count, has_animation=has_animation,
+        product_family=product_family, retries=retries,
+    )
+    return fields
+
+
+def extract_model_assisted_with_provenance(
+    page_text: str, *, image_count: int, has_animation: bool, product_family: str, retries: int = 1
+) -> tuple[ModelAssistedFields, str]:
+    """Same as extract_model_assisted, but also returns "provider/model".
+
+    steph 15/09: added so run_collection.py can write extraction_model into the
+    row. extract_model_assisted() is kept as a thin wrapper so existing callers
+    and tests are unaffected.
+    """
+    user_prompt = (
+        f"Page text (truncated): {page_text[:3000]}\n\n"
+        f"Image count on page: {image_count}\n"
+        f"Contains animation/video: {has_animation}\n"
+        f"Product family: {product_family}"
+    )
     last_error: Exception | None = None
     for _ in range(retries + 1):
-        raw = _call_llm(user_prompt)
+        raw, model_id = _call_llm(user_prompt)
         cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
             data = json.loads(cleaned)
-            return ModelAssistedFields.model_validate(data)
+            return ModelAssistedFields.model_validate(data), model_id
         except (json.JSONDecodeError, ValidationError) as exc:
             last_error = exc
             continue

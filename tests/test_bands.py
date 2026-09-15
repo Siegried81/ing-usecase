@@ -25,9 +25,17 @@ def test_word_count_band_none_stays_none():
 
 
 def test_text_to_image_ratio_band_edges():
-    assert bands.text_to_image_ratio_band(0.5) == "image_heavy"
-    assert bands.text_to_image_ratio_band(2.0) == "balanced"
-    assert bands.text_to_image_ratio_band(5.0) == "text_heavy"
+    # steph 15/09: rescaled with the edges. The feature is WORDS PER IMAGE
+    # (scraper.py), not an area ratio - 0.5 would be a page with one word per
+    # two images, which cannot occur. See bands.py for the recalibration note.
+    assert bands.text_to_image_ratio_band(20.0) == "image_heavy"
+    assert bands.text_to_image_ratio_band(70.0) == "balanced"
+    assert bands.text_to_image_ratio_band(150.0) == "text_heavy"
+
+
+def test_text_to_image_bands_separate_the_two_business_models():
+    """The band only earns its place if it does not collapse to one value."""
+    assert bands.text_to_image_ratio_band(25.0) != bands.text_to_image_ratio_band(120.0)
 
 
 def test_second_person_ratio_band_edges():

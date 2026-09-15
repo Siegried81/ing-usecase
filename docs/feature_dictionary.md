@@ -8,7 +8,7 @@
 **Grain** One row per campaign page per capture date.  
 **Freeze target** End of Day 2 - Tuesday 15 September 2026
 
-96 features — 61 core, 35 extended.
+97 features — 62 core, 35 extended.
 
 ## How to read the tables
 
@@ -25,7 +25,7 @@
 
 ## Provenance & compliance
 
-*DR-02, DR-05, LC-01* — 13 features
+*DR-02, DR-05, LC-01* — 14 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -42,6 +42,7 @@
 | `snapshot_html_path` | string | automatic | cross_language | core | Relative path to the stored raw HTML snapshot. |
 | `screenshot_path` | string | automatic | cross_language | core | Relative path to the stored full-page screenshot. |
 | `data_source` | categorical<br>`real` · `synthetic_fixture` · `llm_generated` | automatic | cross_language | core | Whether the row is a real capture or a synthetic fixture row. Guards against fixture data reaching a finding.<br>*llm_generated marks a campaign produced in the stretch step, scored by the same extractor.* |
+| `extraction_model` | string | automatic | cross_language | core | Provider and model that produced the model_assisted fields for this row, as "provider/model". Blank for rows with no model-assisted features.<br>*Comparisons are only fair when every bank was labelled by the same model. A dataset mixing models is not invalid, but the mix has to be reported as a limitation (D-09) rather than discovered afterwards.* |
 
 ## Tone & messaging
 

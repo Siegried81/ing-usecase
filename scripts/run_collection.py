@@ -27,7 +27,7 @@ import _bootstrap  # noqa: F401
 import yaml
 
 from comparator.collection.compliance import ScrapingNotAllowed
-from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted
+from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted_with_provenance
 from comparator.collection.scraper import scrape
 from comparator.collection.visual_features import extract_colours
 from comparator.dictionary import load_dictionary
@@ -53,7 +53,7 @@ def collect_one(target: dict, page_index: int) -> dict | None:
     colours = extract_colours(scraped.get("_hero_image_url"), bank=bank)
 
     try:
-        model_fields = extract_model_assisted(
+        model_fields, extraction_model = extract_model_assisted_with_provenance(
             scraped["_page_text"],
             image_count=scraped["image_count"],
             has_animation=scraped["has_animation"],
@@ -61,7 +61,7 @@ def collect_one(target: dict, page_index: int) -> dict | None:
         )
     except LLMExtractionError as exc:
         logger.error("model-assisted extraction failed for %s: %s (row kept, those fields null)", page_id, exc)
-        model_fields = None
+        model_fields, extraction_model = None, None
 
     row = {
         "page_id": page_id,
@@ -77,6 +77,7 @@ def collect_one(target: dict, page_index: int) -> dict | None:
         "snapshot_html_path": "",  # sieg 14/09: TODO - Dan, write scraped["_html"] to data/raw/ and set this
         "screenshot_path": "",     # TODO - only fillable once headless_render exists
         "data_source": "real",
+        "extraction_model": extraction_model,
         **{k: v for k, v in scraped.items() if not k.startswith("_")},
         **colours,
     }

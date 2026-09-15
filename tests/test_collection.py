@@ -28,6 +28,7 @@ from comparator.collection.llm_extractor import (  # noqa: E402
     LLMExtractionError,
     ModelAssistedFields,
     extract_model_assisted,
+    extract_model_assisted_with_provenance,
 )
 from comparator.collection.scraper import extract  # noqa: E402
 from comparator.collection.visual_features import extract_colours  # noqa: E402
@@ -224,7 +225,7 @@ _VALID_RESPONSE = {
 
 
 def test_extract_model_assisted_validates_a_good_response():
-    with patch("comparator.collection.llm_extractor._call_llm", return_value=__import__("json").dumps(_VALID_RESPONSE)):
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=(__import__("json").dumps(_VALID_RESPONSE), "test/model")):
         result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
     assert isinstance(result, ModelAssistedFields)
     assert result.primary_product == "Term account"
@@ -232,25 +233,38 @@ def test_extract_model_assisted_validates_a_good_response():
 
 def test_extract_model_assisted_strips_markdown_fences():
     fenced = "```json\n" + __import__("json").dumps(_VALID_RESPONSE) + "\n```"
-    with patch("comparator.collection.llm_extractor._call_llm", return_value=fenced):
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=(fenced, "test/model")):
         result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
     assert result.dominant_image_type == "photo"
 
 
 def test_extract_model_assisted_retries_once_then_raises():
-    with patch("comparator.collection.llm_extractor._call_llm", return_value="not json at all"):
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=("not json at all", "test/model")):
         with pytest.raises(LLMExtractionError):
             extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account", retries=1)
 
 
-def test_groq_tried_before_fallbacks(monkeypatch):
+def _clear_provider_keys(monkeypatch):
+    """steph 15/09: provider tests read the real environment, so a developer who
+    has DEEPSEEK_API_KEY exported would get different ordering than CI. Clear
+    them all, then set only the ones the test is about."""
+    for var in ("DEEPSEEK_API_KEY", "GROQ_API_KEY", "GROQ_API_KEY_2", "GROQ_API_KEY_3",
+                "OPENROUTER_API_KEY", "CEREBRAS_API_KEY", "SAMBANOVA_API_KEY"):
+        monkeypatch.delenv(var, raising=False)
+
+
+def test_groq_tried_before_other_fallbacks(monkeypatch):
     # sieg 14/09: confirms the provider ORDER matches .env.example, not just
     # that "a" provider gets called.
+    # steph 15/09: unchanged in intent. DeepSeek now sits ahead of Groq
+    # (Decision 6), so this test pins the order BELOW DeepSeek by leaving its
+    # key unset - see test_deepseek_is_tried_first for the new head of the chain.
+    _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
     monkeypatch.setenv("OPENROUTER_API_KEY", "fake-openrouter-key")
     calls = []
 
-    def fake_call(url, api_key, model, prompt):
+    def fake_call(url, api_key, model, prompt, system_prompt=None):
         calls.append(url)
         if "groq" in url:
             raise __import__("requests").RequestException("groq down")
@@ -261,3 +275,54 @@ def test_groq_tried_before_fallbacks(monkeypatch):
 
     assert any("groq" in c for c in calls), "groq must be tried first"
     assert any("openrouter" in c for c in calls), "fallback must be tried after groq fails"
+
+
+def test_deepseek_is_tried_first(monkeypatch):
+    """steph 15/09, Decision 6: DeepSeek is the pinned model, so it leads the chain."""
+    _clear_provider_keys(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
+    monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
+    calls = []
+
+    def fake_call(url, api_key, model, prompt, system_prompt=None):
+        calls.append(url)
+        return __import__("json").dumps(_VALID_RESPONSE)
+
+    with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
+        extract_model_assisted("text", image_count=1, has_animation=False, product_family="term_account")
+
+    assert "deepseek" in calls[0], f"deepseek must lead the chain, got {calls[0]}"
+
+
+def test_extraction_records_which_model_answered(monkeypatch):
+    """The whole point of Decision 6: the row must say who labelled it."""
+    _clear_provider_keys(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
+    monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-chat")
+
+    def fake_call(url, api_key, model, prompt, system_prompt=None):
+        return __import__("json").dumps(_VALID_RESPONSE)
+
+    with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
+        _fields, model_id = extract_model_assisted_with_provenance(
+            "text", image_count=1, has_animation=False, product_family="term_account"
+        )
+    assert model_id == "deepseek/deepseek-chat"
+
+
+def test_fallback_is_recorded_not_silent(monkeypatch):
+    """A dataset labelled by two models must be able to say so (NFR-02)."""
+    _clear_provider_keys(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
+    monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
+
+    def fake_call(url, api_key, model, prompt, system_prompt=None):
+        if "deepseek" in url:
+            raise __import__("requests").RequestException("deepseek down")
+        return __import__("json").dumps(_VALID_RESPONSE)
+
+    with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
+        _fields, model_id = extract_model_assisted_with_provenance(
+            "text", image_count=1, has_animation=False, product_family="term_account"
+        )
+    assert model_id.startswith("groq/"), "the row must record the model that actually answered"

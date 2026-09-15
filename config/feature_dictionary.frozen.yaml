@@ -265,6 +265,31 @@ features:
     nullable: false
     notes: llm_generated marks a campaign produced in the stretch step, scored by the same extractor.
 
+  # steph 15/09: Decision 6 in the plan (owner: me, due Day 2) says "one model,
+  # version recorded, prompts stored in the repository". The recording half was
+  # missing: collection/llm_extractor.py falls back across providers when one is
+  # rate-limited, so a single run can label ING with one model and Revolut with
+  # another - and nothing in the dataset would say so. That silently breaks
+  # NFR-02 ("every feature is computed by the same code path for every bank").
+  # This column makes the mix visible, and schema.validate() warns when a
+  # dataset contains more than one.
+  - name: extraction_model
+    dimension: provenance
+    definition: >
+      Provider and model that produced the model_assisted fields for this row,
+      as "provider/model". Blank for rows with no model-assisted features.
+    type: string
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+    notes: >
+      Comparisons are only fair when every bank was labelled by the same model.
+      A dataset mixing models is not invalid, but the mix has to be reported as
+      a limitation (D-09) rather than discovered afterwards.
+
   # --- Tone & messaging -------------------------------------------------------
   - name: word_count
     dimension: tone_messaging

@@ -8,6 +8,7 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 | **Requirements** | [`docs/ing_requirements.docx`](docs/ing_requirements.docx) — what must be built (PRD) |
 | **Plan** | [`docs/ing_approach_and_project_plan.docx`](docs/ing_approach_and_project_plan.docx) — how, by whom, by when |
 | **Feature dictionary** | [`config/feature_dictionary.yaml`](config/feature_dictionary.yaml) — the contract |
+| **Decisions** | [`docs/decisions.md`](docs/decisions.md) — what was decided, when, and why |
 | **Team** | Siegried (lead, marketing framework) · Dan (collection, extraction) · Stephane (analysis, GenAI) |
 | **Window** | Mon 14 – Fri 25 September 2026 |
 
@@ -30,10 +31,13 @@ robots.txt review clears each domain.
 ```bash
 pip install -r requirements.txt
 
-python3 scripts/make_fixture.py        # synthetic dataset, for wiring only
-python3 scripts/run_analysis.py        # the full chain: profiles, positioning, charts
-python3 scripts/build_feature_docs.py  # regenerate docs/feature_dictionary.md
-python3 -m pytest tests/ -q            # 35 tests
+python3 scripts/make_fixture.py           # synthetic dataset, for wiring only
+python3 scripts/run_analysis.py           # the full chain: profiles, positioning, charts
+python3 scripts/run_generation.py         # step 5: generate 2 variants and score them
+python3 scripts/run_generation.py --dry-run   # ...without calling a model
+python3 scripts/check_schema_freeze.py    # enforce the Day 2 freeze rule
+python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
+python3 -m pytest tests/ -q               # 115 tests
 ```
 
 Outputs land in `outputs/`: four charts, the profile cards as markdown and JSON,
@@ -57,6 +61,40 @@ Each feature declares:
 
 **Freeze rule:** after the Day 2 freeze, columns may be *added* but never renamed
 or removed without all three of us agreeing. The analysis code depends on them.
+
+Two checks enforce it, deliberately:
+
+- `tests/test_schema.py::test_dictionary_matches_frozen_snapshot` — byte equality
+  against `feature_dictionary.frozen.yaml`. Catches an *accidental* edit.
+- `scripts/check_schema_freeze.py` — the rule itself. Additions pass; renames,
+  removals, type changes, narrowed ranges or categories, tier demotions and
+  tightened nullability fail, naming the feature.
+
+Byte equality alone is not the rule: it fails on an addition (which the rule
+permits) and it *passes* on a rename, because updating both files makes the bytes
+match again. A rename is the change that actually breaks analysis code.
+
+## One model labels every bank
+
+DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). About a
+quarter of the dictionary is model-assisted, and the provider chain falls back
+when one is rate-limited — so a run could label ING with one model and Revolut
+with another. Every row now records `extraction_model`, and `validate()` warns
+when a dataset mixes models and names which banks got which. A difference between
+banks has to be a difference between banks, not between two judges (NFR-02).
+
+## Step 5 — campaign generation (stretch)
+
+`scripts/run_generation.py` derives a numeric target from the data (ING's own
+levels for the on-brand variant; the challenger group's medians for the
+challenger-style one), asks the model for a campaign, renders it to HTML, and
+scores it **with the same extractor that reads real bank pages**. The loop only
+means something because there is exactly one measuring stick in this repo.
+
+Targets never include a feature the guardrails forbid hitting — you cannot ask a
+generator to match a bank's density of figures while forbidding it to invent
+figures. Hitting the target means the generator followed instructions; it says
+nothing about whether the campaign would perform better (plan risk P-08).
 
 ## What the validator refuses
 
@@ -84,7 +122,10 @@ scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain
   build_feature_docs.py          YAML -> markdown
-tests/                           35 tests over the contract and the analysis
+  freeze.py                      the Day 2 freeze rule, enforced semantically
+  generation.py                  step 5: targets, brief, rendering, scoring
+  collection/                    Dan + Siegried: compliance, scraper, LLM, visuals
+tests/                           115 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — gitignored

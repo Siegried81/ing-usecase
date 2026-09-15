@@ -149,7 +149,16 @@ def build_fixture(
             second_person_ratio_value = round(float(np.clip(rng.normal(a["second_person"], 0.05), 0, 1)), 3)
             first_person_plural_value = int(max(0, rng.normal(6, 3)))
             disclaimer_word_share_value = round(float(np.clip(rng.normal(0.18 if a["category"] == "traditional" else 0.07, 0.04), 0, 1)), 3)
-            text_to_image_ratio_value = round(float(max(0.1, rng.normal(*a["text_img_ratio"]))), 2)
+            # steph 15/09, FIXED: this was drawn independently from an archetype,
+            # so the fixture's text_to_image_ratio disagreed with its OWN
+            # word_count and image_count by ~40x (ING: stored 1.18, implied
+            # 77.33). collection/scraper.py defines the feature as
+            # word_count / image_count, and a fixture that does not obey the
+            # extractor's own definition silently invalidates anything tuned on
+            # it - which is exactly what happened to the bands.py thresholds.
+            # The archetype's intent (text-led vs image-led) is already carried
+            # by word_count and image_count, so it is not lost here.
+            text_to_image_ratio_value = round(words / max(images, 1), 2)
             rows.append(
                 {
                     "page_id": f"{bank}_{product_family}_{language}_{i + 1:02d}",

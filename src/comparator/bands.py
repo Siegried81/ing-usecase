@@ -46,7 +46,17 @@ FIRST_PERSON_PLURAL_DEFAULT = "frequent"
 DISCLAIMER_WORD_SHARE_EDGES = [(0.05, "minimal"), (0.15, "moderate")]
 DISCLAIMER_WORD_SHARE_DEFAULT = "heavy"
 
-TEXT_TO_IMAGE_RATIO_EDGES = [(1.0, "image_heavy"), (3.0, "balanced")]
+# steph 15/09, RECALIBRATED. These edges (1.0 / 3.0) were set against the old
+# fixture, whose text_to_image_ratio was drawn from an archetype and disagreed
+# with its own word_count/image_count by ~40x. collection/scraper.py actually
+# computes WORDS PER IMAGE, which lands in the tens-to-hundreds - so on real
+# captures every single page would have banded "text_heavy" and the feature
+# would have carried no information at all. Fixture (now consistent with the
+# extractor) gives challengers 13-39 and traditionals 62-258 words per image,
+# quartiles 37/78/136.
+# PROVISIONAL: still derived from synthetic data. Re-check against the first
+# real captures before any finding leans on this band - Dan's Day 3-4 output.
+TEXT_TO_IMAGE_RATIO_EDGES = [(40.0, "image_heavy"), (100.0, "balanced")]
 TEXT_TO_IMAGE_RATIO_DEFAULT = "text_heavy"
 
 

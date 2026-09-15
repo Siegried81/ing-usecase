@@ -195,6 +195,31 @@ def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> 
                 "exclude them from bank comparisons, score them separately."
             )
 
+    # --- one judge for every bank (NFR-02) -----------------------------------
+    # steph 15/09, Decision 6. The model_assisted features are ~a quarter of the
+    # dictionary. If Groq rate-limits halfway through a run and the chain falls
+    # back, half the banks get labelled by a different model - and the resulting
+    # "difference between ING and Revolut" is partly a difference between two
+    # LLMs. That is not something to discover while writing the deck.
+    if "extraction_model" in df.columns:
+        models = sorted(str(m) for m in df["extraction_model"].dropna().unique())
+        if len(models) > 1:
+            detail = models
+            if "bank" in df.columns:
+                by_model = (
+                    df.dropna(subset=["extraction_model"])
+                    .groupby("extraction_model", observed=True)["bank"]
+                    .apply(lambda s: sorted(set(s)))
+                    .to_dict()
+                )
+                detail = [f"{m}: {banks}" for m, banks in by_model.items()]
+            report.warnings.append(
+                "model_assisted features were produced by MORE THAN ONE model "
+                f"({'; '.join(str(d) for d in detail)}). Cross-bank comparisons on those "
+                "features are partly a comparison between models - either re-run the odd "
+                "banks on the pinned model, or report it as a limitation (D-09, NFR-02)."
+            )
+
     # --- coverage: same features attempted for every bank (DR-07) -------------
     if "bank" in df.columns:
         core_feats = [f.name for f in fd.select(tier="core") if f.name in df.columns]
