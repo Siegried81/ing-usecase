@@ -169,9 +169,31 @@ def _hero_image_url(soup: BeautifulSoup, page_url: str | None = None):
 
 
 def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, float]:
-    # heuristic: elements whose class/id mentions disclaimer/legal/small-print
+    # heuristic 1: elements whose class/id mentions disclaimer/legal/small-print
     candidates = soup.find_all(attrs={"class": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
     candidates += soup.find_all(attrs={"id": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
+
+    # heuristic 2, sieg 15/09: FIXED - verified live on n26.com, which has
+    # neither (0 matches on heuristic 1) but uses real footnotes: <sup>1</sup>
+    # markers in the body referencing paragraphs elsewhere that start with
+    # "1 ...". Restricted to <sup> whose own text is 1-2 digits only (a
+    # footnote marker, not e.g. a "TM" superscript) so this can't fire on an
+    # unrelated page, and to <p>/<div>/<li> with NO block-level descendant
+    # (a true leaf) so a large wrapper that merely starts with a number can't
+    # match and get double-counted through a nested tag.
+    footnote_numbers = {
+        s.get_text(strip=True) for s in soup.find_all("sup")
+        if s.get_text(strip=True).isdigit() and len(s.get_text(strip=True)) <= 2
+    }
+    if footnote_numbers:
+        for tag in soup.find_all(["p", "div", "li"]):
+            if tag.find(["p", "div", "li"]):
+                continue
+            text = tag.get_text(strip=True)
+            match = re.match(r"^(\d{1,2})[\s.]", text)
+            if match and match.group(1) in footnote_numbers and 5 < len(text) < 400:
+                candidates.append(tag)
+
     if not candidates or total_words == 0:
         return False, 0.0
     disclaimer_words = sum(len(c.get_text(strip=True).split()) for c in candidates)
