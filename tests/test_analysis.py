@@ -20,8 +20,10 @@ from comparator.analysis import (  # noqa: E402
     cluster_banks,
     comparable_features,
     ing_vs_peers,
+    insight_candidates,
     nearest_neighbours,
     positioning_axis,
+    recurring_patterns,
     similarity_matrix,
 )
 from comparator.dictionary import load_dictionary  # noqa: E402
@@ -91,6 +93,15 @@ def test_nearest_neighbours_excludes_self(df, fd):
     assert len(neighbours) == 3
 
 
+def test_nearest_neighbours_accepts_tier(df, fd):
+    # sieg 14/09: nearest_neighbours used to be the only sibling function
+    # without a tier passthrough - this is a regression guard, not a claim
+    # about which neighbours a restricted tier should return.
+    neighbours = nearest_neighbours(df, fd, focus="ing", k=3, tier="core")
+    assert "ing" not in neighbours.index
+    assert len(neighbours) == 3
+
+
 def test_deviations_are_sorted_by_absolute_gap(df, fd):
     gaps = ing_vs_peers(df, fd)["gap_sd"].abs().tolist()
     assert gaps == sorted(gaps, reverse=True)
@@ -106,6 +117,60 @@ def test_deck_claims_all_return_a_verdict(df, fd):
     claims = check_deck_claims(df, fd)
     assert len(claims) == 5
     assert claims["verdict"].isin({"supported", "not supported", "not testable"}).all()
+
+
+def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
+    # sieg 14/09: H2 (KBC) used to call .idxmin() on a subset that could be
+    # empty (e.g. no bank tagged "traditional" left in the data), which raises
+    # instead of reporting "not testable" like every other untestable claim.
+    no_traditional = df.copy()
+    no_traditional["bank_category"] = "challenger"
+    claims = check_deck_claims(no_traditional, fd)
+    h2 = claims.loc[claims["id"] == "H2"].iloc[0]
+    assert h2["verdict"] == "not testable"
+
+
+# sieg 15/09: new function, new tests - BO-04 (recurring market-wide patterns)
+# had no function behind it before this.
+def test_recurring_patterns_are_sorted_and_above_the_threshold(df, fd):
+    patterns = recurring_patterns(df, fd, min_abs_corr=0.5)
+    if patterns.empty:
+        return
+    assert (patterns["correlation"].abs() >= 0.5).all()
+    corrs = patterns["correlation"].abs().tolist()
+    assert corrs == sorted(corrs, reverse=True)
+
+
+def test_recurring_patterns_never_pairs_a_feature_with_itself(df, fd):
+    patterns = recurring_patterns(df, fd, min_abs_corr=0.0)
+    assert (patterns["feature_a"] != patterns["feature_b"]).all()
+
+
+def test_recurring_patterns_does_not_list_a_pair_twice(df, fd):
+    patterns = recurring_patterns(df, fd, min_abs_corr=0.0)
+    pairs = {frozenset((a, b)) for a, b in zip(patterns["feature_a"], patterns["feature_b"])}
+    assert len(pairs) == len(patterns)
+
+
+# sieg 15/09: new function, new tests - FR-10 (M priority) had no function
+# behind it before this.
+def test_insight_candidates_are_sorted_and_above_the_threshold(df, fd):
+    candidates = insight_candidates(df, fd, min_gap_sd=0.5)
+    assert (candidates["gap_sd"].abs() >= 0.5).all()
+    gaps = candidates["gap_sd"].abs().tolist()
+    assert gaps == sorted(gaps, reverse=True)
+
+
+def test_insight_candidates_respects_top_n(df, fd):
+    candidates = insight_candidates(df, fd, min_gap_sd=0.0, top_n=2)
+    assert len(candidates) <= 2
+
+
+def test_insight_candidates_cite_a_source_page(df, fd):
+    candidates = insight_candidates(df, fd, min_gap_sd=0.5)
+    assert not candidates.empty, "fixture should produce at least one candidate above 0.5 SD"
+    assert all(candidates["example_page_ids"].apply(len) > 0)
+    assert all(pid in set(df.loc[df["bank"] == "ing", "page_id"]) for ids in candidates["example_page_ids"] for pid in ids)
 
 
 def test_every_profile_has_the_same_fields(df, fd):

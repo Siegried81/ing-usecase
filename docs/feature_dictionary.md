@@ -8,7 +8,7 @@
 **Grain** One row per campaign page per capture date.  
 **Freeze target** End of Day 2 - Tuesday 15 September 2026
 
-67 features — 53 core, 14 extended.
+96 features — 61 core, 35 extended.
 
 ## How to read the tables
 
@@ -45,7 +45,7 @@
 
 ## Tone & messaging
 
-*PRD section 11 - "Is it formal, simple, persuasive?"* — 13 features
+*PRD section 11 - "Is it formal, simple, persuasive?"* — 18 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -55,6 +55,11 @@
 | `readability_score` | float | automatic | within_language | core | Readability index of the body text. Higher means easier.<br>*Formula differs per language - see readability_formula. Raw scores are NOT comparable across languages; use readability_band for cross-language work.* |
 | `readability_formula` | categorical<br>`flesch_douma_nl` · `kandel_moles_fr` · `flesch_reading_ease_en` | automatic | cross_language | core | Which readability formula produced readability_score. |
 | `readability_band` | categorical<br>`very_easy` · `easy` · `medium` · `hard` · `very_hard` | derived | cross_language | core | Readability score bucketed into language-neutral bands, so it can cross languages. |
+| `word_count_band` | categorical<br>`very_short` · `short` · `medium` · `long` | derived | cross_language | core | word_count bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same idea as readability_band, but fixed universal cutoffs rather than a language-normalising formula (word_count has no such formula). REDUCES the cross-language comparability problem, does not eliminate it - French runs ~15-20% longer than English for the same content. See src/comparator/bands.py for the thresholds.* |
+| `sentence_count_band` | categorical<br>`very_short` · `short` · `medium` · `long` | derived | cross_language | extended | sentence_count bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band.* |
+| `avg_sentence_length_band` | categorical<br>`short_sentences` · `medium_sentences` · `long_sentences` | derived | cross_language | core | avg_sentence_length bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band.* |
+| `second_person_ratio_band` | categorical<br>`rarely_direct` · `sometimes_direct` · `mostly_direct` | derived | cross_language | core | second_person_ratio bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - a ratio travels a little better across languages than a raw count, banded anyway for consistency with the rest of this set.* |
+| `first_person_plural_band` | categorical<br>`rare` · `occasional` · `frequent` | derived | cross_language | extended | first_person_plural_count bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band.* |
 | `second_person_ratio` | float<br>[0, 1] | automatic | within_language | core | Share of personal pronouns that address the reader (je/u/jij, vous/tu, you).<br>*Direct address is a known challenger-bank marker. Cheap to compute, high signal.* |
 | `first_person_plural_count` | integer<br>[0, ∞] | automatic | within_language | extended | Occurrences of bank-as-we pronouns (wij/we, nous, we/our). |
 | `question_count` | integer<br>[0, ∞] | automatic | cross_language | extended | Number of question marks in body text. |
@@ -71,21 +76,45 @@
 - **4** — Formal. Full forms of address, product and regulatory vocabulary.
 - **5** — Institutional and legalistic. Reads like a product sheet.
 
+### Rubric — `clarity_score`
+
+- **1** — Can't tell what's being offered without reading twice.
+- **2** — Vague - the product is named but the offer itself (rate, benefit, condition) is unclear.
+- **3** — Understandable with effort - the offer is there but buried among secondary information.
+- **4** — Clear - offer, audience and next step are identifiable at a glance.
+- **5** — Immediate - the value proposition is unmistakable within the first few seconds.
+
 ## Topics & value proposition
 
-*PRD section 11 - "What is being offered? How is it framed?"* — 9 features
+*PRD section 11 - "What is being offered? How is it framed?"* — 10 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
+| `disclaimer_word_share_band` | categorical<br>`minimal` · `moderate` · `heavy` | derived | cross_language | extended | disclaimer_word_share bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band.* |
 | `primary_product` | string | model_assisted | cross_language | core | The specific product named on the page, in the page's own words. |
 | `rate_shown` | boolean | automatic | cross_language | core | Whether an interest rate or price is displayed on the page. |
 | `rate_value_pct` | float<br>[0, ∞] | automatic | within_capture_window | core | The headline rate as a percentage, when one is shown.<br>*Rates move. Only comparable between pages captured in the same window.* |
 | `rate_prominence` | categorical<br>`hero` · `above_fold` · `below_fold` · `absent` | rubric | cross_language | core | Where the rate sits in the visual hierarchy. |
-| `benefit_framing` | categorical<br>`rational` · `emotional` · `mixed` | rubric | cross_language | core | Whether the offer is argued with figures, with feelings, or both. |
-| `fab_level` | categorical<br>`feature` · `advantage` · `benefit` | rubric | cross_language | core | Dominant level of the feature-advantage-benefit ladder. "3.2% gross annual" is a feature; "your money works while you sleep" is a benefit. |
+| `benefit_framing` | categorical<br>`rational` · `emotional` · `mixed` | model_assisted | cross_language | core | Whether the offer is argued with figures, with feelings, or both. |
+| `fab_level` | categorical<br>`feature` · `advantage` · `benefit` | model_assisted | cross_language | core | Dominant level of the feature-advantage-benefit ladder. "3.2% gross annual" is a feature; "your money works while you sleep" is a benefit. |
 | `value_prop_clarity` | integer<br>[1, 5] | rubric | cross_language | extended | How clearly the page states what is offered, to whom, against which alternative. |
 | `disclaimer_present` | boolean | automatic | cross_language | extended | Whether legal or risk disclaimers appear on the page. |
 | `disclaimer_word_share` | float<br>[0, 1] | automatic | within_language | extended | Share of body words that sit inside disclaimer blocks. |
+
+### Rubric — `rate_prominence`
+
+- **above_fold** — The rate is visible without scrolling, but is not the dominant visual element.
+- **absent** — No rate is shown anywhere on the page.
+- **below_fold** — The rate only appears after scrolling.
+- **hero** — The rate is the largest or most visually dominant element on the page.
+
+### Rubric — `value_prop_clarity`
+
+- **1** — No stated value proposition - reads like a product description, not an offer.
+- **2** — What is offered is named, but who it is for and the alternative are absent.
+- **3** — What and who are clear, but the implied alternative is absent or only implicit.
+- **4** — What, who and the implied alternative are all identifiable.
+- **5** — What, who and the alternative are explicit and quantified.
 
 ## Visuals & illustrations
 
@@ -117,12 +146,21 @@
 | `background_luminance` | float<br>[0, 1] | automatic | cross_language | core | Mean relative luminance of the page background. 0 = black, 1 = white.<br>*Separates dark-themed challengers (Revolut "deep blue and dark") from white incumbent pages.* |
 | `cta_contrast_ratio` | float<br>[1, 21] | automatic | cross_language | extended | WCAG contrast ratio between the primary call-to-action and its background. |
 
+### Rubric — `accent_locations`
+
+- **background** — Accent colour used as a section or page background.
+- **buttons** — Accent colour used on call-to-action buttons or other interactive elements.
+- **icons** — Accent colour used on icons or small graphic markers.
+- **imagery** — Accent colour appears within the photos, illustrations or renders themselves.
+- **text** — Accent colour used on headlines or body text.
+
 ## Layout & structure
 
-*PRD section 11 - "Is the page easy to read? How is it organised?"* — 9 features
+*PRD section 11 - "Is the page easy to read? How is it organised?"* — 11 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
+| `text_to_image_ratio_band` | categorical<br>`image_heavy` · `balanced` · `text_heavy` | derived | cross_language | core | text_to_image_ratio bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band; also inherits the text_to_image_ratio approximation noted in collection/scraper.py for static_fetch rows.* |
 | `page_height_px` | integer<br>[0, ∞] | automatic | cross_language | core | Full rendered page height at a fixed 1440x900 viewport.<br>*Viewport must be identical for every capture or this feature is meaningless.* |
 | `section_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct content blocks on the page. |
 | `cta_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct call-to-action buttons or links. |
@@ -132,6 +170,24 @@
 | `above_fold_element_count` | integer<br>[0, ∞] | automatic | cross_language | extended | Number of distinct interactive or content elements visible without scrolling. |
 | `has_comparison_table` | boolean | automatic | cross_language | extended | Whether the page contains a product comparison table. |
 | `layout_archetype` | categorical<br>`hero_stacked` · `split_columns` · `card_grid` · `long_form` | rubric | cross_language | core | Overall structural pattern of the page. |
+| `mobile_first_design_signal` | boolean | rubric | cross_language | extended | Whether the page's visual design reads as built mobile-first (single-column cards, large tap targets, minimal above-fold density) rather than desktop-first (multi-column, hover-dependent, dense), judged from the desktop screenshot. Not a responsive/viewport measurement - this project only captures one fixed viewport. |
+
+### Rubric — `text_image_adjacent`
+
+- **False** — Text and images are stacked vertically, or images stand alone without adjacent text.
+- **True** — The dominant pattern places a block of text directly beside an image, on the same visual row.
+
+### Rubric — `layout_archetype`
+
+- **card_grid** — Content is organised as a grid of self-contained cards or tiles.
+- **hero_stacked** — One large hero visual at the top, content stacked vertically below it.
+- **long_form** — Continuous scrolling sections with no strong grid or card structure.
+- **split_columns** — The page is organised into two or more side-by-side columns throughout.
+
+### Rubric — `mobile_first_design_signal`
+
+- **False** — Multi-column layout, dense information, hover-dependent interactions.
+- **True** — Single-column, card-like blocks, large tap-friendly buttons, minimal density above the fold.
 
 ## Marketing principles
 
@@ -146,3 +202,60 @@
 | `aida_coverage_score` | integer<br>[0, 4] | derived | cross_language | core | How many of the four AIDA stages the page covers. |
 | `persuasion_levers` | list[string]<br>`reciprocity` · `commitment` · `social_proof` · `authority` · `liking` · `scarcity` | rubric | cross_language | core | Which of Cialdini's six persuasion principles are used on the page.<br>*Turns the vague word "persuasive" into a closed, countable list.* |
 | `persuasion_lever_count` | integer<br>[0, 6] | derived | cross_language | core | Number of distinct persuasion levers detected. |
+
+### Rubric — `aida_attention`
+
+- **False** — The opening is generic enough that skipping it would lose nothing.
+- **True** — Something on the first screen (headline, visual, number) is genuinely arresting, not generic.
+
+### Rubric — `aida_interest`
+
+- **False** — The page front-loads everything, or gives no reason to continue past the first line.
+- **True** — There is a reason to keep reading beyond the headline - a specific detail, a question, a hinted benefit.
+
+### Rubric — `aida_desire`
+
+- **False** — The page states facts (rate, features) without making the reader want the outcome.
+- **True** — The offer is made to feel worth having - concrete benefit, social proof or emotional payoff, not only a spec sheet.
+
+### Rubric — `aida_action`
+
+- **False** — No clear call to action, or several competing ones that dilute the next step.
+- **True** — There is one unmistakable next step - a clear, singular call to action.
+
+### Rubric — `persuasion_levers`
+
+- **authority** — The page invokes expertise, credentials, regulator backing, or institutional tenure.
+- **commitment** — The page asks for a small first step that implies a larger one.
+- **liking** — The page uses a friendly tone, relatable imagery, or a likeable brand voice to build affinity.
+- **reciprocity** — The page offers something free or upfront before asking for commitment.
+- **scarcity** — The page uses deadlines, limited availability, or "only until" language.
+- **social_proof** — The page cites other customers, ratings, review counts, or user numbers.
+
+## Banking-domain signals (Siegried's addendum)
+
+*PRD section 11 bis / Plan section 4.3 bis - retail-banking angles a generic marketing framework misses* — 21 features
+
+| Feature | Type | Extraction | Comparability | Tier | Definition |
+| --- | --- | --- | --- | --- | --- |
+| `audience_segment` | categorical<br>`retail` · `professional` · `mixed` | model_assisted | cross_language | core | Whether the page addresses an individual, a professional/self-employed activity, or both.<br>*sieg 14/09 - retail vs pro is a different axis than traditional vs challenger; most banks run both but frame differently.* |
+| `is_bundled_offer` | boolean | model_assisted | cross_language | extended | Whether the page pushes a bundle (account + card + insurance + investment) in the same funnel, rather than one isolated product.<br>*sieg 14/09 - the bancassurance model (bundled) vs single-product neobank is a business-model signal, not a tone or design choice.* |
+| `cross_sell_delivery_model` | categorical<br>`internal_advisor_led` · `partner_addon_digital` · `not_applicable` | model_assisted | cross_language | extended | How a cross-sold product (insurance, investment) is delivered when one is offered - an in-house product with a dedicated advisor (bancassurance), a digital add-on distributed through a third-party partner with no advisor, or not applicable (nothing cross-sold on this page). |
+| `rate_framing` | categorical<br>`base_rate` · `promo_bonus` · `capped_tiered` · `not_shown` | model_assisted | within_capture_window | core | Whether the headline rate is the regulated base rate, a promotional bonus, a capped/tiered rate presented as the full rate, or no rate is shown.<br>*sieg 14/09 - complements rate_shown/rate_value_pct/rate_prominence (which measure IF and WHERE a rate appears) with WHAT KIND of rate it is. Belgian savings accounts are legally a base rate (>=0.50%) plus a fidelity/growth premium; a "capped_tiered" rate ("up to X%") applying only to a low ceiling or a short window is a known framing tactic.* |
+| `primary_cta_type` | categorical<br>`self_service_online` · `book_advisor_or_branch` · `other` | model_assisted | cross_language | core | Whether the primary call to action is self-service online, booking an advisor/branch visit, or something else.<br>*sieg 14/09 - a distribution-model signal; a neobank structurally cannot offer book_advisor_or_branch.* |
+| `switching_framing` | categorical<br>`retention_reassurance` · `acquisition_encouragement` · `not_applicable` | model_assisted | cross_language | extended | Whether the message reassures against switching away (retention) or actively encourages switching in (acquisition), if applicable at all.<br>*sieg 14/09 - Belgium's bank-switching service makes this a concrete, mesurable framing choice, not a vague "tone".* |
+| `regulatory_disclosure_prominence` | categorical<br>`prominent` · `present_not_prominent` · `absent` · `not_applicable` | model_assisted | cross_language | core | How visible the mandated disclosure THAT APPLIES TO THIS PAGE'S product_family is: APR/TAEG for mortgage, the deposit guarantee scheme for term_account/savings_account, a capital-at-risk warning for investment. not_applicable when no such disclosure is expected for this product_family (e.g. a plain current_account_pack with no credit component) - do not score it "absent" in that case, absent is reserved for a disclosure that IS expected but isn't shown.<br>*sieg 14/09 - distinct from disclaimer_present/disclaimer_word_share (which measure raw presence and word share automatically): this judges whether disclosures are placed where a reader will actually see them, which is what a compliance reviewer cares about.* |
+| `hidden_conditions_behind_free_claim` | boolean | model_assisted | cross_language | extended | Whether "free" is the headline claim while conditions (minimum balance, usage requirement) sit in small print.<br>*sieg 14/09 - ties directly to the kickoff deck's own top-NPS-irritator finding about ING's communications.* |
+| `esg_claim_specificity` | categorical<br>`no_claim` · `vague_adjective_only` · `backed_by_reference_or_figure` | model_assisted | cross_language | extended | Whether a sustainability claim carries a verifiable reference or figure, is an adjective only, or is absent.<br>*sieg 14/09 - recalibrated from an earlier idea of reading the SFDR Article 6/8/9 classification directly off the page; that classification lives in the KID/prospectus, rarely on a marketing page, so this coarser version is the realistic one.* |
+| `green_product_specific_benefit` | boolean | model_assisted | cross_language | extended | Whether a concrete financial benefit (e.g. a rate discount) is explicitly tied to a green/energy-performance criterion, vs a generic sustainability claim.<br>*sieg 14/09 - a green mortgage with an actual rate discount is a stronger signal than "we are sustainable".* |
+| `mentions_loyalty_or_referral` | boolean | automatic | cross_language | extended | Whether the page advertises a loyalty programme or a referral scheme ("invite a friend").<br>*sieg 14/09 - a public-page proxy for CRM/retention strategy. True CRM/personalisation data sits behind authentication and is out of reach entirely (DR-01/DR-09) - this is not a substitute for it, just the closest observable signal on a public page.* |
+| `images_have_alt_text` | boolean | automatic | cross_language | extended | Whether content images on the page carry non-empty alt text. |
+| `meta_title` | string | automatic | within_language | extended | The <title> tag content - what the bank prioritises for organic search, often different from the page's visual message. |
+| `institutional_trust_signal_present` | boolean | model_assisted | cross_language | extended | Whether the page invokes tenure, customer count, or ownership backing (e.g. state ownership) as a trust/safety argument.<br>*sieg 14/09 - e.g. Belfius is 100%% Belgian-State-owned, a safety argument unique to that bank, tracing to the 2011 Dexia/Belfius restructuring.* |
+| `youth_student_targeting` | boolean | model_assisted | cross_language | extended | Whether a junior/student account or youth-oriented offer is promoted, as a long-horizon acquisition strategy. |
+| `secondary_bank_positioning` | boolean | model_assisted | cross_language | extended | Whether the bank frames itself as an addition to an existing bank ("keep your current bank, add us") rather than a full replacement. |
+| `expat_cross_border_targeting` | boolean | model_assisted | cross_language | extended | Whether the page targets expats/international clients (e.g. English content framed around "moving to Belgium"). |
+| `branch_network_cited_as_benefit` | boolean | model_assisted | cross_language | extended | Whether the page explicitly cites physical branch/ATM network size as an advantage. |
+| `fast_digital_onboarding_claim` | boolean | model_assisted | cross_language | extended | Whether the page claims a fast, frictionless digital account-opening process (e.g. "open an account in 5 minutes", no branch visit needed, instant approval).<br>*sieg 14/09 - structurally unavailable to a neobank; a hard marker of business model.* |
+| `first_time_investor_targeting` | boolean | model_assisted | cross_language | extended | Whether the page frames investing as a first step for a novice (e.g. "start with as little as", beginner glossary, low/no minimum) rather than assuming existing investment experience. |
+| `senior_preretirement_targeting` | boolean | model_assisted | cross_language | extended | Whether the page targets a pre-retirement/senior life stage - pension planning, wealth transfer or succession, end-of-career estate management - as the entry point. |

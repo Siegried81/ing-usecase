@@ -38,16 +38,17 @@ def _flatten_lists(series: pd.Series) -> list[str]:
     return [item for item, _ in counter.most_common()]
 
 
-def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SIGNATURE_FEATURES) -> list[tuple[str, float]]:
+def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SIGNATURE_FEATURES, *, tier: str | None = None) -> list[tuple[str, float]]:
     """The features on which this bank departs most from the market average."""
-    z = standardise(bank_vectors(df, fd).dropna(axis=1, how="any"))
+    # sieg 14/09: see the dropna(axis=1, how="any") note in analysis.positioning_axis().
+    z = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
     if bank not in z.index:
         return []
     row = z.loc[bank].dropna()
     return [(name, float(row[name])) for name in row.abs().sort_values(ascending=False).head(n).index]
 
 
-def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = None) -> dict:
+def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = None, *, tier: str | None = None) -> dict:
     """Build one bank's profile card from its rows."""
     fd = fd or load_dictionary()
     rows = df[df["bank"] == bank]
@@ -111,13 +112,13 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "persuasion_levers": _flatten_lists(rows.get("persuasion_levers", pd.Series(dtype="object"))),
             "lever_count": mean("persuasion_lever_count"),
         },
-        "signature": _distinctive(bank, df, fd),
+        "signature": _distinctive(bank, df, fd, tier=tier),
     }
 
 
-def build_all(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> dict[str, dict]:
+def build_all(df: pd.DataFrame, fd: FeatureDictionary | None = None, *, tier: str | None = None) -> dict[str, dict]:
     fd = fd or load_dictionary()
-    return {bank: build_profile(df, bank, fd) for bank in sorted(df["bank"].unique())}
+    return {bank: build_profile(df, bank, fd, tier=tier) for bank in sorted(df["bank"].unique())}
 
 
 def _fmt_share(value: object) -> str:
@@ -133,6 +134,13 @@ def _fmt_share(value: object) -> str:
 
 
 def _fmt(value: object, digits: int = 2) -> str:
+    # sieg 14/09 - NOTE FOR LATER, not fixed now (never triggered today, every
+    # call site uses the default digits=2): with digits=0 there is no decimal
+    # point for rstrip("0") to stop at, so an integer like 200 would be
+    # stripped down to "2". Safe today only because digits=0 is never passed.
+    # If anyone parameterises this later, guard it, e.g.:
+    #   text = f"{value:,.{digits}f}"
+    #   return text.rstrip("0").rstrip(".") if "." in text else text
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return "-"
     if isinstance(value, float):
