@@ -38,7 +38,7 @@
 | persuasion levers | liking |
 | lever count | 1 |
 
-**Signature:** avg sentence length well below the market average (-2.4 SD); aida desire well below the market average (-2.3 SD); images have alt text well below the market average (-2.3 SD).
+**Signature:** avg sentence length well below the market average (-2.4 SD); images have alt text well below the market average (-2.3 SD); aida desire well below the market average (-2.3 SD).
 
 ### belfius  (traditional)
 
@@ -228,7 +228,7 @@
 | persuasion levers | scarcity, authority |
 | lever count | 2 |
 
-**Signature:** green product specific benefit well above the market average (+2.8 SD); expat cross border targeting well above the market average (+2.8 SD); first person plural count well above the market average (+2.4 SD).
+**Signature:** expat cross border targeting well above the market average (+2.8 SD); green product specific benefit well above the market average (+2.8 SD); first person plural count well above the market average (+2.4 SD).
 
 ### kbc  (traditional)
 

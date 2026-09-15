@@ -30,6 +30,9 @@ with the real one; static_fetch stays as the fast path for everything else.
 """
 from __future__ import annotations
 
+import logging
+from pathlib import Path
+
 import re
 from datetime import datetime, timezone
 
@@ -38,6 +41,9 @@ from bs4 import BeautifulSoup
 
 from comparator import bands
 from comparator.collection.compliance import USER_AGENT, assert_can_fetch
+from comparator.collection.render import RenderUnavailable, render
+
+logger = logging.getLogger(__name__)
 
 REQUEST_TIMEOUT_S = 15
 
@@ -266,12 +272,57 @@ def extract(html: str, *, language: str) -> dict:
     }
 
 
-def scrape(url: str, *, language: str) -> dict:
-    """Compliant fetch + full automatic extraction for one page."""
-    html = _fetch_html(url)
-    features = extract(html, language=language)
+def scrape(
+    url: str,
+    *,
+    language: str,
+    method: str = "auto",
+    screenshot_path: str | Path | None = None,
+) -> dict:
+    """Compliant fetch + full automatic extraction for one page.
+
+    steph 15/09: added the headless path alongside the static one. Five features
+    (page_height_px, hero_image_area_ratio, total_image_area_ratio,
+    cta_contrast_ratio, above_fold_element_count) are geometry - they need a
+    browser and were hardcoded None until now. page_height_px is core, required
+    and NOT nullable, so strict validation failed outright on every real static
+    row; the run aborted rather than degraded.
+
+    method:
+      "auto"     - render if this machine can, else fall back to static and say so.
+      "headless" - require the browser; raise RenderUnavailable if absent.
+      "static"   - never launch a browser (fast, and what the tests use).
+
+    The rendered DOM is also what gets parsed, so a JavaScript-built page is read
+    as a reader sees it rather than as an empty shell (PRD risk R-02).
+    """
+    if method not in {"auto", "headless", "static"}:
+        raise ValueError(f"unknown method {method!r}")
+
+    rendered = None
+    if method in {"auto", "headless"}:
+        try:
+            rendered = render(url, screenshot_path=screenshot_path)
+        except RenderUnavailable:
+            if method == "headless":
+                raise
+            logger.warning(
+                "headless rendering unavailable, falling back to static fetch for %s - "
+                "page_height_px and the image-area ratios will be empty and strict "
+                "validation will fail on this row", url,
+            )
+
+    if rendered is not None:
+        html = rendered.html
+        features = extract(html, language=language)
+        features.update(rendered.features)  # geometry overrides the None placeholders
+        features["collection_method"] = "headless_render"
+    else:
+        html = _fetch_html(url)
+        features = extract(html, language=language)
+        features["collection_method"] = "static_fetch"
+
     features["_html"] = html
-    features["collection_method"] = "static_fetch"
     features["robots_allowed"] = True  # reaching this line means assert_can_fetch already passed
     features["captured_at"] = datetime.now(timezone.utc).isoformat()
     return features
