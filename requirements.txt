@@ -5,7 +5,8 @@ scipy==1.16.3
 scikit-learn==1.7.2
 matplotlib==3.10.7
 PyYAML==6.0.3
-pytest==8.4.2
+# sieg 15/09: bumped from 8.4.2 - flagged by GitHub Dependabot as vulnerable.
+pytest==9.0.3
 
 # sieg 14/09: collection module dependencies - were missing entirely, my
 # oversight when I added src/comparator/collection/ and tests/test_collection.py.
