@@ -14,9 +14,13 @@ autonomous tool use. This is a feature-extraction call, nothing decides
 anything here.
 
 Providers are called via their OpenAI-compatible chat-completions endpoint
-directly (requests), so this needs no per-provider SDK. VERIFY the base URLs
-below against each provider's current docs before relying on the fallbacks -
-Groq and OpenRouter are ones I'm confident about, Cerebras/SambaNova less so.
+directly (requests), so this needs no per-provider SDK.
+
+sieg 15/09: the default model names for OpenRouter/Cerebras/SambaNova were
+originally guessed and flagged as unverified - replaced with the values from
+Sieg's own portfolio_forecasting .env.example (qwen/qwen3-4b:free / gpt-oss-120b
+/ gpt-oss-120b), which are known to work. Base URLs are still worth a quick
+check against each provider's current docs if a call starts failing.
 """
 from __future__ import annotations
 
@@ -146,9 +150,12 @@ class LLMExtractionError(Exception):
 # then hosted fallbacks, then local Ollama for dev.
 _PROVIDERS = [
     ("GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "openai/gpt-oss-120b:free"),
-    ("CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "llama-3.3-70b"),
-    ("SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "Meta-Llama-3.3-70B-Instruct"),
+    # sieg 15/09: FIXED - these three were guessed defaults ("VERIFY... Cerebras/
+    # SambaNova less so", see module docstring). Replaced with the values from
+    # Sieg's own portfolio_forecasting .env.example, which are known to work.
+    ("OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "qwen/qwen3-4b:free"),
+    ("CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "gpt-oss-120b"),
+    ("SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "gpt-oss-120b"),
 ]
 
 
