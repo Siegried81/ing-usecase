@@ -5,6 +5,15 @@ sieg 14/09, new module. background_luminance here is the hero image's own
 luminance as a stand-in for the page background - a real page-background
 reading needs a rendered viewport, same limitation as noted in
 collection/scraper.py. Documented in the returned dict, not hidden.
+
+sieg 15/09: audit finding - this module fetched the hero image with plain
+requests.get(), never running assert_can_fetch() first like scraper.py's
+_fetch_html() does. robots.txt can allow a page but disallow its /images/ or
+/assets/ path, so this was a real bypass of the CLAUDE.md compliance gate.
+Fixed by checking the image URL too, inside the existing try/except so a
+disallowed image still degrades to "no colours" (ScrapingNotAllowed is an
+Exception, caught below) instead of turning a best-effort feature into a hard
+crash for the whole row.
 """
 from __future__ import annotations
 
@@ -13,7 +22,7 @@ import io
 import requests
 from PIL import Image
 
-from comparator.collection.compliance import USER_AGENT
+from comparator.collection.compliance import USER_AGENT, assert_can_fetch
 
 REQUEST_TIMEOUT_S = 15
 
@@ -59,10 +68,11 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     if not image_url:
         return empty
     try:
+        assert_can_fetch(image_url)  # sieg 15/09: compliance gate, must run before every fetch
         response = requests.get(image_url, headers={"User-Agent": USER_AGENT}, timeout=REQUEST_TIMEOUT_S)
         response.raise_for_status()
         img = Image.open(io.BytesIO(response.content)).convert("RGB")
-    except Exception:  # noqa: BLE001 - best-effort feature, never fatal
+    except Exception:  # noqa: BLE001 - best-effort feature, never fatal (incl. robots disallow)
         return empty
 
     img = img.resize((150, 150))

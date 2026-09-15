@@ -208,9 +208,14 @@ def _fake_image_response(image: Image.Image) -> Mock:
     return response
 
 
+# sieg 15/09: extract_colours() now runs assert_can_fetch() before the image
+# GET (audit finding - it used to skip the compliance gate). Every test below
+# that expects the fetch to actually happen has to patch it too, or it would
+# make a real network call to example.com/robots.txt.
 def test_extract_colours_on_a_solid_image():
     solid_orange = Image.new("RGB", (100, 100), color=(255, 98, 0))
-    with patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(solid_orange)):
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(solid_orange)):
         result = extract_colours("https://example.com/hero.png", n_colours=1)
     assert result["dominant_colour_hex"] == "#ff6200"
     assert result["background_luminance"] is not None
@@ -219,14 +224,16 @@ def test_extract_colours_on_a_solid_image():
 
 def test_brand_colour_share_is_none_without_a_known_bank():
     solid_orange = Image.new("RGB", (100, 100), color=(255, 98, 0))
-    with patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(solid_orange)):
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(solid_orange)):
         result = extract_colours("https://example.com/hero.png", n_colours=1)
     assert result["brand_colour_share"] is None
 
 
 def test_brand_colour_share_matches_the_banks_own_colour():
     ing_orange = Image.new("RGB", (100, 100), color=(255, 98, 0))  # #ff6200
-    with patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(ing_orange)):
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(ing_orange)):
         result = extract_colours("https://example.com/hero.png", bank="ing", n_colours=1)
     assert result["brand_colour_share"] == pytest.approx(1.0)
 
@@ -236,7 +243,8 @@ def test_brand_colour_share_is_low_when_the_image_is_not_the_brand_colour():
     # frequent colour, mislabelled "brand"), for ANY bank, even ING (orange)
     # against a solid blue image.
     unrelated_blue = Image.new("RGB", (100, 100), color=(0, 0, 255))
-    with patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(unrelated_blue)):
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", return_value=_fake_image_response(unrelated_blue)):
         result = extract_colours("https://example.com/hero.png", bank="ing", n_colours=1)
     assert result["brand_colour_share"] == pytest.approx(0.0)
 
@@ -248,9 +256,23 @@ def test_extract_colours_handles_missing_url():
 
 
 def test_extract_colours_handles_fetch_failure_gracefully():
-    with patch("comparator.collection.visual_features.requests.get", side_effect=ConnectionError("nope")):
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", side_effect=ConnectionError("nope")):
         result = extract_colours("https://example.com/broken.png")
     assert result["dominant_colour_hex"] is None  # must not raise
+
+
+def test_extract_colours_respects_the_compliance_gate():
+    # sieg 15/09: new test for the audit fix - a robots.txt disallow on the
+    # image itself must stop the fetch (never bypassed) and still degrade to
+    # "no colours" rather than raising, per this function's existing contract.
+    with patch(
+        "comparator.collection.visual_features.assert_can_fetch",
+        side_effect=ScrapingNotAllowed("disallowed"),
+    ), patch("comparator.collection.visual_features.requests.get") as mock_get:
+        result = extract_colours("https://example.com/hero.png", bank="ing")
+    mock_get.assert_not_called()
+    assert result["dominant_colour_hex"] is None
 
 
 # --- llm_extractor ---------------------------------------------------------
