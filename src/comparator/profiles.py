@@ -21,7 +21,7 @@ SIGNATURE_FEATURES = 3
 # Card fields whose value is the mean of a boolean feature. A mean of 0.5 means
 # "half the pages", not "0.5" - the renderer says so rather than printing a float.
 BOOLEAN_FIELDS = {
-    "people_present", "animated", "hero_image", "text_image_adjacent",
+    "people_present", "animated", "hero_image",
     "cta_above_fold", "rate_shown",
 }
 
@@ -88,7 +88,7 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
         "layout": {
             "archetype": _mode(rows.get("layout_archetype", pd.Series(dtype="object"))),
             "hero_image": mean("hero_image_present"),
-            "text_image_adjacent": mean("text_image_adjacent"),
+            "text_image_layout": _mode(rows.get("text_image_layout", pd.Series(dtype="object"))),
             "page_height_px": mean("page_height_px"),
             "cta_count": mean("cta_count"),
             "cta_above_fold": mean("cta_above_fold"),

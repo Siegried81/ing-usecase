@@ -331,8 +331,11 @@ DECK_CLAIMS: list[dict] = [
          feature="word_count", test="lowest_traditional"),
     dict(id="H3", bank="ing", claim="ING is the only traditional bank using animation",
          feature="has_animation", test="only_traditional_true"),
+    # sieg 15/09: feature renamed text_image_adjacent -> text_image_layout
+    # (boolean -> categorical: beside/stacked/overlaid) - "is_false" no longer
+    # applies to a categorical column, replaced with "categorical_is_not".
     dict(id="H4", bank="ing", claim="ING no longer places text next to picture",
-         feature="text_image_adjacent", test="is_false"),
+         feature="text_image_layout", test="categorical_is_not", not_value="beside"),
     dict(id="H5", bank="revolut", claim="Revolut uses very little text",
          feature="word_count", test="lowest"),
 ]
@@ -354,7 +357,20 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
         feature, bank, test = claim["feature"], claim["bank"], claim["test"]
         verdict, evidence = "not testable", "feature absent from the dataset"
 
-        if feature in vectors.columns and bank in vectors.index:
+        # sieg 15/09: categorical claims can't go through bank_vectors (it
+        # only carries numeric/boolean columns) - test the per-bank mode from
+        # the raw rows directly instead.
+        if test == "categorical_is_not":
+            if feature in df.columns and bank in set(df["bank"]):
+                raw = df.loc[df["bank"] == bank, feature].dropna()
+                if raw.empty:
+                    evidence = f"no {feature} values recorded for {bank}"
+                else:
+                    mode_value = raw.mode().iat[0]
+                    not_value = claim["not_value"]
+                    verdict = "supported" if mode_value != not_value else "not supported"
+                    evidence = f"{bank}'s most common {feature}: {mode_value!r} (claim: not {not_value!r})"
+        elif feature in vectors.columns and bank in vectors.index:
             series = vectors[feature].dropna()
             value = series.get(bank)
 
@@ -379,9 +395,6 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
                 others_true = [b for b in others if series[b] > 0]
                 verdict = "supported" if value > 0 and not others_true else "not supported"
                 evidence = f"{bank}={value:.2f}; other traditional banks above zero: {others_true or 'none'}"
-            elif test == "is_false":
-                verdict = "supported" if value < 0.5 else "not supported"
-                evidence = f"{bank}={value:.2f} (0 = never adjacent, 1 = always)"
 
         rows.append({**{k: claim[k] for k in ("id", "bank", "claim", "feature")},
                      "verdict": verdict, "evidence": evidence})
