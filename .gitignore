@@ -10,7 +10,6 @@
 # Raw captures - large, and third-party brand assets we do not redistribute
 data/raw/
 data/processed/
-
 # Python
 __pycache__/
 *.py[cod]

@@ -20,3 +20,8 @@ Pillow==12.3.0
 # nullable, so strict validation failed on every real static row until this.
 # After installing, also run: python3 -m playwright install chromium
 playwright==1.57.0
+
+# sieg 16/09: .env was never actually loaded by any code - os.getenv() only
+# ever saw real shell exports. Root cause of a real collection run coming back
+# with every model_assisted field empty despite .env being filled in.
+python-dotenv==1.0.1

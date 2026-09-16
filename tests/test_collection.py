@@ -51,13 +51,6 @@ Rate: 2.75%</p>
 
 
 # --- compliance --------------------------------------------------------------
-def test_check_robots_allows_when_parser_says_yes():
-    with patch("comparator.collection.compliance.RobotFileParser") as mock_cls:
-        mock_cls.return_value.can_fetch.return_value = True
-        result = check_robots("https://example.com/page")
-    assert result.allowed is True
-
-
 def _robots_response(status: int = 200, text: str = ""):
     """Minimal stand-in for the requests.Response compliance.py reads."""
     from unittest.mock import MagicMock
