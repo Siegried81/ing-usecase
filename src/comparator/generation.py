@@ -313,6 +313,11 @@ class GenerationBrief:
                 )
         return lines
 
+    @property
+    def can_be_on_brand(self) -> bool:
+        """An on-brand variant needs the bank's own profile to be on-brand WITH."""
+        return bool(self.focus_profile)
+
     def to_prompt(self) -> str:
         lines = [
             f"Product: {self.product}",
@@ -324,9 +329,12 @@ class GenerationBrief:
             "",
             *self._structural_instructions(),
             "",
-            "The bank's current profile, for reference:",
-            *[f"- {k}: {v}" for k, v in self.focus_profile.items()],
         ]
+        if self.focus_profile:
+            lines += ["The bank's current profile, for reference:",
+                      *[f"- {k}: {v}" for k, v in self.focus_profile.items()]]
+        else:
+            lines.append("(No profile available for the target bank - it has no usable capture.)")
         if self.competitor_patterns:
             lines += ["", "Patterns observed at the challenger banks (patterns only, never their words):",
                       *[f"- {p}" for p in self.competitor_patterns]]
@@ -334,6 +342,14 @@ class GenerationBrief:
 
 
 def _focus_summary(df: pd.DataFrame, fd: FeatureDictionary, focus: str) -> dict:
+    """The focus bank's own profile, or nothing if it has no usable page.
+
+    steph 16/09: not hypothetical - ING's capture came back an unrendered shell
+    on the first live run, so the bank we are writing 'on-brand' copy for was
+    absent from its own dataset.
+    """
+    if focus not in set(df.get("bank", [])):
+        return {}
     profile = build_profile(df, focus, fd)
     return {
         "tone": profile["tone"],

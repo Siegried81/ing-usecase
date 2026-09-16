@@ -1,32 +1,46 @@
 {
-  "headline": "Put your savings to work with a term account",
-  "subheading": "A fixed rate for a fixed term, so you know exactly where you stand.",
+  "headline": "Et si votre compte \u00e0 vue travaillait enfin pour vous ?",
+  "subheading": "Un compte \u00e0 vue ING, c'est simple, transparent et pens\u00e9 pour votre quotidien.",
   "body_paragraphs": [
-    "You have worked for your savings. So it makes sense that you want them to work for you too. A term account does exactly that: you set your money aside for a period you choose, and in return you get a rate that is agreed upfront.",
-    "That means no surprises. You know the rate from day one, and you know it will not move until your term ends. Whether you are saving for a home, a sabbatical or simply a little more peace of mind, you can plan around a figure that stays put.",
-    "Opening one is straightforward. You decide how much you want to put in and for how long, and we take care of the rest. There is no need to keep an eye on it, and no need to move money around to chase a better deal.",
-    "You can open a term account online in a few minutes. If you would rather talk it through first, you can reach us by phone or drop into a branch. Either way, you will get a clear answer, not a sales pitch.",
-    "Your money stays yours. You can see your term account in the same app as the rest of your banking, so you always have the full picture. And when your term comes to an end, we will let you know in good time so you can decide what happens next.",
-    "Rates depend on the amount you deposit and the term you choose. You will see the rate that applies to you before you confirm anything, so you can compare and decide at your own pace."
+    "Vous vous demandez peut-\u00eatre pourquoi votre compte \u00e0 vue actuel ne vous offre pas plus de clart\u00e9 ?",
+    "Avec ING, vous gardez le contr\u00f4le sur vos d\u00e9penses et vos \u00e9conomies, sans mauvaise surprise.",
+    "Combien de fois avez-vous cherch\u00e9 une information claire sur les frais de votre compte ?",
+    "Chez ING, nous croyons qu'un compte \u00e0 vue doit \u00eatre facile \u00e0 comprendre et \u00e0 utiliser.",
+    "Vous voulez savoir comment ouvrir un compte en quelques minutes ?",
+    "C'est possible, directement depuis votre canap\u00e9, avec une identification s\u00e9curis\u00e9e.",
+    "Quels sont les avantages d'un compte \u00e0 vue ING ?",
+    "Pas de paperasse inutile, une application mobile intuitive et un service client \u00e0 votre \u00e9coute.",
+    "Vous vous demandez si vous pouvez changer de banque facilement ?",
+    "Oui, et nous vous accompagnons \u00e0 chaque \u00e9tape pour que tout se passe sans stress.",
+    "Pourquoi attendre demain pour simplifier votre gestion bancaire ?",
+    "D\u00e9couvrez une banque qui parle votre langue, sans jargon compliqu\u00e9.",
+    "Vous cherchez un compte \u00e0 vue sans conditions de revenus ?",
+    "ING vous propose une solution accessible, avec des frais transparents.",
+    "Combien de temps vous faut-il pour ouvrir un compte ?",
+    "Quelques minutes suffisent, et vous recevez vos identifiants rapidement.",
+    "Envie de passer \u00e0 une banque plus simple ?",
+    "Rejoignez les nombreux clients qui ont d\u00e9j\u00e0 fait le choix d'ING.",
+    "Vous avez encore des questions ?",
+    "Notre \u00e9quipe est l\u00e0 pour y r\u00e9pondre, par t\u00e9l\u00e9phone ou en agence."
   ],
-  "cta_label": "Open a term account",
+  "cta_label": "D\u00e9couvrir le compte \u00e0 vue ING",
   "additional_cta_labels": [
-    "Discover how it works",
-    "Get started online",
-    "Learn more about rates"
+    "Ouvrir un compte en ligne"
   ],
   "layout_archetype": "hero_stacked",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A warm, natural-light photograph of a person in their thirties sitting at a kitchen table with a laptop and a cup of coffee, relaxed and unhurried, looking at their banking app. The scene should feel calm and everyday, not staged or aspirational. Muted tones with a single orange accent, perhaps a notebook or a mug, to echo the brand colour.",
-    "A close-up, softly lit still life of a simple paper calendar or planner with a pen resting on it, suggesting planning and certainty over time. Neutral background, shallow depth of field, with a subtle orange element in the frame. No text or numbers should be legible.",
-    "A candid photograph of a customer service advisor in a bright, modern branch or office, mid-conversation with a colleague, both smiling naturally. The setting should feel approachable and human rather than corporate. Warm daylight, uncluttered desk, a hint of orange in the environment."
+    "A smiling person using a smartphone to manage their bank account, sitting comfortably on a sofa, with a laptop nearby. The scene is bright and modern, with ING's orange accent subtly present in the background. The person looks relaxed and in control.",
+    "A close-up of a smartphone screen showing a user-friendly banking app interface with clear icons and a positive balance. The screen is slightly angled, and the background is a soft, out-of-focus living room. The app design reflects ING's clean and simple style.",
+    "A split image: on the left, a person looking confused at a pile of paper statements; on the right, the same person smiling while using the ING app. The contrast highlights the simplicity and ease of digital banking with ING.",
+    "A friendly customer service representative with a headset, smiling and ready to help, in a modern office environment. The ING logo is visible on a wall or desk item. The image conveys approachability and support.",
+    "A step-by-step visual guide: three simple icons showing (1) a person with a smartphone, (2) a checkmark, (3) a happy person with a debit card. The icons are in ING's orange and white, with minimal text. This illustrates the easy account opening process."
   ],
-  "disclaimer_placeholder": "[Legal disclaimer: rates depend on term and deposit amount; terms and conditions apply; capital at risk where applicable; please read the product sheet before opening an account.]",
+  "disclaimer_placeholder": "[Disclaimer placeholder: legal and risk information to be provided by compliance team.]",
   "persuasion_levers_used": [
     "authority",
-    "commitment",
-    "liking"
+    "liking",
+    "commitment"
   ]
 }

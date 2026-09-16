@@ -30,12 +30,19 @@ robots.txt review clears each domain.
 
 ```bash
 pip install -r requirements.txt
+cp .env.example .env        # then fill in DEEPSEEK_API_KEY - .env is gitignored
 
 python3 scripts/make_fixture.py           # synthetic dataset, for wiring only
 python3 scripts/run_analysis.py           # the full chain: profiles, positioning, charts
 python3 scripts/run_generation.py         # step 5: generate 2 variants and score them
 python3 scripts/run_generation.py --dry-run   # ...without calling a model
 python3 scripts/check_schema_freeze.py    # enforce the Day 2 freeze rule
+
+# real data
+python3 scripts/run_collection.py --config scripts/collection_targets.yaml --method headless
+python3 scripts/rubric_sheet.py emit      # scoring sheets for the 13 human-scored features
+python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
+python3 scripts/run_analysis.py --dataset data/processed/campaigns.csv --no-strict
 python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
 python3 -m pytest tests/ -q               # 124 tests
 ```
@@ -81,12 +88,37 @@ match again. A rename is the change that actually breaks analysis code.
 
 ## One model labels every bank
 
-DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). About a
+DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). Put the
+key in `.env` (gitignored); `scripts/_bootstrap.py` loads it, so no `export` is
+needed. A real environment variable still wins over the file. Never put a key in
+`.env.example` — that file is tracked and public. About a
 quarter of the dictionary is model-assisted, and the provider chain falls back
 when one is rate-limited — so a run could label ING with one model and Revolut
 with another. Every row now records `extraction_model`, and `validate()` warns
 when a dataset mixes models and names which banks got which. A difference between
 banks has to be a difference between banks, not between two judges (NFR-02).
+
+## Two things a range check cannot catch
+
+**A capture can be honestly measured and still be the wrong page.** The first live
+collection returned ING as an unrendered JavaScript shell (16 words — the `<title>`,
+twice) and BNP Paribas Fortis as a maintenance notice. Every numeric feature on
+those rows was in range. `collection/quality.py` judges whether a capture looks
+like a campaign page at all, and the verdict travels with the row in
+`capture_quality`. Analysis excludes `unusable` rows and says which.
+
+**13 core features are scored by a person**, so a collected dataset can never pass
+strict validation on its own. `scripts/rubric_sheet.py` emits one sheet per rater
+with the screenshot path, merges completed sheets back, and reports inter-rater
+agreement — which is what NFR-05 actually asks for.
+
+## Limitations are generated, not remembered
+
+`outputs/limitations.md` (D-09) is written from the dataset on every run. If two
+captures failed it names them and why; if the focus bank is missing it says which
+questions that makes unanswerable; if the rubric is unscored it says so. A
+limitation nobody can quietly drop on Day 9 is worth more than a well-written
+paragraph.
 
 ## Step 5 — campaign generation (stretch)
 
@@ -127,7 +159,9 @@ src/comparator/
   generation.py                  step 5: targets, brief, rendering, scoring
   generation_guardrails.py       step 5 safety checklist (Appendix B.2)
   report.py                      the generated chart companion
-  collection/                    Dan + Siegried: compliance, scraper, LLM, visuals
+  collection/                    compliance, scraper, headless render, LLM, quality gate
+  rubric.py                      scoring sheets, merge, inter-rater agreement
+  limitations.py                 D-09, generated from the dataset
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain
@@ -141,17 +175,21 @@ data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — gitignored
 ```
 
-## The synthetic fixture
+## No synthetic data in the repo
 
-`data/fixtures/synthetic_sample.csv` exists so analysis code could be written
-before the scraper does. **Every value in it is invented.** Its per-bank archetypes
-were built *from the claims in the ING kickoff deck*, which means:
+`src/comparator/fixtures.py` builds a synthetic dataset **in memory** for the test
+suite. Nothing synthetic is committed and nothing synthetic reaches `outputs/`.
 
-> Running `check_deck_claims` against the fixture will always return "supported".
-> That is circular by construction. It only means something against real captures.
+That is deliberate. The fixture's per-bank archetypes were written *from* the
+claims in the ING kickoff deck, so an analysis run against it always confirms
+them — `check_deck_claims` comes back "supported" every time, by construction. A
+committed synthetic CSV sitting next to `run_analysis.py` is an invitation to run
+it and read the result as a finding.
 
-Every fixture row is stamped `data_source = synthetic_fixture`; the validator
-warns, and `run_analysis.py` prints a banner on every run.
+`scripts/make_fixture.py` still writes one to `data/fixtures/` if you want it for
+local development. That path is gitignored.
+
+Everything in `outputs/` comes from `data/processed/campaigns.csv` — real captures.
 
 ## What analysis answers
 

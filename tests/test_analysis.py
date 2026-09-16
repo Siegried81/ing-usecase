@@ -287,3 +287,88 @@ def test_render_accounting_names_a_reason_for_every_reduction(df, fd):
     text = render_accounting(feature_accounting(df, fd))
     for reason in ("identify a page", "double-count", "carries no signal"):
         assert reason in text
+
+
+# --- the focus bank can legitimately be absent (steph 16/09) ------------------
+# The first live collection returned ING as an unrendered shell, so the bank the
+# project exists to position was missing from its own dataset. That surfaced as
+# KeyError: 'ing' from inside pandas, in three different places.
+def _without_ing(df):
+    return df[df["bank"] != "ing"]
+
+
+def test_positioning_reports_a_missing_focus_instead_of_crashing(df, fd):
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    assert pos.has_focus is False
+    assert "ing" not in pos.scores.index
+
+
+def test_asking_for_the_score_of_an_absent_focus_says_why(df, fd):
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    with pytest.raises(ValueError, match="BO-01 and BO-02 are unanswerable"):
+        _ = pos.focus_score
+
+
+def test_the_rest_of_the_market_is_still_positioned(df, fd):
+    """Losing ING must not cost us the analysis of everyone else."""
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    assert len(pos.scores) == df["bank"].nunique() - 1
+    assert pos.n_features > 0
+
+
+def test_nearest_neighbours_names_the_missing_bank(df, fd):
+    with pytest.raises(ValueError, match="check capture_quality for ing"):
+        nearest_neighbours(_without_ing(df), fd, focus="ing")
+
+
+def test_has_focus_is_true_in_the_normal_case(df, fd):
+    assert positioning_axis(df, fd, focus="ing").has_focus is True
+
+
+# --- a gap in peer SDs is only meaningful if the peers vary (steph 16/09) -----
+# brand_colour_share came back [0.0, 0.014, nan, 0.0] on the first real run:
+# ING at 0.228 scored +33.8 SD and topped the headline chart. That was a peer
+# spread of 0.007, not a fact about ING - the real story was that colour
+# extraction had failed for most banks.
+def test_a_gap_against_near_identical_peers_is_not_reportable(df, fd):
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+
+    row = ing_vs_peers(broken, fd).set_index("feature").loc["brand_colour_share"]
+    assert not row["reportable"]          # pandas stores this as numpy bool_
+    assert row["note"]
+
+
+def test_unreportable_gaps_are_kept_with_a_reason_not_dropped(df, fd):
+    """'Extraction failed for four banks' is itself worth seeing."""
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+    assert "brand_colour_share" in set(ing_vs_peers(broken, fd)["feature"])
+
+
+def test_reportable_gaps_are_ranked_above_unreportable_ones(df, fd):
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+
+    out = ing_vs_peers(broken, fd)
+    flags = out["reportable"].tolist()
+    assert flags == sorted(flags, reverse=True), "reportable gaps must come first"
+
+
+def test_a_feature_only_one_peer_has_is_not_reportable(df, fd):
+    thin = df.copy()
+    thin["cta_contrast_ratio"] = float("nan")
+    thin.loc[thin["bank"] == "ing", "cta_contrast_ratio"] = 5.0
+    thin.loc[thin["bank"] == "kbc", "cta_contrast_ratio"] = 4.0
+
+    out = ing_vs_peers(thin, fd).set_index("feature")
+    if "cta_contrast_ratio" in out.index:
+        assert not out.loc["cta_contrast_ratio", "reportable"]
+
+
+def test_a_normal_gap_stays_reportable(df, fd):
+    out = ing_vs_peers(df, fd)
+    assert out["reportable"].any(), "the ordinary case must still produce findings"

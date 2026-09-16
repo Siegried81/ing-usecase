@@ -1,34 +1,45 @@
 {
-  "headline": "Your money, your terms \u2014 no fine print surprises",
-  "subheading": "A term account built around you, not the bank.",
+  "headline": "Et si votre compte courant travaillait enfin pour vous ?",
+  "subheading": "Une banque qui vous parle clairement, sans jargon ni frais cach\u00e9s.",
   "body_paragraphs": [
-    "You work hard for your money. So when you put it aside for a fixed term, you should know exactly what you're getting \u2014 and exactly what you're giving up.",
-    "With our term account, you choose how long you lock in. You see the rate up front. You decide what happens when the term ends. No branch visit, no paperwork chase, no waiting on hold.",
-    "Open it in minutes from your phone. Track it in the same app you already use. Move money in when it suits you, and let it sit until you're ready.",
-    "You get a clear rate, a clear end date, and a clear next step. That's it."
+    "Vous ouvrez un compte courant pour g\u00e9rer votre quotidien, pas pour d\u00e9coder des conditions tarifaires illisibles. Alors pourquoi est-ce si compliqu\u00e9 ?",
+    "Chez nous, tout est pens\u00e9 pour aller vite : ouverture en ligne, carte activable imm\u00e9diatement, et une application qui r\u00e9pond \u00e0 vos questions avant m\u00eame que vous ne les posiez.",
+    "Vous voulez savoir combien vous payez ? Le compte \u00e0 vue est propos\u00e9 \u00e0 [RATE] par mois, sans condition de revenus. Les paiements par carte sont inclus, les virements aussi.",
+    "Vous voyagez ? Les paiements hors zone euro sont factur\u00e9s \u00e0 [RATE]. Pas de surprise au retour.",
+    "Vous h\u00e9sitez encore ? D\u00e9couvrez comment des milliers de clients g\u00e8rent leur budget au quotidien avec une interface claire et des notifications en temps r\u00e9el.",
+    "Vous pouvez aussi choisir d'ajouter des options payantes, comme une assurance voyage ou une carte premium, \u00e0 [AMOUNT] par an. Mais rien ne vous y oblige.",
+    "Notre promesse est simple : un compte courant utile, transparent, et qui s'adapte \u00e0 votre vie. Pas l'inverse."
   ],
-  "cta_label": "Open your term account",
+  "cta_label": "Ouvrir un compte",
   "additional_cta_labels": [
-    "Discover the rate",
-    "Get started in the app",
-    "Learn more about terms",
-    "Sign up for updates",
-    "Apply online today"
+    "D\u00e9couvrir l'offre",
+    "Appliquer en ligne",
+    "Commencer maintenant",
+    "Ouvrir mon compte",
+    "En savoir plus",
+    "D\u00e9couvrir les avantages",
+    "S'inscrire en 5 minutes",
+    "Appliquer sans engagement"
   ],
-  "layout_archetype": "split_columns",
+  "layout_archetype": "hero_stacked",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A close-up of a hand holding a phone showing a simple term-account dashboard with a large rate figure and a progress bar for the term; soft daylight, minimal background, brand accent colour used only on the progress bar.",
-    "A split-screen lifestyle shot: left side a person relaxed on a sofa with a coffee, right side the same person tapping 'open account' on a phone; warm, natural light, no visible text on screen.",
-    "An abstract animated loop of a calendar page turning into a stack of coins, then into a checkmark; flat vector style, brand accent colour as the only bright colour, loopable 3-second animation.",
-    "A simple icon set in a row: a lock, a calendar, a phone, a checkmark \u2014 each in outline style with the brand accent colour as the single fill colour, arranged on a light background.",
-    "A short animated sequence showing a rate figure ticking up once and then holding steady, with a subtle 'locked' padlock icon appearing; minimal, no numbers visible, just the motion pattern."
+    "A young professional smiling while looking at their phone, sitting in a bright modern kitchen, coffee cup nearby, natural light, candid style.",
+    "Close-up of a hand holding a smartphone displaying a clean banking app interface with a notification about a completed transaction, soft focus background.",
+    "A couple in their thirties reviewing finances together on a laptop at a dining table, relaxed and confident, warm home environment.",
+    "A traveler at an airport gate, using their phone to pay for a coffee, suitcase beside them, bright daylight through large windows.",
+    "A flat-lay of a debit card, a notebook with a simple budget, and a pen on a light wooden desk, minimalist and organized.",
+    "A customer support agent with a headset, smiling and gesturing while helping a client, modern office with plants, approachable vibe.",
+    "A person jogging in a park, glancing at a smartwatch showing a banking notification, dynamic and energetic, morning light.",
+    "A small business owner at a market stall, using a mobile card reader to accept a payment, proud and focused, natural setting."
   ],
-  "disclaimer_placeholder": "[Legal/risk disclaimer placeholder: terms, conditions, rate and eligibility details to be inserted by compliance.]",
+  "disclaimer_placeholder": "[DISCLAIMER: Legal and risk information to be inserted by compliance team.]",
   "persuasion_levers_used": [
-    "commitment",
     "authority",
-    "liking"
+    "commitment",
+    "liking",
+    "reciprocity",
+    "social_proof"
   ]
 }

@@ -133,8 +133,22 @@ def positioning_chart(
     ax.legend(handles=handles, frameon=False, fontsize=9, loc="lower right",
               bbox_to_anchor=(1, 1.005), labelcolor=INK_SECONDARY, ncols=2)
 
-    _title(ax, f"Where does {positioning.focus.upper()} sit?",
-           note or f"projection onto the line between group centroids · {positioning.n_features} features")
+    # steph 16/09: the focus bank can be legitimately absent (unusable capture).
+    # A chart titled "Where does ING sit?" with no ING on it reads as a finding
+    # to anyone who sees the PNG without the companion text - and the PNG is the
+    # thing that ends up in a deck.
+    if positioning.focus in scores.index:
+        _title(ax, f"Where does {positioning.focus.upper()} sit?",
+               note or f"projection onto the line between group centroids · "
+                       f"{positioning.n_features} features")
+    else:
+        _title(ax, f"The market, without {positioning.focus.upper()}",
+               note or f"{positioning.focus.upper()} had no usable capture, so it is not on this "
+                       f"chart · {positioning.n_features} features")
+        ax.text(0.5, -0.16, f"{positioning.focus.upper()} IS MISSING — this chart cannot answer "
+                            f"where {positioning.focus.upper()} stands.",
+                transform=ax.transAxes, ha="center", va="top",
+                fontsize=9.5, color=CATEGORY_COLOUR["challenger"], fontweight="bold")
     return _save(fig, path)
 
 
@@ -152,7 +166,11 @@ def deviation_chart(
     neutral zero. Poles keep the category hues used everywhere else, so a reader
     who has seen one chart can read this one.
     """
-    data = deviations.head(top_n).iloc[::-1]
+    # steph 16/09: only rank gaps that mean something. A feature whose peers all
+    # sit at zero because extraction failed produces an enormous SD gap and would
+    # otherwise top this chart.
+    usable = deviations[deviations["reportable"]] if "reportable" in deviations.columns else deviations
+    data = usable.head(top_n).iloc[::-1]
     fig, ax = _figure(9.5, 0.36 * len(data) + 2.2)
 
     colours = [CATEGORY_COLOUR["challenger"] if g > 0 else CATEGORY_COLOUR["traditional"]
@@ -176,7 +194,9 @@ def deviation_chart(
     ax.set_axisbelow(True)
 
     _title(ax, f"{focus.upper()} against its peers, feature by feature",
-           note or f"the {top_n} features with the largest gap · positive = above the peer mean")
+           note or (f"the {min(top_n, len(data))} largest reportable gaps · positive = above the "
+                    f"peer mean" + (f" · {len(deviations) - len(usable)} excluded as unreportable"
+                                    if len(usable) < len(deviations) else "")))
     return _save(fig, path)
 
 

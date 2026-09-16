@@ -195,6 +195,21 @@ def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> 
                 "exclude them from bank comparisons, score them separately."
             )
 
+    # --- is each row even the page we meant to collect? ----------------------
+    # steph 16/09: see collection/quality.py. These rows are not invalid, they
+    # are honest measurements of the wrong page - which is worse, because every
+    # range check passes.
+    if "capture_quality" in df.columns:
+        for verdict, label in (("unusable", "MUST be excluded from analysis"),
+                               ("suspect", "needs a human look before use")):
+            bad = df[df["capture_quality"] == verdict]
+            if not bad.empty:
+                names = sorted(bad["bank"].unique()) if "bank" in bad.columns else []
+                report.warnings.append(
+                    f"{len(bad)} row(s) have capture_quality={verdict} ({names}) - {label}. "
+                    "See capture_quality_note for why."
+                )
+
     # --- one judge for every bank (NFR-02) -----------------------------------
     # steph 15/09, Decision 6. The model_assisted features are ~a quarter of the
     # dictionary. If Groq rate-limits halfway through a run and the chain falls

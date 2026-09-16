@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Step 5 - generate two campaign variants and score them (stretch goal).
 
-    python3 scripts/run_generation.py --dataset data/fixtures/synthetic_sample.csv
+    python3 scripts/run_generation.py --no-strict
 
 steph 15/09. Plan section 4.5 / Appendix B, owner: me. Gated behind the Day 6
 freeze in the plan - this is the machinery, run early so it is not improvised
@@ -36,7 +36,7 @@ from comparator.generation import (
 )
 from comparator.schema import read_dataset, write_dataset
 
-DEFAULT_DATASET = Path("data/fixtures/synthetic_sample.csv")
+DEFAULT_DATASET = Path("data/processed/campaigns.csv")
 DEFAULT_OUTDIR = Path("outputs/generated")
 
 BANNER = (
@@ -60,6 +60,11 @@ def main() -> int:
     parser.add_argument("--focus", default="ing")
     parser.add_argument("--product", default="term account")
     parser.add_argument("--language", default="en", choices=["en", "nl", "fr"])
+    parser.add_argument(
+        "--no-strict", action="store_true",
+        help="run on a dataset missing rubric scores. Generation targets use only automatically "
+             "measured features, so they are unaffected - but say so in the deck.",
+    )
     parser.add_argument("--dry-run", action="store_true",
                         help="build and print the briefs without calling the model")
     args = parser.parse_args()
@@ -81,9 +86,22 @@ def main() -> int:
     # --dataset at them instead of the fixture.
     df, report = read_dataset(args.dataset, fd, tier="core", strict=False)
     print(report.render())
-    if not report.ok:
+    if not report.ok and not args.no_strict:
         print("\ndataset failed core validation - fix it before generating targets from it.")
+        print("  --no-strict runs anyway: generation targets are derived only from")
+        print("  automatically measured features, so missing rubric scores do not affect them.")
         return 1
+    if not report.ok:
+        print("\n  Running with --no-strict. The generation targets use only automatically")
+        print("  measured features, so the missing rubric scores do not change them - but the")
+        print("  dataset is incomplete and the deck must say so.")
+    if "capture_quality" in df.columns:
+        unusable = df[df["capture_quality"] == "unusable"]
+        if not unusable.empty:
+            print(f"\n  excluding {len(unusable)} unusable capture(s): "
+                  f"{sorted(unusable['bank'].unique())}")
+            df = df[df["capture_quality"] != "unusable"]
+
     if "data_source" in df and (df["data_source"] == "synthetic_fixture").any():
         print("\nNOTE: targets are derived from FIXTURE data, so they are shaped like\n"
               "real targets but are not real ones.")
@@ -99,6 +117,16 @@ def main() -> int:
     for variant, target in targets.items():
         brief = build_brief(df, target, fd, focus=args.focus,
                             product=args.product, language=args.language)
+
+        # steph 16/09: an "on-brand" campaign needs the brand, and the brand
+        # comes from the bank's own page. Without a usable capture there is
+        # nothing to be on-brand with, and inventing one would be the exact
+        # over-claiming risk P-08 is about.
+        if variant == "on_brand" and not brief.can_be_on_brand:
+            _header(f"Skipping - {variant}")
+            print(f"  no usable {args.focus} page, so there is no {args.focus} profile to stay "
+                  f"on brand with.\n  Collect one first - see outputs/limitations.md.")
+            continue
 
         if args.dry_run:
             _header(f"Brief - {variant} (dry run, no model called)")

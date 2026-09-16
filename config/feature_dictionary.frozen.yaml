@@ -290,6 +290,72 @@ features:
       A dataset mixing models is not invalid, but the mix has to be reported as
       a limitation (D-09) rather than discovered afterwards.
 
+  # steph 16/09: added after the first real collection run. Two of six rows were
+  # unusable - ING rendered as an empty JavaScript shell (16 words, body text was
+  # just the <title>), BNP returned a maintenance page - and NOTHING caught it.
+  # Every numeric feature on those rows was in range and honestly measured; they
+  # were honest measurements of the wrong page. A range check cannot catch that,
+  # so the verdict travels with the row instead, like robots_allowed does.
+  - name: capture_quality
+    dimension: provenance
+    definition: >
+      Whether the captured page looks like a real campaign page. 'unusable' means
+      an error/maintenance page or a shell that never rendered its content, and
+      the row must be excluded from analysis.
+    type: categorical
+    values: [ok, suspect, unusable]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+    notes: >
+      Deliberately conservative - a genuinely short challenger page is 'suspect',
+      not 'unusable'. Only unambiguous cases are excluded automatically.
+
+  # steph 16/09: BNP's entire site was serving a maintenance notice with HTTP
+  # 503 and we recorded it as a normal capture - a 503 still renders a page.
+  # The status was never looked at. Now it is, and the quality gate fails any
+  # non-2xx outright.
+  - name: http_status
+    dimension: provenance
+    definition: HTTP status returned when the page was fetched. Anything other than 2xx is not a campaign page.
+    type: integer
+    range: [100, 599]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+
+  - name: shadow_hosts_flattened
+    dimension: provenance
+    definition: >
+      Number of shadow roots inlined into the HTML before extraction. Above zero
+      means the page is built from web components and would have been largely
+      invisible to a light-DOM-only extractor.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+
+  - name: capture_quality_note
+    dimension: provenance
+    definition: Why capture_quality got that verdict, in words, for the limitations section.
+    type: string
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+
   # --- Tone & messaging -------------------------------------------------------
   - name: word_count
     dimension: tone_messaging

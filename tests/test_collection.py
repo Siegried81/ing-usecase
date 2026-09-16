@@ -19,10 +19,12 @@ from PIL import Image
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.collection.compliance import (  # noqa: E402
+    USER_AGENT,
     ComplianceCheck,
     ScrapingNotAllowed,
     assert_can_fetch,
     check_robots,
+    clear_cache,
 )
 from comparator.collection.llm_extractor import (  # noqa: E402
     LLMExtractionError,
@@ -56,12 +58,83 @@ def test_check_robots_allows_when_parser_says_yes():
     assert result.allowed is True
 
 
+def _robots_response(status: int = 200, text: str = ""):
+    """Minimal stand-in for the requests.Response compliance.py reads."""
+    from unittest.mock import MagicMock
+
+    response = MagicMock()
+    response.status_code = status
+    response.text = text
+    response.raise_for_status.side_effect = (
+        None if status < 400 else __import__("requests").HTTPError(f"{status}")
+    )
+    return response
+
+
 def test_check_robots_fails_closed_on_read_error():
-    with patch("comparator.collection.compliance.RobotFileParser") as mock_cls:
-        mock_cls.return_value.read.side_effect = ConnectionError("unreachable")
+    # steph 16/09: was mocking RobotFileParser.read(). compliance.py now fetches
+    # robots.txt with requests instead - same stack as the page fetch, because
+    # urllib had no CA bundle and every HTTPS robots.txt raised
+    # CERTIFICATE_VERIFY_FAILED, silently skipping all six real targets. The
+    # test's intent is unchanged: an unreadable robots.txt must fail closed.
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               side_effect=ConnectionError("unreachable")):
         result = check_robots("https://example.com/page")
     assert result.allowed is False
     assert "could not read" in result.reason
+
+
+def test_robots_is_read_with_the_same_http_stack_that_fetches_the_page():
+    """If we can fetch the page, we must be able to read its rules."""
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               return_value=_robots_response(200, "User-agent: *\nAllow: /")) as get:
+        assert check_robots("https://example.com/page").allowed is True
+    assert get.call_args.kwargs["headers"]["User-Agent"] == USER_AGENT
+
+
+def test_disallow_rule_is_honoured():
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               return_value=_robots_response(200, "User-agent: *\nDisallow: /private/")):
+        assert check_robots("https://example.com/private/x").allowed is False
+        assert check_robots("https://example.com/public/x").allowed is True
+
+
+def test_missing_robots_means_nothing_is_disallowed():
+    """404 = the site publishes no rules. Standard-library semantics, preserved."""
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               return_value=_robots_response(404)):
+        assert check_robots("https://example.com/page").allowed is True
+
+
+def test_auth_required_on_robots_means_the_whole_site_is_off_limits():
+    clear_cache()
+    for status in (401, 403):
+        clear_cache()
+        with patch("comparator.collection.compliance.requests.get",
+                   return_value=_robots_response(status)):
+            assert check_robots("https://example.com/page").allowed is False
+
+
+def test_server_error_on_robots_fails_closed():
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               return_value=_robots_response(503)):
+        assert check_robots("https://example.com/page").allowed is False
+
+
+def test_robots_is_fetched_once_per_domain():
+    """We check before every page AND every hero image - re-downloading the same
+    robots.txt a dozen times is rude to the sites we are asking (LC-05)."""
+    clear_cache()
+    with patch("comparator.collection.compliance.requests.get",
+               return_value=_robots_response(200, "User-agent: *\nAllow: /")) as get:
+        for i in range(5):
+            check_robots(f"https://example.com/page-{i}")
+    assert get.call_count == 1
 
 
 def test_assert_can_fetch_raises_when_disallowed():

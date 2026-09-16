@@ -31,6 +31,18 @@ page_height_px and both area ratios are not comparable across banks - the
 feature dictionary says so in page_height_px's own notes. It is a module
 constant, not an argument, so it cannot drift per call site.
 
+SHADOW DOM. steph 16/09: ING's site is built from web components, and its page
+content lives inside shadow roots. `page.content()` serialises the LIGHT DOM
+only, so the first real collection saw 16 words (the <title>, twice) on a page
+that actually carries 1,745 words and 51 images. It looked like a failed render;
+it was a blind extractor. After measuring and screenshotting, this module
+flattens every shadow root into the light DOM so the existing BeautifulSoup
+extraction sees the whole page. Nothing else downstream had to change.
+
+HTTP STATUS. A 503 still renders a page - BNP's whole site was serving a
+maintenance notice with status 503 and we recorded it as a normal capture. The
+status is now returned and carried on the row.
+
 Compliance: the robots.txt gate runs BEFORE navigation, exactly as in the static
 path. A headless browser is still a fetch (LC-01, LC-04).
 """
@@ -69,7 +81,36 @@ class RenderResult:
     html: str
     screenshot: bytes
     features: dict
+    http_status: int | None = None
+    shadow_hosts: int = 0
 
+
+# Inline every shadow root into its host, so the serialised HTML contains the
+# content a reader actually sees. Runs AFTER the screenshot and the geometry
+# measurement, because it rewrites the DOM.
+_FLATTEN_JS = """
+() => {
+  let hosts = 0;
+  const flatten = (root) => {
+    // Deepest first, so a nested host is already flattened when its parent is read.
+    for (const el of [...root.querySelectorAll('*')]) {
+      if (el.shadowRoot) {
+        flatten(el.shadowRoot);
+        const html = el.shadowRoot.innerHTML;
+        if (html && html.trim()) {
+          const holder = document.createElement('div');
+          holder.setAttribute('data-shadow-host', el.tagName.toLowerCase());
+          holder.innerHTML = html;
+          el.appendChild(holder);
+          hosts++;
+        }
+      }
+    }
+  };
+  flatten(document);
+  return hosts;
+}
+"""
 
 # JavaScript runs in the page: geometry has to be read where the layout lives.
 _MEASURE_JS = """
@@ -86,8 +127,20 @@ _MEASURE_JS = """
     return s.display !== 'none' && s.visibility !== 'hidden' && parseFloat(s.opacity || '1') > 0.01;
   };
 
+  // steph 16/09: walk shadow roots too - on a web-component site every image
+  // lives inside one, and querySelectorAll on the document finds none of them.
+  const deep = (selector) => {
+    const found = [];
+    const walk = (root) => {
+      for (const el of root.querySelectorAll(selector)) found.push(el);
+      for (const el of root.querySelectorAll('*')) if (el.shadowRoot) walk(el.shadowRoot);
+    };
+    walk(document);
+    return found;
+  };
+
   let totalImageArea = 0, heroArea = 0;
-  for (const img of document.querySelectorAll('img, picture, video')) {
+  for (const img of deep('img, picture, video')) {
     if (!visible(img)) continue;
     const r = img.getBoundingClientRect();
     if (r.width < minEdge || r.height < minEdge) continue;
@@ -97,8 +150,7 @@ _MEASURE_JS = """
   }
 
   let aboveFold = 0;
-  for (const el of document.querySelectorAll(
-      'a, button, input, select, h1, h2, h3, p, img, video, form')) {
+  for (const el of deep('a, button, input, select, h1, h2, h3, p, img, video, form')) {
     if (!visible(el)) continue;
     const r = el.getBoundingClientRect();
     if (r.bottom > 0 && r.top < vh && r.width > 0 && r.height > 0) aboveFold++;
@@ -109,7 +161,7 @@ _MEASURE_JS = """
                'decouvrir','découvrir','ouvrir','demander','en savoir plus',
                'ontdek','openen','aanvragen','meer weten'];
   let ctaColours = null;
-  for (const el of document.querySelectorAll('a, button')) {
+  for (const el of deep('a, button')) {
     if (!visible(el)) continue;
     const label = (el.textContent || '').trim().toLowerCase();
     if (!label || !CTA.some(k => label.includes(k))) continue;
@@ -219,12 +271,16 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
                     viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},
                     user_agent=USER_AGENT,
                 )
-                page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
+                response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
+                status = response.status if response else None
                 page.wait_for_timeout(SETTLE_MS)
 
-                html = page.content()
+                # Order matters: measure and screenshot the page as rendered,
+                # THEN rewrite the DOM to expose shadow content for extraction.
                 measurement = page.evaluate(_MEASURE_JS, MIN_IMAGE_EDGE_PX)
                 shot = page.screenshot(full_page=True)
+                hosts = page.evaluate(_FLATTEN_JS)
+                html = page.content()
             finally:
                 browser.close()
     except Exception as exc:
@@ -241,7 +297,16 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_bytes(shot)
 
-    return RenderResult(html=html, screenshot=shot, features=_features_from_measurement(measurement))
+    if hosts:
+        logger.info("flattened %d shadow host(s) into the HTML for %s", hosts, url)
+
+    return RenderResult(
+        html=html,
+        screenshot=shot,
+        features=_features_from_measurement(measurement),
+        http_status=status,
+        shadow_hosts=hosts,
+    )
 
 
 def is_available() -> bool:

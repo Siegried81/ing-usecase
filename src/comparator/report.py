@@ -49,7 +49,10 @@ def _table(df: pd.DataFrame, columns: list[str], headers: list[str], rows: int =
 def _positioning_section(positioning: Positioning, categories: pd.Series) -> list[str]:
     scores = positioning.scores
     focus = positioning.focus
-    focus_score = positioning.focus_score
+    # steph 16/09: the focus bank can be legitimately absent - ING's own capture
+    # came back an unrendered shell on the first live run. The market section is
+    # still worth writing; the ING answer is not available, and says so.
+    focus_score = positioning.focus_score if positioning.has_focus else None
 
     traditional = scores[[b for b in scores.index if categories.get(b) == "traditional"]]
     challenger = scores[[b for b in scores.index if categories.get(b) == "challenger"]]
@@ -75,10 +78,24 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
         "declared category, so a dot far from its own colour's cluster is the interesting case. "
         f"{focus.upper()} is ringed and bold.",
         "",
-        f"**What this run shows.** {focus.upper()} scores **{focus_score:.2f}** — "
-        f"{positioning.verdict}. Computed over {positioning.n_features} features.",
-        "",
     ]
+
+    if focus_score is None:
+        lines += [
+            f"**{focus.upper()} IS NOT IN THIS CHART.** Its capture was unusable, so it was "
+            "excluded from the dataset. **BO-01 and BO-02 cannot be answered from this run** — "
+            "everything here describes the market without us in it. See `limitations.md`.",
+            "",
+            f"The axis is still computed over {positioning.n_features} features and still "
+            "separates the two groups, so it is ready the moment a usable page exists.",
+            "",
+        ]
+    else:
+        lines += [
+            f"**What this run shows.** {focus.upper()} scores **{focus_score:.2f}** — "
+            f"{positioning.verdict}. Computed over {positioning.n_features} features.",
+            "",
+        ]
 
     if len(traditional) and len(challenger):
         lines += [
@@ -105,6 +122,14 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
 
 
 def _deviation_section(deviations: pd.DataFrame, focus: str, n_peers: int) -> list[str]:
+    if deviations.empty:
+        return [
+            f"## 2. {focus.upper()} against its peers, feature by feature",
+            "",
+            f"**Not produced.** There is no usable {focus.upper()} page in this dataset, so there "
+            "is nothing to compare against its peers. See `limitations.md`.",
+            "",
+        ]
     top = deviations.head(3)
     lines = [
         f"## 2. {focus.upper()} against its peers, feature by feature",
