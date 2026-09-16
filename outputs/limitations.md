@@ -2,20 +2,19 @@
 
 *Deliverable D-09. Generated from the dataset by `scripts/run_analysis.py`, so it describes the data that actually exists rather than the data we meant to collect.*
 
-**4 usable page(s) across 4 bank(s)**, from 4 collected.
+**5 usable page(s) across 5 bank(s)**, from 6 collected.
 
 ## What this analysis cannot support
 
 ### Blocking — a question cannot be answered at all
 
-- **ING is not in the usable data.** BO-01 (position ING) and BO-02 (traditional or challenger) cannot be answered at all until a usable ing page is collected. Every other finding is about the market without us in it.
+- **bnp_paribas_fortis** could not be captured: HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor. Source: https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire. The row is excluded; the bank is effectively absent.
 - **13 of 13 rubric features are unscored** (['formality_score', 'clarity_score', 'rate_prominence', 'value_prop_clarity'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`).
 
 ### Material — findings survive, but weakened
 
-- Only **2 traditional bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.
 - Only **2 challenger bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.
-- The usable pages span **2 different product families** (['current_account_pack', 'other']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
+- The usable pages span **3 different product families** (['current_account_pack', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
 
 ### Standing — true regardless of how much we collect
 

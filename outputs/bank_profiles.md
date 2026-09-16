@@ -2,16 +2,16 @@
 
 ### belfius  (traditional)
 
-*1 page(s) · other · fr · captured 2026-09-16 07:21:01.916112+00:00 · source: real*
+*1 page(s) · other · fr · captured 2026-09-16 07:50:55.205098+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
-| dominant colour | #031a26 |
-| brand colour share | 0 |
-| accent colour count | 4 |
+| dominant colour | - |
+| brand colour share | - |
+| accent colour count | - |
 | accent locations | - |
-| background luminance | 0.25 |
-| image count | 4 |
+| background luminance | - |
+| image count | 11 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
@@ -20,27 +20,65 @@
 | hero image | yes (all pages) |
 | text image layout | - |
 | page height px | 2,179 |
-| cta count | 1 |
+| cta count | 9 |
 | cta above fold | no |
-| word count | 718 |
-| readability band | medium |
+| word count | 1,354 |
+| readability band | very_hard |
 | formality score | - |
-| second person ratio | 0.57 |
+| second person ratio | 0.61 |
 | urgency markers | 0 |
-| primary product | pension |
+| primary product | Épargne-pension |
 | rate shown | yes (all pages) |
 | rate prominence | - |
-| benefit framing | emotional |
+| benefit framing | mixed |
 | fab level | benefit |
 | aida coverage | - |
 | persuasion levers | - |
 | lever count | - |
 
-**Signature:** first time investor targeting well below the market average (-1.7 SD); is bundled offer well below the market average (-1.7 SD); section count well above the market average (+1.6 SD).
+**Signature:** avg sentence length well above the market average (+1.9 SD); section count well above the market average (+1.8 SD); second person ratio well below the market average (-1.7 SD).
+
+### ing  (traditional)
+
+*1 page(s) · savings_account · fr · captured 2026-09-16 07:51:00.753151+00:00 · source: real*
+
+| Field | Value |
+| --- | --- |
+| dominant colour | #ffffff |
+| brand colour share | 0.23 |
+| accent colour count | 4 |
+| accent locations | - |
+| background luminance | 0.83 |
+| image count | 49 |
+| dominant image type | photo |
+| people present | yes (all pages) |
+| animated | no |
+| image area share | 0.2 |
+| archetype | - |
+| hero image | yes (all pages) |
+| text image layout | - |
+| page height px | 5,730 |
+| cta count | 2 |
+| cta above fold | no |
+| word count | 1,576 |
+| readability band | hard |
+| formality score | - |
+| second person ratio | 0.78 |
+| urgency markers | 3 |
+| primary product | Compte à terme ING |
+| rate shown | yes (all pages) |
+| rate prominence | - |
+| benefit framing | rational |
+| fab level | feature |
+| aida coverage | - |
+| persuasion levers | - |
+| lever count | - |
+
+**Signature:** has animation well below the market average (-2.0 SD); first time investor targeting well below the market average (-2.0 SD); animated asset count well below the market average (-2.0 SD).
 
 ### kbc  (traditional)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:20:47.976622+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:50:41.192462+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -49,7 +87,7 @@
 | accent colour count | 4 |
 | accent locations | - |
 | background luminance | 0.3 |
-| image count | 6 |
+| image count | 8 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
@@ -60,10 +98,10 @@
 | page height px | 3,772 |
 | cta count | 5 |
 | cta above fold | no |
-| word count | 2,279 |
+| word count | 2,644 |
 | readability band | very_hard |
 | formality score | - |
-| second person ratio | 0.94 |
+| second person ratio | 0.89 |
 | urgency markers | 0 |
 | primary product | Compte Base KBC |
 | rate shown | yes (all pages) |
@@ -74,11 +112,11 @@
 | persuasion levers | - |
 | lever count | - |
 
-**Signature:** fast digital onboarding claim well above the market average (+1.7 SD); has comparison table well above the market average (+1.7 SD); above fold element count well above the market average (+1.7 SD).
+**Signature:** fast digital onboarding claim well above the market average (+2.0 SD); has comparison table well above the market average (+2.0 SD); text to image ratio well above the market average (+1.9 SD).
 
 ### n26  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:20:54.474464+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:50:47.543859+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -89,7 +127,7 @@
 | background luminance | 0.12 |
 | image count | 29 |
 | dominant image type | render_3d |
-| people present | no |
+| people present | yes (all pages) |
 | animated | yes (all pages) |
 | image area share | 0.59 |
 | archetype | - |
@@ -98,10 +136,10 @@
 | page height px | 8,005 |
 | cta count | 11 |
 | cta above fold | no |
-| word count | 1,774 |
+| word count | 2,019 |
 | readability band | hard |
 | formality score | - |
-| second person ratio | 0.87 |
+| second person ratio | 0.78 |
 | urgency markers | 0 |
 | primary product | N26 Standard, le compte bancaire gratuit |
 | rate shown | yes (all pages) |
@@ -112,11 +150,11 @@
 | persuasion levers | - |
 | lever count | - |
 
-**Signature:** mentions loyalty or referral well above the market average (+1.7 SD); hidden conditions behind free claim well above the market average (+1.7 SD); people present well below the market average (-1.7 SD).
+**Signature:** hidden conditions behind free claim well above the market average (+2.0 SD); mentions loyalty or referral well above the market average (+2.0 SD); disclaimer word share well above the market average (+2.0 SD).
 
 ### revolut  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:21:18.871780+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 07:51:15.085388+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -126,7 +164,7 @@
 | accent locations | - |
 | background luminance | 0.97 |
 | image count | 10 |
-| dominant image type | illustration |
+| dominant image type | mixed |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
 | image area share | 0.24 |
@@ -150,4 +188,4 @@
 | persuasion levers | - |
 | lever count | - |
 
-**Signature:** expat cross border targeting well above the market average (+1.7 SD); institutional trust signal present well above the market average (+1.7 SD); urgency marker count well above the market average (+1.7 SD).
+**Signature:** institutional trust signal present well above the market average (+2.0 SD); question count well below the market average (-1.5 SD); rate value pct well below the market average (-1.3 SD).

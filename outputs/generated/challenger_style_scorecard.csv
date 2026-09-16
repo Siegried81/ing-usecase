@@ -1,9 +1,9 @@
 feature,target,actual,measured,result,rationale
+question_count,question_count between 2.80 and 5.20,6,True,miss,challenger median 4.00
+disclaimer_word_share,disclaimer_word_share between 0.01 and 0.02,0.048,True,miss,challenger median 0.02
 cta_count,cta_count between 6.30 and 12,5,True,miss,challenger median 9.00
-text_to_image_ratio,text_to_image_ratio between 69 and 128,11.5,True,miss,challenger median 98.19
-image_count,image_count between 14 and 25,20,True,hit,challenger median 19.50
+avg_sentence_length,avg_sentence_length between 16 and 31,11.4,True,miss,challenger median 23.50
+text_to_image_ratio,text_to_image_ratio between 72 and 133,28.5,True,miss,challenger median 102.41
 urgency_marker_count,urgency_marker_count between 0.35 and 0.65,0,True,miss,challenger median 0.50
-disclaimer_word_share,disclaimer_word_share between 0.02 and 0.03,0.096,True,miss,challenger median 0.02
-question_count,question_count between 2.80 and 5.20,1,True,miss,challenger median 4.00
 cta_above_fold,cta_above_fold = True,True,True,hit,AIDA 'action' - the next step must be visible without scrolling
 disclaimer_present,disclaimer_present = True,True,True,hit,guardrail - a disclaimer placeholder is never omitted

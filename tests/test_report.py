@@ -126,3 +126,19 @@ def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_pat
     path = positioning_chart(pos, categories, tmp_path / "p.png")
     assert path.exists()
     assert pos.has_focus is False
+
+
+def test_limitations_report_the_rows_that_were_excluded(fd):
+    """steph 16/09: passing the already-filtered frame made D-09 stop mentioning
+    the excluded banks - the limitation vanished because we had acted on it."""
+    from comparator.fixtures import build_fixture
+    from comparator.limitations import assess, render
+
+    data = build_fixture(fd)
+    data["capture_quality"] = "ok"
+    data.loc[data["bank"] == "bnp_paribas_fortis", "capture_quality"] = "unusable"
+    data.loc[data["bank"] == "bnp_paribas_fortis", "capture_quality_note"] = "HTTP 503"
+
+    text = render(assess(data, fd))
+    assert "bnp_paribas_fortis" in text
+    assert "503" in text

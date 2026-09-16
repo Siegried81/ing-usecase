@@ -323,3 +323,52 @@ def test_nearest_neighbours_names_the_missing_bank(df, fd):
 
 def test_has_focus_is_true_in_the_normal_case(df, fd):
     assert positioning_axis(df, fd, focus="ing").has_focus is True
+
+
+# --- a gap in peer SDs is only meaningful if the peers vary (steph 16/09) -----
+# brand_colour_share came back [0.0, 0.014, nan, 0.0] on the first real run:
+# ING at 0.228 scored +33.8 SD and topped the headline chart. That was a peer
+# spread of 0.007, not a fact about ING - the real story was that colour
+# extraction had failed for most banks.
+def test_a_gap_against_near_identical_peers_is_not_reportable(df, fd):
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+
+    row = ing_vs_peers(broken, fd).set_index("feature").loc["brand_colour_share"]
+    assert not row["reportable"]          # pandas stores this as numpy bool_
+    assert row["note"]
+
+
+def test_unreportable_gaps_are_kept_with_a_reason_not_dropped(df, fd):
+    """'Extraction failed for four banks' is itself worth seeing."""
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+    assert "brand_colour_share" in set(ing_vs_peers(broken, fd)["feature"])
+
+
+def test_reportable_gaps_are_ranked_above_unreportable_ones(df, fd):
+    broken = df.copy()
+    broken["brand_colour_share"] = 0.0
+    broken.loc[broken["bank"] == "ing", "brand_colour_share"] = 0.228
+
+    out = ing_vs_peers(broken, fd)
+    flags = out["reportable"].tolist()
+    assert flags == sorted(flags, reverse=True), "reportable gaps must come first"
+
+
+def test_a_feature_only_one_peer_has_is_not_reportable(df, fd):
+    thin = df.copy()
+    thin["cta_contrast_ratio"] = float("nan")
+    thin.loc[thin["bank"] == "ing", "cta_contrast_ratio"] = 5.0
+    thin.loc[thin["bank"] == "kbc", "cta_contrast_ratio"] = 4.0
+
+    out = ing_vs_peers(thin, fd).set_index("feature")
+    if "cta_contrast_ratio" in out.index:
+        assert not out.loc["cta_contrast_ratio", "reportable"]
+
+
+def test_a_normal_gap_stays_reportable(df, fd):
+    out = ing_vs_peers(df, fd)
+    assert out["reportable"].any(), "the ordinary case must still produce findings"

@@ -36,6 +36,8 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass, field
 
+import pandas as pd
+
 # A real campaign page in any language clears this comfortably. Below it, the
 # capture is almost always a shell, a consent wall, or an error page.
 MIN_PLAUSIBLE_WORDS = 120
@@ -96,6 +98,14 @@ def assess_capture(row: dict, page_text: str = "") -> QualityReport:
     images = row.get("image_count") or 0
     ctas = row.get("cta_count") or 0
     height = row.get("page_height_px") or 0
+
+    # steph 16/09: a 503 still renders a page. BNP's whole site was serving a
+    # maintenance notice under 503 and we stored it as a normal capture because
+    # nothing looked at the status.
+    status = row.get("http_status")
+    if status is not None and not pd.isna(status) and not (200 <= int(status) < 300):
+        verdict = UNUSABLE
+        reasons.append(f"HTTP {int(status)} - the server did not serve the page")
 
     hit = next((p for p in ERROR_PHRASES if p in text), None)
     if hit:

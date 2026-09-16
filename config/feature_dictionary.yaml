@@ -314,6 +314,37 @@ features:
       Deliberately conservative - a genuinely short challenger page is 'suspect',
       not 'unusable'. Only unambiguous cases are excluded automatically.
 
+  # steph 16/09: BNP's entire site was serving a maintenance notice with HTTP
+  # 503 and we recorded it as a normal capture - a 503 still renders a page.
+  # The status was never looked at. Now it is, and the quality gate fails any
+  # non-2xx outright.
+  - name: http_status
+    dimension: provenance
+    definition: HTTP status returned when the page was fetched. Anything other than 2xx is not a campaign page.
+    type: integer
+    range: [100, 599]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+
+  - name: shadow_hosts_flattened
+    dimension: provenance
+    definition: >
+      Number of shadow roots inlined into the HTML before extraction. Above zero
+      means the page is built from web components and would have been largely
+      invisible to a light-DOM-only extractor.
+    type: integer
+    range: [0, null]
+    extraction: automatic
+    source: derived
+    comparability: cross_language
+    tier: core
+    required: false
+    nullable: true
+
   - name: capture_quality_note
     dimension: provenance
     definition: Why capture_quality got that verdict, in words, for the limitations section.

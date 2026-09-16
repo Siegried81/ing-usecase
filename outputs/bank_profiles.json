@@ -6,18 +6,18 @@
       "pages_analysed": 1,
       "product_family": "other",
       "language": "fr",
-      "captured": "2026-09-16 07:21:01.916112+00:00",
+      "captured": "2026-09-16 07:50:55.205098+00:00",
       "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#031a26",
-      "brand_colour_share": 0.0,
-      "accent_colour_count": 4.0,
+      "dominant_colour": null,
+      "brand_colour_share": null,
+      "accent_colour_count": null,
       "accent_locations": [],
-      "background_luminance": 0.252
+      "background_luminance": null
     },
     "imagery": {
-      "image_count": 4.0,
+      "image_count": 11.0,
       "dominant_image_type": "photo",
       "people_present": 1.0,
       "animated": 1.0,
@@ -28,21 +28,21 @@
       "hero_image": 1.0,
       "text_image_layout": null,
       "page_height_px": 2179.0,
-      "cta_count": 1.0,
+      "cta_count": 9.0,
       "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 718.0,
-      "readability_band": "medium",
+      "word_count": 1354.0,
+      "readability_band": "very_hard",
       "formality_score": null,
-      "second_person_ratio": 0.569,
+      "second_person_ratio": 0.606,
       "urgency_markers": 0.0
     },
     "value_proposition": {
-      "primary_product": "pension",
+      "primary_product": "\u00c9pargne-pension",
       "rate_shown": 1.0,
       "rate_prominence": null,
-      "benefit_framing": "emotional",
+      "benefit_framing": "mixed",
       "fab_level": "benefit"
     },
     "marketing_principles": {
@@ -52,16 +52,82 @@
     },
     "signature": [
       [
-        "first_time_investor_targeting",
-        -1.7320508075688774
-      ],
-      [
-        "is_bundled_offer",
-        -1.7320508075688774
+        "avg_sentence_length",
+        1.8628547257216146
       ],
       [
         "section_count",
-        1.6203829873338667
+        1.844510387678726
+      ],
+      [
+        "second_person_ratio",
+        -1.7429128353843648
+      ]
+    ]
+  },
+  "ing": {
+    "identity": {
+      "bank": "ing",
+      "category": "traditional",
+      "pages_analysed": 1,
+      "product_family": "savings_account",
+      "language": "fr",
+      "captured": "2026-09-16 07:51:00.753151+00:00",
+      "data_source": "real"
+    },
+    "palette": {
+      "dominant_colour": "#ffffff",
+      "brand_colour_share": 0.228,
+      "accent_colour_count": 4.0,
+      "accent_locations": [],
+      "background_luminance": 0.828
+    },
+    "imagery": {
+      "image_count": 49.0,
+      "dominant_image_type": "photo",
+      "people_present": 1.0,
+      "animated": 0.0,
+      "image_area_share": 0.204
+    },
+    "layout": {
+      "archetype": null,
+      "hero_image": 1.0,
+      "text_image_layout": null,
+      "page_height_px": 5730.0,
+      "cta_count": 2.0,
+      "cta_above_fold": 0.0
+    },
+    "tone": {
+      "word_count": 1576.0,
+      "readability_band": "hard",
+      "formality_score": null,
+      "second_person_ratio": 0.781,
+      "urgency_markers": 3.0
+    },
+    "value_proposition": {
+      "primary_product": "Compte \u00e0 terme ING",
+      "rate_shown": 1.0,
+      "rate_prominence": null,
+      "benefit_framing": "rational",
+      "fab_level": "feature"
+    },
+    "marketing_principles": {
+      "aida_coverage": null,
+      "persuasion_levers": [],
+      "lever_count": null
+    },
+    "signature": [
+      [
+        "has_animation",
+        -1.9999999999999998
+      ],
+      [
+        "first_time_investor_targeting",
+        -1.9999999999999998
+      ],
+      [
+        "animated_asset_count",
+        -1.9999999999999998
       ]
     ]
   },
@@ -72,7 +138,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:20:47.976622+00:00",
+      "captured": "2026-09-16 07:50:41.192462+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -83,7 +149,7 @@
       "background_luminance": 0.298
     },
     "imagery": {
-      "image_count": 6.0,
+      "image_count": 8.0,
       "dominant_image_type": "photo",
       "people_present": 1.0,
       "animated": 1.0,
@@ -98,10 +164,10 @@
       "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 2279.0,
+      "word_count": 2644.0,
       "readability_band": "very_hard",
       "formality_score": null,
-      "second_person_ratio": 0.944,
+      "second_person_ratio": 0.885,
       "urgency_markers": 0.0
     },
     "value_proposition": {
@@ -119,15 +185,15 @@
     "signature": [
       [
         "fast_digital_onboarding_claim",
-        1.7320508075688774
+        1.9999999999999998
       ],
       [
         "has_comparison_table",
-        1.7320508075688774
+        1.9999999999999998
       ],
       [
-        "above_fold_element_count",
-        1.678875660012193
+        "text_to_image_ratio",
+        1.8657290250348597
       ]
     ]
   },
@@ -138,7 +204,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:20:54.474464+00:00",
+      "captured": "2026-09-16 07:50:47.543859+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -151,7 +217,7 @@
     "imagery": {
       "image_count": 29.0,
       "dominant_image_type": "render_3d",
-      "people_present": 0.0,
+      "people_present": 1.0,
       "animated": 1.0,
       "image_area_share": 0.587
     },
@@ -164,10 +230,10 @@
       "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 1774.0,
+      "word_count": 2019.0,
       "readability_band": "hard",
       "formality_score": null,
-      "second_person_ratio": 0.873,
+      "second_person_ratio": 0.78,
       "urgency_markers": 0.0
     },
     "value_proposition": {
@@ -184,16 +250,16 @@
     },
     "signature": [
       [
-        "mentions_loyalty_or_referral",
-        1.7320508075688774
-      ],
-      [
         "hidden_conditions_behind_free_claim",
-        1.7320508075688774
+        2.0
       ],
       [
-        "people_present",
-        -1.7320508075688774
+        "mentions_loyalty_or_referral",
+        2.0
+      ],
+      [
+        "disclaimer_word_share",
+        1.9939467852064048
       ]
     ]
   },
@@ -204,7 +270,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:21:18.871780+00:00",
+      "captured": "2026-09-16 07:51:15.085388+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -216,7 +282,7 @@
     },
     "imagery": {
       "image_count": 10.0,
-      "dominant_image_type": "illustration",
+      "dominant_image_type": "mixed",
       "people_present": 1.0,
       "animated": 1.0,
       "image_area_share": 0.243
@@ -250,16 +316,16 @@
     },
     "signature": [
       [
-        "expat_cross_border_targeting",
-        1.7320508075688774
-      ],
-      [
         "institutional_trust_signal_present",
-        1.7320508075688774
+        2.0
       ],
       [
-        "urgency_marker_count",
-        1.7320508075688774
+        "question_count",
+        -1.45680154528957
+      ],
+      [
+        "rate_value_pct",
+        -1.3406107745504672
       ]
     ]
   }

@@ -166,7 +166,11 @@ def deviation_chart(
     neutral zero. Poles keep the category hues used everywhere else, so a reader
     who has seen one chart can read this one.
     """
-    data = deviations.head(top_n).iloc[::-1]
+    # steph 16/09: only rank gaps that mean something. A feature whose peers all
+    # sit at zero because extraction failed produces an enormous SD gap and would
+    # otherwise top this chart.
+    usable = deviations[deviations["reportable"]] if "reportable" in deviations.columns else deviations
+    data = usable.head(top_n).iloc[::-1]
     fig, ax = _figure(9.5, 0.36 * len(data) + 2.2)
 
     colours = [CATEGORY_COLOUR["challenger"] if g > 0 else CATEGORY_COLOUR["traditional"]
@@ -190,7 +194,9 @@ def deviation_chart(
     ax.set_axisbelow(True)
 
     _title(ax, f"{focus.upper()} against its peers, feature by feature",
-           note or f"the {top_n} features with the largest gap · positive = above the peer mean")
+           note or (f"the {min(top_n, len(data))} largest reportable gaps · positive = above the "
+                    f"peer mean" + (f" · {len(deviations) - len(usable)} excluded as unreportable"
+                                    if len(usable) < len(deviations) else "")))
     return _save(fig, path)
 
 

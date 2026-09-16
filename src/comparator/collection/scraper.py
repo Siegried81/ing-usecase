@@ -361,10 +361,13 @@ def scrape(
         features = extract(html, language=language, page_url=url)
         features.update(rendered.features)  # geometry overrides the None placeholders
         features["collection_method"] = "headless_render"
+        features["http_status"] = rendered.http_status
+        features["shadow_hosts_flattened"] = rendered.shadow_hosts
     else:
         html = _fetch_html(url)
         features = extract(html, language=language, page_url=url)
         features["collection_method"] = "static_fetch"
+        features["shadow_hosts_flattened"] = 0  # a static fetch cannot see shadow DOM at all
 
     features["_html"] = html
     features["robots_allowed"] = True  # reaching this line means assert_can_fetch already passed

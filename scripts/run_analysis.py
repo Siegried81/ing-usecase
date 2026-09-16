@@ -92,6 +92,7 @@ def main() -> int:
     # steph 16/09: a maintenance page and an unrendered shell are honest
     # measurements of the wrong page. Left in, they would characterise a bank
     # from content it never showed - see collection/quality.py.
+    all_banks_df = banks_df  # before exclusions - D-09 must see what was dropped
     if "capture_quality" in banks_df.columns:
         unusable = banks_df[banks_df["capture_quality"] == "unusable"]
         if not unusable.empty:
@@ -213,7 +214,10 @@ def main() -> int:
     # steph 16/09: I am R on D-09. Generated from the dataset so an inconvenient
     # limitation cannot be quietly forgotten while writing the deck on Day 9.
     _header("10. Limitations (D-09)")
-    assessment = assess(banks_df, fd, focus=args.focus)
+    # steph 16/09: the UNFILTERED frame. Passing the filtered one made D-09 stop
+    # mentioning the excluded banks entirely - the limitation disappeared because
+    # we had acted on it, which is exactly backwards.
+    assessment = assess(all_banks_df, fd, focus=args.focus)
     (args.outdir / "limitations.md").write_text(
         render_limitations(assessment, synthetic=synthetic), encoding="utf-8")
     for label in ("blocking", "material"):
