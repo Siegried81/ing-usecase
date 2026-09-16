@@ -1,43 +1,53 @@
 {
-  "headline": "Et si votre compte courant travaillait enfin pour vous ?",
-  "subheading": "Oubliez les frais cach\u00e9s et les conditions obscures : d\u00e9couvrez une banque qui parle clairement.",
+  "headline": "Et si votre compte \u00e0 vue travaillait enfin pour vous ?",
+  "subheading": "Nous repensons la banque du quotidien : plus claire, plus juste, sans jargon inutile.",
   "body_paragraphs": [
-    "Pourquoi accepter des frais bancaires qui grignotent votre budget sans que vous sachiez vraiment pourquoi ? Chez nous, la transparence n'est pas une option, c'est notre point de d\u00e9part. Nous avons construit un compte \u00e0 vue qui vous ressemble, sans jargon inutile ni petites lignes qui font la grimace.",
-    "Combien de fois avez-vous ouvert votre application bancaire en esp\u00e9rant comprendre o\u00f9 va votre argent ? Avec notre compte \u00e0 vue, chaque op\u00e9ration est lisible, chaque frais est justifi\u00e9, et chaque euro reste le v\u00f4tre. Pas de surprise \u00e0 la fin du mois, pas de frais de tenue de compte qui apparaissent sans pr\u00e9venir.",
-    "La banque traditionnelle vous demande de vous adapter \u00e0 elle. Nous faisons l'inverse : notre compte \u00e0 vue s'adapte \u00e0 votre vie. Vous voyagez ? Les paiements \u00e0 l'\u00e9tranger sont simplifi\u00e9s. Vous g\u00e9rez un budget serr\u00e9 ? Des alertes personnalis\u00e9es vous aident \u00e0 garder le cap. Vous voulez ouvrir un compte en quelques minutes ? C'est possible, sans paperasse interminable.",
-    "Et si vous pouviez poser vos questions \u00e0 une vraie personne, sans attendre des heures sur une ligne satur\u00e9e ? Notre service client est pens\u00e9 pour r\u00e9pondre vite et bien, que ce soit par chat, par t\u00e9l\u00e9phone ou dans l'application. Parce qu'un compte courant, c'est bien plus qu'un IBAN : c'est votre quotidien financier.",
-    "Rejoignez les milliers de clients qui ont d\u00e9j\u00e0 fait le choix de la clart\u00e9. Ouvrez un compte \u00e0 vue sans frais de dossier, sans engagement, et profitez d'une application prim\u00e9e pour g\u00e9rer votre argent en toute s\u00e9r\u00e9nit\u00e9. Parce que vous m\u00e9ritez une banque qui vous respecte, pas une banque qui vous facture l'air que vous respirez.",
-    "Alors, pr\u00eat \u00e0 passer \u00e0 une banque qui joue cartes sur table ? D\u00e9couvrez notre compte \u00e0 vue d\u00e8s aujourd'hui et voyez la diff\u00e9rence par vous-m\u00eame. L'ouverture se fait en ligne, en quelques minutes, et vous gardez le contr\u00f4le total sur vos finances. Pas de promesses en l'air, juste un compte qui fait ce qu'il dit."
+    "Nous avons pos\u00e9 une question simple : pourquoi un compte \u00e0 vue devrait-il \u00eatre compliqu\u00e9 ? Chez nous, ouvrir un compte se fait en quelques minutes, et nous vous expliquons chaque \u00e9tape sans d\u00e9tour.",
+    "Notre compte \u00e0 vue r\u00e9unit l'essentiel : des paiements fluides, une carte utilisable partout, et une application qui vous montre o\u00f9 va votre argent. Nous ne cachons rien dans les petites lignes.",
+    "Nous croyons qu'une banque doit \u00eatre un partenaire, pas un guichet. C'est pourquoi nous construisons nos services avec vous, en \u00e9coutant vos retours et en am\u00e9liorant l'exp\u00e9rience mois apr\u00e8s mois.",
+    "Combien de temps passez-vous \u00e0 chercher une information sur votre compte ? Nous avons r\u00e9duit ce temps au minimum. Vos op\u00e9rations sont lisibles, cat\u00e9goris\u00e9es, et accessibles en un geste.",
+    "Nous savons que changer de banque peut sembler fastidieux. Alors nous avons simplifi\u00e9 la mobilit\u00e9 : nous nous occupons des d\u00e9marches, vous gardez le contr\u00f4le.",
+    "Notre engagement est simple : pas de frais cach\u00e9s, pas de conditions illisibles. Nous pr\u00e9f\u00e9rons vous dire clairement ce que nous proposons, et vous laisser d\u00e9cider.",
+    "Nous sommes une \u00e9quipe de personnes qui utilisent aussi ce compte au quotidien. Nous testons, nous ajustons, nous am\u00e9liorons. Votre exp\u00e9rience r\u00e9elle guide nos d\u00e9cisions.",
+    "Que vous soyez \u00e9tudiant, salari\u00e9 ou ind\u00e9pendant, nous adaptons les options \u00e0 votre rythme. Vous activez ce dont vous avez besoin, quand vous en avez besoin.",
+    "Nous mettons la m\u00eame exigence dans la s\u00e9curit\u00e9 que dans la simplicit\u00e9. Vos donn\u00e9es sont prot\u00e9g\u00e9es, et vous \u00eates pr\u00e9venu en temps r\u00e9el de chaque mouvement.",
+    "Nous ne pr\u00e9tendons pas \u00eatre parfaits. Mais nous nous engageons \u00e0 \u00eatre transparents, r\u00e9actifs, et \u00e0 traiter vos demandes comme les n\u00f4tres.",
+    "Rejoindre notre compte \u00e0 vue, c'est choisir une relation bancaire qui vous ressemble. Nous vous accompagnons pas \u00e0 pas, sans pression.",
+    "Nous pensons que la clart\u00e9 n'est pas un luxe. C'est la base. Et c'est ce que nous mettons dans chaque \u00e9cran, chaque message, chaque conseil.",
+    "Alors, pr\u00eat \u00e0 d\u00e9couvrir une autre fa\u00e7on de g\u00e9rer votre argent ? Nous vous montrons tout, sans engagement."
   ],
-  "cta_label": "Ouvrez votre compte en ligne",
+  "cta_label": "D\u00e9couvrir le compte \u00e0 vue",
   "additional_cta_labels": [
-    "D\u00e9couvrez nos offres sans engagement",
-    "Apprenez-en plus sur nos frais transparents",
-    "Inscrivez-vous pour recevoir notre guide",
-    "Commencez d\u00e8s maintenant avec notre app",
-    "Ouvrez un compte en 5 minutes",
-    "D\u00e9couvrez pourquoi nos clients nous adorent",
-    "Inscrivez-vous \u00e0 la newsletter",
-    "Apprenez-en plus sur la s\u00e9curit\u00e9"
+    "Ouvrir un compte en ligne",
+    "Appliquer maintenant",
+    "Commencer l'ouverture",
+    "S'inscrire en quelques minutes",
+    "En savoir plus sur nos offres"
   ],
-  "layout_archetype": "hero_stacked",
+  "layout_archetype": "split_columns",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A young professional smiling while using a mobile banking app on a smartphone, sitting in a bright modern kitchen, natural light, candid style, warm tones.",
-    "A close-up of a hand holding a debit card with a subtle orange accent, blurred background of a cafe, shallow depth of field, lifestyle photography.",
-    "An overhead shot of a desk with a laptop, a cup of coffee, and a notebook showing a simple budget plan, clean and minimal, soft shadows.",
-    "A diverse group of friends laughing and splitting a bill using a mobile app, outdoor terrace, golden hour, authentic and joyful.",
-    "A customer service representative wearing a headset, smiling warmly at a computer screen, modern office with plants, approachable and professional.",
-    "A split-screen illustration contrasting a cluttered, confusing bank statement with a clean, simple mobile interface, using the accent colour for highlights.",
-    "A person traveling in a foreign city, paying with their phone at a market stall, vibrant colours, sense of freedom and ease.",
-    "A serene image of a person reviewing their finances on a tablet at home, with a cup of tea, calm and in control, soft lighting."
+    "Photographie lifestyle : une personne souriante consultant son application bancaire sur smartphone, dans un cadre lumineux et moderne, style \u00e9pur\u00e9.",
+    "Illustration vectorielle : un compte \u00e0 vue repr\u00e9sent\u00e9 comme un tableau de bord clair avec des ic\u00f4nes de paiement, d'\u00e9pargne et de s\u00e9curit\u00e9.",
+    "Photo d'\u00e9quipe : de jeunes professionnels divers discutant autour d'une table, ordinateurs portables ouverts, ambiance collaborative.",
+    "Capture d'\u00e9cran stylis\u00e9e : interface d'application montrant une transaction simplifi\u00e9e, avec des couleurs vives et une typographie lisible.",
+    "Image conceptuelle : une balance \u00e9quilibr\u00e9e entre \u00ab frais cach\u00e9s \u00bb barr\u00e9s et \u00ab transparence \u00bb mise en avant, design minimaliste.",
+    "Photo de rue : un client utilisant sa carte bancaire sans contact dans un caf\u00e9, mouvement naturel, lumi\u00e8re douce.",
+    "Infographie : parcours d'ouverture de compte en 3 \u00e9tapes, avec des ic\u00f4nes et des fl\u00e8ches, fond clair.",
+    "Portrait : un conseiller client\u00e8le souriant, en visio ou au t\u00e9l\u00e9phone, pour illustrer l'accompagnement humain.",
+    "Photo macro : une carte bancaire pos\u00e9e sur une table en bois, avec un smartphone \u00e0 c\u00f4t\u00e9, ambiance quotidienne.",
+    "Illustration : un coffre-fort num\u00e9rique stylis\u00e9 avec un cadenas, symbolisant la s\u00e9curit\u00e9 des donn\u00e9es.",
+    "Photo de groupe : une famille ou des amis partageant un repas, avec une notification de paiement partag\u00e9 sur un t\u00e9l\u00e9phone.",
+    "Graphique anim\u00e9 : \u00e9volution du solde sur un mois, avec des cat\u00e9gories de d\u00e9penses color\u00e9es, style \u00e9pur\u00e9.",
+    "Photo d'architecture : une agence bancaire moderne et ouverte, sans guichet traditionnel, avec des espaces collaboratifs."
   ],
-  "disclaimer_placeholder": "[Texte de mention l\u00e9gale et de risque \u00e0 r\u00e9diger par le service conformit\u00e9 : conditions d'ouverture de compte, frais \u00e9ventuels, disponibilit\u00e9 de l'offre, etc.]",
+  "disclaimer_placeholder": "[Texte l\u00e9gal et risques \u00e0 r\u00e9diger par l'\u00e9quipe conformit\u00e9 : conditions d'ouverture, frais \u00e9ventuels, protection des donn\u00e9es.]",
   "persuasion_levers_used": [
-    "social_proof",
     "authority",
     "commitment",
-    "liking"
+    "liking",
+    "reciprocity",
+    "social_proof"
   ]
 }

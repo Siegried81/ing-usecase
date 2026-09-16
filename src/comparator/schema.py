@@ -100,7 +100,12 @@ def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
         elif feature.is_boolean:
             out[name] = _coerce_boolean(out[name]).astype("boolean")
         elif feature.type == "datetime":
-            out[name] = pd.to_datetime(out[name], errors="coerce", utc=True)
+            # steph 16/09: format="ISO8601" rather than letting pandas infer.
+            # The live path writes microseconds and the manual-capture importer
+            # did not, and a column mixing the two silently coerced the odd ones
+            # to NaT - captured_at then failed validation as "missing" on rows
+            # that had a perfectly good timestamp.
+            out[name] = pd.to_datetime(out[name], errors="coerce", utc=True, format="ISO8601")
         elif feature.is_list:
             out[name] = out[name].map(parse_list)
         else:

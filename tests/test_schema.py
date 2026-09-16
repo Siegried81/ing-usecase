@@ -167,3 +167,14 @@ def test_coercion_survives_a_csv_round_trip(df, fd, tmp_path):
     assert validate(back, fd, tier="core").ok
     assert back["has_animation"].dtype == "boolean"
     assert back["word_count"].dtype == "Int64"
+
+
+def test_timestamps_of_different_iso_precision_parse(fd):
+    """steph 16/09: the live path writes microseconds, the manual-capture
+    importer did not, and a column mixing the two coerced the odd ones to NaT -
+    captured_at then failed validation as missing on rows that had one."""
+    df = pd.DataFrame({
+        "captured_at": ["2026-09-16T13:42:21.253554+00:00", "2026-09-16T12:42:30+00:00"],
+    })
+    out = coerce_types(df, fd)
+    assert out["captured_at"].notna().all()
