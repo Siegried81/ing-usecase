@@ -211,6 +211,116 @@ def agreement(sheets: list[pd.DataFrame], fd: FeatureDictionary | None = None) -
     return Agreement(table)
 
 
+# -----------------------------------------------------------------------------
+# sieg 16/09, new. agreement() above reports raw % match - useful, but it does
+# not correct for chance. Two raters who both score mostly "3" on a 1-5 scale
+# will show high raw agreement even scoring at random, because there are only
+# 5 buckets to land in. NFR-05 asks for the disagreement to be reported
+# honestly, and a chance-inflated number is not honest. Cohen's kappa corrects
+# for exactly this: kappa = (observed - expected-by-chance) / (1 - expected).
+#
+# One function for human-vs-human AND human-vs-model, deliberately: the model
+# is just another rater in its own sheet (rubric_model.py), so the same pair-
+# wise computation applies without a special case for which "rater" it is.
+def _cohens_kappa(a: pd.Series, b: pd.Series, *, ordinal: bool) -> float | None:
+    """Pairwise Cohen's kappa between two aligned rating series.
+
+    `ordinal=True` (numeric 1-5 scales) uses linear weights, so a 3-vs-4
+    disagreement counts as a smaller miss than a 1-vs-5 one - matching the
+    "within one point" leniency agreement() already applies, but as a real
+    statistic instead of a fixed threshold. `ordinal=False` (categoricals) is
+    unweighted: every mismatch counts the same, there is no natural distance
+    between e.g. "hero_stacked" and "card_grid".
+    """
+    paired = pd.DataFrame({"a": a, "b": b}).dropna()
+    if len(paired) < 2:
+        return None
+
+    categories = sorted(set(paired["a"]) | set(paired["b"]), key=str)
+    k = len(categories)
+    if k < 2:
+        return None  # every rater picked the same single value - kappa is undefined, not 1.0
+    index = {c: i for i, c in enumerate(categories)}
+
+    if ordinal:
+        weights = [[abs(i - j) / (k - 1) for j in range(k)] for i in range(k)]
+    else:
+        weights = [[0.0 if i == j else 1.0 for j in range(k)] for i in range(k)]
+
+    observed = [[0.0] * k for _ in range(k)]
+    for av, bv in zip(paired["a"], paired["b"]):
+        observed[index[av]][index[bv]] += 1
+    n = len(paired)
+
+    row_marg = [sum(row) / n for row in observed]
+    col_marg = [sum(observed[i][j] for i in range(k)) / n for j in range(k)]
+
+    p_o = sum(weights[i][j] * observed[i][j] / n for i in range(k) for j in range(k))
+    p_e = sum(weights[i][j] * row_marg[i] * col_marg[j] for i in range(k) for j in range(k))
+
+    if p_e >= 1.0:
+        return None  # degenerate: expected chance disagreement is total, kappa undefined
+    # p_o/p_e above are weighted DISAGREEMENT (weight 0 = perfect match), so
+    # kappa is 1 - ratio, not (p_o - p_e) / (1 - p_e) as for the unweighted form.
+    return round(1 - (p_o / p_e), 3) if p_e > 0 else None
+
+
+@dataclass
+class KappaAgreement:
+    """Chance-corrected agreement per feature, per pair of raters (NFR-05)."""
+
+    table: pd.DataFrame
+
+    def render(self) -> str:
+        if self.table.empty:
+            return "Not enough overlapping scores to compute kappa for any feature."
+        lines = ["Cohen's kappa - chance-corrected agreement (NFR-05)", "",
+                 self.table.to_string(index=False)]
+        # Landis & Koch (1977) - the standard reference bands, not our invention.
+        weak = self.table[self.table["kappa"] < 0.4]
+        if not weak.empty:
+            lines += ["", "Below 0.4 (fair or worse, Landis & Koch): "
+                      f"{list(zip(weak['feature'], weak['raters']))}. "
+                      "Raw % agreement on these may look fine while being close to chance."]
+        return "\n".join(lines)
+
+
+def kappa_agreement(sheets: list[pd.DataFrame], fd: FeatureDictionary | None = None) -> KappaAgreement:
+    """Cohen's kappa for every feature, for every pair of raters present.
+
+    Works the same whether the "raters" are two humans, or a human and the
+    model's own sheet (rubric_model.py) - it only ever sees a rater column
+    and a set of per-page scores, never who or what produced them.
+    """
+    fd = fd or load_dictionary()
+    if len(sheets) < 2:
+        return KappaAgreement(pd.DataFrame(columns=["feature", "raters", "pages", "kappa"]))
+
+    combined = pd.concat(sheets, ignore_index=True)
+    raters = sorted(combined[RATER_COLUMN].dropna().unique())
+    rows = []
+    for feature in rubric_features(fd):
+        if feature.name not in combined.columns:
+            continue
+        wide = combined.pivot_table(
+            index="page_id", columns=RATER_COLUMN, values=feature.name, aggfunc="first"
+        )
+        for i, r1 in enumerate(raters):
+            for r2 in raters[i + 1:]:
+                if r1 not in wide.columns or r2 not in wide.columns:
+                    continue
+                k = _cohens_kappa(wide[r1], wide[r2], ordinal=feature.is_numeric)
+                if k is None:
+                    continue
+                pages = wide[[r1, r2]].dropna().shape[0]
+                rows.append({"feature": feature.name, "raters": f"{r1} vs {r2}",
+                             "pages": pages, "kappa": k})
+    table = pd.DataFrame(rows)
+    if not table.empty:
+        table = table.sort_values("kappa").reset_index(drop=True)
+    return KappaAgreement(table)
+
+
 def read_sheets(paths: list[str | Path]) -> list[pd.DataFrame]:
     return [pd.read_csv(p) for p in paths]
 
