@@ -24,4 +24,4 @@ playwright==1.57.0
 # sieg 16/09: .env was never actually loaded by any code - os.getenv() only
 # ever saw real shell exports. Root cause of a real collection run coming back
 # with every model_assisted field empty despite .env being filled in.
-python-dotenv==1.0.1
+python-dotenv==1.2.2
