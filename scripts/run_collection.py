@@ -25,6 +25,10 @@ from pathlib import Path
 
 import _bootstrap  # noqa: F401
 import yaml
+from dotenv import load_dotenv
+
+# sieg 16/09: load environment variables via python-dotenv.
+load_dotenv()
 
 from comparator.collection.compliance import ScrapingNotAllowed
 from comparator.collection.quality import assess_capture

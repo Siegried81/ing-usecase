@@ -942,6 +942,13 @@ features:
     notes: >
       Directly tests the deck's distinction - Fortis uses green "in text and icons,
       not in pictures", Belfius uses red "in text and pictures".
+      sieg 15/09: this is a perceptual judgement call, independent from the
+      automatic brand_colour_share (strict pixel-distance match on the hero
+      image only). The two are expected to disagree sometimes - e.g. a human
+      says "yes, accent in imagery" for a subtle tint that brand_colour_share's
+      Euclidean tolerance doesn't count. Do not try to reconcile them; report
+      both, a mismatch between "looks branded" and "measures as branded" is
+      itself a finding.
 
   - name: background_luminance
     dimension: colours_design
@@ -1048,6 +1055,9 @@ features:
     notes: >
       The single observation the deck repeats for every bank. ING is called out as
       the one where "text and picture not anymore next to each other".
+      sieg 15/09: no "no_image" value on purpose - a page with no image at all
+      leaves this field null (nullable: true), it is not forced into one of the
+      three categories above.
 
   - name: text_to_image_ratio
     dimension: layout_structure
@@ -1103,6 +1113,10 @@ features:
       split_columns: The page is organised into two or more side-by-side columns throughout.
       card_grid: Content is organised as a grid of self-contained cards or tiles.
       long_form: Continuous scrolling sections with no strong grid or card structure.
+    notes: >
+      sieg 15/09: real pages often mix patterns (e.g. a hero_stacked header over
+      a card_grid body) - score the pattern of the FIRST SCREEN (above the
+      fold), not the page as a whole, so raters have one consistent rule.
 
   # sieg 15/09: gap flagged in the same discussion as first_time_investor_targeting.
   # HONEST LIMITATION: every capture uses one fixed 1440x900 viewport (see

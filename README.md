@@ -14,17 +14,21 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-Day 1–2 of 10. The analysis chain runs end to end **on synthetic fixture data**.
-Nothing has been scraped yet — collection is Dan's workstream and starts once the
-robots.txt review clears each domain.
+Day 3 of 10 (sieg 16/09). The analysis chain runs end to end on synthetic fixture
+data. Real collection is under way: 4 of the (at least) 6 currently-configured
+banks are captured; rubric fields wait for the Day 5 joint scoring session, and
+headless-render geometry fields wait on a working Chromium in the collection
+environment. See
+[`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md)
+for the current status of each bank.
 
 | Deliverable | State |
 | --- | --- |
-| Feature dictionary v0.1 (D-03) | drafted, 97 features — **awaiting the Day 2 freeze tag** |
+| Feature dictionary v0.1 (D-03) | frozen (Day 2) — 97 features, `feature_dictionary.frozen.yaml` in sync |
 | Dataset schema + validator (D-04) | built and tested |
 | Analysis skeleton (D-05) | runs end to end on fixture data |
-| Bank profile cards | generated, 9 banks |
-| Real captures (D-02) | not started — Dan, Days 1–4 |
+| Bank profile cards | generated, 9 banks (on fixture data) |
+| Real captures (D-02) | in progress — KBC/N26/Belfius/ING captured; BNP Fortis/Revolut/Argenta/Crelan/bunq still to collect, see D-01 |
 
 ## Quick start
 
@@ -44,7 +48,7 @@ python3 scripts/rubric_sheet.py emit      # scoring sheets for the 13 human-scor
 python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
 python3 scripts/run_analysis.py --dataset data/processed/campaigns.csv --no-strict
 python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
-python3 -m pytest tests/ -q               # 124 tests
+python3 -m pytest tests/ -q               # 158 tests
 ```
 
 Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
@@ -172,7 +176,10 @@ scripts/
 tests/                           124 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
-outputs/                         charts and tables — gitignored
+outputs/                         charts and tables — wiped and regenerated on every
+                                  run; sieg 16/09: currently COMMITTED to git despite
+                                  that (no .gitignore rule for it) - team decision
+                                  needed on whether that is intentional
 ```
 
 ## No synthetic data in the repo

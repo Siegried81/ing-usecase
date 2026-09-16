@@ -76,3 +76,12 @@ Byte equality alone is not the rule — it fails on an addition, which section 3
 explicitly permits, and it *passes* on a rename, because updating both files
 makes the bytes match again. A rename is the change that actually breaks
 analysis code, so it is the one worth catching.
+
+**sieg 16/09, follow-up.** `feature_dictionary.frozen.yaml` fell out of sync
+with three `notes:` additions made 15/09 (`accent_locations`,
+`text_image_layout`, `layout_archetype`) — documentation only, no type, value,
+tier or nullability change. `check_schema_freeze.py` confirmed zero breaking
+changes; `notes` isn't even part of what that check compares, so this was
+never a freeze-rule violation, only the byte-equality drift alarm doing its
+job. Synced without waiting on a full re-vote — flagged to Dan and Stephane
+for awareness, not as a blocking approval.

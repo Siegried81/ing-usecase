@@ -33,7 +33,11 @@ import json
 import os
 
 import requests
+from dotenv import load_dotenv
 from pydantic import BaseModel, ValidationError
+
+# sieg 16/09: load environment variables via python-dotenv.
+load_dotenv()
 
 MODEL_FIELDS = (
     "primary_product", "dominant_image_type", "people_present", "imagery_register",
