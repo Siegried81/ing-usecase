@@ -19,6 +19,7 @@ from pathlib import Path
 import _bootstrap  # noqa: F401
 
 from comparator import load_dictionary
+from comparator.rubric_model import score_dataset
 from comparator.rubric import (
     agreement,
     disagreement_table,
@@ -61,6 +62,13 @@ def main() -> int:
 
     # steph 16/09: renders Sieg's docs/day5_scoring_disagreement_template.md from
     # the sheets, so the number that goes in the deck is computed, not retyped.
+    # steph 16/09: the model scores as its OWN rater, never into a human sheet -
+    # a pre-filled sheet gets rubber-stamped and the NFR-05 agreement number
+    # would then measure how persuasive the model's guess was.
+    model = sub.add_parser("model", help="score the text-inferable features with the pinned model")
+    model.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
+    model.add_argument("--out", type=Path, default=DEFAULT_DIR / "model_scores.csv")
+
     report = sub.add_parser("report", help="render the Day 5 disagreement table from the sheets")
     report.add_argument("--sheets", nargs="+", required=True)
     report.add_argument("--out", type=Path, default=Path("docs/day5_scoring_disagreement.md"))
@@ -84,6 +92,22 @@ def main() -> int:
         print(f"  guide -> {guide}")
         print("\nScore independently, do not confer - the agreement number only means "
               "something if the scores are independent.")
+        return 0
+
+    if args.command == "model":
+        df, report = read_dataset(args.dataset, fd, tier="core", strict=False)
+        scored = score_dataset(df, fd)
+        if scored.empty:
+            print("nothing scored - no usable page had a readable snapshot")
+            return 1
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        scored.to_csv(args.out, index=False)
+        print(f"scored {len(scored)} page(s) -> {args.out}")
+        print("  rater:", scored["rater"].iloc[0])
+        print("  4 vision-only features left blank on purpose (the pinned model has no vision):")
+        print("    accent_locations, text_image_layout, layout_archetype, mobile_first_design_signal")
+        print("\nThis is a THIRD RATER, not a pre-fill. Human sheets stay blank so Friday's")
+        print("scores stay independent and the agreement number keeps meaning something.")
         return 0
 
     sheets = read_sheets(_expand(args.sheets))

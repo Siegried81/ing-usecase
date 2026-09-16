@@ -1,92 +1,54 @@
 # Bank profile cards
 
-### belfius  (traditional)
+### ing  (traditional)
 
-*1 page(s) · other · fr · captured 2026-09-16 12:13:57.563733+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:31:39.815766+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
-| dominant colour | - |
-| brand colour share | - |
-| accent colour count | - |
+| dominant colour | #ffffff |
+| brand colour share | 0.02 |
+| accent colour count | 4 |
 | accent locations | - |
-| background luminance | - |
-| image count | 11 |
+| background luminance | 0.91 |
+| image count | 33 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
-| image area share | 0.15 |
+| image area share | 0.1 |
 | archetype | - |
 | hero image | yes (all pages) |
 | text image layout | - |
-| page height px | 2,179 |
-| cta count | 9 |
+| page height px | 12,088 |
+| cta count | 4 |
 | cta above fold | no |
-| word count | 1,354 |
-| readability band | very_hard |
-| formality score | - |
-| second person ratio | 0.61 |
-| urgency markers | 0 |
-| primary product | Épargne-pension |
-| rate shown | yes (all pages) |
-| rate prominence | - |
-| benefit framing | mixed |
-| fab level | benefit |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
-
-**Signature:** section count well above the market average (+1.8 SD); second person ratio well below the market average (-1.8 SD); avg sentence length well above the market average (+1.8 SD).
-
-### ing  (traditional)
-
-*2 page(s) · current_account_pack · fr · captured 2026-09-16 12:14:03.540281+00:00 · source: real*
-
-| Field | Value |
-| --- | --- |
-| dominant colour | #f25402 |
-| brand colour share | 0.61 |
-| accent colour count | 4 |
-| accent locations | - |
-| background luminance | 0.54 |
-| image count | 41 |
-| dominant image type | photo |
-| people present | yes (all pages) |
-| animated | 50% of pages |
-| image area share | 0.15 |
-| archetype | - |
-| hero image | yes (all pages) |
-| text image layout | - |
-| page height px | 8,909 |
-| cta count | 3 |
-| cta above fold | no |
-| word count | 2,896 |
+| word count | 4,217 |
 | readability band | hard |
-| formality score | - |
-| second person ratio | 0.81 |
-| urgency markers | 2 |
-| primary product | Compte à terme ING |
-| rate shown | 50% of pages |
-| rate prominence | - |
+| formality score | 4 |
+| second person ratio | 0.85 |
+| urgency markers | 1 |
+| primary product | pack ING More |
+| rate shown | no |
+| rate prominence | above_fold |
 | benefit framing | mixed |
 | fab level | benefit |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 4 |
+| persuasion levers | reciprocity, authority, social_proof, scarcity |
+| lever count | 4 |
 
-**Signature:** has animation well below the market average (-2.0 SD); first time investor targeting well below the market average (-2.0 SD); animated asset count well below the market average (-2.0 SD).
+**Signature:** first time investor targeting well below the market average (-1.7 SD); formality score well above the market average (+1.7 SD); rate shown well below the market average (-1.7 SD).
 
 ### kbc  (traditional)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:13:42.685161+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:30:51.906171+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
-| dominant colour | #90806b |
+| dominant colour | #ffffff |
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | - |
-| background luminance | 0.3 |
+| background luminance | 0.9 |
 | image count | 8 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -100,31 +62,31 @@
 | cta above fold | no |
 | word count | 2,644 |
 | readability band | very_hard |
-| formality score | - |
+| formality score | 3 |
 | second person ratio | 0.89 |
 | urgency markers | 0 |
 | primary product | Compte Base KBC |
 | rate shown | yes (all pages) |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 1 |
+| persuasion levers | authority |
+| lever count | 1 |
 
-**Signature:** fast digital onboarding claim well above the market average (+2.0 SD); has comparison table well above the market average (+2.0 SD); text to image ratio well above the market average (+1.9 SD).
+**Signature:** senior preretirement targeting well above the market average (+1.7 SD); clarity score well below the market average (-1.7 SD); has comparison table well above the market average (+1.7 SD).
 
 ### n26  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:13:49.650799+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:30:58.588145+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
-| dominant colour | #045e58 |
-| brand colour share | 0.01 |
+| dominant colour | #293830 |
+| brand colour share | 0.02 |
 | accent colour count | 4 |
 | accent locations | - |
-| background luminance | 0.12 |
+| background luminance | 0.58 |
 | image count | 29 |
 | dominant image type | render_3d |
 | people present | no |
@@ -138,23 +100,23 @@
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
-| formality score | - |
+| formality score | 3 |
 | second person ratio | 0.78 |
 | urgency markers | 0 |
 | primary product | N26 Standard |
 | rate shown | yes (all pages) |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | benefit |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 4 |
+| persuasion levers | authority, liking |
+| lever count | 2 |
 
-**Signature:** hidden conditions behind free claim well above the market average (+2.0 SD); youth student targeting well below the market average (-2.0 SD); people present well below the market average (-2.0 SD).
+**Signature:** mentions loyalty or referral well above the market average (+1.7 SD); people present well below the market average (-1.7 SD); hidden conditions behind free claim well above the market average (+1.7 SD).
 
 ### revolut  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:14:15.330070+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:31:34.006192+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -162,7 +124,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | - |
-| background luminance | 0.97 |
+| background luminance | 0.53 |
 | image count | 10 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
@@ -176,16 +138,16 @@
 | cta above fold | no |
 | word count | 1,352 |
 | readability band | hard |
-| formality score | - |
+| formality score | 3 |
 | second person ratio | 0.76 |
 | urgency markers | 1 |
 | primary product | Compte courant |
 | rate shown | yes (all pages) |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | benefit |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 4 |
+| persuasion levers | authority, social_proof, liking |
+| lever count | 3 |
 
-**Signature:** institutional trust signal present well above the market average (+2.0 SD); first person plural count well below the market average (-1.5 SD); question count well below the market average (-1.5 SD).
+**Signature:** institutional trust signal present well above the market average (+1.7 SD); disclaimer present well below the market average (-1.7 SD); first person plural count well below the market average (-1.5 SD).

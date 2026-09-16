@@ -363,6 +363,7 @@ def scrape(
         features["collection_method"] = "headless_render"
         features["http_status"] = rendered.http_status
         features["shadow_hosts_flattened"] = rendered.shadow_hosts
+        features["_screenshot"] = rendered.screenshot
     else:
         html = _fetch_html(url)
         features = extract(html, language=language, page_url=url)

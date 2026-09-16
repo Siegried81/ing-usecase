@@ -9,7 +9,7 @@
 ### Blocking — a question cannot be answered at all
 
 - **bnp_paribas_fortis** could not be captured: HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor. Source: https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire. The row is excluded; the bank is effectively absent.
-- **13 of 13 rubric features are unscored** (['formality_score', 'clarity_score', 'rate_prominence', 'value_prop_clarity'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`).
+- **3 of 13 rubric features are unscored** (['text_image_layout', 'layout_archetype', 'mobile_first_design_signal']). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`).
 
 ### Material — findings survive, but weakened
 

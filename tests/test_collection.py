@@ -472,3 +472,50 @@ def test_fallback_is_recorded_not_silent(monkeypatch):
             "text", image_count=1, has_animation=False, product_family="term_account"
         )
     assert model_id.startswith("groq/"), "the row must record the model that actually answered"
+
+
+# --- colour measured on the page, not the hero crop (steph 16/09) -------------
+def test_brand_share_counts_every_pixel_not_just_the_top_palette():
+    """A brand accent is a few percent of a full page and never makes the top-5
+    quantised palette - the palette shortcut scored every bank exactly 0.000,
+    which was a property of the method, not of the banks."""
+    from PIL import Image
+
+    from comparator.collection.visual_features import extract_colours_from_image
+
+    img = Image.new("RGB", (200, 200), (255, 255, 255))
+    for y in range(8):                      # 4% of the image, ING orange
+        for x in range(200):
+            img.putpixel((x, y), (255, 98, 0))
+
+    assert extract_colours_from_image(img, bank="ing")["brand_colour_share"] == pytest.approx(0.04, abs=0.01)
+
+
+def test_brand_share_is_specific_to_the_bank():
+    from PIL import Image
+
+    from comparator.collection.visual_features import extract_colours_from_image
+
+    img = Image.new("RGB", (100, 100), (255, 98, 0))          # solid ING orange
+    assert extract_colours_from_image(img, bank="ing")["brand_colour_share"] > 0.9
+    assert extract_colours_from_image(img, bank="kbc")["brand_colour_share"] == 0.0
+
+
+def test_background_luminance_separates_a_dark_page_from_a_light_one():
+    from PIL import Image
+
+    from comparator.collection.visual_features import extract_colours_from_image
+
+    light = extract_colours_from_image(Image.new("RGB", (50, 50), (255, 255, 255)))
+    dark = extract_colours_from_image(Image.new("RGB", (50, 50), (20, 20, 25)))
+    assert light["background_luminance"] > 0.9
+    assert dark["background_luminance"] < 0.1
+
+
+def test_unknown_bank_gets_no_brand_share_rather_than_a_wrong_one():
+    """sieg 15/09's finding, kept: without a known bank the honest answer is None."""
+    from PIL import Image
+
+    from comparator.collection.visual_features import extract_colours_from_image
+
+    assert extract_colours_from_image(Image.new("RGB", (40, 40), (10, 10, 200)))["brand_colour_share"] is None

@@ -68,6 +68,14 @@ SETTLE_MS = 1_500
 MIN_IMAGE_EDGE_PX = 32
 
 
+# steph 16/09: a 503 is sometimes genuinely transient. Retrying costs one extra
+# request and recovers a real outage without anyone re-running the pipeline by
+# hand. It does NOT get past BNP - see the note in run_collection.py - but it is
+# the right behaviour regardless of who is down.
+RETRY_STATUSES = (429, 500, 502, 503, 504)
+RETRY_BACKOFF_S = (2, 8)
+
+
 class RenderUnavailable(RuntimeError):
     """Playwright or its browser binary is not installed.
 
@@ -273,6 +281,16 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
                 )
                 response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
                 status = response.status if response else None
+
+                # Polite retry on a server-side status, backing off between tries.
+                for delay in RETRY_BACKOFF_S:
+                    if status not in RETRY_STATUSES:
+                        break
+                    logger.info("HTTP %s from %s - retrying in %ss", status, url, delay)
+                    page.wait_for_timeout(delay * 1000)
+                    response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
+                    status = response.status if response else None
+
                 page.wait_for_timeout(SETTLE_MS)
 
                 # Order matters: measure and screenshot the page as rendered,

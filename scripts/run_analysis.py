@@ -21,6 +21,8 @@ import pandas as pd
 from comparator import load_dictionary
 from comparator.analysis import (
     category_comparison,
+    family_options,
+    scope_to_family,
     feature_accounting,
     render_accounting,
     check_deck_claims,
@@ -65,6 +67,12 @@ def main() -> int:
     parser.add_argument("--clusters", type=int, default=2)
     parser.add_argument("--top-n", type=int, default=12)
     parser.add_argument(
+        "--product-family", default=None,
+        help="restrict the comparison to one product family (DR-04). Pooling families "
+             "confounds every cross-bank difference with the product. Use 'auto' to pick "
+             "the family with banks on both sides of the traditional/challenger split.",
+    )
+    parser.add_argument(
         "--trends-dir", type=Path, default=None,
         help="Dan's kbc-ing-benchmark/export directory. Adds search-interest CONTEXT "
              "for ING/KBC/CBC. Skipped silently when absent.",
@@ -98,6 +106,20 @@ def main() -> int:
     # steph 16/09: a maintenance page and an unrendered shell are honest
     # measurements of the wrong page. Left in, they would characterise a bank
     # from content it never showed - see collection/quality.py.
+    # --- restrict to one product family (DR-04) ------------------------------
+    # steph 16/09: this was carried as a limitation on every run. It does not
+    # have to be one - it can be a filter.
+    _header("Product families available")
+    options = family_options(banks_df[banks_df.get("capture_quality", "ok") != "unusable"]
+                             if "capture_quality" in banks_df.columns else banks_df)
+    print(options.to_string(index=False) if not options.empty else "  (no product_family column)")
+
+    family = args.product_family
+    if family == "auto":
+        usable = options[options["comparable"]] if not options.empty else options
+        family = usable.iloc[0]["product_family"] if not usable.empty else None
+        print(f"\n  --product-family auto -> {family!r}")
+
     all_banks_df = banks_df  # before exclusions - D-09 must see what was dropped
     if "capture_quality" in banks_df.columns:
         unusable = banks_df[banks_df["capture_quality"] == "unusable"]
@@ -105,6 +127,13 @@ def main() -> int:
             print(f"\n  EXCLUDING {len(unusable)} unusable capture(s): "
                   f"{sorted(unusable['bank'].unique())} - see outputs/limitations.md")
             banks_df = banks_df[banks_df["capture_quality"] != "unusable"]
+
+    banks_df, scope = scope_to_family(banks_df, family)
+    print(f"\n{scope.render()}")
+    if family and not scope.comparable:
+        print("\n  Refusing to continue: with one side of the split empty there is no "
+              "traditional-vs-challenger comparison to make.")
+        return 2
     print(f"\n{len(banks_df)} page(s) · {banks_df['bank'].nunique()} banks · "
           f"{banks_df['product_family'].nunique()} product family/families")
 

@@ -50,6 +50,24 @@ def _relative_luminance(r: int, g: int, b: int) -> float:
     return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
 
 
+def extract_colours_from_image(image: "Image.Image", *, bank: str | None = None, n_colours: int = 5) -> dict:
+    """Same measurement, on an already-decoded image.
+
+    steph 16/09: split out so the full-page SCREENSHOT can be measured instead of
+    the hero image. The dictionary defines these features on `source: screenshot`,
+    and measuring the hero photo was giving brand_colour_share = 0.0 for KBC and
+    Revolut and null for Belfius - a bank's brand colour lives in its buttons,
+    headers and rules, not necessarily in the lifestyle photo at the top. That
+    was a measurement artefact reported as a property of those banks, and it is
+    the same class of mistake as the shadow-DOM one: we were looking at the
+    wrong part of the page.
+
+    Reachable only with a rendered page, which is why it could not be done when
+    this module was written.
+    """
+    return _measure(image, bank=bank, n_colours=n_colours)
+
+
 def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours: int = 5) -> dict:
     """Dominant palette + derived brand/luminance fields from one image.
     Returns nulls (never raises) if the image can't be fetched or decoded -
@@ -75,6 +93,20 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     except Exception:  # noqa: BLE001 - best-effort feature, never fatal (incl. robots disallow)
         return empty
 
+    return _measure(img, bank=bank, n_colours=n_colours)
+
+
+def _measure(img: "Image.Image", *, bank: str | None, n_colours: int) -> dict:
+    """The measurement itself, on a decoded RGB image."""
+    empty = {
+        "dominant_colour_hex": None, "palette_hex": [], "brand_colour_share": None,
+        "background_luminance": None, "accent_colour_count": None,
+    }
+    try:
+        img = img.convert("RGB")
+    except Exception:  # noqa: BLE001
+        return empty
+
     img = img.resize((150, 150))
     quantized = img.quantize(colors=n_colours, method=Image.MEDIANCUT)
     palette = quantized.getpalette()[: n_colours * 3]
@@ -93,11 +125,21 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     brand_share = None
     if brand_hex:
         br, bg, bb = (int(brand_hex[i: i + 2], 16) for i in (1, 3, 5))
+        # steph 16/09: count EVERY pixel, not just the quantised top-n palette.
+        # On a hero crop the brand colour is often one of the five dominant
+        # colours, so the palette shortcut worked. On a full-page screenshot it
+        # never is - a brand accent is a few percent of a mostly-white page - and
+        # every bank scored exactly 0.000, which is a property of the method, not
+        # of the banks. Scanning all pixels is the measurement the dictionary
+        # describes ("share of coloured pixels within tolerance of the brand
+        # colour") and it is cheap on a 150x150 thumbnail.
+        tolerance_sq = _BRAND_COLOUR_TOLERANCE ** 2
+        pixels = list(img.getdata())
         matching = sum(
-            c for c, r, g, b in rgb_colours
-            if ((r - br) ** 2 + (g - bg) ** 2 + (b - bb) ** 2) ** 0.5 <= _BRAND_COLOUR_TOLERANCE
+            1 for r, g, b in pixels
+            if (r - br) ** 2 + (g - bg) ** 2 + (b - bb) ** 2 <= tolerance_sq
         )
-        brand_share = round(matching / total_pixels, 3)
+        brand_share = round(matching / max(len(pixels), 1), 3)
 
     return {
         "dominant_colour_hex": hex_colours[0] if hex_colours else None,

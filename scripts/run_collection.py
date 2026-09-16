@@ -32,9 +32,29 @@ load_dotenv()
 
 from comparator.collection.compliance import ScrapingNotAllowed
 from comparator.collection.quality import assess_capture
+
+# steph 16/09, BNP Paribas Fortis - diagnosed, not worked around.
+#   robots.txt           200, and no Disallow covers the target path
+#   robots.txt itself    200 (static file, different edge config)
+#   every other path     503 from server: AkamaiNetStorage, including / and
+#                        /sitemap.xml - so the sitemap route (LC-02) is shut too
+#   our honest UA        503
+#   a browser UA         503, byte-identical (9875 bytes)
+#
+# Not user-agent-based bot detection: swapping to a browser UA changes nothing.
+# Whatever the edge is refusing, it is not the string we send. That leaves
+# rotating IPs or residential proxies as the only things that might work, and
+# those are exactly what LC-04 forbids ("no bot-detection evasion"). We hold a
+# robots.txt allow for this path; we do not hold permission to get past an edge
+# that is declining us.
+#
+# So: no workaround. Retry-with-backoff (collection/render.py) recovers a
+# genuinely transient 503 on any site, and BNP re-attempts on every run. If it
+# stays down, the honest deliverable is a named gap in D-09, not a bank
+# characterised from a maintenance page.
 from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted_with_provenance
 from comparator.collection.scraper import scrape
-from comparator.collection.visual_features import extract_colours
+from comparator.collection.visual_features import extract_colours, extract_colours_from_image
 from comparator.dictionary import load_dictionary
 from comparator.schema import validate, write_dataset
 
@@ -69,7 +89,24 @@ def collect_one(
     bank_dir.mkdir(parents=True, exist_ok=True)
     html_path.write_text(scraped["_html"], encoding="utf-8")
 
-    colours = extract_colours(scraped.get("_hero_image_url"), bank=bank)
+    # steph 16/09: measure colour on the RENDERED PAGE when we have one. The
+    # dictionary defines these features on source: screenshot, and measuring the
+    # hero photo instead gave brand_colour_share = 0.0 for KBC and Revolut and
+    # null for Belfius - their brand colour is in buttons and headers, not in the
+    # lifestyle photo. The hero image stays the fallback for a static fetch.
+    colours = None
+    shot = scraped.get("_screenshot")
+    if shot:
+        try:
+            from io import BytesIO
+
+            from PIL import Image
+
+            colours = extract_colours_from_image(Image.open(BytesIO(shot)), bank=bank)
+        except Exception as exc:  # noqa: BLE001 - best-effort, never fatal
+            logger.warning("screenshot colour extraction failed for %s: %s", page_id, exc)
+    if not colours or colours.get("brand_colour_share") is None:
+        colours = extract_colours(scraped.get("_hero_image_url"), bank=bank)
 
     try:
         model_fields, extraction_model = extract_model_assisted_with_provenance(
