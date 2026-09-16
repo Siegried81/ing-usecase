@@ -10,6 +10,16 @@ pages:
     url: "https://www.kbc.be/particuliers/fr/produits/paiements/comptes-a-vue/ouvrir-un-compte-de-base.html"
     language: fr
 
+  # sieg 16/09: NL equivalent of the same page (found via the FR page's own
+  # language switcher, not a fresh search - same product, "basisrekening" =
+  # "compte de base").
+  - bank: kbc
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.kbc.be/particulieren/nl/product/betalen/zichtrekeningen/basisrekening-openen.html"
+    language: nl
+
   - bank: n26
     bank_category: challenger
     product_family: current_account_pack
@@ -60,4 +70,40 @@ pages:
     product_family: current_account_pack
     page_role: campaign_landing
     url: "https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-more"
+    language: fr
+
+  # sieg 16/09: entry-level pack, the direct DR-04 like-for-like match to
+  # KBC's "compte de base" / N26's free Standard / Revolut's free plan.
+  - bank: ing
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-go"
+    language: fr
+
+  # sieg 16/09: the 3 banks never configured for collection - found via
+  # each site's own navigation (homepage -> language switcher, not guessed),
+  # same current_account_pack family for DR-04 comparability.
+  - bank: argenta
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    # sieg 16/09: corrected to the real live URL (redirects here) - shows
+    # 3 tiers (Green/Silver/Gold) on one page, Green is the one that's
+    # comparable (free, "formule de base"), same convention as ING Go.
+    url: "https://www.argenta.be/fr/formules.html"
+    language: fr
+
+  - bank: crelan
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.crelan.be/fr/particuliers/payer/comptes-vue/produit/economy-plus-pack"
+    language: fr
+
+  - bank: bunq
+    bank_category: challenger
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.bunq.com/fr-be/personal/plans/bunq-free"
     language: fr
