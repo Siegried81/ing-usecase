@@ -127,6 +127,35 @@ questions that makes unanswerable; if the rubric is unscored it says so. A
 limitation nobody can quietly drop on Day 9 is worth more than a well-written
 paragraph.
 
+## When a site will not serve the pipeline
+
+Some pages cannot be fetched by us at all — BNP's edge declines automated
+traffic outright (diagnosed in `scripts/run_collection.py`, and not worked
+around: getting past it would need IP rotation, which LC-04 forbids).
+
+`scripts/import_captures.py` imports pages a person saved from a normal browser:
+
+```bash
+python3 scripts/import_captures.py --dir <folder> --merge-with data/processed/campaigns.csv
+```
+
+A human opening a public page and saving it is ordinary use of a public website,
+not automation getting past a control. The importer still **re-checks robots.txt**
+for every recovered URL rather than trusting that someone checked earlier, and it
+recovers the URL from the browser's own "saved from url" comment so there is no
+hand-written manifest to drift.
+
+A manual capture carries `collection_method = manual_capture`, **no
+`http_status`** (we made no request — writing 200 would claim a response nobody
+received) and **no `page_height_px`** (a browser save is a *viewport* screenshot,
+not a full-page one, so the height genuinely cannot be measured). A live capture
+that worked is always preferred over a manual one for the same page.
+
+Chrome writes shadow DOM out as `<template shadowrootmode>`, which BeautifulSoup
+does not walk into — Siegried's saved ING pages parsed as 14 words while carrying
+4,858 inside templates. `extract()` flattens those, so a manual capture and a live
+capture are measured the same way.
+
 ## Compare like for like, not everything at once
 
 `--product-family current_account_pack` (or `auto`) restricts the comparison to
@@ -215,6 +244,7 @@ src/comparator/
   trends.py                      bridge to Dan's Google Trends benchmark
   rubric_model.py                model as a third rater (text-inferable only)
   derive.py                      recompute derived features after any change
+  banks.py                       canonical bank -> category facts
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain

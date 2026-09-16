@@ -204,9 +204,14 @@ features:
 
   - name: collection_method
     dimension: provenance
-    definition: How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02).
+    definition: >
+      How the page was retrieved. Static fetch misses JavaScript-built layout
+      (risk R-02). manual_capture is a page a person opened in a normal browser
+      and saved, used where an edge/CDN declines automated traffic - the content
+      is identical, but there is no HTTP status of our own and the capture time
+      is the person's, not the pipeline's.
     type: categorical
-    values: [static_fetch, headless_render]
+    values: [static_fetch, headless_render, manual_capture]
     extraction: automatic
     source: derived
     comparability: cross_language
@@ -987,8 +992,15 @@ features:
     comparability: cross_language
     tier: core
     required: true
-    nullable: false
-    notes: Viewport must be identical for every capture or this feature is meaningless.
+    nullable: true
+    notes: >
+      Viewport must be identical for every capture or this feature is meaningless.
+      steph 16/09: widened to nullable. A manually saved capture (collection_method
+      = manual_capture) carries a VIEWPORT screenshot, not a full-page one, so the
+      page height genuinely cannot be measured from it - Siegried's saves are
+      ~1,000px tall for pages we measure live at 12,000px. Deriving a height from
+      them would be inventing one. Blank is the honest value, and the feature
+      accounting already drops a feature that is missing for some bank.
 
   - name: section_count
     dimension: layout_structure

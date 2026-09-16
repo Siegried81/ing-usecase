@@ -214,12 +214,35 @@ def _rate(text: str):
     return True, value
 
 
+def flatten_declarative_shadow_roots(html: str) -> tuple[str, int]:
+    """Unwrap <template shadowrootmode=...> into its parent. Returns (html, count).
+
+    steph 16/09. The live path flattens shadow DOM with JavaScript in the page
+    (collection/render.py). A browser "save page as complete" writes the same
+    content out as DECLARATIVE shadow DOM instead - <template shadowrootmode>
+    blocks - and BeautifulSoup does not walk into them, so Siegried's manually
+    saved ING pages parsed as 14 words while carrying 4,858 inside templates.
+
+    Exactly the bug we already fixed once, arriving through a different door.
+    Unwrapping makes the saved HTML equivalent to what render.py produces, so a
+    manual capture and a live capture are measured the same way - which is the
+    whole point of doing it here rather than in the import script.
+    """
+    soup = BeautifulSoup(html, "html.parser")
+    templates = [t for t in soup.find_all("template")
+                 if t.has_attr("shadowrootmode") or t.has_attr("shadowroot")]
+    for template in templates:
+        template.unwrap()  # children become children of the shadow host
+    return (str(soup), len(templates)) if templates else (html, 0)
+
+
 def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
     """Parse fetched HTML into every automatic feature this module covers.
 
     page_url is optional (only scrape() always has one) so a hero image
     given as a relative path can be resolved to an absolute URL - see
     _hero_image_url()."""
+    html, _ = flatten_declarative_shadow_roots(html)
     soup = BeautifulSoup(html, "html.parser")
     for tag in soup(["script", "style", "noscript"]):
         tag.decompose()

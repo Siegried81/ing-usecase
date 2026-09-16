@@ -2,16 +2,16 @@
 
 ### ing  (traditional)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:31:39.815766+00:00 · source: real*
+*2 page(s) · current_account_pack · fr · captured 2026-09-16 12:51:10+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
-| dominant colour | #ffffff |
+| dominant colour | #050505 |
 | brand colour share | 0.02 |
 | accent colour count | 4 |
 | accent locations | - |
-| background luminance | 0.91 |
-| image count | 33 |
+| background luminance | 0.68 |
+| image count | 30.5 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
@@ -20,27 +20,27 @@
 | hero image | yes (all pages) |
 | text image layout | - |
 | page height px | 12,088 |
-| cta count | 4 |
+| cta count | 3 |
 | cta above fold | no |
-| word count | 4,217 |
+| word count | 3,108 |
 | readability band | hard |
-| formality score | 4 |
-| second person ratio | 0.85 |
-| urgency markers | 1 |
-| primary product | pack ING More |
+| formality score | 3 |
+| second person ratio | 0.84 |
+| urgency markers | 0.5 |
+| primary product | ING Go |
 | rate shown | no |
-| rate prominence | above_fold |
+| rate prominence | absent |
 | benefit framing | mixed |
-| fab level | benefit |
-| aida coverage | 4 |
-| persuasion levers | reciprocity, authority, social_proof, scarcity |
-| lever count | 4 |
+| fab level | advantage |
+| aida coverage | 0 |
+| persuasion levers | - |
+| lever count | - |
 
-**Signature:** first time investor targeting well below the market average (-1.7 SD); formality score well above the market average (+1.7 SD); rate shown well below the market average (-1.7 SD).
+**Signature:** first time investor targeting well below the market average (-1.7 SD); aida action well below the market average (-1.7 SD); rate shown well below the market average (-1.7 SD).
 
 ### kbc  (traditional)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:30:51.906171+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 13:42:21.253554+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -62,7 +62,7 @@
 | cta above fold | no |
 | word count | 2,644 |
 | readability band | very_hard |
-| formality score | 3 |
+| formality score | 4 |
 | second person ratio | 0.89 |
 | urgency markers | 0 |
 | primary product | Compte Base KBC |
@@ -74,11 +74,11 @@
 | persuasion levers | authority |
 | lever count | 1 |
 
-**Signature:** senior preretirement targeting well above the market average (+1.7 SD); clarity score well below the market average (-1.7 SD); has comparison table well above the market average (+1.7 SD).
+**Signature:** senior preretirement targeting well above the market average (+1.7 SD); formality score well above the market average (+1.7 SD); has comparison table well above the market average (+1.7 SD).
 
 ### n26  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:30:58.588145+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 13:42:27.363394+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -88,8 +88,8 @@
 | accent locations | - |
 | background luminance | 0.58 |
 | image count | 29 |
-| dominant image type | render_3d |
-| people present | no |
+| dominant image type | photo |
+| people present | yes (all pages) |
 | animated | yes (all pages) |
 | image area share | 0.59 |
 | archetype | - |
@@ -112,11 +112,11 @@
 | persuasion levers | authority, liking |
 | lever count | 2 |
 
-**Signature:** mentions loyalty or referral well above the market average (+1.7 SD); people present well below the market average (-1.7 SD); hidden conditions behind free claim well above the market average (+1.7 SD).
+**Signature:** mentions loyalty or referral well above the market average (+1.7 SD); youth student targeting well below the market average (-1.7 SD); total image area ratio well above the market average (+1.6 SD).
 
 ### revolut  (challenger)
 
-*1 page(s) · current_account_pack · fr · captured 2026-09-16 12:31:34.006192+00:00 · source: real*
+*1 page(s) · current_account_pack · fr · captured 2026-09-16 13:43:03.367302+00:00 · source: real*
 
 | Field | Value |
 | --- | --- |
@@ -150,4 +150,4 @@
 | persuasion levers | authority, social_proof, liking |
 | lever count | 3 |
 
-**Signature:** institutional trust signal present well above the market average (+1.7 SD); disclaimer present well below the market average (-1.7 SD); first person plural count well below the market average (-1.5 SD).
+**Signature:** institutional trust signal present well above the market average (+1.7 SD); disclaimer present well below the market average (-1.7 SD); urgency marker count well above the market average (+1.5 SD).

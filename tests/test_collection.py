@@ -519,3 +519,57 @@ def test_unknown_bank_gets_no_brand_share_rather_than_a_wrong_one():
     from comparator.collection.visual_features import extract_colours_from_image
 
     assert extract_colours_from_image(Image.new("RGB", (40, 40), (10, 10, 200)))["brand_colour_share"] is None
+
+
+# --- declarative shadow DOM in manually saved pages (steph 16/09) -------------
+# A browser "save page as complete" writes shadow content out as
+# <template shadowrootmode>. BeautifulSoup does not walk into those, so
+# Siegried's saved ING pages parsed as 14 words while carrying 4,858 inside
+# templates - the shadow-DOM bug again, arriving through a different door.
+DECLARATIVE_SHADOW_HTML = """
+<html><body>
+  <h1>Visible heading</h1>
+  <ing-app-page>
+    <template shadowrootmode="open">
+      <p>Ouvrez un compte a vue en quelques minutes seulement aujourd'hui.</p>
+      <img src="hero.png" alt="hero">
+      <a href="#x">Decouvrir le compte</a>
+    </template>
+  </ing-app-page>
+</body></html>
+"""
+
+
+def test_declarative_shadow_content_is_recovered():
+    from comparator.collection.scraper import flatten_declarative_shadow_roots
+
+    flat, count = flatten_declarative_shadow_roots(DECLARATIVE_SHADOW_HTML)
+    assert count == 1
+    assert "quelques minutes" in flat
+
+
+def test_extract_sees_shadow_content_without_being_asked():
+    """Applied inside extract(), so a manual capture and a live capture are
+    measured the same way."""
+    features = extract(DECLARATIVE_SHADOW_HTML, language="fr", page_url="https://example.invalid/x")
+    assert features["word_count"] > 8, "the shadow paragraph must be counted"
+    assert features["image_count"] == 1
+    assert features["cta_count"] >= 1
+
+
+def test_a_page_without_shadow_roots_is_untouched():
+    from comparator.collection.scraper import flatten_declarative_shadow_roots
+
+    plain = "<html><body><p>hello</p></body></html>"
+    flat, count = flatten_declarative_shadow_roots(plain)
+    assert count == 0 and flat == plain
+
+
+def test_ordinary_templates_are_left_alone():
+    """A <template> without a shadowroot attribute is an inert stamp-out
+    template - its content is not on the page and must not be counted."""
+    from comparator.collection.scraper import flatten_declarative_shadow_roots
+
+    html = "<html><body><template><p>not rendered</p></template></body></html>"
+    _flat, count = flatten_declarative_shadow_roots(html)
+    assert count == 0
