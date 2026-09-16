@@ -206,3 +206,76 @@ def agreement(sheets: list[pd.DataFrame], fd: FeatureDictionary | None = None) -
 
 def read_sheets(paths: list[str | Path]) -> list[pd.DataFrame]:
     return [pd.read_csv(p) for p in paths]
+
+
+# -----------------------------------------------------------------------------
+# Siegried's Day 5 disagreement table, generated from the sheets
+# -----------------------------------------------------------------------------
+# steph 16/09. docs/day5_scoring_disagreement_template.md is a markdown table
+# with one column per rater, filled in by hand after the session. That is a
+# second place for the same numbers to live, and the file itself says its
+# summary row is what goes in the deck - so a transcription slip would land
+# straight in front of the stakeholders.
+#
+# The sheets already hold every score. This renders Siegried's table FROM them,
+# so the deck number is computed rather than copied. The "why" and "rubric fix"
+# columns stay empty on purpose: those are the human judgements the session
+# exists to produce, and nothing here can invent them.
+def disagreement_table(
+    sheets: list[pd.DataFrame],
+    fd: FeatureDictionary | None = None,
+    *,
+    page_ids: list[str] | None = None,
+) -> str:
+    """Render the Day 5 disagreement table from the completed scoring sheets."""
+    fd = fd or load_dictionary()
+    if not sheets:
+        return "No scoring sheets found. Run `scripts/rubric_sheet.py emit` first."
+
+    combined = pd.concat(sheets, ignore_index=True)
+    raters = sorted(str(r) for r in combined[RATER_COLUMN].dropna().unique())
+    pages = page_ids or sorted(str(p) for p in combined["page_id"].dropna().unique())
+    features = [f for f in rubric_features(fd) if f.name in combined.columns]
+
+    lines = [
+        "# Day 5 — joint rubric scoring, disagreement tracking",
+        "",
+        "> Generated from the scoring sheets by `scripts/rubric_sheet.py report`.",
+        "> Scores are read from the CSVs, never retyped. The last two columns are",
+        "> for the session itself — nothing can fill those in for you.",
+        "",
+        f"**Raters:** {', '.join(raters) or 'none'}  |  **Pages scored:** {len(pages)}",
+        "",
+    ]
+
+    for page in pages:
+        rows = combined[combined["page_id"] == page]
+        bank = rows["bank"].dropna().iloc[0] if "bank" in rows and not rows["bank"].dropna().empty else "?"
+        lines += [f"## {page}  ({bank})", "",
+                  "| Feature | " + " | ".join(raters) + " | Agree? | If disagree: why | Rubric fix needed? |",
+                  "| --- | " + " | ".join("---" for _ in raters) + " | --- | --- | --- |"]
+
+        for feature in features:
+            values = []
+            for rater in raters:
+                cell = rows[rows[RATER_COLUMN].astype("string") == rater][feature.name].dropna()
+                values.append("" if cell.empty else str(cell.iat[0]))
+
+            scored = [v for v in values if v]
+            if len(scored) < 2:
+                agree = "—"
+            elif feature.is_numeric:
+                numbers = pd.to_numeric(pd.Series(scored), errors="coerce").dropna()
+                agree = "Y" if not numbers.empty and (numbers.max() - numbers.min()) <= 1 else "N"
+            else:
+                agree = "Y" if len(set(scored)) == 1 else "N"
+
+            lines.append(f"| `{feature.name}` | " + " | ".join(values) + f" | {agree} |  |  |")
+        lines.append("")
+
+    report = agreement(sheets, fd)
+    lines += ["## Summary — what goes in the deck", "", "```", report.render(), "```", ""]
+    if len(sheets) < 2:
+        lines += ["Only one rater has scored so far, so no agreement figure exists yet. "
+                  "NFR-05 needs at least two independent raters.", ""]
+    return "\n".join(lines)

@@ -1,6 +1,6 @@
 id,bank,claim,feature,verdict,evidence
-H1,belfius,Belfius is pretty verbose,word_count,not supported,belfius=1354.0; highest is kbc=2644.0
+H1,belfius,Belfius is pretty verbose,word_count,not supported,belfius=1354.0; highest is ing=2896.5
 H2,kbc,KBC is straight to the point,word_count,not supported,kbc=2644.0; lowest traditional is belfius=1354.0
-H3,ing,ING is the only traditional bank using animation,has_animation,not supported,"ing=0.00; other traditional banks above zero: ['kbc', 'belfius']"
+H3,ing,ING is the only traditional bank using animation,has_animation,not supported,"ing=0.50; other traditional banks above zero: ['kbc', 'belfius']"
 H4,ing,ING no longer places text next to picture,text_image_layout,not testable,feature absent from the dataset
 H5,revolut,Revolut uses very little text,word_count,supported,revolut=1352.0; lowest is revolut=1352.0

@@ -2,7 +2,7 @@
 
 *Deliverable D-09. Generated from the dataset by `scripts/run_analysis.py`, so it describes the data that actually exists rather than the data we meant to collect.*
 
-**5 usable page(s) across 5 bank(s)**, from 6 collected.
+**6 usable page(s) across 5 bank(s)**, from 7 collected.
 
 ## What this analysis cannot support
 
@@ -20,7 +20,7 @@
 
 - Model-assisted features were all produced by `deepseek/deepseek-chat`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.
 - Every conclusion is valid for the capture window **2026-09-16 to 2026-09-16** and no later. Campaign pages change without notice (DR-05).
-- **No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2).
+- **No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.
 - Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.
 - `total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.
 - The generated campaigns are **not reproducible**: the same brief at temperature 0 produced different copy and a different hit rate on five separate runs. A committed generated artefact is one sample, not the output.
