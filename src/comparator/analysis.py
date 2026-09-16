@@ -369,7 +369,25 @@ class Positioning:
     n_features: int
 
     @property
+    def has_focus(self) -> bool:
+        """steph 16/09: the focus bank can be missing for a real reason - ING's
+        own page came back as an unrendered shell on the first live run and was
+        excluded. The rest of the market analysis is still valid, so this is a
+        state to handle, not a crash. It used to surface as KeyError: 'ing' from
+        inside pandas, several frames from the cause."""
+        return self.focus in self.scores.index
+
+    def _require_focus(self) -> None:
+        if not self.has_focus:
+            raise ValueError(
+                f"{self.focus!r} is not in the positioned banks ({list(self.scores.index)}). "
+                f"BO-01 and BO-02 are unanswerable without it - check capture_quality for "
+                f"{self.focus} before reading anything into the rest."
+            )
+
+    @property
     def focus_score(self) -> float:
+        self._require_focus()
         return float(self.scores[self.focus])
 
     @property
@@ -467,8 +485,18 @@ def nearest_neighbours(
     k: int = 3,
     tier: str | None = None,
 ) -> pd.Series:
-    """The k banks whose communication most resembles the focus bank."""
+    """The k banks whose communication most resembles the focus bank.
+
+    steph 16/09: same guard as Positioning.focus_score - the focus bank can be
+    legitimately absent (an unusable capture), and a KeyError from inside pandas
+    is not a useful way to learn that.
+    """
     dist = similarity_matrix(df, fd, tier=tier)
+    if focus not in dist.index:
+        raise ValueError(
+            f"{focus!r} is not in the compared banks ({list(dist.index)}) - "
+            f"check capture_quality for {focus}"
+        )
     return dist.loc[focus].drop(index=focus).sort_values().head(k)
 
 

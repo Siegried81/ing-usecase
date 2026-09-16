@@ -27,6 +27,7 @@ import _bootstrap  # noqa: F401
 import yaml
 
 from comparator.collection.compliance import ScrapingNotAllowed
+from comparator.collection.quality import assess_capture
 from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted_with_provenance
 from comparator.collection.scraper import scrape
 from comparator.collection.visual_features import extract_colours
@@ -97,6 +98,15 @@ def collect_one(
     }
     if model_fields:
         row.update(model_fields.model_dump())
+
+    # steph 16/09: judge the capture before it becomes a row. Two of the first
+    # six real pages were an empty shell and a maintenance notice; both passed
+    # every other check because their numbers were in range.
+    quality = assess_capture(row, scraped.get("_page_text", ""))
+    row["capture_quality"] = quality.verdict
+    row["capture_quality_note"] = quality.note()
+    if quality.verdict != "ok":
+        logger.warning("%s capture is %s: %s", page_id, quality.verdict, quality.note())
     return row
 
 

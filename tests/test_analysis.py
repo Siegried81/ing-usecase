@@ -287,3 +287,39 @@ def test_render_accounting_names_a_reason_for_every_reduction(df, fd):
     text = render_accounting(feature_accounting(df, fd))
     for reason in ("identify a page", "double-count", "carries no signal"):
         assert reason in text
+
+
+# --- the focus bank can legitimately be absent (steph 16/09) ------------------
+# The first live collection returned ING as an unrendered shell, so the bank the
+# project exists to position was missing from its own dataset. That surfaced as
+# KeyError: 'ing' from inside pandas, in three different places.
+def _without_ing(df):
+    return df[df["bank"] != "ing"]
+
+
+def test_positioning_reports_a_missing_focus_instead_of_crashing(df, fd):
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    assert pos.has_focus is False
+    assert "ing" not in pos.scores.index
+
+
+def test_asking_for_the_score_of_an_absent_focus_says_why(df, fd):
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    with pytest.raises(ValueError, match="BO-01 and BO-02 are unanswerable"):
+        _ = pos.focus_score
+
+
+def test_the_rest_of_the_market_is_still_positioned(df, fd):
+    """Losing ING must not cost us the analysis of everyone else."""
+    pos = positioning_axis(_without_ing(df), fd, focus="ing")
+    assert len(pos.scores) == df["bank"].nunique() - 1
+    assert pos.n_features > 0
+
+
+def test_nearest_neighbours_names_the_missing_bank(df, fd):
+    with pytest.raises(ValueError, match="check capture_quality for ing"):
+        nearest_neighbours(_without_ing(df), fd, focus="ing")
+
+
+def test_has_focus_is_true_in_the_normal_case(df, fd):
+    assert positioning_axis(df, fd, focus="ing").has_focus is True

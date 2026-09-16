@@ -200,3 +200,28 @@ def test_challenger_brief_carries_competitor_patterns_but_on_brand_does_not(df, 
     targets = build_targets(df, fd)
     assert build_brief(df, targets["challenger_style"], fd).competitor_patterns
     assert not build_brief(df, targets["on_brand"], fd).competitor_patterns
+
+
+# --- the focus bank can be absent (steph 16/09) -------------------------------
+def test_on_brand_is_impossible_without_the_bank_own_page(df, fd):
+    """There is nothing to be 'on brand' with if the brand has no usable capture.
+    Inventing one would be exactly the over-claiming risk P-08 warns about."""
+    without_ing = df[df["bank"] != "ing"]
+    targets = build_targets(without_ing, fd, focus="ing")
+    brief = build_brief(without_ing, targets["on_brand"], fd, focus="ing")
+    assert brief.can_be_on_brand is False
+    assert "no profile available" in brief.to_prompt().lower()
+
+
+def test_challenger_style_still_works_without_the_focus_bank(df, fd):
+    """It is built from the challenger group, so it never needed ING."""
+    without_ing = df[df["bank"] != "ing"]
+    targets = build_targets(without_ing, fd, focus="ing")
+    brief = build_brief(without_ing, targets["challenger_style"], fd, focus="ing")
+    assert brief.competitor_patterns
+    assert brief.to_prompt()
+
+
+def test_on_brand_is_possible_in_the_normal_case(df, fd):
+    brief = build_brief(df, build_targets(df, fd)["on_brand"], fd)
+    assert brief.can_be_on_brand is True
