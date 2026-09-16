@@ -30,6 +30,7 @@ robots.txt review clears each domain.
 
 ```bash
 pip install -r requirements.txt
+cp .env.example .env        # then fill in DEEPSEEK_API_KEY - .env is gitignored
 
 python3 scripts/make_fixture.py           # synthetic dataset, for wiring only
 python3 scripts/run_analysis.py           # the full chain: profiles, positioning, charts
@@ -81,7 +82,10 @@ match again. A rename is the change that actually breaks analysis code.
 
 ## One model labels every bank
 
-DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). About a
+DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). Put the
+key in `.env` (gitignored); `scripts/_bootstrap.py` loads it, so no `export` is
+needed. A real environment variable still wins over the file. Never put a key in
+`.env.example` — that file is tracked and public. About a
 quarter of the dictionary is model-assisted, and the provider chain falls back
 when one is rate-limited — so a run could label ING with one model and Revolut
 with another. Every row now records `extraction_model`, and `validate()` warns
