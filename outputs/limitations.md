@@ -2,15 +2,25 @@
 
 *Deliverable D-09. Generated from the dataset by `scripts/run_analysis.py`, so it describes the data that actually exists rather than the data we meant to collect.*
 
-**18 usable page(s) across 9 bank(s)**, from 18 collected.
-
-> **This run used synthetic fixture data.** The limitations below are real properties of the pipeline, but the counts describe invented rows.
+**4 usable page(s) across 4 bank(s)**, from 4 collected.
 
 ## What this analysis cannot support
 
+### Blocking — a question cannot be answered at all
+
+- **ING is not in the usable data.** BO-01 (position ING) and BO-02 (traditional or challenger) cannot be answered at all until a usable ing page is collected. Every other finding is about the market without us in it.
+- **13 of 13 rubric features are unscored** (['formality_score', 'clarity_score', 'rate_prominence', 'value_prop_clarity'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`).
+
+### Material — findings survive, but weakened
+
+- Only **2 traditional bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.
+- Only **2 challenger bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.
+- The usable pages span **2 different product families** (['current_account_pack', 'other']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
+
 ### Standing — true regardless of how much we collect
 
-- Every conclusion is valid for the capture window **2026-09-15 to 2026-09-15** and no later. Campaign pages change without notice (DR-05).
+- Model-assisted features were all produced by `deepseek/deepseek-chat`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.
+- Every conclusion is valid for the capture window **2026-09-16 to 2026-09-16** and no later. Campaign pages change without notice (DR-05).
 - **No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2).
 - Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.
 - `total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.

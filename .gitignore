@@ -20,3 +20,8 @@ venv/
 
 # sieg 15/09: local-only working file, not for the shared repo
 CLAUDE.md
+
+# steph 16/09: the synthetic fixture is a dev/test tool (src/comparator/fixtures.py
+# builds it in memory for the test suite). Committing a synthetic DATA file invites
+# someone to run the analysis on it and read the result as a finding.
+data/fixtures/

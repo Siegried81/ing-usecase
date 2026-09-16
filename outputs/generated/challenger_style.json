@@ -1,34 +1,53 @@
 {
-  "headline": "Your money, your terms \u2014 no fine print surprises",
-  "subheading": "A term account built around you, not the bank.",
+  "headline": "La banque qui vous rend le pouvoir sur votre argent",
+  "subheading": "Un compte \u00e0 vue sans compromis, pens\u00e9 pour celles et ceux qui veulent tout comprendre, tout ma\u00eetriser.",
   "body_paragraphs": [
-    "You work hard for your money. So when you put it aside for a fixed term, you should know exactly what you're getting \u2014 and exactly what you're giving up.",
-    "With our term account, you choose how long you lock in. You see the rate up front. You decide what happens when the term ends. No branch visit, no paperwork chase, no waiting on hold.",
-    "Open it in minutes from your phone. Track it in the same app you already use. Move money in when it suits you, and let it sit until you're ready.",
-    "You get a clear rate, a clear end date, and a clear next step. That's it."
+    "Et si votre compte courant arr\u00eatait de vous co\u00fbter sans rien vous rendre ? Chez nous, pas de frais cach\u00e9s, pas de petites lignes : juste un compte \u00e0 vue clair, mobile, et con\u00e7u pour vous suivre partout.",
+    "Vous ouvrez votre compte en quelques minutes, depuis votre t\u00e9l\u00e9phone. Vous pilotez vos d\u00e9penses en temps r\u00e9el, vous cat\u00e9gorisez vos achats, vous mettez de c\u00f4t\u00e9 sans y penser. Le tout, sans paperasse et sans agence.",
+    "Parce que votre argent vous appartient, nous vous donnons les outils pour le reprendre : virements instantan\u00e9s, alertes personnalis\u00e9es, cartes virtuelles pour vos achats en ligne. Et un service client qui r\u00e9pond vraiment, quand vous en avez besoin.",
+    "Rejoignez celles et ceux qui ont d\u00e9j\u00e0 chang\u00e9 de banque pour une exp\u00e9rience plus simple, plus juste, plus humaine. Votre compte \u00e0 vue nouvelle g\u00e9n\u00e9ration vous attend."
   ],
-  "cta_label": "Open your term account",
+  "cta_label": "Ouvrir un compte en 5 minutes",
   "additional_cta_labels": [
-    "Discover the rate",
-    "Get started in the app",
-    "Learn more about terms",
-    "Sign up for updates",
-    "Apply online today"
+    "D\u00e9couvrir nos offres",
+    "Appliquer pour un compte",
+    "Commencer maintenant",
+    "En savoir plus sur nos tarifs",
+    "Ouvrir un compte joint",
+    "D\u00e9couvrir l'application mobile",
+    "S'inscrire \u00e0 la newsletter",
+    "Appliquer pour une carte virtuelle"
   ],
-  "layout_archetype": "split_columns",
+  "layout_archetype": "hero_stacked",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "A close-up of a hand holding a phone showing a simple term-account dashboard with a large rate figure and a progress bar for the term; soft daylight, minimal background, brand accent colour used only on the progress bar.",
-    "A split-screen lifestyle shot: left side a person relaxed on a sofa with a coffee, right side the same person tapping 'open account' on a phone; warm, natural light, no visible text on screen.",
-    "An abstract animated loop of a calendar page turning into a stack of coins, then into a checkmark; flat vector style, brand accent colour as the only bright colour, loopable 3-second animation.",
-    "A simple icon set in a row: a lock, a calendar, a phone, a checkmark \u2014 each in outline style with the brand accent colour as the single fill colour, arranged on a light background.",
-    "A short animated sequence showing a rate figure ticking up once and then holding steady, with a subtle 'locked' padlock icon appearing; minimal, no numbers visible, just the motion pattern."
+    "A young professional smiling while using a mobile banking app on a smartphone, sitting in a bright modern apartment, natural light, shallow depth of field.",
+    "Close-up of a hand holding a smartphone displaying a clean account dashboard with spending categories, blurred background of a coffee shop.",
+    "A diverse group of friends laughing and splitting a bill using their phones at a restaurant table, warm ambient light.",
+    "A woman jogging in a park, glancing at her smartwatch showing a payment confirmation, morning sunlight.",
+    "A freelancer working from a co-working space, laptop open with a banking interface, coffee cup nearby, focused expression.",
+    "A couple reviewing their finances together on a tablet at home, cozy living room, soft evening light.",
+    "A student paying for textbooks with a contactless card at a campus bookstore, bright and airy.",
+    "A small business owner using a card reader on a smartphone to accept payment from a customer, outdoor market setting.",
+    "A person setting up a virtual card on their phone while online shopping, home office, screen glow on face.",
+    "A family receiving a notification of a transfer on their phone, kitchen table, breakfast scene, joyful.",
+    "A traveler using a mobile app to pay for a taxi in a foreign city, vibrant street background.",
+    "A close-up of a sleek metal debit card being tapped on a payment terminal, modern retail environment.",
+    "A young woman checking her savings goals on a banking app, sitting on a park bench, autumn leaves.",
+    "A man in a suit using a banking app on a tablet during a commute on a train, city skyline through window.",
+    "A group of colleagues splitting a lunch bill via a mobile app, office cafeteria, candid laughter.",
+    "A person activating their new bank card on a smartphone, unboxing moment, clean desk, minimal aesthetic.",
+    "A teenager receiving their first bank card from a parent, proud smile, home setting.",
+    "A senior couple using a banking app on a large-screen phone, comfortable living room, warm tones.",
+    "A person reviewing their monthly spending insights on a laptop, modern home office, plants in background.",
+    "A hand holding a phone with a notification of a successful instant transfer, blurred city lights at night."
   ],
-  "disclaimer_placeholder": "[Legal/risk disclaimer placeholder: terms, conditions, rate and eligibility details to be inserted by compliance.]",
+  "disclaimer_placeholder": "[Texte l\u00e9gal et risques \u00e0 r\u00e9diger par l'\u00e9quipe conformit\u00e9 : conditions d'ouverture de compte, frais \u00e9ventuels, disponibilit\u00e9 des services, protection des donn\u00e9es.]",
   "persuasion_levers_used": [
-    "commitment",
     "authority",
-    "liking"
+    "commitment",
+    "liking",
+    "social_proof"
   ]
 }

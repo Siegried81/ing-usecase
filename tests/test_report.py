@@ -113,3 +113,16 @@ def test_no_significance_language_anywhere(report):
     """The project never claims significance - the companion must not either."""
     for banned in ("p-value of", "statistically significant", "p <"):
         assert banned not in report.lower()
+
+
+def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_path):
+    """The PNG is what ends up in a deck. A chart titled 'Where does ING sit?'
+    with no ING on it reads as a finding (steph 16/09)."""
+    from comparator.charts import positioning_chart
+
+    without = df[df["bank"] != "ing"]
+    categories = without.drop_duplicates("bank").set_index("bank")["bank_category"]
+    pos = positioning_axis(without, fd, focus="ing")
+    path = positioning_chart(pos, categories, tmp_path / "p.png")
+    assert path.exists()
+    assert pos.has_focus is False

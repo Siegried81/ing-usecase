@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Step 5 - generate two campaign variants and score them (stretch goal).
 
-    python3 scripts/run_generation.py --dataset data/fixtures/synthetic_sample.csv
+    python3 scripts/run_generation.py --no-strict
 
 steph 15/09. Plan section 4.5 / Appendix B, owner: me. Gated behind the Day 6
 freeze in the plan - this is the machinery, run early so it is not improvised
@@ -36,7 +36,7 @@ from comparator.generation import (
 )
 from comparator.schema import read_dataset, write_dataset
 
-DEFAULT_DATASET = Path("data/fixtures/synthetic_sample.csv")
+DEFAULT_DATASET = Path("data/processed/campaigns.csv")
 DEFAULT_OUTDIR = Path("outputs/generated")
 
 BANNER = (

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """End-to-end analysis skeleton: dataset in, profiles / comparisons / charts out.
 
-    python3 scripts/run_analysis.py                     # runs on the synthetic fixture
-    python3 scripts/run_analysis.py --dataset data/processed/campaigns.csv
+    python3 scripts/run_analysis.py --no-strict          # real collected data
+    python3 scripts/run_analysis.py --dataset <other.csv>
 
 This is the chain the Day 6 gate asks about (Project Plan section 6): a dataset
 becomes a positioned, profiled, charted comparison with no manual step in between.
@@ -42,7 +42,7 @@ from comparator.profiles import build_all, render_all_markdown
 from comparator.report import build_chart_report
 from comparator.schema import read_dataset
 
-DEFAULT_DATASET = Path("data/fixtures/synthetic_sample.csv")
+DEFAULT_DATASET = Path("data/processed/campaigns.csv")
 DEFAULT_OUTDIR = Path("outputs")
 SYNTHETIC_BANNER = (
     "=" * 78 + "\n"

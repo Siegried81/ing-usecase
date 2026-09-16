@@ -175,17 +175,21 @@ data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — gitignored
 ```
 
-## The synthetic fixture
+## No synthetic data in the repo
 
-`data/fixtures/synthetic_sample.csv` exists so analysis code could be written
-before the scraper does. **Every value in it is invented.** Its per-bank archetypes
-were built *from the claims in the ING kickoff deck*, which means:
+`src/comparator/fixtures.py` builds a synthetic dataset **in memory** for the test
+suite. Nothing synthetic is committed and nothing synthetic reaches `outputs/`.
 
-> Running `check_deck_claims` against the fixture will always return "supported".
-> That is circular by construction. It only means something against real captures.
+That is deliberate. The fixture's per-bank archetypes were written *from* the
+claims in the ING kickoff deck, so an analysis run against it always confirms
+them — `check_deck_claims` comes back "supported" every time, by construction. A
+committed synthetic CSV sitting next to `run_analysis.py` is an invitation to run
+it and read the result as a finding.
 
-Every fixture row is stamped `data_source = synthetic_fixture`; the validator
-warns, and `run_analysis.py` prints a banner on every run.
+`scripts/make_fixture.py` still writes one to `data/fixtures/` if you want it for
+local development. That path is gitignored.
+
+Everything in `outputs/` comes from `data/processed/campaigns.csv` — real captures.
 
 ## What analysis answers
 

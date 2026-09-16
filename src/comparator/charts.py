@@ -133,8 +133,22 @@ def positioning_chart(
     ax.legend(handles=handles, frameon=False, fontsize=9, loc="lower right",
               bbox_to_anchor=(1, 1.005), labelcolor=INK_SECONDARY, ncols=2)
 
-    _title(ax, f"Where does {positioning.focus.upper()} sit?",
-           note or f"projection onto the line between group centroids · {positioning.n_features} features")
+    # steph 16/09: the focus bank can be legitimately absent (unusable capture).
+    # A chart titled "Where does ING sit?" with no ING on it reads as a finding
+    # to anyone who sees the PNG without the companion text - and the PNG is the
+    # thing that ends up in a deck.
+    if positioning.focus in scores.index:
+        _title(ax, f"Where does {positioning.focus.upper()} sit?",
+               note or f"projection onto the line between group centroids · "
+                       f"{positioning.n_features} features")
+    else:
+        _title(ax, f"The market, without {positioning.focus.upper()}",
+               note or f"{positioning.focus.upper()} had no usable capture, so it is not on this "
+                       f"chart · {positioning.n_features} features")
+        ax.text(0.5, -0.16, f"{positioning.focus.upper()} IS MISSING — this chart cannot answer "
+                            f"where {positioning.focus.upper()} stands.",
+                transform=ax.transAxes, ha="center", va="top",
+                fontsize=9.5, color=CATEGORY_COLOUR["challenger"], fontweight="bold")
     return _save(fig, path)
 
 

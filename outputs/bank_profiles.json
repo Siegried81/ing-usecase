@@ -1,434 +1,67 @@
 {
-  "argenta": {
+  "belfius": {
     "identity": {
-      "bank": "argenta",
+      "bank": "belfius",
       "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
+      "pages_analysed": 1,
+      "product_family": "other",
+      "language": "fr",
+      "captured": "2026-09-16 07:21:01.916112+00:00",
+      "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#e94e1b",
-      "brand_colour_share": 0.0605,
-      "accent_colour_count": 3.0,
-      "accent_locations": [
-        "text",
-        "buttons"
-      ],
-      "background_luminance": 0.978
+      "dominant_colour": "#031a26",
+      "brand_colour_share": 0.0,
+      "accent_colour_count": 4.0,
+      "accent_locations": [],
+      "background_luminance": 0.252
     },
     "imagery": {
       "image_count": 4.0,
       "dominant_image_type": "photo",
       "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.27
-    },
-    "layout": {
-      "archetype": "long_form",
-      "hero_image": 0.0,
-      "text_image_layout": "beside",
-      "page_height_px": 4294.0,
-      "cta_count": 4.0,
-      "cta_above_fold": 0.5
-    },
-    "tone": {
-      "word_count": 475.0,
-      "readability_band": "hard",
-      "formality_score": 5.0,
-      "second_person_ratio": 0.457,
-      "urgency_markers": 0.5
-    },
-    "value_proposition": {
-      "primary_product": "Termijnrekening",
-      "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
-      "fab_level": "feature"
-    },
-    "marketing_principles": {
-      "aida_coverage": 3.0,
-      "persuasion_levers": [
-        "liking"
-      ],
-      "lever_count": 1.0
-    },
-    "signature": [
-      [
-        "avg_sentence_length",
-        -2.3676864549313565
-      ],
-      [
-        "images_have_alt_text",
-        -2.2710998958306754
-      ],
-      [
-        "aida_desire",
-        -2.2710998958306754
-      ]
-    ]
-  },
-  "belfius": {
-    "identity": {
-      "bank": "belfius",
-      "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
-    },
-    "palette": {
-      "dominant_colour": "#c8102e",
-      "brand_colour_share": 0.15250000000000002,
-      "accent_colour_count": 2.0,
-      "accent_locations": [
-        "text",
-        "imagery"
-      ],
-      "background_luminance": 0.966
-    },
-    "imagery": {
-      "image_count": 3.0,
-      "dominant_image_type": "photo",
-      "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.322
-    },
-    "layout": {
-      "archetype": "split_columns",
-      "hero_image": 0.0,
-      "text_image_layout": "beside",
-      "page_height_px": 4421.0,
-      "cta_count": 2.5,
-      "cta_above_fold": 0.5
-    },
-    "tone": {
-      "word_count": 769.0,
-      "readability_band": "hard",
-      "formality_score": 2.5,
-      "second_person_ratio": 0.42100000000000004,
-      "urgency_markers": 1.5
-    },
-    "value_proposition": {
-      "primary_product": "Termijnrekening",
-      "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
-      "fab_level": "feature"
-    },
-    "marketing_principles": {
-      "aida_coverage": 4.0,
-      "persuasion_levers": [
-        "authority"
-      ],
-      "lever_count": 1.0
-    },
-    "signature": [
-      [
-        "institutional_trust_signal_present",
-        2.8284271247461903
-      ],
-      [
-        "text_to_image_ratio",
-        2.197058184420448
-      ],
-      [
-        "word_count",
-        1.768966003265525
-      ]
-    ]
-  },
-  "bnp_paribas_fortis": {
-    "identity": {
-      "bank": "bnp_paribas_fortis",
-      "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
-    },
-    "palette": {
-      "dominant_colour": "#00915a",
-      "brand_colour_share": 0.0655,
-      "accent_colour_count": 3.0,
-      "accent_locations": [
-        "text",
-        "icons"
-      ],
-      "background_luminance": 1.0
-    },
-    "imagery": {
-      "image_count": 7.5,
-      "dominant_image_type": "photo",
-      "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.3265
-    },
-    "layout": {
-      "archetype": "split_columns",
-      "hero_image": 1.0,
-      "text_image_layout": "beside",
-      "page_height_px": 4754.0,
-      "cta_count": 4.5,
-      "cta_above_fold": 0.5
-    },
-    "tone": {
-      "word_count": 581.0,
-      "readability_band": "hard",
-      "formality_score": 3.0,
-      "second_person_ratio": 0.34299999999999997,
-      "urgency_markers": 1.5
-    },
-    "value_proposition": {
-      "primary_product": "Termijnrekening",
-      "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
-      "fab_level": "feature"
-    },
-    "marketing_principles": {
-      "aida_coverage": 4.0,
-      "persuasion_levers": [
-        "authority",
-        "social_proof"
-      ],
-      "lever_count": 2.0
-    },
-    "signature": [
-      [
-        "numeric_claim_count",
-        1.8116432546313532
-      ],
-      [
-        "readability_score",
-        -1.5938592255950679
-      ],
-      [
-        "clarity_score",
-        -1.5112193036696508
-      ]
-    ]
-  },
-  "bunq": {
-    "identity": {
-      "bank": "bunq",
-      "category": "challenger",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
-    },
-    "palette": {
-      "dominant_colour": "#3394ff",
-      "brand_colour_share": 0.262,
-      "accent_colour_count": 2.0,
-      "accent_locations": [
-        "imagery",
-        "background",
-        "buttons"
-      ],
-      "background_luminance": 0.209
-    },
-    "imagery": {
-      "image_count": 7.5,
-      "dominant_image_type": "illustration",
-      "people_present": 0.0,
       "animated": 1.0,
-      "image_area_share": 0.511
+      "image_area_share": 0.15
     },
     "layout": {
-      "archetype": "card_grid",
+      "archetype": null,
       "hero_image": 1.0,
-      "text_image_layout": "overlaid",
-      "page_height_px": 5429.5,
-      "cta_count": 8.0,
-      "cta_above_fold": 1.0
+      "text_image_layout": null,
+      "page_height_px": 2179.0,
+      "cta_count": 1.0,
+      "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 193.0,
+      "word_count": 718.0,
       "readability_band": "medium",
-      "formality_score": 1.5,
-      "second_person_ratio": 0.7895,
-      "urgency_markers": 1.5
+      "formality_score": null,
+      "second_person_ratio": 0.569,
+      "urgency_markers": 0.0
     },
     "value_proposition": {
-      "primary_product": "Savings vault",
+      "primary_product": "pension",
       "rate_shown": 1.0,
-      "rate_prominence": "above_fold",
+      "rate_prominence": null,
       "benefit_framing": "emotional",
       "fab_level": "benefit"
     },
     "marketing_principles": {
-      "aida_coverage": 4.0,
-      "persuasion_levers": [
-        "liking",
-        "social_proof"
-      ],
-      "lever_count": 2.0
+      "aida_coverage": null,
+      "persuasion_levers": [],
+      "lever_count": null
     },
     "signature": [
       [
-        "cta_count",
-        1.9081143036240564
+        "first_time_investor_targeting",
+        -1.7320508075688774
       ],
       [
-        "background_luminance",
-        -1.8687779452932316
+        "is_bundled_offer",
+        -1.7320508075688774
       ],
       [
-        "second_person_ratio",
-        1.8093119627827945
-      ]
-    ]
-  },
-  "crelan": {
-    "identity": {
-      "bank": "crelan",
-      "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
-    },
-    "palette": {
-      "dominant_colour": "#009640",
-      "brand_colour_share": 0.0875,
-      "accent_colour_count": 3.5,
-      "accent_locations": [
-        "text",
-        "icons"
-      ],
-      "background_luminance": 0.9624999999999999
-    },
-    "imagery": {
-      "image_count": 3.5,
-      "dominant_image_type": "photo",
-      "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.3185
-    },
-    "layout": {
-      "archetype": "long_form",
-      "hero_image": 0.0,
-      "text_image_layout": "beside",
-      "page_height_px": 4157.5,
-      "cta_count": 2.0,
-      "cta_above_fold": 0.5
-    },
-    "tone": {
-      "word_count": 588.5,
-      "readability_band": "hard",
-      "formality_score": 3.5,
-      "second_person_ratio": 0.4295,
-      "urgency_markers": 0.0
-    },
-    "value_proposition": {
-      "primary_product": "Termijnrekening",
-      "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
-      "fab_level": "feature"
-    },
-    "marketing_principles": {
-      "aida_coverage": 3.5,
-      "persuasion_levers": [
-        "liking",
-        "authority"
-      ],
-      "lever_count": 2.0
-    },
-    "signature": [
-      [
-        "aida_action",
-        -1.8708286933869704
-      ],
-      [
-        "urgency_marker_count",
-        -1.8107149208503708
-      ],
-      [
-        "accent_colour_count",
-        1.6499158227686106
-      ]
-    ]
-  },
-  "ing": {
-    "identity": {
-      "bank": "ing",
-      "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
-    },
-    "palette": {
-      "dominant_colour": "#ff6200",
-      "brand_colour_share": 0.13,
-      "accent_colour_count": 2.5,
-      "accent_locations": [
-        "text",
-        "icons",
-        "buttons",
-        "imagery"
-      ],
-      "background_luminance": 0.9775
-    },
-    "imagery": {
-      "image_count": 7.0,
-      "dominant_image_type": "photo",
-      "people_present": 1.0,
-      "animated": 1.0,
-      "image_area_share": 0.1995
-    },
-    "layout": {
-      "archetype": "hero_stacked",
-      "hero_image": 1.0,
-      "text_image_layout": "stacked",
-      "page_height_px": 4091.5,
-      "cta_count": 3.5,
-      "cta_above_fold": 0.5
-    },
-    "tone": {
-      "word_count": 478.5,
-      "readability_band": "medium",
-      "formality_score": 2.0,
-      "second_person_ratio": 0.546,
-      "urgency_markers": 0.5
-    },
-    "value_proposition": {
-      "primary_product": "Termijnrekening",
-      "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
-      "fab_level": "feature"
-    },
-    "marketing_principles": {
-      "aida_coverage": 4.0,
-      "persuasion_levers": [
-        "scarcity",
-        "authority"
-      ],
-      "lever_count": 2.0
-    },
-    "signature": [
-      [
-        "expat_cross_border_targeting",
-        2.8284271247461903
-      ],
-      [
-        "green_product_specific_benefit",
-        2.8284271247461903
-      ],
-      [
-        "first_person_plural_count",
-        2.383656473113981
+        "section_count",
+        1.6203829873338667
       ]
     ]
   },
@@ -436,70 +69,65 @@
     "identity": {
       "bank": "kbc",
       "category": "traditional",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
+      "pages_analysed": 1,
+      "product_family": "current_account_pack",
+      "language": "fr",
+      "captured": "2026-09-16 07:20:47.976622+00:00",
+      "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#00aeef",
-      "brand_colour_share": 0.107,
-      "accent_colour_count": 2.0,
-      "accent_locations": [
-        "text",
-        "icons"
-      ],
-      "background_luminance": 0.987
+      "dominant_colour": "#90806b",
+      "brand_colour_share": 0.0,
+      "accent_colour_count": 4.0,
+      "accent_locations": [],
+      "background_luminance": 0.298
     },
     "imagery": {
-      "image_count": 4.5,
+      "image_count": 6.0,
       "dominant_image_type": "photo",
       "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.3165
+      "animated": 1.0,
+      "image_area_share": 0.042
     },
     "layout": {
-      "archetype": "split_columns",
-      "hero_image": 0.0,
-      "text_image_layout": "beside",
-      "page_height_px": 4451.0,
+      "archetype": null,
+      "hero_image": 1.0,
+      "text_image_layout": null,
+      "page_height_px": 3772.0,
       "cta_count": 5.0,
-      "cta_above_fold": 1.0
+      "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 381.5,
-      "readability_band": "hard",
-      "formality_score": 3.5,
-      "second_person_ratio": 0.4575,
-      "urgency_markers": 1.5
+      "word_count": 2279.0,
+      "readability_band": "very_hard",
+      "formality_score": null,
+      "second_person_ratio": 0.944,
+      "urgency_markers": 0.0
     },
     "value_proposition": {
-      "primary_product": "Termijnrekening",
+      "primary_product": "Compte Base KBC",
       "rate_shown": 1.0,
-      "rate_prominence": "hero",
-      "benefit_framing": "rational",
+      "rate_prominence": null,
+      "benefit_framing": "mixed",
       "fab_level": "feature"
     },
     "marketing_principles": {
-      "aida_coverage": 3.5,
-      "persuasion_levers": [
-        "authority"
-      ],
-      "lever_count": 1.0
+      "aida_coverage": null,
+      "persuasion_levers": [],
+      "lever_count": null
     },
     "signature": [
       [
-        "avg_sentence_length",
-        1.4337082463630901
+        "fast_digital_onboarding_claim",
+        1.7320508075688774
       ],
       [
-        "persuasion_lever_count",
-        -1.2374368670764582
+        "has_comparison_table",
+        1.7320508075688774
       ],
       [
-        "hero_image_area_ratio",
-        -1.160684206463496
+        "above_fold_element_count",
+        1.678875660012193
       ]
     ]
   },
@@ -507,71 +135,65 @@
     "identity": {
       "bank": "n26",
       "category": "challenger",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
+      "pages_analysed": 1,
+      "product_family": "current_account_pack",
+      "language": "fr",
+      "captured": "2026-09-16 07:20:54.474464+00:00",
+      "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#36a18b",
-      "brand_colour_share": 0.20350000000000001,
-      "accent_colour_count": 2.0,
-      "accent_locations": [
-        "imagery",
-        "buttons"
-      ],
-      "background_luminance": 0.96
+      "dominant_colour": "#045e58",
+      "brand_colour_share": 0.014,
+      "accent_colour_count": 4.0,
+      "accent_locations": [],
+      "background_luminance": 0.119
     },
     "imagery": {
-      "image_count": 8.0,
+      "image_count": 29.0,
       "dominant_image_type": "render_3d",
       "people_present": 0.0,
       "animated": 1.0,
-      "image_area_share": 0.48050000000000004
+      "image_area_share": 0.587
     },
     "layout": {
-      "archetype": "card_grid",
+      "archetype": null,
       "hero_image": 1.0,
-      "text_image_layout": "overlaid",
-      "page_height_px": 5548.0,
-      "cta_count": 6.0,
-      "cta_above_fold": 1.0
+      "text_image_layout": null,
+      "page_height_px": 8005.0,
+      "cta_count": 11.0,
+      "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 258.0,
-      "readability_band": "easy",
-      "formality_score": 1.5,
-      "second_person_ratio": 0.6955,
-      "urgency_markers": 1.0
+      "word_count": 1774.0,
+      "readability_band": "hard",
+      "formality_score": null,
+      "second_person_ratio": 0.873,
+      "urgency_markers": 0.0
     },
     "value_proposition": {
-      "primary_product": "Savings vault",
+      "primary_product": "N26 Standard, le compte bancaire gratuit",
       "rate_shown": 1.0,
-      "rate_prominence": "above_fold",
-      "benefit_framing": "emotional",
+      "rate_prominence": null,
+      "benefit_framing": "mixed",
       "fab_level": "benefit"
     },
     "marketing_principles": {
-      "aida_coverage": 4.0,
-      "persuasion_levers": [
-        "social_proof",
-        "liking"
-      ],
-      "lever_count": 2.0
+      "aida_coverage": null,
+      "persuasion_levers": [],
+      "lever_count": null
     },
     "signature": [
       [
-        "question_count",
-        2.4000768036865963
+        "mentions_loyalty_or_referral",
+        1.7320508075688774
       ],
       [
-        "has_comparison_table",
-        -1.944543648263006
+        "hidden_conditions_behind_free_claim",
+        1.7320508075688774
       ],
       [
-        "rate_value_pct",
-        1.780511242613987
+        "people_present",
+        -1.7320508075688774
       ]
     ]
   },
@@ -579,73 +201,65 @@
     "identity": {
       "bank": "revolut",
       "category": "challenger",
-      "pages_analysed": 2,
-      "product_family": "term_account",
-      "language": "nl",
-      "captured": "2026-09-15 09:00:00+00:00",
-      "data_source": "synthetic_fixture"
+      "pages_analysed": 1,
+      "product_family": "current_account_pack",
+      "language": "fr",
+      "captured": "2026-09-16 07:21:18.871780+00:00",
+      "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#0666eb",
-      "brand_colour_share": 0.309,
-      "accent_colour_count": 1.0,
-      "accent_locations": [
-        "imagery",
-        "background",
-        "buttons"
-      ],
-      "background_luminance": 0.20850000000000002
+      "dominant_colour": "#ffffff",
+      "brand_colour_share": 0.0,
+      "accent_colour_count": 4.0,
+      "accent_locations": [],
+      "background_luminance": 0.973
     },
     "imagery": {
-      "image_count": 8.5,
-      "dominant_image_type": "render_3d",
-      "people_present": 0.0,
+      "image_count": 10.0,
+      "dominant_image_type": "illustration",
+      "people_present": 1.0,
       "animated": 1.0,
-      "image_area_share": 0.5765
+      "image_area_share": 0.243
     },
     "layout": {
-      "archetype": "card_grid",
+      "archetype": null,
       "hero_image": 1.0,
-      "text_image_layout": "overlaid",
-      "page_height_px": 5527.0,
-      "cta_count": 6.0,
-      "cta_above_fold": 1.0
+      "text_image_layout": null,
+      "page_height_px": 6615.0,
+      "cta_count": 7.0,
+      "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 162.5,
-      "readability_band": "medium",
-      "formality_score": 1.0,
-      "second_person_ratio": 0.663,
-      "urgency_markers": 2.0
+      "word_count": 1352.0,
+      "readability_band": "hard",
+      "formality_score": null,
+      "second_person_ratio": 0.759,
+      "urgency_markers": 1.0
     },
     "value_proposition": {
-      "primary_product": "Savings vault",
+      "primary_product": "Compte courant",
       "rate_shown": 1.0,
-      "rate_prominence": "above_fold",
-      "benefit_framing": "emotional",
+      "rate_prominence": null,
+      "benefit_framing": "mixed",
       "fab_level": "benefit"
     },
     "marketing_principles": {
-      "aida_coverage": 3.0,
-      "persuasion_levers": [
-        "social_proof",
-        "scarcity",
-        "liking"
-      ],
-      "lever_count": 3.0
+      "aida_coverage": null,
+      "persuasion_levers": [],
+      "lever_count": null
     },
     "signature": [
       [
-        "above_fold_element_count",
-        2.0083160441856087
+        "expat_cross_border_targeting",
+        1.7320508075688774
       ],
       [
-        "persuasion_lever_count",
-        1.944543648263006
+        "institutional_trust_signal_present",
+        1.7320508075688774
       ],
       [
-        "accent_colour_count",
-        -1.8856180831641267
+        "urgency_marker_count",
+        1.7320508075688774
       ]
     ]
   }
