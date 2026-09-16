@@ -148,6 +148,90 @@ def render_accounting(accounting: dict) -> str:
     return "\n".join(lines)
 
 
+@dataclass
+class FamilyScope:
+    """Which product family the comparison is restricted to, and what it costs.
+
+    steph 16/09. DR-04 says comparisons are only valid within one product family:
+    a mortgage page and a current-account page differ because the PRODUCTS
+    differ, not because the banks communicate differently. Every run so far
+    pooled three families and carried that as a limitation. It does not have to
+    be a limitation - it can be a filter.
+    """
+
+    family: str | None
+    banks: list[str]
+    traditional: list[str]
+    challenger: list[str]
+    dropped_banks: list[str]
+    pages: int
+
+    @property
+    def comparable(self) -> bool:
+        """Both sides of the traditional/challenger question need a bank in them."""
+        return bool(self.traditional) and bool(self.challenger)
+
+    def render(self) -> str:
+        if self.family is None:
+            return ("Comparing across ALL product families pooled together. Any cross-bank "
+                    "difference is confounded by product (DR-04) - pass --product-family to fix.")
+        lines = [
+            f"Restricted to product family '{self.family}': {self.pages} page(s), "
+            f"{len(self.banks)} bank(s).",
+            f"  traditional: {', '.join(self.traditional) or 'none'}",
+            f"  challenger : {', '.join(self.challenger) or 'none'}",
+        ]
+        if self.dropped_banks:
+            lines.append(f"  dropped (no page in this family): {', '.join(self.dropped_banks)}")
+        if not self.comparable:
+            lines.append("  NOT comparable: one side of the traditional/challenger split is empty.")
+        return "\n".join(lines)
+
+
+def family_options(df: pd.DataFrame) -> pd.DataFrame:
+    """Which families could be compared like-for-like, ranked by usefulness.
+
+    A family with banks on only one side of the split cannot answer BO-02, so
+    the team can see at a glance which family is worth collecting more of.
+    """
+    if "product_family" not in df.columns:
+        return pd.DataFrame()
+    rows = []
+    for family, group in df.groupby("product_family", observed=True):
+        banks = group.drop_duplicates("bank")
+        traditional = sorted(banks[banks["bank_category"] == "traditional"]["bank"])
+        challenger = sorted(banks[banks["bank_category"] == "challenger"]["bank"])
+        rows.append({
+            "product_family": family,
+            "pages": len(group),
+            "banks": len(banks),
+            "traditional": len(traditional),
+            "challenger": len(challenger),
+            "comparable": bool(traditional and challenger),
+        })
+    out = pd.DataFrame(rows)
+    return out.sort_values(["comparable", "banks"], ascending=[False, False]).reset_index(drop=True)
+
+
+def scope_to_family(df: pd.DataFrame, family: str | None) -> tuple[pd.DataFrame, FamilyScope]:
+    """Filter to one product family and describe what that leaves."""
+    all_banks = sorted(df["bank"].dropna().unique()) if "bank" in df.columns else []
+    if family is None:
+        return df, FamilyScope(None, all_banks, [], [], [], len(df))
+
+    subset = df[df["product_family"] == family]
+    banks = subset.drop_duplicates("bank")
+    kept = sorted(banks["bank"])
+    return subset, FamilyScope(
+        family=family,
+        banks=kept,
+        traditional=sorted(banks[banks["bank_category"] == "traditional"]["bank"]),
+        challenger=sorted(banks[banks["bank_category"] == "challenger"]["bank"]),
+        dropped_banks=sorted(set(all_banks) - set(kept)),
+        pages=len(subset),
+    )
+
+
 def comparable_features(
     fd: FeatureDictionary,
     df: pd.DataFrame,

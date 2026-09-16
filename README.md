@@ -46,7 +46,10 @@ python3 scripts/check_schema_freeze.py    # enforce the Day 2 freeze rule
 python3 scripts/run_collection.py --config scripts/collection_targets.yaml --method headless
 python3 scripts/rubric_sheet.py emit      # scoring sheets for the 13 human-scored features
 python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
-python3 scripts/run_analysis.py --dataset data/processed/campaigns.csv --no-strict
+python3 scripts/rubric_sheet.py model     # model scores as a third rater
+python3 scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv
+python3 scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv \
+        --product-family auto --no-strict
 python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
 python3 -m pytest tests/ -q               # 158 tests
 ```
@@ -124,6 +127,29 @@ questions that makes unanswerable; if the rubric is unscored it says so. A
 limitation nobody can quietly drop on Day 9 is worth more than a well-written
 paragraph.
 
+## Compare like for like, not everything at once
+
+`--product-family current_account_pack` (or `auto`) restricts the comparison to
+one product family. Pooling families confounds every cross-bank difference with
+the product — a mortgage page and a current-account page differ because the
+*products* differ (DR-04). Every run carried that as a limitation; it did not
+have to be one. The runner prints which families are comparable, and refuses to
+continue if one side of the traditional/challenger split is empty.
+
+## The model scores as a third rater, never as a pre-fill
+
+`scripts/rubric_sheet.py model` scores the 9 text-inferable rubric features with
+the pinned model into its **own** sheet. It never touches the human sheets —
+a pre-filled sheet gets rubber-stamped, and the NFR-05 agreement figure would
+then measure how persuasive the model's guess was rather than how well two
+people agree. As a separate rater, model-vs-human agreement is measurable with
+the same machinery, which is what FR-18 asks for.
+
+The 4 vision-only features (`accent_locations`, `text_image_layout`,
+`layout_archetype`, `mobile_first_design_signal`) stay blank and stay human: the
+pinned model has no vision and the extractor only sends text, so scoring them
+would be guessing from the wrong evidence.
+
 ## Integration with the rest of the team
 
 **Rubric scoring is one workflow, not two.** `scripts/rubric_sheet.py report`
@@ -187,6 +213,8 @@ src/comparator/
   rubric.py                      scoring sheets, merge, inter-rater agreement
   limitations.py                 D-09, generated from the dataset
   trends.py                      bridge to Dan's Google Trends benchmark
+  rubric_model.py                model as a third rater (text-inferable only)
+  derive.py                      recompute derived features after any change
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain

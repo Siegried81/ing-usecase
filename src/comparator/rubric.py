@@ -141,7 +141,14 @@ def merge_scores(
         out[feature.name] = out["page_id"].map(
             lambda pid, name=feature.name: consensus.get(pid, {}).get(name, pd.NA)
         )
-    return out
+
+    # steph 16/09: merging rubric scores changes the inputs of derived features
+    # (aida_coverage_score, persuasion_lever_count). Nothing recomputed them, so
+    # the merged dataset failed validation on two features whose sources were
+    # sitting in the same row.
+    from comparator.derive import recompute_derived
+
+    return recompute_derived(out, fd)
 
 
 @dataclass

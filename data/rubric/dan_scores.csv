@@ -4,3 +4,4 @@ dan,n26_current_account_pack_fr_01,n26,challenger,current_account_pack,fr,https:
 dan,belfius_other_fr_01,belfius,traditional,other,fr,https://www.belfius.be/retail/fr/moments-cles/pension/index.aspx,data/raw/belfius/other_fr_01.png,ok,,,,,,,,,,,,,
 dan,ing_savings_account_fr_01,ing,traditional,savings_account,fr,https://www.ing.be/fr/particuliers/epargner,data/raw/ing/savings_account_fr_01.png,ok,,,,,,,,,,,,,
 dan,revolut_current_account_pack_fr_01,revolut,challenger,current_account_pack,fr,https://www.revolut.com/fr-BE/bank-account/,data/raw/revolut/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,
+dan,ing_current_account_pack_fr_02,ing,traditional,current_account_pack,fr,https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-more,data/raw/ing/current_account_pack_fr_02.png,ok,,,,,,,,,,,,,
