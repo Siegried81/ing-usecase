@@ -8,7 +8,7 @@
 **Grain** One row per campaign page per capture date.  
 **Freeze target** End of Day 2 - Tuesday 15 September 2026
 
-97 features — 62 core, 35 extended.
+101 features — 66 core, 35 extended.
 
 ## How to read the tables
 
@@ -25,7 +25,7 @@
 
 ## Provenance & compliance
 
-*DR-02, DR-05, LC-01* — 14 features
+*DR-02, DR-05, LC-01* — 18 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -37,12 +37,16 @@
 | `url` | string | automatic | cross_language | core | Full source URL as fetched. |
 | `language` | categorical<br>`nl` · `fr` · `en` | automatic | cross_language | core | Language of the page version captured.<br>*Controls every within_language feature. Fixing one language is decision 2 in the plan.* |
 | `captured_at` | datetime | automatic | cross_language | core | UTC timestamp of the fetch. Every conclusion is valid for this date only. |
-| `collection_method` | categorical<br>`static_fetch` · `headless_render` | automatic | cross_language | core | How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02). |
+| `collection_method` | categorical<br>`static_fetch` · `headless_render` · `manual_capture` | automatic | cross_language | core | How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02). manual_capture is a page a person opened in a normal browser and saved, used where an edge/CDN declines automated traffic - the content is identical, but there is no HTTP status of our own and the capture time is the person's, not the pipeline's. |
 | `robots_allowed` | boolean | automatic | cross_language | core | Whether robots.txt allowed this path for the user agent used, checked before fetching. Carried in the row so compliance evidence travels with the data (LC-01).<br>*A row with robots_allowed = false must never exist. The validator treats it as a hard error.* |
 | `snapshot_html_path` | string | automatic | cross_language | core | Relative path to the stored raw HTML snapshot. |
 | `screenshot_path` | string | automatic | cross_language | core | Relative path to the stored full-page screenshot. |
 | `data_source` | categorical<br>`real` · `synthetic_fixture` · `llm_generated` | automatic | cross_language | core | Whether the row is a real capture or a synthetic fixture row. Guards against fixture data reaching a finding.<br>*llm_generated marks a campaign produced in the stretch step, scored by the same extractor.* |
 | `extraction_model` | string | automatic | cross_language | core | Provider and model that produced the model_assisted fields for this row, as "provider/model". Blank for rows with no model-assisted features.<br>*Comparisons are only fair when every bank was labelled by the same model. A dataset mixing models is not invalid, but the mix has to be reported as a limitation (D-09) rather than discovered afterwards.* |
+| `capture_quality` | categorical<br>`ok` · `suspect` · `unusable` | automatic | cross_language | core | Whether the captured page looks like a real campaign page. 'unusable' means an error/maintenance page or a shell that never rendered its content, and the row must be excluded from analysis.<br>*Deliberately conservative - a genuinely short challenger page is 'suspect', not 'unusable'. Only unambiguous cases are excluded automatically.* |
+| `http_status` | integer<br>[100, 599] | automatic | cross_language | core | HTTP status returned when the page was fetched. Anything other than 2xx is not a campaign page. |
+| `shadow_hosts_flattened` | integer<br>[0, ∞] | automatic | cross_language | core | Number of shadow roots inlined into the HTML before extraction. Above zero means the page is built from web components and would have been largely invisible to a light-DOM-only extractor. |
+| `capture_quality_note` | string | automatic | cross_language | core | Why capture_quality got that verdict, in words, for the limitations section. |
 
 ## Tone & messaging
 
@@ -143,7 +147,7 @@
 | `palette_hex` | list[string] | automatic | cross_language | core | Top five colours by pixel share, most frequent first. |
 | `brand_colour_share` | float<br>[0, 1] | automatic | cross_language | core | Share of coloured pixels within tolerance of the bank's primary brand colour.<br>*The deck's claim that ING uses "not only orange" is measurable here.* |
 | `accent_colour_count` | integer<br>[0, ∞] | automatic | cross_language | extended | Number of distinct accent colours used for emphasis. |
-| `accent_locations` | list[string]<br>`text` · `icons` · `imagery` · `background` · `buttons` | rubric | cross_language | core | Where the brand accent actually appears.<br>*Directly tests the deck's distinction - Fortis uses green "in text and icons, not in pictures", Belfius uses red "in text and pictures".* |
+| `accent_locations` | list[string]<br>`text` · `icons` · `imagery` · `background` · `buttons` | rubric | cross_language | core | Where the brand accent actually appears.<br>*Directly tests the deck's distinction - Fortis uses green "in text and icons, not in pictures", Belfius uses red "in text and pictures". sieg 15/09: this is a perceptual judgement call, independent from the automatic brand_colour_share (strict pixel-distance match on the hero image only). The two are expected to disagree sometimes - e.g. a human says "yes, accent in imagery" for a subtle tint that brand_colour_share's Euclidean tolerance doesn't count. Do not try to reconcile them; report both, a mismatch between "looks branded" and "measures as branded" is itself a finding.* |
 | `background_luminance` | float<br>[0, 1] | automatic | cross_language | core | Mean relative luminance of the page background. 0 = black, 1 = white.<br>*Separates dark-themed challengers (Revolut "deep blue and dark") from white incumbent pages.* |
 | `cta_contrast_ratio` | float<br>[1, 21] | automatic | cross_language | extended | WCAG contrast ratio between the primary call-to-action and its background. |
 
@@ -162,15 +166,15 @@
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
 | `text_to_image_ratio_band` | categorical<br>`image_heavy` · `balanced` · `text_heavy` | derived | cross_language | core | text_to_image_ratio bucketed into fixed-threshold bands, so it can be compared across languages.<br>*sieg 14/09 - same caveat as word_count_band; also inherits the text_to_image_ratio approximation noted in collection/scraper.py for static_fetch rows.* |
-| `page_height_px` | integer<br>[0, ∞] | automatic | cross_language | core | Full rendered page height at a fixed 1440x900 viewport.<br>*Viewport must be identical for every capture or this feature is meaningless.* |
+| `page_height_px` | integer<br>[0, ∞] | automatic | cross_language | core | Full rendered page height at a fixed 1440x900 viewport.<br>*Viewport must be identical for every capture or this feature is meaningless. steph 16/09: widened to nullable. A manually saved capture (collection_method = manual_capture) carries a VIEWPORT screenshot, not a full-page one, so the page height genuinely cannot be measured from it - Siegried's saves are ~1,000px tall for pages we measure live at 12,000px. Deriving a height from them would be inventing one. Blank is the honest value, and the feature accounting already drops a feature that is missing for some bank.* |
 | `section_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct content blocks on the page. |
 | `cta_count` | integer<br>[0, ∞] | automatic | cross_language | core | Number of distinct call-to-action buttons or links. |
 | `cta_above_fold` | boolean | automatic | cross_language | core | Whether at least one call to action is visible without scrolling. |
-| `text_image_layout` | categorical<br>`beside` · `stacked` · `overlaid` | rubric | cross_language | core | How the dominant pattern relates text and image: side by side (beside), one above the other (stacked), or text written directly on top of the image (overlaid, e.g. a full-bleed hero photo with a headline over it).<br>*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other".* |
+| `text_image_layout` | categorical<br>`beside` · `stacked` · `overlaid` | rubric | cross_language | core | How the dominant pattern relates text and image: side by side (beside), one above the other (stacked), or text written directly on top of the image (overlaid, e.g. a full-bleed hero photo with a headline over it).<br>*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other". sieg 15/09: no "no_image" value on purpose - a page with no image at all leaves this field null (nullable: true), it is not forced into one of the three categories above.* |
 | `text_to_image_ratio` | float<br>[0, ∞] | automatic | within_language | core | Text area divided by image area in the rendered page. |
 | `above_fold_element_count` | integer<br>[0, ∞] | automatic | cross_language | extended | Number of distinct interactive or content elements visible without scrolling. |
 | `has_comparison_table` | boolean | automatic | cross_language | extended | Whether the page contains a product comparison table. |
-| `layout_archetype` | categorical<br>`hero_stacked` · `split_columns` · `card_grid` · `long_form` | rubric | cross_language | core | Overall structural pattern of the page. |
+| `layout_archetype` | categorical<br>`hero_stacked` · `split_columns` · `card_grid` · `long_form` | rubric | cross_language | core | Overall structural pattern of the page.<br>*sieg 15/09: real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.* |
 | `mobile_first_design_signal` | boolean | rubric | cross_language | extended | Whether the page's visual design reads as built mobile-first (single-column cards, large tap targets, minimal above-fold density) rather than desktop-first (multi-column, hover-dependent, dense), judged from the desktop screenshot. Not a responsive/viewport measurement - this project only captures one fixed viewport. |
 
 ### Rubric — `text_image_layout`

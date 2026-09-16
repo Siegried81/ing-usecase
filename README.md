@@ -24,7 +24,7 @@ for the current status of each bank.
 
 | Deliverable | State |
 | --- | --- |
-| Feature dictionary v0.1 (D-03) | frozen (Day 2) — 97 features, `feature_dictionary.frozen.yaml` in sync |
+| Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — 101 features, `feature_dictionary.frozen.yaml` in sync |
 | Dataset schema + validator (D-04) | built and tested |
 | Analysis skeleton (D-05) | runs end to end on fixture data |
 | Bank profile cards | generated, 9 banks (on fixture data) |
@@ -51,7 +51,7 @@ python3 scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv
 python3 scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv \
         --product-family auto --no-strict
 python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
-python3 -m pytest tests/ -q               # 158 tests
+python3 -m pytest tests/ -q               # 259 tests
 ```
 
 Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
@@ -75,8 +75,8 @@ Each feature declares:
   This is what determines how far a value can be trusted.
 - **comparability** — `cross_language`, `within_language` (word counts and
   readability cannot cross NL/FR/EN), or `within_capture_window` (rates move).
-- **tier** — `core` is the Day 6 MVP minimum (53 features); `extended` is added
-  only after the gate passes (14 features).
+- **tier** — `core` is the Day 6 MVP minimum (66 features); `extended` is added
+  only after the gate passes (35 features).
 
 **Freeze rule:** after the Day 2 freeze, columns may be *added* but never renamed
 or removed without all three of us agreeing. The analysis code depends on them.
@@ -252,7 +252,7 @@ scripts/
   run_generation.py              CLI for step 5 (generation.py)
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
-tests/                           124 tests
+tests/                           259 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — wiped and regenerated on every

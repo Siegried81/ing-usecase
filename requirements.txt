@@ -21,5 +21,7 @@ Pillow==12.3.0
 # After installing, also run: python3 -m playwright install chromium
 playwright==1.57.0
 
-# sieg 16/09: loads .env into the environment.
-python-dotenv==1.0.1
+# sieg 16/09: loads .env into the environment. Pinned to 1.2.2, not 1.0.1 -
+# GHSA-mf9w-mj56-hr94 (moderate), fixed upstream in 1.2.2. A merge briefly
+# reverted this pin; re-fixed here, same version as before.
+python-dotenv==1.2.2
