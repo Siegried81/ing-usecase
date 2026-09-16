@@ -118,6 +118,14 @@ No domain has been excluded on compliance grounds so far.
 - **Public repository / public competitor assets** — treated as internal
   only per Q-05; no public redistribution of competitor screenshots, HTML or
   brand assets outside the team.
+- **English as a third capture language** — not excluded on validity grounds
+  (checked: ING's English site is a genuine full mirror of the French one,
+  same packs, same pricing, same promos — not an expat-only subset). Held
+  back purely on capacity: a third language triples the manual rubric
+  scoring workload (13 features × banks × language), and that scoring is
+  already the single blocking item before Friday. Dutch was added instead —
+  same reasoning applies (same audience, same offer), and two languages was
+  judged the right size for the time available.
 
 ## 5. What we considered acceptable, and why
 

@@ -49,3 +49,15 @@ pages:
     page_role: campaign_landing
     url: "https://www.revolut.com/fr-BE/bank-account/"
     language: fr
+
+  # sieg 16/09: ING's current-account pack page, alongside the existing
+  # savings_account capture - gives a second ING product_family that is
+  # directly like-for-like (DR-04) with KBC/N26/Revolut's current_account_pack
+  # pages, rather than only the cross-family savings comparison. ing.be
+  # robots.txt only disallows /video (see D-01) - this path isn't affected.
+  - bank: ing
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-more"
+    language: fr
