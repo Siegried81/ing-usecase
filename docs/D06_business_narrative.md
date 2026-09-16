@@ -64,6 +64,31 @@ noisy to a real visitor is exactly the kind of question this project cannot
 answer alone (no performance data) — but it is now a precise, testable one
 instead of a vague impression.
 
+## 5. Challengers own the screen, traditional banks own the word count
+
+Market-wide, not just ING: traditional banks' pages average 0.91 background
+luminance (near-white); challengers average 0.56 — a visibly darker register.
+Challenger hero images fill 98% of the visible screen on average, against
+35% for traditional banks. On the other side, traditional banks write more
+than double the words of challengers (3,430 vs 1,685) and ask nearly five
+times as many questions in their copy.
+
+**What it means.** This isn't a couple of banks happening to differ — it's
+two distinct design languages. Traditional banks argue in words; challengers
+argue in screen space. (Sample: 2 banks per group, current-account pages
+only — descriptive, not a market-wide statistical claim; see D-07 for the
+full caveat.)
+
+## 6. ING doesn't just out-talk challengers — it out-talks its own category
+
+Insight 1 compared ING to all peers. Against traditional banks specifically,
+the average is already high — 3,430 words. ING's 4,217 sits above even that
+elevated bar.
+
+**What it means.** The gap isn't "ING is a traditional bank, and traditional
+banks write more." ING writes more than the traditional norm itself. Whatever
+is driving the length, it isn't simply category convention.
+
 ---
 
 ## What ties these together

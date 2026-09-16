@@ -136,3 +136,93 @@ def test_weak_agreement_is_called_out(df, fd):
     report = agreement([_scored(df, fd, "a", 1, "card_grid"),
                         _scored(df, fd, "b", 5, "long_form")], fd)
     assert "Weak agreement" in report.render()
+
+
+# -----------------------------------------------------------------------------
+# sieg 16/09: Cohen's kappa - each case below is hand-computed in the
+# function's own docstring reasoning, not just "some plausible number".
+def _pair_sheet(rater: str, page_ids: list[str], feature: str, values: list) -> pd.DataFrame:
+    return pd.DataFrame({"page_id": page_ids, "rater": rater, feature: values})
+
+
+def test_kappa_is_one_for_perfect_agreement():
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3", "p4", "p5"]
+    a = _pair_sheet("a", pages, "formality_score", [1, 2, 3, 4, 5])
+    b = _pair_sheet("b", pages, "formality_score", [1, 2, 3, 4, 5])
+    report = kappa_agreement([a, b])
+    row = report.table.set_index("feature").loc["formality_score"]
+    assert row["kappa"] == 1.0
+
+
+def test_kappa_is_zero_at_chance_level():
+    """Hand-computed: A/A, A/B, B/A, B/B with matched 50/50 marginals gives
+    exactly 0 - observed disagreement equals what the marginals predict."""
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3", "p4"]
+    a = _pair_sheet("a", pages, "layout_archetype", ["hero_stacked", "hero_stacked", "long_form", "long_form"])
+    b = _pair_sheet("b", pages, "layout_archetype", ["hero_stacked", "long_form", "hero_stacked", "long_form"])
+    report = kappa_agreement([a, b])
+    row = report.table.set_index("feature").loc["layout_archetype"]
+    assert row["kappa"] == 0.0
+
+
+def test_kappa_is_negative_for_systematic_opposite_disagreement():
+    """Hand-computed: raters always pick the OTHER category - worse than
+    chance, kappa = -1 exactly, given matched 50/50 marginals."""
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3", "p4"]
+    a = _pair_sheet("a", pages, "layout_archetype", ["hero_stacked", "hero_stacked", "long_form", "long_form"])
+    b = _pair_sheet("b", pages, "layout_archetype", ["long_form", "long_form", "hero_stacked", "hero_stacked"])
+    report = kappa_agreement([a, b])
+    row = report.table.set_index("feature").loc["layout_archetype"]
+    assert row["kappa"] == -1.0
+
+
+def test_kappa_needs_at_least_two_raters():
+    from comparator.rubric import kappa_agreement
+
+    report = kappa_agreement([_pair_sheet("a", ["p1", "p2"], "formality_score", [1, 2])])
+    assert report.table.empty
+    assert "Not enough" in report.render()
+
+
+def test_kappa_covers_every_rater_pair_not_just_the_first_two():
+    """The model is just a third rater - same function, no special case."""
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3", "p4"]
+    a = _pair_sheet("siegried", pages, "layout_archetype", ["hero_stacked", "hero_stacked", "long_form", "long_form"])
+    b = _pair_sheet("stephane", pages, "layout_archetype", ["hero_stacked", "hero_stacked", "long_form", "long_form"])
+    c = _pair_sheet("model", pages, "layout_archetype", ["hero_stacked", "long_form", "hero_stacked", "long_form"])
+    report = kappa_agreement([a, b, c])
+    pairs = {frozenset(p.split(" vs ")) for p in report.table["raters"]}
+    assert pairs == {
+        frozenset({"siegried", "stephane"}),
+        frozenset({"siegried", "model"}),
+        frozenset({"stephane", "model"}),
+    }
+
+
+def test_kappa_flags_weak_pairs_in_render():
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3", "p4"]
+    a = _pair_sheet("a", pages, "layout_archetype", ["hero_stacked", "hero_stacked", "long_form", "long_form"])
+    b = _pair_sheet("b", pages, "layout_archetype", ["long_form", "long_form", "hero_stacked", "hero_stacked"])
+    assert "Below 0.4" in kappa_agreement([a, b]).render()
+
+
+def test_kappa_is_undefined_not_fabricated_when_every_rater_agrees_on_one_value():
+    """Zero variance means kappa's denominator is 0 - reporting 1.0 here
+    would be a fabricated "perfect agreement" from a case that proves nothing."""
+    from comparator.rubric import kappa_agreement
+
+    pages = ["p1", "p2", "p3"]
+    a = _pair_sheet("a", pages, "formality_score", [3, 3, 3])
+    b = _pair_sheet("b", pages, "formality_score", [3, 3, 3])
+    report = kappa_agreement([a, b])
+    assert report.table.empty

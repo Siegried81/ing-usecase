@@ -23,6 +23,7 @@ from comparator.rubric_model import score_dataset
 from comparator.rubric import (
     agreement,
     disagreement_table,
+    kappa_agreement,
     make_sheet,
     merge_scores,
     read_sheets,
@@ -117,6 +118,8 @@ def main() -> int:
 
     if args.command == "agreement":
         print(agreement(sheets, fd).render())
+        print()
+        print(kappa_agreement(sheets, fd).render())
         return 0
 
     if args.command == "report":
