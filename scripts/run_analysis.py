@@ -41,6 +41,7 @@ from comparator.limitations import assess, render as render_limitations
 from comparator.profiles import build_all, render_all_markdown
 from comparator.report import build_chart_report
 from comparator.schema import read_dataset
+from comparator.trends import context_or_none
 
 DEFAULT_DATASET = Path("data/processed/campaigns.csv")
 DEFAULT_OUTDIR = Path("outputs")
@@ -63,6 +64,11 @@ def main() -> int:
     parser.add_argument("--focus", default="ing")
     parser.add_argument("--clusters", type=int, default=2)
     parser.add_argument("--top-n", type=int, default=12)
+    parser.add_argument(
+        "--trends-dir", type=Path, default=None,
+        help="Dan's kbc-ing-benchmark/export directory. Adds search-interest CONTEXT "
+             "for ING/KBC/CBC. Skipped silently when absent.",
+    )
     parser.add_argument(
         "--no-strict", action="store_true",
         help="continue when the dataset is incomplete. Real collected data fails strict "
@@ -209,7 +215,7 @@ def main() -> int:
     (args.outdir / "charts.md").write_text(companion, encoding="utf-8")
     print(f"  wrote {args.outdir / 'charts.md'} ({len(companion.splitlines())} lines)")
 
-    # --- 11. persuasion levers ------------------------------------------------
+    # --- 12. persuasion levers ------------------------------------------------
     # --- 10. D-09 limitations ------------------------------------------------
     # steph 16/09: I am R on D-09. Generated from the dataset so an inconvenient
     # limitation cannot be quietly forgotten while writing the deck on Day 9.
@@ -226,7 +232,24 @@ def main() -> int:
             print(f"  [{label}] {flat[:150]}")
     print(f"  -> {args.outdir / 'limitations.md'}")
 
-    _header("11. Persuasion levers by category")
+    # --- 11. search-interest context (Dan's Google Trends benchmark) ---------
+    # steph 16/09: CONTEXT, never an outcome. See src/comparator/trends.py for
+    # why joining this to page features would be the worst error available to us.
+    _header("11. Search interest context (Dan's trends benchmark)")
+    trends_ctx = (context_or_none(banks_df, args.trends_dir) if args.trends_dir
+                  else context_or_none(banks_df))
+    if trends_ctx is None:
+        print("  exports not present - skipped. Nothing else is affected.")
+    else:
+        print(trends_ctx.render())
+        (args.outdir / "search_interest_context.md").write_text(
+            "# Search interest context\n\n"
+            "> Google Trends, via Dan's kbc-ing-benchmark. **Context, not performance.**\n"
+            "> This is what people searched for, not what any campaign achieved, and the\n"
+            "> pages captured are today's pages - not the pages live during an older spike.\n\n"
+            "```\n" + trends_ctx.render() + "\n```\n", encoding="utf-8")
+
+    _header("12. Persuasion levers by category")
     levers = lever_frequency(banks_df)
     if not levers.empty:
         print(levers.to_string())

@@ -124,6 +124,26 @@ questions that makes unanswerable; if the rubric is unscored it says so. A
 limitation nobody can quietly drop on Day 9 is worth more than a well-written
 paragraph.
 
+## Integration with the rest of the team
+
+**Rubric scoring is one workflow, not two.** `scripts/rubric_sheet.py report`
+renders Siegried's `docs/day5_scoring_disagreement_template.md` **from** the
+completed CSV sheets, so the agreement figure that goes in the deck is computed
+rather than retyped. The "why" and "rubric fix" columns stay empty on purpose —
+those are the judgements the session exists to produce.
+
+**Search interest is context, never an outcome.** `src/comparator/trends.py`
+joins Dan's `kbc-ing-benchmark` Google Trends exports to the campaign dataset on
+bank + product family (`--trends-dir`), and degrades to nothing when the exports
+are absent. It covers ING, KBC and CBC only, it measures what people searched
+for rather than what a campaign achieved, and the pages captured are today's
+pages — so it does **not** make this a performance study. The module refuses to
+emit a per-page number for exactly that reason: a per-page column would end up
+regressed against page features and called performance.
+
+**One `.env` mechanism.** `scripts/_bootstrap.py` now uses `python-dotenv`
+(Siegried's dependency) instead of the hand-rolled parser it started with.
+
 ## Step 5 — campaign generation (stretch)
 
 `scripts/run_generation.py` derives a numeric target from the data (ING's own
@@ -166,6 +186,7 @@ src/comparator/
   collection/                    compliance, scraper, headless render, LLM, quality gate
   rubric.py                      scoring sheets, merge, inter-rater agreement
   limitations.py                 D-09, generated from the dataset
+  trends.py                      bridge to Dan's Google Trends benchmark
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain

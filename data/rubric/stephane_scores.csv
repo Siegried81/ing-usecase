@@ -2,4 +2,5 @@ rater,page_id,bank,bank_category,product_family,language,url,screenshot_path,cap
 stephane,kbc_current_account_pack_fr_01,kbc,traditional,current_account_pack,fr,https://www.kbc.be/particuliers/fr/produits/paiements/comptes-a-vue/ouvrir-un-compte-de-base.html,data/raw/kbc/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,
 stephane,n26_current_account_pack_fr_01,n26,challenger,current_account_pack,fr,https://n26.com/fr-fr/compte-bancaire-gratuit,data/raw/n26/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,
 stephane,belfius_other_fr_01,belfius,traditional,other,fr,https://www.belfius.be/retail/fr/moments-cles/pension/index.aspx,data/raw/belfius/other_fr_01.png,ok,,,,,,,,,,,,,
+stephane,ing_savings_account_fr_01,ing,traditional,savings_account,fr,https://www.ing.be/fr/particuliers/epargner,data/raw/ing/savings_account_fr_01.png,ok,,,,,,,,,,,,,
 stephane,revolut_current_account_pack_fr_01,revolut,challenger,current_account_pack,fr,https://www.revolut.com/fr-BE/bank-account/,data/raw/revolut/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,

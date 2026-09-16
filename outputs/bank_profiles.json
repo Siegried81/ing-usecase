@@ -6,7 +6,7 @@
       "pages_analysed": 1,
       "product_family": "other",
       "language": "fr",
-      "captured": "2026-09-16 07:50:55.205098+00:00",
+      "captured": "2026-09-16 12:13:57.563733+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -52,16 +52,16 @@
     },
     "signature": [
       [
-        "avg_sentence_length",
-        1.8628547257216146
-      ],
-      [
         "section_count",
         1.844510387678726
       ],
       [
         "second_person_ratio",
-        -1.7429128353843648
+        -1.7704497788207874
+      ],
+      [
+        "avg_sentence_length",
+        1.7689581947351305
       ]
     ]
   },
@@ -69,47 +69,47 @@
     "identity": {
       "bank": "ing",
       "category": "traditional",
-      "pages_analysed": 1,
-      "product_family": "savings_account",
+      "pages_analysed": 2,
+      "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:51:00.753151+00:00",
+      "captured": "2026-09-16 12:14:03.540281+00:00",
       "data_source": "real"
     },
     "palette": {
-      "dominant_colour": "#ffffff",
-      "brand_colour_share": 0.228,
+      "dominant_colour": "#f25402",
+      "brand_colour_share": 0.614,
       "accent_colour_count": 4.0,
       "accent_locations": [],
-      "background_luminance": 0.828
+      "background_luminance": 0.5389999999999999
     },
     "imagery": {
-      "image_count": 49.0,
+      "image_count": 41.0,
       "dominant_image_type": "photo",
       "people_present": 1.0,
-      "animated": 0.0,
-      "image_area_share": 0.204
+      "animated": 0.5,
+      "image_area_share": 0.1525
     },
     "layout": {
       "archetype": null,
       "hero_image": 1.0,
       "text_image_layout": null,
-      "page_height_px": 5730.0,
-      "cta_count": 2.0,
+      "page_height_px": 8909.0,
+      "cta_count": 3.0,
       "cta_above_fold": 0.0
     },
     "tone": {
-      "word_count": 1576.0,
+      "word_count": 2896.5,
       "readability_band": "hard",
       "formality_score": null,
-      "second_person_ratio": 0.781,
-      "urgency_markers": 3.0
+      "second_person_ratio": 0.8135,
+      "urgency_markers": 2.0
     },
     "value_proposition": {
       "primary_product": "Compte \u00e0 terme ING",
-      "rate_shown": 1.0,
+      "rate_shown": 0.5,
       "rate_prominence": null,
-      "benefit_framing": "rational",
-      "fab_level": "feature"
+      "benefit_framing": "mixed",
+      "fab_level": "benefit"
     },
     "marketing_principles": {
       "aida_coverage": null,
@@ -138,7 +138,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:50:41.192462+00:00",
+      "captured": "2026-09-16 12:13:42.685161+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -193,7 +193,7 @@
       ],
       [
         "text_to_image_ratio",
-        1.8657290250348597
+        1.9301089966130196
       ]
     ]
   },
@@ -204,7 +204,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:50:47.543859+00:00",
+      "captured": "2026-09-16 12:13:49.650799+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -217,7 +217,7 @@
     "imagery": {
       "image_count": 29.0,
       "dominant_image_type": "render_3d",
-      "people_present": 1.0,
+      "people_present": 0.0,
       "animated": 1.0,
       "image_area_share": 0.587
     },
@@ -237,7 +237,7 @@
       "urgency_markers": 0.0
     },
     "value_proposition": {
-      "primary_product": "N26 Standard, le compte bancaire gratuit",
+      "primary_product": "N26 Standard",
       "rate_shown": 1.0,
       "rate_prominence": null,
       "benefit_framing": "mixed",
@@ -254,12 +254,12 @@
         2.0
       ],
       [
-        "mentions_loyalty_or_referral",
-        2.0
+        "youth_student_targeting",
+        -2.0
       ],
       [
-        "disclaimer_word_share",
-        1.9939467852064048
+        "people_present",
+        -2.0
       ]
     ]
   },
@@ -270,7 +270,7 @@
       "pages_analysed": 1,
       "product_family": "current_account_pack",
       "language": "fr",
-      "captured": "2026-09-16 07:51:15.085388+00:00",
+      "captured": "2026-09-16 12:14:15.330070+00:00",
       "data_source": "real"
     },
     "palette": {
@@ -282,7 +282,7 @@
     },
     "imagery": {
       "image_count": 10.0,
-      "dominant_image_type": "mixed",
+      "dominant_image_type": "illustration",
       "people_present": 1.0,
       "animated": 1.0,
       "image_area_share": 0.243
@@ -320,12 +320,12 @@
         2.0
       ],
       [
-        "question_count",
-        -1.45680154528957
+        "first_person_plural_count",
+        -1.520302849670743
       ],
       [
-        "rate_value_pct",
-        -1.3406107745504672
+        "question_count",
+        -1.4534625357457622
       ]
     ]
   }

@@ -21,6 +21,7 @@ import _bootstrap  # noqa: F401
 from comparator import load_dictionary
 from comparator.rubric import (
     agreement,
+    disagreement_table,
     make_sheet,
     merge_scores,
     read_sheets,
@@ -46,7 +47,7 @@ def main() -> int:
     emit = sub.add_parser("emit", help="write one empty scoring sheet per rater")
     emit.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
     emit.add_argument("--outdir", type=Path, default=DEFAULT_DIR)
-    emit.add_argument("--raters", nargs="+", default=["siegried", "stephane"])
+    emit.add_argument("--raters", nargs="+", default=["siegried", "dan", "stephane"])
     emit.add_argument("--include-unusable", action="store_true",
                       help="also list captures flagged unusable (normally a waste of a rater's time)")
 
@@ -57,6 +58,12 @@ def main() -> int:
 
     agree = sub.add_parser("agreement", help="report inter-rater disagreement (NFR-05)")
     agree.add_argument("--sheets", nargs="+", required=True)
+
+    # steph 16/09: renders Sieg's docs/day5_scoring_disagreement_template.md from
+    # the sheets, so the number that goes in the deck is computed, not retyped.
+    report = sub.add_parser("report", help="render the Day 5 disagreement table from the sheets")
+    report.add_argument("--sheets", nargs="+", required=True)
+    report.add_argument("--out", type=Path, default=Path("docs/day5_scoring_disagreement.md"))
 
     args = parser.parse_args()
     fd = load_dictionary()
@@ -86,6 +93,12 @@ def main() -> int:
 
     if args.command == "agreement":
         print(agreement(sheets, fd).render())
+        return 0
+
+    if args.command == "report":
+        args.out.parent.mkdir(parents=True, exist_ok=True)
+        args.out.write_text(disagreement_table(sheets, fd), encoding="utf-8")
+        print(f"wrote {args.out}")
         return 0
 
     df, _ = read_dataset(args.dataset, fd, tier="core", strict=False)

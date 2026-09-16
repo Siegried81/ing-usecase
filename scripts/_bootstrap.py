@@ -1,22 +1,29 @@
 """Put src/ on the path and load .env, so the scripts run without an install step.
 
-steph 16/09: added the .env loading. Sieg's .env.example documented the
-variables from day one, but nothing in the repo ever READ a .env file - every
-script used os.getenv() only, so the file was inert and a key had to be
-exported by hand in every shell. That is the kind of gap where someone
-concludes "the LLM step is broken" when it is only unconfigured.
+steph 15/09: added .env loading - Sieg's .env.example documented the variables
+from day one, but nothing in the repo READ a .env file, so it was inert and a
+key had to be exported by hand in every shell.
 
-Deliberately a dozen lines rather than a python-dotenv dependency: we have just
-added playwright plus a browser download to everyone's setup, and this does not
-need a package.
+steph 16/09, CONSOLIDATED. That first version was a hand-rolled parser, written
+to avoid adding a dependency. Sieg has since added python-dotenv to
+requirements.txt and calls load_dotenv() in run_collection.py and
+llm_extractor.py, so the dependency exists either way and the repo had two
+mechanisms doing the same job with subtly different parsing. One is enough, and
+it should be the maintained library rather than my twelve lines.
 
-A real environment variable always wins over the file. Exporting a different
-key for one run has to keep working, and CI has no .env at all.
+Kept here as well as in Sieg's two call sites because this module is imported
+first by EVERY script - a script that forgets load_dotenv() still gets its
+environment. load_dotenv() is idempotent, so calling it in both places is free.
+
+A real environment variable still wins over the file: python-dotenv does not
+override by default, which is the behaviour the previous version had too.
+Exporting a different key for one run keeps working, and CI has no .env at all.
 """
 
-import os
 import sys
 from pathlib import Path
+
+from dotenv import load_dotenv
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 SRC = REPO_ROOT / "src"
@@ -25,25 +32,4 @@ ENV_FILE = REPO_ROOT / ".env"
 if str(SRC) not in sys.path:
     sys.path.insert(0, str(SRC))
 
-
-def load_env(path: Path = ENV_FILE) -> int:
-    """Read KEY=value lines into os.environ. Returns how many were set."""
-    if not path.is_file():
-        return 0
-
-    loaded = 0
-    for raw in path.read_text(encoding="utf-8").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, _, value = line.partition("=")
-        key = key.strip().removeprefix("export ").strip()
-        value = value.strip().strip('"').strip("'")
-        if not key or key in os.environ:  # the real environment wins
-            continue
-        os.environ[key] = value
-        loaded += 1
-    return loaded
-
-
-load_env()
+load_dotenv(ENV_FILE)
