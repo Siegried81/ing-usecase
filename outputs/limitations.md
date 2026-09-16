@@ -2,7 +2,7 @@
 
 *Deliverable D-09. Generated from the dataset by `scripts/run_analysis.py`, so it describes the data that actually exists rather than the data we meant to collect.*
 
-**8 usable page(s) across 6 bank(s)**, from 8 collected.
+**12 usable page(s) across 9 bank(s)**, from 12 collected.
 
 ## What this analysis cannot support
 
@@ -12,8 +12,8 @@
 
 ### Material — findings survive, but weakened
 
-- Only **2 challenger bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.
 - The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
+- Pages are in **2 languages** (['fr', 'nl']). Word counts and readability are not comparable across languages; only the banded versions travel.
 
 ### Standing — true regardless of how much we collect
 

@@ -390,8 +390,13 @@ def disagreement_table(
             lines.append(f"| `{feature.name}` | " + " | ".join(values) + f" | {agree} |  |  |")
         lines.append("")
 
-    report = agreement(sheets, fd)
-    lines += ["## Summary — what goes in the deck", "", "```", report.render(), "```", ""]
+    # steph 16/09: raw % agreement AND Sieg's chance-corrected kappa. His own
+    # note is the reason both belong here - "raw % agreement on these may look
+    # fine while being close to chance" - and this table is what goes in the
+    # deck, so it should not carry only the flattering half.
+    lines += ["## Summary — what goes in the deck", "",
+              "```", agreement(sheets, fd).render(), "```", "",
+              "```", kappa_agreement(sheets, fd).render(), "```", ""]
     if len(sheets) < 2:
         lines += ["Only one rater has scored so far, so no agreement figure exists yet. "
                   "NFR-05 needs at least two independent raters.", ""]

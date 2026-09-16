@@ -226,3 +226,31 @@ def test_kappa_is_undefined_not_fabricated_when_every_rater_agrees_on_one_value(
     b = _pair_sheet("b", pages, "formality_score", [3, 3, 3])
     report = kappa_agreement([a, b])
     assert report.table.empty
+
+
+def test_day5_table_reports_chance_corrected_agreement_too(df, fd):
+    """steph 16/09: raw % agreement can look fine while being close to chance -
+    Sieg's own note on kappa. The deck table must not carry only the flattering
+    half of the story."""
+    from comparator.rubric import disagreement_table
+
+    text = disagreement_table([_scored(df, fd, "a", 3, "card_grid"),
+                               _scored(df, fd, "b", 4, "long_form")], fd)
+    assert "Inter-rater agreement" in text
+    # Either the kappa table, or kappa's own explanation of why it cannot be
+    # computed - both are the chance-corrected half being reported rather than
+    # quietly omitted. (These fixture raters are constant, so kappa is undefined.)
+    assert "Cohen's kappa" in text or "compute kappa" in text
+
+
+def test_day5_table_shows_the_kappa_table_when_it_can_be_computed(df, fd):
+    from comparator.rubric import disagreement_table, make_sheet
+
+    def varied(rater, scores):
+        sheet = make_sheet(df, fd, rater=rater)
+        sheet["formality_score"] = scores[: len(sheet)]
+        return sheet
+
+    n = len(make_sheet(df, fd, rater="a"))
+    text = disagreement_table([varied("a", [1, 5] * n), varied("b", [1, 4] * n)], fd)
+    assert "Cohen's kappa" in text
