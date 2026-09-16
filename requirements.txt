@@ -21,7 +21,5 @@ Pillow==12.3.0
 # After installing, also run: python3 -m playwright install chromium
 playwright==1.57.0
 
-# sieg 16/09: .env was never actually loaded by any code - os.getenv() only
-# ever saw real shell exports. Root cause of a real collection run coming back
-# with every model_assisted field empty despite .env being filled in.
+# sieg 16/09: loads .env into the environment.
 python-dotenv==1.0.1

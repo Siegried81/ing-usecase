@@ -7,19 +7,27 @@ minutes, one decision, all three.
 
 ## Per-bank pipeline status
 
-Fill in as of the morning of the gate. One row per in-scope bank.
+sieg 16/09, current snapshot — re-check and update the morning of the gate,
+this will keep moving. One row per in-scope bank.
 
 | Bank | Captured (HTML) | Robots allowed | Screenshot | LLM extraction | Rubric scored | Profile card | End-to-end? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| ING | | | | | | | |
-| KBC | | | | | | | |
-| BNP Paribas Fortis | | | | | | | |
-| Argenta | | | | | | | |
-| Crelan | | | | | | | |
-| Belfius | | | | | | | |
-| Revolut | | | | | | | |
-| N26 | | | | | | | |
-| bunq | | | | | | | |
+| ING | yes | yes | yes | yes | no | yes | blocked on rubric only |
+| KBC | yes | yes | yes | yes | no | yes | blocked on rubric only |
+| Belfius | yes | yes | yes | yes | no | yes | blocked on rubric only |
+| Revolut | yes | yes | yes | yes | no | yes | blocked on rubric only |
+| N26 | yes | yes | yes | yes | no | yes | blocked on rubric only |
+| BNP Paribas Fortis | no | yes | no | no | no | no | no — see note |
+| Argenta | not yet configured | | | | | | no |
+| Crelan | not yet configured | | | | | | no |
+| bunq | not yet configured | | | | | | no |
+
+Note on BNP Paribas Fortis: robots.txt allows the page, but the capture was
+excluded by the quality gate (non-2xx response). Live-checked 16/09 from two
+different automated environments and got the same result, while a normal
+browser loads the page without issue at the same time — looks like the
+site's CDN treating cloud/datacenter traffic differently, not a real outage.
+Under investigation; not yet resolved as of this writing.
 
 ## The decision
 

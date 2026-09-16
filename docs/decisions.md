@@ -85,3 +85,10 @@ changes; `notes` isn't even part of what that check compares, so this was
 never a freeze-rule violation, only the byte-equality drift alarm doing its
 job. Synced without waiting on a full re-vote — flagged to Dan and Stephane
 for awareness, not as a blocking approval.
+
+**sieg 16/09, data quality check.** The two largest gaps in `ing_vs_peers.csv`
+(`urgency_marker_count` +6.35 SD, `image_count` +4.09 SD) were recalculated
+by hand from `bank_profiles.md` — a different code path than
+`ing_vs_peers.csv`, so this isn't circular. Peer mean, peer std and the
+resulting gap all matched exactly for both features. Safe to use in the
+business narrative.
