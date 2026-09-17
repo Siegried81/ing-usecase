@@ -19,6 +19,27 @@ evaluation meaningless, so there is deliberately only one extractor in this
 repo and this module imports it rather than reimplementing anything.
 
 HONEST LIMITS, to repeat wherever this is shown (plan risk P-08, mine):
+REPRODUCIBILITY, measured rather than assumed (sieg 17/09 audit, point 4).
+I had told the team the generation was "not reproducible" on the strength of
+five runs that disagreed. That was too strong, and the cause was not what I
+implied. Isolating it:
+
+  * Our code is deterministic. Rebuilding the brief three times on an unchanged
+    dataset gives a byte-identical prompt for both variants. Targets are derived
+    from the data, so when the DATA changes the prompt legitimately changes -
+    four of those five runs had re-collected in between, so they were never
+    comparing like with like.
+  * DeepSeek at temperature=0 is *mostly* deterministic: three identical short
+    calls returned byte-identical text. On the longer generation prompt, the
+    challenger variant reproduced exactly across runs and the on-brand one did
+    not. temperature controls sampling, not routing, so an MoE model served in
+    batches can still vary between otherwise identical requests.
+
+So: same data -> same prompt -> usually, not always, the same campaign. Each
+generated artefact now records the hash of the prompt that produced it, so a
+future difference can be attributed to the prompt or to the model instead of
+being argued about.
+
   * A generated page is text and specs, not a real rendered page. Features that
     need a browser or real assets - actual colours, image area, page height -
     are declared by the brief, not measured. Only the text-derived and
@@ -388,6 +409,14 @@ def build_brief(
         focus_profile=_focus_summary(df, fd, focus),
         competitor_patterns=_challenger_patterns(df, fd) if target.variant == "challenger_style" else [],
     )
+
+
+def prompt_fingerprint(brief: GenerationBrief) -> str:
+    """Hash of the exact prompt sent, so a differing output is attributable."""
+    import hashlib
+
+    payload = f"{SYSTEM_PROMPT}\n----\n{brief.to_prompt()}"
+    return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
 def generate(brief: GenerationBrief, *, retries: int = 1) -> tuple[GeneratedCampaign, str]:

@@ -4,6 +4,8 @@
 
 **12 usable page(s) across 9 bank(s)**, from 12 collected.
 
+> **These counts are pre-filter.** The comparison itself was restricted to the `current_account_pack` product family, so `charts.md` and `bank_profiles.json` report a smaller set — belfius, bnp_paribas_fortis have usable captures but no page in that family.
+
 ## What this analysis cannot support
 
 ### Blocking — a question cannot be answered at all
@@ -14,6 +16,7 @@
 
 - The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
 - Pages are in **2 languages** (['fr', 'nl']). Word counts and readability are not comparable across languages; only the banded versions travel.
+- **2 bank(s) are absent from this comparison entirely**: belfius, bnp_paribas_fortis. They have real, usable captures but no page in the 'current_account_pack' product family, and comparing across families would confound every difference with the product (DR-04). They are in the dataset, not in these results - collect them a page in this family to include them.
 
 ### Standing — true regardless of how much we collect
 
@@ -27,9 +30,8 @@
 
 ## Next steps
 
-1. **Collect a usable ING page.** Nothing about ING's position can be said without it. The current capture is a JavaScript shell; a longer settle time or a different entry URL is the first thing to try.
-2. **Fix the product-family mix.** Collect the same product family across every bank. The current targets file is a pipeline test, not a comparable scope (DR-04).
-3. **Run the Day 5 scoring session.** 13 rubric features, two independent raters, then report agreement. Until then the comparison is automatic features only.
-4. **Handle consent walls in collection.** Two of six captures were defeated by a page that never rendered its content. Detect and dismiss the consent layer, or record the bank as uncollectable.
-5. **Make generation reproducible.** Store the generated artefact and evaluate that, rather than regenerating on every run.
-6. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.
+1. **Collect belfius, bnp_paribas_fortis a page in the compared product family.** They have usable captures but none in 'current_account_pack', so they sit out of the comparison entirely rather than for any analytical reason.
+2. **Score the 3 unscored rubric feature(s).** Vision-only features cannot be model-scored; they need a human with the screenshot.
+3. **Run the Day 5 scoring session.** Two independent human raters, then report agreement alongside the model's own sheet. Until then the judgement-based dimensions carry one model's opinion and nothing to check it against.
+4. **Make generation attributable.** Store the generated artefact and its prompt hash and evaluate that, rather than regenerating on every run.
+5. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.

@@ -1,3 +1,6 @@
+> **Scope: `current_account_pack` product family only** — 7 of 9 banks with usable captures.
+> Not shown: belfius, bnp_paribas_fortis — usable captures, but no page in this family. Comparing across families would confound every difference with the product (DR-04).
+
 # Bank profile cards
 
 ### argenta  (traditional)

@@ -1,53 +1,46 @@
 {
-  "headline": "Et si votre compte \u00e0 vue travaillait enfin pour vous ?",
-  "subheading": "Nous repensons la banque du quotidien : plus claire, plus juste, sans jargon inutile.",
+  "headline": "Et si votre compte courant travaillait enfin pour vous ?",
+  "subheading": "Nous repensons la banque de tous les jours : plus claire, plus juste, plus proche de vous.",
   "body_paragraphs": [
-    "Nous avons pos\u00e9 une question simple : pourquoi un compte \u00e0 vue devrait-il \u00eatre compliqu\u00e9 ? Chez nous, ouvrir un compte se fait en quelques minutes, et nous vous expliquons chaque \u00e9tape sans d\u00e9tour.",
-    "Notre compte \u00e0 vue r\u00e9unit l'essentiel : des paiements fluides, une carte utilisable partout, et une application qui vous montre o\u00f9 va votre argent. Nous ne cachons rien dans les petites lignes.",
-    "Nous croyons qu'une banque doit \u00eatre un partenaire, pas un guichet. C'est pourquoi nous construisons nos services avec vous, en \u00e9coutant vos retours et en am\u00e9liorant l'exp\u00e9rience mois apr\u00e8s mois.",
-    "Combien de temps passez-vous \u00e0 chercher une information sur votre compte ? Nous avons r\u00e9duit ce temps au minimum. Vos op\u00e9rations sont lisibles, cat\u00e9goris\u00e9es, et accessibles en un geste.",
-    "Nous savons que changer de banque peut sembler fastidieux. Alors nous avons simplifi\u00e9 la mobilit\u00e9 : nous nous occupons des d\u00e9marches, vous gardez le contr\u00f4le.",
-    "Notre engagement est simple : pas de frais cach\u00e9s, pas de conditions illisibles. Nous pr\u00e9f\u00e9rons vous dire clairement ce que nous proposons, et vous laisser d\u00e9cider.",
-    "Nous sommes une \u00e9quipe de personnes qui utilisent aussi ce compte au quotidien. Nous testons, nous ajustons, nous am\u00e9liorons. Votre exp\u00e9rience r\u00e9elle guide nos d\u00e9cisions.",
-    "Que vous soyez \u00e9tudiant, salari\u00e9 ou ind\u00e9pendant, nous adaptons les options \u00e0 votre rythme. Vous activez ce dont vous avez besoin, quand vous en avez besoin.",
-    "Nous mettons la m\u00eame exigence dans la s\u00e9curit\u00e9 que dans la simplicit\u00e9. Vos donn\u00e9es sont prot\u00e9g\u00e9es, et vous \u00eates pr\u00e9venu en temps r\u00e9el de chaque mouvement.",
-    "Nous ne pr\u00e9tendons pas \u00eatre parfaits. Mais nous nous engageons \u00e0 \u00eatre transparents, r\u00e9actifs, et \u00e0 traiter vos demandes comme les n\u00f4tres.",
-    "Rejoindre notre compte \u00e0 vue, c'est choisir une relation bancaire qui vous ressemble. Nous vous accompagnons pas \u00e0 pas, sans pression.",
-    "Nous pensons que la clart\u00e9 n'est pas un luxe. C'est la base. Et c'est ce que nous mettons dans chaque \u00e9cran, chaque message, chaque conseil.",
-    "Alors, pr\u00eat \u00e0 d\u00e9couvrir une autre fa\u00e7on de g\u00e9rer votre argent ? Nous vous montrons tout, sans engagement."
+    "Nous avons pos\u00e9 une question simple : pourquoi votre compte courant ne vous rendrait-il pas ce qu'il vous co\u00fbte ? Chez nous, chaque euro qui dort peut servir. Nous ne parlons pas de promesses lointaines, mais d'un compte qui s'adapte \u00e0 votre rythme, sans jargon ni petites lignes.",
+    "Nous croyons qu'une banque doit d'abord expliquer avant de facturer. C'est pourquoi nous affichons [RATE] sur les op\u00e9rations essentielles et [AMOUNT] pour l'ouverture, sans frais cach\u00e9s. Vous gardez la main sur chaque mouvement, chaque pr\u00e9l\u00e8vement, chaque virement.",
+    "Notre application vous montre o\u00f9 va votre argent, en temps r\u00e9el. Nous vous alertons avant qu'un d\u00e9couvert ne vous co\u00fbte cher. Nous vous proposons des solutions concr\u00e8tes, pas des discours. Et quand vous avez une question, nous r\u00e9pondons vite, par chat ou par t\u00e9l\u00e9phone, avec des conseillers qui connaissent votre dossier.",
+    "Nous avons aussi pens\u00e9 \u00e0 ceux qui veulent \u00e9pargner sans y penser. Chaque semaine, nous arrondissons vos achats et nous pla\u00e7ons la diff\u00e9rence sur un espace r\u00e9mun\u00e9r\u00e9 [RATE]. Vous pouvez tout arr\u00eater en un geste. Nous ne verrouillons rien, nous n'imposons rien.",
+    "Rejoindre une banque qui vous ressemble, c'est possible. Nous ouvrons les comptes en quelques minutes, sans paperasse inutile. Vous choisissez votre carte, vos plafonds, vos alertes. Nous nous occupons du reste. Et si vous changez d'avis, nous vous aidons \u00e0 partir proprement.",
+    "Nous ne sommes pas une banque comme les autres. Nous sommes la banque qui pose des questions, qui \u00e9coute, qui ajuste. Nous construisons avec vous, pas contre vous. C'est notre fa\u00e7on de faire, et nous en sommes fiers."
   ],
-  "cta_label": "D\u00e9couvrir le compte \u00e0 vue",
+  "cta_label": "Ouvrir un compte en 5 minutes",
   "additional_cta_labels": [
-    "Ouvrir un compte en ligne",
-    "Appliquer maintenant",
-    "Commencer l'ouverture",
-    "S'inscrire en quelques minutes",
-    "En savoir plus sur nos offres"
+    "D\u00e9couvrir nos offres",
+    "Commencer maintenant",
+    "En savoir plus sur nos tarifs"
   ],
-  "layout_archetype": "split_columns",
+  "layout_archetype": "hero_stacked",
   "background_style": "light",
   "accent_colour_hex": "#ff6200",
   "image_briefs": [
-    "Photographie lifestyle : une personne souriante consultant son application bancaire sur smartphone, dans un cadre lumineux et moderne, style \u00e9pur\u00e9.",
-    "Illustration vectorielle : un compte \u00e0 vue repr\u00e9sent\u00e9 comme un tableau de bord clair avec des ic\u00f4nes de paiement, d'\u00e9pargne et de s\u00e9curit\u00e9.",
-    "Photo d'\u00e9quipe : de jeunes professionnels divers discutant autour d'une table, ordinateurs portables ouverts, ambiance collaborative.",
-    "Capture d'\u00e9cran stylis\u00e9e : interface d'application montrant une transaction simplifi\u00e9e, avec des couleurs vives et une typographie lisible.",
-    "Image conceptuelle : une balance \u00e9quilibr\u00e9e entre \u00ab frais cach\u00e9s \u00bb barr\u00e9s et \u00ab transparence \u00bb mise en avant, design minimaliste.",
-    "Photo de rue : un client utilisant sa carte bancaire sans contact dans un caf\u00e9, mouvement naturel, lumi\u00e8re douce.",
-    "Infographie : parcours d'ouverture de compte en 3 \u00e9tapes, avec des ic\u00f4nes et des fl\u00e8ches, fond clair.",
-    "Portrait : un conseiller client\u00e8le souriant, en visio ou au t\u00e9l\u00e9phone, pour illustrer l'accompagnement humain.",
-    "Photo macro : une carte bancaire pos\u00e9e sur une table en bois, avec un smartphone \u00e0 c\u00f4t\u00e9, ambiance quotidienne.",
-    "Illustration : un coffre-fort num\u00e9rique stylis\u00e9 avec un cadenas, symbolisant la s\u00e9curit\u00e9 des donn\u00e9es.",
-    "Photo de groupe : une famille ou des amis partageant un repas, avec une notification de paiement partag\u00e9 sur un t\u00e9l\u00e9phone.",
-    "Graphique anim\u00e9 : \u00e9volution du solde sur un mois, avec des cat\u00e9gories de d\u00e9penses color\u00e9es, style \u00e9pur\u00e9.",
-    "Photo d'architecture : une agence bancaire moderne et ouverte, sans guichet traditionnel, avec des espaces collaboratifs."
+    "Photographie lifestyle : une jeune femme souriante consulte son t\u00e9l\u00e9phone dans un caf\u00e9 lumineux, tasse \u00e0 la main, arri\u00e8re-plan flou avec des plantes vertes.",
+    "Illustration vectorielle : un compte courant stylis\u00e9 avec des fl\u00e8ches entrantes et sortantes, des pi\u00e8ces qui circulent, palette orange et bleu nuit.",
+    "Capture d'\u00e9cran fictive d'application mobile : tableau de bord avec cat\u00e9gories de d\u00e9penses, graphique circulaire, bouton d'action orange.",
+    "Portrait d'un conseiller client\u00e8le souriant, casque t\u00e9l\u00e9phonique, dans un open space moderne, lumi\u00e8re naturelle.",
+    "Infographie : comparaison avant/apr\u00e8s d'un relev\u00e9 bancaire, avant en gris avec des frais, apr\u00e8s en couleur avec des \u00e9conomies.",
+    "Photo macro : une carte bancaire sans contact pos\u00e9e sur une table en bois, reflets doux, arri\u00e8re-plan flou.",
+    "Sc\u00e8ne de vie : un couple jeune devant un ordinateur portable, planifiant son budget, expressions d\u00e9tendues.",
+    "Illustration : un coffre-fort ouvert avec des plantes qui poussent autour, symbolisant l'\u00e9pargne qui grandit.",
+    "Capture d'\u00e9cran d'alerte mobile : notification push \u00ab Solde bas \u00bb avec option \u00ab Voir des solutions \u00bb, design \u00e9pur\u00e9.",
+    "Photo d'\u00e9quipe : petits groupes de personnes diverses en train de discuter autour d'une table, ambiance collaborative.",
+    "Graphique anim\u00e9 : courbe de progression de l'\u00e9pargne sur 12 mois, avec des paliers et des objectifs atteints.",
+    "Vue a\u00e9rienne d'une ville avec des flux lumineux repr\u00e9sentant des transactions, style n\u00e9on orange.",
+    "Portrait d'une femme \u00e2g\u00e9e souriante tenant une tablette, dans un salon lumineux, petit-fils \u00e0 c\u00f4t\u00e9."
   ],
-  "disclaimer_placeholder": "[Texte l\u00e9gal et risques \u00e0 r\u00e9diger par l'\u00e9quipe conformit\u00e9 : conditions d'ouverture, frais \u00e9ventuels, protection des donn\u00e9es.]",
+  "disclaimer_placeholder": "[Texte l\u00e9gal et risques \u00e0 r\u00e9diger par le service conformit\u00e9 : conditions d'ouverture, tarifs, taux, plafonds, m\u00e9diation, etc.]",
   "persuasion_levers_used": [
     "authority",
     "commitment",
     "liking",
     "reciprocity",
     "social_proof"
-  ]
+  ],
+  "_prompt_sha256_16": "cfa89fa56c22b63f",
+  "_model": "deepseek/deepseek-chat"
 }
