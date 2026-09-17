@@ -14,21 +14,30 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-Day 3 of 10 (sieg 16/09). The analysis chain runs end to end on synthetic fixture
-data. Real collection is under way: 4 of the (at least) 6 currently-configured
-banks are captured; rubric fields wait for the Day 5 joint scoring session, and
-headless-render geometry fields wait on a working Chromium in the collection
-environment. See
-[`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md)
-for the current status of each bank.
+<!-- sieg 17/09: refreshed after a full repo audit - the table below was still
+describing Day 3 while collection had moved well past it. See docs/D01 and
+docs/day6_gate_discussion_notes.md for the per-bank detail this summarizes. -->
+Day 4 of 10 (sieg 17/09). The analysis chain now runs end to end on real
+captures for 7 banks (argenta, bunq, crelan, ing, kbc, n26, revolut). Belfius
+and BNP Paribas Fortis have real captures and were scored by the model rater
+(`docs/day5_scoring_disagreement.md` lists 8 pages), but are absent from the
+current `outputs/bank_profiles.json` for a reason not yet documented — under
+investigation, ask Stephane before assuming either is dropped for good. The
+Day 5 human rubric session (2 independent raters, 13 features) has not
+happened yet — only the model column is filled in
+(`data/rubric/{dan,siegried,stephane}_scores.csv`); this is the current
+blocker per `outputs/limitations.md`. Headless-render geometry fields
+(`page_height_px` and three others) still wait on a working Chromium in the
+collection environment.
 
 | Deliverable | State |
 | --- | --- |
 | Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — 101 features, `feature_dictionary.frozen.yaml` in sync |
 | Dataset schema + validator (D-04) | built and tested |
-| Analysis skeleton (D-05) | runs end to end on fixture data |
-| Bank profile cards | generated, 9 banks (on fixture data) |
-| Real captures (D-02) | in progress — KBC/N26/Belfius/ING captured; BNP Fortis/Revolut/Argenta/Crelan/bunq still to collect, see D-01 |
+| Analysis skeleton (D-05) | runs end to end on real captures |
+| Bank profile cards | generated, 7 banks (real data); Belfius/BNP captured but not in the current profile set, see note above |
+| Real captures (D-02) | 9/9 banks have raw captures; BNP still needs the manual-capture path confirmed working, see D-01 |
+| Rubric scoring (Day 5) | model column only — human 2-rater session not yet run |
 
 ## Quick start
 
