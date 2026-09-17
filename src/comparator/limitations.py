@@ -166,9 +166,18 @@ def assess(
         "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice "
         "and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an "
         "element. Both are exact about geometry and approximate about meaning.",
-        "The generated campaigns are **not reproducible**: the same brief at temperature 0 produced "
-        "different copy and a different hit rate on five separate runs. A committed generated "
-        "artefact is one sample, not the output.",
+        # steph 17/09: this used to say flatly "not reproducible", on the strength of
+        # five runs that disagreed. Measured since: our half is deterministic, and
+        # four of those five runs had re-collected in between, so the data - and
+        # therefore the derived targets and the prompt - legitimately changed.
+        # The narrower statement is the true one, and the business UI renders this
+        # text verbatim, so an over-claim here reaches a stakeholder.
+        "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is "
+        "deterministic: the same dataset produces a byte-identical prompt, and each generated "
+        "artefact records that prompt's fingerprint. The model is the variable part — identical "
+        "requests usually return identical copy but not always, because temperature controls "
+        "sampling and not how the model routes internally. Treat a committed campaign as one "
+        "sample rather than as the output.",
         "Hitting a generation target shows the model followed instructions. It says nothing about "
         "whether the campaign would perform better (plan risk P-08).",
     ]

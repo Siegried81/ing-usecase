@@ -1,0 +1,1212 @@
+{
+  "generated_at": "2026-09-17T10:01:34+00:00",
+  "dataset": "data/processed/campaigns_scored.csv",
+  "scope": {
+    "product_family": "current_account_pack",
+    "product_family_label": "Current-account packs",
+    "pages": 9,
+    "banks": [
+      "Argenta",
+      "bunq",
+      "Crelan",
+      "ING",
+      "KBC",
+      "N26",
+      "Revolut"
+    ],
+    "traditional": [
+      "Argenta",
+      "Crelan",
+      "ING",
+      "KBC"
+    ],
+    "challenger": [
+      "bunq",
+      "N26",
+      "Revolut"
+    ],
+    "excluded": [
+      {
+        "bank": "Belfius",
+        "reason": "has a usable capture, but no page in this product family"
+      },
+      {
+        "bank": "BNP Paribas Fortis",
+        "reason": "has a usable capture, but no page in this product family"
+      }
+    ],
+    "uncollectable": [],
+    "languages": [
+      "fr",
+      "nl"
+    ],
+    "captured_from": "2026-09-16T14:31:44.733572+00:00",
+    "captured_to": "2026-09-16T14:33:09.865190+00:00",
+    "total_collected": 12,
+    "n_features": 44
+  },
+  "headline": {
+    "focus": "ING",
+    "score": 0.031,
+    "verdict": "clearly with the traditional banks",
+    "has_focus": true
+  },
+  "positioning": [
+    {
+      "bank": "Crelan",
+      "key": "crelan",
+      "category": "traditional",
+      "score": -0.089,
+      "isFocus": false
+    },
+    {
+      "bank": "KBC",
+      "key": "kbc",
+      "category": "traditional",
+      "score": -0.03,
+      "isFocus": false
+    },
+    {
+      "bank": "ING",
+      "key": "ing",
+      "category": "traditional",
+      "score": 0.031,
+      "isFocus": true
+    },
+    {
+      "bank": "Argenta",
+      "key": "argenta",
+      "category": "traditional",
+      "score": 0.088,
+      "isFocus": false
+    },
+    {
+      "bank": "Revolut",
+      "key": "revolut",
+      "category": "challenger",
+      "score": 0.926,
+      "isFocus": false
+    },
+    {
+      "bank": "N26",
+      "key": "n26",
+      "category": "challenger",
+      "score": 1.0,
+      "isFocus": false
+    },
+    {
+      "bank": "bunq",
+      "key": "bunq",
+      "category": "challenger",
+      "score": 1.074,
+      "isFocus": false
+    }
+  ],
+  "peerGaps": [
+    {
+      "feature": "disclaimer_word_share",
+      "label": "Share of words that are legal small print",
+      "dimension": "topics_value_prop",
+      "extraction": "automatic",
+      "focusValue": 0.41000000000000003,
+      "peerMean": 0.03333333333333333,
+      "gapSd": 7.0,
+      "direction": "above"
+    },
+    {
+      "feature": "sentence_count",
+      "label": "Sentences",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 165.5,
+      "peerMean": 80.91666666666667,
+      "gapSd": 3.8,
+      "direction": "above"
+    },
+    {
+      "feature": "word_count",
+      "label": "Words on the page",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 3148.5,
+      "peerMean": 1954.0,
+      "gapSd": 3.31,
+      "direction": "above"
+    },
+    {
+      "feature": "value_prop_clarity",
+      "label": "Clarity of the offer",
+      "dimension": "topics_value_prop",
+      "extraction": "rubric",
+      "focusValue": 1.5,
+      "peerMean": 2.6666666666666665,
+      "gapSd": -2.47,
+      "direction": "below"
+    },
+    {
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
+      "dimension": "banking_domain",
+      "extraction": "model_assisted",
+      "focusValue": 1.0,
+      "peerMean": 0.16666666666666666,
+      "gapSd": 2.24,
+      "direction": "above"
+    },
+    {
+      "feature": "aida_action",
+      "label": "Has an unmistakable next step",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 0.0,
+      "peerMean": 0.75,
+      "gapSd": -1.96,
+      "direction": "below"
+    },
+    {
+      "feature": "clarity_score",
+      "label": "Clarity",
+      "dimension": "tone_messaging",
+      "extraction": "rubric",
+      "focusValue": 1.5,
+      "peerMean": 2.8333333333333335,
+      "gapSd": -1.94,
+      "direction": "below"
+    },
+    {
+      "feature": "readability_score",
+      "label": "Readability",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 53.85,
+      "peerMean": 35.13333333333333,
+      "gapSd": 1.88,
+      "direction": "above"
+    },
+    {
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 0.0,
+      "peerMean": 2.4166666666666665,
+      "gapSd": -1.43,
+      "direction": "below"
+    },
+    {
+      "feature": "rate_shown",
+      "label": "Shows a rate",
+      "dimension": "topics_value_prop",
+      "extraction": "automatic",
+      "focusValue": 0.0,
+      "peerMean": 0.6666666666666666,
+      "gapSd": -1.41,
+      "direction": "below"
+    }
+  ],
+  "excludedGaps": [
+    {
+      "label": "Opens with a large image",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Distinct accent colours",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Sells a bundle",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Names a concrete green benefit",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Positions as a second bank",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Cites its branch network",
+      "note": "every peer has the same value - no spread to measure against"
+    }
+  ],
+  "separation": [
+    {
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
+      "extraction": "rubric",
+      "traditional": 0.5,
+      "challenger": 4.0,
+      "effect": 4.95,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "persuasion_lever_count",
+      "label": "Persuasion techniques used",
+      "extraction": "rubric",
+      "traditional": 1.0,
+      "challenger": 2.6666666666666665,
+      "effect": 4.08,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "background_luminance",
+      "label": "Page brightness",
+      "extraction": "automatic",
+      "traditional": 0.8721666666666666,
+      "challenger": 0.371,
+      "effect": -2.86,
+      "higherAt": "traditional"
+    },
+    {
+      "feature": "aida_interest",
+      "label": "Gives a reason to keep reading",
+      "extraction": "rubric",
+      "traditional": 0.16666666666666666,
+      "challenger": 1.0,
+      "effect": 2.42,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "above_fold_element_count",
+      "label": "Elements visible without scrolling",
+      "extraction": "automatic",
+      "traditional": 35.833333333333336,
+      "challenger": 19.333333333333332,
+      "effect": -2.34,
+      "higherAt": "traditional"
+    },
+    {
+      "feature": "clarity_score",
+      "label": "Clarity",
+      "extraction": "rubric",
+      "traditional": 2.0,
+      "challenger": 3.3333333333333335,
+      "effect": 2.16,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "total_image_area_ratio",
+      "label": "Share of the page that is imagery",
+      "extraction": "automatic",
+      "traditional": 0.0625,
+      "challenger": 0.3323333333333333,
+      "effect": 2.08,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "value_prop_clarity",
+      "label": "Clarity of the offer",
+      "extraction": "rubric",
+      "traditional": 2.0,
+      "challenger": 3.0,
+      "effect": 1.87,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "hero_image_area_ratio",
+      "label": "Size of the opening image",
+      "extraction": "automatic",
+      "traditional": 0.24050000000000002,
+      "challenger": 0.7520000000000001,
+      "effect": 1.75,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "first_time_investor_targeting",
+      "label": "Targets first-time investors",
+      "extraction": "model_assisted",
+      "traditional": 0.3333333333333333,
+      "challenger": 1.0,
+      "effect": 1.53,
+      "higherAt": "challenger"
+    }
+  ],
+  "banks": [
+    {
+      "key": "argenta",
+      "name": "Argenta",
+      "category": "traditional",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Uses animation",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
+          "label": "Animated elements",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
+          "label": "Words per sentence",
+          "sd": 2.2,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1831.0,
+        "Readability band": "very_hard",
+        "Formality of tone": 4.0,
+        "Speaks to “you” rather than “we”": 0.746,
+        "Urgency markers": 2.0
+      },
+      "imagery": {
+        "Images": 11.0,
+        "Dominant image type": "illustration",
+        "People present": 0.0,
+        "Animated": 0.0,
+        "Image area share": 0.023
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 3244.0,
+        "Calls to action": 7.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "La Formule Silver / La Formule Gold / La Formule Green",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "rational",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.886
+      },
+      "marketing": {
+        "Aida coverage": 2.0,
+        "Persuasion levers": [
+          "authority"
+        ],
+        "Lever count": 1.0
+      }
+    },
+    {
+      "key": "bunq",
+      "name": "bunq",
+      "category": "challenger",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Call to action visible without scrolling",
+          "sd": 2.4,
+          "direction": "above"
+        },
+        {
+          "label": "Page brightness",
+          "sd": -2.2,
+          "direction": "below"
+        },
+        {
+          "label": "Page length",
+          "sd": 2.0,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1763.0,
+        "Readability band": "medium",
+        "Formality of tone": 2.0,
+        "Speaks to “you” rather than “we”": 0.889,
+        "Urgency markers": 3.0
+      },
+      "imagery": {
+        "Images": 13.0,
+        "Dominant image type": "illustration",
+        "People present": 0.0,
+        "Animated": 1.0,
+        "Image area share": 0.167
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 15135.0,
+        "Calls to action": 21.0,
+        "Call to action visible without scrolling": 1.0
+      },
+      "valueProposition": {
+        "Primary product": "Ton compte bancaire gratuit",
+        "Shows a rate": 1.0,
+        "How prominently the rate is shown": "below_fold",
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
+      },
+      "palette": {
+        "dominant": "#000000",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.002
+      },
+      "marketing": {
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "authority",
+          "social_proof",
+          "liking"
+        ],
+        "Lever count": 3.0
+      }
+    },
+    {
+      "key": "crelan",
+      "name": "Crelan",
+      "category": "traditional",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Images",
+          "sd": 2.3,
+          "direction": "above"
+        },
+        {
+          "label": "Questions asked",
+          "sd": 2.2,
+          "direction": "above"
+        },
+        {
+          "label": "Calls to action",
+          "sd": 2.2,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 2373.0,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.832,
+        "Urgency markers": 0.0
+      },
+      "imagery": {
+        "Images": 76.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.002
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 2945.0,
+        "Calls to action": 42.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Performance Pack",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "rational",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.006,
+        "backgroundLuminance": 0.79
+      },
+      "marketing": {
+        "Aida coverage": 0.0,
+        "Persuasion levers": [],
+        "Lever count": null
+      }
+    },
+    {
+      "key": "ing",
+      "name": "ING",
+      "category": "traditional",
+      "pages": 2,
+      "signature": [
+        {
+          "label": "Share of words that are legal small print",
+          "sd": 2.3,
+          "direction": "above"
+        },
+        {
+          "label": "Sentences",
+          "sd": 2.0,
+          "direction": "above"
+        },
+        {
+          "label": "Words on the page",
+          "sd": 1.9,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 3148.5,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.829,
+        "Urgency markers": 0.5
+      },
+      "imagery": {
+        "Images": 30.5,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.133
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 9465.0,
+        "Calls to action": 3.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "ING Go",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "mixed",
+        "Fab level": "advantage"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.0155,
+        "backgroundLuminance": 0.9005000000000001
+      },
+      "marketing": {
+        "Aida coverage": 0.0,
+        "Persuasion levers": [],
+        "Lever count": null
+      }
+    },
+    {
+      "key": "kbc",
+      "name": "KBC",
+      "category": "traditional",
+      "pages": 2,
+      "signature": [
+        {
+          "label": "Targets pre-retirement",
+          "sd": 2.4,
+          "direction": "above"
+        },
+        {
+          "label": "Words per image",
+          "sd": 2.1,
+          "direction": "above"
+        },
+        {
+          "label": "Includes a comparison table",
+          "sd": 1.6,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 2386.0,
+        "Readability band": "very_hard",
+        "Formality of tone": 4.0,
+        "Speaks to “you” rather than “we”": 0.87,
+        "Urgency markers": 0.5
+      },
+      "imagery": {
+        "Images": 8.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.042
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 3806.5,
+        "Calls to action": 7.5,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Compte Base KBC",
+        "Shows a rate": 1.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "mixed",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.002,
+        "backgroundLuminance": 0.878
+      },
+      "marketing": {
+        "Aida coverage": 0.5,
+        "Persuasion levers": [
+          "authority"
+        ],
+        "Lever count": 1.0
+      }
+    },
+    {
+      "key": "n26",
+      "name": "N26",
+      "category": "challenger",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Mentions loyalty or referral",
+          "sd": 2.4,
+          "direction": "above"
+        },
+        {
+          "label": "Share of the page that is imagery",
+          "sd": 2.2,
+          "direction": "above"
+        },
+        {
+          "label": "Brand colour on the page",
+          "sd": 2.0,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 2019.0,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.78,
+        "Urgency markers": 0.0
+      },
+      "imagery": {
+        "Images": 29.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.587
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 8005.0,
+        "Calls to action": 11.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "N26 Standard",
+        "Shows a rate": 1.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
+      },
+      "palette": {
+        "dominant": "#293830",
+        "brandShare": 0.024,
+        "backgroundLuminance": 0.579
+      },
+      "marketing": {
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "authority",
+          "liking"
+        ],
+        "Lever count": 2.0
+      }
+    },
+    {
+      "key": "revolut",
+      "name": "Revolut",
+      "category": "challenger",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Invokes institutional trust",
+          "sd": 2.4,
+          "direction": "above"
+        },
+        {
+          "label": "Call-to-action contrast",
+          "sd": 1.9,
+          "direction": "above"
+        },
+        {
+          "label": "Carries legal small print",
+          "sd": -1.6,
+          "direction": "below"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1352.0,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.759,
+        "Urgency markers": 1.0
+      },
+      "imagery": {
+        "Images": 10.0,
+        "Dominant image type": "illustration",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.243
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 6615.0,
+        "Calls to action": 7.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Compte courant",
+        "Shows a rate": 1.0,
+        "How prominently the rate is shown": "absent",
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.532
+      },
+      "marketing": {
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "authority",
+          "social_proof",
+          "liking"
+        ],
+        "Lever count": 3.0
+      }
+    }
+  ],
+  "similarity": {
+    "banks": [
+      "Argenta",
+      "bunq",
+      "Crelan",
+      "ING",
+      "KBC",
+      "N26",
+      "Revolut"
+    ],
+    "matrix": [
+      [
+        0.0,
+        11.46,
+        10.48,
+        11.0,
+        9.33,
+        10.8,
+        10.37
+      ],
+      [
+        11.46,
+        0.0,
+        11.84,
+        10.79,
+        11.2,
+        9.33,
+        9.84
+      ],
+      [
+        10.48,
+        11.84,
+        0.0,
+        8.38,
+        8.24,
+        10.75,
+        10.22
+      ],
+      [
+        11.0,
+        10.79,
+        8.38,
+        0.0,
+        8.58,
+        10.04,
+        10.81
+      ],
+      [
+        9.33,
+        11.2,
+        8.24,
+        8.58,
+        0.0,
+        10.38,
+        9.66
+      ],
+      [
+        10.8,
+        9.33,
+        10.75,
+        10.04,
+        10.38,
+        0.0,
+        8.12
+      ],
+      [
+        10.37,
+        9.84,
+        10.22,
+        10.81,
+        9.66,
+        8.12,
+        0.0
+      ]
+    ]
+  },
+  "clusters": [
+    {
+      "cluster": 1,
+      "banks": [
+        "bunq",
+        "N26",
+        "Revolut"
+      ]
+    },
+    {
+      "cluster": 2,
+      "banks": [
+        "Argenta",
+        "Crelan",
+        "ING",
+        "KBC"
+      ]
+    }
+  ],
+  "nearestToFocus": [
+    {
+      "bank": "Crelan",
+      "distance": 8.38
+    },
+    {
+      "bank": "KBC",
+      "distance": 8.58
+    },
+    {
+      "bank": "N26",
+      "distance": 10.04
+    }
+  ],
+  "deckClaims": [
+    {
+      "id": "H1",
+      "bank": "belfius",
+      "claim": "Belfius is pretty verbose",
+      "verdict": "not testable",
+      "evidence": "feature absent from the dataset"
+    },
+    {
+      "id": "H2",
+      "bank": "kbc",
+      "claim": "KBC is straight to the point",
+      "verdict": "not supported",
+      "evidence": "kbc=2386.0; lowest traditional is argenta=1831.0"
+    },
+    {
+      "id": "H3",
+      "bank": "ing",
+      "claim": "ING is the only traditional bank using animation",
+      "verdict": "not supported",
+      "evidence": "ing=1.00; other traditional banks above zero: ['kbc', 'crelan']"
+    },
+    {
+      "id": "H4",
+      "bank": "ing",
+      "claim": "ING no longer places text next to picture",
+      "verdict": "not testable",
+      "evidence": "no text_image_layout values recorded for ing"
+    },
+    {
+      "id": "H5",
+      "bank": "revolut",
+      "claim": "Revolut uses very little text",
+      "verdict": "supported",
+      "evidence": "revolut=1352.0; lowest is revolut=1352.0"
+    }
+  ],
+  "limitations": {
+    "blocking": [
+      "**3 of 13 rubric features are unscored** (['text_image_layout', 'layout_archetype', 'mobile_first_design_signal']). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`)."
+    ],
+    "material": [
+      "The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
+      "Pages are in **2 languages** (['fr', 'nl']). Word counts and readability are not comparable across languages; only the banded versions travel.",
+      "**2 bank(s) are absent from this comparison entirely**: belfius, bnp_paribas_fortis. They have real, usable captures but no page in the 'current_account_pack' product family, and comparing across families would confound every difference with the product (DR-04). They are in the dataset, not in these results - collect them a page in this family to include them."
+    ],
+    "standing": [
+      "Model-assisted features were all produced by `deepseek/deepseek-chat`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.",
+      "Every conclusion is valid for the capture window **2026-09-16 to 2026-09-16** and no later. Campaign pages change without notice (DR-05).",
+      "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.",
+      "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
+      "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
+      "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is deterministic: the same dataset produces a byte-identical prompt, and each generated artefact records that prompt's fingerprint. The model is the variable part — identical requests usually return identical copy but not always, because temperature controls sampling and not how the model routes internally. Treat a committed campaign as one sample rather than as the output.",
+      "Hitting a generation target shows the model followed instructions. It says nothing about whether the campaign would perform better (plan risk P-08)."
+    ]
+  },
+  "validation": {
+    "ok": true,
+    "warnings": [
+      "text_image_layout: required feature is entirely empty",
+      "layout_archetype: required feature is entirely empty",
+      "argenta: core feature(s) entirely missing: ['rate_value_pct', 'text_image_layout', 'layout_archetype'] - record a reason (DR-07)",
+      "belfius: core feature(s) entirely missing: ['text_image_layout', 'layout_archetype'] - record a reason (DR-07)",
+      "bnp_paribas_fortis: core feature(s) entirely missing: ['http_status', 'total_image_area_ratio', 'page_height_px', 'text_image_layout', 'layout_archetype'] - record a reason (DR-07)",
+      "bunq: core feature(s) entirely missing: ['text_image_layout', 'layout_archetype'] - record a reason (DR-07)"
+    ]
+  },
+  "generated": [
+    {
+      "variant": "on_brand",
+      "title": "On brand",
+      "headline": "Et si votre compte à vue travaillait enfin pour vous ?",
+      "subheading": "Chez ING, nous croyons qu’un compte courant doit être simple, transparent et sans mauvaise surprise. Découvrez une façon plus claire de gérer votre argent au quotidien.",
+      "body": [
+        "Nous savons que votre temps est précieux. C’est pourquoi nous avons repensé le compte à vue pour qu’il vous simplifie la vie, pas l’inverse. Pas de jargon inutile, pas de conditions cachées : juste un compte qui fait ce qu’il promet.",
+        "Avec ING, vous ouvrez un compte à vue en quelques minutes, sans paperasse inutile. Vous gardez le contrôle sur vos dépenses, vos virements et vos prélèvements, où que vous soyez. Et parce que la transparence n’est pas un luxe, nous vous disons clairement ce que vous payez — et ce que vous ne payez pas.",
+        "Nous mettons à votre disposition des outils simples pour suivre votre budget en temps réel, catégoriser vos dépenses et anticiper vos fins de mois. Parce qu’un compte à vue ne devrait pas être une source de stress, mais un allié du quotidien.",
+        "Vous vous demandez si vous payez trop de frais ? Nous aussi, nous nous posons la question pour vous. Notre compte à vue est conçu pour réduire les coûts inutiles et vous offrir une expérience bancaire fluide, sans engagement de durée.",
+        "Nous croyons que la banque doit être accessible, honnête et efficace. C’est pourquoi nous vous accompagnons à chaque étape : ouverture en ligne, service client basé en Europe, et une application mobile qui vous suit partout.",
+        "Alors, prêt à passer à un compte à vue qui vous ressemble ? Découvrez notre offre, comparez, et prenez votre décision en toute connaissance de cause. Nous sommes là pour vous aider, pas pour vous compliquer la vie.",
+        "Parce que votre argent mérite mieux qu’un compte dormant. Avec ING, chaque euro compte, et chaque question trouve sa réponse. Nous vous expliquons tout, sans détour.",
+        "Rejoignez des milliers de clients qui ont déjà simplifié leur quotidien bancaire avec nous. Et si vous faisiez le premier pas vers une gestion plus sereine ?",
+        "Nous ne promettons pas de miracles, mais nous promettons de la clarté. Votre compte à vue ING, c’est un engagement mutuel : nous vous offrons la simplicité, vous gardez la liberté.",
+        "Alors, on commence ? Découvrez comment ouvrir votre compte à vue ING dès aujourd’hui et reprenez le contrôle de vos finances.",
+        "Chez ING, nous pensons que la banque de détail doit être utile, pas intrusive. Notre compte à vue est pensé pour vous laisser respirer, avec des frais maîtrisés et un service qui répond présent.",
+        "Vous avez des questions ? Nous avons des réponses. Consultez notre FAQ, discutez avec notre service client, ou lancez-vous directement. C’est vous qui décidez.",
+        "Nous croyons que la confiance se gagne par la transparence. C’est pourquoi nous affichons clairement les conditions de notre compte à vue, sans astérisques cachées.",
+        "Et parce que nous aimons aller droit au but : ouvrez un compte à vue ING, c’est simple, rapide et sans engagement. Découvrez-le par vous-même.",
+        "Nous sommes là pour vous accompagner, pas pour vous vendre un produit de plus. Notre compte à vue, c’est un outil, pas une contrainte.",
+        "Alors, qu’attendez-vous pour découvrir une banque qui vous parle franchement ?"
+      ],
+      "cta": "Découvrir le compte à vue ING",
+      "additionalCtas": [
+        "Ouvrir un compte en ligne",
+        "En savoir plus sur nos offres"
+      ],
+      "layout": "long_form",
+      "background": "light",
+      "accent": "#ff6200",
+      "imageBriefs": [
+        "Photo lifestyle : jeune active souriante consultant son application bancaire ING sur smartphone, dans un café lumineux, arrière-plan flou.",
+        "Illustration minimaliste : un compte à vue représenté par un coffre-fort ouvert d’où s’échappent des engrenages, style flat design, couleurs ING.",
+        "Capture d’écran fictive : interface mobile ING montrant un tableau de bord de compte à vue avec catégories de dépenses, sans chiffres réels.",
+        "Photo : couple trentenaire devant un ordinateur portable, ouvrant un compte en ligne ensemble, ambiance chaleureuse.",
+        "Icône : bouclier avec une coche, symbolisant la sécurité des transactions, style ligne fine, orange ING.",
+        "Photo : homme senior utilisant une tablette pour vérifier son solde, dans un salon moderne, lumière naturelle.",
+        "Illustration : calendrier avec des pièces de monnaie, évoquant la gestion des prélèvements et virements automatiques.",
+        "Photo : femme au travail, casque audio, consultant son compte à vue sur second écran, open space.",
+        "Infographie : comparaison avant/après d’un compte à vue traditionnel vs ING, sans chiffres, juste des icônes.",
+        "Photo : mains tenant une carte bancaire ING devant un terminal de paiement sans contact.",
+        "Illustration : graphique circulaire montrant la répartition des dépenses, style épuré, sans pourcentages.",
+        "Photo : jeune homme dans un bus, regardant son téléphone avec l’app ING, mouvement léger.",
+        "Icône : ampoule allumée, symbolisant une idée ou une astuce budget, dans un cercle orange.",
+        "Photo : famille dans une cuisine, un parent montre quelque chose sur une tablette à un enfant.",
+        "Illustration : route sinueuse avec des panneaux indicateurs 'Épargne', 'Dépenses', 'Projets', style vectoriel.",
+        "Photo : femme d’affaires en tailleur, marchant dans la rue, téléphone à la main, sourire confiant.",
+        "Capture d’écran fictive : notification push ING 'Votre compte à vue est à jour', sans données personnelles.",
+        "Photo : deux amies attablées, l’une montre son téléphone à l’autre, ambiance décontractée.",
+        "Illustration : serrure et clé, symbolisant l’accès sécurisé au compte, style minimaliste.",
+        "Photo : homme en télétravail, ordinateur portable, tasse de café, consultant son compte en ligne.",
+        "Infographie : étapes d’ouverture d’un compte en 3 icônes (formulaire, validation, carte).",
+        "Photo : main tenant un smartphone avec l’app ING, arrière-plan flou de bureau.",
+        "Illustration : balance avec d’un côté des pièces, de l’autre un sourire, symbolisant l’équilibre financier.",
+        "Photo : femme faisant ses courses, payant avec son téléphone, terminal sans contact.",
+        "Icône : horloge, symbolisant le gain de temps avec la banque en ligne.",
+        "Photo : jeune couple dans un canapé, ordinateur sur les genoux, plan large.",
+        "Illustration : boîte de réception avec des enveloppes, dont une ouverte, symbolisant les relevés papier vs numériques.",
+        "Photo : homme souriant dans une agence bancaire, accueilli par un conseiller, ambiance moderne.",
+        "Capture d’écran fictive : section 'Frais' de l’app ING, avec des lignes vides ou 'inclus'.",
+        "Photo : femme courant dans un parc, écouteurs, smartphone attaché au bras, app ING visible.",
+        "Illustration : puzzle dont les pièces s’assemblent pour former le mot 'simplicité'.",
+        "Photo : main qui tape sur un clavier d’ordinateur, écran affichant un formulaire d’ouverture de compte.",
+        "Icône : pouce levé, symbolisant la satisfaction client, dans un cercle orange.",
+        "Photo : groupe de collègues en pause, l’un montre son téléphone aux autres, rires.",
+        "Illustration : carte du monde avec des points de connexion, symbolisant l’accès mobile international.",
+        "Photo : personne âgée et jeune adulte côte à côte, le jeune montre l’app sur tablette à l’aîné.",
+        "Capture d’écran fictive : page de confirmation d’ouverture de compte, message 'Bienvenue chez ING'."
+      ],
+      "disclaimer": "[Texte légal et risques à rédiger par le service conformité : conditions d’ouverture, frais éventuels, disponibilité de l’offre, mentions légales ING.]",
+      "levers": [
+        "authority",
+        "commitment",
+        "liking",
+        "reciprocity",
+        "social_proof"
+      ],
+      "model": "deepseek/deepseek-chat",
+      "promptHash": "a3e544f720ecbc8c",
+      "scorecard": [
+        {
+          "label": "Questions asked",
+          "target": "question_count between 12 and 22",
+          "actual": "8",
+          "result": "miss"
+        },
+        {
+          "label": "Words on the page",
+          "target": "word_count between 1,837 and 3,412",
+          "actual": "591",
+          "result": "miss"
+        },
+        {
+          "label": "Talks about “we”",
+          "target": "first_person_plural_count between 12 and 23",
+          "actual": "30",
+          "result": "miss"
+        },
+        {
+          "label": "Words per sentence",
+          "target": "avg_sentence_length between 14 and 26",
+          "actual": "13.43",
+          "result": "miss"
+        },
+        {
+          "label": "Images",
+          "target": "image_count between 26 and 48",
+          "actual": "37",
+          "result": "hit"
+        },
+        {
+          "label": "Sentences",
+          "target": "sentence_count between 93 and 173",
+          "actual": "44",
+          "result": "miss"
+        },
+        {
+          "label": "Call to action visible without scrolling",
+          "target": "cta_above_fold = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Carries legal small print",
+          "target": "disclaimer_present = True",
+          "actual": "True",
+          "result": "hit"
+        }
+      ],
+      "hitRate": 0.38
+    },
+    {
+      "variant": "challenger_style",
+      "title": "Challenger style",
+      "headline": "Et si votre compte courant travaillait enfin pour vous ?",
+      "subheading": "Nous repensons la banque de tous les jours : plus claire, plus juste, plus proche de vous.",
+      "body": [
+        "Nous avons posé une question simple : pourquoi votre compte courant ne vous rendrait-il pas ce qu'il vous coûte ? Chez nous, chaque euro qui dort peut servir. Nous ne parlons pas de promesses lointaines, mais d'un compte qui s'adapte à votre rythme, sans jargon ni petites lignes.",
+        "Nous croyons qu'une banque doit d'abord expliquer avant de facturer. C'est pourquoi nous affichons [RATE] sur les opérations essentielles et [AMOUNT] pour l'ouverture, sans frais cachés. Vous gardez la main sur chaque mouvement, chaque prélèvement, chaque virement.",
+        "Notre application vous montre où va votre argent, en temps réel. Nous vous alertons avant qu'un découvert ne vous coûte cher. Nous vous proposons des solutions concrètes, pas des discours. Et quand vous avez une question, nous répondons vite, par chat ou par téléphone, avec des conseillers qui connaissent votre dossier.",
+        "Nous avons aussi pensé à ceux qui veulent épargner sans y penser. Chaque semaine, nous arrondissons vos achats et nous plaçons la différence sur un espace rémunéré [RATE]. Vous pouvez tout arrêter en un geste. Nous ne verrouillons rien, nous n'imposons rien.",
+        "Rejoindre une banque qui vous ressemble, c'est possible. Nous ouvrons les comptes en quelques minutes, sans paperasse inutile. Vous choisissez votre carte, vos plafonds, vos alertes. Nous nous occupons du reste. Et si vous changez d'avis, nous vous aidons à partir proprement.",
+        "Nous ne sommes pas une banque comme les autres. Nous sommes la banque qui pose des questions, qui écoute, qui ajuste. Nous construisons avec vous, pas contre vous. C'est notre façon de faire, et nous en sommes fiers."
+      ],
+      "cta": "Ouvrir un compte en 5 minutes",
+      "additionalCtas": [
+        "Découvrir nos offres",
+        "Commencer maintenant",
+        "En savoir plus sur nos tarifs"
+      ],
+      "layout": "hero_stacked",
+      "background": "light",
+      "accent": "#ff6200",
+      "imageBriefs": [
+        "Photographie lifestyle : une jeune femme souriante consulte son téléphone dans un café lumineux, tasse à la main, arrière-plan flou avec des plantes vertes.",
+        "Illustration vectorielle : un compte courant stylisé avec des flèches entrantes et sortantes, des pièces qui circulent, palette orange et bleu nuit.",
+        "Capture d'écran fictive d'application mobile : tableau de bord avec catégories de dépenses, graphique circulaire, bouton d'action orange.",
+        "Portrait d'un conseiller clientèle souriant, casque téléphonique, dans un open space moderne, lumière naturelle.",
+        "Infographie : comparaison avant/après d'un relevé bancaire, avant en gris avec des frais, après en couleur avec des économies.",
+        "Photo macro : une carte bancaire sans contact posée sur une table en bois, reflets doux, arrière-plan flou.",
+        "Scène de vie : un couple jeune devant un ordinateur portable, planifiant son budget, expressions détendues.",
+        "Illustration : un coffre-fort ouvert avec des plantes qui poussent autour, symbolisant l'épargne qui grandit.",
+        "Capture d'écran d'alerte mobile : notification push « Solde bas » avec option « Voir des solutions », design épuré.",
+        "Photo d'équipe : petits groupes de personnes diverses en train de discuter autour d'une table, ambiance collaborative.",
+        "Graphique animé : courbe de progression de l'épargne sur 12 mois, avec des paliers et des objectifs atteints.",
+        "Vue aérienne d'une ville avec des flux lumineux représentant des transactions, style néon orange.",
+        "Portrait d'une femme âgée souriante tenant une tablette, dans un salon lumineux, petit-fils à côté."
+      ],
+      "disclaimer": "[Texte légal et risques à rédiger par le service conformité : conditions d'ouverture, tarifs, taux, plafonds, médiation, etc.]",
+      "levers": [
+        "authority",
+        "commitment",
+        "liking",
+        "reciprocity",
+        "social_proof"
+      ],
+      "model": "deepseek/deepseek-chat",
+      "promptHash": "cfa89fa56c22b63f",
+      "scorecard": [
+        {
+          "label": "Questions asked",
+          "target": "question_count between 5.60 and 10",
+          "actual": "3",
+          "result": "miss"
+        },
+        {
+          "label": "Words on the page",
+          "target": "word_count between 1,234 and 2,292",
+          "actual": "324",
+          "result": "miss"
+        },
+        {
+          "label": "Talks about “we”",
+          "target": "first_person_plural_count between 9.10 and 17",
+          "actual": "26",
+          "result": "miss"
+        },
+        {
+          "label": "Words per sentence",
+          "target": "avg_sentence_length between 16 and 29",
+          "actual": "11.57",
+          "result": "miss"
+        },
+        {
+          "label": "Images",
+          "target": "image_count between 9.10 and 17",
+          "actual": "13",
+          "result": "hit"
+        },
+        {
+          "label": "Sentences",
+          "target": "sentence_count between 63 and 117",
+          "actual": "28",
+          "result": "miss"
+        },
+        {
+          "label": "Call to action visible without scrolling",
+          "target": "cta_above_fold = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Carries legal small print",
+          "target": "disclaimer_present = True",
+          "actual": "True",
+          "result": "hit"
+        }
+      ],
+      "hitRate": 0.38
+    }
+  ],
+  "trends": {
+    "rows": [
+      {
+        "bank": "KBC",
+        "family": "Current-account packs",
+        "recent": 1.2,
+        "baseline": 2.3,
+        "changePct": -48.2,
+        "direction": "lower"
+      },
+      {
+        "bank": "ING",
+        "family": "Current-account packs",
+        "recent": 0.1,
+        "baseline": 0.3,
+        "changePct": -64.7,
+        "direction": "lower"
+      }
+    ],
+    "uncovered": [
+      "Argenta",
+      "bunq",
+      "Crelan",
+      "N26",
+      "Revolut"
+    ]
+  }
+}

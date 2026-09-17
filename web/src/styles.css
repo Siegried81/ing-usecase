@@ -1,0 +1,158 @@
+/* Palette: the same two hues as the matplotlib charts the team already knows —
+   traditional #2a78d6, challenger #eb6834 — validated for colour-vision
+   separation. ING is never given a third hue; it is emphasised with a ring and
+   weight, because colour follows the entity, not its importance. */
+
+:root {
+  --ink: #12131a;
+  --ink-2: #464a57;
+  --ink-3: #767b8a;
+  --line: #e4e6ec;
+  --line-2: #f0f1f5;
+  --surface: #ffffff;
+  --surface-2: #f8f9fb;
+  --traditional: #2a78d6;
+  --challenger: #eb6834;
+  --focus-ring: #12131a;
+  --warn: #9a6a00;
+  --warn-bg: #fdf6e3;
+  --radius: 14px;
+  --maxw: 1080px;
+  --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface-2);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 24px; }
+
+/* ---------- masthead ---------- */
+.masthead { background: var(--surface); border-bottom: 1px solid var(--line); padding: 28px 0 22px; }
+.masthead .eyebrow { font-size: 12px; letter-spacing: .09em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.masthead h1 { margin: 6px 0 4px; font-size: 26px; letter-spacing: -.02em; }
+.masthead .sub { color: var(--ink-2); font-size: 15px; }
+
+/* ---------- scope banner ---------- */
+.scope {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 18px 20px; margin: 22px 0; display: grid; gap: 14px;
+}
+.scope-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 14px 22px; }
+.scope-item .k { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.scope-item .v { font-size: 15px; font-weight: 600; margin-top: 2px; }
+.scope-note { font-size: 13.5px; color: var(--warn); background: var(--warn-bg); border-radius: 9px; padding: 10px 12px; }
+
+/* ---------- sections ---------- */
+section { margin: 40px 0; }
+.section-head { margin-bottom: 14px; }
+.section-head h2 { margin: 0 0 4px; font-size: 21px; letter-spacing: -.015em; }
+.section-head p { margin: 0; color: var(--ink-2); font-size: 14.5px; max-width: 68ch; }
+
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
+
+/* ---------- headline ---------- */
+.headline { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px; }
+.headline .q { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.headline .a { font-size: clamp(24px, 3.6vw, 36px); line-height: 1.22; letter-spacing: -.025em; margin: 8px 0 12px; font-weight: 650; }
+.headline .a em { font-style: normal; border-bottom: 3px solid var(--traditional); }
+.headline .why { color: var(--ink-2); font-size: 15.5px; max-width: 70ch; }
+
+/* ---------- axis ---------- */
+.axis { padding: 6px 2px 0; }
+.axis-row { display: grid; grid-template-columns: 132px 1fr 62px; align-items: center; gap: 12px; padding: 5px 0; }
+.axis-name { font-size: 14.5px; text-align: right; color: var(--ink-2); }
+.axis-row.focus .axis-name { color: var(--ink); font-weight: 700; }
+.axis-track { position: relative; height: 26px; }
+.axis-track::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--line);
+}
+.axis-dot {
+  position: absolute; top: 50%; width: 14px; height: 14px; border-radius: 50%;
+  transform: translate(-50%, -50%); border: 2px solid var(--surface);
+}
+.axis-row.focus .axis-dot { width: 19px; height: 19px; border-color: var(--focus-ring); border-width: 2.5px; }
+.axis-score { font-size: 14px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.axis-row.focus .axis-score { color: var(--ink); font-weight: 700; }
+.axis-scale { display: grid; grid-template-columns: 132px 1fr 62px; gap: 12px; margin-top: 8px; }
+.axis-scale .ends { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-3); }
+
+/* ---------- bars ---------- */
+.bar-row { display: grid; grid-template-columns: 1fr 200px 112px; gap: 14px; align-items: center; padding: 9px 0; border-bottom: 1px solid var(--line-2); }
+.bar-row:last-child { border-bottom: 0; }
+.bar-label { font-size: 14.5px; }
+.bar-label small { display: block; color: var(--ink-3); font-size: 12.5px; }
+.bar-track { position: relative; height: 10px; background: var(--line-2); border-radius: 5px; }
+.bar-mid { position: absolute; left: 50%; top: -4px; bottom: -4px; width: 1px; background: var(--line); }
+.bar-fill { position: absolute; top: 0; height: 10px; border-radius: 5px; }
+.bar-value { font-size: 13.5px; color: var(--ink-2); text-align: right; font-variant-numeric: tabular-nums; }
+
+/* ---------- bank cards ---------- */
+.banks { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; }
+.bank { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+.bank.focus { border-color: var(--focus-ring); box-shadow: 0 0 0 1px var(--focus-ring); }
+.bank-top { display: flex; align-items: center; gap: 9px; margin-bottom: 12px; }
+.swatch { width: 13px; height: 13px; border-radius: 4px; flex: none; }
+.bank-name { font-weight: 700; font-size: 16px; }
+.tag { font-size: 11px; letter-spacing: .05em; text-transform: uppercase; font-weight: 600; padding: 2px 7px; border-radius: 999px; }
+.tag.traditional { background: #eaf2fd; color: #1c5cab; }
+.tag.challenger { background: #fdeee7; color: #b44a1d; }
+.sig { font-size: 13.5px; color: var(--ink-2); display: flex; gap: 7px; padding: 3px 0; }
+.sig .sd { font-variant-numeric: tabular-nums; font-weight: 650; flex: none; }
+.sig .sd.above { color: var(--challenger); }
+.sig .sd.below { color: var(--traditional); }
+
+/* ---------- generated ---------- */
+.synthetic {
+  display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 700;
+  letter-spacing: .05em; text-transform: uppercase; color: var(--warn);
+  background: var(--warn-bg); border-radius: 999px; padding: 5px 11px;
+}
+.gen { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.gen-copy h3 { margin: 12px 0 4px; font-size: 20px; letter-spacing: -.02em; line-height: 1.25; }
+.gen-copy .sub { color: var(--ink-2); font-size: 15px; margin-bottom: 10px; }
+.gen-copy p { font-size: 14px; color: var(--ink-2); margin: 0 0 8px; }
+.cta-pill { display: inline-block; font-size: 13px; font-weight: 650; padding: 7px 13px; border-radius: 8px; color: #fff; margin: 2px 6px 2px 0; }
+.score-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; font-size: 13.5px; padding: 6px 0; border-bottom: 1px solid var(--line-2); }
+.pill { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.pill.hit { background: #e7f4ec; color: #1a7f4b; }
+.pill.miss { background: #fdeee7; color: #b44a1d; }
+
+/* ---------- limitations ---------- */
+.lim h3 { font-size: 15px; margin: 16px 0 7px; }
+.lim ul { margin: 0; padding-left: 18px; }
+.lim li { font-size: 14px; color: var(--ink-2); margin-bottom: 7px; }
+.lim li strong { color: var(--ink); }
+
+/* ---------- misc ---------- */
+.foot { color: var(--ink-3); font-size: 13px; padding: 30px 0 46px; border-top: 1px solid var(--line); margin-top: 40px; }
+.claims { width: 100%; border-collapse: collapse; font-size: 14px; }
+.claims th { text-align: left; font-size: 11.5px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); padding: 6px 10px 6px 0; border-bottom: 1px solid var(--line); }
+.claims td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line-2); vertical-align: top; color: var(--ink-2); }
+.claims td.claim { color: var(--ink); }
+.verdict { font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+.verdict.supported { color: #1a7f4b; }
+.verdict.not { color: #b44a1d; }
+.verdict.untestable { color: var(--ink-3); }
+
+@media (max-width: 760px) {
+  .gen { grid-template-columns: 1fr; }
+  .bar-row { grid-template-columns: 1fr 120px 76px; }
+  .axis-row, .axis-scale { grid-template-columns: 96px 1fr 54px; }
+  .axis-name { font-size: 13px; }
+}
+
+.judged {
+  font-size: 10.5px; letter-spacing: .04em; text-transform: uppercase; font-weight: 700;
+  color: var(--warn); background: var(--warn-bg); border-radius: 999px;
+  padding: 1px 7px; margin-left: 6px; vertical-align: 1px; white-space: nowrap;
+}
+.legend { font-size: 13px; color: var(--ink-3); margin-top: 10px; }
