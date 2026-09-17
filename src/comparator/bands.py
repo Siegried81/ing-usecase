@@ -86,3 +86,25 @@ def disclaimer_word_share_band(value) -> str | None:
 
 def text_to_image_ratio_band(value) -> str | None:
     return _band(value, TEXT_TO_IMAGE_RATIO_EDGES, TEXT_TO_IMAGE_RATIO_DEFAULT)
+
+
+# sieg 17/09, audit finding (LOW): these edges were duplicated identically in
+# THREE places - collection/scraper.py (_BAND_EDGES), derive.py
+# (_READABILITY_EDGES) and fixtures.py (also _BAND_EDGES) - exactly the
+# failure mode this module's own docstring warns about ("duplicating
+# thresholds in two files is how they silently drift apart"). Consolidated
+# here; all three call sites now use readability_band().
+#
+# Descending thresholds, checked with >=, unlike the ascending/< convention of
+# _band() above: a HIGHER readability_score means EASIER text, so the highest
+# edge is checked first. readability_score's own formula already normalises
+# for language (see bands.py module docstring), so this is not subject to the
+# "fixed universal cutoff" caveat the other bands carry.
+READABILITY_EDGES = [(90, "very_easy"), (70, "easy"), (50, "medium"), (30, "hard")]
+READABILITY_DEFAULT = "very_hard"
+
+
+def readability_band(score: float | int | None) -> str | None:
+    if score is None:
+        return None
+    return next((label for edge, label in READABILITY_EDGES if score >= edge), READABILITY_DEFAULT)

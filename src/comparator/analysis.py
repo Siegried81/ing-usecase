@@ -53,11 +53,47 @@ def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str
     Siegried's bands exist to make a within_language number cross-language. They
     are a coarser view of a value already in the matrix, so including both would
     count the same signal twice and quietly double the weight of word length.
+
+    sieg 17/09, audit finding (MEDIUM). This used to check "is X a numeric
+    column present in df", not "does X actually enter the comparison" - so
+    when mixed languages excluded X (see language_excluded_features() below),
+    X_band was STILL classified as redundant and stayed hidden from
+    encodable_categoricals(), even though it is exactly the cross-language
+    substitute for the value that just got excluded. Uses comparable_features()
+    (the actual used set) instead of raw column presence, so a band becomes
+    available the moment its raw number is excluded, language or otherwise.
     """
-    numeric = {f.name for f in fd.features if (f.is_numeric or f.is_boolean) and f.name in df.columns}
+    used = set(comparable_features(fd, df))
     return sorted(
         f.name for f in fd.features
-        if f.name.endswith(BAND_SUFFIX) and f.name[: -len(BAND_SUFFIX)] in numeric
+        if f.name.endswith(BAND_SUFFIX) and f.name[: -len(BAND_SUFFIX)] in used
+    )
+
+
+# sieg 17/09: audit finding (HIGH) - comparable_features() picked every numeric
+# feature regardless of `comparability`, so word_count/readability_score/
+# avg_sentence_length/second_person_ratio/... (all `within_language` in the
+# dictionary) were compared raw across banks even when their pages were
+# captured in different languages. Confirmed live: collection_targets.yaml has
+# KBC with both a fr and a nl page, and bank_vectors() averaged them together
+# before any cross-bank comparison. CLAUDE.md: "Never compare a
+# within_language feature across two banks captured in different languages
+# without flagging it explicitly." This is the flag - excluded, not silently
+# kept, whenever the usable pages span more than one language.
+def language_excluded_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
+    """within_language features dropped because the usable pages span >1 language.
+
+    Empty when the data is single-language - existing single-language runs are
+    unaffected. No band substitution here: bands only enter the comparison
+    through include_categorical, a separate opt-in the team controls (see
+    feature_accounting()), so this is a plain exclusion, reported like every
+    other reduction in render_accounting().
+    """
+    if "language" not in df.columns or df["language"].dropna().nunique() <= 1:
+        return []
+    return sorted(
+        f.name for f in fd.features
+        if (f.is_numeric or f.is_boolean) and f.name in df.columns and f.comparability == "within_language"
     )
 
 
@@ -96,6 +132,9 @@ def feature_accounting(
     free_text = sorted(n for n in FREE_TEXT_FEATURES if n in fd)
     bands = band_redundant_features(fd, df)
     categoricals = encodable_categoricals(fd, df)
+    # sieg 17/09: report the within_language exclusion the same way every other
+    # reduction here is reported - see language_excluded_features().
+    language_excluded = language_excluded_features(fd, df)
 
     matrix = bank_vectors(df, fd, include_categorical=include_categorical)
     incomplete = sorted(c for c in matrix.columns if matrix[c].isna().any())
@@ -108,6 +147,7 @@ def feature_accounting(
         "provenance": provenance,
         "free_text": free_text,
         "band_redundant": bands,
+        "language_excluded": language_excluded,
         "categorical": categoricals,
         "categorical_included": bool(include_categorical),
         "incomplete": incomplete,
@@ -128,6 +168,9 @@ def render_accounting(accounting: dict) -> str:
     row("provenance", accounting["provenance"], "identify a page, do not describe a campaign")
     row("free text / identifiers", accounting["free_text"], "no two pages share them")
     row("bands of a number already in", accounting["band_redundant"], "would double-count the same signal")
+    # sieg 17/09: within_language features dropped because >1 language is present.
+    row("within_language, mixed languages present", accounting["language_excluded"],
+        "not comparable across languages (comparability in the dictionary)")
     if accounting["categorical_included"]:
         lines.append(
             f"  +{len(accounting['categorical']):>3}  categorical / list         "
@@ -241,10 +284,16 @@ def comparable_features(
     """Numeric and boolean features usable in a distance calculation.
 
     Provenance columns are excluded - they identify a page, they do not describe
-    a campaign.
+    a campaign. within_language features (word_count, readability_score, ...)
+    are excluded too whenever the usable pages span more than one language -
+    sieg 17/09, see language_excluded_features() above.
     """
     feats = fd.select(tier=tier, exclude_dimensions=PROVENANCE)
-    return [f.name for f in feats if (f.is_numeric or f.is_boolean) and f.name in df.columns]
+    excluded = set(language_excluded_features(fd, df))
+    return [
+        f.name for f in feats
+        if (f.is_numeric or f.is_boolean) and f.name in df.columns and f.name not in excluded
+    ]
 
 
 def _numeric_frame(df: pd.DataFrame, columns: list[str]) -> pd.DataFrame:

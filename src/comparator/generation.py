@@ -269,6 +269,9 @@ class GeneratedCampaign(BaseModel):
     body_paragraphs: list[str] = Field(min_length=1)
     cta_label: str
     additional_cta_labels: list[str] = Field(default_factory=list)
+    # sieg 17/09: duplicates config/feature_dictionary.yaml's layout_archetype
+    # values - guarded against drift by test_generation.py's
+    # test_layout_archetype_literal_matches_the_dictionary.
     layout_archetype: Literal["hero_stacked", "split_columns", "card_grid", "long_form"]
     background_style: Literal["light", "dark"]
     accent_colour_hex: str
@@ -277,6 +280,9 @@ class GeneratedCampaign(BaseModel):
     persuasion_levers_used: list[str] = Field(default_factory=list)
 
 
+# sieg 17/09: the Cialdini lever list below duplicates
+# config/feature_dictionary.yaml's persuasion_levers values - guarded against
+# drift by test_generation.py's test_prompt_lever_list_matches_the_dictionary.
 SYSTEM_PROMPT = """You write structured marketing campaign specifications for a bank, for a
 research comparison. You are NOT writing a finished advert.
 

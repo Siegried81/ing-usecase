@@ -15,11 +15,12 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from comparator.collection.compliance import ScrapingNotAllowed  # noqa: E402
+from comparator.collection.compliance import ComplianceCheck, ScrapingNotAllowed  # noqa: E402
 from comparator.collection.render import (  # noqa: E402
     VIEWPORT_HEIGHT,
     VIEWPORT_WIDTH,
     RenderUnavailable,
+    _blocks_same_origin_asset,
     _features_from_measurement,
     _parse_css_colour,
     contrast_ratio,
@@ -103,6 +104,36 @@ def test_robots_gate_runs_before_the_browser_launches():
                 render("https://example.invalid/page")
     gate.assert_called_once()
     browser.assert_not_called(), "the browser must never start for a disallowed URL"
+
+
+# sieg 17/09, audit finding (MEDIUM): only the top-level navigation was gated;
+# same-origin sub-resources loaded during page.goto() were not. These pin the
+# fix without launching a browser - _blocks_same_origin_asset is the pure
+# decision the route handler makes.
+def test_same_origin_asset_disallowed_by_robots_is_blocked():
+    with patch(
+        "comparator.collection.render.check_robots",
+        return_value=ComplianceCheck("https://bank.example/api/x", allowed=False, reason="disallowed"),
+    ):
+        assert _blocks_same_origin_asset("https://bank.example/api/x", "bank.example") is True
+
+
+def test_same_origin_asset_allowed_by_robots_is_not_blocked():
+    with patch(
+        "comparator.collection.render.check_robots",
+        return_value=ComplianceCheck("https://bank.example/style.css", allowed=True, reason="allowed"),
+    ):
+        assert _blocks_same_origin_asset("https://bank.example/style.css", "bank.example") is False
+
+
+def test_cross_origin_asset_is_never_checked_or_blocked():
+    """Third-party CDN/font/analytics domains are out of scope on purpose -
+    see _blocks_same_origin_asset's docstring. Not even robots.txt is fetched
+    for them: check_robots must not be called."""
+    with patch("comparator.collection.render.check_robots") as robots_check:
+        blocked = _blocks_same_origin_asset("https://cdn.example/font.woff2", "bank.example")
+    assert blocked is False
+    robots_check.assert_not_called()
 
 
 # --- method selection --------------------------------------------------------

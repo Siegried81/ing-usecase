@@ -17,6 +17,7 @@ from __future__ import annotations
 
 import pandas as pd
 
+from comparator.analysis import language_excluded_features  # sieg 17/09: accurate comparability note
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.rubric import rubric_features
 
@@ -104,9 +105,25 @@ def assess(
     if "language" in usable.columns:
         languages = sorted(usable["language"].dropna().unique())
         if len(languages) > 1:
+            # sieg 17/09, FIXED. This used to claim "only the banded versions
+            # travel" - false: comparable_features() never substituted the band,
+            # it kept comparing the raw within_language value across languages
+            # (audit finding, HIGH). Now that comparable_features() actually
+            # excludes them (analysis.language_excluded_features()), this note
+            # describes what really happens instead of what was supposed to.
+            #
+            # sieg 17/09, second pass: dropped the "see charts.md" pointer - it
+            # only exists on the run_analysis.py path. This module is also
+            # consumed by export_web_report.py (business web UI), which never
+            # writes charts.md, so pointing every reader at it was the same
+            # "claims what the pipeline doesn't actually do" mistake this note
+            # had just been fixed for, one level up.
+            excluded = language_excluded_features(fd, usable)
             material.append(
-                f"Pages are in **{len(languages)} languages** ({languages}). Word counts and readability "
-                "are not comparable across languages; only the banded versions travel."
+                f"Pages are in **{len(languages)} languages** ({languages}). "
+                f"{len(excluded)} within_language feature(s) ({excluded}) are excluded from every "
+                "cross-bank comparison while that is true (comparability in the dictionary). "
+                "Band versions exist but are not compared in by default."
             )
 
     # --- human scores --------------------------------------------------------

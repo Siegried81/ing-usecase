@@ -92,3 +92,19 @@ by hand from `bank_profiles.md` — a different code path than
 `ing_vs_peers.csv`, so this isn't circular. Peer mean, peer std and the
 resulting gap all matched exactly for both features. Safe to use in the
 business narrative.
+
+**sieg 17/09, parked idea - channels beyond the open web.** Prompted by a CBC
+radio ad heard live - do the other banks in scope run radio (or other
+non-web) campaigns too, and is that worth comparing? Not pursued: the
+feature dictionary is built entirely for web content (layout, palette, page
+text) and has nothing to say about a 20-second audio spot - this would need
+its own dictionary (tone of voice, spot length, jingle presence, call-to-
+action framing) and its own collection method (recording/monitoring, not a
+URL fetch), not a small extension of the current pipeline. Same category as
+the already-named "extend beyond the open web" next step (social, in-app),
+just a channel further out. Parked here rather than in `limitations.md`
+because that file's next-steps list is generated from the dataset now (per
+the 17/09 audit-followups fix) and can't carry a step the data itself
+doesn't suggest. Revisit if: the team has scope/time for a v2, or a bank's
+radio campaign becomes directly relevant to a specific finding (e.g. an
+image-based feature that a radio spot could contextualise).

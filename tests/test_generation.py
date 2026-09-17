@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
+from typing import get_args
 
 import pytest
 
@@ -20,6 +21,7 @@ from comparator.fixtures import build_fixture  # noqa: E402
 from comparator.generation import (  # noqa: E402
     GUARDRAIL_BLOCKED_FEATURES,
     MEASURED_FEATURES,
+    SYSTEM_PROMPT,
     GeneratedCampaign,
     TargetSpec,
     build_brief,
@@ -60,6 +62,31 @@ def campaign():
         disclaimer_placeholder="[LEGAL: capital availability and early-withdrawal conditions]",
         persuasion_levers_used=["authority", "scarcity"],
     )
+
+
+# sieg 17/09, audit finding (MEDIUM) - layout_archetype's Literal and the
+# persuasion-lever list in SYSTEM_PROMPT duplicate config/feature_dictionary.yaml's
+# `values:` with nothing to catch drift, unlike rubric_model.py's TEXT_SCORABLE/
+# VISION_ONLY (guarded by test_rubric_model.py). These pin the same guarantee
+# here: if the dictionary adds/removes a value, this test fails loudly instead
+# of the model silently never being told, or being rejected by pydantic.
+def test_layout_archetype_literal_matches_the_dictionary(fd):
+    literal_values = set(get_args(GeneratedCampaign.model_fields["layout_archetype"].annotation))
+    assert literal_values == set(fd["layout_archetype"].values)
+
+
+def test_prompt_lever_list_matches_the_dictionary(fd):
+    for lever in fd["persuasion_levers"].values:
+        assert lever in SYSTEM_PROMPT
+
+
+# sieg 17/09, audit finding (LOW) - MEASURED_FEATURES is a hand-maintained
+# tuple with nothing checking its names actually exist in the dictionary; a
+# typo or a rename would silently degrade to "not measured" (row.get(...)
+# returns None) rather than erroring.
+def test_every_measured_feature_exists_in_the_dictionary(fd):
+    unknown = [name for name in MEASURED_FEATURES if name not in fd]
+    assert not unknown, f"MEASURED_FEATURES names {unknown}, not in the dictionary"
 
 
 # --- targets -----------------------------------------------------------------

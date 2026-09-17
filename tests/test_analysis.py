@@ -22,6 +22,7 @@ from comparator.analysis import (  # noqa: E402
     comparable_features,
     ing_vs_peers,
     insight_candidates,
+    language_excluded_features,  # sieg 17/09: audit fix, comparability enforcement
     nearest_neighbours,
     positioning_axis,
     recurring_patterns,
@@ -52,6 +53,71 @@ def test_provenance_never_enters_a_comparison(df, fd):
 def test_bank_vectors_are_one_row_per_bank(df, fd):
     vectors = bank_vectors(df, fd)
     assert len(vectors) == df["bank"].nunique()
+
+
+# sieg 17/09: audit finding (HIGH) - comparable_features() ignored `comparability`
+# and compared within_language features (word_count, readability_score, ...) raw
+# across banks captured in different languages. These tests pin the fix.
+def test_within_language_features_stay_in_when_one_language(df, fd):
+    """Regression: single-language data (the fixture default) is unaffected."""
+    assert df["language"].nunique() == 1
+    assert language_excluded_features(fd, df) == []
+    cols = comparable_features(fd, df)
+    assert "word_count" in cols
+    assert "readability_score" in cols
+
+
+def test_within_language_features_are_excluded_when_languages_mix(df, fd):
+    """KBC's real captures already mix fr/nl (scripts/collection_targets.yaml) -
+    this is the scenario the audit found silently mis-compared."""
+    mixed = df.copy()
+    half = mixed.index[: len(mixed) // 2]
+    mixed.loc[half, "language"] = "fr"
+    mixed.loc[mixed.index.difference(half), "language"] = "nl"
+
+    excluded = language_excluded_features(fd, mixed)
+    assert "word_count" in excluded
+    assert "readability_score" in excluded
+    assert all(fd[name].comparability == "within_language" for name in excluded)
+
+    cols = comparable_features(fd, mixed)
+    assert "word_count" not in cols
+    assert "readability_score" not in cols
+    # cross_language features are still compared - the fix is scoped, not a blanket drop.
+    assert any(fd[c].comparability == "cross_language" for c in cols)
+
+
+def test_accounting_reports_the_language_exclusion(fd):
+    from comparator.analysis import feature_accounting, render_accounting
+    from comparator.fixtures import build_fixture
+
+    mixed = build_fixture(fd)
+    half = mixed.index[: len(mixed) // 2]
+    mixed.loc[half, "language"] = "fr"
+    mixed.loc[mixed.index.difference(half), "language"] = "nl"
+
+    accounting = feature_accounting(mixed, fd)
+    assert "word_count" in accounting["language_excluded"]
+    text = render_accounting(accounting)
+    assert "mixed languages present" in text
+
+
+# sieg 17/09, audit finding (MEDIUM, follow-up) - band_redundant_features()
+# used to check "is the raw column present in df", not "does the raw feature
+# actually enter the comparison" - so word_count_band stayed hidden as
+# "redundant" even once word_count itself was excluded for mixing languages,
+# even though the band is precisely the cross-language substitute for it.
+def test_band_becomes_available_once_its_raw_feature_is_language_excluded(fd):
+    from comparator.analysis import band_redundant_features, encodable_categoricals
+    from comparator.fixtures import build_fixture
+
+    mixed = build_fixture(fd)
+    half = mixed.index[: len(mixed) // 2]
+    mixed.loc[half, "language"] = "fr"
+    mixed.loc[mixed.index.difference(half), "language"] = "nl"
+
+    assert "word_count_band" not in band_redundant_features(fd, mixed)
+    assert "word_count_band" in encodable_categoricals(fd, mixed)
 
 
 def test_positioning_puts_the_groups_on_opposite_ends(df, fd):
@@ -189,6 +255,34 @@ def test_profile_renders_to_markdown(df, fd):
 def test_profile_for_unknown_bank_fails_loudly(df, fd):
     with pytest.raises(ValueError, match="no rows for bank"):
         build_profile(df, "not_a_bank", fd)
+
+
+# sieg 17/09, audit finding (HIGH, follow-up) - build_profile() computed
+# within_language means (word_count, second_person_ratio) directly from a
+# bank's own rows, bypassing comparable_features() entirely. KBC's real
+# captures already mix fr/nl pages (scripts/collection_targets.yaml) - these
+# tests pin the fix on that exact scenario.
+def test_single_language_bank_profile_is_unaffected(df, fd):
+    """Regression: the fixture default (one language per bank) must not change."""
+    profile = build_profile(df, "ing", fd)
+    assert profile["identity"]["mixed_language"] is False
+    assert profile["tone"]["word_count"] is not None
+
+
+def test_mixed_language_bank_profile_nulls_the_within_language_tone_fields():
+    fd = load_dictionary()
+    df = build_fixture(fd)
+    ing_rows = df.index[df["bank"] == "ing"]
+    half = ing_rows[: len(ing_rows) // 2]
+    df.loc[half, "language"] = "fr"
+    df.loc[ing_rows.difference(half), "language"] = "nl"
+
+    profile = build_profile(df, "ing", fd)
+    assert profile["identity"]["mixed_language"] is True
+    assert profile["tone"]["word_count"] is None
+    assert profile["tone"]["second_person_ratio"] is None
+    # cross_language tone fields are still reported - the fix is scoped.
+    assert profile["tone"]["formality_score"] is not None
 
 
 # --- feature accounting (steph 15/09, after Sieg's "50 features... and with 97?") ---

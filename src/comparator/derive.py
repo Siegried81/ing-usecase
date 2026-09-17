@@ -22,9 +22,12 @@ from comparator.schema import parse_list
 
 AIDA_STAGES = ("aida_attention", "aida_interest", "aida_desire", "aida_action")
 
-_READABILITY_EDGES = [(90, "very_easy"), (70, "easy"), (50, "medium"), (30, "hard")]
-
 # derived feature -> (source feature, function)
+# sieg 17/09, audit finding (LOW): readability_band used to be handled by a
+# local _readability_band() with its own copy of the threshold edges, which
+# also lived in collection/scraper.py - now both use bands.readability_band(),
+# and this rule folds into the same loop as every other band instead of a
+# separate special-cased block below.
 BAND_RULES = {
     "word_count_band": ("word_count", bands.word_count_band),
     "sentence_count_band": ("sentence_count", bands.sentence_count_band),
@@ -33,13 +36,8 @@ BAND_RULES = {
     "first_person_plural_band": ("first_person_plural_count", bands.first_person_plural_band),
     "disclaimer_word_share_band": ("disclaimer_word_share", bands.disclaimer_word_share_band),
     "text_to_image_ratio_band": ("text_to_image_ratio", bands.text_to_image_ratio_band),
+    "readability_band": ("readability_score", bands.readability_band),
 }
-
-
-def _readability_band(score) -> str | None:
-    if score is None or pd.isna(score):
-        return None
-    return next((label for edge, label in _READABILITY_EDGES if score >= edge), "very_hard")
 
 
 def _truthy(value) -> bool | None:
@@ -65,10 +63,6 @@ def recompute_derived(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
         if target in fd and source in out.columns:
             values = pd.to_numeric(out[source], errors="coerce")
             out[target] = [fn(v) if pd.notna(v) else None for v in values]
-
-    if "readability_band" in fd and "readability_score" in out.columns:
-        scores = pd.to_numeric(out["readability_score"], errors="coerce")
-        out["readability_band"] = [_readability_band(v) for v in scores]
 
     if "has_animation" in fd and "animated_asset_count" in out.columns:
         counts = pd.to_numeric(out["animated_asset_count"], errors="coerce")
