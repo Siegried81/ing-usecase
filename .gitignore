@@ -27,3 +27,7 @@ CLAUDE.md
 # builds it in memory for the test suite). Committing a synthetic DATA file invites
 # someone to run the analysis on it and read the result as a finding.
 data/fixtures/
+
+# web UI build artefacts
+web/node_modules/
+web/dist/
