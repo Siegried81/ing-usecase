@@ -141,11 +141,31 @@ def main() -> int:
     _header("2. Bank profiles")
     profiles = build_all(banks_df, fd)
     markdown = render_all_markdown(profiles, fd)
+    # sieg 17/09 audit, point 1: this file listed 7 banks while the dataset had 9,
+    # with nothing on the page to say why. The scope belongs on the artefact, not
+    # only in the console output of the run that produced it.
+    scope_note = ""
+    if scope.family:
+        scope_note = (
+            f"> **Scope: `{scope.family}` product family only** — {len(scope.banks)} of "
+            f"{len(scope.banks) + len(scope.dropped_banks)} banks with usable captures.\n"
+        )
+        if scope.dropped_banks:
+            scope_note += (
+                f"> Not shown: {', '.join(scope.dropped_banks)} — usable captures, but no page in "
+                "this family. Comparing across families would confound every difference with the "
+                "product (DR-04).\n"
+            )
+        scope_note += "\n"
     (args.outdir / "bank_profiles.md").write_text(
-        (f"> **{note}**\n\n" if note else "") + "# Bank profile cards\n\n" + markdown,
+        (f"> **{note}**\n\n" if note else "") + scope_note + "# Bank profile cards\n\n" + markdown,
         encoding="utf-8",
     )
-    (args.outdir / "bank_profiles.json").write_text(json.dumps(profiles, indent=2, default=str), encoding="utf-8")
+    (args.outdir / "bank_profiles.json").write_text(
+        json.dumps({"_scope": {"product_family": scope.family,
+                               "banks_included": scope.banks,
+                               "banks_excluded_no_page_in_family": scope.dropped_banks},
+                    "profiles": profiles}, indent=2, default=str), encoding="utf-8")
     for bank, profile in profiles.items():
         signature = ", ".join(f"{n} {z:+.1f}SD" for n, z in profile["signature"])
         print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
@@ -252,7 +272,7 @@ def main() -> int:
     # steph 16/09: the UNFILTERED frame. Passing the filtered one made D-09 stop
     # mentioning the excluded banks entirely - the limitation disappeared because
     # we had acted on it, which is exactly backwards.
-    assessment = assess(all_banks_df, fd, focus=args.focus)
+    assessment = assess(all_banks_df, fd, focus=args.focus, scope=scope)
     (args.outdir / "limitations.md").write_text(
         render_limitations(assessment, synthetic=synthetic), encoding="utf-8")
     for label in ("blocking", "material"):

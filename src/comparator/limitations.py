@@ -40,6 +40,7 @@ def assess(
     fd: FeatureDictionary | None = None,
     *,
     focus: str = FOCUS_BANK,
+    scope=None,
 ) -> dict:
     """Collect every limitation the dataset itself can demonstrate."""
     fd = fd or load_dictionary()
@@ -172,7 +173,31 @@ def assess(
         "whether the campaign would perform better (plan risk P-08).",
     ]
 
+    # sieg 17/09 audit, point 1: --product-family drops every bank with no page
+    # in the chosen family, and the OUTPUT FILES never said so - Belfius (other)
+    # and BNP (mortgage) simply were not in bank_profiles.json. The console said
+    # it; the artefacts a reader actually opens did not.
+    if scope is not None and getattr(scope, "family", None):
+        if scope.dropped_banks:
+            material.append(
+                f"**{len(scope.dropped_banks)} bank(s) are absent from this comparison entirely**: "
+                f"{', '.join(scope.dropped_banks)}. They have real, usable captures but no page in "
+                f"the '{scope.family}' product family, and comparing across families would confound "
+                "every difference with the product (DR-04). They are in the dataset, not in these "
+                "results - collect them a page in this family to include them."
+            )
+
+    uncollectable = []
+    if "capture_quality" in df.columns and "bank" in df.columns:
+        broken_banks = set(df[df["capture_quality"] == "unusable"]["bank"])
+        uncollectable = sorted(broken_banks - set(usable_banks))
+
     return {
+        "uncollectable_banks": uncollectable,
+        "families_pooled": int(usable["product_family"].nunique()) if "product_family" in usable else 0,
+        "unscored_rubric_features": missing_rubric,
+        "family": getattr(scope, "family", None) if scope is not None else None,
+        "dropped_banks": list(getattr(scope, "dropped_banks", [])) if scope is not None else [],
         "n_banks": n_banks,
         "n_usable_banks": len(usable_banks),
         "n_pages": len(df),
@@ -183,20 +208,55 @@ def assess(
     }
 
 
-NEXT_STEPS = [
-    ("Collect a usable ING page", "Nothing about ING's position can be said without it. The current "
-     "capture is a JavaScript shell; a longer settle time or a different entry URL is the first thing to try."),
-    ("Fix the product-family mix", "Collect the same product family across every bank. The current "
-     "targets file is a pipeline test, not a comparable scope (DR-04)."),
-    ("Run the Day 5 scoring session", "13 rubric features, two independent raters, then report "
-     "agreement. Until then the comparison is automatic features only."),
-    ("Handle consent walls in collection", "Two of six captures were defeated by a page that never "
-     "rendered its content. Detect and dismiss the consent layer, or record the bank as uncollectable."),
-    ("Make generation reproducible", "Store the generated artefact and evaluate that, rather than "
-     "regenerating on every run."),
-    ("Extend beyond the open web", "Social media and in-app banners, using the same feature framework — "
-     "the extension the brief names, and the reason the framework is worth keeping."),
+# sieg 17/09 audit, point 2: this was a frozen list. It still told the team to
+# "collect a usable ING page" and described "two of six captures defeated by a
+# consent wall" long after ING was fixed and the dataset had grown - stale advice
+# sitting inside a file whose whole premise is that it describes the data in
+# hand. Built from the assessment now, like everything else here.
+STANDING_NEXT_STEPS = [
+    ("Run the Day 5 scoring session", "Two independent human raters, then report agreement "
+     "alongside the model's own sheet. Until then the judgement-based dimensions carry one "
+     "model's opinion and nothing to check it against."),
+    ("Make generation attributable", "Store the generated artefact and its prompt hash and "
+     "evaluate that, rather than regenerating on every run."),
+    ("Extend beyond the open web", "Social media and in-app banners, using the same feature "
+     "framework — the extension the brief names, and the reason the framework is worth keeping."),
 ]
+
+
+def next_steps(assessment: dict) -> list[tuple[str, str]]:
+    """The steps this dataset actually calls for, in priority order."""
+    steps: list[tuple[str, str]] = []
+
+    for bank in assessment.get("uncollectable_banks", []):
+        steps.append((
+            f"Recover a usable capture for {bank}",
+            "It has no usable page, so it is absent from every comparison. See its "
+            "capture_quality_note for what failed.",
+        ))
+
+    dropped = assessment.get("dropped_banks") or []
+    if dropped:
+        steps.append((
+            f"Collect {', '.join(dropped)} a page in the compared product family",
+            f"They have usable captures but none in '{assessment.get('family')}', so they sit out "
+            "of the comparison entirely rather than for any analytical reason.",
+        ))
+
+    if assessment.get("families_pooled", 0) > 1 and not assessment.get("family"):
+        steps.append((
+            "Restrict the comparison to one product family",
+            "Pooling families confounds every cross-bank difference with the product (DR-04). "
+            "Pass --product-family.",
+        ))
+
+    if assessment.get("unscored_rubric_features"):
+        steps.append((
+            f"Score the {len(assessment['unscored_rubric_features'])} unscored rubric feature(s)",
+            "Vision-only features cannot be model-scored; they need a human with the screenshot.",
+        ))
+
+    return steps + STANDING_NEXT_STEPS
 
 
 def render(assessment: dict, *, synthetic: bool = False) -> str:
@@ -211,6 +271,20 @@ def render(assessment: dict, *, synthetic: bool = False) -> str:
         f"{assessment['n_usable_banks']} bank(s)**, from {assessment['n_pages']} collected.",
         "",
     ]
+    # sieg 17/09 audit, point 3: this headline counts the WHOLE dataset, while
+    # charts.md and bank_profiles.json count what survived the product-family
+    # filter. Two honest views of one run, but nothing said so, and side by side
+    # they read as contradictory.
+    if assessment.get("family"):
+        dropped = assessment.get("dropped_banks") or []
+        lines += [
+            f"> **These counts are pre-filter.** The comparison itself was restricted to the "
+            f"`{assessment['family']}` product family, so `charts.md` and `bank_profiles.json` "
+            f"report a smaller set"
+            + (f" — {', '.join(dropped)} have usable captures but no page in that family."
+               if dropped else "."),
+            "",
+        ]
     if synthetic:
         lines += ["> **This run used synthetic fixture data.** The limitations below are real "
                   "properties of the pipeline, but the counts describe invented rows.", ""]
@@ -221,7 +295,7 @@ def render(assessment: dict, *, synthetic: bool = False) -> str:
     lines += _severity_block("Standing — true regardless of how much we collect", assessment["standing"])
 
     lines += ["## Next steps", ""]
-    for i, (title, detail) in enumerate(NEXT_STEPS, 1):
+    for i, (title, detail) in enumerate(next_steps(assessment), 1):
         lines.append(f"{i}. **{title}.** {detail}")
     lines.append("")
     return "\n".join(lines)

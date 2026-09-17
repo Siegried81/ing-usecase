@@ -25,6 +25,7 @@ import pandas as pd
 from comparator import load_dictionary
 from comparator.generation import (
     build_brief,
+    prompt_fingerprint,
     build_targets,
     evaluate,
     generate,
@@ -152,8 +153,15 @@ def main() -> int:
         print(f"\n  scorecard (hit rate on measured criteria: {hit_rate(scorecard):.0%})")
         print(scorecard.to_string(index=False, columns=["feature", "target", "actual", "result"]))
 
+        # sieg 17/09 audit, point 4: record what produced this. Same data gives a
+        # byte-identical prompt, so a differing campaign is attributable to the
+        # model rather than argued about.
+        fingerprint = prompt_fingerprint(brief)
+        print(f"  prompt     : {fingerprint}")
         (args.outdir / f"{variant}.json").write_text(
-            json.dumps(campaign.model_dump(), indent=2), encoding="utf-8")
+            json.dumps({**campaign.model_dump(),
+                        "_prompt_sha256_16": fingerprint,
+                        "_model": model_id}, indent=2), encoding="utf-8")
         (args.outdir / f"{variant}.html").write_text(to_html(campaign), encoding="utf-8")
         scorecard.to_csv(args.outdir / f"{variant}_scorecard.csv", index=False)
         generated_rows.append(row)

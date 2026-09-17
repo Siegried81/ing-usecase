@@ -225,3 +225,33 @@ def test_challenger_style_still_works_without_the_focus_bank(df, fd):
 def test_on_brand_is_possible_in_the_normal_case(df, fd):
     brief = build_brief(df, build_targets(df, fd)["on_brand"], fd)
     assert brief.can_be_on_brand is True
+
+
+# --- reproducibility, measured (sieg 17/09 audit, point 4) --------------------
+def test_the_prompt_is_byte_stable_on_unchanged_data(df, fd):
+    """Our half of the pipeline is deterministic. Rebuilding the brief on the
+    same dataset must give the same prompt, so any differing campaign is
+    attributable to the model rather than to us."""
+    from comparator.generation import prompt_fingerprint
+
+    for variant in ("on_brand", "challenger_style"):
+        prints = set()
+        for _ in range(3):
+            target = build_targets(df, fd)[variant]
+            prints.add(prompt_fingerprint(build_brief(df, target, fd)))
+        assert len(prints) == 1, f"{variant} prompt is not stable across rebuilds"
+
+
+def test_changing_the_data_changes_the_prompt(df, fd):
+    """The other half of the same point: targets are derived, so different data
+    SHOULD give a different prompt - that is not non-determinism."""
+    from comparator.generation import prompt_fingerprint
+
+    target = build_targets(df, fd)["challenger_style"]
+    before = prompt_fingerprint(build_brief(df, target, fd))
+
+    changed = df.copy()
+    changed["word_count"] = changed["word_count"] * 3
+    after_target = build_targets(changed, fd)["challenger_style"]
+    after = prompt_fingerprint(build_brief(changed, after_target, fd))
+    assert before != after
