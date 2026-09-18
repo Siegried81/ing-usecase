@@ -166,7 +166,10 @@ class LLMExtractionError(Exception):
 # a fallback is now RECORDED in extraction_model rather than silent, and
 # schema.validate() warns when a dataset mixes models. See docs/decisions.md.
 _PROVIDERS = [
-    ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-chat"),
+    # sieg 18/09: DeepSeek retired "deepseek-chat" - the API now serves
+    # "deepseek-flash" (fast/economical) and "deepseek-v4-pro". Default
+    # updated to match; .env's DEEPSEEK_MODEL overrides this regardless.
+    ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-flash"),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
     # sieg 15/09: kept steph's provider-tuple structure (name + deepseek pin,
     # decision 6) but fixed the default model ids for these three fallbacks -
