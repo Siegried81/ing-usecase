@@ -147,7 +147,10 @@ features:
     dimension: provenance
     definition: Product family the page promotes. Comparisons are only valid within one family (DR-04).
     type: categorical
-    values: [term_account, current_account_pack, savings_account, mortgage, investment, other]
+    # sieg 18/09: "pension" added - Belfius's pension page was carrying the
+    # catch-all "other", which hid it from any family-scoped comparison.
+    # Addition only (freeze rule): no existing value renamed or removed.
+    values: [term_account, current_account_pack, savings_account, mortgage, investment, pension, other]
     extraction: automatic
     source: manual
     comparability: cross_language
