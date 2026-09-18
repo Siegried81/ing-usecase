@@ -11,17 +11,17 @@
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `formality_score` |  | 4.0 | 3.0 |  | Y |  |  |
-| `clarity_score` |  | 3.0 | 2.0 |  | Y |  |  |
-| `rate_prominence` |  | absent | absent |  | Y |  |  |
-| `value_prop_clarity` |  | 3.0 | 3.0 |  | Y |  |  |
-| `accent_locations` |  |  | imagery |  | — |  |  |
+| `clarity_score` |  | 3.0 | 4.0 |  | Y |  |  |
+| `rate_prominence` |  | absent | above_fold |  | N |  |  |
+| `value_prop_clarity` |  | 3.0 | 4.0 |  | Y |  |  |
+| `accent_locations` |  |  | icons\|buttons\|text |  | — |  |  |
 | `text_image_layout` |  |  | beside |  | — |  |  |
-| `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  | False | False |  | Y |  |  |
-| `aida_interest` |  | True | True |  | Y |  |  |
-| `aida_desire` |  | False | False |  | Y |  |  |
-| `aida_action` |  | True | True |  | Y |  |  |
+| `layout_archetype` |  |  | split_columns |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
 | `persuasion_levers` |  | authority |  |  | — |  |  |
 
 ## belfius_other_fr_01  (belfius)
@@ -29,35 +29,35 @@
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `formality_score` |  | 3.0 | 3.0 |  | Y |  |  |
-| `clarity_score` |  | 2.0 | 4.0 |  | N |  |  |
+| `clarity_score` |  | 2.0 | 2.0 |  | Y |  |  |
 | `rate_prominence` |  | absent | absent |  | Y |  |  |
 | `value_prop_clarity` |  | 2.0 | 4.0 |  | N |  |  |
 | `accent_locations` |  |  | buttons\|imagery\|text |  | — |  |  |
 | `text_image_layout` |  |  | overlaid |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  | True | True |  | Y |  |  |
-| `aida_interest` |  | True | True |  | Y |  |  |
-| `aida_desire` |  | True | True |  | Y |  |  |
-| `aida_action` |  | True | True |  | Y |  |  |
-| `persuasion_levers` |  | social_proof\|authority\|liking | commitment\|liking\|social_proof |  | N |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
+| `persuasion_levers` |  | social_proof\|authority\|liking | liking\|social_proof |  | N |  |  |
 
 ## bnp_paribas_fortis_mortgage_fr_01  (bnp_paribas_fortis)
 
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `formality_score` |  | 4.0 | 3.0 |  | Y |  |  |
-| `clarity_score` |  | 3.0 | 5.0 |  | N |  |  |
+| `formality_score` |  | 4.0 | 4.0 |  | Y |  |  |
+| `clarity_score` |  | 3.0 | 4.0 |  | Y |  |  |
 | `rate_prominence` |  | absent | absent |  | Y |  |  |
-| `value_prop_clarity` |  | 3.0 | 3.0 |  | Y |  |  |
+| `value_prop_clarity` |  | 3.0 | 2.0 |  | Y |  |  |
 | `accent_locations` |  |  | imagery\|buttons |  | — |  |  |
 | `text_image_layout` |  |  | overlaid |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  | False | True |  | N |  |  |
-| `aida_interest` |  | True | True |  | Y |  |  |
-| `aida_desire` |  | True | True |  | Y |  |  |
-| `aida_action` |  | True | True |  | Y |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
 | `persuasion_levers` |  | authority | commitment\|liking\|reciprocity |  | N |  |  |
 
 ## bunq_current_account_pack_fr_01  (bunq)
@@ -71,11 +71,11 @@
 | `accent_locations` |  |  | imagery\|background |  | — |  |  |
 | `text_image_layout` |  |  | beside |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | True |  | — |  |  |
-| `aida_attention` |  | True | True |  | Y |  |  |
-| `aida_interest` |  | True | True |  | Y |  |  |
-| `aida_desire` |  | True | True |  | Y |  |  |
-| `aida_action` |  | True | True |  | Y |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
 | `persuasion_levers` |  | authority\|social_proof\|liking | liking |  | N |  |  |
 
 ## crelan_current_account_pack_fr_01  (crelan)
@@ -89,11 +89,11 @@
 | `accent_locations` |  |  | icons\|background\|buttons |  | — |  |  |
 | `text_image_layout` |  |  | overlaid |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  | False | False |  | Y |  |  |
-| `aida_interest` |  | False | True |  | N |  |  |
-| `aida_desire` |  | False | True |  | N |  |  |
-| `aida_action` |  | False | True |  | N |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_desire` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_action` |  | 0.0 | 1.0 |  | N |  |  |
 | `persuasion_levers` |  |  | liking |  | — |  |  |
 
 ## ing_current_account_pack_fr_02  (ing)
@@ -107,11 +107,11 @@
 | `accent_locations` |  |  | buttons\|icons |  | — |  |  |
 | `text_image_layout` |  |  |  |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | True |  | — |  |  |
-| `aida_attention` |  | False | False |  | Y |  |  |
-| `aida_interest` |  | False | True |  | N |  |  |
-| `aida_desire` |  | False | True |  | N |  |  |
-| `aida_action` |  | False | True |  | N |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_desire` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_action` |  | 0.0 | 1.0 |  | N |  |  |
 | `persuasion_levers` |  |  | reciprocity\|scarcity\|social_proof |  | — |  |  |
 
 ## ing_current_account_pack_fr_03  (ing)
@@ -125,11 +125,11 @@
 | `accent_locations` |  |  | buttons\|imagery\|icons |  | — |  |  |
 | `text_image_layout` |  |  | overlaid |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | True |  | — |  |  |
-| `aida_attention` |  | False | False |  | Y |  |  |
-| `aida_interest` |  | False | True |  | N |  |  |
-| `aida_desire` |  | False | True |  | N |  |  |
-| `aida_action` |  | False | True |  | N |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_desire` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_action` |  | 0.0 | 1.0 |  | N |  |  |
 | `persuasion_levers` |  |  | reciprocity\|scarcity\|social_proof\|authority |  | — |  |  |
 
 ## ing_savings_account_fr_01  (ing)
@@ -143,11 +143,11 @@
 | `accent_locations` |  |  | text |  | — |  |  |
 | `text_image_layout` |  |  | stacked |  | — |  |  |
 | `layout_archetype` |  |  | card_grid |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  | False | False |  | Y |  |  |
-| `aida_interest` |  | False | True |  | N |  |  |
-| `aida_desire` |  | False | True |  | N |  |  |
-| `aida_action` |  | False | True |  | N |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_desire` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_action` |  | 0.0 | 1.0 |  | N |  |  |
 | `persuasion_levers` |  |  | scarcity\|reciprocity |  | — |  |  |
 
 ## kbc_current_account_pack_en_01  (kbc)
@@ -161,30 +161,30 @@
 | `accent_locations` |  |  | buttons\|imagery\|background |  | — |  |  |
 | `text_image_layout` |  |  | beside |  | — |  |  |
 | `layout_archetype` |  |  | split_columns |  | — |  |  |
-| `mobile_first_design_signal` |  |  | False |  | — |  |  |
-| `aida_attention` |  |  | False |  | — |  |  |
-| `aida_interest` |  |  | True |  | — |  |  |
-| `aida_desire` |  |  | True |  | — |  |  |
-| `aida_action` |  |  | True |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  |  | 0.0 |  | — |  |  |
+| `aida_interest` |  |  | 1.0 |  | — |  |  |
+| `aida_desire` |  |  | 1.0 |  | — |  |  |
+| `aida_action` |  |  | 1.0 |  | — |  |  |
 | `persuasion_levers` |  |  | authority\|liking |  | — |  |  |
 
 ## kbc_current_account_pack_fr_01  (kbc)
 
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `formality_score` |  | 4.0 |  |  | — |  |  |
-| `clarity_score` |  | 2.0 |  |  | — |  |  |
-| `rate_prominence` |  | absent |  |  | — |  |  |
-| `value_prop_clarity` |  | 2.0 |  |  | — |  |  |
-| `accent_locations` |  |  |  |  | — |  |  |
-| `text_image_layout` |  |  |  |  | — |  |  |
-| `layout_archetype` |  |  |  |  | — |  |  |
-| `mobile_first_design_signal` |  |  |  |  | — |  |  |
-| `aida_attention` |  | False |  |  | — |  |  |
-| `aida_interest` |  | False |  |  | — |  |  |
-| `aida_desire` |  | False |  |  | — |  |  |
-| `aida_action` |  | True |  |  | — |  |  |
-| `persuasion_levers` |  | authority |  |  | — |  |  |
+| `formality_score` |  | 4.0 | 3.0 |  | Y |  |  |
+| `clarity_score` |  | 2.0 | 5.0 |  | N |  |  |
+| `rate_prominence` |  | absent | above_fold |  | N |  |  |
+| `value_prop_clarity` |  | 2.0 | 5.0 |  | N |  |  |
+| `accent_locations` |  |  | buttons\|icons\|background |  | — |  |  |
+| `text_image_layout` |  |  | beside |  | — |  |  |
+| `layout_archetype` |  |  | split_columns |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
+| `aida_interest` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_desire` |  | 0.0 | 1.0 |  | N |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
+| `persuasion_levers` |  | authority | authority\|liking |  | N |  |  |
 
 ## kbc_current_account_pack_nl_02  (kbc)
 
@@ -198,47 +198,47 @@
 | `text_image_layout` |  |  |  |  | — |  |  |
 | `layout_archetype` |  |  |  |  | — |  |  |
 | `mobile_first_design_signal` |  |  |  |  | — |  |  |
-| `aida_attention` |  | False |  |  | — |  |  |
-| `aida_interest` |  | False |  |  | — |  |  |
-| `aida_desire` |  | False |  |  | — |  |  |
-| `aida_action` |  | False |  |  | — |  |  |
+| `aida_attention` |  | 0.0 |  |  | — |  |  |
+| `aida_interest` |  | 0.0 |  |  | — |  |  |
+| `aida_desire` |  | 0.0 |  |  | — |  |  |
+| `aida_action` |  | 0.0 |  |  | — |  |  |
 | `persuasion_levers` |  | authority |  |  | — |  |  |
 
 ## n26_current_account_pack_fr_01  (n26)
 
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `formality_score` |  | 3.0 |  |  | — |  |  |
-| `clarity_score` |  | 4.0 |  |  | — |  |  |
-| `rate_prominence` |  | absent |  |  | — |  |  |
-| `value_prop_clarity` |  | 3.0 |  |  | — |  |  |
-| `accent_locations` |  |  |  |  | — |  |  |
-| `text_image_layout` |  |  |  |  | — |  |  |
-| `layout_archetype` |  |  |  |  | — |  |  |
-| `mobile_first_design_signal` |  |  |  |  | — |  |  |
-| `aida_attention` |  | True |  |  | — |  |  |
-| `aida_interest` |  | True |  |  | — |  |  |
-| `aida_desire` |  | True |  |  | — |  |  |
-| `aida_action` |  | True |  |  | — |  |  |
-| `persuasion_levers` |  | authority\|liking |  |  | — |  |  |
+| `formality_score` |  | 3.0 | 2.0 |  | Y |  |  |
+| `clarity_score` |  | 4.0 | 5.0 |  | Y |  |  |
+| `rate_prominence` |  | absent | absent |  | Y |  |  |
+| `value_prop_clarity` |  | 3.0 | 3.0 |  | Y |  |  |
+| `accent_locations` |  |  | background\|buttons |  | — |  |  |
+| `text_image_layout` |  |  | overlaid |  | — |  |  |
+| `layout_archetype` |  |  | hero_stacked |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
+| `persuasion_levers` |  | authority\|liking | liking |  | N |  |  |
 
 ## revolut_current_account_pack_fr_01  (revolut)
 
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `formality_score` |  | 3.0 |  |  | — |  |  |
-| `clarity_score` |  | 3.0 |  |  | — |  |  |
-| `rate_prominence` |  | absent |  |  | — |  |  |
-| `value_prop_clarity` |  | 3.0 |  |  | — |  |  |
-| `accent_locations` |  |  |  |  | — |  |  |
-| `text_image_layout` |  |  |  |  | — |  |  |
-| `layout_archetype` |  |  |  |  | — |  |  |
-| `mobile_first_design_signal` |  |  |  |  | — |  |  |
-| `aida_attention` |  | True |  |  | — |  |  |
-| `aida_interest` |  | True |  |  | — |  |  |
-| `aida_desire` |  | True |  |  | — |  |  |
-| `aida_action` |  | True |  |  | — |  |  |
-| `persuasion_levers` |  | authority\|social_proof\|liking |  |  | — |  |  |
+| `formality_score` |  | 3.0 | 2.0 |  | Y |  |  |
+| `clarity_score` |  | 3.0 | 4.0 |  | Y |  |  |
+| `rate_prominence` |  | absent | above_fold |  | N |  |  |
+| `value_prop_clarity` |  | 3.0 | 2.0 |  | Y |  |  |
+| `accent_locations` |  |  | background |  | — |  |  |
+| `text_image_layout` |  |  | overlaid |  | — |  |  |
+| `layout_archetype` |  |  | hero_stacked |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
+| `aida_attention` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
+| `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
+| `persuasion_levers` |  | authority\|social_proof\|liking | social_proof\|authority\|reciprocity |  | N |  |  |
 
 ## Summary — what goes in the deck
 
@@ -246,17 +246,17 @@
 Inter-rater agreement (NFR-05)
 
            feature  pages  agreement          basis
- persuasion_levers      3       0.00    exact match
-     clarity_score      8       0.25 within 1 point
-value_prop_clarity      8       0.38 within 1 point
-   rate_prominence      8       0.50    exact match
-       aida_action      8       0.50    exact match
-       aida_desire      8       0.50    exact match
-     aida_interest      8       0.50    exact match
-    aida_attention      8       0.88    exact match
-   formality_score      8       1.00 within 1 point
+ persuasion_levers      6       0.00    exact match
+   rate_prominence     11       0.36    exact match
+value_prop_clarity     11       0.45 within 1 point
+     clarity_score     11       0.55 within 1 point
+       aida_desire     11       0.55    exact match
+     aida_interest     11       0.55    exact match
+       aida_action     11       0.64    exact match
+    aida_attention     11       0.91    exact match
+   formality_score     11       1.00 within 1 point
 
-Weak agreement (<60%): ['persuasion_levers', 'clarity_score', 'value_prop_clarity', 'rate_prominence', 'aida_action', 'aida_desire', 'aida_interest'].
+Weak agreement (<60%): ['persuasion_levers', 'rate_prominence', 'value_prop_clarity', 'clarity_score', 'aida_desire', 'aida_interest'].
 Tighten the rubric wording for these before trusting them in a finding.
 ```
 
@@ -264,14 +264,15 @@ Tighten the rubric wording for these before trusting them in a finding.
 Cohen's kappa - chance-corrected agreement (NFR-05)
 
            feature                          raters  pages  kappa
-   rate_prominence model/deepseek-chat vs siegried      8 -0.143
-     clarity_score model/deepseek-chat vs siegried      8 -0.079
-value_prop_clarity model/deepseek-chat vs siegried      8  0.000
-     aida_interest model/deepseek-chat vs siegried      8  0.000
-       aida_action model/deepseek-chat vs siegried      8  0.000
-       aida_desire model/deepseek-chat vs siegried      8  0.158
-   formality_score model/deepseek-chat vs siegried      8  0.467
-    aida_attention model/deepseek-chat vs siegried      8  0.714
+value_prop_clarity model/deepseek-chat vs siegried     11 -0.122
+   rate_prominence model/deepseek-chat vs siegried     11 -0.100
+ persuasion_levers model/deepseek-chat vs siegried      6 -0.029
+       aida_action model/deepseek-chat vs siegried     11  0.000
+     aida_interest model/deepseek-chat vs siegried     11  0.000
+     clarity_score model/deepseek-chat vs siegried     11  0.063
+       aida_desire model/deepseek-chat vs siegried     11  0.154
+   formality_score model/deepseek-chat vs siegried     11  0.421
+    aida_attention model/deepseek-chat vs siegried     11  0.814
 
-Below 0.4 (fair or worse, Landis & Koch): [('rate_prominence', 'model/deepseek-chat vs siegried'), ('clarity_score', 'model/deepseek-chat vs siegried'), ('value_prop_clarity', 'model/deepseek-chat vs siegried'), ('aida_interest', 'model/deepseek-chat vs siegried'), ('aida_action', 'model/deepseek-chat vs siegried'), ('aida_desire', 'model/deepseek-chat vs siegried')]. Raw % agreement on these may look fine while being close to chance.
+Below 0.4 (fair or worse, Landis & Koch): [('value_prop_clarity', 'model/deepseek-chat vs siegried'), ('rate_prominence', 'model/deepseek-chat vs siegried'), ('persuasion_levers', 'model/deepseek-chat vs siegried'), ('aida_action', 'model/deepseek-chat vs siegried'), ('aida_interest', 'model/deepseek-chat vs siegried'), ('clarity_score', 'model/deepseek-chat vs siegried'), ('aida_desire', 'model/deepseek-chat vs siegried')]. Raw % agreement on these may look fine while being close to chance.
 ```

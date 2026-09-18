@@ -10,24 +10,43 @@ minutes, one decision, all three.
 sieg 16/09, current snapshot — re-check and update the morning of the gate,
 this will keep moving. One row per in-scope bank.
 
-| Bank | Captured (HTML) | Robots allowed | Screenshot | LLM extraction | Rubric scored | Profile card | End-to-end? |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| ING | yes | yes | yes | yes | no | yes | blocked on rubric only |
-| KBC | yes | yes | yes | yes | no | yes | blocked on rubric only |
-| Belfius | yes | yes | yes | yes | no | yes | blocked on rubric only |
-| Revolut | yes | yes | yes | yes | no | yes | blocked on rubric only |
-| N26 | yes | yes | yes | yes | no | yes | blocked on rubric only |
-| BNP Paribas Fortis | no | yes | no | no | no | no | no — see note |
-| Argenta | not yet configured | | | | | | no |
-| Crelan | not yet configured | | | | | | no |
-| bunq | not yet configured | | | | | | no |
+**sieg 18/09, refreshed for Monday's gate** — table below was still the
+16/09 snapshot (Argenta/Crelan/bunq shown as "not yet configured", BNP
+Paribas Fortis shown as blocked with no capture at all). Both are stale;
+real state from `data/processed/campaigns.csv` and the rubric sheets:
 
-Note on BNP Paribas Fortis: robots.txt allows the page, but the capture was
-excluded by the quality gate (non-2xx response). Live-checked 16/09 from two
-different automated environments and got the same result, while a normal
-browser loads the page without issue at the same time — looks like the
-site's CDN treating cloud/datacenter traffic differently, not a real outage.
-Under investigation; not yet resolved as of this writing.
+| Bank | Captured (HTML) | Robots allowed | Screenshot | LLM extraction | Rubric: model | Rubric: siegried | Rubric: dan | Rubric: stephane | Profile card | End-to-end? |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| ING | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| KBC | yes | yes | **no** | yes | yes | yes | no | no | yes | blocked on screenshot + dan + stephane |
+| Belfius | yes | yes | **no** | yes | yes | yes | no | no | **excluded** — no page in `current_account_pack` | blocked on screenshot + dan + stephane, then still excluded from this comparison by family |
+| Revolut | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| N26 | yes | yes | **no** | **no** | yes | yes | no | no | yes | blocked on screenshot + LLM extraction + dan + stephane |
+| BNP Paribas Fortis | yes (manual capture) | yes | yes | yes | yes | yes | no | no | **excluded** — no page in `current_account_pack` | blocked on dan + stephane, then still excluded from this comparison by family |
+| Argenta | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| Crelan | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| bunq | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+
+Every bank in scope now has a real capture — collection is done. The gate
+has one real blocker left, the same one everywhere: **Dan and Stephane's
+rubric sheets are still at 0/12 pages each** (Siegried's and the model's are
+both complete, 12/12). Nothing is end-to-end until at least two independent
+human raters have scored.
+
+Note on BNP Paribas Fortis and Belfius: they are **not** blocked on
+collection — both have a usable capture. `outputs/bank_profiles.json`'s own
+`_scope.banks_excluded_no_page_in_family` names the real reason: neither has
+a page in `current_account_pack`, the family the current comparison is
+filtered to (DR-04 forbids comparing across product families). This was
+flagged in the README as an undocumented mystery to ask Stephane about — it
+isn't a mystery, the dataset already states it.
+
+Note on BNP Paribas Fortis's capture itself (superseded): the CDN-blocking
+issue from 16/09 (robots.txt allowed the page, but automated fetches got a
+non-2xx response the same page loaded fine in a normal browser) is worked
+around, not solved — `collection_method=manual_capture` for this row, via
+`scripts/import_captures.py` (README, "When a site will not serve the
+pipeline"). The underlying CDN behaviour was never diagnosed further.
 
 ## The decision
 

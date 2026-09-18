@@ -7,6 +7,11 @@ considered acceptable, and why" statement). Audience: both decks.
 
 Status: draft, based on what is actually in the repo today (15/09).
 
+**sieg 18/09:** table below and the Argenta/Crelan/bunq bullet in section 4
+were still describing 15/09 while collection moved past them - all 9 banks
+now have a real capture. See `docs/day6_gate_discussion_notes.md` for the
+per-bank pipeline detail this summarizes.
+
 ## 1. Banks in scope
 
 Working from the PRD's own candidate list (section 2 / Appendix A):
@@ -20,32 +25,43 @@ assumption "include only if capacity allows."
 (e.g. the 100%-state-owned trust-signal example). Capacity allowed it, per
 the PRD's own condition.
 
-**As of today, actually configured/collected** (`scripts/collection_targets.yaml`,
-`data/processed/real_captures.csv`):
+**sieg 18/09, refreshed from `data/processed/campaigns.csv` (the real
+dataset that's actually in use today):**
 
-| Bank | Category | Real HTML captured | In `real_captures.csv` | Model-assisted fields |
-| --- | --- | --- | --- | --- |
-| KBC | traditional | yes | yes | yes (16/09) |
-| N26 | challenger | yes | yes | yes (16/09) |
-| Belfius | traditional | yes | yes | yes (16/09) |
-| ING | traditional | yes (Dan, 16/09) | pending — Dan extending the dataset | - |
-| BNP Paribas Fortis | traditional | configured, not yet captured | no | - |
-| Revolut | challenger | configured, not yet captured | no | - |
-| Argenta | traditional | not yet configured | no | - |
-| Crelan | traditional | not yet configured | no | - |
-| bunq | challenger | not yet configured | no | - |
+| Bank | Category | Real capture | Robots allowed | Screenshot | Model-assisted fields |
+| --- | --- | --- | --- | --- | --- |
+| ING | traditional | yes (3 pages) | yes | yes | yes |
+| KBC | traditional | yes (2 pages) | yes | **no** — file exists in `data/raw/kbc/` but not wired to a `screenshot_path` | yes |
+| Belfius | traditional | yes | yes | **no** | yes |
+| Revolut | challenger | yes | yes | yes | yes |
+| N26 | challenger | yes | yes | **no** | **no** — LLM extraction missing entirely |
+| BNP Paribas Fortis | traditional | yes | yes | yes | yes |
+| Argenta | traditional | yes | yes | yes | yes |
+| Crelan | traditional | yes | yes | yes | yes |
+| bunq | challenger | yes | yes | yes | yes |
 
-sieg 16/09: re-ran `scripts/run_collection.py` today — KBC/N26/Belfius now
-have both automatic and model-assisted fields filled. Dan captured ING
-separately and is extending to the rest of the list.
+All 9 banks now have a real, usable capture (`capture_quality=ok` for all
+12 pages) — the "not yet configured" state below is stale, superseded by
+collection actually finishing. Every row's `collection_method` is
+`manual_capture` (the browser-save path in the README's "when a site will
+not serve the pipeline" section), not the live headless scrape — that
+includes BNP Paribas Fortis, whose CDN-blocking issue (see
+`day6_gate_discussion_notes.md`) is resolved this way, not by getting past
+the block.
 
-- **Headless rendering** — not available yet; geometry fields
-  (`page_height_px` and three others) stay empty on every real row.
+Two real gaps, not "not yet configured":
 
-**`scripts/collection_targets.yaml`** — Dan confirmed 16/09 he is taking
-ownership of this today (was previously `[TO CONFIRM]`, still says "not the
-final team scope" in its own header as of this writing). D-02 can be called
-advanced once the file itself is updated to say so.
+- **No screenshot for Belfius, KBC and N26.** Blocks the 4 vision-only rubric
+  features for those banks (`accent_locations`, `text_image_layout`,
+  `layout_archetype`, `mobile_first_design_signal`) — a rater has nothing to
+  score them against. KBC's case looks recoverable (a screenshot file exists
+  on disk, just not linked); Belfius and N26 need an actual capture.
+- **No LLM extraction for N26.** Automatic non-model features are still
+  present, but every model-assisted feature is empty for this bank.
+
+- **Headless rendering** — still not available; geometry fields
+  (`page_height_px` and three others) stay empty on every real row,
+  unchanged since 16/09.
 
 ## 2. Product family and language
 
@@ -101,10 +117,9 @@ No domain has been excluded on compliance grounds so far.
 
 ## 4. What was excluded, and why
 
-- **Argenta, Crelan, bunq** — not yet configured for collection. Not excluded
-  on principle, just not reached yet (`[TO CONFIRM]` with Dan: still planned,
-  or dropped for capacity per the PRD's "narrowing is permitted, provided it's
-  stated and argued"?).
+- **sieg 18/09: superseded.** Argenta, Crelan and bunq are now captured and
+  in scope like every other bank — nothing was excluded here after all, they
+  were just collected later than the rest.
 - **Social media sentiment** (candidate analysis dimension, PRD 11 bis) —
   deliberately deferred to a documented D-09 next step, not in v1 scope, to
   avoid the scope-creep risk R-07.
