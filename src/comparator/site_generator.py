@@ -143,7 +143,8 @@ PAGE_TITLES: dict[str, dict[str, str]] = {
 # instead of silently staying French.
 UI: dict[str, dict[str, str]] = {
     "fr": {
-        "locale_label": "Français", "search": "Que recherchez-vous ?", "contact": "Contact",
+        "locale_label": "Français", "personal": "Particuliers",
+        "search": "Que recherchez-vous ?", "contact": "Contact",
         "services": "Services", "login": "Connexion", "open": "Ouvrir un compte",
         "faq_heading": "Questions fréquentes",
         "band_heading": "Prêt à passer à l'action ?", "band_button": "Ouvrir un compte",
@@ -154,11 +155,13 @@ UI: dict[str, dict[str, str]] = {
         "fallback_disclaimer": "Texte légal à compléter par les équipes conformité. Taux et conditions à confirmer.",
         "fallback_heading": "À propos de cette page",
         "fallback_body": "Cette page n'a pas pu être générée à temps. Le contenu sera complété.",
+        "image_alt_default": "Illustration ING accompagnant cette page",
         "foot_legal": ("Site de démonstration généré à partir d'une analyse comparative. Aucun taux, "
                        "montant ou condition ne doit être considéré comme une offre réelle."),
     },
     "nl": {
-        "locale_label": "Nederlands", "search": "Waar zoekt u naar?", "contact": "Contact",
+        "locale_label": "Nederlands", "personal": "Particulieren",
+        "search": "Waar zoekt u naar?", "contact": "Contact",
         "services": "Diensten", "login": "Aanmelden", "open": "Rekening openen",
         "faq_heading": "Veelgestelde vragen",
         "band_heading": "Klaar om te starten?", "band_button": "Rekening openen",
@@ -169,11 +172,13 @@ UI: dict[str, dict[str, str]] = {
         "fallback_disclaimer": "Juridische tekst aan te vullen door de compliance-teams. Tarieven en voorwaarden te bevestigen.",
         "fallback_heading": "Over deze pagina",
         "fallback_body": "Deze pagina kon niet op tijd worden gegenereerd. De inhoud wordt aangevuld.",
+        "image_alt_default": "ING-illustratie bij deze pagina",
         "foot_legal": ("Demonstratiesite gegenereerd op basis van een vergelijkende analyse. Geen enkel "
                        "tarief, bedrag of voorwaarde mag als een reëel aanbod worden beschouwd."),
     },
     "en": {
-        "locale_label": "English", "search": "What are you looking for?", "contact": "Contact",
+        "locale_label": "English", "personal": "Personal",
+        "search": "What are you looking for?", "contact": "Contact",
         "services": "Services", "login": "Log in", "open": "Open an account",
         "faq_heading": "Frequently asked questions",
         "band_heading": "Ready to get started?", "band_button": "Open an account",
@@ -184,6 +189,7 @@ UI: dict[str, dict[str, str]] = {
         "fallback_disclaimer": "Legal text to be completed by the compliance teams. Rates and conditions to be confirmed.",
         "fallback_heading": "About this page",
         "fallback_body": "This page could not be generated in time. The content will be completed.",
+        "image_alt_default": "ING illustration for this page",
         "foot_legal": ("Demonstration site generated from a comparative analysis. No rate, amount or "
                        "condition should be treated as a real offer."),
     },
@@ -243,6 +249,10 @@ class Hero(BaseModel):
     primary_cta: str
     secondary_cta: str | None = None
     image: str = "home"
+    # Short description of the illustration, in the page language. Without it
+    # every hero image shipped alt="", which fails the accessibility
+    # recommendation the site is supposed to demonstrate.
+    image_alt: str = ""
 
 
 class Section(BaseModel):
@@ -297,7 +307,9 @@ Return ONLY a JSON object with exactly these keys:
 "page_title" (for the browser tab),
 "meta_description" (one sentence),
 "hero" (object with: "eyebrow", "headline", "subheading", "primary_cta",
-  "secondary_cta" (string or null), "image" (one of the asset keys given to you)),
+  "secondary_cta" (string or null), "image" (one of the asset keys given to you),
+  "image_alt" (one short sentence describing the illustration, in the requested language,
+  for screen readers - never empty)),
 "sections" (array of 3 to 5 objects, each with: "heading", "body" (array of 1-3 paragraphs),
   "bullets" (array of 0-4 short strings), "cta_label" (string or null)),
 "faq" (array of 3 to 5 objects, each with "q" and "a"),
@@ -310,32 +322,96 @@ No preamble, no markdown fences, JSON only."""
 def _rec_brief(recs: RecommendationSet) -> str:
     lines = []
     for r in recs.recommendations:
+        targets = f"\n  target pages: {', '.join(r.page_targets)}" if r.page_targets else ""
         lines.append(
             f"- {r.id} [{r.priority}] {r.title}\n"
             f"  finding: {r.finding}\n"
             f"  action: {r.recommendation}\n"
-            f"  features: {', '.join(r.features) or 'n/a'}"
+            f"  features: {', '.join(r.features) or 'n/a'}{targets}"
         )
     return "\n".join(lines)
 
 
-def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str) -> str:
+# Machine-checkable cues per feature, multilingual. Used to verify a page
+# actually expresses the recommendation it was briefed on, not just that the
+# model said it did. Structural features (cta_count, images_have_alt_text,
+# aida_coverage_score, value_prop_clarity) are guaranteed by the template and
+# are deliberately absent here.
+_COVERAGE_CUES: dict[str, tuple[str, ...]] = {
+    "rate_shown": ("taux", "rate", "rentevoet", "rente", "tarief", "interest", "%"),
+    "rate_value_pct": ("taux", "rate", "rentevoet", "rente", "tarief", "interest", "%"),
+    "first_time_investor_targeting": (
+        "première fois", "premier pas", "débutant", "se lancer", "beginner",
+        "eerste keer", "eerste stap", "beginnende", "first time", "new to investing"),
+    "expat_cross_border_targeting": (
+        "expat", "international", "étranger", "buitenland", "grens", "frontière",
+        "cross-border", "abroad"),
+    "persuasion_lever_count": (
+        "clients", "klanten", "depuis", "sinds", "confiance", "vertrouwen", "des milliers",
+        "duizenden", "millions", "miljoenen", "expert", "protégé", "beschermd", "protected"),
+    "youth_student_targeting": (
+        "jeune", "enfant", "étudiant", "student", "studenten", "kind", "jongere", "young"),
+    "branch_network_cited_as_benefit": (
+        "agence", "branche", "kantoor", "atm", "distributeur", "branch"),
+    "fast_digital_onboarding_claim": (
+        "minutes", "minuten", "rapide", "snel", "fast", "online", "en ligne"),
+    "green_product_specific_benefit": (
+        "durable", "duurzaam", "green", "groen", "énergie", "energie", "sustainability"),
+    "hidden_conditions_behind_free_claim": (
+        "conditions", "voorwaarden", "minimum", "petites lignes", "kleine lettertjes"),
+}
+
+
+def _coverage_cues(features: list[str]) -> tuple[str, ...]:
+    cues: list[str] = []
+    for f in features:
+        cues.extend(_COVERAGE_CUES.get(f, ()))
+    return tuple(dict.fromkeys(cues))
+
+
+def _missing_coverage(page: PageContent, recs: RecommendationSet) -> list[str]:
+    """Selected recommendations this page was briefed on but does not express.
+
+    Only recommendations that name machine-checkable features are assessed; a
+    recommendation about layout or tone has no reliable cue and is left to the
+    reader rather than guessed at.
+    """
+    text = (_content_text(page) + " " + page.hero.image_alt).lower()
+    missing: list[str] = []
+    for r in recs.recommendations:
+        if r.page_targets and page.slug not in r.page_targets:
+            continue
+        cues = _coverage_cues(r.features)
+        if cues and not any(c in text for c in cues):
+            missing.append(r.id)
+    return missing
+
+
+def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
+                 extra: str = "") -> str:
     locale, language_name, language_rule = LANGUAGES.get(language, LANGUAGES["fr"])
-    nav = " | ".join(f"{p.slug} ({nav_label(p.slug, language)})" for p in PAGES)
+    applicable = [r for r in recs.recommendations
+                  if not r.page_targets or spec.slug in r.page_targets]
+    must = ", ".join(r.id for r in applicable) or "none"
     return (
         f"!!! REQUESTED LANGUAGE: {language_name} ({locale}). {language_rule}\n"
-        f"Write the ENTIRE page in {language_name}. Do not mix in any other language, "
+        f"Write the ENTIRE page in the requested language. Do not mix in any other language, "
         f"not even for a product name or a single heading.\n\n"
         f"Global positioning for the site: {site_summary}\n\n"
         f"This page: slug={spec.slug}; navigation label in the requested language="
         f"\"{nav_label(spec.slug, language)}\"; purpose={spec.purpose}\n\n"
-        f"The ten pages (slug and its label in the requested language): {nav}\n"
+        f"The ten pages (slug and its label in the requested language): "
+        f"{' | '.join(f'{p.slug} ({nav_label(p.slug, language)})' for p in PAGES)}\n"
         f"Asset keys you may use for hero.image: home, savings, term, current, youth, invest, "
         f"mortgage, onboarding, why, contact. Pick the one that best fits this page; "
-        f"{spec.image} is the natural default.\n\n"
-        f"Selected recommendations this page should help implement (written in English - read "
-        f"them, but output {language_name}):\n{_rec_brief(recs)}\n\n"
-        f"Reminder: the final output must be entirely in {language_name}."
+        f"{spec.image} is the natural default. hero.image_alt must be a short sentence in the "
+        f"requested language describing the illustration, and must never be empty.\n\n"
+        f"Selected recommendations (written in English - read them, but output in the requested "
+        f"language):\n{_rec_brief(recs)}\n\n"
+        f"THIS PAGE MUST MAKE THESE RECOMMENDATIONS EXPLICIT, in the copy or the structure: "
+        f"{must}. A recommendation is only 'implemented' if a reader can see it on this page.\n"
+        f"{extra}\n"
+        f"Reminder: the final output must be entirely in the requested language."
     )
 
 
@@ -382,9 +458,10 @@ def _content_text(page: PageContent) -> str:
 def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
                   *, retries: int = 2) -> PageContent:
     last_error: Exception | None = None
-    for _ in range(retries + 1):
+    extra = ""
+    for attempt in range(retries + 1):
         raw, _model = _call_llm(
-            _page_prompt(spec, recs, language, site_summary),
+            _page_prompt(spec, recs, language, site_summary, extra),
             system_prompt=PAGE_SYSTEM_PROMPT,
             timeout=180,
         )
@@ -407,7 +484,25 @@ def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_s
             last_error = LLMExtractionError(
                 f"page came back in {detected} but {language} was requested"
             )
+            extra = (f"Your previous draft was written in {detected}; it must be in "
+                     f"{LANGUAGES.get(language, LANGUAGES['fr'])[1]}.")
             continue
+
+        # A recommendation the page was briefed on but does not express is the
+        # other failure a reader notices. Check it and ask again, naming the ids.
+        missing = _missing_coverage(page, recs)
+        if missing and attempt < retries:
+            last_error = LLMExtractionError(f"page did not express {', '.join(missing)}")
+            extra = ("Your previous draft was rejected because a reader could not see these "
+                     f"recommendations on the page: {', '.join(missing)}. Rewrite this page so "
+                     "each of them is explicit in the copy, a heading, a bullet or the structure. "
+                     f"Keep the entire page in {LANGUAGES.get(language, LANGUAGES['fr'])[1]} - do "
+                     "not switch language.")
+            continue
+        # On the last attempt a valid, correctly-localised page is accepted even
+        # if one cue is missing: a thin deterministic fallback is worse than a
+        # real page that underplays one recommendation, and the coverage is
+        # still reported by the browser audit.
         return page
 
     raise LLMExtractionError(f"page {spec.slug} did not return valid content: {last_error}")
@@ -430,16 +525,19 @@ def _bullets(items: list[str]) -> str:
     return "<ul>" + "".join(f"<li>{_esc(b)}</li>" for b in items if str(b).strip()) + "</ul>"
 
 
-def _hero_image(image: str) -> str:
+def _hero_image(image: str, alt: str, language: str) -> str:
     name = image if image in ASSETS else "home"
     file = f"{name}.svg"
-    return f'<img class="hero-illu" src="assets/{_esc(file)}" alt="">'
+    description = (alt or "").strip() or ui(language, "image_alt_default")
+    return (f'<img class="hero-illu" src="assets/{_esc(file)}" alt="{_esc(description)}" '
+            f'width="560" height="360" loading="eager" decoding="async">')
 
 
 def _nav(current: str, language: str) -> str:
     links = []
     for p in PAGES:
-        cls = ' class="active"' if p.slug == current else ""
+        active = p.slug == current
+        cls = ' class="active" aria-current="page"' if active else ""
         href = "index.html" if p.slug == "index" else f"{p.slug}.html"
         links.append(f'<a{cls} href="{href}">{_esc(nav_label(p.slug, language))}</a>')
     return "".join(links)
@@ -490,7 +588,7 @@ def render_page(content: PageContent, language: str) -> str:
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="utility"><div class="wrap">
-<span class="u-active">Particuliers</span><a href="#">Business</a><a href="#">Private Banking</a>
+<span class="u-active">{_esc(ui(language, "personal"))}</span><a href="#">Business</a><a href="#">Private Banking</a>
 <span class="u-lang">{_esc(ui(language, "locale_label"))} ▾</span>
 </div></div>
 <header class="masthead"><div class="wrap masthead-in">
@@ -517,7 +615,7 @@ def render_page(content: PageContent, language: str) -> str:
         {secondary_link}
       </div>
     </div>
-    <div class="hero-art">{_hero_image(hero.image)}</div>
+    <div class="hero-art">{_hero_image(hero.image, hero.image_alt, language)}</div>
   </div>
 </section>
 
@@ -732,7 +830,7 @@ def generate_site(
     return manifest
 
 
-def _fallback_page(spec: PageSpec, summary: str, language: str = "fr") -> PageContent:
+def _fallback_page(spec: PageSpec, _summary: str, language: str = "fr") -> PageContent:
     """A complete, honest page when the model did not deliver one.
 
     Not hidden: the manifest marks it. This exists so a partial model outage
@@ -746,10 +844,13 @@ def _fallback_page(spec: PageSpec, summary: str, language: str = "fr") -> PageCo
         hero=Hero(
             eyebrow=nav_label(spec.slug, language),
             headline=PAGE_TITLES.get(language, PAGE_TITLES["fr"]).get(spec.slug, spec.slug),
-            subheading=summary,
+            # Never the English model summary here: it made the fallback page
+            # read as English under Dutch chrome. The fallback is localised.
+            subheading=ui(language, "fallback_body"),
             primary_cta=ui(language, "open"),
             secondary_cta=ui(language, "contact"),
             image=spec.image,
+            image_alt=ui(language, "image_alt_default"),
         ),
         sections=[Section(
             heading=ui(language, "fallback_heading"),
