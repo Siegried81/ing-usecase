@@ -44,7 +44,10 @@ maintenance notice with status 503 and we recorded it as a normal capture. The
 status is now returned and carried on the row.
 
 Compliance: the robots.txt gate runs BEFORE navigation, exactly as in the static
-path. A headless browser is still a fetch (LC-01, LC-04).
+path. A headless browser is still a fetch (LC-01, LC-04). sieg 17/09: also
+gates every SAME-ORIGIN sub-resource the page then loads (see
+_blocks_same_origin_asset) - third-party assets are left alone on purpose,
+see that function's docstring.
 """
 
 from __future__ import annotations
@@ -53,8 +56,9 @@ import logging
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from urllib.parse import urlparse
 
-from comparator.collection.compliance import USER_AGENT, assert_can_fetch
+from comparator.collection.compliance import USER_AGENT, assert_can_fetch, check_robots
 
 logger = logging.getLogger(__name__)
 
@@ -255,6 +259,27 @@ def _features_from_measurement(raw: dict) -> dict:
     }
 
 
+# sieg 17/09, audit finding (MEDIUM). assert_can_fetch(url) only gated the top-
+# level navigation - every sub-resource page.goto() pulls in (images, scripts,
+# fonts, XHR) loaded with no per-URL robots check at all, even though
+# visual_features.py was patched (15/09) to add exactly this check for a
+# single image fetch. A site whose robots.txt allows the page path but
+# disallows e.g. /api/ would still have it fetched during render.
+#
+# Scoped to SAME-ORIGIN requests only, deliberately: third-party CDN/font/
+# analytics domains are not what LC-01/LC-04 is about (their robots.txt says
+# nothing about us, and most sites don't expect a browser to consult it per
+# asset), and blocking them would corrupt the very geometry this module
+# measures (page_height_px, image ratios) rather than enforce compliance.
+# check_robots() is cache-per-domain (compliance.py), so after the initial
+# assert_can_fetch(url) call this adds no extra network round-trip for the
+# page's own domain.
+def _blocks_same_origin_asset(request_url: str, page_origin: str) -> bool:
+    if urlparse(request_url).netloc != page_origin:
+        return False
+    return not check_robots(request_url).allowed
+
+
 def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResult:
     """Render one page in a fixed viewport and measure what needs a browser.
 
@@ -262,6 +287,17 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
     navigation, not after.
     """
     assert_can_fetch(url)
+    # sieg 17/09, audit finding (HIGH). This used to be a fixed value computed
+    # once from the pre-navigation URL, which made _blocks_same_origin_asset a
+    # silent no-op across any redirect that changes host - e.g. n26.com (a
+    # real target in collection_targets.yaml) redirecting to www.n26.com would
+    # make every one of the ACTUAL page's sub-resources compare as
+    # "cross-origin" and skip the robots check entirely, reverting to the
+    # pre-fix behaviour. Tracked dynamically below instead, via
+    # page.on("framenavigated"), which fires once the main frame's URL is
+    # actually committed - i.e. after redirects resolve and before the
+    # resulting document's own sub-resources start loading.
+    page_origin = urlparse(url).netloc
 
     try:
         from playwright.sync_api import sync_playwright
@@ -278,6 +314,24 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
                 page = browser.new_page(
                     viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},
                     user_agent=USER_AGENT,
+                )
+                # sieg 17/09: gate same-origin sub-resources too - see
+                # _blocks_same_origin_asset() above. Registered once; it stays
+                # in effect across the retry re-navigation below.
+                def _track_origin(frame) -> None:
+                    # sieg 17/09, audit finding (HIGH): keep page_origin in
+                    # sync with whatever host the browser actually committed
+                    # to, so a host-changing redirect doesn't blind the gate.
+                    nonlocal page_origin
+                    if frame == page.main_frame:
+                        page_origin = urlparse(frame.url).netloc
+
+                page.on("framenavigated", _track_origin)
+                page.route(
+                    "**/*",
+                    lambda route: route.abort()
+                    if _blocks_same_origin_asset(route.request.url, page_origin)
+                    else route.continue_(),
                 )
                 response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
                 status = response.status if response else None

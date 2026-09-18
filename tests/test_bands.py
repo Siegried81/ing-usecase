@@ -50,5 +50,21 @@ def test_every_band_function_handles_none():
         bands.word_count_band, bands.sentence_count_band, bands.avg_sentence_length_band,
         bands.second_person_ratio_band, bands.first_person_plural_band,
         bands.disclaimer_word_share_band, bands.text_to_image_ratio_band,
+        bands.readability_band,
     ):
         assert fn(None) is None
+
+
+# sieg 17/09, audit finding (LOW): readability_band was duplicated identically
+# in collection/scraper.py and derive.py - now both call this one function.
+def test_readability_band_edges():
+    assert bands.readability_band(95) == "very_easy"
+    assert bands.readability_band(90) == "very_easy"
+    assert bands.readability_band(89) == "easy"
+    assert bands.readability_band(70) == "easy"
+    assert bands.readability_band(69) == "medium"
+    assert bands.readability_band(50) == "medium"
+    assert bands.readability_band(49) == "hard"
+    assert bands.readability_band(30) == "hard"
+    assert bands.readability_band(29) == "very_hard"
+    assert bands.readability_band(0) == "very_hard"

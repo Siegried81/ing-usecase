@@ -254,3 +254,18 @@ def test_day5_table_shows_the_kappa_table_when_it_can_be_computed(df, fd):
     n = len(make_sheet(df, fd, rater="a"))
     text = disagreement_table([varied("a", [1, 5] * n), varied("b", [1, 4] * n)], fd)
     assert "Cohen's kappa" in text
+
+
+def test_day5_table_escapes_pipes_in_list_valued_scores(df, fd):
+    """sieg 18/09: accent_locations/persuasion_levers are stored pipe-separated
+    (D5), and "|" is the Markdown table cell delimiter - an unescaped multi-item
+    value adds extra columns to that row and breaks the table's rendering from
+    that point on. A raw "|" must never reach a rendered cell unescaped."""
+    from comparator.rubric import disagreement_table, make_sheet
+
+    sheet = make_sheet(df, fd, rater="a")
+    sheet["persuasion_levers"] = "authority|liking"
+    text = disagreement_table([sheet], fd)
+
+    assert "authority\\|liking" in text
+    assert "authority|liking" not in text

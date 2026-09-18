@@ -55,8 +55,21 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
     if rows.empty:
         raise ValueError(f"no rows for bank {bank!r}")
 
+    # sieg 17/09, audit finding (HIGH, follow-up to analysis.py's comparability
+    # fix). This function computed within_language means (word_count,
+    # second_person_ratio, in "tone" below) straight from this bank's own rows,
+    # bypassing comparable_features()/language_excluded_features() entirely -
+    # the first fix never touched this path. Profile cards are explicitly built
+    # for side-by-side reading (module docstring: "identical fields for every
+    # bank... comparable"), so even ONE bank whose own captured pages mix
+    # languages (KBC has both fr and nl in collection_targets.yaml) was
+    # silently averaging across them into a single misleading number.
+    mixed_language = "language" in rows.columns and rows["language"].dropna().nunique() > 1
+
     def mean(col: str) -> float | None:
         if col not in rows.columns:
+            return None
+        if mixed_language and col in fd and fd[col].comparability == "within_language":
             return None
         values = pd.to_numeric(rows[col].astype("float64"), errors="coerce").dropna()
         return None if values.empty else float(values.mean())
@@ -68,6 +81,10 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "pages_analysed": len(rows),
             "product_family": _mode(rows["product_family"]),
             "language": _mode(rows["language"]),
+            # sieg 17/09: explicit flag - see the mean() guard above. True means
+            # this bank's own pages already mix languages, so its within_language
+            # tone fields are None rather than a cross-language-confounded average.
+            "mixed_language": mixed_language,
             "captured": _mode(rows["captured_at"].astype("string")),
             "data_source": _mode(rows["data_source"]),
         },

@@ -62,6 +62,15 @@ def test_bands_follow_their_source(fd):
     assert out == ["very_short", "long"]
 
 
+# sieg 17/09, audit finding (LOW): readability_band used to be filled by its
+# own special-cased block with a locally-duplicated edge list - now it is just
+# another BAND_RULES entry, same loop as word_count_band and friends.
+def test_readability_band_follows_its_source(fd):
+    df = pd.DataFrame([{"readability_score": 95}, {"readability_score": 10}])
+    out = recompute_derived(df, fd)["readability_band"].tolist()
+    assert out == ["very_easy", "very_hard"]
+
+
 def test_has_animation_follows_the_asset_count(fd):
     df = pd.DataFrame([{"animated_asset_count": 0}, {"animated_asset_count": 3}])
     assert recompute_derived(df, fd)["has_animation"].tolist() == [False, True]

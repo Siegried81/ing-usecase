@@ -376,7 +376,12 @@ def disagreement_table(
             values = []
             for rater in raters:
                 cell = rows[rows[RATER_COLUMN].astype("string") == rater][feature.name].dropna()
-                values.append("" if cell.empty else str(cell.iat[0]))
+                # sieg 18/09: list-valued features (accent_locations, persuasion_levers)
+                # are pipe-separated, and "|" is the Markdown table delimiter - an
+                # unescaped value broke every table row after it once a rater actually
+                # filled in a multi-item list (bug pre-dates this fix; only showed up
+                # once a real value produced more than one list item).
+                values.append("" if cell.empty else str(cell.iat[0]).replace("|", "\\|"))
 
             scored = [v for v in values if v]
             if len(scored) < 2:

@@ -100,14 +100,9 @@ _READABILITY_FORMULA = {
     "fr": "kandel_moles_fr",
     "en": "flesch_reading_ease_en",
 }
-_BAND_EDGES = [(90, "very_easy"), (70, "easy"), (50, "medium"), (30, "hard")]
-
-
-def _band(score: float) -> str:
-    for edge, label in _BAND_EDGES:
-        if score >= edge:
-            return label
-    return "very_hard"
+# sieg 17/09, audit finding (LOW): this was a THIRD independent copy of the
+# same readability threshold edges (collection/scraper.py and derive.py had
+# their own too) - all three now call bands.readability_band().
 
 
 def build_fixture(
@@ -183,7 +178,7 @@ def build_fixture(
                     "avg_sentence_length_band": bands.avg_sentence_length_band(words / sentences),  # sieg 14/09
                     "readability_score": round(readability, 1),
                     "readability_formula": _READABILITY_FORMULA[language],  # sieg 14/09: was hardcoded to nl
-                    "readability_band": _band(readability),
+                    "readability_band": bands.readability_band(readability),
                     "second_person_ratio": second_person_ratio_value,
                     "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio_value),  # sieg 14/09
                     "first_person_plural_count": first_person_plural_value,

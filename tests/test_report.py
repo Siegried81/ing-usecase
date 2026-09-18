@@ -142,3 +142,23 @@ def test_limitations_report_the_rows_that_were_excluded(fd):
     text = render(assess(data, fd))
     assert "bnp_paribas_fortis" in text
     assert "503" in text
+
+
+# sieg 17/09, FIXED. This note used to say "only the banded versions travel",
+# which was false - comparable_features() never substituted the band, it kept
+# comparing the raw within_language value across languages (audit finding,
+# HIGH). Pin the corrected wording so it can't silently drift back to the
+# false claim now that the underlying behaviour actually matches it.
+def test_mixed_language_note_matches_what_the_pipeline_actually_does(fd):
+    from comparator.fixtures import build_fixture
+    from comparator.limitations import assess, render
+
+    data = build_fixture(fd)
+    half = data.index[: len(data) // 2]
+    data.loc[half, "language"] = "fr"
+    data.loc[data.index.difference(half), "language"] = "nl"
+
+    text = render(assess(data, fd))
+    assert "banded versions travel" not in text
+    assert "excluded from every" in text
+    assert "word_count" in text

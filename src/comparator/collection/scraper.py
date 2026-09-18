@@ -97,7 +97,8 @@ _READABILITY_COEFFS = {
 _READABILITY_FORMULA_NAME = {
     "nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en",
 }
-_BAND_EDGES = [(90, "very_easy"), (70, "easy"), (50, "medium"), (30, "hard")]
+# sieg 17/09: was a local duplicate of derive.py's _READABILITY_EDGES -
+# consolidated into bands.readability_band(), see that module for why.
 
 
 def _fetch_html(url: str) -> str:
@@ -124,7 +125,7 @@ def _readability(text: str, language: str) -> tuple[float, str, str]:
     c = _READABILITY_COEFFS[language]
     score = c["base"] - c["per_word"] * (len(words) / len(sentences)) - c["per_syllable"] * (syllables / len(words))
     score = max(0.0, min(100.0, score))
-    band = next((label for edge, label in _BAND_EDGES if score >= edge), "very_hard")
+    band = bands.readability_band(score)
     return round(score, 1), _READABILITY_FORMULA_NAME[language], band
 
 
