@@ -26,3 +26,7 @@ playwright==1.57.0
 # GHSA-mf9w-mj56-hr94 (moderate), fixed upstream in 1.2.2. A merge briefly
 # reverted this pin; re-fixed here, same version as before.
 python-dotenv==1.2.2
+
+# sieg 18/09: NOT adding pytrends/streamlit/plotly here - that's
+# kbc-ing-benchmark/'s own tool, already pinned in its own
+# kbc-ing-benchmark/requirements.txt. This file stays the main pipeline's.
