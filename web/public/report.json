@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18T09:45:09+00:00",
+  "generated_at": "2026-09-18T10:37:26+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -953,5 +953,26 @@
     ]
   },
   "generated": [],
-  "trends": null
+  "trends": {
+    "available": true,
+    "source": "Dan's kbc-ing-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
+    "window": {
+      "start": "2021-09-12",
+      "end": "2026-09-13"
+    },
+    "covered": [
+      "Argenta",
+      "bunq",
+      "Crelan",
+      "ING",
+      "KBC",
+      "N26",
+      "Revolut"
+    ],
+    "uncovered": [],
+    "n_series": 33536,
+    "n_anomalies": 1155,
+    "n_campaigns": 21,
+    "data_url": "trends.json"
+  }
 }

@@ -43,7 +43,7 @@ from comparator.analysis import (
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
-from comparator.trends import context_or_none
+from comparator.trends import build_trends_dashboard
 
 DEFAULT_DATASET = Path("data/processed/campaigns_scored.csv")
 DEFAULT_OUT = Path("web/public/report.json")
@@ -166,7 +166,7 @@ def _rows(df: pd.DataFrame, columns: list[str]) -> list[dict]:
 
 
 def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
-                 trends_dir: Path | None) -> dict:
+                 trends_dir: Path | None) -> tuple[dict, dict | None]:
     fd = load_dictionary()
     df, validation = read_dataset(dataset, fd, tier="core", strict=False)
 
@@ -345,22 +345,27 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
             "hitRate": round(len(hits) / len(measured), 2) if measured else None,
         })
 
-    context = context_or_none(compared, trends_dir) if trends_dir else context_or_none(compared)
-    if context and context.available:
+    context = build_trends_dashboard(compared, trends_dir)
+    if context:
+        series_points = sum(
+            len(t["points"]) for b in context["banks"] for p in b["products"] for t in p["terms"]
+        )
+        anomaly_count = sum(
+            len(t["anomalies"]) for b in context["banks"] for p in b["products"] for t in p["terms"]
+        )
         report["trends"] = {
-            "rows": [
-                {"bank": bank_name(r["bank"]),
-                 "family": FAMILY_NAMES.get(r["product_family"], r["product_family"]),
-                 "recent": _clean(r.get("last_12m_mean")),
-                 "baseline": _clean(r.get("baseline_mean")),
-                 "changePct": _clean(r.get("change_pct")),
-                 "direction": r.get("vs_baseline")}
-                for _, r in context.table.iterrows()
-            ],
-            "uncovered": [bank_name(b) for b in context.uncovered_banks],
+            "available": True,
+            "source": context["source"],
+            "window": context["window"],
+            "covered": context["coverage"]["covered"],
+            "uncovered": context["coverage"]["uncovered"],
+            "n_series": series_points,
+            "n_anomalies": anomaly_count,
+            "n_campaigns": context["campaigns"]["catalogued"],
+            "data_url": "trends.json",
         }
 
-    return report
+    return report, context
 
 
 def main() -> int:
@@ -373,10 +378,14 @@ def main() -> int:
     parser.add_argument("--trends-dir", type=Path, default=None)
     args = parser.parse_args()
 
-    report = build_report(args.dataset, family=args.product_family, focus=args.focus,
-                          top_n=args.top_n, trends_dir=args.trends_dir)
+    report, trends = build_report(args.dataset, family=args.product_family, focus=args.focus,
+                                  top_n=args.top_n, trends_dir=args.trends_dir)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    trends_path = args.out.parent / "trends.json"
+    if trends:
+        trends_path.write_text(json.dumps(trends, ensure_ascii=False), encoding="utf-8")
 
     scope = report["scope"]
     print(f"wrote {args.out}")
@@ -386,6 +395,12 @@ def main() -> int:
     print(f"  headline: {report['headline']['focus']} {report['headline']['score']} "
           f"({report['headline']['verdict']})")
     print(f"  generated variants: {len(report['generated'])}")
+    t = report.get("trends")
+    if t:
+        print(f"  trends  : {t['n_series']} weekly points, {t['n_anomalies']} anomalies, "
+              f"{t['n_campaigns']} campaigns -> {trends_path.name}")
+    else:
+        print("  trends  : Dan's export not present - Trends tab will show an empty state")
     return 0
 
 

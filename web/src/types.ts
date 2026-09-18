@@ -131,6 +131,129 @@ export interface SiteStatus {
   site_url: string | null;
 }
 
+/** Pointer to the Trends tab payload. The series themselves live in trends.json. */
+export interface TrendsSummary {
+  available: boolean;
+  source: string;
+  window: { start: string | null; end: string | null };
+  covered: string[];
+  uncovered: string[];
+  n_series: number;
+  n_anomalies: number;
+  n_campaigns: number;
+  data_url: string;
+}
+
+/** [YYYY-MM-DD, value] - one weekly Google Trends point. */
+export type TrendPoint = [string, number];
+
+export interface TrendAnomaly {
+  date: string;
+  value: number;
+  type: "isolated_spike" | "sustained_trend";
+  label: string;
+  score: number;
+}
+
+export interface TrendTerm {
+  term: string;
+  label: string;
+  language: string;
+  points: TrendPoint[];
+  anomalies: TrendAnomaly[];
+}
+
+export interface TrendProduct {
+  id: string;
+  label: string;
+  terms: TrendTerm[];
+}
+
+export interface TrendBank {
+  key: string;
+  name: string;
+  segment: Category;
+  products: TrendProduct[];
+}
+
+export interface TrendEvent {
+  bank: string;
+  key: string;
+  date: string;
+  label: string;
+}
+
+export interface CampaignScore {
+  id: number;
+  bank: string;
+  key: string;
+  name: string;
+  language: string;
+  startDate: string | null;
+  endDate: string | null;
+  confidence: string;
+  type: string;
+  targetFiches: string[];
+  status: string;
+  reason: string | null;
+  anomalyCount: number;
+  fichesTouched: number;
+  seasonalConfounds: number;
+  rawScore: number;
+  finalScore: number;
+}
+
+export interface CampaignMatch {
+  campaignId: number;
+  campaignName: string;
+  campaignBank: string;
+  productId: string;
+  term: string;
+  date: string;
+  type: string;
+  label: string;
+  score: number | null;
+  delayDays: number | null;
+  seasonalConfound: boolean;
+  contribution: number | null;
+}
+
+export interface CampaignSummary {
+  bank: string;
+  catalogued: number;
+  scorable: number;
+  totalScore: number;
+  averageScore: number;
+  successRate: number;
+}
+
+export interface CampaignTypeMix {
+  bank: string;
+  brand: number;
+  product: number;
+  sponsoring: number;
+  csr: number;
+  other: number;
+}
+
+export interface TrendsPayload {
+  available: boolean;
+  source: string;
+  window: { start: string | null; end: string | null };
+  coverage: { covered: string[]; uncovered: string[] };
+  banks: TrendBank[];
+  events: TrendEvent[];
+  campaigns: {
+    catalogued: number;
+    scorable: number;
+    scorecards: CampaignScore[];
+    matches: CampaignMatch[];
+    summary: CampaignSummary[];
+    byType: CampaignTypeMix[];
+  };
+  guardrail: string;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;
@@ -148,9 +271,5 @@ export interface Report {
   limitations: { blocking: string[]; material: string[]; standing: string[] };
   validation: { ok: boolean; warnings: string[] };
   generated: GeneratedCampaign[];
-  trends: {
-    rows: { bank: string; family: string; recent: number | null; baseline: number | null;
-            changePct: number | null; direction: string }[];
-    uncovered: string[];
-  } | null;
+  trends: TrendsSummary | null;
 }
