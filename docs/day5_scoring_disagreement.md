@@ -47,9 +47,9 @@
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `formality_score` |  | 4.0 | 4.0 |  | Y |  |  |
-| `clarity_score` |  | 3.0 | 4.0 |  | Y |  |  |
+| `clarity_score` |  | 3.0 | 5.0 |  | N |  |  |
 | `rate_prominence` |  | absent | absent |  | Y |  |  |
-| `value_prop_clarity` |  | 3.0 | 2.0 |  | Y |  |  |
+| `value_prop_clarity` |  | 3.0 | 4.0 |  | Y |  |  |
 | `accent_locations` |  |  | imagery\|buttons |  | — |  |  |
 | `text_image_layout` |  |  | overlaid |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
@@ -66,8 +66,8 @@
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | `formality_score` |  | 2.0 | 2.0 |  | Y |  |  |
 | `clarity_score` |  | 3.0 | 5.0 |  | N |  |  |
-| `rate_prominence` |  | below_fold | absent |  | N |  |  |
-| `value_prop_clarity` |  | 3.0 | 4.0 |  | Y |  |  |
+| `rate_prominence` |  | below_fold | below_fold |  | Y |  |  |
+| `value_prop_clarity` |  | 3.0 | 5.0 |  | N |  |  |
 | `accent_locations` |  |  | imagery\|background |  | — |  |  |
 | `text_image_layout` |  |  | beside |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
@@ -76,7 +76,7 @@
 | `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
 | `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
 | `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
-| `persuasion_levers` |  | authority\|social_proof\|liking | liking |  | N |  |  |
+| `persuasion_levers` |  | authority\|social_proof\|liking | liking\|social_proof\|reciprocity |  | N |  |  |
 
 ## crelan_current_account_pack_fr_01  (crelan)
 
@@ -105,7 +105,7 @@
 | `rate_prominence` |  | absent | below_fold |  | N |  |  |
 | `value_prop_clarity` |  | 1.0 | 5.0 |  | N |  |  |
 | `accent_locations` |  |  | buttons\|icons |  | — |  |  |
-| `text_image_layout` |  |  |  |  | — |  |  |
+| `text_image_layout` |  |  | stacked |  | — |  |  |
 | `layout_archetype` |  |  | hero_stacked |  | — |  |  |
 | `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
 | `aida_attention` |  | 0.0 | 0.0 |  | Y |  |  |
@@ -208,19 +208,19 @@
 
 | Feature | dan | model/deepseek-chat | siegried | stephane | Agree? | If disagree: why | Rubric fix needed? |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| `formality_score` |  | 3.0 | 2.0 |  | Y |  |  |
+| `formality_score` |  | 3.0 | 3.0 |  | Y |  |  |
 | `clarity_score` |  | 4.0 | 5.0 |  | Y |  |  |
 | `rate_prominence` |  | absent | absent |  | Y |  |  |
-| `value_prop_clarity` |  | 3.0 | 3.0 |  | Y |  |  |
-| `accent_locations` |  |  | background\|buttons |  | — |  |  |
-| `text_image_layout` |  |  | overlaid |  | — |  |  |
-| `layout_archetype` |  |  | hero_stacked |  | — |  |  |
-| `mobile_first_design_signal` |  |  | 1.0 |  | — |  |  |
-| `aida_attention` |  | 1.0 | 1.0 |  | Y |  |  |
+| `value_prop_clarity` |  | 3.0 | 4.0 |  | Y |  |  |
+| `accent_locations` |  |  | background\|imagery |  | — |  |  |
+| `text_image_layout` |  |  | beside |  | — |  |  |
+| `layout_archetype` |  |  | split_columns |  | — |  |  |
+| `mobile_first_design_signal` |  |  | 0.0 |  | — |  |  |
+| `aida_attention` |  | 1.0 | 0.0 |  | N |  |  |
 | `aida_interest` |  | 1.0 | 1.0 |  | Y |  |  |
 | `aida_desire` |  | 1.0 | 1.0 |  | Y |  |  |
 | `aida_action` |  | 1.0 | 1.0 |  | Y |  |  |
-| `persuasion_levers` |  | authority\|liking | liking |  | N |  |  |
+| `persuasion_levers` |  | authority\|liking | authority\|reciprocity |  | N |  |  |
 
 ## revolut_current_account_pack_fr_01  (revolut)
 
@@ -247,16 +247,16 @@ Inter-rater agreement (NFR-05)
 
            feature  pages  agreement          basis
  persuasion_levers      6       0.00    exact match
-   rate_prominence     11       0.36    exact match
-value_prop_clarity     11       0.45 within 1 point
-     clarity_score     11       0.55 within 1 point
+value_prop_clarity     11       0.36 within 1 point
+   rate_prominence     11       0.45    exact match
+     clarity_score     11       0.45 within 1 point
        aida_desire     11       0.55    exact match
      aida_interest     11       0.55    exact match
        aida_action     11       0.64    exact match
-    aida_attention     11       0.91    exact match
+    aida_attention     11       0.82    exact match
    formality_score     11       1.00 within 1 point
 
-Weak agreement (<60%): ['persuasion_levers', 'rate_prominence', 'value_prop_clarity', 'clarity_score', 'aida_desire', 'aida_interest'].
+Weak agreement (<60%): ['persuasion_levers', 'value_prop_clarity', 'rate_prominence', 'clarity_score', 'aida_desire', 'aida_interest'].
 Tighten the rubric wording for these before trusting them in a finding.
 ```
 
@@ -264,15 +264,15 @@ Tighten the rubric wording for these before trusting them in a finding.
 Cohen's kappa - chance-corrected agreement (NFR-05)
 
            feature                          raters  pages  kappa
-value_prop_clarity model/deepseek-chat vs siegried     11 -0.122
-   rate_prominence model/deepseek-chat vs siegried     11 -0.100
+value_prop_clarity model/deepseek-chat vs siegried     11 -0.052
  persuasion_levers model/deepseek-chat vs siegried      6 -0.029
        aida_action model/deepseek-chat vs siegried     11  0.000
      aida_interest model/deepseek-chat vs siegried     11  0.000
-     clarity_score model/deepseek-chat vs siegried     11  0.063
+     clarity_score model/deepseek-chat vs siegried     11  0.060
        aida_desire model/deepseek-chat vs siegried     11  0.154
-   formality_score model/deepseek-chat vs siegried     11  0.421
-    aida_attention model/deepseek-chat vs siegried     11  0.814
+   rate_prominence model/deepseek-chat vs siegried     11  0.165
+   formality_score model/deepseek-chat vs siegried     11  0.507
+    aida_attention model/deepseek-chat vs siegried     11  0.607
 
-Below 0.4 (fair or worse, Landis & Koch): [('value_prop_clarity', 'model/deepseek-chat vs siegried'), ('rate_prominence', 'model/deepseek-chat vs siegried'), ('persuasion_levers', 'model/deepseek-chat vs siegried'), ('aida_action', 'model/deepseek-chat vs siegried'), ('aida_interest', 'model/deepseek-chat vs siegried'), ('clarity_score', 'model/deepseek-chat vs siegried'), ('aida_desire', 'model/deepseek-chat vs siegried')]. Raw % agreement on these may look fine while being close to chance.
+Below 0.4 (fair or worse, Landis & Koch): [('value_prop_clarity', 'model/deepseek-chat vs siegried'), ('persuasion_levers', 'model/deepseek-chat vs siegried'), ('aida_action', 'model/deepseek-chat vs siegried'), ('aida_interest', 'model/deepseek-chat vs siegried'), ('clarity_score', 'model/deepseek-chat vs siegried'), ('aida_desire', 'model/deepseek-chat vs siegried'), ('rate_prominence', 'model/deepseek-chat vs siegried')]. Raw % agreement on these may look fine while being close to chance.
 ```

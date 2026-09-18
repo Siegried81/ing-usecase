@@ -12,6 +12,43 @@ were still describing 15/09 while collection moved past them - all 9 banks
 now have a real capture. See `docs/day6_gate_discussion_notes.md` for the
 per-bank pipeline detail this summarizes.
 
+**sieg 18/09, open questions status (PRD Appendix, Q-01 to Q-07).** Every one
+of these was closed with a **working assumption**, not an ING-confirmed
+answer - the PRD's own wording. Ahead of any ING meeting, here is which ones
+still need a real answer vs. which are fine as internal calls:
+
+TO VALIDATE TOGETHER
+
+**sieg 18/09, 14h meeting plan (10 min + 5 min Q&A).** Q-01, Q-02 and Q-04
+closed by the team today, dropped from the table below - no need to raise
+them with ING. **The one question for the 5 minutes of Q&A is Q-05** (repo
+public or not).
+
+Also flagging, not from the PRD list: **is this afternoon's 10+5 min slot
+the actual Day 10 delivery, or a shorter interim check-in?** The brief is
+explicit that business (D-06) and data/technical (D-07) are two separate
+mandatory presentations - "one set of slides serving both does not meet the
+requirement." Ten minutes total cannot cover both properly, and Day 10
+(confirmed next Friday, 25/09) is where the plan actually schedules "deliver
+business session, deliver technical section" as two things. Worth a quick
+confirm so today's content matches what ING expects from this slot.
+
+| Q# | Question (PRD) | Where in this file | Status |
+| --- | --- | --- | --- |
+| Q-05 | Can deliverables/repo be public? | §4, line ~134 | **the one question for this afternoon's Q&A** - decided "internal only" ourselves, never confirmed by ING |
+| Q-06 | ING-preferred/approved tooling or compliance process for web collection? | not covered here | never asked - we applied our own reading of §9 (LC-04, "no bot-detection evasion") instead |
+| Q-07 | Which language is the reference? | §2, line ~69 | resolved, French chosen and documented - nothing to ask |
+
+**sieg 18/09, correction on Q-06/LC-04.** "IP rotation" does not appear
+anywhere in the PRD - checked the source text directly. LC-04's actual
+wording is "no bot-detection evasion" (among no login, no CAPTCHA solving,
+no rate-limit evasion). "Getting past BNP's CDN block would need IP
+rotation, which LC-04 forbids" (README, "When a site will not serve the
+pipeline") is the team's own reasonable reading of that clause applied to
+BNP's specific block - not a PRD quote. Worth citing LC-04's real wording if
+this comes up with ING this afternoon, and a good moment to get their read
+on whether that interpretation matches what they meant (ties into Q-06).
+
 ## 1. Banks in scope
 
 Working from the PRD's own candidate list (section 2 / Appendix A):
