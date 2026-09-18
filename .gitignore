@@ -31,3 +31,11 @@ data/fixtures/
 # web UI build artefacts
 web/node_modules/
 web/dist/
+
+# sieg 18/09: kbc-ing-benchmark/ (Dan's Google Trends tool) patterns, merged
+# in from origin/ing-vs-kbc - *.pyc and __pycache__/ already covered above.
+benchmark.db
+benchmark_backup_*.db
+data/*.log
+campaigns_streamlit_log.txt
+streamlit_log.txt
