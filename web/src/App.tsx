@@ -7,6 +7,7 @@ import { BankCards } from "./components/Banks";
 import { GeneratedCampaigns } from "./components/Generated";
 import { Limitations } from "./components/Limitations";
 import { DeckClaims } from "./components/Claims";
+import { Recommendations } from "./components/Recommendations";
 
 function Section({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode }) {
   return (
@@ -20,9 +21,12 @@ function Section({ title, lede, children }: { title: string; lede?: string; chil
   );
 }
 
+type Tab = "analysis" | "recommendations";
+
 export default function App() {
   const [report, setReport] = useState<Report | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [tab, setTab] = useState<Tab>("analysis");
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}report.json`)
@@ -64,6 +68,34 @@ export default function App() {
         </div>
       </div>
 
+      <div className="wrap">
+        <div className="tabs" role="tablist">
+          <button
+            role="tab"
+            aria-selected={tab === "analysis"}
+            className={`tab${tab === "analysis" ? " active" : ""}`}
+            onClick={() => setTab("analysis")}
+          >
+            Analysis
+          </button>
+          <button
+            role="tab"
+            aria-selected={tab === "recommendations"}
+            className={`tab${tab === "recommendations" ? " active" : ""}`}
+            onClick={() => setTab("recommendations")}
+          >
+            Recommendations
+          </button>
+        </div>
+      </div>
+
+      {tab === "recommendations" && (
+        <div className="wrap">
+          <Recommendations report={report} />
+        </div>
+      )}
+
+      {tab === "analysis" && (
       <div className="wrap">
         <ScopeBanner scope={scope} />
 
@@ -187,6 +219,7 @@ export default function App() {
           This is a proof of concept on a deliberately limited scope.
         </div>
       </div>
+      )}
     </>
   );
 }

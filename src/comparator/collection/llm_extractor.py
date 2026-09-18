@@ -196,7 +196,7 @@ def _groq_keys() -> list[str]:
     return [k for k in keys if k]
 
 
-def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> str:
+def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> str:
     response = requests.post(
         url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
@@ -208,13 +208,13 @@ def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str
             ],
             "temperature": 0,
         },
-        timeout=30,
+        timeout=timeout,
     )
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"]
 
 
-def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> str:
+def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 60) -> str:
     host = os.getenv("OLLAMA_HOST", "http://localhost:11434")
     model = os.getenv("OLLAMA_MODEL", "llama3.1")
     response = requests.post(
@@ -227,13 +227,13 @@ def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> str
             ],
             "temperature": 0,
         },
-        timeout=60,
+        timeout=timeout,
     )
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"]
 
 
-def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> tuple[str, str]:
+def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> tuple[str, str]:
     """Try each provider in order; return (response_text, "provider/model").
 
     steph 15/09: now returns WHICH model answered, so the caller can record it
@@ -252,13 +252,13 @@ def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT) -> tuple[
         resolved_url = _provider_url(name, url)
         for key in keys:
             try:
-                text = _call_openai_compatible(resolved_url, key, model, user_prompt, system_prompt=system_prompt)
+                text = _call_openai_compatible(resolved_url, key, model, user_prompt, system_prompt=system_prompt, timeout=timeout)
                 return text, f"{name}/{model}"
             except requests.RequestException as exc:  # noqa: PERF203 - key rotation needs the loop
                 errors.append(f"{name}: {exc}")
 
     try:
-        return _call_ollama(user_prompt, system_prompt=system_prompt), f"ollama/{os.getenv('OLLAMA_MODEL', 'llama3.1')}"
+        return _call_ollama(user_prompt, system_prompt=system_prompt, timeout=timeout), f"ollama/{os.getenv('OLLAMA_MODEL', 'llama3.1')}"
     except requests.RequestException as exc:
         errors.append(f"ollama: {exc}")
 

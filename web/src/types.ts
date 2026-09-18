@@ -81,6 +81,56 @@ export interface GeneratedCampaign {
   hitRate: number | null;
 }
 
+export type Priority = "high" | "medium" | "low";
+
+export interface Recommendation {
+  id: string;
+  title: string;
+  priority: Priority;
+  finding: string;
+  recommendation: string;
+  features: string[];
+  page_targets: string[];
+}
+
+export interface RecommendationPayload {
+  available: boolean;
+  generated_at?: string;
+  model?: string;
+  summary: string | null;
+  recommendations: Recommendation[];
+}
+
+export interface SitePage {
+  slug: string;
+  nav: string;
+  title: string;
+  file: string;
+  used_fallback: boolean;
+  recommendations_implemented: string[];
+}
+
+export interface SiteManifest {
+  language: string;
+  locale: string;
+  generated_at: string | null;
+  model: string;
+  pages: SitePage[];
+  recommendations: { id: string; title: string; priority: Priority }[];
+  asset_warnings: string[];
+}
+
+export interface SiteStatus {
+  status: "idle" | "generating" | "ready" | "error";
+  progress: number;
+  total: number;
+  page: string | null;
+  error: string | null;
+  ready: boolean;
+  manifest: SiteManifest | null;
+  site_url: string | null;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;

@@ -246,6 +246,8 @@ src/comparator/
   freeze.py                      the Day 2 freeze rule, enforced semantically
   generation.py                  step 5: targets, brief, rendering, scoring
   generation_guardrails.py       step 5 safety checklist (Appendix B.2)
+  recommendations.py             LLM advice grounded in one report (web UI tab)
+  site_generator.py              10-page ING-styled site from selected recommendations
   report.py                      the generated chart companion
   collection/                    compliance, scraper, headless render, LLM, quality gate
   rubric.py                      scoring sheets, merge, inter-rater agreement
@@ -259,6 +261,8 @@ scripts/
   run_analysis.py                the end-to-end chain
   run_collection.py              real captures: compliance -> scrape -> extract -> validate
   run_generation.py              CLI for step 5 (generation.py)
+  export_web_report.py           one JSON snapshot for the business web UI
+  serve_web.py                   backend for the UI's recommendations + generated site
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
 tests/                           259 tests
