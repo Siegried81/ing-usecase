@@ -8,6 +8,7 @@ import { GeneratedCampaigns } from "./components/Generated";
 import { Limitations } from "./components/Limitations";
 import { DeckClaims } from "./components/Claims";
 import { Recommendations } from "./components/Recommendations";
+import { Trends } from "./components/Trends";
 
 function Section({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode }) {
   return (
@@ -21,7 +22,7 @@ function Section({ title, lede, children }: { title: string; lede?: string; chil
   );
 }
 
-type Tab = "analysis" | "recommendations";
+type Tab = "analysis" | "trends" | "recommendations";
 
 export default function App() {
   const [report, setReport] = useState<Report | null>(null);
@@ -80,6 +81,14 @@ export default function App() {
           </button>
           <button
             role="tab"
+            aria-selected={tab === "trends"}
+            className={`tab${tab === "trends" ? " active" : ""}`}
+            onClick={() => setTab("trends")}
+          >
+            Trends
+          </button>
+          <button
+            role="tab"
             aria-selected={tab === "recommendations"}
             className={`tab${tab === "recommendations" ? " active" : ""}`}
             onClick={() => setTab("recommendations")}
@@ -88,6 +97,12 @@ export default function App() {
           </button>
         </div>
       </div>
+
+      {tab === "trends" && (
+        <div className="wrap">
+          <Trends summary={report.trends} />
+        </div>
+      )}
 
       {tab === "recommendations" && (
         <div className="wrap">
@@ -173,27 +188,6 @@ export default function App() {
             lede="Five observations from ING's own briefing, checked against the measured pages."
           >
             <DeckClaims claims={report.deckClaims} />
-          </Section>
-        )}
-
-        {report.trends && (
-          <Section
-            title="Search interest, for context"
-            lede="What people searched for around these products. Context only — it measures attention, not what any campaign achieved."
-          >
-            <div className="card">
-              {report.trends.rows.map((r, i) => (
-                <div className="score-row" key={i}>
-                  <span>{r.bank} · {r.family}</span>
-                  <span style={{ color: "var(--ink-2)" }}>{r.direction}</span>
-                </div>
-              ))}
-              {report.trends.uncovered.length > 0 && (
-                <div style={{ marginTop: 10, fontSize: 13, color: "var(--ink-3)" }}>
-                  No search data for {report.trends.uncovered.join(", ")}.
-                </div>
-              )}
-            </div>
           </Section>
         )}
 

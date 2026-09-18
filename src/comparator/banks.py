@@ -17,6 +17,9 @@ BANK_CATEGORY: dict[str, str] = {
     "argenta": "traditional",
     "crelan": "traditional",
     "belfius": "traditional",
+    # CBC is KBC Group's francophone brand, a separate search entity in Dan's
+    # Trends benchmark but the same incumbent model.
+    "cbc": "traditional",
     "revolut": "challenger",
     "n26": "challenger",
     "bunq": "challenger",

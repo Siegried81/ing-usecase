@@ -252,7 +252,7 @@ src/comparator/
   collection/                    compliance, scraper, headless render, LLM, quality gate
   rubric.py                      scoring sheets, merge, inter-rater agreement
   limitations.py                 D-09, generated from the dataset
-  trends.py                      bridge to Dan's Google Trends benchmark
+  trends.py                      bridge to Dan's Google Trends benchmark: series, anomalies, campaigns (Trends tab)
   rubric_model.py                model as a third rater (text-inferable only)
   derive.py                      recompute derived features after any change
   banks.py                       canonical bank -> category facts
@@ -261,7 +261,7 @@ scripts/
   run_analysis.py                the end-to-end chain
   run_collection.py              real captures: compliance -> scrape -> extract -> validate
   run_generation.py              CLI for step 5 (generation.py)
-  export_web_report.py           one JSON snapshot for the business web UI
+  export_web_report.py           one JSON snapshot + trends payload for the business web UI
   serve_web.py                   backend for the UI's recommendations + generated site
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown

@@ -4,7 +4,7 @@ The findings surface for one analysis run, for the business audience (D-06),
 plus two model-backed actions: writing recommendations and building a website.
 
 ```bash
-python3 scripts/export_web_report.py --product-family auto   # writes web/public/report.json
+python3 scripts/export_web_report.py --product-family auto   # writes report.json + trends.json
 
 python3 scripts/serve_web.py --port 8010                      # recommendations + site backend
 cd web && npm install && npm run dev                          # http://localhost:5173
@@ -17,12 +17,30 @@ recommendations and open the generated website without a second origin. `npm run
 build` still produces a folder that opens anywhere; the Analysis tab works from
 that build alone.
 
-## Two tabs
+## Three tabs
 
 **Analysis** is the read-only snapshot described below. It reads a single
 `report.json` and talks to nothing. A snapshot is the honest shape for a finding:
 it is true for one dataset, at one capture date, under one scope. `npm run build`
 produces a folder that opens anywhere.
+
+**Trends** is Dan's Google Trends benchmark given a home of its own. The exporter
+writes the series separately to `trends.json` (it is ~800 KB of weekly points, too
+large to inline in `report.json`, which carries only a small summary and the
+`data_url` the tab fetches). The tab shows the five-year weekly search interest per
+bank and product sheet, the spikes Dan's detector flags, the known structural
+events, and the campaign catalogue matched to those spikes. Anomaly detection is a
+port of `kbc-ing-benchmark/analysis/anomaly_detection.py`, tested against the same
+inputs, so the tab and Dan's Streamlit app cannot report different spikes.
+
+The guardrail is not a footnote here: **search interest is context, never an
+outcome.** The tab leads with it, and the payload carries the sentence so no view
+can drop it. Nothing in `trends.py` regresses a search value onto a page feature,
+and the tab deliberately offers no per-page number to regress.
+
+If `kbc-ing-benchmark/export/` is absent, `trends.json` is not written and the tab
+renders an empty state; nothing else is affected. The pipeline only reads Dan's CSV
+export — it does not need `pytrends`, `streamlit` or `plotly`.
 
 **Recommendations** is the one place a model is allowed to opine. It asks the
 pinned model to turn this run's own numbers into advice, shows each
