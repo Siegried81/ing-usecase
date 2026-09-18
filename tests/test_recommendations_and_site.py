@@ -28,6 +28,7 @@ from comparator.site_generator import (  # noqa: E402
     Hero,
     PageContent,
     Section,
+    _content_text,
     _detected_language,
     _download_assets,
     _fallback_page,
@@ -180,6 +181,38 @@ def test_generate_page_retries_when_the_model_answers_in_the_wrong_language(monk
     page = generate_page(spec, recs, "fr", "s", retries=1)
     assert calls["n"] == 2
     assert page.hero.headline == "Ouvrez votre compte"
+
+
+def test_generate_page_retries_when_a_selected_recommendation_is_not_expressed(monkeypatch):
+    calls = {"n": 0}
+    no_rate = ("Notre compte courant vous simplifie la vie. Vous gardez le controle de vos "
+               "paiements et de votre budget, pour vous et vos projets, avec votre carte.")
+    with_rate = no_rate + " Le taux de votre compte est indique clairement des le depart."
+
+    def fake_llm(*args, **kwargs):
+        calls["n"] += 1
+        body = no_rate if calls["n"] == 1 else with_rate
+        return (_page_json("Votre compte courant", body, body), "m")
+
+    monkeypatch.setattr("comparator.site_generator._call_llm", fake_llm)
+    recs = RecommendationSet(generated_at="t", model="m", summary="s", recommendations=[
+        Recommendation("R1", "Add a visible rate", "high", "f", "r", ["rate_shown"], ["index"]),
+    ])
+    spec = next(p for p in PAGES if p.slug == "index")
+    page = generate_page(spec, recs, "fr", "s", retries=2)
+    assert calls["n"] == 2
+    assert "taux" in _content_text(page).lower()
+
+
+def test_missing_coverage_ignores_unbriefed_pages_and_unmappable_features():
+    from comparator.site_generator import _missing_coverage
+    page = _content("contact")
+    recs = RecommendationSet(generated_at="t", model="m", summary="s", recommendations=[
+        Recommendation("R1", "rate", "high", "f", "r", ["rate_shown"], ["index"]),
+        Recommendation("R2", "layout", "low", "f", "r", ["layout_archetype"], ["contact"]),
+    ])
+    # R1 does not target contact, R2 has no machine-checkable cue.
+    assert _missing_coverage(page, recs) == []
 
 
 def test_download_assets_builds_a_white_logo_from_ings_own_svg(monkeypatch, tmp_path):
