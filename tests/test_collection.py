@@ -410,7 +410,7 @@ def test_groq_tried_before_other_fallbacks(monkeypatch):
     monkeypatch.setenv("OPENROUTER_API_KEY", "fake-openrouter-key")
     calls = []
 
-    def fake_call(url, api_key, model, prompt, system_prompt=None):
+    def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         calls.append(url)
         if "groq" in url:
             raise __import__("requests").RequestException("groq down")
@@ -430,7 +430,7 @@ def test_deepseek_is_tried_first(monkeypatch):
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
     calls = []
 
-    def fake_call(url, api_key, model, prompt, system_prompt=None):
+    def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         calls.append(url)
         return __import__("json").dumps(_VALID_RESPONSE)
 
@@ -446,7 +446,7 @@ def test_extraction_records_which_model_answered(monkeypatch):
     monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
     monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-chat")
 
-    def fake_call(url, api_key, model, prompt, system_prompt=None):
+    def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         return __import__("json").dumps(_VALID_RESPONSE)
 
     with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
@@ -462,7 +462,7 @@ def test_fallback_is_recorded_not_silent(monkeypatch):
     monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
 
-    def fake_call(url, api_key, model, prompt, system_prompt=None):
+    def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         if "deepseek" in url:
             raise __import__("requests").RequestException("deepseek down")
         return __import__("json").dumps(_VALID_RESPONSE)

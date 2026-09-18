@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-18T09:19:31+00:00",
+  "generated_at": "2026-09-18T09:45:09+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -953,31 +953,5 @@
     ]
   },
   "generated": [],
-  "trends": {
-    "rows": [
-      {
-        "bank": "KBC",
-        "family": "Current-account packs",
-        "recent": 1.2,
-        "baseline": 2.3,
-        "changePct": -48.2,
-        "direction": "lower"
-      },
-      {
-        "bank": "ING",
-        "family": "Current-account packs",
-        "recent": 0.1,
-        "baseline": 0.3,
-        "changePct": -64.7,
-        "direction": "lower"
-      }
-    ],
-    "uncovered": [
-      "Argenta",
-      "bunq",
-      "Crelan",
-      "N26",
-      "Revolut"
-    ]
-  }
+  "trends": null
 }
