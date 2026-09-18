@@ -269,3 +269,22 @@ def test_day5_table_escapes_pipes_in_list_valued_scores(df, fd):
 
     assert "authority\\|liking" in text
     assert "authority|liking" not in text
+
+
+def test_consensus_of_two_integer_raters_is_an_integer(df, fd):
+    """steph 18/09: only surfaced once a second rater existed. Averaging 2 and 3
+    gave 2.5, the dictionary declares these as integers, and the merged dataset
+    failed to load with 'cannot safely cast non-equivalent float64 to int64'."""
+    merged = merge_scores(df, [_scored(df, fd, "a", 2, "card_grid"),
+                               _scored(df, fd, "b", 3, "card_grid")], fd)
+    scored = merged[merged["bank"] != "ing"]["formality_score"].dropna()
+    assert not scored.empty
+    assert (scored == scored.astype(int)).all(), "an ordinal rubric has no half-steps"
+    assert (scored == 3).all(), "2 and 3 rounds half away from zero"
+
+
+def test_disagreement_is_still_visible_after_rounding(df, fd):
+    """Rounding the stored value must not be how a disagreement disappears."""
+    sheets = [_scored(df, fd, "a", 1, "card_grid"), _scored(df, fd, "b", 5, "long_form")]
+    merge_scores(df, sheets, fd)
+    assert agreement(sheets, fd).table.set_index("feature").loc["formality_score", "agreement"] == 0.0

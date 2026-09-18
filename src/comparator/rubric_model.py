@@ -38,30 +38,53 @@ from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.rubric import RATER_COLUMN, rubric_features
 from comparator.schema import format_list
 
-# Judged from the page's own words, which is all the model is given.
-TEXT_SCORABLE = (
-    "formality_score", "clarity_score", "rate_prominence", "value_prop_clarity",
-    "aida_attention", "aida_interest", "aida_desire", "aida_action",
-    "persuasion_levers",
-)
+# steph 18/09, FIXED - and the inter-rater data is what caught it.
+#
+# This list used to be hand-written, and it was wrong: 8 of the 9 features I let
+# the model score from text are declared in the dictionary as `source: screenshot`.
+# The module's own docstring claims it refuses to score from the wrong evidence,
+# and then it did exactly that for everything except formality_score.
+#
+# Siegried's scoring makes the damage measurable. Against her 11 pages:
+#   formality_score     source html_text   kappa  0.42   (the one scored correctly)
+#   aida_attention      source screenshot  kappa  0.81   (survived - visually obvious)
+#   aida_desire         source screenshot  kappa  0.15
+#   clarity_score       source screenshot  kappa  0.06
+#   aida_interest       source screenshot  kappa  0.00
+#   aida_action         source screenshot  kappa  0.00
+#   persuasion_levers   source screenshot  kappa -0.03
+#   rate_prominence     source screenshot  kappa -0.10
+#   value_prop_clarity  source screenshot  kappa -0.12, Spearman -0.77
+#
+# value_prop_clarity is the clearest: the model ranked the pages almost exactly
+# OPPOSITE to a human. That is what scoring from the wrong evidence looks like -
+# not noise, but a confident answer to a question the text cannot settle. And
+# rate_prominence is literally about where a number sits on the page.
+#
+# So the split is now DERIVED from the dictionary instead of asserted here.
+# A feature the dictionary says is judged from the screenshot cannot be judged
+# from text, and no future edit to this file can quietly re-add one.
+TEXT_SOURCE = "html_text"
 
-# Needs the rendered page. deepseek-chat has no vision; these stay human.
-VISION_ONLY = (
-    "accent_locations", "text_image_layout", "layout_archetype",
-    "mobile_first_design_signal",
-)
+
+def _split(fd: FeatureDictionary) -> tuple[tuple[str, ...], tuple[str, ...]]:
+    text, vision = [], []
+    for feature in rubric_features(fd):
+        (text if feature.source == TEXT_SOURCE else vision).append(feature.name)
+    return tuple(text), tuple(vision)
+
+
+TEXT_SCORABLE, VISION_ONLY = _split(load_dictionary())
 
 
 class ModelRubricScores(BaseModel):
-    formality_score: int = Field(ge=1, le=5)
-    clarity_score: int = Field(ge=1, le=5)
-    value_prop_clarity: int = Field(ge=1, le=5)
-    rate_prominence: str
-    aida_attention: bool
-    aida_interest: bool
-    aida_desire: bool
-    aida_action: bool
-    persuasion_levers: list[str] = Field(default_factory=list)
+    """Only the text-sourced features. Built to accept exactly what the prompt
+    asks for, so a model that volunteers a screenshot-sourced field is ignored
+    rather than quietly believed."""
+
+    model_config = {"extra": "ignore"}
+
+    formality_score: int | None = Field(default=None, ge=1, le=5)
 
 
 def build_prompt(fd: FeatureDictionary) -> str:
@@ -92,12 +115,6 @@ def build_prompt(fd: FeatureDictionary) -> str:
         if feature.rubric:
             for level, text in sorted(feature.rubric.items()):
                 lines.append(f"    {level} = {' '.join(str(text).split())}")
-    lines += [
-        "",
-        'For "persuasion_levers", return an array containing only the Cialdini principles the '
-        'page actually uses, from: "reciprocity", "commitment", "social_proof", "authority", '
-        '"liking", "scarcity". Return an empty array if none are present - do not pad it.',
-    ]
     return "\n".join(lines)
 
 
@@ -157,8 +174,7 @@ def score_dataset(
             "product_family": row.get("product_family"), "language": row.get("language"),
             "url": row.get("url"), "screenshot_path": row.get("screenshot_path"),
             "capture_quality": row.get("capture_quality"),
-            **result.model_dump(exclude={"persuasion_levers"}),
-            "persuasion_levers": format_list(result.persuasion_levers),
+            **{k: v for k, v in result.model_dump().items() if v is not None},
         }
         # The vision-only features stay blank, in the sheet, so their absence is visible.
         for name in VISION_ONLY:

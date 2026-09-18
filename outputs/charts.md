@@ -8,20 +8,20 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 ## Why the charts use fewer features than the dictionary has
 
-The dictionary defines 101 features. The comparisons here use **44**. Nothing is thrown away quietly — this is the whole reduction:
+The dictionary defines 101 features. The comparisons here use **32**. Nothing is thrown away quietly — this is the whole reduction:
 
 ```
 101 features in the dictionary
   - 18  provenance                 identify a page, do not describe a campaign
   -  4  free text / identifiers    no two pages share them
-  -  6  bands of a number already in would double-count the same signal
-  - 19  categorical / list         not encoded - see note below
-  -  4  missing for some bank      cannot compare what one bank lacks
+  -  8  within_language, mixed languages present not comparable across languages (comparability in the dictionary)
+  - 25  categorical / list         not encoded - see note below
+  -  8  missing for some bank      cannot compare what one bank lacks
   -  6  no variation across banks  identical everywhere, carries no signal
-  = 44  features used in this comparison
+  = 32  features used in this comparison
 ```
 
-**The line worth arguing about is the 19 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
+**The line worth arguing about is the 25 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
 
 They *can* be included (`include_categorical=True`), one-hot encoded with each feature's indicators scaled by 1/√k so a 5-value category does not silently outweigh five numbers. It is off by default because switching it on moves every number in the analysis, which is a team decision rather than a default.
 
@@ -39,18 +39,18 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **How to read it.** Left is traditional, right is challenger. Colour carries the bank's declared category, so a dot far from its own colour's cluster is the interesting case. ING is ringed and bold.
 
-**What this run shows.** ING scores **0.03** — clearly with the traditional banks. Computed over 44 features.
+**What this run shows.** ING scores **0.22** — clearly with the traditional banks. Computed over 32 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.09 and the most traditional challenger at 0.93, a gap of 0.84. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.22 and the most traditional challenger at 0.92, a gap of 0.70. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| crelan | traditional | -0.09 |
-| kbc | traditional | -0.03 |
-| ing **(focus)** | traditional | 0.03 |
-| argenta | traditional | 0.09 |
-| revolut | challenger | 0.93 |
-| n26 | challenger | 1.00 |
+| argenta | traditional | -0.21 |
+| crelan | traditional | -0.06 |
+| kbc | traditional | 0.05 |
+| ing **(focus)** | traditional | 0.22 |
+| revolut | challenger | 0.92 |
+| n26 | challenger | 1.01 |
 | bunq | challenger | 1.07 |
 
 **What it cannot tell you.** The axis is defined by the banks in this dataset. Add or remove a bank and the centroids move, so a score is a position *within this sample*, not an absolute coordinate. It also says nothing about which end is better.
@@ -67,18 +67,18 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.09 a
 
 **A gap is not a fault.** Being 2 SD from the peer mean might be a deliberate brand choice or a weakness. The chart finds where to look; deciding which is a judgement call that belongs in the business narrative.
 
-**What this run shows.** The largest gap is **disclaimer word share** at +7.0 SD (ing 0.41 against a peer mean of 0.03).
+**What this run shows.** The largest gap is **persuasion lever count** at +2.4 SD (ing 3.50 against a peer mean of 1.60).
 
 | Feature | Dimension | ing | Peer mean | Gap (SD) |
 | --- | --- | --- | --- | --- |
-| disclaimer_word_share | topics_value_prop | 0.41 | 0.03 | 7.00 |
-| sentence_count | tone_messaging | 165.50 | 80.92 | 3.80 |
-| word_count | tone_messaging | 3,148 | 1,954 | 3.31 |
-| value_prop_clarity | topics_value_prop | 1.50 | 2.67 | -2.47 |
+| persuasion_lever_count | marketing_principles | 3.50 | 1.60 | 2.37 |
 | expat_cross_border_targeting | banking_domain | 1.00 | 0.17 | 2.24 |
-| aida_action | marketing_principles | 0.00 | 0.75 | -1.96 |
-| clarity_score | tone_messaging | 1.50 | 2.83 | -1.94 |
-| readability_score | tone_messaging | 53.85 | 35.13 | 1.88 |
+| value_prop_clarity | topics_value_prop | 5.00 | 3.67 | 1.41 |
+| rate_shown | topics_value_prop | 0.00 | 0.67 | -1.41 |
+| first_time_investor_targeting | banking_domain | 0.00 | 0.67 | -1.41 |
+| numeric_claim_count | tone_messaging | 25.50 | 13.50 | 1.30 |
+| brand_colour_share | colours_design | 0.02 | 0.01 | 1.18 |
+| cta_count | layout_structure | 3.00 | 15.92 | -1.02 |
 
 **What it cannot tell you.** With 6 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 
@@ -94,18 +94,18 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.09 a
 
 **This is descriptive, not a significance test.** Cohen's d is being used here purely as a *ranking device* for which features separate the groups most. With 4 bank(s) on one side and 3 on the other, no p-value would be meaningful, and none is computed anywhere in this project (PRD risk R-03).
 
-**What this run shows.** The sharpest separator is **aida coverage score** (traditional 0.50 vs challenger 4.00, d = +4.95).
+**What this run shows.** The sharpest separator is **aida coverage score** (traditional 2.80 vs challenger 4.00, d = +3.29).
 
 | Feature | Traditional | Challenger | Cohen's d |
 | --- | --- | --- | --- |
-| aida_coverage_score | 0.50 | 4.00 | 4.95 |
-| persuasion_lever_count | 1.00 | 2.67 | 4.08 |
+| aida_coverage_score | 2.80 | 4.00 | 3.29 |
 | background_luminance | 0.87 | 0.37 | -2.86 |
-| aida_interest | 0.17 | 1.00 | 2.42 |
 | above_fold_element_count | 35.83 | 19.33 | -2.34 |
-| clarity_score | 2.00 | 3.33 | 2.16 |
+| value_prop_clarity | 4.60 | 3.00 | -2.19 |
 | total_image_area_ratio | 0.06 | 0.33 | 2.08 |
-| value_prop_clarity | 2.00 | 3.00 | 1.87 |
+| hero_image_area_ratio | 0.24 | 0.75 | 1.75 |
+| first_time_investor_targeting | 0.33 | 1.00 | 1.53 |
+| rate_shown | 0.33 | 1.00 | 1.53 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 
@@ -121,12 +121,12 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.09 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **crelan** (8.4), **kbc** (8.6), **n26** (10.0).
+**What this run shows.** The banks closest to ING are **kbc** (6.7), **n26** (7.1), **crelan** (7.2).
 
 | Cluster | Banks |
 | --- | --- |
-| 1 | bunq, n26, revolut |
-| 2 | argenta, crelan, ing, kbc |
+| 1 | argenta, crelan, ing, kbc |
+| 2 | bunq, n26, revolut |
 
 Clusters come from hierarchical clustering (Ward linkage) on the same distances.
 
@@ -141,10 +141,10 @@ Not a chart, but the same discipline: the deck's five eyeball observations, test
 | # | Claim | Verdict | Evidence |
 | --- | --- | --- | --- |
 | H1 | Belfius is pretty verbose | not testable | feature absent from the dataset |
-| H2 | KBC is straight to the point | not supported | kbc=2386.0; lowest traditional is argenta=1831.0 |
+| H2 | KBC is straight to the point | not testable | feature absent from the dataset |
 | H3 | ING is the only traditional bank using animation | not supported | ing=1.00; other traditional banks above zero: ['kbc', 'crelan'] |
-| H4 | ING no longer places text next to picture | not testable | no text_image_layout values recorded for ing |
-| H5 | Revolut uses very little text | supported | revolut=1352.0; lowest is revolut=1352.0 |
+| H4 | ING no longer places text next to picture | supported | ing's most common text_image_layout: 'overlaid' (claim: not 'beside') |
+| H5 | Revolut uses very little text | not testable | feature absent from the dataset |
 
 ---
 

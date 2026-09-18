@@ -26,6 +26,7 @@ the schema validator says the feature is missing - which is the honest outcome.
 
 from __future__ import annotations
 
+import math
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -110,12 +111,29 @@ def sheet_guide(fd: FeatureDictionary | None = None) -> str:
 
 
 def _consensus(values: pd.Series, feature) -> object:
-    """One agreed value from several raters."""
+    """One agreed value from several raters.
+
+    steph 18/09: a bug that could only appear once a second rater existed, which
+    is today. Averaging two integer rubric scores gives 2.5, and the dictionary
+    declares those features as integers - so the merged dataset failed to load
+    with "cannot safely cast non-equivalent float64 to int64".
+
+    An ordinal 1-5 rubric has no meaningful half-step, so the stored consensus is
+    rounded to the scale it is declared on. Nothing is lost: the per-rater sheets
+    keep both original scores, and the disagreement is reported by agreement()
+    and kappa_agreement() - which is where a disagreement belongs, rather than
+    smuggled into the dataset as a fractional score nobody can interpret.
+    """
     clean = values.dropna()
     if clean.empty:
         return pd.NA
     if feature.is_numeric:
-        return round(float(pd.to_numeric(clean, errors="coerce").dropna().mean()), 2)
+        mean = float(pd.to_numeric(clean, errors="coerce").dropna().mean())
+        if feature.type == "integer":
+            # Round half away from zero: a 2/3 split becomes 3, not 2, and the
+            # choice is at least consistent rather than banker's-rounding by luck.
+            return int(math.floor(mean + 0.5))
+        return round(mean, 2)
     return clean.astype("string").mode().iat[0]  # majority; ties resolve to first alphabetically
 
 
