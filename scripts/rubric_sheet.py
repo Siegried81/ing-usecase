@@ -105,8 +105,11 @@ def main() -> int:
         scored.to_csv(args.out, index=False)
         print(f"scored {len(scored)} page(s) -> {args.out}")
         print("  rater:", scored["rater"].iloc[0])
-        print("  4 vision-only features left blank on purpose (the pinned model has no vision):")
-        print("    accent_locations, text_image_layout, layout_archetype, mobile_first_design_signal")
+        from comparator.rubric_model import TEXT_SCORABLE, VISION_ONLY
+
+        print(f"  scored from text  : {', '.join(TEXT_SCORABLE)}")
+        print(f"  left blank ({len(VISION_ONLY)})   : judged from the rendered page, so a text-only")
+        print("                      model cannot settle them. They need a human with the screenshot.")
         print("\nThis is a THIRD RATER, not a pre-fill. Human sheets stay blank so Friday's")
         print("scores stay independent and the agreement number keeps meaning something.")
         return 0

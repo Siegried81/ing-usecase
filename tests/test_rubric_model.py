@@ -50,14 +50,41 @@ def test_the_prompt_is_built_from_the_dictionary(fd):
         assert " ".join(str(level_text).split())[:30] in prompt
 
 
-def test_the_prompt_lists_allowed_values_for_categoricals(fd):
+def test_the_split_matches_what_the_dictionary_says_each_feature_is_judged_from(fd):
+    """steph 18/09, the regression this module actually had.
+
+    TEXT_SCORABLE was hand-written and 8 of its 9 entries were declared in the
+    dictionary as `source: screenshot`. The model answered anyway - confidently,
+    from evidence that cannot settle the question - and against Siegried's
+    scoring those eight came back at chance (value_prop_clarity ranked the pages
+    almost exactly opposite, Spearman -0.77). The one text-sourced feature,
+    formality_score, reached kappa 0.42.
+
+    So the split is derived, and this asserts it stays derived.
+    """
+    for name in TEXT_SCORABLE:
+        assert fd[name].source == "html_text", (
+            f"{name} is declared as judged from {fd[name].source}, so the model must not "
+            "score it from text"
+        )
+    for name in VISION_ONLY:
+        assert fd[name].source != "html_text"
+
+
+def test_a_screenshot_sourced_feature_never_reaches_the_prompt(fd):
     prompt = build_prompt(fd)
-    for value in fd["rate_prominence"].values:
-        assert f'"{value}"' in prompt
+    for feature in rubric_features(fd):
+        if feature.source != "html_text":
+            assert f'"{feature.name}"' not in prompt
 
 
-def test_the_prompt_forbids_padding_the_lever_list(fd):
-    assert "do not pad" in build_prompt(fd)
+def test_allowed_values_are_listed_for_any_categorical_that_is_text_sourced(fd):
+    prompt = build_prompt(fd)
+    for name in TEXT_SCORABLE:
+        feature = fd[name]
+        if feature.values:
+            for value in feature.values:
+                assert f'"{value}"' in prompt
 
 
 def test_the_prompt_demands_the_same_standard_for_every_bank(fd):
