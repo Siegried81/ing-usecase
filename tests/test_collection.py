@@ -367,6 +367,8 @@ _VALID_RESPONSE = {
     "esg_claim_specificity": "no_claim",
     "green_product_specific_benefit": False,
     "fast_digital_onboarding_claim": False,
+    "target_personas": ["family", "student"],  # sieg 19/09
+    "cross_sold_products": ["mortgage", "pension"],  # sieg 19/09
 }
 
 
@@ -375,6 +377,26 @@ def test_extract_model_assisted_validates_a_good_response():
         result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
     assert isinstance(result, ModelAssistedFields)
     assert result.primary_product == "Term account"
+
+
+# sieg 19/09: target_personas is the first list-valued model_assisted field.
+def test_extract_model_assisted_reads_target_personas():
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=(__import__("json").dumps(_VALID_RESPONSE), "test/model")):
+        result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
+    assert result.target_personas == ["family", "student"]
+
+
+def test_extract_model_assisted_defaults_target_personas_to_empty_list_when_omitted():
+    without_personas = {k: v for k, v in _VALID_RESPONSE.items() if k != "target_personas"}
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=(__import__("json").dumps(without_personas), "test/model")):
+        result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
+    assert result.target_personas == []
+
+
+def test_extract_model_assisted_reads_cross_sold_products():
+    with patch("comparator.collection.llm_extractor._call_llm", return_value=(__import__("json").dumps(_VALID_RESPONSE), "test/model")):
+        result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
+    assert result.cross_sold_products == ["mortgage", "pension"]
 
 
 def test_extract_model_assisted_strips_markdown_fences():

@@ -47,6 +47,22 @@ export interface Separation {
   higherAt: Category;
 }
 
+/** sieg 19/09: one target_personas value, aggregated to a share of this bank's pages. */
+export interface Persona {
+  persona: string;
+  label: string;
+  share: number;
+}
+
+/** sieg 19/09: comparator/ai_score.py axis key -> score (0-10), null when the bank has no data for it. */
+export type AiScore = Record<string, number | null>;
+
+/** sieg 19/09: radar legend entry, mirrors comparator/ai_score.py's AXES. */
+export interface AiScoreAxis {
+  key: string;
+  label: string;
+}
+
 export interface BankProfile {
   key: string;
   name: string;
@@ -59,6 +75,22 @@ export interface BankProfile {
   valueProposition: Record<string, unknown>;
   palette: { dominant: string | null; brandShare: number | null; backgroundLuminance: number | null };
   marketing: Record<string, unknown>;
+  personas: Persona[];
+  aiScore: AiScore;
+  /** sieg 19/09: comparator/cross_sell.py's score_bank() - share of possible other products cross-sold, 0-1. */
+  crossSellScore: number | null;
+}
+
+/** sieg 19/09: comparator/cross_sell.py's cross_sell_matrix(), flattened for the UI. */
+export interface CrossSellMatrix {
+  products: string[];
+  matrix: number[][];
+  mostAssociated: { from: string; to: string; count: number }[];
+  /** confirmed: enough pages to trust the zero. insufficient_data: too few pages to say. */
+  neverPaired: {
+    confirmed: { from: string; to: string }[];
+    insufficient_data: { from: string; to: string }[];
+  };
 }
 
 export interface GeneratedCampaign {
@@ -254,6 +286,18 @@ export interface TrendsPayload {
   guardrail: string;
 }
 
+/** sieg 19/09: comparator/reputation.py - themes only, never sentiment. */
+export interface BankReputation {
+  headline_count: number;
+  themes: Record<string, number>;
+  notable_headlines: string[];
+}
+
+export interface ReputationPayload {
+  available: boolean;
+  banks: Record<string, BankReputation | null>;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;
@@ -264,6 +308,8 @@ export interface Report {
   excludedGaps: { label: string; note: string }[];
   separation: Separation[];
   banks: BankProfile[];
+  aiScoreAxes: AiScoreAxis[];
+  crossSellMatrix: CrossSellMatrix;
   similarity: { banks: string[]; matrix: number[][] };
   clusters: { cluster: number; banks: string[] }[];
   nearestToFocus: { bank: string; distance: number }[];
@@ -272,4 +318,5 @@ export interface Report {
   validation: { ok: boolean; warnings: string[] };
   generated: GeneratedCampaign[];
   trends: TrendsSummary | null;
+  reputation: ReputationPayload;
 }

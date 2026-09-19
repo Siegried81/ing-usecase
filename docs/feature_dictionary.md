@@ -8,7 +8,7 @@
 **Grain** One row per campaign page per capture date.  
 **Freeze target** End of Day 2 - Tuesday 15 September 2026
 
-101 features — 66 core, 35 extended.
+104 features — 66 core, 38 extended.
 
 ## How to read the tables
 
@@ -32,7 +32,7 @@
 | `page_id` | string | automatic | cross_language | core | Unique key for the page-capture. Format {bank}_{product_family}_{language}_{nn}. |
 | `bank` | categorical<br>`ing` · `kbc` · `bnp_paribas_fortis` · `argenta` · `crelan` · `belfius` · `revolut` · `n26` · `bunq` | automatic | cross_language | core | Bank whose page this is. |
 | `bank_category` | categorical<br>`traditional` · `challenger` | automatic | cross_language | core | Traditional incumbent or digital challenger. The axis BO-02 asks about. |
-| `product_family` | categorical<br>`term_account` · `current_account_pack` · `savings_account` · `mortgage` · `investment` · `other` | automatic | cross_language | core | Product family the page promotes. Comparisons are only valid within one family (DR-04). |
+| `product_family` | categorical<br>`term_account` · `current_account_pack` · `savings_account` · `mortgage` · `investment` · `pension` · `other` | automatic | cross_language | core | Product family the page promotes. Comparisons are only valid within one family (DR-04). |
 | `page_role` | categorical<br>`campaign_landing` · `product_detail` · `comparison` · `other` | automatic | cross_language | extended | What the page is for within the funnel. |
 | `url` | string | automatic | cross_language | core | Full source URL as fetched. |
 | `language` | categorical<br>`nl` · `fr` · `en` | automatic | cross_language | core | Language of the page version captured.<br>*Controls every within_language feature. Fixing one language is decision 2 in the plan.* |
@@ -241,13 +241,16 @@
 
 ## Banking-domain signals (Siegried's addendum)
 
-*PRD section 11 bis / Plan section 4.3 bis - retail-banking angles a generic marketing framework misses* — 21 features
+*PRD section 11 bis / Plan section 4.3 bis - retail-banking angles a generic marketing framework misses* — 24 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
 | `audience_segment` | categorical<br>`retail` · `professional` · `mixed` | model_assisted | cross_language | core | Whether the page addresses an individual, a professional/self-employed activity, or both.<br>*sieg 14/09 - retail vs pro is a different axis than traditional vs challenger; most banks run both but frame differently.* |
 | `is_bundled_offer` | boolean | model_assisted | cross_language | extended | Whether the page pushes a bundle (account + card + insurance + investment) in the same funnel, rather than one isolated product.<br>*sieg 14/09 - the bancassurance model (bundled) vs single-product neobank is a business-model signal, not a tone or design choice.* |
 | `cross_sell_delivery_model` | categorical<br>`internal_advisor_led` · `partner_addon_digital` · `not_applicable` | model_assisted | cross_language | extended | How a cross-sold product (insurance, investment) is delivered when one is offered - an in-house product with a dedicated advisor (bancassurance), a digital add-on distributed through a third-party partner with no advisor, or not applicable (nothing cross-sold on this page). |
+| `target_personas` | list[string]<br>`student` · `family` · `entrepreneur_self_employed` · `expat` · `investor` · `retiree` · `digital_nomad` · `mass_market` | model_assisted | cross_language | extended | Which customer persona archetypes this page's copy/imagery explicitly addresses. |
+| `cross_sold_products` | list[string]<br>`term_account` · `current_account_pack` · `savings_account` · `mortgage` · `investment` · `pension` · `other` | model_assisted | cross_language | extended | Other product families this page cross-sells or cross-references alongside its own product_family. |
+| `subscription_style_framing` | boolean | model_assisted | cross_language | extended | Whether the account tiers are framed as a subscription/plan (like a phone or streaming service) rather than a traditional banking "pack". |
 | `rate_framing` | categorical<br>`base_rate` · `promo_bonus` · `capped_tiered` · `not_shown` | model_assisted | within_capture_window | core | Whether the headline rate is the regulated base rate, a promotional bonus, a capped/tiered rate presented as the full rate, or no rate is shown.<br>*sieg 14/09 - complements rate_shown/rate_value_pct/rate_prominence (which measure IF and WHERE a rate appears) with WHAT KIND of rate it is. Belgian savings accounts are legally a base rate (>=0.50%) plus a fidelity/growth premium; a "capped_tiered" rate ("up to X%") applying only to a low ceiling or a short window is a known framing tactic.* |
 | `primary_cta_type` | categorical<br>`self_service_online` · `book_advisor_or_branch` · `other` | model_assisted | cross_language | core | Whether the primary call to action is self-service online, booking an advisor/branch visit, or something else.<br>*sieg 14/09 - a distribution-model signal; a neobank structurally cannot offer book_advisor_or_branch.* |
 | `switching_framing` | categorical<br>`retention_reassurance` · `acquisition_encouragement` · `not_applicable` | model_assisted | cross_language | extended | Whether the message reassures against switching away (retention) or actively encourages switching in (acquisition), if applicable at all.<br>*sieg 14/09 - Belgium's bank-switching service makes this a concrete, mesurable framing choice, not a vague "tone".* |
