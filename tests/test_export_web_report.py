@@ -69,6 +69,18 @@ def test_reputation_is_an_honest_not_configured_state_without_a_key(report):
     assert report["reputation"] == {"available": False, "banks": {}}
 
 
+# sieg 20/09: geo_trends.py's output file is optional and rate-limited to
+# generate, so this checks the SHAPE is well-formed rather than a specific
+# availability value - whether outputs/geo_trends.json happens to exist on
+# the machine running the test is not something this test should depend on.
+def test_geo_trends_payload_is_well_formed_whether_or_not_it_was_generated(report):
+    geo = report["geoTrends"]
+    assert isinstance(geo["available"], bool)
+    for bank in geo["banks"].values():
+        assert "name" in bank
+        assert isinstance(bank["regions"], dict)
+
+
 def test_cross_sell_matrix_is_square_over_the_product_taxonomy(report):
     matrix = report["crossSellMatrix"]
     n = len(matrix["products"])

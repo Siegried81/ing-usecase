@@ -9,6 +9,12 @@ because the model was never asked. This backfills them (and refreshes every
 other model_assisted field at the same time, since the extractor is the same
 single call either way) from the HTML already saved on disk.
 
+NOTE: every re-run makes a fresh LLM call, so it is NOT a no-op on rows that
+already have values - re-running this after the 19/09 backfill measurably
+changed personas/cross-sell/imagery on several rows (LLM non-determinism).
+Don't run this again just to fix an unrelated deterministic field - see
+scripts/fix_rate_fields.py for that (no LLM call, touches only two columns).
+
 WHY THIS NEEDS NO NEW COMPLIANCE CHECK: `compliance.py::assert_can_fetch()`
 gates a FETCH of a bank's site, and there is none here - the page was already
 lawfully collected (its `robots_allowed=True` already travels with the row),

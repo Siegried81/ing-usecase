@@ -13,6 +13,7 @@ import { DeckClaims } from "./components/Claims";
 import { Recommendations } from "./components/Recommendations";
 import { Trends } from "./components/Trends";
 import { Reputation } from "./components/Reputation";
+import { GeoTrends } from "./components/GeoTrends";
 
 function Section({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode }) {
   return (
@@ -219,6 +220,13 @@ export default function App() {
           lede="Share of possible other products each bank cross-sells alongside its own, and which product pairs actually appear together."
         >
           <CrossSell banks={report.banks} matrix={report.crossSellMatrix} />
+        </Section>
+
+        <Section
+          title="Search interest by region"
+          lede="Google Trends per Belgian region (Brussels / Flanders / Wallonia) - context, not performance, same caveat as the Trends tab."
+        >
+          <GeoTrends geoTrends={report.geoTrends} />
         </Section>
 
         {report.deckClaims.length > 0 && (

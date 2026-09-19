@@ -67,6 +67,12 @@ _URGENCY_MARKERS = {
     "fr": ["offre limitee", "offre limitée", "jusqu'au", "temporaire", "seulement"],
     "en": ["only until", "limited offer", "limited time", "today only"],
 }
+# sieg 20/09: added alongside _rate()'s fix - see that function's docstring.
+_RATE_KEYWORDS = {
+    "nl": ["rente", "rentevoet", "interest", "tarief", "jaarlijkse"],
+    "fr": ["taux", "interet", "intérêt", "rendement", "tae"],
+    "en": ["rate", "interest", "apr", "yield"],
+}
 _LOYALTY_REFERRAL_TERMS = [
     "refer a friend", "invite a friend", "loyalty", "rewards program",
     "parrainage", "fidelite", "fidélité", "programme de fidelite",
@@ -207,12 +213,22 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
     return True, round(min(1.0, disclaimer_words / total_words), 3)
 
 
-def _rate(text: str):
-    match = re.search(r"(\d+[.,]\d+|\d+)\s?%", text)
-    if not match:
-        return False, None
-    value = float(match.group(1).replace(",", "."))
-    return True, value
+def _rate(text: str, language: str):
+    """Find a percentage that genuinely describes an interest/savings rate.
+
+    sieg 20/09: FIXED - previously matched the FIRST "N%" anywhere on the
+    page, which caught marketing copy ("100% en ligne", "100% digital")
+    before any real rate. Verified in the wild: BNP Paribas Fortis, KBC (x3)
+    and ING all extracted rate_value_pct=100.00 identically, which is
+    "100% online", not a rate - flagged in docs/decisions.md. Now requires a
+    rate keyword within 40 characters of the match.
+    """
+    keywords = _RATE_KEYWORDS.get(language, _RATE_KEYWORDS["en"])
+    for match in re.finditer(r"(\d+[.,]\d+|\d+)\s?%", text):
+        window = text[max(0, match.start() - 40): match.end() + 40].lower()
+        if any(keyword in window for keyword in keywords):
+            return True, float(match.group(1).replace(",", "."))
+    return False, None
 
 
 def flatten_declarative_shadow_roots(html: str) -> tuple[str, int]:
@@ -259,7 +275,7 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
     animated = _has_animation(soup, html)
     cta_count, cta_above_fold_guess = _count_ctas(soup)
     disclaimer_present, disclaimer_word_share = _disclaimer_share(soup, word_count)
-    rate_shown, rate_value_pct = _rate(text)
+    rate_shown, rate_value_pct = _rate(text, language)
 
     content_images = [img for img in soup.find_all("img") if img.get("src")]
     images_have_alt_text = bool(content_images) and all((img.get("alt") or "").strip() for img in content_images)

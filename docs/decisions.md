@@ -205,3 +205,62 @@ taxonomy) - flagged for Dan/Stephane's read, not a unilateral call to treat
 as final. These 9 pages still need a human rubric-scoring pass
 (`scripts/rubric_sheet.py emit`) like any fresh capture - the 13 human-scored
 features are blank for them until then.
+
+**sieg 20/09, geographic interest.** The kickoff brief's "intérêt
+géographique" axis was never built - the existing Google Trends work reports
+Belgium as a whole and never breaks it down by region. Added
+`comparator/geo_trends.py` + `scripts/geo_trends.py`: direct pytrends calls
+(`interest_by_region`, Brussels/Flanders/Wallonia), output at
+`outputs/geo_trends.json`, and a new web UI section ("Search interest by
+region", Analysis tab). pytrends pinned in a new `requirements-geo.txt`, same
+reasoning as `requirements-streamlit.txt` - kept out of the main
+`requirements.txt` and out of CI, tests skip cleanly via
+`pytest.importorskip` when it is not installed.
+
+First real run, for the record: KBC and Argenta (traditional, Flemish roots)
+peak in Flanders; BNP Paribas Fortis, Crelan and Belfius peak in Wallonia;
+Revolut/N26/bunq (the three challengers) all peak in Brussels. **ING is the
+one traditional bank that also peaks in Brussels** - the same direction as
+every challenger, and the one traditional bank that doesn't match its own
+peer group's regional roots. Otherwise matches what's already known about
+each bank's footprint - a sanity check, not a finding this project is set up
+to claim (same "context, not performance" caveat as the rest of the Trends
+work). See D06_business_narrative.md insight 6.
+
+---
+
+**sieg 20/09, `rate_value_pct` scraper bug found and fixed.** While drafting
+the D06 narrative, a "traditional banks average ~85% rate" number looked
+implausible - `rate_value_pct`=100.00 repeated identically across BNP
+Paribas Fortis, KBC (x3) and ING. Root cause: `scraper.py::_rate()` matched
+the FIRST "N%" anywhere on the page, so marketing copy ("100% en ligne",
+"100% digital") was reported as a rate before any real one. Fixed by
+requiring a rate keyword (`taux`/`interet`/`rendement` fr, `rente`/`interest`
+nl, `rate`/`interest`/`apr` en) within 40 characters of the match - see
+`_RATE_KEYWORDS` next to `_rate()`. This touches Dan's `collection/scraper.py`,
+done with Siegried's explicit go-ahead this session (not a unilateral call).
+
+Applied to the real dataset via a new, narrowly-scoped `scripts/fix_rate_fields.py`
+- re-reads each page's stored HTML and refreshes only `rate_shown`/
+`rate_value_pct`, no LLM call. (A first attempt reused
+`reextract_model_fields.py` instead, which makes a fresh LLM call per row -
+that measurably re-rolled personas/cross-sell/imagery on several already-
+finalized rows through ordinary model non-determinism, an unwanted side
+effect for a deterministic bug fix. Reverted before committing; kept as a
+documented "don't do this" note in that script's docstring.)
+
+Two rows still show a rate after the fix, both explainable and left as-is
+rather than chased further: `kbc_mortgage_fr_01` (100.00) - the page text
+reads "...sur votre taux d'intérêt et pouvez emprunter 100% de la valeur de
+votre habitation", so the keyword-proximity heuristic still fires on a
+loan-to-value percentage sitting right next to a real rate mention; and
+`kbc_savings_account_fr_01` (100.00, unchanged) - its snapshot HTML is not
+on disk (`data/raw/kbc/savings_account_fr_01.html` missing), so the script
+correctly skips it rather than guessing. Both are a known ceiling of a
+regex/proximity heuristic, not something worth more code for a 10-day
+project - flagged here instead. Full outputs/web report regenerated from the
+corrected dataset; `docs/D06_business_narrative.md`'s numbers (ING
+positioning score, AI Score digital axis, urgency/persuasion/onboarding gaps)
+were re-verified against the regenerated `report.json` and three more stale
+figures were caught and corrected in the same pass (unrelated to this bug -
+the dataset had moved since those lines were first drafted).

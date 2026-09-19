@@ -1,6 +1,5 @@
 rater,page_id,bank,bank_category,product_family,language,url,screenshot_path,capture_quality,formality_score,clarity_score,rate_prominence,value_prop_clarity,accent_locations,text_image_layout,layout_archetype,mobile_first_design_signal,aida_attention,aida_interest,aida_desire,aida_action,persuasion_levers
 stephane,argenta_current_account_pack_fr_01,argenta,traditional,current_account_pack,fr,https://www.argenta.be/fr/formules/green.html#compte,data/raw/argenta/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,
-stephane,belfius_other_fr_01,belfius,traditional,other,fr,https://www.belfius.be/retail/fr/moments-cles/pension/index.aspx,,ok,,,,,,,,,,,,,
 stephane,bnp_paribas_fortis_mortgage_fr_01,bnp_paribas_fortis,traditional,mortgage,fr,https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire,data/raw/bnp_paribas_fortis/mortgage_fr_01.png,ok,,,,,,,,,,,,,
 stephane,bunq_current_account_pack_fr_01,bunq,challenger,current_account_pack,fr,https://www.bunq.com/fr-be/personal/plans/bunq-free,data/raw/bunq/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,
 stephane,crelan_current_account_pack_fr_01,crelan,traditional,current_account_pack,fr,https://www.crelan.be/fr/particuliers/payer/comptes-vue/produit/economy-plus-pack,data/raw/crelan/current_account_pack_fr_01.png,ok,,,,,,,,,,,,,

@@ -217,6 +217,20 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     reputation_dashboard = reputation.build_dashboard(
         [(b, bank_name(b)) for b in sorted(compared["bank"].unique())]
     )
+    # sieg 20/09: geo_trends.py is a separate, standalone module (own pytrends
+    # calls, not a bridge to anyone else's exports) - read its output file if
+    # someone has run `python3 scripts/geo_trends.py`, degrade to unavailable
+    # if not (that script is optional and rate-limited, never run automatically
+    # by this export).
+    geo_path = Path("outputs/geo_trends.json")
+    geo_raw = json.loads(geo_path.read_text(encoding="utf-8")) if geo_path.is_file() else None
+    geo_trends_payload = {
+        "available": geo_raw is not None,
+        "banks": {
+            bank: {"name": bank_name(bank), "regions": regions}
+            for bank, regions in (geo_raw or {}).items()
+        },
+    }
     assessment = assess(all_rows, fd, focus=focus, scope=scope)
 
     stamps = pd.to_datetime(compared["captured_at"], errors="coerce", utc=True).dropna()
@@ -333,6 +347,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         "generated": [],
         "trends": None,
         "reputation": reputation_dashboard,  # sieg 19/09
+        "geoTrends": geo_trends_payload,  # sieg 20/09
     }
 
     for bank, profile in profiles.items():
