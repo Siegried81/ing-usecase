@@ -14,10 +14,10 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- sieg 17/09: refreshed after a full repo audit - the table below was still
-describing Day 3 while collection had moved well past it. See docs/D01 and
+<!-- sieg 19/09: refreshed for the weekend before the Day 6 gate (Mon 21). The table below was still
+describing an earlier day while collection had moved well past it. See docs/D01 and
 docs/day6_gate_discussion_notes.md for the per-bank detail this summarizes. -->
-Day 4 of 10 (sieg 17/09). The analysis chain now runs end to end on real
+Day 5 of 10 (sieg 18/09), weekend before Day 6 gate (Mon 21 Sep). The analysis chain now runs end to end on real
 captures for 7 banks (argenta, bunq, crelan, ing, kbc, n26, revolut). Belfius
 and BNP Paribas Fortis have real captures and were scored by the model rater
 (`docs/day5_scoring_disagreement.md` lists 8 pages), but are absent from the
