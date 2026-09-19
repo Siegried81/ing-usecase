@@ -32,6 +32,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=3, layout="hero_stacked", people=True,
         accents=["text", "icons", "buttons", "imagery"], levers=["scarcity", "authority"],
         second_person=0.58, urgency=(2, 1), text_img_ratio=(2.1, 0.3), archetype_note="broad palette, some motion",
+        personas=["family", "expat", "mass_market"],  # sieg 19/09
+        cross_sell=["current_account_pack", "investment"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "kbc": dict(
         category="traditional", brand="#00aeef", words=(330, 50), images=(5, 1),
@@ -39,6 +42,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "icons"], levers=["authority"],
         second_person=0.44, urgency=(1, 1), text_img_ratio=(2.6, 0.3), archetype_note="straight to the point",
+        personas=["family", "mass_market"],  # sieg 19/09
+        cross_sell=["savings_account"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "bnp_paribas_fortis": dict(
         category="traditional", brand="#00915a", words=(610, 70), images=(6, 2),
@@ -46,6 +52,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "icons"], levers=["authority", "social_proof"],
         second_person=0.40, urgency=(1, 1), text_img_ratio=(2.9, 0.4), archetype_note="green in text and icons only",
+        personas=["family", "entrepreneur_self_employed"],  # sieg 19/09
+        cross_sell=["current_account_pack", "savings_account"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "argenta": dict(
         category="traditional", brand="#e94e1b", words=(470, 60), images=(4, 1),
@@ -53,6 +62,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="long_form", people=True,
         accents=["text", "buttons"], levers=["liking"],
         second_person=0.46, urgency=(0, 1), text_img_ratio=(3.4, 0.4), archetype_note="text-led",
+        personas=["family", "retiree"],  # sieg 19/09
+        cross_sell=["savings_account"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "crelan": dict(
         category="traditional", brand="#009640", words=(540, 70), images=(4, 1),
@@ -60,6 +72,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="long_form", people=True,
         accents=["text", "icons"], levers=["liking", "authority"],
         second_person=0.43, urgency=(1, 1), text_img_ratio=(3.1, 0.4), archetype_note="text-led",
+        personas=["family", "retiree"],  # sieg 19/09
+        cross_sell=["savings_account", "pension"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "belfius": dict(
         category="traditional", brand="#c8102e", words=(720, 80), images=(5, 2),
@@ -67,6 +82,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "imagery"], levers=["authority"],
         second_person=0.42, urgency=(1, 1), text_img_ratio=(3.6, 0.4), archetype_note="verbose, red in text and pictures",
+        personas=["retiree", "mass_market"],  # sieg 19/09
+        cross_sell=["pension", "investment"],  # sieg 19/09
+        subscription=False,  # sieg 19/09
     ),
     "revolut": dict(
         category="challenger", brand="#0666eb", words=(140, 40), images=(11, 3),
@@ -74,6 +92,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="render_3d", formality=2, layout="card_grid", people=False,
         accents=["imagery", "background", "buttons"], levers=["social_proof", "scarcity", "liking"],
         second_person=0.71, urgency=(3, 1), text_img_ratio=(0.7, 0.2), archetype_note="dark, 3D, minimal copy",
+        personas=["digital_nomad", "expat", "student"],  # sieg 19/09
+        cross_sell=[],  # sieg 19/09: no bundle pushed, matches is_bundled_offer=False
+        subscription=True,  # sieg 19/09
     ),
     "n26": dict(
         category="challenger", brand="#36a18b", words=(210, 40), images=(9, 2),
@@ -81,6 +102,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="render_3d", formality=2, layout="card_grid", people=False,
         accents=["imagery", "buttons"], levers=["social_proof", "liking"],
         second_person=0.68, urgency=(2, 1), text_img_ratio=(1.0, 0.2), archetype_note="product renders, light ground",
+        personas=["digital_nomad", "student"],  # sieg 19/09
+        cross_sell=[],  # sieg 19/09: no bundle pushed, matches is_bundled_offer=False
+        subscription=True,  # sieg 19/09
     ),
     "bunq": dict(
         category="challenger", brand="#3394ff", words=(190, 40), images=(10, 3),
@@ -88,6 +112,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="illustration", formality=2, layout="card_grid", people=False,
         accents=["imagery", "background", "buttons"], levers=["liking", "social_proof"],
         second_person=0.74, urgency=(2, 1), text_img_ratio=(0.8, 0.2), archetype_note="dark, illustrated",
+        personas=["digital_nomad", "entrepreneur_self_employed"],  # sieg 19/09
+        cross_sell=["current_account_pack"],  # sieg 19/09: bunq's business add-on, still no full bundle
+        subscription=True,  # sieg 19/09
     ),
 }
 
@@ -291,6 +318,12 @@ def build_fixture(
                     # register already encoded per-archetype above (img_type/layout) -
                     # challengers use the same card-grid, tap-friendly register here.
                     "mobile_first_design_signal": a["layout"] == "card_grid",
+                    # sieg 19/09: target_personas - see feature_dictionary.yaml.
+                    "target_personas": format_list(a["personas"]),
+                    # sieg 19/09: cross_sold_products - see feature_dictionary.yaml.
+                    "cross_sold_products": format_list(a["cross_sell"]),
+                    # sieg 19/09: subscription_style_framing - see feature_dictionary.yaml.
+                    "subscription_style_framing": a["subscription"],
                 }
             )
 

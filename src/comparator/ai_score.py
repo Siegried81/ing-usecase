@@ -1,0 +1,150 @@
+"""AI Score - a transparent, rule-based composite index per bank.
+
+sieg 19/09, new module. Six axes (Digital, Trust, Cross-sell, Personalisation,
+Innovation, Simplicity), each 0-10, computed for the radar chart in the web UI.
+
+WHY DETERMINISTIC, NOT A MODEL CALL: every other "proprietary index" idea in the
+original brief (Innovation/Trust/Digital/... scored by an LLM) would ask a model
+to judge a whole bank from a handful of pages with no rubric a human could check -
+exactly the kind of ungrounded number `recommendations.py` refuses to produce.
+Instead, every axis here is a documented mean of features ALREADY in the
+dictionary and ALREADY measured for every bank. No new LLM call, no new API key,
+nothing this module could hallucinate.
+
+Formulas (all means are of already-collected page-level features for one bank):
+  * digital         - primary_cta_type == self_service_online, fast_digital_onboarding_claim,
+                       mobile_first_design_signal
+  * trust           - institutional_trust_signal_present, regulatory_disclosure_prominence
+                       == prominent, branch_network_cited_as_benefit
+  * cross_sell      - is_bundled_offer
+  * personalisation - how many of the 8 target_personas values this bank's pages use at all,
+                       out of the taxonomy size
+  * innovation      - has_animation, dominant_image_type == render_3d
+  * simplicity      - readability_band mapped to a 0-10 scale (very_easy=10 ... very_hard=0)
+
+None (not 0) is returned whenever a bank has no data at all for an axis - a
+missing measurement is not the same as the worst possible score, same rule
+`profiles.py`'s `mean()` already follows.
+
+What this cannot tell you: these are six independent means, not a validated
+psychometric scale - a bank can score high on "trust" by citing its branch
+network alone, which says nothing about whether customers actually trust it.
+Read the axes as "how often this bank's pages carry each kind of signal", not
+as a verdict.
+"""
+
+from __future__ import annotations
+
+import pandas as pd
+
+AXES = ("digital", "trust", "cross_sell", "personalisation", "innovation", "simplicity")
+
+PERSONA_TAXONOMY_SIZE = 8  # sieg 19/09: len(target_personas.values) in the dictionary
+
+_READABILITY_TO_SIMPLICITY = {
+    "very_easy": 10.0, "easy": 7.5, "medium": 5.0, "hard": 2.5, "very_hard": 0.0,
+}
+
+
+def _mean_of_bools(rows: pd.DataFrame, specs: list[tuple[str, object]]) -> float | None:
+    """Row-wise mean across one or more boolean/categorical-equality conditions, x10.
+
+    Each spec is (column, expected_value); expected_value=True/False reads the
+    column as-is (already boolean), any other value is an equality check
+    (e.g. ("primary_cta_type", "self_service_online")). A condition whose column
+    is missing from the frame is skipped entirely; if every condition ends up
+    skipped or entirely null, the result is None, never a fabricated 0.
+    """
+    columns = []
+    for col, expected in specs:
+        if col not in rows.columns:
+            continue
+        if isinstance(expected, bool):
+            columns.append(rows[col].astype("boolean"))
+        else:
+            # sieg 19/09: NaN == expected is False in pandas, not NaN - without
+            # masking, a page where this categorical was never extracted would
+            # silently count as "condition false" instead of being excluded.
+            eq = (rows[col] == expected).mask(rows[col].isna())
+            columns.append(eq.astype("boolean"))
+    if not columns:
+        return None
+    stacked = pd.concat(columns, axis=1)
+    # sieg 19/09: mean over both axes (rows and conditions) so one page with two
+    # matching conditions doesn't count twice as much as a page with one.
+    values = stacked.to_numpy(dtype="float64", na_value=float("nan"))
+    flat = values[~pd.isna(values)]
+    if flat.size == 0:
+        return None
+    return round(float(flat.mean()) * 10, 1)
+
+
+def score_digital(rows: pd.DataFrame) -> float | None:
+    return _mean_of_bools(rows, [
+        ("primary_cta_type", "self_service_online"),
+        ("fast_digital_onboarding_claim", True),
+        ("mobile_first_design_signal", True),
+    ])
+
+
+def score_trust(rows: pd.DataFrame) -> float | None:
+    return _mean_of_bools(rows, [
+        ("institutional_trust_signal_present", True),
+        ("regulatory_disclosure_prominence", "prominent"),
+        ("branch_network_cited_as_benefit", True),
+    ])
+
+
+def score_cross_sell(rows: pd.DataFrame) -> float | None:
+    return _mean_of_bools(rows, [("is_bundled_offer", True)])
+
+
+def score_personalisation(rows: pd.DataFrame, taxonomy_size: int = PERSONA_TAXONOMY_SIZE) -> float | None:
+    """Breadth of distinct personas this bank's pages address, out of the taxonomy."""
+    if "target_personas" not in rows.columns:
+        return None
+    from comparator.schema import parse_list  # sieg 19/09: local import, avoids a module-load cycle
+
+    distinct: set[str] = set()
+    for cell in rows["target_personas"].dropna():
+        distinct.update(parse_list(cell))
+    if not distinct:
+        return None
+    return round(len(distinct) / taxonomy_size * 10, 1)
+
+
+def score_innovation(rows: pd.DataFrame) -> float | None:
+    return _mean_of_bools(rows, [
+        ("has_animation", True),
+        ("dominant_image_type", "render_3d"),
+    ])
+
+
+def score_simplicity(rows: pd.DataFrame) -> float | None:
+    if "readability_band" not in rows.columns:
+        return None
+    non_null = rows["readability_band"].dropna()
+    if non_null.empty:
+        return None
+    mode = non_null.mode().iat[0]
+    return _READABILITY_TO_SIMPLICITY.get(str(mode))
+
+
+_SCORERS = {
+    "digital": score_digital,
+    "trust": score_trust,
+    "cross_sell": score_cross_sell,
+    "personalisation": score_personalisation,
+    "innovation": score_innovation,
+    "simplicity": score_simplicity,
+}
+
+
+def score_bank(df: pd.DataFrame, bank: str) -> dict[str, float | None]:
+    """All six axes for one bank."""
+    rows = df[df["bank"] == bank]
+    return {axis: _SCORERS[axis](rows) for axis in AXES}
+
+
+def score_all(df: pd.DataFrame) -> dict[str, dict[str, float | None]]:
+    return {bank: score_bank(df, bank) for bank in sorted(df["bank"].unique())}

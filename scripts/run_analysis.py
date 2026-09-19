@@ -19,6 +19,9 @@ import _bootstrap  # noqa: F401
 import pandas as pd
 
 from comparator import load_dictionary
+from comparator import ai_score  # sieg 19/09
+from comparator import cross_sell  # sieg 19/09
+from comparator import reputation  # sieg 19/09
 from comparator.analysis import (
     category_comparison,
     family_options,
@@ -178,6 +181,33 @@ def main() -> int:
     accounting = feature_accounting(banks_df, fd)
     print(render_accounting(accounting))
 
+    # --- 3b. AI Score (sieg 19/09) --------------------------------------------
+    # Deterministic, from features already in the dataset - no new LLM call.
+    # See comparator/ai_score.py's module docstring for the formulas and caveats.
+    _header("3b. AI Score (Digital / Trust / Cross-sell / Personalisation / Innovation / Simplicity)")
+    scores = ai_score.score_all(banks_df)
+    for bank, axes in scores.items():
+        rendered = ", ".join(f"{axis}={value if value is not None else '-'}" for axis, value in axes.items())
+        print(f"  {bank:<20} {rendered}")
+    pd.DataFrame(scores).T.to_csv(args.outdir / "ai_score.csv", index_label="bank")
+
+    # --- 3c. Cross-sell (sieg 19/09) -------------------------------------------
+    # cross_sold_products / possible other products, plus the product co-
+    # occurrence matrix - see comparator/cross_sell.py for the exact formulas.
+    _header("3c. Cross-sell score and product matrix")
+    cross_sell_scores = cross_sell.score_all(banks_df, fd)
+    for bank, score in cross_sell_scores.items():
+        print(f"  {bank:<20} {score if score is not None else '-'}")
+    pd.Series(cross_sell_scores, name="cross_sell_score").to_csv(args.outdir / "cross_sell_score.csv", index_label="bank")
+    matrix = cross_sell.cross_sell_matrix(banks_df, fd)
+    matrix.to_csv(args.outdir / "cross_sell_matrix.csv", index_label="product_family")
+    top_pairs = cross_sell.most_associated(matrix, n=3)
+    if top_pairs:
+        print("  most associated: " + ", ".join(f"{a}+{b} ({n})" for a, b, n in top_pairs))
+    never = cross_sell.never_paired(matrix, banks_df.groupby("product_family").size())
+    print(f"  never paired: {len(never['confirmed'])} confirmed, "
+          f"{len(never['insufficient_data'])} not enough data to say")
+
     # --- 4. BO-02 positioning ------------------------------------------------
     _header("4. Positioning on the traditional ↔ challenger axis (BO-02)")
     positioning = positioning_axis(banks_df, fd, focus=args.focus)
@@ -297,6 +327,24 @@ def main() -> int:
             "> This is what people searched for, not what any campaign achieved, and the\n"
             "> pages captured are today's pages - not the pages live during an older spike.\n\n"
             "```\n" + trends_ctx.render() + "\n```\n", encoding="utf-8")
+
+    # --- 11b. bank reputation (NewsAPI, optional) -----------------------------
+    # sieg 19/09: same optional/degrade-gracefully shape as the trends step
+    # above. Themes only, never sentiment - see comparator/reputation.py.
+    _header("11b. Bank reputation (NewsAPI, optional)")
+    rep_banks = [(b, b) for b in sorted(banks_df["bank"].unique())]
+    reputation_dashboard = reputation.build_dashboard(rep_banks)
+    if not reputation_dashboard["available"]:
+        print("  NEWSAPI_KEY not set - skipped. Nothing else is affected.")
+    else:
+        for bank, snapshot in reputation_dashboard["banks"].items():
+            if snapshot is None:
+                print(f"  {bank:<20} no headlines found")
+            else:
+                themes = ", ".join(f"{t}={c}" for t, c in snapshot["themes"].items() if c)
+                print(f"  {bank:<20} {snapshot['headline_count']} headlines - {themes or 'no theme detected'}")
+        (args.outdir / "reputation.json").write_text(
+            json.dumps(reputation_dashboard, indent=2, ensure_ascii=False), encoding="utf-8")
 
     _header("12. Persuasion levers by category")
     levers = lever_frequency(banks_df)

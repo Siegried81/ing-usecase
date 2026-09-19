@@ -108,3 +108,100 @@ the 17/09 audit-followups fix) and can't carry a step the data itself
 doesn't suggest. Revisit if: the team has scope/time for a v2, or a bank's
 radio campaign becomes directly relevant to a specific finding (e.g. an
 image-based feature that a radio spot could contextualise).
+
+**sieg 19/09, personas + AI Score - flagged for Dan and Stephane, not a blocking
+approval.** Two additive-only changes, prompted by a wider "AI Marketing
+Intelligence Platform" brief - most of that brief's ideas already exist here in
+some form (Trends, LLM feature extraction, positioning/clustering,
+recommendations); these two did not.
+
+1. `target_personas` (list[string], `banking_domain`, `extended`, `model_assisted`)
+   - fixed 8-value taxonomy (student, family, entrepreneur_self_employed, expat,
+   investor, retiree, digital_nomad, mass_market), extracted by the SAME single
+   structured call `llm_extractor.py` already makes (no new LLM call, no new
+   provider). Aggregated to a per-bank distribution in `profiles.py`. Passed
+   `check_schema_freeze.py` clean (pure addition); `feature_dictionary.frozen.yaml`
+   re-synced the same way as the 16/09 note above.
+2. AI Score (`comparator/ai_score.py`, new module) - NOT a dictionary feature,
+   same status as `positioning_axis`/`category_comparison`: a derived analysis
+   output. Six axes (Digital, Trust, Cross-sell, Personalisation, Innovation,
+   Simplicity), each a documented mean of features already in the dictionary -
+   deliberately NOT a model-scored index, so nothing here can hallucinate a
+   number. `None` (never a fabricated 0) when a bank has no data for an axis.
+
+Taxonomy and formulas are Siegried's first pass - open to Dan/Stephane's read
+before either is treated as final, same non-blocking spirit as the 16/09 sync.
+
+**sieg 19/09, cross-sell + three external-data utilities - same brief, same
+non-blocking flag to Dan and Stephane.**
+
+3. `cross_sold_products` (list[string], `banking_domain`, `extended`,
+   `model_assisted`) - the "cross-sell score/graph" gap. Reuses the SAME
+   7-value `product_family` taxonomy already frozen in this dictionary rather
+   than inventing a parallel one, extracted by the same structured call as
+   `target_personas`. `comparator/cross_sell.py` turns it into a per-bank score
+   (products cross-sold / products possible, the brief's own formula, kept as
+   a 0-1 ratio) and a product co-occurrence matrix - the "graph", flattened to
+   a table since this repo has no graph-drawing library and one wasn't worth
+   adding for 7 nodes.
+4. `comparator/reputation.py` (NewsAPI, optional via `NEWSAPI_KEY`) - recent
+   headlines per bank classified into THEMES (innovation, crisis, results,
+   ...), never sentiment (out of scope for this pass, see the module
+   docstring for why themes are the honest substitute). Degrades to an
+   explicit "not configured" state without a key, same shape as `trends.py`
+   when Dan's export is absent - never silently shows every bank as zero.
+5. `comparator/market_context.py` (Finnhub, optional via `FINNHUB_API_KEY`) -
+   deliberately NOT wired into report.json or the web UI. Only 3 of the 9
+   banks in scope are even publicly listed (ING via ING Groep, KBC Group, BNP
+   Paribas Fortis via BNP Paribas SA) - Belfius, Argenta, Crelan aren't listed
+   and Revolut/N26/bunq are private, so a stock-impact feature here would
+   mostly be empty cells. Kept as a single standalone lookup function instead
+   of building a pipeline/chart around data most banks don't have. The brief's
+   own text already called Finnhub low-value for this project.
+6. `comparator/research.py` (Semantic Scholar, keyless at low volume) - also
+   not wired into the pipeline. The brief names this "Optionnel" and never
+   defines a per-bank metric to compute from academic papers, so this stays a
+   standalone `search_papers()` helper for whoever is writing the business
+   narrative, rather than invented scope with no defined output.
+
+Scraping additional channels (LinkedIn/Instagram/YouTube) and sentiment
+analysis (Reddit/App Store/FinBERT) from the same brief were explicitly
+excluded from this pass by Siegried - not attempted here.
+
+**sieg 19/09, one more feature + two small-N honesty fixes, found while
+looking at the real (not fixture) data for the first time this session.**
+
+7. `subscription_style_framing` (boolean, `banking_domain`, `extended`,
+   `model_assisted`) - Siegried noticed Revolut/bunq frame their account tiers
+   as a phone/streaming-style subscription ("abonnement") rather than a
+   traditional banking "pack". Verified in the raw page text before adding the
+   feature: Revolut 16 mentions of "abonnement", bunq 9, every traditional
+   bank 0. Same structured call as the other two additions above. The model's
+   own verdict on the real dataset only came back `True` for Revolut - bunq's
+   raw mention count didn't translate into the model calling it the
+   *dominant* framing, which is a legitimate judgement call, not a bug.
+8. `analysis.py::check_deck_claims()` - H1/H2/H5 used to test raw `word_count`,
+   which `language_excluded_features()` drops ENTIRELY the moment >1 language
+   is in the compared scope (true since English was added 16/09, worse once
+   KBC's Dutch page was added today). Switched to `word_count_band` (fixed
+   universal thresholds, `comparability: cross_language`), which survives.
+   H1 (Belfius) stays "not testable" for an unrelated reason - Belfius wasn't
+   in the `current_account_pack` scope until today's captures.
+9. `cross_sell.py::never_paired()` now returns `{"confirmed", "insufficient_data"}`
+   instead of one flat list. With most product families still at 1-2 real
+   pages, a "0" co-occurrence was almost always "never had the chance to
+   observe it", not a real finding - same smallN honesty `ing_vs_peers()`
+   already applies via `MIN_PEERS_FOR_SD`. `export_web_report.py` and
+   `CrossSell.tsx` updated to read the split from Python rather than
+   recomputing a naive version client-side.
+
+Also merged 9 new real captures today (Belfius current-account + savings,
+KBC mortgage + savings, ING mortgage + a professional-account page, N26
+professional-account + savings) - `data/processed/campaigns.csv` is
+gitignored so this doesn't show in the branch diff, only the code that
+reads it. The two "professional account" pages (ING, N26) were classified as
+`current_account_pack` (no dedicated business-account family exists in the
+taxonomy) - flagged for Dan/Stephane's read, not a unilateral call to treat
+as final. These 9 pages still need a human rubric-scoring pass
+(`scripts/rubric_sheet.py emit`) like any fresh capture - the 13 human-scored
+features are blank for them until then.

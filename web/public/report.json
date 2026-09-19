@@ -1,12 +1,13 @@
 {
-  "generated_at": "2026-09-18T13:46:18+00:00",
+  "generated_at": "2026-09-19T11:04:06+00:00",
   "dataset": "data\\processed\\campaigns.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
-    "pages": 11,
+    "pages": 15,
     "banks": [
       "Argenta",
+      "Belfius",
       "BNP Paribas Fortis",
       "bunq",
       "Crelan",
@@ -17,6 +18,7 @@
     ],
     "traditional": [
       "Argenta",
+      "Belfius",
       "BNP Paribas Fortis",
       "Crelan",
       "ING",
@@ -27,145 +29,128 @@
       "N26",
       "Revolut"
     ],
-    "excluded": [
-      {
-        "bank": "Belfius",
-        "reason": "has a usable capture, but no page in this product family"
-      }
-    ],
+    "excluded": [],
     "uncollectable": [],
     "languages": [
       "en",
-      "fr"
+      "fr",
+      "nl"
     ],
     "captured_from": "2026-09-18T13:39:50.769576+00:00",
-    "captured_to": "2026-09-18T13:39:51.951242+00:00",
-    "total_collected": 14,
-    "n_features": 25
+    "captured_to": "2026-09-19T10:52:25.835049+00:00",
+    "total_collected": 23,
+    "n_features": 24
   },
   "headline": {
     "focus": "ING",
-    "score": 0.225,
-    "verdict": "clearly with the traditional banks",
+    "score": 0.45,
+    "verdict": "traditional, but leaning towards the challengers",
     "has_focus": true
   },
   "positioning": [
     {
-      "bank": "BNP Paribas Fortis",
-      "key": "bnp_paribas_fortis",
+      "bank": "Belfius",
+      "key": "belfius",
       "category": "traditional",
-      "score": -0.125,
+      "score": -0.173,
       "isFocus": false
     },
     {
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.114,
+      "score": -0.171,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.08,
+      "score": -0.151,
+      "isFocus": false
+    },
+    {
+      "bank": "BNP Paribas Fortis",
+      "key": "bnp_paribas_fortis",
+      "category": "traditional",
+      "score": -0.019,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.095,
+      "score": 0.064,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.225,
+      "score": 0.45,
       "isFocus": true
-    },
-    {
-      "bank": "N26",
-      "key": "n26",
-      "category": "challenger",
-      "score": 0.931,
-      "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 0.981,
+      "score": 0.908,
+      "isFocus": false
+    },
+    {
+      "bank": "N26",
+      "key": "n26",
+      "category": "challenger",
+      "score": 1.036,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.088,
+      "score": 1.056,
       "isFocus": false
     }
   ],
   "peerGaps": [
     {
-      "feature": "persuasion_lever_count",
-      "label": "Persuasion techniques used",
-      "dimension": "marketing_principles",
-      "extraction": "rubric",
-      "focusValue": 3.6666666666666665,
-      "peerMean": 2.1666666666666665,
-      "gapSd": 2.18,
-      "direction": "above"
-    },
-    {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
-      "dimension": "banking_domain",
-      "extraction": "model_assisted",
-      "focusValue": 0.6666666666666666,
-      "peerMean": 0.14285714285714285,
-      "gapSd": 1.5,
-      "direction": "above"
-    },
-    {
-      "feature": "numeric_claim_count",
-      "label": "Figures and percentages quoted",
-      "dimension": "tone_messaging",
-      "extraction": "automatic",
-      "focusValue": 16.666666666666668,
-      "peerMean": 10.0,
-      "gapSd": 1.39,
-      "direction": "above"
-    },
-    {
       "feature": "urgency_marker_count",
       "label": "Urgency and deadline language",
       "dimension": "tone_messaging",
       "extraction": "automatic",
-      "focusValue": 0.3333333333333333,
-      "peerMean": 1.4285714285714286,
-      "gapSd": -0.93,
-      "direction": "below"
-    },
-    {
-      "feature": "people_present",
-      "label": "People present",
-      "dimension": "visuals",
-      "extraction": "model_assisted",
-      "focusValue": 1.0,
-      "peerMean": 0.5714285714285714,
-      "gapSd": 0.87,
+      "focusValue": 3.5,
+      "peerMean": 1.1041666666666667,
+      "gapSd": 2.46,
       "direction": "above"
     },
     {
-      "feature": "images_have_alt_text",
-      "label": "Images carry alt text",
+      "feature": "fast_digital_onboarding_claim",
+      "label": "Promises fast digital sign-up",
       "dimension": "banking_domain",
+      "extraction": "model_assisted",
+      "focusValue": 0.75,
+      "peerMean": 0.22916666666666666,
+      "gapSd": 1.52,
+      "direction": "above"
+    },
+    {
+      "feature": "persuasion_lever_count",
+      "label": "Persuasion techniques used",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 2.75,
+      "peerMean": 1.4166666666666665,
+      "gapSd": 1.21,
+      "direction": "above"
+    },
+    {
+      "feature": "background_luminance",
+      "label": "Page brightness",
+      "dimension": "colours_design",
       "extraction": "automatic",
-      "focusValue": 0.0,
-      "peerMean": 0.42857142857142855,
-      "gapSd": -0.87,
+      "focusValue": 0.19775,
+      "peerMean": 0.5912291666666667,
+      "gapSd": -1.17,
       "direction": "below"
     },
     {
@@ -189,23 +174,43 @@
       "direction": "below"
     },
     {
-      "feature": "rate_shown",
-      "label": "Shows a rate",
-      "dimension": "topics_value_prop",
+      "feature": "people_present",
+      "label": "People present",
+      "dimension": "visuals",
+      "extraction": "model_assisted",
+      "focusValue": 1.0,
+      "peerMean": 0.625,
+      "gapSd": 0.77,
+      "direction": "above"
+    },
+    {
+      "feature": "images_have_alt_text",
+      "label": "Images carry alt text",
+      "dimension": "banking_domain",
       "extraction": "automatic",
-      "focusValue": 0.3333333333333333,
-      "peerMean": 0.7142857142857143,
-      "gapSd": -0.84,
+      "focusValue": 0.0,
+      "peerMean": 0.375,
+      "gapSd": -0.77,
       "direction": "below"
     },
     {
-      "feature": "youth_student_targeting",
-      "label": "Targets students or young people",
-      "dimension": "banking_domain",
-      "extraction": "model_assisted",
-      "focusValue": 0.6666666666666666,
-      "peerMean": 0.2857142857142857,
-      "gapSd": 0.84,
+      "feature": "cta_count",
+      "label": "Calls to action",
+      "dimension": "layout_structure",
+      "extraction": "automatic",
+      "focusValue": 5.5,
+      "peerMean": 14.479166666666668,
+      "gapSd": -0.73,
+      "direction": "below"
+    },
+    {
+      "feature": "brand_colour_share",
+      "label": "Brand colour on the page",
+      "dimension": "colours_design",
+      "extraction": "automatic",
+      "focusValue": 0.094,
+      "peerMean": 0.04039583333333334,
+      "gapSd": 0.66,
       "direction": "above"
     }
   ],
@@ -216,10 +221,6 @@
     },
     {
       "label": "Distinct accent colours",
-      "note": "every peer has the same value - no spread to measure against"
-    },
-    {
-      "label": "“Free” with conditions attached",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -248,28 +249,37 @@
       "feature": "rate_value_pct",
       "label": "Headline rate",
       "extraction": "automatic",
-      "traditional": 77.5,
-      "challenger": 1.3366666666666667,
-      "effect": -2.18,
+      "traditional": 85.0,
+      "challenger": 1.0274999999999999,
+      "effect": -2.89,
       "higherAt": "traditional"
     },
     {
-      "feature": "urgency_marker_count",
-      "label": "Urgency and deadline language",
-      "extraction": "automatic",
-      "traditional": 0.5,
-      "challenger": 2.3333333333333335,
-      "effect": 2.13,
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
+      "extraction": "model_assisted",
+      "traditional": 0.18181818181818182,
+      "challenger": 1.0,
+      "effect": 2.31,
       "higherAt": "challenger"
     },
     {
-      "feature": "question_count",
-      "label": "Questions asked",
-      "extraction": "automatic",
-      "traditional": 20.125,
-      "challenger": 3.3333333333333335,
-      "effect": -1.31,
+      "feature": "people_present",
+      "label": "People present",
+      "extraction": "model_assisted",
+      "traditional": 0.9090909090909091,
+      "challenger": 0.25,
+      "effect": -1.84,
       "higherAt": "traditional"
+    },
+    {
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
+      "extraction": "model_assisted",
+      "traditional": 0.0,
+      "challenger": 0.5,
+      "effect": 1.8,
+      "higherAt": "challenger"
     },
     {
       "feature": "value_prop_clarity",
@@ -281,30 +291,30 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "background_luminance",
-      "label": "Page brightness",
+      "feature": "question_count",
+      "label": "Questions asked",
       "extraction": "automatic",
-      "traditional": 0.5896250000000001,
-      "challenger": 0.18766666666666668,
-      "effect": -1.3,
+      "traditional": 18.727272727272727,
+      "challenger": 4.5,
+      "effect": -1.29,
       "higherAt": "traditional"
     },
     {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "extraction": "rubric",
-      "traditional": 2.875,
-      "challenger": 3.6666666666666665,
-      "effect": 1.26,
+      "feature": "hidden_conditions_behind_free_claim",
+      "label": "“Free” with conditions attached",
+      "extraction": "model_assisted",
+      "traditional": 0.09090909090909091,
+      "challenger": 0.5,
+      "effect": 1.07,
       "higherAt": "challenger"
     },
     {
       "feature": "institutional_trust_signal_present",
       "label": "Invokes institutional trust",
       "extraction": "model_assisted",
-      "traditional": 0.0,
-      "challenger": 0.3333333333333333,
-      "effect": 1.22,
+      "traditional": 0.09090909090909091,
+      "challenger": 0.5,
+      "effect": 1.07,
       "higherAt": "challenger"
     },
     {
@@ -312,8 +322,8 @@
       "label": "Targets first-time investors",
       "extraction": "model_assisted",
       "traditional": 0.0,
-      "challenger": 0.3333333333333333,
-      "effect": 1.22,
+      "challenger": 0.25,
+      "effect": 1.04,
       "higherAt": "challenger"
     },
     {
@@ -321,17 +331,8 @@
       "label": "Call to action visible without scrolling",
       "extraction": "automatic",
       "traditional": 0.0,
-      "challenger": 0.3333333333333333,
-      "effect": 1.22,
-      "higherAt": "challenger"
-    },
-    {
-      "feature": "rate_shown",
-      "label": "Shows a rate",
-      "extraction": "automatic",
-      "traditional": 0.5,
-      "challenger": 1.0,
-      "effect": 1.06,
+      "challenger": 0.25,
+      "effect": 1.04,
       "higherAt": "challenger"
     }
   ],
@@ -343,18 +344,18 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Formality of tone",
-          "sd": 2.1,
-          "direction": "above"
-        },
-        {
-          "label": "Uses animation",
-          "sd": -1.7,
+          "label": "Animated elements",
+          "sd": -1.8,
           "direction": "below"
         },
         {
-          "label": "Animated elements",
-          "sd": -1.7,
+          "label": "Uses animation",
+          "sd": -1.8,
+          "direction": "below"
+        },
+        {
+          "label": "Persuasion techniques used",
+          "sd": -1.4,
           "direction": "below"
         }
       ],
@@ -368,7 +369,7 @@
       "imagery": {
         "Images": 7.0,
         "Dominant image type": "illustration",
-        "People present": 0.0,
+        "People present": 1.0,
         "Animated": 0.0,
         "Image area share": null
       },
@@ -381,7 +382,7 @@
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
-        "Primary product": "La Formule Green",
+        "Primary product": "La formule Green",
         "Shows a rate": 0.0,
         "How prominently the rate is shown": "above_fold",
         "Benefit framing": "mixed",
@@ -393,10 +394,109 @@
         "backgroundLuminance": 0.547
       },
       "marketing": {
-        "Aida coverage": 2.0,
+        "Aida coverage": null,
         "Persuasion levers": [],
-        "Lever count": null
-      }
+        "Lever count": 0.0
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 1.2,
+        "innovation": 0.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.0
+    },
+    {
+      "key": "belfius",
+      "name": "Belfius",
+      "category": "traditional",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Includes a comparison table",
+          "sd": 1.8,
+          "direction": "above"
+        },
+        {
+          "label": "Persuasion techniques used",
+          "sd": -1.4,
+          "direction": "below"
+        },
+        {
+          "label": "Shows a rate",
+          "sd": -1.3,
+          "direction": "below"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1728.0,
+        "Readability band": "hard",
+        "Formality of tone": null,
+        "Speaks to “you” rather than “we”": 0.722,
+        "Urgency markers": 0.0
+      },
+      "imagery": {
+        "Images": 18.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": null
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": null,
+        "Calls to action": 5.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Comptes de paiement Beats (Beats Pulse, Beats New, Beats Star)",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": null,
+        "Benefit framing": "rational",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.069,
+        "backgroundLuminance": 0.842
+      },
+      "marketing": {
+        "Aida coverage": null,
+        "Persuasion levers": [],
+        "Lever count": 0.0
+      },
+      "personas": [
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 2.5,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.167
     },
     {
       "key": "bnp_paribas_fortis",
@@ -406,18 +506,18 @@
       "signature": [
         {
           "label": "Animated elements",
-          "sd": -1.7,
+          "sd": -1.8,
           "direction": "below"
         },
         {
           "label": "Uses animation",
-          "sd": -1.7,
+          "sd": -1.8,
           "direction": "below"
         },
         {
-          "label": "Targets students or young people",
-          "sd": 1.5,
-          "direction": "above"
+          "label": "People present",
+          "sd": -1.4,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -455,13 +555,34 @@
         "backgroundLuminance": 0.97
       },
       "marketing": {
-        "Aida coverage": 2.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "liking",
           "commitment"
         ],
         "Lever count": 2.0
-      }
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        },
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 2.5,
+        "innovation": 0.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.0
     },
     {
       "key": "bunq",
@@ -470,19 +591,19 @@
       "pages": 1,
       "signature": [
         {
+          "label": "Targets first-time investors",
+          "sd": 2.8,
+          "direction": "above"
+        },
+        {
           "label": "Call to action visible without scrolling",
-          "sd": 2.6,
+          "sd": 2.8,
           "direction": "above"
         },
         {
-          "label": "Targets expats",
-          "sd": 2.1,
+          "label": "Promises fast digital sign-up",
+          "sd": 2.0,
           "direction": "above"
-        },
-        {
-          "label": "Formality of tone",
-          "sd": -1.7,
-          "direction": "below"
         }
       ],
       "tone": {
@@ -495,7 +616,7 @@
       "imagery": {
         "Images": 13.0,
         "Dominant image type": "illustration",
-        "People present": 0.0,
+        "People present": 1.0,
         "Animated": 1.0,
         "Image area share": null
       },
@@ -511,8 +632,8 @@
         "Primary product": "bunq Free – compte bancaire gratuit sans frais mensuels",
         "Shows a rate": 1.0,
         "How prominently the rate is shown": "below_fold",
-        "Benefit framing": "rational",
-        "Fab level": "advantage"
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
       },
       "palette": {
         "dominant": "#010203",
@@ -520,14 +641,45 @@
         "backgroundLuminance": 0.047
       },
       "marketing": {
-        "Aida coverage": 4.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "liking",
           "social_proof",
           "reciprocity"
         ],
         "Lever count": 3.0
-      }
+      },
+      "personas": [
+        {
+          "persona": "expat",
+          "label": "Expat",
+          "share": 1.0
+        },
+        {
+          "persona": "digital_nomad",
+          "label": "Digital nomad",
+          "share": 1.0
+        },
+        {
+          "persona": "investor",
+          "label": "Investor",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 10.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 5.0,
+        "innovation": 5.0,
+        "simplicity": 5.0
+      },
+      "crossSellScore": 0.5
     },
     {
       "key": "crelan",
@@ -536,18 +688,18 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Images",
-          "sd": 2.4,
-          "direction": "above"
-        },
-        {
           "label": "Questions asked",
-          "sd": 2.4,
+          "sd": 2.6,
           "direction": "above"
         },
         {
           "label": "Calls to action",
-          "sd": 2.2,
+          "sd": 2.4,
+          "direction": "above"
+        },
+        {
+          "label": "Images",
+          "sd": 1.9,
           "direction": "above"
         }
       ],
@@ -577,8 +729,8 @@
         "Primary product": "Performance Pack",
         "Shows a rate": 0.0,
         "How prominently the rate is shown": "above_fold",
-        "Benefit framing": "rational",
-        "Fab level": "feature"
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
       },
       "palette": {
         "dominant": "#ffffff",
@@ -586,47 +738,73 @@
         "backgroundLuminance": 0.739
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "liking"
         ],
         "Lever count": 1.0
-      }
+      },
+      "personas": [
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 1.0
+        },
+        {
+          "persona": "family",
+          "label": "Family",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 3.8,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.0
     },
     {
       "key": "ing",
       "name": "ING",
       "category": "traditional",
-      "pages": 3,
+      "pages": 4,
       "signature": [
         {
-          "label": "Targets expats",
-          "sd": 1.2,
-          "direction": "above"
-        },
-        {
-          "label": "Figures and percentages quoted",
-          "sd": 1.2,
-          "direction": "above"
-        },
-        {
           "label": "Urgency and deadline language",
-          "sd": -0.8,
-          "direction": "below"
+          "sd": 1.8,
+          "direction": "above"
+        },
+        {
+          "label": "Promises fast digital sign-up",
+          "sd": 1.3,
+          "direction": "above"
+        },
+        {
+          "label": "Persuasion techniques used",
+          "sd": 1.1,
+          "direction": "above"
         }
       ],
       "tone": {
         "Words on the page": null,
-        "Readability band": "medium",
+        "Readability band": "hard",
         "Formality of tone": 2.6666666666666665,
         "Speaks to “you” rather than “we”": null,
-        "Urgency markers": 0.3333333333333333
+        "Urgency markers": 3.5
       },
       "imagery": {
-        "Images": 30.666666666666668,
+        "Images": 32.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.6666666666666666,
+        "Animated": 0.75,
         "Image area share": null
       },
       "layout": {
@@ -634,51 +812,87 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": null,
-        "Calls to action": 5.666666666666667,
+        "Calls to action": 5.5,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
-        "Primary product": "ING Go (pack compte à vue)",
-        "Shows a rate": 0.3333333333333333,
+        "Primary product": "Compte professionnel",
+        "Shows a rate": 0.5,
         "How prominently the rate is shown": "below_fold",
-        "Benefit framing": "rational",
-        "Fab level": "feature"
+        "Benefit framing": "mixed",
+        "Fab level": "benefit"
       },
       "palette": {
         "dominant": "#050505",
-        "brandShare": 0.11533333333333333,
-        "backgroundLuminance": 0.24633333333333332
+        "brandShare": 0.094,
+        "backgroundLuminance": 0.19775
       },
       "marketing": {
-        "Aida coverage": 3.3333333333333335,
+        "Aida coverage": null,
         "Persuasion levers": [
           "social_proof",
           "reciprocity",
           "scarcity",
           "authority"
         ],
-        "Lever count": 3.6666666666666665
-      }
+        "Lever count": 2.75
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 0.75
+        },
+        {
+          "persona": "expat",
+          "label": "Expat",
+          "share": 0.5
+        },
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 0.5
+        },
+        {
+          "persona": "family",
+          "label": "Family",
+          "share": 0.25
+        },
+        {
+          "persona": "entrepreneur_self_employed",
+          "label": "Entrepreneur / self-employed",
+          "share": 0.25
+        }
+      ],
+      "aiScore": {
+        "digital": 8.8,
+        "trust": 0.8,
+        "cross_sell": 10.0,
+        "personalisation": 6.2,
+        "innovation": 3.8,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.167
     },
     {
       "key": "kbc",
       "name": "KBC",
       "category": "traditional",
-      "pages": 2,
+      "pages": 3,
       "signature": [
         {
+          "label": "Sells a bundle",
+          "sd": -2.2,
+          "direction": "below"
+        },
+        {
           "label": "Includes a comparison table",
-          "sd": 2.5,
+          "sd": 1.8,
           "direction": "above"
         },
         {
           "label": "Images carry alt text",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Page brightness",
-          "sd": 1.1,
+          "sd": 1.4,
           "direction": "above"
         }
       ],
@@ -687,21 +901,21 @@
         "Readability band": "very_hard",
         "Formality of tone": 2.5,
         "Speaks to “you” rather than “we”": null,
-        "Urgency markers": 0.0
+        "Urgency markers": 0.3333333333333333
       },
       "imagery": {
-        "Images": 6.0,
+        "Images": 6.666666666666667,
         "Dominant image type": "photo",
         "People present": 1.0,
         "Animated": 1.0,
-        "Image area share": null
+        "Image area share": 0.042
       },
       "layout": {
         "Archetype": "split_columns",
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
-        "Page length": null,
-        "Calls to action": 6.0,
+        "Page length": 3841.0,
+        "Calls to action": 7.333333333333333,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -713,51 +927,67 @@
       },
       "palette": {
         "dominant": "#ffffff",
-        "brandShare": 0.0025,
-        "backgroundLuminance": 0.861
+        "brandShare": 0.0026666666666666666,
+        "backgroundLuminance": 0.8603333333333333
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "authority",
           "liking"
         ],
-        "Lever count": 2.0
-      }
+        "Lever count": 1.3333333333333333
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 6.7,
+        "trust": 0.0,
+        "cross_sell": 3.3,
+        "personalisation": 1.2,
+        "innovation": 5.0,
+        "simplicity": 0.0
+      },
+      "crossSellScore": 0.0
     },
     {
       "key": "n26",
       "name": "N26",
       "category": "challenger",
-      "pages": 1,
+      "pages": 2,
       "signature": [
+        {
+          "label": "“Free” with conditions attached",
+          "sd": 2.7,
+          "direction": "above"
+        },
+        {
+          "label": "Figures and percentages quoted",
+          "sd": 2.7,
+          "direction": "above"
+        },
         {
           "label": "Brand colour on the page",
           "sd": 2.6,
           "direction": "above"
-        },
-        {
-          "label": "Sells a bundle",
-          "sd": -2.3,
-          "direction": "below"
-        },
-        {
-          "label": "Urgency and deadline language",
-          "sd": 1.5,
-          "direction": "above"
         }
       ],
       "tone": {
-        "Words on the page": 1167.0,
+        "Words on the page": 2153.5,
         "Readability band": "hard",
         "Formality of tone": 3.0,
-        "Speaks to “you” rather than “we”": 0.932,
-        "Urgency markers": 3.0
+        "Speaks to “you” rather than “we”": 0.929,
+        "Urgency markers": 1.5
       },
       "imagery": {
-        "Images": 30.0,
-        "Dominant image type": "render_3d",
-        "People present": 1.0,
+        "Images": 72.5,
+        "Dominant image type": "illustration",
+        "People present": 0.0,
         "Animated": 1.0,
         "Image area share": null
       },
@@ -766,11 +996,11 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": null,
-        "Calls to action": 3.0,
+        "Calls to action": 4.5,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
-        "Primary product": "N26 Standard - compte bancaire gratuit",
+        "Primary product": "Business Standard",
         "Shows a rate": 1.0,
         "How prominently the rate is shown": "absent",
         "Benefit framing": "mixed",
@@ -778,17 +1008,53 @@
       },
       "palette": {
         "dominant": "#088177",
-        "brandShare": 0.477,
-        "backgroundLuminance": 0.465
+        "brandShare": 0.2455,
+        "backgroundLuminance": 0.6735
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "authority",
           "reciprocity"
         ],
-        "Lever count": 2.0
-      }
+        "Lever count": 1.0
+      },
+      "personas": [
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 1.0
+        },
+        {
+          "persona": "expat",
+          "label": "Expat",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        },
+        {
+          "persona": "digital_nomad",
+          "label": "Digital nomad",
+          "share": 0.5
+        },
+        {
+          "persona": "entrepreneur_self_employed",
+          "label": "Entrepreneur / self-employed",
+          "share": 0.5
+        }
+      ],
+      "aiScore": {
+        "digital": 7.5,
+        "trust": 1.7,
+        "cross_sell": 5.0,
+        "personalisation": 6.2,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.333
     },
     {
       "key": "revolut",
@@ -797,18 +1063,18 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Targets first-time investors",
-          "sd": 2.6,
+          "label": "Subscription style framing",
+          "sd": 2.5,
           "direction": "above"
         },
         {
           "label": "Invokes institutional trust",
-          "sd": 2.6,
+          "sd": 2.5,
           "direction": "above"
         },
         {
-          "label": "Clarity of the offer",
-          "sd": -2.3,
+          "label": "Carries legal small print",
+          "sd": -1.7,
           "direction": "below"
         }
       ],
@@ -822,7 +1088,7 @@
       "imagery": {
         "Images": 10.0,
         "Dominant image type": "illustration",
-        "People present": 1.0,
+        "People present": 0.0,
         "Animated": 1.0,
         "Image area share": null
       },
@@ -835,11 +1101,11 @@
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
-        "Primary product": "Compte courant (compte bancaire Revolut)",
+        "Primary product": "Compte courant",
         "Shows a rate": 1.0,
         "How prominently the rate is shown": "above_fold",
         "Benefit framing": "mixed",
-        "Fab level": "benefit"
+        "Fab level": "feature"
       },
       "palette": {
         "dominant": "#000000",
@@ -847,19 +1113,332 @@
         "backgroundLuminance": 0.051
       },
       "marketing": {
-        "Aida coverage": 4.0,
+        "Aida coverage": null,
         "Persuasion levers": [
           "social_proof",
           "authority",
           "reciprocity"
         ],
         "Lever count": 3.0
-      }
+      },
+      "personas": [
+        {
+          "persona": "entrepreneur_self_employed",
+          "label": "Entrepreneur / self-employed",
+          "share": 1.0
+        },
+        {
+          "persona": "expat",
+          "label": "Expat",
+          "share": 1.0
+        },
+        {
+          "persona": "family",
+          "label": "Family",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 3.3,
+        "cross_sell": 10.0,
+        "personalisation": 5.0,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.167
     }
   ],
+  "aiScoreAxes": [
+    {
+      "key": "digital",
+      "label": "Digital"
+    },
+    {
+      "key": "trust",
+      "label": "Trust"
+    },
+    {
+      "key": "cross_sell",
+      "label": "Cross-sell"
+    },
+    {
+      "key": "personalisation",
+      "label": "Personalisation"
+    },
+    {
+      "key": "innovation",
+      "label": "Innovation"
+    },
+    {
+      "key": "simplicity",
+      "label": "Simplicity"
+    }
+  ],
+  "crossSellMatrix": {
+    "products": [
+      "Term accounts",
+      "Current-account packs",
+      "Savings accounts",
+      "Mortgages",
+      "Investment",
+      "pension",
+      "Other"
+    ],
+    "matrix": [
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        4,
+        0,
+        5,
+        0,
+        4
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "mostAssociated": [
+      {
+        "from": "Current-account packs",
+        "to": "Investment",
+        "count": 5
+      },
+      {
+        "from": "Current-account packs",
+        "to": "Savings accounts",
+        "count": 4
+      },
+      {
+        "from": "Current-account packs",
+        "to": "Other",
+        "count": 4
+      }
+    ],
+    "neverPaired": {
+      "confirmed": [
+        {
+          "from": "Current-account packs",
+          "to": "Term accounts"
+        },
+        {
+          "from": "Current-account packs",
+          "to": "Mortgages"
+        },
+        {
+          "from": "Current-account packs",
+          "to": "pension"
+        }
+      ],
+      "insufficient_data": [
+        {
+          "from": "Term accounts",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "Term accounts",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "Term accounts",
+          "to": "Mortgages"
+        },
+        {
+          "from": "Term accounts",
+          "to": "Investment"
+        },
+        {
+          "from": "Term accounts",
+          "to": "pension"
+        },
+        {
+          "from": "Term accounts",
+          "to": "Other"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "Term accounts"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "Mortgages"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "Investment"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "pension"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "Other"
+        },
+        {
+          "from": "Mortgages",
+          "to": "Term accounts"
+        },
+        {
+          "from": "Mortgages",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "Mortgages",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "Mortgages",
+          "to": "Investment"
+        },
+        {
+          "from": "Mortgages",
+          "to": "pension"
+        },
+        {
+          "from": "Mortgages",
+          "to": "Other"
+        },
+        {
+          "from": "Investment",
+          "to": "Term accounts"
+        },
+        {
+          "from": "Investment",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "Investment",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "Investment",
+          "to": "Mortgages"
+        },
+        {
+          "from": "Investment",
+          "to": "pension"
+        },
+        {
+          "from": "Investment",
+          "to": "Other"
+        },
+        {
+          "from": "pension",
+          "to": "Term accounts"
+        },
+        {
+          "from": "pension",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "pension",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "pension",
+          "to": "Mortgages"
+        },
+        {
+          "from": "pension",
+          "to": "Investment"
+        },
+        {
+          "from": "pension",
+          "to": "Other"
+        },
+        {
+          "from": "Other",
+          "to": "Term accounts"
+        },
+        {
+          "from": "Other",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "Other",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "Other",
+          "to": "Mortgages"
+        },
+        {
+          "from": "Other",
+          "to": "Investment"
+        },
+        {
+          "from": "Other",
+          "to": "pension"
+        }
+      ]
+    }
+  },
   "similarity": {
     "banks": [
       "Argenta",
+      "Belfius",
       "BNP Paribas Fortis",
       "bunq",
       "Crelan",
@@ -871,82 +1450,101 @@
     "matrix": [
       [
         0.0,
-        6.05,
-        8.45,
-        8.01,
-        6.47,
-        7.93,
-        7.89,
+        5.27,
+        4.62,
+        7.79,
+        7.47,
+        5.5,
+        6.36,
+        9.09,
+        8.08
+      ],
+      [
+        5.27,
+        0.0,
+        5.87,
+        8.33,
+        6.37,
+        5.62,
+        4.94,
+        7.9,
+        8.28
+      ],
+      [
+        4.62,
+        5.87,
+        0.0,
+        8.05,
+        7.16,
+        5.9,
+        6.52,
+        8.09,
+        7.79
+      ],
+      [
+        7.79,
+        8.33,
+        8.05,
+        0.0,
+        9.21,
+        5.74,
+        7.8,
+        9.29,
+        8.11
+      ],
+      [
+        7.47,
+        6.37,
+        7.16,
+        9.21,
+        0.0,
+        7.05,
+        7.21,
+        9.19,
         8.56
       ],
       [
-        6.05,
+        5.5,
+        5.62,
+        5.9,
+        5.74,
+        7.05,
         0.0,
-        7.54,
-        8.17,
-        5.82,
-        6.82,
-        7.49,
-        9.07
+        6.22,
+        6.66,
+        6.82
       ],
       [
-        8.45,
-        7.54,
+        6.36,
+        4.94,
+        6.52,
+        7.8,
+        7.21,
+        6.22,
         0.0,
-        8.79,
-        6.25,
-        7.69,
-        7.31,
-        8.97
+        8.22,
+        7.58
       ],
       [
-        8.01,
-        8.17,
-        8.79,
+        9.09,
+        7.9,
+        8.09,
+        9.29,
+        9.19,
+        6.66,
+        8.22,
         0.0,
-        6.61,
-        7.23,
-        8.02,
-        8.61
+        8.01
       ],
       [
-        6.47,
-        5.82,
-        6.25,
-        6.61,
-        0.0,
-        5.35,
-        6.41,
-        7.18
-      ],
-      [
-        7.93,
-        6.82,
-        7.69,
-        7.23,
-        5.35,
-        0.0,
-        6.87,
-        8.14
-      ],
-      [
-        7.89,
-        7.49,
-        7.31,
-        8.02,
-        6.41,
-        6.87,
-        0.0,
-        8.17
-      ],
-      [
+        8.08,
+        8.28,
+        7.79,
+        8.11,
         8.56,
-        9.07,
-        8.97,
-        8.61,
-        7.18,
-        8.14,
-        8.17,
+        6.82,
+        7.58,
+        8.01,
         0.0
       ]
     ]
@@ -956,33 +1554,34 @@
       "cluster": 1,
       "banks": [
         "Argenta",
+        "Belfius",
         "BNP Paribas Fortis",
-        "bunq",
         "Crelan",
-        "ING",
-        "KBC",
-        "N26"
+        "KBC"
       ]
     },
     {
       "cluster": 2,
       "banks": [
+        "bunq",
+        "ING",
+        "N26",
         "Revolut"
       ]
     }
   ],
   "nearestToFocus": [
     {
-      "bank": "KBC",
-      "distance": 5.35
+      "bank": "Argenta",
+      "distance": 5.5
     },
     {
-      "bank": "BNP Paribas Fortis",
-      "distance": 5.82
+      "bank": "Belfius",
+      "distance": 5.62
     },
     {
       "bank": "bunq",
-      "distance": 6.25
+      "distance": 5.74
     }
   ],
   "deckClaims": [
@@ -990,22 +1589,22 @@
       "id": "H1",
       "bank": "belfius",
       "claim": "Belfius is pretty verbose",
-      "verdict": "not testable",
-      "evidence": "feature absent from the dataset"
+      "verdict": "not supported",
+      "evidence": "belfius='long'; highest is argenta='long'"
     },
     {
       "id": "H2",
       "bank": "kbc",
       "claim": "KBC is straight to the point",
-      "verdict": "not testable",
-      "evidence": "feature absent from the dataset"
+      "verdict": "not supported",
+      "evidence": "kbc='long'; lowest traditional is argenta='long'"
     },
     {
       "id": "H3",
       "bank": "ing",
       "claim": "ING is the only traditional bank using animation",
       "verdict": "not supported",
-      "evidence": "ing=0.67; other traditional banks above zero: ['crelan', 'kbc']"
+      "evidence": "ing=0.75; other traditional banks above zero: ['crelan', 'kbc', 'belfius']"
     },
     {
       "id": "H4",
@@ -1018,8 +1617,8 @@
       "id": "H5",
       "bank": "revolut",
       "claim": "Revolut uses very little text",
-      "verdict": "not testable",
-      "evidence": "feature absent from the dataset"
+      "verdict": "not supported",
+      "evidence": "revolut='long'; lowest is argenta='long'"
     }
   ],
   "limitations": {
@@ -1028,12 +1627,11 @@
     ],
     "material": [
       "The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'pension', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
-      "Pages are in **2 languages** (['en', 'fr']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
-      "**1 bank(s) are absent from this comparison entirely**: belfius. They have real, usable captures but no page in the 'current_account_pack' product family, and comparing across families would confound every difference with the product (DR-04). They are in the dataset, not in these results - collect them a page in this family to include them."
+      "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
+      "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
-      "Model-assisted features were all produced by `deepseek/deepseek-flash`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.",
-      "Every conclusion is valid for the capture window **2026-09-18 to 2026-09-18** and no later. Campaign pages change without notice (DR-05).",
+      "Every conclusion is valid for the capture window **2026-09-18 to 2026-09-19** and no later. Campaign pages change without notice (DR-05).",
       "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
@@ -1044,12 +1642,12 @@
   "validation": {
     "ok": true,
     "warnings": [
-      "total_image_area_ratio: required feature is entirely empty",
-      "page_height_px: required feature is entirely empty",
       "aida_attention: required feature is entirely empty",
       "aida_interest: required feature is entirely empty",
       "aida_desire: required feature is entirely empty",
-      "aida_action: required feature is entirely empty"
+      "aida_action: required feature is entirely empty",
+      "aida_coverage_score: required feature is entirely empty",
+      "model_assisted features were produced by MORE THAN ONE model (deepseek/deepseek-flash: ['argenta', 'belfius', 'bnp_paribas_fortis', 'bunq', 'ing', 'kbc', 'n26']; groq/openai/gpt-oss-120b: ['crelan', 'ing', 'kbc', 'n26', 'revolut']). Cross-bank comparisons on those features are partly a comparison between models - either re-run the odd banks on the pinned model, or report it as a limitation (D-09, NFR-02)."
     ]
   },
   "generated": [],
@@ -1070,10 +1668,26 @@
       "N26",
       "Revolut"
     ],
-    "uncovered": [],
+    "uncovered": [
+      "Belfius"
+    ],
     "n_series": 33536,
     "n_anomalies": 1155,
     "n_campaigns": 21,
     "data_url": "trends.json"
+  },
+  "reputation": {
+    "available": true,
+    "banks": {
+      "argenta": null,
+      "belfius": null,
+      "bnp_paribas_fortis": null,
+      "bunq": null,
+      "crelan": null,
+      "ing": null,
+      "kbc": null,
+      "n26": null,
+      "revolut": null
+    }
   }
 }

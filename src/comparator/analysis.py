@@ -735,11 +735,23 @@ def recurring_patterns(
 # FR-14 - verify the kickoff-deck observations
 # -----------------------------------------------------------------------------
 #   claim id -> (bank, human-readable claim, feature, test)
+# sieg 19/09: ordinal scale for a categorical BAND feature, so a highest/
+# lowest deck claim survives once the raw feature it used to test (word_count,
+# within_language) gets dropped entirely from the comparison the moment >1
+# language is in scope (language_excluded_features()). The band uses fixed,
+# universal thresholds (comparability: cross_language, see bands.py) so it
+# keeps meaning something across languages - this ordinal reading is used ONLY
+# for ranking a deck claim, never as a reported SD gap (that stays on the raw
+# feature in ing_vs_peers()).
+BAND_ORDINALS: dict[str, dict[str, int]] = {
+    "word_count_band": {"very_short": 1, "short": 2, "medium": 3, "long": 4},
+}
+
 DECK_CLAIMS: list[dict] = [
     dict(id="H1", bank="belfius", claim="Belfius is pretty verbose",
-         feature="word_count", test="highest"),
+         feature="word_count_band", test="highest"),
     dict(id="H2", bank="kbc", claim="KBC is straight to the point",
-         feature="word_count", test="lowest_traditional"),
+         feature="word_count_band", test="lowest_traditional"),
     dict(id="H3", bank="ing", claim="ING is the only traditional bank using animation",
          feature="has_animation", test="only_traditional_true"),
     # sieg 15/09: feature renamed text_image_adjacent -> text_image_layout
@@ -748,8 +760,15 @@ DECK_CLAIMS: list[dict] = [
     dict(id="H4", bank="ing", claim="ING no longer places text next to picture",
          feature="text_image_layout", test="categorical_is_not", not_value="beside"),
     dict(id="H5", bank="revolut", claim="Revolut uses very little text",
-         feature="word_count", test="lowest"),
+         feature="word_count_band", test="lowest"),
 ]
+
+
+def _band_ordinal_series(df: pd.DataFrame, feature: str) -> tuple[pd.Series, dict[int, str]]:
+    """Per-bank mode of a categorical band, mapped to BAND_ORDINALS. sieg 19/09."""
+    ordinals = BAND_ORDINALS[feature]
+    modes = df.dropna(subset=[feature]).groupby("bank", observed=True)[feature].agg(lambda s: s.mode().iat[0])
+    return modes.map(ordinals).dropna(), {v: k for k, v in ordinals.items()}
 
 
 def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> pd.DataFrame:
@@ -781,27 +800,42 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
                     not_value = claim["not_value"]
                     verdict = "supported" if mode_value != not_value else "not supported"
                     evidence = f"{bank}'s most common {feature}: {mode_value!r} (claim: not {not_value!r})"
-        elif feature in vectors.columns and bank in vectors.index:
-            series = vectors[feature].dropna()
-            value = series.get(bank)
+        else:
+            # sieg 19/09: a BAND feature (e.g. word_count_band) never appears in
+            # vectors (numeric/boolean only) but still ranks fine as an ordinal.
+            is_band = feature in BAND_ORDINALS
+            if is_band and feature in df.columns:
+                series, band_labels = _band_ordinal_series(df, feature)
+            elif feature in vectors.columns:
+                series, band_labels = vectors[feature].dropna(), None
+            else:
+                series, band_labels = pd.Series(dtype="float64"), None
 
-            if test == "highest":
+            fmt = (lambda v: repr(band_labels[v])) if band_labels else (lambda v: f"{v:.1f}")
+
+            if bank not in series.index:
+                pass
+            elif test == "highest":
+                value = series[bank]
                 winner = series.idxmax()
                 verdict = "supported" if winner == bank else "not supported"
-                evidence = f"{bank}={value:.1f}; highest is {winner}={series.max():.1f}"
+                evidence = f"{bank}={fmt(value)}; highest is {winner}={fmt(series.max())}"
             elif test == "lowest":
+                value = series[bank]
                 winner = series.idxmin()
                 verdict = "supported" if winner == bank else "not supported"
-                evidence = f"{bank}={value:.1f}; lowest is {winner}={series.min():.1f}"
+                evidence = f"{bank}={fmt(value)}; lowest is {winner}={fmt(series.min())}"
             elif test == "lowest_traditional":
+                value = series[bank]
                 sub = series.loc[[b for b in traditional if b in series.index]]
                 if sub.empty:
                     verdict, evidence = "not testable", "no traditional banks with this feature in the dataset"
                 else:
                     winner = sub.idxmin()
                     verdict = "supported" if winner == bank else "not supported"
-                    evidence = f"{bank}={value:.1f}; lowest traditional is {winner}={sub.min():.1f}"
+                    evidence = f"{bank}={fmt(value)}; lowest traditional is {winner}={fmt(sub.min())}"
             elif test == "only_traditional_true":
+                value = series[bank]
                 others = [b for b in traditional if b != bank and b in series.index]
                 others_true = [b for b in others if series[b] > 0]
                 verdict = "supported" if value > 0 and not others_true else "not supported"

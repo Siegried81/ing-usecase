@@ -56,6 +56,10 @@ MODEL_FIELDS = (
     "switching_framing", "regulatory_disclosure_prominence",
     "hidden_conditions_behind_free_claim", "esg_claim_specificity",
     "green_product_specific_benefit", "fast_digital_onboarding_claim",
+    # sieg 19/09: new field, same structured call - see feature_dictionary.yaml.
+    "target_personas",
+    "cross_sold_products",
+    "subscription_style_framing",
 )
 
 SYSTEM_PROMPT = """You are extracting structured features from a bank campaign page for a
@@ -119,6 +123,17 @@ Return ONLY a JSON object with exactly these keys:
 - "fast_digital_onboarding_claim": boolean, does the page claim a fast, frictionless digital
   account-opening process (e.g. "open an account in 5 minutes", no branch visit needed, instant
   approval)
+- "target_personas": array of zero or more of "student", "family", "entrepreneur_self_employed",
+  "expat", "investor", "retiree", "digital_nomad", "mass_market" - which customer personas this
+  page's copy/imagery explicitly addresses. Empty array if none clearly targeted.
+- "cross_sold_products": array of zero or more of "term_account", "current_account_pack",
+  "savings_account", "mortgage", "investment", "pension", "other" - OTHER product families
+  (besides this page's own) that are cross-sold or cross-referenced on this page (e.g. a mortgage
+  page that also pitches home insurance and a current account). Never include this page's own
+  product family. Empty array if nothing else is cross-sold.
+- "subscription_style_framing": boolean, are the account tiers framed as a subscription/plan
+  (like a phone or streaming service, e.g. "abonnement", "plan") rather than a traditional
+  banking "pack"
 
 No preamble, no markdown fences, JSON only."""
 
@@ -148,6 +163,9 @@ class ModelAssistedFields(BaseModel):
     esg_claim_specificity: str
     green_product_specific_benefit: bool
     fast_digital_onboarding_claim: bool
+    target_personas: list[str] = []  # sieg 19/09: new field, see feature_dictionary.yaml
+    cross_sold_products: list[str] = []  # sieg 19/09: new field, see feature_dictionary.yaml
+    subscription_style_framing: bool = False  # sieg 19/09: new field, see feature_dictionary.yaml
 
 
 class LLMExtractionError(Exception):

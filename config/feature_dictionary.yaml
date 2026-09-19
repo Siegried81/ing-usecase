@@ -1334,6 +1334,57 @@ features:
     required: false
     nullable: true
 
+  # sieg 19/09: new feature, additive only (freeze rule) - fills a real gap
+  # flagged in the "AI Marketing Intelligence Platform" brief discussion.
+  # Reuses llm_extractor.py's existing single structured call (no new LLM
+  # call, no new provider). Fixed 8-value taxonomy so the field stays
+  # comparable across banks; aggregated to a per-bank distribution in
+  # profiles.py. Flagged to Dan and Stephane per docs/decisions.md, 19/09.
+  - name: target_personas
+    dimension: banking_domain
+    definition: Which customer persona archetypes this page's copy/imagery explicitly addresses.
+    type: list[string]
+    values: [student, family, entrepreneur_self_employed, expat, investor, retiree, digital_nomad, mass_market]
+    extraction: model_assisted
+    source: html_text
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # sieg 19/09: second additive feature from the same brief discussion as
+  # target_personas above - fills the "cross-sell score/graph" gap. Reuses the
+  # SAME 7-value product_family taxonomy already frozen in this dictionary
+  # (never inventing a parallel one) so "possible products" has one definition
+  # everywhere. See comparator/cross_sell.py for the score/matrix built from it.
+  - name: cross_sold_products
+    dimension: banking_domain
+    definition: Other product families this page cross-sells or cross-references alongside its own product_family.
+    type: list[string]
+    values: [term_account, current_account_pack, savings_account, mortgage, investment, pension, other]
+    extraction: model_assisted
+    source: html_text
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
+  # sieg 19/09: third additive feature, same session - Siegried noticed
+  # Revolut/bunq frame their tiers as a phone/streaming-style subscription
+  # ("abonnement") rather than a traditional bancassurance "pack" - verified
+  # in the raw page text (Revolut 16 mentions, bunq 9, every traditional bank
+  # 0). Same single structured call as target_personas/cross_sold_products.
+  - name: subscription_style_framing
+    dimension: banking_domain
+    definition: Whether the account tiers are framed as a subscription/plan (like a phone or streaming service) rather than a traditional banking "pack".
+    type: boolean
+    extraction: model_assisted
+    source: html_text
+    comparability: cross_language
+    tier: extended
+    required: false
+    nullable: true
+
   - name: rate_framing
     dimension: banking_domain
     definition: Whether the headline rate is the regulated base rate, a promotional bonus, a capped/tiered rate presented as the full rate, or no rate is shown.

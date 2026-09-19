@@ -38,6 +38,19 @@ def _flatten_lists(series: pd.Series) -> list[str]:
     return [item for item, _ in counter.most_common()]
 
 
+# sieg 19/09: new helper for target_personas. Unlike _flatten_lists (which only
+# ranks by frequency), this keeps the SHARE of this bank's pages that named each
+# persona - the brief's exact "ING: 35% family, 20% entrepreneur" shape.
+def _persona_distribution(series: pd.Series, n_pages: int) -> list[dict]:
+    """Share of this bank's pages targeting each persona, most common first."""
+    counter: Counter[str] = Counter()
+    for cell in series.dropna():
+        counter.update(parse_list(cell))
+    if n_pages == 0:
+        return []
+    return [{"persona": persona, "share": count / n_pages} for persona, count in counter.most_common()]
+
+
 def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SIGNATURE_FEATURES, *, tier: str | None = None) -> list[tuple[str, float]]:
     """The features on which this bank departs most from the market average."""
     # sieg 14/09: see the dropna(axis=1, how="any") note in analysis.positioning_axis().
@@ -129,6 +142,8 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "persuasion_levers": _flatten_lists(rows.get("persuasion_levers", pd.Series(dtype="object"))),
             "lever_count": mean("persuasion_lever_count"),
         },
+        # sieg 19/09: new section - per-bank persona distribution.
+        "personas": _persona_distribution(rows.get("target_personas", pd.Series(dtype="object")), len(rows)),
         "signature": _distinctive(bank, df, fd, tier=tier),
     }
 
@@ -184,6 +199,12 @@ def render_markdown(profile: dict, fd: FeatureDictionary | None = None) -> str:
         for key, value in profile[section].items():
             rendered = _fmt_share(value) if key in BOOLEAN_FIELDS else _fmt(value)
             lines.append(f"| {key.replace('_', ' ')} | {rendered} |")
+
+    # sieg 19/09: personas is a list of {persona, share} dicts, not a scalar -
+    # the loop above (via _fmt/_fmt_share) doesn't handle that shape.
+    if profile["personas"]:
+        rendered = ", ".join(f"{p['persona']} {p['share']:.0%}" for p in profile["personas"])
+        lines.append(f"| personas | {rendered} |")
 
     if profile["signature"]:
         parts = []

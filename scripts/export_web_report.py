@@ -29,6 +29,9 @@ import _bootstrap  # noqa: F401
 import pandas as pd
 
 from comparator import load_dictionary
+from comparator import ai_score  # sieg 19/09
+from comparator import cross_sell  # sieg 19/09
+from comparator import reputation  # sieg 19/09
 from comparator.analysis import (
     category_comparison,
     check_deck_claims,
@@ -109,6 +112,25 @@ LABELS = {
     "first_time_investor_targeting": "Targets first-time investors",
     "has_comparison_table": "Includes a comparison table",
     "hidden_conditions_behind_free_claim": "“Free” with conditions attached",
+    # sieg 19/09: AI Score axis labels (comparator/ai_score.py).
+    "digital": "Digital",
+    "trust": "Trust",
+    "cross_sell": "Cross-sell",
+    "personalisation": "Personalisation",
+    "innovation": "Innovation",
+    "simplicity": "Simplicity",
+}
+
+# sieg 19/09: display labels for the target_personas taxonomy (feature_dictionary.yaml).
+PERSONA_LABELS = {
+    "student": "Student",
+    "family": "Family",
+    "entrepreneur_self_employed": "Entrepreneur / self-employed",
+    "expat": "Expat",
+    "investor": "Investor",
+    "retiree": "Retiree",
+    "digital_nomad": "Digital nomad",
+    "mass_market": "Mass market",
 }
 
 BANK_NAMES = {
@@ -188,6 +210,13 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     distances = similarity_matrix(compared, fd)
     clusters = cluster_banks(compared, fd, n_clusters=2)
     profiles = build_all(compared, fd)
+    ai_scores = ai_score.score_all(compared)  # sieg 19/09
+    cross_sell_scores = cross_sell.score_all(compared, fd)  # sieg 19/09
+    cross_sell_matrix_df = cross_sell.cross_sell_matrix(compared, fd)  # sieg 19/09
+    # sieg 19/09: optional, degrades to {"available": False} without NEWSAPI_KEY.
+    reputation_dashboard = reputation.build_dashboard(
+        [(b, bank_name(b)) for b in sorted(compared["bank"].unique())]
+    )
     assessment = assess(all_rows, fd, focus=focus, scope=scope)
 
     stamps = pd.to_datetime(compared["captured_at"], errors="coerce", utc=True).dropna()
@@ -257,6 +286,26 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
             for _, r in separation.head(top_n).iterrows()
         ],
         "banks": [],
+        # sieg 19/09: legend for the AI Score radar - one entry per axis in comparator/ai_score.py.
+        "aiScoreAxes": [{"key": a, "label": label(a)} for a in ai_score.AXES],
+        # sieg 19/09: the cross-sell "graph", flattened to a co-occurrence matrix - see cross_sell.py.
+        "crossSellMatrix": {
+            "products": [FAMILY_NAMES.get(p, p) for p in cross_sell_matrix_df.index],
+            "matrix": cross_sell_matrix_df.to_numpy().tolist(),
+            "mostAssociated": [
+                {"from": FAMILY_NAMES.get(a, a), "to": FAMILY_NAMES.get(b, b), "count": n}
+                for a, b, n in cross_sell.most_associated(cross_sell_matrix_df, n=5)
+            ],
+            # sieg 19/09: "confirmed never" (row family has enough pages to trust
+            # the zero) vs "insufficient_data" (too few pages, a 0 is a data gap,
+            # not a finding) - see cross_sell.py::never_paired().
+            "neverPaired": {
+                kind: [{"from": FAMILY_NAMES.get(a, a), "to": FAMILY_NAMES.get(b, b)} for a, b in pairs]
+                for kind, pairs in cross_sell.never_paired(
+                    cross_sell_matrix_df, compared.groupby("product_family").size()
+                ).items()
+            },
+        },
         "similarity": {
             "banks": [bank_name(b) for b in distances.index],
             "matrix": [[round(float(v), 2) for v in row] for row in distances.to_numpy()],
@@ -283,6 +332,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         },
         "generated": [],
         "trends": None,
+        "reputation": reputation_dashboard,  # sieg 19/09
     }
 
     for bank, profile in profiles.items():
@@ -306,6 +356,13 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
                 "backgroundLuminance": _clean(profile["palette"].get("background_luminance")),
             },
             "marketing": {label(k): _clean(v) for k, v in profile["marketing_principles"].items()},
+            # sieg 19/09: personas + AI Score, additive - see comparator/profiles.py and ai_score.py.
+            "personas": [
+                {"persona": p["persona"], "label": PERSONA_LABELS.get(p["persona"], p["persona"]), "share": round(p["share"], 3)}
+                for p in profile["personas"]
+            ],
+            "aiScore": ai_scores.get(bank, {}),
+            "crossSellScore": cross_sell_scores.get(bank),
         })
 
     generated_dir = Path("outputs/generated")

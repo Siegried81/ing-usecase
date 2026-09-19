@@ -29,6 +29,16 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
   const [bankKey, setBankKey] = useState<string>("");
   const [productId, setProductId] = useState<string>("");
   const [campaignId, setCampaignId] = useState<number | null>(null);
+  const [anomalySortKey, setAnomalySortKey] = useState<"date" | "term" | "label" | "value" | "score">("score");
+  const [anomalySortDir, setAnomalySortDir] = useState<"asc" | "desc">("desc");
+
+  function toggleAnomalySort(key: typeof anomalySortKey) {
+    if (key === anomalySortKey) setAnomalySortDir((d) => (d === "asc" ? "desc" : "asc"));
+    else {
+      setAnomalySortKey(key);
+      setAnomalySortDir("desc");
+    }
+  }
 
   useEffect(() => {
     if (!summary?.available) return;
@@ -76,11 +86,23 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
   if (!data) return <div className="card muted-note">Loading search-interest data…</div>;
 
   const events = data.events.filter((e) => e.bank === bank?.name);
-  const anomalies = product
-    ? product.terms.flatMap((t) =>
-        t.anomalies.map((a) => ({ ...a, term: t.label })),
-      ).sort((a, b) => b.score - a.score)
+  const rawAnomalies = product
+    ? product.terms.flatMap((t) => t.anomalies.map((a) => ({ ...a, term: t.label })))
     : [];
+  // sieg 19/09: the 40-row cap is always the 40 LARGEST deviations (unchanged
+  // from before) - a column-sort only reorders that fixed subset for display,
+  // it never swaps in a different 40 rows (sorting by date ascending should
+  // not silently hide the actual spikes).
+  const topAnomalies = [...rawAnomalies].sort((a, b) => b.score - a.score).slice(0, 40);
+  const anomalies = [...topAnomalies].sort((a, b) => {
+    const dir = anomalySortDir === "asc" ? 1 : -1;
+    const av = a[anomalySortKey];
+    const bv = b[anomalySortKey];
+    if (typeof av === "string" || typeof bv === "string") {
+      return String(av).localeCompare(String(bv)) * dir;
+    }
+    return ((av as number) - (bv as number)) * dir;
+  });
   const selectedCampaign = data.campaigns.scorecards.find((c) => c.id === campaignId) ?? null;
   const matches = selectedCampaign
     ? data.campaigns.matches.filter((m) => m.campaignId === selectedCampaign.id)
@@ -173,19 +195,27 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
 
         {anomalies.length > 0 && (
           <div className="card" style={{ marginTop: 14 }}>
-            <h3 className="sub-h">Flagged weeks in this sheet ({anomalies.length})</h3>
+            <h3 className="sub-h">Flagged weeks in this sheet ({rawAnomalies.length})</h3>
             <table className="claims">
               <thead>
                 <tr>
-                  <th>Date</th>
-                  <th>Term</th>
-                  <th>Kind</th>
-                  <th>Value</th>
-                  <th>Deviation (z)</th>
+                  {([
+                    ["date", "Date"], ["term", "Term"], ["label", "Kind"],
+                    ["value", "Value"], ["score", "Deviation (z)"],
+                  ] as const).map(([key, label]) => (
+                    <th
+                      key={key}
+                      onClick={() => toggleAnomalySort(key)}
+                      style={{ cursor: "pointer", userSelect: "none" }}
+                      title="Click to sort"
+                    >
+                      {label}{anomalySortKey === key ? (anomalySortDir === "asc" ? " ▲" : " ▼") : ""}
+                    </th>
+                  ))}
                 </tr>
               </thead>
               <tbody>
-                {anomalies.slice(0, 40).map((a, i) => (
+                {anomalies.map((a, i) => (
                   <tr key={`${a.term}-${a.date}-${i}`}>
                     <td>{a.date}</td>
                     <td className="claim">{a.term}</td>
@@ -196,8 +226,8 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
                 ))}
               </tbody>
             </table>
-            {anomalies.length > 40 && (
-              <p className="muted-note">Showing the 40 largest deviations of {anomalies.length}.</p>
+            {rawAnomalies.length > 40 && (
+              <p className="muted-note">Showing the 40 largest deviations of {rawAnomalies.length}.</p>
             )}
           </div>
         )}

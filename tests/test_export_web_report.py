@@ -1,0 +1,81 @@
+"""Tests for the report.json export (sieg 19/09).
+
+No test covered scripts/export_web_report.py before this - this only adds
+targeted coverage for the two new additions (personas, AI Score), following
+tests/test_import_captures.py's pattern for loading a scripts/*.py module
+directly since it isn't part of the installed package.
+"""
+
+from __future__ import annotations
+
+import importlib.util
+import sys
+from pathlib import Path
+
+import pytest
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "src"))
+sys.path.insert(0, str(ROOT / "scripts"))
+
+spec = importlib.util.spec_from_file_location("export_web_report", ROOT / "scripts" / "export_web_report.py")
+export_web_report = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(export_web_report)
+
+from comparator import ai_score  # noqa: E402
+from comparator.dictionary import load_dictionary  # noqa: E402
+from comparator.fixtures import build_fixture  # noqa: E402
+from comparator.schema import write_dataset  # noqa: E402
+
+
+@pytest.fixture(scope="module")
+def report(tmp_path_factory):
+    # sieg 19/09, FIXED: a function-scoped `monkeypatch.delenv` autouse fixture
+    # cannot reliably run before this module-scoped fixture's one-time setup -
+    # pytest sets up broader-scoped fixtures first regardless of autouse, so
+    # the deletion happened too late and this test made a REAL NewsAPI call
+    # once NEWSAPI_KEY was actually set in .env (caught by CI-style full-suite
+    # run taking 117s instead of ~12s). Popping the var directly here, at the
+    # start of the fixture that actually needs it gone, has no such ordering
+    # ambiguity.
+    import os
+    os.environ.pop("NEWSAPI_KEY", None)
+    fd = load_dictionary()
+    df = build_fixture(fd)
+    path = write_dataset(df, tmp_path_factory.mktemp("data") / "campaigns.csv", fd)
+    report, _trends = export_web_report.build_report(
+        path, family="term_account", focus="ing", top_n=10, trends_dir=None,
+    )
+    return report
+
+
+def test_ai_score_axes_are_listed_at_the_top_level(report):
+    keys = {axis["key"] for axis in report["aiScoreAxes"]}
+    assert keys == set(ai_score.AXES)
+
+
+def test_every_bank_carries_personas_and_an_ai_score(report):
+    assert report["banks"], "fixture should produce at least one bank"
+    for bank in report["banks"]:
+        assert "personas" in bank
+        assert "aiScore" in bank
+        assert "crossSellScore" in bank
+        assert set(bank["aiScore"]) == set(ai_score.AXES)
+        for persona in bank["personas"]:
+            assert 0 <= persona["share"] <= 1
+
+
+def test_reputation_is_an_honest_not_configured_state_without_a_key(report):
+    assert report["reputation"] == {"available": False, "banks": {}}
+
+
+def test_cross_sell_matrix_is_square_over_the_product_taxonomy(report):
+    matrix = report["crossSellMatrix"]
+    n = len(matrix["products"])
+    assert n > 0
+    assert all(len(row) == n for row in matrix["matrix"])
+
+
+def test_ing_personas_match_the_fixture_archetype(report):
+    ing = next(b for b in report["banks"] if b["key"] == "ing")
+    assert {p["persona"] for p in ing["personas"]} == {"family", "expat", "mass_market"}

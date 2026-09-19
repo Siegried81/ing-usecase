@@ -186,6 +186,24 @@ def test_deck_claims_all_return_a_verdict(df, fd):
     assert claims["verdict"].isin({"supported", "not supported", "not testable"}).all()
 
 
+# sieg 19/09: H1/H2/H5 used to test raw word_count, which language_excluded_features()
+# drops ENTIRELY the moment >1 language is in scope - a real regression hit
+# when English/Dutch pages were added to the real dataset. word_count_band
+# (fixed universal thresholds, cross_language) survives that drop.
+def test_deck_claims_word_count_claims_survive_mixed_language_scope(fd):
+    mixed = pd.concat([
+        build_fixture(fd, banks=["belfius", "kbc", "revolut"], language="fr"),
+        build_fixture(fd, banks=["ing"], language="en", seed=20260915),
+    ], ignore_index=True)
+    claims = check_deck_claims(mixed, fd)
+    verdicts = claims.set_index("id")["verdict"]
+    for claim_id in ("H1", "H2", "H5"):
+        assert verdicts[claim_id] in ("supported", "not supported"), (
+            f"{claim_id} should be testable via word_count_band even with mixed languages, "
+            f"got {verdicts[claim_id]!r}"
+        )
+
+
 def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
     # sieg 14/09: H2 (KBC) used to call .idxmin() on a subset that could be
     # empty (e.g. no bank tagged "traditional" left in the data), which raises
@@ -250,6 +268,22 @@ def test_profile_renders_to_markdown(df, fd):
     text = render_markdown(build_profile(df, "ing", fd), fd)
     assert text.startswith("### ing")
     assert "Signature:" in text
+
+
+# sieg 19/09: persona distribution - build_fixture()'s "ing" archetype targets
+# family/expat/mass_market (2 pages, both carry all three), so each should come
+# back at a 100% share and nothing else should appear.
+def test_profile_persona_distribution_matches_the_fixture(df, fd):
+    profile = build_profile(df, "ing", fd)
+    personas = {p["persona"]: p["share"] for p in profile["personas"]}
+    assert personas == {"family": 1.0, "expat": 1.0, "mass_market": 1.0}
+    assert all(0 <= share <= 1 for share in personas.values())
+
+
+def test_profile_renders_persona_distribution_to_markdown(df, fd):
+    text = render_markdown(build_profile(df, "ing", fd), fd)
+    assert "| personas |" in text
+    assert "family 100%" in text
 
 
 def test_profile_for_unknown_bank_fails_loudly(df, fd):

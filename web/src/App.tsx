@@ -4,11 +4,15 @@ import { ScopeBanner } from "./components/Scope";
 import { Positioning } from "./components/Positioning";
 import { PeerGaps, GroupSeparation } from "./components/Gaps";
 import { BankCards } from "./components/Banks";
+import { Personas } from "./components/Personas";
+import { AiScoreRadar } from "./components/AiScoreRadar";
+import { CrossSell } from "./components/CrossSell";
 import { GeneratedCampaigns } from "./components/Generated";
 import { Limitations } from "./components/Limitations";
 import { DeckClaims } from "./components/Claims";
 import { Recommendations } from "./components/Recommendations";
 import { Trends } from "./components/Trends";
+import { Reputation } from "./components/Reputation";
 
 function Section({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode }) {
   return (
@@ -22,7 +26,7 @@ function Section({ title, lede, children }: { title: string; lede?: string; chil
   );
 }
 
-type Tab = "analysis" | "trends" | "recommendations";
+type Tab = "analysis" | "trends" | "reputation" | "recommendations";
 
 export default function App() {
   const [report, setReport] = useState<Report | null>(null);
@@ -89,6 +93,14 @@ export default function App() {
           </button>
           <button
             role="tab"
+            aria-selected={tab === "reputation"}
+            className={`tab${tab === "reputation" ? " active" : ""}`}
+            onClick={() => setTab("reputation")}
+          >
+            Reputation
+          </button>
+          <button
+            role="tab"
             aria-selected={tab === "recommendations"}
             className={`tab${tab === "recommendations" ? " active" : ""}`}
             onClick={() => setTab("recommendations")}
@@ -101,6 +113,12 @@ export default function App() {
       {tab === "trends" && (
         <div className="wrap">
           <Trends summary={report.trends} />
+        </div>
+      )}
+
+      {tab === "reputation" && (
+        <div className="wrap">
+          <Reputation reputation={report.reputation} />
         </div>
       )}
 
@@ -180,6 +198,27 @@ export default function App() {
           lede="Identical fields for every bank, generated from the data. The numbers are how far that bank sits from the market average, in standard deviations."
         >
           <BankCards banks={report.banks} focusKey={focusBank?.key ?? ""} />
+        </Section>
+
+        <Section
+          title="Who each bank speaks to"
+          lede="Personas named in each bank's own page copy and imagery, as a share of that bank's pages. Model-judged, not yet checked against a human."
+        >
+          <Personas banks={report.banks} />
+        </Section>
+
+        <Section
+          title="AI Score"
+          lede="Six independently-measured signals, 0-10, computed directly from the dictionary - no model opinion involved. A blank cell means no data, never a zero."
+        >
+          <AiScoreRadar banks={report.banks} axes={report.aiScoreAxes} focusKey={focusBank?.key ?? ""} />
+        </Section>
+
+        <Section
+          title="Cross-sell"
+          lede="Share of possible other products each bank cross-sells alongside its own, and which product pairs actually appear together."
+        >
+          <CrossSell banks={report.banks} matrix={report.crossSellMatrix} />
         </Section>
 
         {report.deckClaims.length > 0 && (
