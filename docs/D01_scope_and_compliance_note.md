@@ -5,7 +5,7 @@ compliance note" — banks/product/pages/language selected with justification,
 what was excluded and why, robots.txt/sitemap findings, and the "what we
 considered acceptable, and why" statement). Audience: both decks.
 
-Status: draft, based on what is actually in the repo today (15/09).
+Status: draft, based on what is actually in the repo as of 18/09 (19/09 weekend, before Day 6 gate).
 
 **sieg 18/09:** table below and the Argenta/Crelan/bunq bullet in section 4
 were still describing 15/09 while collection moved past them - all 9 banks
