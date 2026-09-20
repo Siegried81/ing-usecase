@@ -133,6 +133,9 @@ def post_recommendations(request: RecommendationRequest | None = None) -> dict:
 class SiteRequest(BaseModel):
     recommendation_ids: list[str] = Field(default_factory=list)
     language: str = "fr"
+    # Explained mode: each section that implements a recommendation is rendered
+    # with a glowing box and a note saying which one and why.
+    explain: bool = False
 
 
 @app.post("/api/site/generate")
@@ -164,7 +167,7 @@ def post_site_generate(request: SiteRequest) -> dict:
     def run() -> None:
         try:
             manifest = generate_site(
-                report, chosen, language=request.language,
+                report, chosen, language=request.language, explain=request.explain,
                 out_dir=SITE_DIR, on_progress=on_progress,
             )
             with _state_lock:

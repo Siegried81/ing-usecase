@@ -30,6 +30,7 @@ export function Recommendations({ report }: { report: Report }) {
   const [language, setLanguage] = useState("fr");
   const [site, setSite] = useState<SiteStatus | null>(null);
   const [includeTrends, setIncludeTrends] = useState(false);
+  const [explainSite, setExplainSite] = useState(false);
   const trendsAvailable = Boolean(report.trends?.available);
 
   useEffect(() => {
@@ -72,12 +73,12 @@ export function Recommendations({ report }: { report: Report }) {
   const onGenerateSite = useCallback(async () => {
     setError(null);
     try {
-      await generateSite([...selected], language);
+      await generateSite([...selected], language, explainSite);
       setSite(await fetchSiteStatus());
     } catch (e) {
       setError(String(e));
     }
-  }, [selected, language]);
+  }, [selected, language, explainSite]);
 
   const recommendations = useMemo(
     () =>
@@ -271,6 +272,18 @@ export function Recommendations({ report }: { report: Report }) {
                     <option value="en">English (en-BE)</option>
                   </select>
                 </label>
+                <label className="rec-explain">
+                  <input
+                    type="checkbox"
+                    checked={explainSite}
+                    disabled={generating}
+                    onChange={(e) => setExplainSite(e.target.checked)}
+                  />
+                  <span>
+                    Explain each section
+                    <small>Glowing box around every generated section, saying which recommendation it implements and why.</small>
+                  </span>
+                </label>
                 <button
                   className="btn-action"
                   onClick={onGenerateSite}
@@ -323,6 +336,7 @@ export function Recommendations({ report }: { report: Report }) {
                 {site?.manifest && (
                   <div className="muted-note" style={{ marginTop: 10 }}>
                     {site.manifest.locale} · {site.manifest.model}
+                    {site.manifest.explained && " · explained mode"}
                     {site.manifest.asset_warnings.length > 0 &&
                       ` · ${site.manifest.asset_warnings.length} asset(s) reused from cache`}
                   </div>

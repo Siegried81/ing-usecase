@@ -41,12 +41,13 @@ export async function generateRecommendations(
 export async function generateSite(
   recommendationIds: string[],
   language: string,
+  explain = false,
 ): Promise<{ status: string; total: number }> {
   return json(
     await fetch("/api/site/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recommendation_ids: recommendationIds, language }),
+      body: JSON.stringify({ recommendation_ids: recommendationIds, language, explain }),
     }),
   );
 }
