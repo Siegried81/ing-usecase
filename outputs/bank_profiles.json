@@ -1,6 +1,6 @@
 {
   "_scope": {
-    "product_family": null,
+    "product_family": "current_account_pack",
     "banks_included": [
       "argenta",
       "belfius",
@@ -67,9 +67,9 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 2.0,
         "persuasion_levers": [],
-        "lever_count": 0.0
+        "lever_count": null
       },
       "personas": [
         {
@@ -79,16 +79,16 @@
       ],
       "signature": [
         [
-          "formality_score",
-          1.9287583300279414
-        ],
-        [
           "animated_asset_count",
-          -1.7261893667062516
+          -1.8371173070873836
         ],
         [
           "has_animation",
-          -1.7261893667062516
+          -1.8371173070873836
+        ],
+        [
+          "aida_coverage_score",
+          -1.4359163172354763
         ]
       ]
     },
@@ -96,95 +96,80 @@
       "identity": {
         "bank": "belfius",
         "category": "traditional",
-        "pages_analysed": 3,
+        "pages_analysed": 1,
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-18 13:45:23.503764+00:00",
+        "captured": "2026-09-19 10:52:25.835049+00:00",
         "data_source": "real"
       },
       "palette": {
         "dominant_colour": "#ffffff",
-        "brand_colour_share": 0.033,
+        "brand_colour_share": 0.069,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
-          "imagery",
-          "text"
+          "text",
+          "background"
         ],
-        "background_luminance": 0.7596666666666666
+        "background_luminance": 0.842
       },
       "imagery": {
-        "image_count": 24.666666666666668,
+        "image_count": 18.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
         "animated": 1.0,
         "image_area_share": null
       },
       "layout": {
-        "archetype": "hero_stacked",
+        "archetype": "split_columns",
         "hero_image": 1.0,
-        "text_image_layout": "overlaid",
+        "text_image_layout": "beside",
         "page_height_px": null,
-        "cta_count": 7.666666666666667,
+        "cta_count": 5.0,
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 2068.3333333333335,
+        "word_count": 1728.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
-        "second_person_ratio": 0.707,
+        "formality_score": 4.0,
+        "second_person_ratio": 0.722,
         "urgency_markers": 0.0
       },
       "value_proposition": {
         "primary_product": "Comptes de paiement Beats (Beats Pulse, Beats New, Beats Star)",
-        "rate_shown": 0.3333333333333333,
-        "rate_prominence": "absent",
-        "benefit_framing": "mixed",
-        "fab_level": "benefit"
+        "rate_shown": 0.0,
+        "rate_prominence": "below_fold",
+        "benefit_framing": "rational",
+        "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
-        "persuasion_levers": [
-          "liking",
-          "social_proof"
-        ],
-        "lever_count": 0.6666666666666666
+        "aida_coverage": 4.0,
+        "persuasion_levers": [],
+        "lever_count": null
       },
       "personas": [
         {
-          "persona": "retiree",
-          "share": 0.6666666666666666
-        },
-        {
           "persona": "student",
-          "share": 0.6666666666666666
+          "share": 1.0
         },
         {
           "persona": "mass_market",
-          "share": 0.6666666666666666
-        },
-        {
-          "persona": "family",
-          "share": 0.3333333333333333
-        },
-        {
-          "persona": "investor",
-          "share": 0.3333333333333333
+          "share": 1.0
         }
       ],
       "signature": [
         [
-          "senior_preretirement_targeting",
-          2.8284271247461903
-        ],
-        [
           "clarity_score",
-          -2.474873734152916
+          -2.1931556047962752
         ],
         [
           "has_comparison_table",
-          1.6599023536849915
+          1.8371173070873836
+        ],
+        [
+          "value_prop_clarity",
+          -1.162448353103673
         ]
       ]
     },
@@ -192,61 +177,59 @@
       "identity": {
         "bank": "bnp_paribas_fortis",
         "category": "traditional",
-        "pages_analysed": 2,
+        "pages_analysed": 1,
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-18 13:39:51.889997+00:00",
+        "captured": "2026-09-18 13:39:51.951242+00:00",
         "data_source": "real"
       },
       "palette": {
-        "dominant_colour": "#a3ad9e",
+        "dominant_colour": "#ffffff",
         "brand_colour_share": 0.002,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
-          "text",
-          "imagery"
+          "text"
         ],
-        "background_luminance": 0.794
+        "background_luminance": 0.97
       },
       "imagery": {
-        "image_count": 18.5,
+        "image_count": 17.0,
         "dominant_image_type": "illustration",
-        "people_present": 0.5,
+        "people_present": 0.0,
         "animated": 0.0,
         "image_area_share": null
       },
       "layout": {
-        "archetype": "hero_stacked",
+        "archetype": "split_columns",
         "hero_image": 1.0,
-        "text_image_layout": "overlaid",
+        "text_image_layout": null,
         "page_height_px": null,
-        "cta_count": 16.5,
+        "cta_count": 23.0,
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 2685.5,
+        "word_count": 2199.0,
         "readability_band": "hard",
-        "formality_score": 3.5,
-        "second_person_ratio": 0.6285000000000001,
+        "formality_score": 4.0,
+        "second_person_ratio": 0.576,
         "urgency_markers": 1.0
       },
       "value_proposition": {
         "primary_product": "Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack)",
         "rate_shown": 0.0,
-        "rate_prominence": "absent",
+        "rate_prominence": "hero",
         "benefit_framing": "rational",
-        "fab_level": "advantage"
+        "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 2.0,
         "persuasion_levers": [
           "liking",
-          "commitment",
-          "reciprocity"
+          "commitment"
         ],
-        "lever_count": 2.5
+        "lever_count": 2.0
       },
       "personas": [
         {
@@ -255,21 +238,21 @@
         },
         {
           "persona": "student",
-          "share": 0.5
+          "share": 1.0
         }
       ],
       "signature": [
         [
-          "green_product_specific_benefit",
-          2.8284271247461903
+          "animated_asset_count",
+          -1.8371173070873836
         ],
         [
           "has_animation",
-          -1.7261893667062516
+          -1.8371173070873836
         ],
         [
-          "animated_asset_count",
-          -1.7261893667062516
+          "aida_coverage_score",
+          -1.4359163172354763
         ]
       ]
     },
@@ -324,7 +307,7 @@
         "fab_level": "benefit"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 4.0,
         "persuasion_levers": [
           "liking",
           "social_proof",
@@ -352,16 +335,16 @@
       ],
       "signature": [
         [
-          "first_time_investor_targeting",
-          2.8284271247461903
-        ],
-        [
           "cta_above_fold",
           2.8284271247461903
         ],
         [
-          "fast_digital_onboarding_claim",
-          2.3929903315299907
+          "first_time_investor_targeting",
+          2.8284271247461903
+        ],
+        [
+          "formality_score",
+          -2.070627924084866
         ]
       ]
     },
@@ -417,7 +400,7 @@
         "fab_level": "benefit"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 3.0,
         "persuasion_levers": [
           "liking"
         ],
@@ -439,16 +422,16 @@
       ],
       "signature": [
         [
-          "cta_count",
-          2.5602442658074103
+          "question_count",
+          2.598535186976965
         ],
         [
-          "question_count",
-          2.4868319542725836
+          "cta_count",
+          2.3852788253539683
         ],
         [
           "image_count",
-          1.9558656425078016
+          1.8635465800132711
         ]
       ]
     },
@@ -456,7 +439,7 @@
       "identity": {
         "bank": "ing",
         "category": "traditional",
-        "pages_analysed": 6,
+        "pages_analysed": 4,
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": true,
@@ -465,7 +448,7 @@
       },
       "palette": {
         "dominant_colour": "#050505",
-        "brand_colour_share": 0.06266666666666666,
+        "brand_colour_share": 0.094,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "icons",
@@ -474,81 +457,81 @@
           "imagery",
           "text"
         ],
-        "background_luminance": 0.16916666666666666
+        "background_luminance": 0.19775
       },
       "imagery": {
-        "image_count": 36.333333333333336,
+        "image_count": 32.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.5,
+        "animated": 0.75,
         "image_area_share": null
       },
       "layout": {
         "archetype": "hero_stacked",
         "hero_image": 1.0,
-        "text_image_layout": "stacked",
+        "text_image_layout": "beside",
         "page_height_px": null,
-        "cta_count": 5.333333333333333,
+        "cta_count": 5.5,
         "cta_above_fold": 0.0
       },
       "tone": {
         "word_count": null,
         "readability_band": "hard",
-        "formality_score": 2.75,
+        "formality_score": 3.25,
         "second_person_ratio": null,
-        "urgency_markers": 2.8333333333333335
+        "urgency_markers": 3.5
       },
       "value_proposition": {
         "primary_product": "Compte professionnel",
         "rate_shown": 0.0,
         "rate_prominence": "below_fold",
-        "benefit_framing": "emotional",
+        "benefit_framing": "mixed",
         "fab_level": "benefit"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 3.5,
         "persuasion_levers": [
+          "social_proof",
           "reciprocity",
           "scarcity",
-          "social_proof",
           "authority"
         ],
-        "lever_count": 2.1666666666666665
+        "lever_count": 3.5
       },
       "personas": [
         {
           "persona": "mass_market",
-          "share": 0.8333333333333334
+          "share": 0.75
         },
         {
           "persona": "expat",
-          "share": 0.3333333333333333
+          "share": 0.5
         },
         {
           "persona": "student",
-          "share": 0.3333333333333333
+          "share": 0.5
         },
         {
           "persona": "family",
-          "share": 0.3333333333333333
+          "share": 0.25
         },
         {
           "persona": "entrepreneur_self_employed",
-          "share": 0.16666666666666666
+          "share": 0.25
         }
       ],
       "signature": [
         [
           "urgency_marker_count",
-          1.485221778299456
+          1.792068760388986
+        ],
+        [
+          "fast_digital_onboarding_claim",
+          1.2774403257689901
         ],
         [
           "background_luminance",
-          -1.0772332209390838
-        ],
-        [
-          "rate_shown",
-          -0.9473729613780997
+          -1.031390137078688
         ]
       ]
     },
@@ -556,30 +539,29 @@
       "identity": {
         "bank": "kbc",
         "category": "traditional",
-        "pages_analysed": 5,
+        "pages_analysed": 3,
         "product_family": "current_account_pack",
-        "language": "fr",
+        "language": "en",
         "mixed_language": true,
         "captured": "2026-09-18 13:39:50.988793+00:00",
         "data_source": "real"
       },
       "palette": {
         "dominant_colour": "#ffffff",
-        "brand_colour_share": 0.00275,
+        "brand_colour_share": 0.0026666666666666666,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
-          "background",
           "imagery",
           "icons"
         ],
-        "background_luminance": 0.87325
+        "background_luminance": 0.8603333333333333
       },
       "imagery": {
-        "image_count": 10.4,
+        "image_count": 6.666666666666667,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.8,
+        "animated": 1.0,
         "image_area_share": 0.042
       },
       "layout": {
@@ -587,61 +569,49 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3841.0,
-        "cta_count": 6.8,
+        "cta_count": 7.333333333333333,
         "cta_above_fold": 0.0
       },
       "tone": {
         "word_count": null,
         "readability_band": "very_hard",
-        "formality_score": 2.5,
+        "formality_score": 3.0,
         "second_person_ratio": null,
-        "urgency_markers": 0.2
+        "urgency_markers": 0.3333333333333333
       },
       "value_proposition": {
         "primary_product": "Compte Base KBC",
-        "rate_shown": 0.4,
+        "rate_shown": 0.0,
         "rate_prominence": "above_fold",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 3.0,
         "persuasion_levers": [
           "authority",
           "liking"
         ],
-        "lever_count": 0.8
+        "lever_count": 2.0
       },
       "personas": [
         {
           "persona": "mass_market",
           "share": 1.0
-        },
-        {
-          "persona": "family",
-          "share": 0.4
-        },
-        {
-          "persona": "student",
-          "share": 0.2
-        },
-        {
-          "persona": "retiree",
-          "share": 0.2
         }
       ],
       "signature": [
         [
-          "mentions_loyalty_or_referral",
-          2.82842712474619
-        ],
-        [
           "is_bundled_offer",
-          -2.048792924517372
+          -2.185957248188786
         ],
         [
           "has_comparison_table",
-          1.4149987277314682
+          1.8371173070873836
+        ],
+        [
+          "images_have_alt_text",
+          1.4142135623730951
         ]
       ]
     },
@@ -649,7 +619,7 @@
       "identity": {
         "bank": "n26",
         "category": "challenger",
-        "pages_analysed": 3,
+        "pages_analysed": 2,
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
@@ -658,85 +628,86 @@
       },
       "palette": {
         "dominant_colour": "#088177",
-        "brand_colour_share": 0.2926666666666667,
+        "brand_colour_share": 0.2455,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "background",
-          "imagery"
+          "imagery",
+          "buttons"
         ],
-        "background_luminance": 0.5606666666666666
+        "background_luminance": 0.6735
       },
       "imagery": {
-        "image_count": 65.66666666666667,
+        "image_count": 72.5,
         "dominant_image_type": "illustration",
-        "people_present": 0.3333333333333333,
+        "people_present": 0.0,
         "animated": 1.0,
         "image_area_share": null
       },
       "layout": {
-        "archetype": "split_columns",
+        "archetype": "card_grid",
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": null,
-        "cta_count": 8.0,
+        "cta_count": 4.5,
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 2329.0,
+        "word_count": 2153.5,
         "readability_band": "hard",
-        "formality_score": 3.0,
-        "second_person_ratio": 0.934,
-        "urgency_markers": 1.0
+        "formality_score": 4.0,
+        "second_person_ratio": 0.929,
+        "urgency_markers": 1.5
       },
       "value_proposition": {
         "primary_product": "Business Standard",
-        "rate_shown": 0.6666666666666666,
+        "rate_shown": 0.5,
         "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "advantage"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 2.5,
         "persuasion_levers": [
-          "authority",
-          "reciprocity"
+          "reciprocity",
+          "authority"
         ],
-        "lever_count": 0.6666666666666666
+        "lever_count": 1.5
       },
       "personas": [
+        {
+          "persona": "student",
+          "share": 1.0
+        },
+        {
+          "persona": "expat",
+          "share": 1.0
+        },
         {
           "persona": "mass_market",
           "share": 1.0
         },
         {
-          "persona": "student",
-          "share": 0.6666666666666666
-        },
-        {
-          "persona": "expat",
-          "share": 0.6666666666666666
-        },
-        {
           "persona": "digital_nomad",
-          "share": 0.3333333333333333
+          "share": 0.5
         },
         {
           "persona": "entrepreneur_self_employed",
-          "share": 0.3333333333333333
+          "share": 0.5
         }
       ],
       "signature": [
         [
+          "hidden_conditions_behind_free_claim",
+          2.7400387770978716
+        ],
+        [
           "numeric_claim_count",
-          2.7806077489493335
+          2.7313647656930296
         ],
         [
           "brand_colour_share",
-          2.756375108564878
-        ],
-        [
-          "hidden_conditions_behind_free_claim",
-          2.3951281708646324
+          2.557812175103083
         ]
       ]
     },
@@ -790,7 +761,7 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 4.0,
         "persuasion_levers": [
           "social_proof",
           "authority",
@@ -819,15 +790,15 @@
       "signature": [
         [
           "subscription_style_framing",
-          2.6736956911078438
+          2.5000000000000004
         ],
         [
           "institutional_trust_signal_present",
-          2.651650429449553
+          2.450947338712698
         ],
         [
           "value_prop_clarity",
-          -2.4903579753096317
+          -2.1831347119264097
         ]
       ]
     }

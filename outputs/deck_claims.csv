@@ -1,6 +1,6 @@
 id,bank,claim,feature,verdict,evidence
 H1,belfius,Belfius is pretty verbose,word_count_band,not supported,belfius='long'; highest is argenta='long'
 H2,kbc,KBC is straight to the point,word_count_band,not supported,kbc='long'; lowest traditional is argenta='long'
-H3,ing,ING is the only traditional bank using animation,has_animation,not supported,"ing=0.50; other traditional banks above zero: ['crelan', 'kbc', 'belfius']"
-H4,ing,ING no longer places text next to picture,text_image_layout,supported,ing's most common text_image_layout: 'stacked' (claim: not 'beside')
+H3,ing,ING is the only traditional bank using animation,has_animation,not supported,"ing=0.75; other traditional banks above zero: ['crelan', 'kbc', 'belfius']"
+H4,ing,ING no longer places text next to picture,text_image_layout,not supported,ing's most common text_image_layout: 'beside' (claim: not 'beside')
 H5,revolut,Revolut uses very little text,word_count_band,not supported,revolut='long'; lowest is argenta='long'
