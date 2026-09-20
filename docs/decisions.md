@@ -158,11 +158,20 @@ non-blocking flag to Dan and Stephane.**
    mostly be empty cells. Kept as a single standalone lookup function instead
    of building a pipeline/chart around data most banks don't have. The brief's
    own text already called Finnhub low-value for this project.
-6. `comparator/research.py` (Semantic Scholar, keyless at low volume) - also
-   not wired into the pipeline. The brief names this "Optionnel" and never
-   defines a per-bank metric to compute from academic papers, so this stays a
-   standalone `search_papers()` helper for whoever is writing the business
-   narrative, rather than invented scope with no defined output.
+6. `comparator/research.py` (Semantic Scholar, keyless at low volume) - not
+   wired into the analysis pipeline or report.json. The brief names this
+   "Optionnel" and never defines a per-bank metric to compute from academic
+   papers, so this stays a `search_papers()` helper rather than invented
+   scope with no defined output.
+
+   **sieg 20/09, updated per Siegried's explicit request** ("branche le",
+   not "laisse tomber" as I'd recommended): wired into a new Research page
+   in `streamlit_app.py` - a manual search box for whoever is writing the
+   business narrative, run on demand. Still no per-bank metric, still not
+   in `report.json` or the FastAPI/React UI: the risk being avoided was
+   never "showing search results," it was auto-generating an unreviewed
+   feature-to-paper match and presenting it as evidence. A human typing a
+   query and reading the results is a different, lower-risk thing.
 
 Scraping additional channels (LinkedIn/Instagram/YouTube) and sentiment
 analysis (Reddit/App Store/FinBERT) from the same brief were explicitly
@@ -264,3 +273,28 @@ positioning score, AI Score digital axis, urgency/persuasion/onboarding gaps)
 were re-verified against the regenerated `report.json` and three more stale
 figures were caught and corrected in the same pass (unrelated to this bug -
 the dataset had moved since those lines were first drafted).
+
+**Correction to the paragraph above, same day.** "Full web report
+regenerated" was not actually true. `scripts/export_web_report.py` defaults
+to `data/processed/campaigns_scored.csv` (the rubric-merged dataset,
+produced by `scripts/rubric_sheet.py merge`), not `campaigns.csv` -
+`run_analysis.py` defaults to the latter, so I had been regenerating
+`outputs/*.csv` correctly all along, but every `export_web_report.py` run
+this session silently kept reading a `campaigns_scored.csv` last merged
+19/09 18:26, **before** the rate fix - `web/public/report.json` and the
+recommendations built from it still had the old bug the whole time. Found
+because Siegried spotted the web UI's footer crediting `campaigns_scored.csv`
+and its timestamp didn't line up. Fixed by re-running
+`scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv` (which
+non-obviously has to happen after ANY change to `campaigns.csv`, rubric
+scores or not, or the merged file silently drifts from it) and then
+`export_web_report.py` again. ING's positioning score moved again as a
+result: 0.437 (my previous, still-stale number) -> **0.362** (the real one).
+`docs/D06_business_narrative.md` corrected a second time for this -
+`persuasion_lever_count`'s numbers and the AI Score `digital` axis also
+moved (3.67/2.17/+2.18 -> 3.5/2.08/+1.94; 8.2 -> 8.8 respectively).
+
+Lesson for next time a dataset-affecting fix lands: **both**
+`run_analysis.py` **and** `rubric_sheet.py merge` (then
+`export_web_report.py`) need a re-run - they read different files, and only
+running one silently leaves the other's output behind.

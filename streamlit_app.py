@@ -1,7 +1,7 @@
 """Banking Campaigns Comparator — Streamlit dashboard.
 
 Covers the whole repo: analysis, profiles, rubric, collection, data,
-limitations, and trends. Built for share.streamlit.io deployment.
+limitations, trends, and research. Built for share.streamlit.io deployment.
 
 Dependencies: streamlit, pandas, pyyaml, requests (see requirements-streamlit.txt)
 
@@ -12,13 +12,29 @@ Usage:
 from __future__ import annotations
 
 import json
+import sys
 from pathlib import Path
 
 import pandas as pd
 import streamlit as st
 import yaml
+from dotenv import load_dotenv
 
 REPO = Path(__file__).resolve().parent
+
+# sieg 20/09: this file lives at the repo root (for share.streamlit.io, which
+# needs a top-level entry point), so `comparator` isn't importable without
+# putting src/ on the path first - same technique as scripts/_bootstrap.py.
+sys.path.insert(0, str(REPO / "src"))
+from comparator import research  # noqa: E402
+
+# sieg 20/09: the Research page reads SEMANTIC_SCHOLAR_API_KEY via os.getenv()
+# inside research.search_papers() - without this, a real local .env key was
+# silently never read when running `streamlit run streamlit_app.py` directly
+# (every other entry point loads .env via scripts/_bootstrap.py; this file has
+# no equivalent). No-ops harmlessly if .env doesn't exist (e.g. on Streamlit
+# Community Cloud, which uses its own secrets mechanism instead).
+load_dotenv(REPO / ".env")
 DATA = REPO / "data" / "processed"
 OUTPUTS = REPO / "outputs"
 RUBRIC = REPO / "data" / "rubric"
@@ -186,7 +202,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         st.caption("0 = traditional centroid, 1 = challenger centroid. Computed from real captures.")
         png = OUTPUTS / "01_positioning.png"
         if png.is_file():
-            st.image(str(png), use_column_width=True)  # sieg 20/09: st.image() on the pinned streamlit==1.38.0 doesn't have use_container_width yet
+            st.image(str(png), width="stretch")  # sieg 20/09: use_column_width deprecated as of streamlit 1.54.0 (dependabot bump) - width="stretch" is its replacement
         else:
             st.info("`outputs/01_positioning.png` not found. Run `python3 scripts/run_analysis.py`.")
 
@@ -292,7 +308,7 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
         pngs = list(bank_dir.glob("*.png"))
         if pngs:
             st.subheader("Capture")
-            st.image(str(pngs[0]), caption=f"{pngs[0].name}", use_column_width=True)  # sieg 20/09: see note above
+            st.image(str(pngs[0]), caption=f"{pngs[0].name}", width="stretch")  # sieg 20/09: see note above
 
 
 # ── page 4: Rubric ───────────────────────────────────────────────────────
@@ -461,6 +477,46 @@ def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
         st.info("No kbc-ing-benchmark/export found in this repo checkout.")
 
 
+# ── page 9: Research ─────────────────────────────────────────────────────
+
+def page_research(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
+    # sieg 20/09: wires comparator/research.py into the dashboard. Deliberately
+    # not a per-bank metric or an automatic per-insight citation - the module's
+    # own docstring explains why (no defined metric, would be inventing scope).
+    # This stays what the module was built for: an on-demand search box for
+    # whoever is writing the business narrative.
+    st.title("📚 Research")
+    st.caption(
+        "Semantic Scholar paper search, for sourcing claims in the business narrative. "
+        "Works without an API key at low volume; a key in `SEMANTIC_SCHOLAR_API_KEY` "
+        "only raises the rate limit, it does not unlock the feature."
+    )
+
+    col1, col2 = st.columns([4, 1])
+    with col1:
+        query = st.text_input("Search query", placeholder="e.g. cross-selling retail banking")
+    with col2:
+        limit = st.number_input("Max results", min_value=1, max_value=20, value=5)
+
+    if st.button("Search", disabled=not query.strip()):
+        with st.spinner("Searching Semantic Scholar…"):
+            papers = research.search_papers(query.strip(), limit=int(limit))
+        if not papers:
+            st.info(
+                "No papers returned. Either nothing matched, or the request was "
+                "rate-limited (Semantic Scholar's public access without an API key "
+                "has a low limit) - try again in a moment."
+            )
+        for p in papers:
+            title = p.get("title") or "(untitled)"
+            year = f" ({p['year']})" if p.get("year") else ""
+            st.markdown(f"**[{title}]({p['url']}){year}**" if p.get("url") else f"**{title}{year}**")
+            if p.get("abstract"):
+                abstract = p["abstract"]
+                st.caption(abstract[:400] + ("…" if len(abstract) > 400 else ""))
+            st.divider()
+
+
 # ── main ─────────────────────────────────────────────────────────────────
 
 def main() -> None:
@@ -481,6 +537,7 @@ def main() -> None:
         "⚠️ Limitations": page_limitations,
         "🕷️ Collection": page_collection,
         "📈 Trends": page_trends,
+        "📚 Research": page_research,
     }
     choice = st.sidebar.radio("Pages", list(pages.keys()))
 

@@ -18,11 +18,14 @@ grew from 7 banks / 2 per group to 9 banks including Belfius, and a
 scraper bug in `rate_value_pct` was found and fixed on 20/09 (it was matching
 the first "N%" on a page — e.g. "100% en ligne" — instead of an actual rate;
 see `docs/decisions.md`). The traditional↔challenger score for ING moved from
-0.08 (16/09, 7 banks) to 0.45 (19/09, 9 banks, more features) to **0.437**
-(20/09, same 9 banks, after the rate-field fix). None of the old draft's
-numbers are wrong for the run they described — they simply describe an
-earlier, smaller or less accurate dataset. This version replaces them rather
-than reconciling them line by line.
+0.08 (16/09, 7 banks) to 0.45 (19/09, 9 banks, more features) to **0.362**
+(20/09, same 9 banks, after the rate-field fix and re-merging the rubric
+scores the fix hadn't reached yet — `scripts/rubric_sheet.py merge` has to
+re-run after any change to `campaigns.csv`, not just `run_analysis.py`, or
+`campaigns_scored.csv` and the web report stay on the older numbers). None of
+the old draft's numbers are wrong for the run they described — they simply
+describe an earlier, smaller or less accurate dataset. This version replaces
+them rather than reconciling them line by line.
 
 ---
 
@@ -56,8 +59,8 @@ over with a false "winner".
 ## 2. ING's page is the most urgent and the most persuasion-heavy in the set
 
 ING's `urgency_marker_count` is 3.5 against a peer mean of 1.10 (+2.46 SD) —
-the largest gap of any measured feature. Its `persuasion_lever_count` (3.67
-vs peer mean 2.17, +2.18 SD) is the second-largest — this one is rubric-
+the largest gap of any measured feature. Its `persuasion_lever_count` (3.5
+vs peer mean 2.08, +1.94 SD) is the second-largest — this one is rubric-
 sourced and currently reflects Siegried's ratings only (Dan and Stephane are
 still at 0/23, see the Status table), so treat the peer mean as one rater's
 view, not a settled average. ING also claims fast digital onboarding at 0.75
@@ -77,7 +80,7 @@ ING's `background_luminance` is 0.198 against a peer mean of 0.591 (-1.17
 SD) — a visibly dark page for a traditional bank, whose peers run close to
 white. On the AI Score axes (six signals, 0-10, each a mean of already-
 measured features — see the Analysis tab for the exact formulas), ING scores
-**digital 8.2** and **cross-sell 10.0** (every page pushes a bundled offer)
+**digital 8.8** and **cross-sell 10.0** (every page pushes a bundled offer)
 but **trust 0.8** — the lowest of the six axes by a wide margin, next to
 **simplicity 2.5** and **innovation 3.8**.
 
@@ -143,7 +146,7 @@ communication content — it says nothing about *what* a page argues, only
 matching their known regional roots is a sanity check on the pipeline, not a
 discovery on its own. ING breaking that pattern, in the same direction as
 every challenger in the set, is the one region-level result that lines up
-with the overall traditional↔challenger positioning score (0.437, "leaning
+with the overall traditional↔challenger positioning score (0.362, "leaning
 towards the challengers") from a completely independent measurement. Worth
 noting in the room as a second signal pointing the same way, not proof of
 anything by itself — the same "context, never an outcome" rule the existing

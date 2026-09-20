@@ -19,6 +19,7 @@ from comparator.collection.llm_extractor import LLMExtractionError  # noqa: E402
 from comparator.recommendations import (  # noqa: E402
     Recommendation,
     RecommendationSet,
+    _digest,
     build_recommendations,
     parse_response,
     select,
@@ -64,6 +65,23 @@ _RAW = json.dumps({
          "recommendation": "Add two more CTAs", "features": ["cta_count"], "page_targets": ["index"]},
     ],
 })
+
+
+def test_digest_rounds_long_floats_before_they_reach_the_model():
+    # sieg 20/09: regression test - a real report's raw float (e.g.
+    # 0.5912291666666667) must not reach the prompt at full precision, since
+    # the model was copying it verbatim into recommendation prose.
+    report = {
+        **_REPORT,
+        "peerGaps": [{"feature": "background_luminance", "label": "Page brightness",
+                      "focusValue": 0.19775, "peerMean": 0.5912291666666667,
+                      "gapSd": -1.1666666666, "direction": "below", "extraction": "automatic"}],
+    }
+    digest = json.loads(_digest(report))
+    gap = digest["focus_gaps_vs_peers"][0]
+    assert gap["peer_mean"] == 0.59
+    assert gap["gap_sd"] == -1.17
+    assert gap["focus_value"] == 0.2
 
 
 def test_parse_response_accepts_a_json_fence():

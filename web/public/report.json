@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-20T06:14:40+00:00",
+  "generated_at": "2026-09-20T11:24:34+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -36,79 +36,79 @@
       "fr",
       "nl"
     ],
-    "captured_from": null,
-    "captured_to": null,
+    "captured_from": "2026-09-18T13:39:50.769576+00:00",
+    "captured_to": "2026-09-19T10:52:25.835049+00:00",
     "total_collected": 23,
-    "n_features": 30
+    "n_features": 27
   },
   "headline": {
     "focus": "ING",
-    "score": 0.437,
+    "score": 0.362,
     "verdict": "traditional, but leaning towards the challengers",
     "has_focus": true
   },
   "positioning": [
     {
-      "bank": "Argenta",
-      "key": "argenta",
-      "category": "traditional",
-      "score": -0.242,
-      "isFocus": false
-    },
-    {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": -0.181,
+      "score": -0.157,
       "isFocus": false
     },
     {
-      "bank": "Crelan",
-      "key": "crelan",
+      "bank": "Argenta",
+      "key": "argenta",
       "category": "traditional",
-      "score": -0.07,
+      "score": -0.127,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": -0.002,
+      "score": -0.063,
+      "isFocus": false
+    },
+    {
+      "bank": "Crelan",
+      "key": "crelan",
+      "category": "traditional",
+      "score": -0.037,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.059,
+      "score": 0.022,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.437,
+      "score": 0.362,
       "isFocus": true
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.87,
+      "score": 0.932,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.004,
+      "score": 0.977,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.126,
+      "score": 1.091,
       "isFocus": false
     }
   ],
@@ -128,9 +128,9 @@
       "label": "Persuasion techniques used",
       "dimension": "marketing_principles",
       "extraction": "rubric",
-      "focusValue": 3.6666666666666665,
-      "peerMean": 2.1666666666666665,
-      "gapSd": 2.18,
+      "focusValue": 3.5,
+      "peerMean": 2.0833333333333335,
+      "gapSd": 1.94,
       "direction": "above"
     },
     {
@@ -154,26 +154,6 @@
       "direction": "below"
     },
     {
-      "feature": "value_prop_clarity",
-      "label": "Clarity of the offer",
-      "dimension": "topics_value_prop",
-      "extraction": "rubric",
-      "focusValue": 5.0,
-      "peerMean": 4.0,
-      "gapSd": 1.0,
-      "direction": "above"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "dimension": "layout_structure",
-      "extraction": "rubric",
-      "focusValue": 0.6666666666666666,
-      "peerMean": 0.25,
-      "gapSd": 0.96,
-      "direction": "above"
-    },
-    {
       "feature": "people_present",
       "label": "People present",
       "dimension": "visuals",
@@ -194,6 +174,16 @@
       "direction": "below"
     },
     {
+      "feature": "rate_shown",
+      "label": "Shows a rate",
+      "dimension": "topics_value_prop",
+      "extraction": "automatic",
+      "focusValue": 0.0,
+      "peerMean": 0.3125,
+      "gapSd": -0.73,
+      "direction": "below"
+    },
+    {
       "feature": "cta_count",
       "label": "Calls to action",
       "dimension": "layout_structure",
@@ -202,6 +192,16 @@
       "peerMean": 14.479166666666668,
       "gapSd": -0.73,
       "direction": "below"
+    },
+    {
+      "feature": "value_prop_clarity",
+      "label": "Clarity of the offer",
+      "dimension": "topics_value_prop",
+      "extraction": "rubric",
+      "focusValue": 4.75,
+      "peerMean": 4.0625,
+      "gapSd": 0.68,
+      "direction": "above"
     },
     {
       "feature": "brand_colour_share",
@@ -221,14 +221,6 @@
     },
     {
       "label": "Distinct accent colours",
-      "note": "every peer has the same value - no spread to measure against"
-    },
-    {
-      "label": "Gives a reason to keep reading",
-      "note": "every peer has the same value - no spread to measure against"
-    },
-    {
-      "label": "Has an unmistakable next step",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -254,13 +246,13 @@
   ],
   "separation": [
     {
-      "feature": "rate_value_pct",
-      "label": "Headline rate",
+      "feature": "rate_shown",
+      "label": "Shows a rate",
       "extraction": "automatic",
-      "traditional": 85.0,
-      "challenger": 1.0274999999999999,
-      "effect": -2.89,
-      "higherAt": "traditional"
+      "traditional": 0.0,
+      "challenger": 0.75,
+      "effect": 3.12,
+      "higherAt": "challenger"
     },
     {
       "feature": "expat_cross_border_targeting",
@@ -299,8 +291,8 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "institutional_trust_signal_present",
-      "label": "Invokes institutional trust",
+      "feature": "hidden_conditions_behind_free_claim",
+      "label": "“Free” with conditions attached",
       "extraction": "model_assisted",
       "traditional": 0.09090909090909091,
       "challenger": 0.5,
@@ -308,8 +300,8 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "hidden_conditions_behind_free_claim",
-      "label": "“Free” with conditions attached",
+      "feature": "institutional_trust_signal_present",
+      "label": "Invokes institutional trust",
       "extraction": "model_assisted",
       "traditional": 0.09090909090909091,
       "challenger": 0.5,
@@ -335,13 +327,13 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "rate_shown",
-      "label": "Shows a rate",
+      "feature": "has_comparison_table",
+      "label": "Includes a comparison table",
       "extraction": "automatic",
-      "traditional": 0.5454545454545454,
-      "challenger": 1.0,
-      "effect": 0.99,
-      "higherAt": "challenger"
+      "traditional": 0.45454545454545453,
+      "challenger": 0.0,
+      "effect": -0.99,
+      "higherAt": "traditional"
     }
   ],
   "banks": [
@@ -352,8 +344,8 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Makes the offer feel worth having",
-          "sd": -1.9,
+          "label": "Animated elements",
+          "sd": -1.8,
           "direction": "below"
         },
         {
@@ -362,8 +354,8 @@
           "direction": "below"
         },
         {
-          "label": "Animated elements",
-          "sd": -1.8,
+          "label": "Campaign structure completeness (AIDA)",
+          "sd": -1.4,
           "direction": "below"
         }
       ],
@@ -414,7 +406,7 @@
         }
       ],
       "aiScore": {
-        "digital": 3.3,
+        "digital": 5.0,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -440,9 +432,9 @@
           "direction": "above"
         },
         {
-          "label": "Opens with something that stops the reader",
-          "sd": 1.4,
-          "direction": "above"
+          "label": "Clarity of the offer",
+          "sd": -1.2,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -497,7 +489,7 @@
         }
       ],
       "aiScore": {
-        "digital": 3.3,
+        "digital": 5.0,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
@@ -513,8 +505,8 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Makes the offer feel worth having",
-          "sd": -1.9,
+          "label": "Animated elements",
+          "sd": -1.8,
           "direction": "below"
         },
         {
@@ -523,8 +515,8 @@
           "direction": "below"
         },
         {
-          "label": "Animated elements",
-          "sd": -1.8,
+          "label": "Campaign structure completeness (AIDA)",
+          "sd": -1.4,
           "direction": "below"
         }
       ],
@@ -552,7 +544,7 @@
       },
       "valueProposition": {
         "Primary product": "Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack)",
-        "Shows a rate": 1.0,
+        "Shows a rate": 0.0,
         "How prominently the rate is shown": "hero",
         "Benefit framing": "rational",
         "Fab level": "feature"
@@ -583,7 +575,7 @@
         }
       ],
       "aiScore": {
-        "digital": 3.3,
+        "digital": 5.0,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
@@ -599,18 +591,18 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Targets first-time investors",
-          "sd": 2.8,
-          "direction": "above"
-        },
-        {
           "label": "Call to action visible without scrolling",
           "sd": 2.8,
           "direction": "above"
         },
         {
+          "label": "Targets first-time investors",
+          "sd": 2.8,
+          "direction": "above"
+        },
+        {
           "label": "Formality of tone",
-          "sd": -2.2,
+          "sd": -2.1,
           "direction": "below"
         }
       ],
@@ -770,7 +762,7 @@
         }
       ],
       "aiScore": {
-        "digital": 3.3,
+        "digital": 5.0,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 3.8,
@@ -825,7 +817,7 @@
       },
       "valueProposition": {
         "Primary product": "Compte professionnel",
-        "Shows a rate": 0.5,
+        "Shows a rate": 0.0,
         "How prominently the rate is shown": "below_fold",
         "Benefit framing": "mixed",
         "Fab level": "benefit"
@@ -836,14 +828,14 @@
         "backgroundLuminance": 0.19775
       },
       "marketing": {
-        "Aida coverage": 3.3333333333333335,
+        "Aida coverage": 3.5,
         "Persuasion levers": [
           "social_proof",
           "reciprocity",
           "scarcity",
           "authority"
         ],
-        "Lever count": 3.6666666666666665
+        "Lever count": 3.5
       },
       "personas": [
         {
@@ -873,7 +865,7 @@
         }
       ],
       "aiScore": {
-        "digital": 8.2,
+        "digital": 8.8,
         "trust": 0.8,
         "cross_sell": 10.0,
         "personalisation": 6.2,
@@ -907,7 +899,7 @@
       "tone": {
         "Words on the page": null,
         "Readability band": "very_hard",
-        "Formality of tone": 3.3333333333333335,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": null,
         "Urgency markers": 0.3333333333333333
       },
@@ -928,7 +920,7 @@
       },
       "valueProposition": {
         "Primary product": "Compte Base KBC",
-        "Shows a rate": 1.0,
+        "Shows a rate": 0.0,
         "How prominently the rate is shown": "above_fold",
         "Benefit framing": "rational",
         "Fab level": "feature"
@@ -954,7 +946,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 6.7,
         "trust": 0.0,
         "cross_sell": 3.3,
         "personalisation": 1.2,
@@ -1000,7 +992,7 @@
         "Image area share": null
       },
       "layout": {
-        "Archetype": "split_columns",
+        "Archetype": "card_grid",
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": null,
@@ -1009,7 +1001,7 @@
       },
       "valueProposition": {
         "Primary product": "Business Standard",
-        "Shows a rate": 1.0,
+        "Shows a rate": 0.5,
         "How prominently the rate is shown": "absent",
         "Benefit framing": "mixed",
         "Fab level": "advantage"
@@ -1020,12 +1012,12 @@
         "backgroundLuminance": 0.6735
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": 2.5,
         "Persuasion levers": [
-          "authority",
-          "reciprocity"
+          "reciprocity",
+          "authority"
         ],
-        "Lever count": 2.0
+        "Lever count": 1.5
       },
       "personas": [
         {
@@ -1055,7 +1047,7 @@
         }
       ],
       "aiScore": {
-        "digital": 6.0,
+        "digital": 7.5,
         "trust": 1.7,
         "cross_sell": 5.0,
         "personalisation": 6.2,
@@ -1082,7 +1074,7 @@
         },
         {
           "label": "Clarity of the offer",
-          "sd": -2.1,
+          "sd": -2.2,
           "direction": "below"
         }
       ],
@@ -1152,7 +1144,7 @@
         }
       ],
       "aiScore": {
-        "digital": 6.7,
+        "digital": 5.0,
         "trust": 3.3,
         "cross_sell": 10.0,
         "personalisation": 5.0,
@@ -1458,101 +1450,101 @@
     "matrix": [
       [
         0.0,
-        6.99,
-        4.62,
-        9.47,
-        8.21,
-        6.23,
-        7.14,
-        9.58,
-        9.38
+        6.14,
+        4.08,
+        8.58,
+        7.83,
+        5.37,
+        6.45,
+        9.02,
+        8.5
       ],
       [
-        6.99,
+        6.14,
         0.0,
-        7.88,
-        9.5,
-        7.67,
-        6.35,
-        6.61,
-        8.85,
-        8.51
-      ],
-      [
-        4.62,
-        7.88,
-        0.0,
-        9.84,
-        7.84,
-        6.98,
-        7.13,
+        6.8,
+        9.25,
+        7.33,
+        5.72,
+        5.93,
         8.56,
-        9.85
+        8.24
       ],
       [
-        9.47,
-        9.5,
-        9.84,
+        4.08,
+        6.8,
         0.0,
-        9.85,
-        6.41,
-        8.66,
-        10.28,
-        8.92
+        9.26,
+        7.12,
+        6.29,
+        6.79,
+        8.18,
+        9.29
       ],
       [
-        8.21,
-        7.67,
-        7.84,
-        9.85,
+        8.58,
+        9.25,
+        9.26,
         0.0,
-        7.25,
-        7.29,
-        9.32,
-        9.41
+        9.36,
+        6.54,
+        8.27,
+        9.89,
+        8.93
       ],
       [
-        6.23,
-        6.35,
-        6.98,
-        6.41,
-        7.25,
+        7.83,
+        7.33,
+        7.12,
+        9.36,
         0.0,
-        6.43,
         6.96,
+        6.94,
+        9.17,
+        8.9
+      ],
+      [
+        5.37,
+        5.72,
+        6.29,
+        6.54,
+        6.96,
+        0.0,
+        6.15,
+        6.82,
         7.72
       ],
       [
-        7.14,
-        6.61,
-        7.13,
-        8.66,
-        7.29,
-        6.43,
+        6.45,
+        5.93,
+        6.79,
+        8.27,
+        6.94,
+        6.15,
         0.0,
-        8.34,
-        8.88
+        8.48,
+        8.62
       ],
       [
-        9.58,
-        8.85,
+        9.02,
         8.56,
-        10.28,
-        9.32,
-        6.96,
-        8.34,
+        8.18,
+        9.89,
+        9.17,
+        6.82,
+        8.48,
         0.0,
-        9.04
+        8.79
       ],
       [
-        9.38,
-        8.51,
-        9.85,
-        8.92,
-        9.41,
+        8.5,
+        8.24,
+        9.29,
+        8.93,
+        8.9,
         7.72,
-        8.88,
-        9.04,
+        8.62,
+        8.79,
         0.0
       ]
     ]
@@ -1561,35 +1553,35 @@
     {
       "cluster": 1,
       "banks": [
-        "bunq",
-        "Revolut"
-      ]
-    },
-    {
-      "cluster": 2,
-      "banks": [
         "Argenta",
         "Belfius",
         "BNP Paribas Fortis",
         "Crelan",
         "ING",
-        "KBC",
-        "N26"
+        "KBC"
+      ]
+    },
+    {
+      "cluster": 2,
+      "banks": [
+        "bunq",
+        "N26",
+        "Revolut"
       ]
     }
   ],
   "nearestToFocus": [
     {
       "bank": "Argenta",
-      "distance": 6.23
+      "distance": 5.37
     },
     {
       "bank": "Belfius",
-      "distance": 6.35
+      "distance": 5.72
     },
     {
-      "bank": "bunq",
-      "distance": 6.41
+      "bank": "KBC",
+      "distance": 6.15
     }
   ],
   "deckClaims": [
@@ -1630,14 +1622,16 @@
     }
   ],
   "limitations": {
-    "blocking": [],
+    "blocking": [
+      "**5 of 13 rubric features are unscored** (['mobile_first_design_signal', 'aida_attention', 'aida_interest', 'aida_desire'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`)."
+    ],
     "material": [
       "The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'pension', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
       "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
-      "Rubric features carry the opinion of the people who scored them. Inter-rater agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the data presentation (NFR-05).",
+      "Every conclusion is valid for the capture window **2026-09-18 to 2026-09-19** and no later. Campaign pages change without notice (DR-05).",
       "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
@@ -1646,14 +1640,14 @@
     ]
   },
   "validation": {
-    "ok": false,
+    "ok": true,
     "warnings": [
-      "captured_at: required feature is entirely empty",
+      "aida_attention: required feature is entirely empty",
+      "aida_interest: required feature is entirely empty",
+      "aida_desire: required feature is entirely empty",
+      "aida_action: required feature is entirely empty",
       "model_assisted features were produced by MORE THAN ONE model (deepseek/deepseek-flash: ['argenta', 'belfius', 'bnp_paribas_fortis', 'bunq', 'ing', 'kbc', 'n26']; groq/openai/gpt-oss-120b: ['crelan', 'ing', 'kbc', 'n26', 'revolut']). Cross-bank comparisons on those features are partly a comparison between models - either re-run the odd banks on the pinned model, or report it as a limitation (D-09, NFR-02).",
-      "argenta: core feature(s) entirely missing: ['captured_at', 'http_status', 'rate_value_pct', 'total_image_area_ratio', 'page_height_px'] ... - record a reason (DR-07)",
-      "belfius: core feature(s) entirely missing: ['captured_at', 'http_status', 'total_image_area_ratio', 'page_height_px'] - record a reason (DR-07)",
-      "bnp_paribas_fortis: core feature(s) entirely missing: ['captured_at', 'http_status', 'total_image_area_ratio', 'page_height_px'] - record a reason (DR-07)",
-      "bunq: core feature(s) entirely missing: ['captured_at', 'http_status', 'total_image_area_ratio', 'page_height_px'] - record a reason (DR-07)"
+      "argenta: core feature(s) entirely missing: ['http_status', 'rate_value_pct', 'total_image_area_ratio', 'page_height_px', 'section_count'] ... - record a reason (DR-07)"
     ]
   },
   "generated": [],

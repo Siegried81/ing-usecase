@@ -81,6 +81,17 @@ export function Recommendations({ report }: { report: Report }) {
     [payload],
   );
 
+  // sieg 20/09: a recommendation's `features` are raw snake_case ids (they're
+  // machine-checked against the report), but showing "background_luminance"
+  // to a reader looks unprofessional - map each id back to the same
+  // human-readable label the Analysis tab already uses for it.
+  const featureLabels = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const g of report.peerGaps) map[g.feature] = g.label;
+    for (const s of report.separation) map[s.feature] = s.label;
+    return map;
+  }, [report]);
+
   const toggle = (id: string) =>
     setSelected((prev) => {
       const next = new Set(prev);
@@ -154,6 +165,7 @@ export function Recommendations({ report }: { report: Report }) {
                 <RecommendationCard
                   key={r.id}
                   rec={r}
+                  featureLabels={featureLabels}
                   checked={selected.has(r.id)}
                   onToggle={() => toggle(r.id)}
                 />
@@ -248,10 +260,12 @@ export function Recommendations({ report }: { report: Report }) {
 
 function RecommendationCard({
   rec,
+  featureLabels,
   checked,
   onToggle,
 }: {
   rec: Recommendation;
+  featureLabels: Record<string, string>;
   checked: boolean;
   onToggle: () => void;
 }) {
@@ -274,7 +288,7 @@ function RecommendationCard({
         </div>
         <div className="rec-meta">
           {rec.features.map((f) => (
-            <code key={f} className="rec-chip">{f}</code>
+            <span key={f} className="rec-chip" title={f}>{featureLabels[f] ?? f}</span>
           ))}
           {rec.page_targets.length > 0 && (
             <span className="muted-note">Pages: {rec.page_targets.join(", ")}</span>

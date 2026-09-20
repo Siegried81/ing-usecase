@@ -1,0 +1,136 @@
+{
+  "generated_at": "2026-09-20T11:26:09+00:00",
+  "model": "deepseek/deepseek-flash",
+  "summary": "Across 27 measured features on 15 current-account campaign pages, ING scores 0.36 on the study's position index — 'traditional, but leaning towards the challengers'. Its standout above-peer signals are urgency and deadline language (3.5 vs a peer mean of 1.1) and claiming a fast digital sign-up (0.75 vs 0.23), while it sits below peers on page brightness (0.2 vs 0.59), images carrying alt text (0.0 vs 0.38), showing a rate (0.0 vs 0.31) and number of calls to action (5.5 vs 14.48). No performance data exists in this study and the captured pages span four product families, so everything below is a hypothesis ING can test, not a proven cause.",
+  "recommendations": [
+    {
+      "id": "R1",
+      "title": "Put the primary call to action above the fold",
+      "priority": "high",
+      "finding": "A call to action visible without scrolling is absent from ING's traditional-bank peer group (mean 0.0), while challengers average 0.25 on that signal. ING's total number of calls to action is also well below peers (5.5 vs 14.48).",
+      "recommendation": "Move the main 'open an account' call to action into the first screen of each current-account page so it is visible without scrolling, and keep the remaining links as secondary styling.",
+      "features": [
+        "cta_above_fold",
+        "cta_count"
+      ],
+      "page_targets": [
+        "index",
+        "compte-courant",
+        "ouvrir-compte"
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "Repeat the call to action down the page",
+      "priority": "high",
+      "finding": "ING pages carry 5.5 calls to action against a peer mean of 14.48, a below-peer gap of -0.73 SD. The behaviour is not a legal or product constraint; peers simply give the visitor more places to act.",
+      "recommendation": "Add a consistent call-to-action block after the value proposition, after the feature list and at the foot of the page, using the same wording and destination each time.",
+      "features": [
+        "cta_count"
+      ],
+      "page_targets": [
+        "index",
+        "compte-courant",
+        "jeunes",
+        "ouvrir-compte"
+      ]
+    },
+    {
+      "id": "R3",
+      "title": "Lighten the page background",
+      "priority": "high",
+      "finding": "Page brightness measures 0.2 for ING against a peer mean of 0.59 — a gap of -1.17 SD and the widest below-peer deviation in ING's profile. ING's brand colour share is meanwhile above peers (0.09 vs 0.04), so the dark impression is not coming from brand colour alone.",
+      "recommendation": "Shift the dominant page background towards a lighter tone, keeping the brand colour as an accent rather than a field, and re-crop hero imagery so the first screen is not dominated by dark pixels.",
+      "features": [
+        "background_luminance",
+        "brand_colour_share"
+      ],
+      "page_targets": [
+        "index",
+        "compte-courant",
+        "pourquoi-ing"
+      ]
+    },
+    {
+      "id": "R4",
+      "title": "Show a rate or headline figure on the page",
+      "priority": "high",
+      "finding": "ING shows a rate on 0.0 of the measured pages against a peer mean of 0.31 (-0.73 SD). No traditional bank in the set shows one (mean 0.0), while challengers average 0.75 — so this is a market-wide habit ING could break.",
+      "recommendation": "Display the figure that matters for the pack — the monthly account fee or a representative rate — in the first screen, with the conditions written next to it rather than buried in the terms.",
+      "features": [
+        "rate_shown"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "index",
+        "ouvrir-compte"
+      ]
+    },
+    {
+      "id": "R5",
+      "title": "Audit urgency and deadline language",
+      "priority": "medium",
+      "finding": "Urgency and deadline language is ING's largest above-peer signal: 3.5 against a peer mean of 1.1, a gap of 2.46 SD and the widest single deviation in the profile. ING also uses more persuasion techniques than peers (3.5 vs 2.08), and challengers attach conditions to 'free' claims more often than traditional banks (0.5 vs 0.09).",
+      "recommendation": "Review every countdown, 'limited offer' and deadline line on the campaign pages and keep only those tied to a real, datable end; replace the rest with a plain statement of what the customer gets, so urgency is not doing the work of the value proposition.",
+      "features": [
+        "urgency_marker_count",
+        "persuasion_lever_count",
+        "hidden_conditions_behind_free_claim"
+      ],
+      "page_targets": [
+        "index",
+        "ouvrir-compte",
+        "compte-a-terme"
+      ]
+    },
+    {
+      "id": "R6",
+      "title": "Add alt text to campaign imagery",
+      "priority": "medium",
+      "finding": "Images carrying alt text measure 0.0 for ING against a peer mean of 0.38 (-0.77 SD). This is an automatically measured feature, so the zero is not a scoring artefact. ING does show people in its imagery more often than peers (1.0 vs 0.62), so there is more content to describe than the average page.",
+      "recommendation": "Write descriptive alt text for every image on the campaign pages — including the people photography — and carry it through each language version of the page.",
+      "features": [
+        "images_have_alt_text",
+        "people_present"
+      ],
+      "page_targets": [
+        "index",
+        "pourquoi-ing",
+        "jeunes",
+        "contact"
+      ]
+    },
+    {
+      "id": "R7",
+      "title": "Test a comparison table",
+      "priority": "medium",
+      "finding": "Comparison tables appear on 0.45 of traditional-bank pages and on 0.0 of challenger pages, so they are a traditional-bank habit. ING's clarity of the offer is already above the peer mean (4.75 vs 4.06), which suggests the page can carry a denser comparison without losing the reader.",
+      "recommendation": "Add a simple side-by-side table of what the pack includes and excludes, placed directly after the value proposition, and test it against the current layout rather than replacing it outright.",
+      "features": [
+        "has_comparison_table",
+        "value_prop_clarity"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "index",
+        "pourquoi-ing"
+      ]
+    },
+    {
+      "id": "R8",
+      "title": "Substantiate the fast digital sign-up promise",
+      "priority": "low",
+      "finding": "ING claims fast digital sign-up on 0.75 of measured pages against a peer mean of 0.23 (1.52 SD above peers), but that feature is model-assisted rather than automatic, and this study contains no performance data linking the claim to a completed application.",
+      "recommendation": "Keep the promise but make it verifiable on the page: state the number of steps and how long it takes, and pair it with a call to action visible without scrolling so the claim and the action sit together.",
+      "features": [
+        "fast_digital_onboarding_claim",
+        "cta_above_fold"
+      ],
+      "page_targets": [
+        "ouvrir-compte",
+        "index",
+        "jeunes"
+      ]
+    }
+  ]
+}

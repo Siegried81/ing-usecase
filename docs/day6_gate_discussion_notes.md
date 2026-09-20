@@ -10,36 +10,34 @@ minutes, one decision, all three.
 sieg 16/09, current snapshot — re-check and update the morning of the gate,
 this will keep moving. One row per in-scope bank.
 
-**sieg 18/09, refreshed for Monday's gate** — table below was still the
-16/09 snapshot (Argenta/Crelan/bunq shown as "not yet configured", BNP
-Paribas Fortis shown as blocked with no capture at all). Both are stale;
-real state from `data/processed/campaigns.csv` and the rubric sheets:
+**sieg 20/09, refreshed again the night before the gate** — the 18/09 table
+below was itself stale (Belfius and BNP Paribas Fortis shown as "excluded —
+no page in `current_account_pack`"; KBC/Belfius/N26 shown missing a
+screenshot). Both are fixed since: Belfius and BNP each got a real
+current-account-pack capture this week, and every current-account-pack row
+now has a screenshot. Real state from `data/processed/campaigns.csv` and
+`outputs/bank_profiles.json`'s own `_scope`:
 
 | Bank | Captured (HTML) | Robots allowed | Screenshot | LLM extraction | Rubric: model | Rubric: siegried | Rubric: dan | Rubric: stephane | Profile card | End-to-end? |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | ING | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
-| KBC | yes | yes | **no** | yes | yes | yes | no | no | yes | blocked on screenshot + dan + stephane |
-| Belfius | yes | yes | **no** | yes | yes | yes | no | no | **excluded** — no page in `current_account_pack` | blocked on screenshot + dan + stephane, then still excluded from this comparison by family |
+| KBC | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| Belfius | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
 | Revolut | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
-| N26 | yes | yes | **no** | **no** | yes | yes | no | no | yes | blocked on screenshot + LLM extraction + dan + stephane |
-| BNP Paribas Fortis | yes (manual capture) | yes | yes | yes | yes | yes | no | no | **excluded** — no page in `current_account_pack` | blocked on dan + stephane, then still excluded from this comparison by family |
+| N26 | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
+| BNP Paribas Fortis | yes (manual capture) | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
 | Argenta | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
 | Crelan | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
 | bunq | yes | yes | yes | yes | yes | yes | no | no | yes | blocked on dan + stephane |
 
-Every bank in scope now has a real capture — collection is done. The gate
-has one real blocker left, the same one everywhere: **Dan and Stephane's
-rubric sheets are still at 0/12 pages each** (Siegried's and the model's are
-both complete, 12/12). Nothing is end-to-end until at least two independent
-human raters have scored.
-
-Note on BNP Paribas Fortis and Belfius: they are **not** blocked on
-collection — both have a usable capture. `outputs/bank_profiles.json`'s own
-`_scope.banks_excluded_no_page_in_family` names the real reason: neither has
-a page in `current_account_pack`, the family the current comparison is
-filtered to (DR-04 forbids comparing across product families). This was
-flagged in the README as an undocumented mystery to ask Stephane about — it
-isn't a mystery, the dataset already states it.
+Every bank in scope now has a real capture, a screenshot, LLM extraction and
+a profile card — collection and extraction are done, and
+`bank_profiles.json`'s `_scope.banks_excluded_no_page_in_family` is now
+empty (was `["belfius", "bnp_paribas_fortis"]`). The gate has exactly **one**
+real blocker left, the same one for all 9 banks: **Dan and Stephane's rubric
+sheets are still at 0/23 pages each** (Siegried's and the model's are both
+complete, 23/23 — see the README Status table). Nothing is end-to-end until
+at least two independent human raters have scored.
 
 Note on BNP Paribas Fortis's capture itself (superseded): the CDN-blocking
 issue from 16/09 (robots.txt allowed the page, but automated fetches got a
@@ -62,14 +60,22 @@ Per the plan's own table:
   demonstrated.
 - **PARTIALLY** (works for some banks only) → `[decide threshold: how many
   banks is "enough" to call the comparator itself done, vs. still hardening]`
+  — sieg 20/09: this is no longer the live scenario. Collection/extraction
+  is 9/9 banks, not partial by bank anymore. The actual partial state at
+  the gate is by **rater**, not by bank: only 1 of 3 rubric raters
+  (Siegried) has scored, so every human-scored feature is still one
+  person's judgement, not a settled comparison. Decide the threshold on
+  that axis instead (is 1/3 raters enough to present provisionally?).
 
 ## Talking points to bring
 
-- What broke, concretely, for any bank that isn't end-to-end (name the step:
-  compliance gate, scrape, render, LLM extraction, rubric, profile card).
-- Whether a partial dataset (e.g. 6/9 banks) is already enough to answer the
-  PRD's core questions (BO-01–BO-04), or whether specific missing banks
-  (ING, since BO-01/BO-02 depend on it) block the gate regardless of count.
+- What broke, concretely, for any bank that isn't end-to-end — as of 20/09
+  this no longer applies at the collection/extraction level (9/9 banks, see
+  the table above); the one open step is the rubric, and it's the same step
+  for every bank.
+- Whether a dataset with only 1 of 3 rubric raters done is already enough to
+  answer the PRD's core questions (BO-01–BO-04) provisionally, or whether
+  the gate should wait for Dan and Stephane regardless.
 - Sample-size caveat to carry into the analysis regardless of the gate
   outcome: descriptive only, no significance claims (PRD risk R-03).
 - If Step 5 proceeds: confirm the guardrails still hold (labelled synthetic,
