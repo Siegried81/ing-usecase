@@ -156,6 +156,8 @@ UI: dict[str, dict[str, str]] = {
         "fallback_heading": "À propos de cette page",
         "fallback_body": "Cette page n'a pas pu être générée à temps. Le contenu sera complété.",
         "image_alt_default": "Illustration ING accompagnant cette page",
+        "why_section": "Pourquoi cette section",
+        "explain_toggle": "Afficher les explications des recommandations",
         "foot_legal": ("Site de démonstration généré à partir d'une analyse comparative. Aucun taux, "
                        "montant ou condition ne doit être considéré comme une offre réelle."),
     },
@@ -173,6 +175,8 @@ UI: dict[str, dict[str, str]] = {
         "fallback_heading": "Over deze pagina",
         "fallback_body": "Deze pagina kon niet op tijd worden gegenereerd. De inhoud wordt aangevuld.",
         "image_alt_default": "ING-illustratie bij deze pagina",
+        "why_section": "Waarom deze sectie",
+        "explain_toggle": "De uitleg bij de aanbevelingen tonen",
         "foot_legal": ("Demonstratiesite gegenereerd op basis van een vergelijkende analyse. Geen enkel "
                        "tarief, bedrag of voorwaarde mag als een reëel aanbod worden beschouwd."),
     },
@@ -190,6 +194,8 @@ UI: dict[str, dict[str, str]] = {
         "fallback_heading": "About this page",
         "fallback_body": "This page could not be generated in time. The content will be completed.",
         "image_alt_default": "ING illustration for this page",
+        "why_section": "Why this section",
+        "explain_toggle": "Show recommendation explanations",
         "foot_legal": ("Demonstration site generated from a comparative analysis. No rate, amount or "
                        "condition should be treated as a real offer."),
     },
@@ -260,6 +266,11 @@ class Section(BaseModel):
     body: list[str] = Field(default_factory=list)
     bullets: list[str] = Field(default_factory=list)
     cta_label: str | None = None
+    # Explanation mode only. Which selected recommendations this particular
+    # section implements, and why it was written the way it was. Empty/None in
+    # normal mode, where provenance is only reported at page level.
+    source_recs: list[str] = Field(default_factory=list)
+    rationale: str | None = None
 
 
 class Faq(BaseModel):
@@ -302,6 +313,27 @@ Hard rules, no exceptions:
   an appropriate place to do so; list the ids you actually implemented.
 - The call to action must be an unmistakable next step, visible at the top of the page.
 
+WHAT THE COPY IS, because this is where this brief is easiest to get wrong:
+- Every heading, paragraph, bullet, hero line and FAQ answer is what a CUSTOMER reads on ing.be.
+  Write real product and marketing copy for this page's subject: the offer, how it works, the
+  conditions, the reassurance, the next step.
+- Never write META copy. Do not mention or describe the page itself or its sections, the layout,
+  the colours, page brightness, the images, alt text or screen readers; the analysis, the audit,
+  the study or its findings; the recommendations or their ids; or any editorial, planning or review
+  process. Words such as "recommendation", "audit", "alt text", "the template", "this page",
+  "this section", "we review" and "planning calendar" must not appear in heading, body, bullets,
+  hero or faq.
+- Implement a recommendation by CHANGING the product copy so its effect is felt - a visible rate, a
+  plainer condition, a warmer tone, a clearer next step - never by describing the recommendation.
+- Some recommendations are structural and already guaranteed by the template: alt text on images,
+  the number and position of calls to action, contrast and page brightness. The template satisfies
+  those, so write nothing about them; you may still list their ids as implemented.
+- Timing recommendations (for example "be ready for the September window") are implemented by the
+  seasonal emphasis of the copy itself, never by mentioning calendars, planning or review cycles.
+- A section heading is a customer proposition ("A rate you can see at a glance", "Your money stays
+  reachable"), never a description of a design decision or a process ("Light page, described
+  images", "When we review this page").
+
 Return ONLY a JSON object with exactly these keys:
 "slug" (the exact slug given to you),
 "page_title" (for the browser tab),
@@ -317,6 +349,29 @@ Return ONLY a JSON object with exactly these keys:
 "recommendations_implemented" (array of the recommendation ids you implemented).
 
 No preamble, no markdown fences, JSON only."""
+
+# Explained mode: the same pages, plus per-section provenance so the demo can
+# draw a glowing box around a section and say which recommendation produced it.
+# The rationale is written in the page language because it is shown inside the
+# page; the ids are language-neutral and stay as they are.
+_EXPLAIN_RULES = """EXPLANATION MODE, in addition to the rules above:
+For EVERY section object you return, also include these two keys:
+- "source_recs": the ids of the selected recommendations this section implements, taken only from
+  the ids listed for this page. Use an empty array for a section that implements none of them
+  (boilerplate such as the FAQ teaser or the trust strip). Never invent an id.
+- "rationale": ONE sentence in the requested language saying why this section was written this way
+  and which recommendation it acts on, phrased for a stakeholder reading the demo. Do not paste a
+  raw feature id or a long decimal into it. The rationale is the ONLY place that may mention a
+  recommendation or the analysis: the heading, body, bullets and hero stay customer copy.
+A page's sections must together cover every recommendation listed for that page, and a
+recommendation may be claimed by more than one section only if it genuinely appears in both.
+- EVERY page must have at least ONE section with a non-empty "source_recs": a page with no boxed
+  section is rejected and rewritten. If no recommendation is targeted at this page, take the
+  site-wide one that fits it best (tone, transparency, a clear offer) and cite it."""
+
+
+def _page_system_prompt(explain: bool) -> str:
+    return PAGE_SYSTEM_PROMPT + ("\n\n" + _EXPLAIN_RULES if explain else "")
 
 
 def _rec_brief(recs: RecommendationSet) -> str:
@@ -388,11 +443,24 @@ def _missing_coverage(page: PageContent, recs: RecommendationSet) -> list[str]:
 
 
 def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
-                 extra: str = "") -> str:
+                 extra: str = "", explain: bool = False) -> str:
     locale, language_name, language_rule = LANGUAGES.get(language, LANGUAGES["fr"])
     applicable = [r for r in recs.recommendations
                   if not r.page_targets or spec.slug in r.page_targets]
     must = ", ".join(r.id for r in applicable) or "none"
+    if explain and not applicable:
+        # No recommendation names this page. Explained mode still needs at least
+        # one boxed section here, so the model is told to pick, from the full
+        # list, the site-wide advice that genuinely applies to this page.
+        action = ("NO recommendation is specifically targeted at this page. From the full list "
+                  "above, choose the one or two that genuinely apply to what this page does - "
+                  "tone, transparency of conditions, a clear offer - implement them in the real "
+                  "copy, and cite their ids in source_recs.")
+    else:
+        action = (f"ACT ON THESE SELECTED RECOMMENDATIONS: {must}. Act by how the real product copy "
+                  f"is written, never by describing a recommendation, the page's design or the "
+                  f"analysis. List an id in recommendations_implemented when its effect is genuinely "
+                  f"present on this page, including a structural one the template already guarantees.")
     return (
         f"!!! REQUESTED LANGUAGE: {language_name} ({locale}). {language_rule}\n"
         f"Write the ENTIRE page in the requested language. Do not mix in any other language, "
@@ -408,8 +476,7 @@ def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_su
         f"requested language describing the illustration, and must never be empty.\n\n"
         f"Selected recommendations (written in English - read them, but output in the requested "
         f"language):\n{_rec_brief(recs)}\n\n"
-        f"THIS PAGE MUST MAKE THESE RECOMMENDATIONS EXPLICIT, in the copy or the structure: "
-        f"{must}. A recommendation is only 'implemented' if a reader can see it on this page.\n"
+        f"{action}\n"
         f"{extra}\n"
         f"Reminder: the final output must be entirely in the requested language."
     )
@@ -456,13 +523,13 @@ def _content_text(page: PageContent) -> str:
 
 
 def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
-                  *, retries: int = 2) -> PageContent:
+                  *, explain: bool = False, retries: int = 2) -> PageContent:
     last_error: Exception | None = None
     extra = ""
     for attempt in range(retries + 1):
         raw, _model = _call_llm(
-            _page_prompt(spec, recs, language, site_summary, extra),
-            system_prompt=PAGE_SYSTEM_PROMPT,
+            _page_prompt(spec, recs, language, site_summary, extra, explain),
+            system_prompt=_page_system_prompt(explain),
             timeout=180,
         )
         cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
@@ -486,6 +553,15 @@ def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_s
             )
             extra = (f"Your previous draft was written in {detected}; it must be in "
                      f"{LANGUAGES.get(language, LANGUAGES['fr'])[1]}.")
+            continue
+
+        # Explained mode must box at least one section on every page, otherwise
+        # the page reads as if nothing was generated from a recommendation.
+        if explain and not any(s.source_recs for s in page.sections) and attempt < retries:
+            last_error = LLMExtractionError("page has no section that cites a recommendation")
+            extra = ("Your previous draft had no section that implements a recommendation. Rewrite "
+                     "it so at least one section acts on a recommendation from the list, cites its "
+                     "id in source_recs, and explains why in rationale - in the requested language.")
             continue
 
         # A recommendation the page was briefed on but does not express is the
@@ -543,16 +619,49 @@ def _nav(current: str, language: str) -> str:
     return "".join(links)
 
 
-def _sections(sections: list[Section]) -> str:
+def _rec_note(section: Section, language: str, rec_titles: dict[str, str]) -> str:
+    """The (i) button and its explanation balloon, hidden until clicked.
+
+    The balloon is positioned above the button by CSS; the page script toggles
+    `.open`, which is also what starts the yellow flicker on the section.
+    """
+    chips = "".join(
+        f'<span class="rec-note-tag">{_esc(rid)}</span>'
+        + (f'<span class="rec-note-title">{_esc(rec_titles[rid])}</span>' if rid in rec_titles else "")
+        for rid in dict.fromkeys(section.source_recs)
+    )
+    rationale = (section.rationale or "").strip()
+    body = f'<p class="rec-note-body">{_esc(rationale)}</p>' if rationale else ""
+    label = _esc(ui(language, "why_section"))
+    return (
+        f'<div class="rec-explain">'
+        f'<button type="button" class="rec-note-btn" aria-expanded="false" '
+        f'aria-label="{label}" title="{label}">i</button>'
+        f'<div class="rec-note" role="note">'
+        f'<div class="rec-note-head"><span class="rec-note-k">{label}</span>{chips}</div>'
+        f"{body}</div></div>"
+    )
+
+
+def _sections(sections: list[Section], language: str = "fr", explain: bool = False,
+              rec_titles: dict[str, str] | None = None) -> str:
+    titles = rec_titles or {}
     out = []
     for i, s in enumerate(sections):
         cta = (
             f'<a class="btn btn-primary" href="ouvrir-compte.html">{_esc(s.cta_label)}</a>'
             if s.cta_label else ""
         )
+        # Explained mode only marks a section that actually implements a
+        # recommendation; boilerplate stays unmarked. The box sits on the inner
+        # .wrap so it hugs the content column instead of spanning the screen.
+        annotated = explain and bool(s.source_recs)
+        classes = "block" + (" alt" if i % 2 else "")
+        inner = "wrap explained" if annotated else "wrap"
+        note = _rec_note(s, language, titles) if annotated else ""
         out.append(
-            f'<section class="block{" alt" if i % 2 else ""}"><div class="wrap">'
-            f'<h2>{_esc(s.heading)}</h2>{_paragraphs(s.body)}{_bullets(s.bullets)}{cta}'
+            f'<section class="{classes}"><div class="{inner}">'
+            f'<h2>{_esc(s.heading)}</h2>{_paragraphs(s.body)}{_bullets(s.bullets)}{cta}{note}'
             f"</div></section>"
         )
     return "".join(out)
@@ -569,7 +678,44 @@ def _faq(items: list[Faq], language: str) -> str:
             f"{rows}</div></section>")
 
 
-def render_page(content: PageContent, language: str) -> str:
+# Explained mode only. A slim bar above the site turns the whole explanation
+# layer off so the site can be shown as normal, and the choice is remembered
+# across pages. The per-section (i) button toggles its own balloon.
+_EXPLAIN_SCRIPT = """(function(){
+  var KEY='ing-demo-explanations', root=document.documentElement;
+  function apply(on){
+    root.classList.toggle('explanations-off', !on);
+    var t=document.getElementById('explain-toggle'); if(t) t.checked=on;
+  }
+  var stored=null; try{ stored=localStorage.getItem(KEY); }catch(e){}
+  apply(stored!=='0');
+  var t=document.getElementById('explain-toggle');
+  if(t) t.addEventListener('change',function(){
+    try{ localStorage.setItem(KEY, t.checked?'1':'0'); }catch(e){}
+    apply(t.checked);
+  });
+  document.querySelectorAll('.rec-note-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var box=btn.closest('.rec-explain'), open=box.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open?'true':'false');
+      var sec=btn.closest('.explained'); if(sec) sec.classList.toggle('note-open', open);
+    });
+  });
+})();"""
+
+
+def _explain_bar(language: str) -> str:
+    return (
+        '<div class="explain-bar"><div class="wrap">'
+        '<label class="explain-toggle">'
+        '<input type="checkbox" id="explain-toggle" checked> '
+        f'{_esc(ui(language, "explain_toggle"))}</label>'
+        "</div></div>"
+    )
+
+
+def render_page(content: PageContent, language: str, *, explain: bool = False,
+                rec_titles: dict[str, str] | None = None) -> str:
     locale, _name, _rule = LANGUAGES.get(language, LANGUAGES["fr"])
     hero = content.hero
     secondary_link = (
@@ -586,6 +732,7 @@ def render_page(content: PageContent, language: str) -> str:
 <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
+{_explain_bar(language) if explain else ""}
 <a class="skip-link" href="#main">Skip to content</a>
 <div class="utility"><div class="wrap">
 <span class="u-active">{_esc(ui(language, "personal"))}</span><a href="#">Business</a><a href="#">Private Banking</a>
@@ -619,7 +766,7 @@ def render_page(content: PageContent, language: str) -> str:
   </div>
 </section>
 
-{_sections(content.sections)}
+{_sections(content.sections, language, explain, rec_titles)}
 {_faq(content.faq, language)}
 </main>
 
@@ -638,6 +785,7 @@ def render_page(content: PageContent, language: str) -> str:
 <p class="disclaimer">{_esc(content.disclaimer)}</p>
 <p class="foot-legal">{_esc(ui(language, "foot_legal"))}</p>
 </div></footer>
+{f"<script>{_EXPLAIN_SCRIPT}</script>" if explain else ""}
 </body>
 </html>"""
 
@@ -692,6 +840,36 @@ a{color:inherit;text-decoration:none}
 .block ul{color:var(--muted);font-size:16.5px;max-width:72ch;padding-left:20px}
 .block ul li{margin:6px 0}
 .block .btn{margin-top:14px}
+/* Explained mode. The box hugs the content column (.wrap), not the full band.
+   Closed: a quiet orange outline. Open: the (i) balloon plus a SLOW yellow
+   flicker - yellow on purpose, so the "explanation open" state cannot be
+   mistaken for the ING-orange brand treatment. */
+.wrap.explained{position:relative;border-radius:18px;padding:26px 30px;box-shadow:0 0 0 1.5px rgba(255,98,0,.85),0 0 20px 4px rgba(255,98,0,.20);transition:box-shadow .3s ease}
+.wrap.explained.note-open{animation:recglow 3.2s ease-in-out infinite}
+@keyframes recglow{
+  0%{box-shadow:0 0 0 2px #ffd400,0 0 12px 3px rgba(255,212,0,.30)}
+  50%{box-shadow:0 0 0 3px #ffd400,0 0 30px 10px rgba(255,212,0,.70)}
+  100%{box-shadow:0 0 0 2px #ffd400,0 0 12px 3px rgba(255,212,0,.30)}
+}
+.rec-explain{position:relative;display:flex;justify-content:flex-end;margin-top:20px}
+.rec-note-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--orange);background:transparent;color:var(--orange);font-weight:800;font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1;cursor:pointer;flex:none}
+.rec-note-btn:hover,.rec-note-btn:focus-visible{border-color:#ffd400;color:#ffd400}
+.rec-note{display:none;position:absolute;right:0;bottom:calc(100% + 12px);width:min(560px,86vw);background:#1b1b21;border:1px solid #5a5a66;border-radius:14px;padding:14px 18px;box-shadow:0 20px 44px rgba(0,0,0,.55);z-index:6;text-align:left}
+.rec-note::after{content:"";position:absolute;right:13px;bottom:-7px;width:12px;height:12px;background:#1b1b21;border-right:1px solid #5a5a66;border-bottom:1px solid #5a5a66;transform:rotate(45deg)}
+.rec-explain.open .rec-note{display:block}
+.rec-note-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rec-note-k{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:#ff8a3d;font-weight:700}
+.rec-note-tag{background:var(--orange);color:#0a0a0f;font-weight:700;font-size:11.5px;border-radius:999px;padding:2px 9px}
+.rec-note-title{color:#ffd9bd;font-size:13px}
+.rec-note-body{margin:8px 0 0;color:#fff;font-size:14.5px;max-width:78ch}
+/* The bar above the site turns the whole explanation layer off, so the site
+   can be shown as normal; the choice is remembered across the ten pages. */
+.explain-bar{position:sticky;top:0;z-index:30;background:#101014;border-bottom:1px solid var(--line)}
+.explain-bar .wrap{display:flex;align-items:center;min-height:48px}
+.explain-toggle{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;cursor:pointer}
+.explain-toggle input{width:16px;height:16px;accent-color:var(--orange)}
+html.explanations-off .wrap.explained{padding:0 24px;box-shadow:none;animation:none}
+html.explanations-off .rec-explain{display:none}
 details{border-bottom:1px solid var(--line);padding:16px 0}
 summary{cursor:pointer;font-weight:650;font-size:16.5px;list-style:none}
 summary::-webkit-details-marker{display:none}
@@ -761,6 +939,7 @@ def generate_site(
     recommendations: RecommendationSet,
     *,
     language: str = "fr",
+    explain: bool = False,
     out_dir: Path,
     on_progress: Callable[[int, int, str], None] | None = None,
     max_workers: int = 3,
@@ -771,6 +950,10 @@ def generate_site(
     rendered from a deterministic fallback so the site still has all ten pages -
     the manifest records which ones those were, so a demo cannot quietly pass a
     fallback off as generated copy.
+
+    With `explain`, the model also tags each section with the recommendations it
+    implements and a short rationale, and those sections are rendered with a
+    glowing box and an explanation note.
     """
     language = language if language in LANGUAGES else "fr"
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -786,7 +969,8 @@ def generate_site(
 
     def work(spec: PageSpec) -> tuple[str, PageContent, str | None]:
         try:
-            return spec.slug, generate_page(spec, recommendations, language, summary), None
+            return spec.slug, generate_page(spec, recommendations, language, summary,
+                                            explain=explain), None
         except LLMExtractionError as exc:
             return spec.slug, _fallback_page(spec, summary, language), str(exc)
 
@@ -801,14 +985,18 @@ def generate_site(
             if on_progress:
                 on_progress(done, len(PAGES), slug)
 
+    rec_titles = {r.id: r.title for r in recommendations.recommendations}
     for spec in PAGES:
-        _safe_write(out_dir / f"{spec.slug}.html", render_page(contents[spec.slug], language))
+        _safe_write(out_dir / f"{spec.slug}.html",
+                    render_page(contents[spec.slug], language, explain=explain,
+                                rec_titles=rec_titles))
 
     manifest = {
         "language": language,
         "locale": LANGUAGES[language][0],
         "generated_at": report.get("generated_at"),
         "model": recommendations.model,
+        "explained": explain,
         "pages": [
             {
                 "slug": spec.slug,

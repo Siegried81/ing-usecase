@@ -36,6 +36,8 @@ from comparator.site_generator import (  # noqa: E402
     _detected_language,
     _download_assets,
     _fallback_page,
+    _page_prompt,
+    _page_system_prompt,
     generate_page,
     generate_site,
     render_page,
@@ -294,6 +296,90 @@ def test_render_page_uses_the_ing_brand_assets():
         assert f'src="assets/{spec.image}.svg"' in html
 
 
+def _explained_content() -> PageContent:
+    return PageContent(
+        slug="index", page_title="T", meta_description="d",
+        hero=Hero(eyebrow="E", headline="h", subheading="s", primary_cta="c", image="home"),
+        sections=[
+            Section(heading="Linked", body=["b"], source_recs=["R1"],
+                    rationale="Shows the rate because R1 asks for it."),
+            Section(heading="Plain", body=["b2"]),
+        ],
+        faq=[], disclaimer="d", recommendations_implemented=["R1"],
+    )
+
+
+def test_explain_mode_marks_only_sections_that_implement_a_recommendation():
+    html = render_page(_explained_content(), "fr", explain=True, rec_titles={"R1": "Show a rate"})
+    # the box sits on the inner .wrap, not the full-bleed <section>
+    assert '<section class="block"><div class="wrap explained">' in html
+    assert '<section class="block explained">' not in html
+    # the plain section is untouched
+    assert '<section class="block alt"><div class="wrap">' in html
+    # one linked section: one (i) button, one hidden balloon
+    assert html.count('class="rec-note-btn"') == 1
+    assert html.count('<div class="rec-note" role="note">') == 1
+    assert 'aria-expanded="false"' in html
+    assert ">R1<" in html
+    assert "Show a rate" in html
+    assert "Shows the rate because R1 asks for it." in html
+
+
+def test_explain_mode_adds_the_on_site_toggle_and_script():
+    html = render_page(_explained_content(), "fr", explain=True)
+    assert 'class="explain-bar"' in html
+    assert 'id="explain-toggle"' in html
+    assert "ing-demo-explanations" in html  # the script that remembers the choice
+
+
+def test_normal_mode_renders_no_explanation_markup():
+    html = render_page(_explained_content(), "fr")
+    assert "explained" not in html
+    assert "rec-note" not in html
+    assert "explain-bar" not in html
+    assert "explain-toggle" not in html
+    assert '<div class="wrap">' in html
+
+
+def test_page_system_prompt_adds_explanation_rules_only_when_asked():
+    plain = _page_system_prompt(False)
+    explained = _page_system_prompt(True)
+    assert "EXPLANATION MODE" not in plain
+    assert "EXPLANATION MODE" in explained
+    assert "source_recs" in explained
+    assert "rationale" in explained
+
+
+def test_page_prompt_borrows_a_recommendation_for_uncovered_pages_in_explain_mode():
+    recs = RecommendationSet(generated_at="t", model="m", summary="s",
+                             recommendations=[Recommendation("R1", "a", "high", "f", "r", ["x"], ["index"])])
+    spec = next(p for p in PAGES if p.slug == "contact")
+    plain = _page_prompt(spec, recs, "en", "s")
+    explained = _page_prompt(spec, recs, "en", "s", explain=True)
+    assert "ACT ON THESE SELECTED RECOMMENDATIONS: none" in plain
+    assert "NO recommendation is specifically targeted at this page" in explained
+    assert "source_recs" in explained
+
+
+def test_generate_page_requires_a_cited_section_in_explain_mode(monkeypatch):
+    calls = {"n": 0}
+
+    def fake_llm(*args, **kwargs):
+        calls["n"] += 1
+        data = json.loads(_page_json("Ouvrez votre compte", _FRENCH, _FRENCH))
+        if calls["n"] > 1:
+            data["sections"][0]["source_recs"] = ["R1"]
+            data["sections"][0]["rationale"] = "Parce que R1 le demande."
+        return json.dumps(data), "m"
+
+    monkeypatch.setattr("comparator.site_generator._call_llm", fake_llm)
+    recs = RecommendationSet(generated_at="t", model="m", summary="s", recommendations=[])
+    spec = next(p for p in PAGES if p.slug == "index")
+    page = generate_page(spec, recs, "fr", "s", explain=True, retries=1)
+    assert calls["n"] == 2
+    assert page.sections[0].source_recs == ["R1"]
+
+
 def _page_json(headline: str, body: str, lang_marker: str) -> str:
     return json.dumps({
         "slug": "index",
@@ -403,7 +489,7 @@ def test_generate_site_writes_ten_pages_and_marks_fallbacks(monkeypatch, tmp_pat
 
     monkeypatch.setattr("comparator.site_generator._download_assets", fake_assets)
 
-    def fake_generate_page(spec, recs, language, summary, retries=2):
+    def fake_generate_page(spec, recs, language, summary, *, explain=False, retries=2):
         if spec.slug == "contact":
             raise LLMExtractionError("model down")
         return _content(spec.slug, spec.image)

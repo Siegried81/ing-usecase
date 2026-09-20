@@ -154,6 +154,8 @@ export interface SiteManifest {
   locale: string;
   generated_at: string | null;
   model: string;
+  /** True when the pages were rendered with the per-section explanation boxes. */
+  explained?: boolean;
   pages: SitePage[];
   recommendations: { id: string; title: string; priority: Priority }[];
   asset_warnings: string[];
