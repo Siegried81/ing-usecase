@@ -1,0 +1,4 @@
+# sieg 20/09: geo_trends.py's own dependency, deliberately kept out of the
+# main requirements.txt - same reasoning as requirements-streamlit.txt and the
+# sieg 18/09 note in requirements.txt (pytrends is unofficial/rate-limited).
+pytrends==4.9.2

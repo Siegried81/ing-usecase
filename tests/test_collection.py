@@ -150,6 +150,15 @@ def test_extract_finds_the_rate():
     assert result["rate_value_pct"] == pytest.approx(2.75)
 
 
+def test_extract_ignores_percentages_that_are_not_a_rate():
+    # sieg 20/09: regression test for the "100% online" false-positive bug -
+    # a bare percentage with no rate keyword nearby must not be reported as a rate.
+    html = "<html><body><p>100% online, open your account in minutes.</p></body></html>"
+    result = extract(html, language="en")
+    assert result["rate_shown"] is False
+    assert result["rate_value_pct"] is None
+
+
 def test_extract_detects_urgency_marker():
     result = extract(SAMPLE_HTML, language="en")
     assert result["urgency_marker_count"] >= 1  # "only until"

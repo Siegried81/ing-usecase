@@ -16,6 +16,7 @@ from comparator.rubric import (  # noqa: E402
     agreement,
     make_sheet,
     merge_scores,
+    read_sheets,
     rubric_features,
     sheet_guide,
 )
@@ -32,6 +33,22 @@ def df(fd):
     data["capture_quality"] = "ok"
     data.loc[data["bank"] == "ing", "capture_quality"] = "unusable"
     return data
+
+
+# sieg 20/09: a rater's sheet gets hand-edited in Excel between sessions, and
+# Excel's CSV export defaults to ";" under a French/Belgian locale - one real
+# sheet has already flipped between "," and ";" more than once. read_sheets()
+# must parse either without anyone needing to remember which.
+def test_read_sheets_accepts_either_comma_or_semicolon(tmp_path):
+    comma = tmp_path / "comma.csv"
+    comma.write_text("rater,page_id,formality_score\nsiegried,ing_01,3\n", encoding="utf-8")
+    semicolon = tmp_path / "semicolon.csv"
+    semicolon.write_text("rater;page_id;formality_score\nsiegried;ing_01;3\n", encoding="utf-8")
+
+    frames = read_sheets([comma, semicolon])
+    for frame in frames:
+        assert list(frame.columns) == ["rater", "page_id", "formality_score"]
+        assert frame.loc[0, "page_id"] == "ing_01"
 
 
 def test_sheet_has_a_column_for_every_rubric_feature(df, fd):

@@ -339,8 +339,22 @@ def kappa_agreement(sheets: list[pd.DataFrame], fd: FeatureDictionary | None = N
     return KappaAgreement(table)
 
 
+def _read_sheet(path: str | Path) -> pd.DataFrame:
+    """Read one scoring sheet, sniffing comma vs semicolon.
+
+    sieg 20/09: these sheets get hand-edited in Excel between sessions, and
+    Excel's CSV export defaults to ";" under a French/Belgian locale - one
+    sheet has already flipped between "," and ";" more than once. Sniffing
+    the header line rather than assuming either survives the next re-save.
+    """
+    path = Path(path)
+    header = path.read_text(encoding="utf-8").splitlines()[0]
+    sep = ";" if header.count(";") > header.count(",") else ","
+    return pd.read_csv(path, sep=sep)
+
+
 def read_sheets(paths: list[str | Path]) -> list[pd.DataFrame]:
-    return [pd.read_csv(p) for p in paths]
+    return [_read_sheet(p) for p in paths]
 
 
 # -----------------------------------------------------------------------------

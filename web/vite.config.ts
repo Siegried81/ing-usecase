@@ -12,9 +12,16 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   server: {
+    // sieg 20/09, FIXED: pointed at :8010, but scripts/serve_web.py listens
+    // on :8000 by default (see its own --port default and usage docstring).
+    // Every proxied request failed with a connection-refused that Vite's dev
+    // proxy surfaces to the browser as a 500 - this was the "Generate
+    // recommendations: Error 500" report, reproduced end-to-end through the
+    // real dev server (a direct curl to :8000 "worked" because it bypassed
+    // this proxy entirely).
     proxy: {
-      "/api": "http://127.0.0.1:8010",
-      "/site": "http://127.0.0.1:8010",
+      "/api": "http://127.0.0.1:8000",
+      "/site": "http://127.0.0.1:8000",
     },
   },
 });

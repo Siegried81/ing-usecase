@@ -298,6 +298,19 @@ export interface ReputationPayload {
   banks: Record<string, BankReputation | null>;
 }
 
+/** sieg 20/09: comparator/geo_trends.py - Google Trends by Belgian region, a
+ * standalone module (own pytrends calls), not part of the Trends tab's bridge
+ * to Dan's exports. regions: e.g. {"Bruxelles": 100, "Région Flamande": 74}. */
+export interface GeoTrendsBank {
+  name: string;
+  regions: Record<string, number>;
+}
+
+export interface GeoTrendsPayload {
+  available: boolean;
+  banks: Record<string, GeoTrendsBank>;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;
@@ -319,4 +332,5 @@ export interface Report {
   generated: GeneratedCampaign[];
   trends: TrendsSummary | null;
   reputation: ReputationPayload;
+  geoTrends: GeoTrendsPayload;
 }

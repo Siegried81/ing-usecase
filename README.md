@@ -14,30 +14,28 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- sieg 19/09: refreshed for the weekend before the Day 6 gate (Mon 21). The table below was still
-describing an earlier day while collection had moved well past it. See docs/D01 and
-docs/day6_gate_discussion_notes.md for the per-bank detail this summarizes. -->
-Day 5 of 10 (sieg 18/09), weekend before Day 6 gate (Mon 21 Sep). The analysis chain now runs end to end on real
-captures for 7 banks (argenta, bunq, crelan, ing, kbc, n26, revolut). Belfius
-and BNP Paribas Fortis have real captures and were scored by the model rater
-(`docs/day5_scoring_disagreement.md` lists 8 pages), but are absent from the
-current `outputs/bank_profiles.json` for a reason not yet documented — under
-investigation, ask Stephane before assuming either is dropped for good. The
-Day 5 human rubric session (2 independent raters, 13 features) has not
-happened yet — only the model column is filled in
-(`data/rubric/{dan,siegried,stephane}_scores.csv`); this is the current
-blocker per `outputs/limitations.md`. Headless-render geometry fields
-(`page_height_px` and three others) still wait on a working Chromium in the
+<!-- sieg 20/09: refreshed the night before the Day 6 gate (Mon 21). The table below was still
+describing 18/09 (7 banks, Belfius/BNP "absent for an undocumented reason") while the dataset had
+moved past it - see docs/D01 and docs/day6_gate_discussion_notes.md for the per-bank detail. -->
+Day 5 of 10 (sieg 20/09), the night before the Day 6 gate (Mon 21 Sep). All 9 banks are now in the
+analysis (Belfius's earlier absence from `bank_profiles.json` was a scope gap - it had no page in
+the compared product family - not a bug; it now has one). 23 real pages across 9 banks, up from 14.
+`config/feature_dictionary.yaml` is at 104 features (3 additive fields since Day 2: `target_personas`,
+`cross_sold_products`, `subscription_style_framing`). **The rubric session is the live blocker**:
+Siegried has scored all 23 pages; Dan and Stephane are at 0/23
+(`data/rubric/{dan,stephane}_scores.csv`) - the 13 human-scored features stay blank for every bank
+until at least one more independent rater finishes, per `outputs/limitations.md`. Headless-render
+geometry fields (`page_height_px` and three others) still wait on a working Chromium in the
 collection environment.
 
 | Deliverable | State |
 | --- | --- |
-| Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — 101 features, `feature_dictionary.frozen.yaml` in sync |
+| Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — 104 features, `feature_dictionary.frozen.yaml` in sync |
 | Dataset schema + validator (D-04) | built and tested |
 | Analysis skeleton (D-05) | runs end to end on real captures |
-| Bank profile cards | generated, 7 banks (real data); Belfius/BNP captured but not in the current profile set, see note above |
-| Real captures (D-02) | 9/9 banks have raw captures; BNP still needs the manual-capture path confirmed working, see D-01 |
-| Rubric scoring (Day 5) | model column only — human 2-rater session not yet run |
+| Bank profile cards | generated, 9/9 banks (real data) |
+| Real captures (D-02) | 9/9 banks, 23 pages; BNP's manual-capture path confirmed working |
+| Rubric scoring (Day 5) | Siegried: 23/23. Dan, Stephane: 0/23. Model column filled in separately as a third rater |
 
 ## Quick start
 
@@ -256,6 +254,12 @@ src/comparator/
   rubric_model.py                model as a third rater (text-inferable only)
   derive.py                      recompute derived features after any change
   banks.py                       canonical bank -> category facts
+  ai_score.py                    sieg 19/09: 6-axis composite score per bank, deterministic, no LLM call
+  cross_sell.py                  sieg 19/09: cross-sell score + product co-occurrence matrix
+  reputation.py                  sieg 19/09: optional NewsAPI headline themes (never sentiment)
+  market_context.py              sieg 19/09: thin standalone Finnhub lookup, not wired into the pipeline
+  research.py                    sieg 19/09: thin standalone Semantic Scholar lookup, not wired into the pipeline
+  geo_trends.py                  sieg 20/09: Google Trends by Belgian region (own pytrends calls)
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain
@@ -265,7 +269,10 @@ scripts/
   serve_web.py                   backend for the UI's recommendations + generated site
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
-tests/                           259 tests
+  reextract_model_fields.py      sieg 19/09: backfill model_assisted fields on already-captured pages, no re-fetch
+  geo_trends.py                  sieg 20/09: CLI for geo_trends.py (requires requirements-geo.txt)
+streamlit_app.py                 sieg 19/09: 8-page dashboard for share.streamlit.io (requirements-streamlit.txt)
+tests/                           355 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
 outputs/                         charts and tables — wiped and regenerated on every
