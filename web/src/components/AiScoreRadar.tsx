@@ -123,25 +123,27 @@ export function AiScoreRadar({
 
       {/* sieg 19/09: reuses DeckClaims' .claims table styling - the accessibility
           fallback for the radar above, same doctrine as charts.py's companion tables. */}
-      <table className="claims" style={{ marginTop: 14 }}>
-        <thead>
-          <tr>
-            <th>Bank</th>
-            {axes.map((a) => <th key={a.key}>{a.label}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {banks.map((b) => (
-            <tr key={b.key}>
-              <td className="claim" style={{ fontWeight: b.key === selectedKey ? 700 : 400 }}>{b.name}</td>
-              {axes.map((a) => {
-                const value = b.aiScore[a.key];
-                return <td key={a.key}>{value === null || value === undefined ? "no data" : value.toFixed(1)}</td>;
-              })}
+      <div className="table-scroll wide">
+        <table className="claims" style={{ marginTop: 14 }}>
+          <thead>
+            <tr>
+              <th>Bank</th>
+              {axes.map((a) => <th key={a.key}>{a.label}</th>)}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {banks.map((b) => (
+              <tr key={b.key}>
+                <td className="claim" style={{ fontWeight: b.key === selectedKey ? 700 : 400 }}>{b.name}</td>
+                {axes.map((a) => {
+                  const value = b.aiScore[a.key];
+                  return <td key={a.key}>{value === null || value === undefined ? "no data" : value.toFixed(1)}</td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

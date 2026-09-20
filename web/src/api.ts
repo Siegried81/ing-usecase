@@ -26,9 +26,15 @@ export async function fetchRecommendations(): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(await fetch("/api/recommendations"));
 }
 
-export async function generateRecommendations(): Promise<RecommendationPayload> {
+export async function generateRecommendations(
+  includeTrends = false,
+): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(
-    await fetch("/api/recommendations/generate", { method: "POST" }),
+    await fetch("/api/recommendations/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ include_trends: includeTrends }),
+    }),
   );
 }
 

@@ -115,6 +115,10 @@ export interface GeneratedCampaign {
 
 export type Priority = "high" | "medium" | "low";
 
+/** Analysis recommendations come from the measured pages; trends ones are
+ *  added on top from search-interest context and never cite page features. */
+export type RecommendationBasis = "analysis" | "trends";
+
 export interface Recommendation {
   id: string;
   title: string;
@@ -123,6 +127,8 @@ export interface Recommendation {
   recommendation: string;
   features: string[];
   page_targets: string[];
+  basis?: RecommendationBasis;
+  market_context?: string | null;
 }
 
 export interface RecommendationPayload {
@@ -131,6 +137,7 @@ export interface RecommendationPayload {
   model?: string;
   summary: string | null;
   recommendations: Recommendation[];
+  used_trends?: boolean;
 }
 
 export interface SitePage {

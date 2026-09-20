@@ -12,6 +12,8 @@ import json
 import sys
 from pathlib import Path
 
+import pytest
+
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.collection.llm_extractor import LLMExtractionError  # noqa: E402
@@ -20,6 +22,7 @@ from comparator.recommendations import (  # noqa: E402
     Recommendation,
     RecommendationSet,
     _digest,
+    _trends_digest,
     build_recommendations,
     parse_response,
     select,
@@ -67,6 +70,66 @@ _RAW = json.dumps({
 })
 
 
+# A trimmed Trends payload: one captured covered bank with a recent and an old
+# anomaly, one bank Dan covers but this run never captured, and one bank with no
+# trends data at all. The digest must keep only the first, recent one.
+_TRENDS = {
+    "window": {"start": "2021-01-01", "end": "2026-08-01"},
+    "coverage": {"covered": ["ING", "KBC"], "uncovered": ["Argenta"]},
+    "banks": [
+        {"key": "ing", "name": "ING", "segment": "traditional", "products": [
+            {"id": "savings_account", "label": "Savings account", "terms": [
+                {"term": "ing epargne", "label": "ING savings", "language": "fr", "points": [],
+                 "anomalies": [
+                     {"date": "2026-03-01", "value": 88, "type": "sustained_trend",
+                      "label": "Sustained trend", "score": 2.1},
+                     {"date": "2019-01-01", "value": 70, "type": "isolated_spike",
+                      "label": "Isolated spike", "score": 1.6},
+                 ]},
+            ]},
+        ]},
+        {"key": "belfius", "name": "Belfius", "segment": "traditional", "products": [
+            {"id": "savings_account", "label": "Savings account", "terms": [
+                {"term": "belfius epargne", "label": "Belfius savings", "language": "fr", "points": [],
+                 "anomalies": [
+                     {"date": "2026-02-01", "value": 60, "type": "isolated_spike",
+                      "label": "Isolated spike", "score": 1.5},
+                 ]},
+            ]},
+        ]},
+    ],
+    "events": [
+        {"bank": "ING", "key": "ing", "date": "2026-02-01", "label": "ING savings push"},
+        {"bank": "Belfius", "key": "belfius", "date": "2026-02-01", "label": "Belfius event"},
+    ],
+    "campaigns": {"matches": [
+        {"campaignId": 1, "campaignName": "ING Save", "campaignBank": "ING",
+         "productId": "savings_account", "term": "ING savings", "date": "2026-03-02",
+         "type": "sustained_trend", "label": "Sustained trend", "score": 2.1, "delayDays": 1,
+         "seasonalConfound": False, "contribution": 0.5},
+        {"campaignId": 2, "campaignName": "Belfius Save", "campaignBank": "Belfius",
+         "productId": "savings_account", "term": "Belfius savings", "date": "2026-03-02",
+         "type": "sustained_trend", "label": "Sustained trend", "score": 2.1, "delayDays": 1,
+         "seasonalConfound": False, "contribution": 0.5},
+    ]},
+    "guardrail": "Search interest is context, not performance.",
+}
+
+_RAW_TRENDS = json.dumps({
+    "summary": "ING is clear but under-equipped to convert.",
+    "recommendations": [
+        {"title": "Add a visible rate", "priority": "high", "finding": "rate_shown is 0.0",
+         "recommendation": "Show the rate above the fold", "features": ["rate_shown"],
+         "page_targets": ["index"], "basis": "analysis", "market_context": None},
+        {"title": "Time the savings message", "priority": "high",
+         "finding": "Savings searches were elevated in early 2026",
+         "recommendation": "Have the savings page ready before the next peak",
+         "features": [], "page_targets": ["comptes-epargne"], "basis": "trends",
+         "market_context": "Savings searches ran above baseline in March 2026."},
+    ],
+})
+
+
 def test_digest_rounds_long_floats_before_they_reach_the_model():
     # sieg 20/09: regression test - a real report's raw float (e.g.
     # 0.5912291666666667) must not reach the prompt at full precision, since
@@ -110,6 +173,77 @@ def test_build_recommendations_retries_on_invalid_json(monkeypatch):
     result = build_recommendations(_REPORT)
     assert calls["n"] == 2
     assert len(result.recommendations) == 2
+
+
+def test_trends_digest_keeps_captured_banks_and_the_recent_window_only():
+    digest = _trends_digest(_TRENDS, _REPORT)
+    assert digest is not None
+    assert "2026-03-01" in digest
+    # Outside the 24-month window, and from a bank this run never captured.
+    assert "2019-01-01" not in digest
+    assert "Belfius event" not in digest
+    assert "Belfius Save" not in digest
+    assert "ING savings push" in digest
+    assert "ING Save" in digest
+    # The coverage gap still travels, so the model cannot imply a comparison.
+    assert "Argenta" in digest
+
+
+def test_trends_digest_is_none_when_nothing_covers_the_run():
+    trends = {**_TRENDS, "banks": [], "events": [], "campaigns": {"matches": []}}
+    assert _trends_digest(trends, _REPORT) is None
+
+
+def test_build_recommendations_with_trends_adds_context_and_marks_basis(monkeypatch):
+    seen: dict[str, str] = {}
+
+    def fake_llm(prompt, *, system_prompt, timeout):
+        seen["prompt"] = prompt
+        seen["system"] = system_prompt
+        return _RAW_TRENDS, "deepseek/deepseek-chat"
+
+    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
+    result = build_recommendations(_REPORT, include_trends=True, trends=_TRENDS)
+
+    assert "Google Trends" in seen["prompt"]
+    assert "2026-03-01" in seen["prompt"]
+    assert "CONTEXT, never evidence" in seen["system"]
+    assert result.used_trends is True
+    assert [r.basis for r in result.recommendations] == ["analysis", "trends"]
+    assert result.recommendations[1].market_context.startswith("Savings searches")
+    # A trends recommendation may not carry page-feature evidence.
+    assert result.recommendations[1].features == []
+
+
+def test_build_recommendations_without_trends_uses_the_plain_prompt(monkeypatch):
+    seen: dict[str, str] = {}
+
+    def fake_llm(prompt, *, system_prompt, timeout):
+        seen["prompt"] = prompt
+        seen["system"] = system_prompt
+        return _RAW, "m"
+
+    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
+    result = build_recommendations(_REPORT)
+    assert "Google Trends" not in seen["prompt"]
+    assert "CONTEXT, never evidence" not in seen["system"]
+    assert result.used_trends is False
+
+
+def test_build_recommendations_refuses_trends_when_none_is_available():
+    with pytest.raises(LLMExtractionError):
+        build_recommendations(_REPORT, include_trends=True, trends=None)
+
+
+def test_from_dict_defaults_basis_for_recommendations_saved_before_trends():
+    saved = {"generated_at": "t", "model": "m", "summary": "s", "recommendations": [
+        {"id": "R1", "title": "a", "priority": "high", "finding": "f", "recommendation": "r",
+         "features": [], "page_targets": []},
+    ]}
+    restored = RecommendationSet.from_dict(saved)
+    assert restored.recommendations[0].basis == "analysis"
+    assert restored.recommendations[0].market_context is None
+    assert restored.used_trends is False
 
 
 def test_select_keeps_only_the_chosen_ids_in_the_original_order():

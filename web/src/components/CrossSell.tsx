@@ -35,24 +35,26 @@ export function CrossSell({ banks, matrix }: { banks: BankProfile[]; matrix: Cro
         </div>
       )}
 
-      <table className="claims" style={{ marginTop: 14 }}>
-        <thead>
-          <tr>
-            <th>Page&rsquo;s own product</th>
-            {matrix.products.map((p) => <th key={p}>{p}</th>)}
-          </tr>
-        </thead>
-        <tbody>
-          {matrix.products.map((row, i) => (
-            <tr key={row}>
-              <td className="claim">{row}</td>
-              {matrix.products.map((col, j) => (
-                <td key={col}>{i === j ? "—" : matrix.matrix[i][j]}</td>
-              ))}
+      <div className="table-scroll wide">
+        <table className="claims" style={{ marginTop: 14 }}>
+          <thead>
+            <tr>
+              <th>Page&rsquo;s own product</th>
+              {matrix.products.map((p) => <th key={p}>{p}</th>)}
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {matrix.products.map((row, i) => (
+              <tr key={row}>
+                <td className="claim">{row}</td>
+                {matrix.products.map((col, j) => (
+                  <td key={col}>{i === j ? "—" : matrix.matrix[i][j]}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
       {matrix.neverPaired.confirmed.length > 0 && (
         <div className="scope-note" style={{ marginTop: 12 }}>

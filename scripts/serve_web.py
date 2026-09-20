@@ -39,6 +39,7 @@ from comparator.site_generator import PAGES, generate_site
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = REPO_ROOT / "web" / "public" / "report.json"
+TRENDS_PATH = REPO_ROOT / "web" / "public" / "trends.json"
 SITE_DIR = REPO_ROOT / "outputs" / "generated_site"
 RECS_PATH = REPO_ROOT / "outputs" / "web_recommendations.json"
 
@@ -70,6 +71,12 @@ def _load_recommendations() -> dict | None:
     return None
 
 
+def _load_trends() -> dict | None:
+    if TRENDS_PATH.is_file():
+        return json.loads(TRENDS_PATH.read_text(encoding="utf-8"))
+    return None
+
+
 def _save_recommendations(payload: dict) -> None:
     RECS_PATH.parent.mkdir(parents=True, exist_ok=True)
     RECS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -95,11 +102,27 @@ def get_recommendations() -> dict:
     return {"available": True, **saved}
 
 
+class RecommendationRequest(BaseModel):
+    include_trends: bool = False
+
+
 @app.post("/api/recommendations/generate")
-def post_recommendations() -> dict:
-    """One model call over the analysis snapshot. Synchronous; the UI shows a wait state."""
+def post_recommendations(request: RecommendationRequest | None = None) -> dict:
+    """One model call over the analysis snapshot. Synchronous; the UI shows a wait state.
+
+    With `include_trends`, the Trends tab snapshot (`web/public/trends.json`) is
+    added to the prompt as context. Search interest never becomes evidence of
+    performance; the additional recommendations are labelled by `basis`.
+    """
+    include_trends = bool(request and request.include_trends)
+    trends = _load_trends() if include_trends else None
+    if include_trends and trends is None:
+        raise HTTPException(
+            status_code=409,
+            detail="No trends data available. Run: python3 scripts/export_web_report.py",
+        )
     try:
-        result = build_recommendations(_read_report())
+        result = build_recommendations(_read_report(), include_trends=include_trends, trends=trends)
     except LLMExtractionError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     payload = result.to_dict()
