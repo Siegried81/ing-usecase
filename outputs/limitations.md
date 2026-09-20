@@ -4,6 +4,8 @@
 
 **23 usable page(s) across 9 bank(s)**, from 23 collected.
 
+> **These counts are pre-filter.** The comparison itself was restricted to the `current_account_pack` product family, so `charts.md` and `bank_profiles.json` report a smaller set.
+
 ## What this analysis cannot support
 
 ### Blocking — a question cannot be answered at all
@@ -27,8 +29,7 @@
 
 ## Next steps
 
-1. **Restrict the comparison to one product family.** Pooling families confounds every cross-bank difference with the product (DR-04). Pass --product-family.
-2. **Score the 5 unscored rubric feature(s).** Vision-only features cannot be model-scored; they need a human with the screenshot.
-3. **Run the Day 5 scoring session.** Two independent human raters, then report agreement alongside the model's own sheet. Until then the judgement-based dimensions carry one model's opinion and nothing to check it against.
-4. **Make generation attributable.** Store the generated artefact and its prompt hash and evaluate that, rather than regenerating on every run.
-5. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.
+1. **Score the 5 unscored rubric feature(s).** Vision-only features cannot be model-scored; they need a human with the screenshot.
+2. **Run the Day 5 scoring session.** Two independent human raters, then report agreement alongside the model's own sheet. Until then the judgement-based dimensions carry one model's opinion and nothing to check it against.
+3. **Make generation attributable.** Store the generated artefact and its prompt hash and evaluate that, rather than regenerating on every run.
+4. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.

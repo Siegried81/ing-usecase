@@ -6,7 +6,7 @@ plus two model-backed actions: writing recommendations and building a website.
 ```bash
 python3 scripts/export_web_report.py --product-family auto   # writes report.json + trends.json
 
-python3 scripts/serve_web.py --port 8010                      # recommendations + site backend
+python3 scripts/serve_web.py --port 8000                      # recommendations + site backend
 cd web && npm install && npm run dev                          # http://localhost:5173
 
 npm run build                                                 # static bundle in web/dist/
@@ -17,7 +17,7 @@ recommendations and open the generated website without a second origin. `npm run
 build` still produces a folder that opens anywhere; the Analysis tab works from
 that build alone.
 
-## Three tabs
+## Four tabs
 
 **Analysis** is the read-only snapshot described below. It reads a single
 `report.json` and talks to nothing. A snapshot is the honest shape for a finding:
@@ -41,6 +41,13 @@ and the tab deliberately offers no per-page number to regress.
 If `kbc-ing-benchmark/export/` is absent, `trends.json` is not written and the tab
 renders an empty state; nothing else is affected. The pipeline only reads Dan's CSV
 export — it does not need `pytrends`, `streamlit` or `plotly`.
+
+**Reputation** shows recent news headline *themes* per bank (innovation,
+crisis, results, ...) from NewsAPI, classified by one structured model call -
+counts only, deliberately never sentiment (see
+`comparator/reputation.py`'s docstring for why). Renders an honest "not
+configured" state when `NEWSAPI_KEY` is unset, same pattern as Trends when
+Dan's export is missing - nothing else is affected either way.
 
 **Recommendations** is the one place a model is allowed to opine. It asks the
 pinned model to turn this run's own numbers into advice, shows each

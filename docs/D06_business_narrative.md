@@ -114,9 +114,11 @@ naming on the page at all.
 
 ## 5. ING addresses more customer personas than any other bank — but shallowly
 
+<!-- sieg 20/09: "5 distinct personas" -> "5 of the 8 possible personas" (8 = values allowed for target_personas in the dictionary), so the reader sees the scale. -->
+
 `target_personas` (a new model-assisted field, one structured call per page,
 same pattern as every other model-assisted feature) shows ING's current-
-account pages naming **5 distinct personas** across its 4 pages — mass
+account pages naming **5 of the 8 possible personas** across its 4 pages — mass
 market (75%), expat (50%), student (50%), family (25%), entrepreneur/self-
 employed (25%). No other bank in the comparison names more than 4, and most
 name 1-3. Argenta and KBC name exactly one: mass market.
@@ -124,7 +126,7 @@ name 1-3. Argenta and KBC name exactly one: mass market.
 **What it means.** Read together with insight 3 (low trust-signal presence)
 and the AI Score's `personalisation` axis (6.2/10, mid-pack), ING is not
 failing to speak to enough audiences — if anything it is the broadest bank
-in the set. The open question is depth: 4 pages naming 5 personas means most
+in the set. The open question is depth: 4 pages naming 5 of the 8 personas means most
 personas get one page's worth of attention, while Revolut and N26 (also
 broad, 3-4 personas each) build that breadth around a single, more focused
 product story. Worth testing whether a page that speaks to five audiences at
