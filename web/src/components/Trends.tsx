@@ -196,36 +196,38 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         {anomalies.length > 0 && (
           <div className="card" style={{ marginTop: 14 }}>
             <h3 className="sub-h">Flagged weeks in this sheet ({rawAnomalies.length})</h3>
-            <table className="claims">
-              <thead>
-                <tr>
-                  {([
-                    ["date", "Date"], ["term", "Term"], ["label", "Kind"],
-                    ["value", "Value"], ["score", "Deviation (z)"],
-                  ] as const).map(([key, label]) => (
-                    <th
-                      key={key}
-                      onClick={() => toggleAnomalySort(key)}
-                      style={{ cursor: "pointer", userSelect: "none" }}
-                      title="Click to sort"
-                    >
-                      {label}{anomalySortKey === key ? (anomalySortDir === "asc" ? " ▲" : " ▼") : ""}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {anomalies.map((a, i) => (
-                  <tr key={`${a.term}-${a.date}-${i}`}>
-                    <td>{a.date}</td>
-                    <td className="claim">{a.term}</td>
-                    <td>{a.label}</td>
-                    <td>{a.value}</td>
-                    <td>{a.score.toFixed(2)}</td>
+            <div className="table-scroll wide">
+              <table className="claims">
+                <thead>
+                  <tr>
+                    {([
+                      ["date", "Date"], ["term", "Term"], ["label", "Kind"],
+                      ["value", "Value"], ["score", "Deviation (z)"],
+                    ] as const).map(([key, label]) => (
+                      <th
+                        key={key}
+                        onClick={() => toggleAnomalySort(key)}
+                        style={{ cursor: "pointer", userSelect: "none" }}
+                        title="Click to sort"
+                      >
+                        {label}{anomalySortKey === key ? (anomalySortDir === "asc" ? " ▲" : " ▼") : ""}
+                      </th>
+                    ))}
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {anomalies.map((a, i) => (
+                    <tr key={`${a.term}-${a.date}-${i}`}>
+                      <td>{a.date}</td>
+                      <td className="claim">{a.term}</td>
+                      <td>{a.label}</td>
+                      <td>{a.value}</td>
+                      <td>{a.score.toFixed(2)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
             {rawAnomalies.length > 40 && (
               <p className="muted-note">Showing the 40 largest deviations of {rawAnomalies.length}.</p>
             )}
@@ -244,30 +246,32 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         </div>
 
         <div className="card">
-          <table className="claims">
-            <thead>
-              <tr>
-                <th>Bank</th>
-                <th>Catalogued</th>
-                <th>Scorable</th>
-                <th>Total score</th>
-                <th>Average</th>
-                <th>With a matched spike</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.campaigns.summary.map((s) => (
-                <tr key={s.bank}>
-                  <td className="claim">{s.bank}</td>
-                  <td>{s.catalogued}</td>
-                  <td>{s.scorable}</td>
-                  <td>{s.totalScore.toFixed(2)}</td>
-                  <td>{s.averageScore.toFixed(2)}</td>
-                  <td>{pct(s.successRate)}</td>
+          <div className="table-scroll wide">
+            <table className="claims">
+              <thead>
+                <tr>
+                  <th>Bank</th>
+                  <th>Catalogued</th>
+                  <th>Scorable</th>
+                  <th>Total score</th>
+                  <th>Average</th>
+                  <th>With a matched spike</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {data.campaigns.summary.map((s) => (
+                  <tr key={s.bank}>
+                    <td className="claim">{s.bank}</td>
+                    <td>{s.catalogued}</td>
+                    <td>{s.scorable}</td>
+                    <td>{s.totalScore.toFixed(2)}</td>
+                    <td>{s.averageScore.toFixed(2)}</td>
+                    <td>{pct(s.successRate)}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
           <p className="muted-note" style={{ marginTop: 10 }}>
             A brand or sponsoring campaign is structurally less likely to match a product term —
             read the score with its type, not against a product campaign.
@@ -275,29 +279,31 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         </div>
 
         <div className="card" style={{ marginTop: 14 }}>
-          <table className="claims">
-            <thead>
-              <tr>
-                <th>Score</th>
-                <th>Bank</th>
-                <th>Campaign</th>
-                <th>Type</th>
-                <th>Spikes</th>
-                <th>Sheets</th>
-                <th>Dates</th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.campaigns.scorecards.map((c) => (
-                <CampaignRow
-                  key={c.id}
-                  campaign={c}
-                  selected={c.id === campaignId}
-                  onSelect={() => setCampaignId(c.id)}
-                />
-              ))}
-            </tbody>
-          </table>
+          <div className="table-scroll wide">
+            <table className="claims">
+              <thead>
+                <tr>
+                  <th>Score</th>
+                  <th>Bank</th>
+                  <th>Campaign</th>
+                  <th>Type</th>
+                  <th>Spikes</th>
+                  <th>Sheets</th>
+                  <th>Dates</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.campaigns.scorecards.map((c) => (
+                  <CampaignRow
+                    key={c.id}
+                    campaign={c}
+                    selected={c.id === campaignId}
+                    onSelect={() => setCampaignId(c.id)}
+                  />
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {selectedCampaign && (
@@ -309,34 +315,36 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
                 but unmatched.
               </p>
             ) : (
-              <table className="claims">
-                <thead>
-                  <tr>
-                    <th>Spike date</th>
-                    <th>Product sheet</th>
-                    <th>Term</th>
-                    <th>Kind</th>
-                    <th>Deviation</th>
-                    <th>Delay</th>
-                    <th>Seasonal confound</th>
-                    <th>Contribution</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {matches.map((m: CampaignMatch, i) => (
-                    <tr key={`${m.productId}-${m.date}-${i}`}>
-                      <td>{m.date}</td>
-                      <td>{m.productId}</td>
-                      <td className="claim">{m.term}</td>
-                      <td>{m.label}</td>
-                      <td>{m.score === null ? "—" : m.score.toFixed(2)}</td>
-                      <td>{m.delayDays === null ? "—" : `${m.delayDays}d`}</td>
-                      <td>{m.seasonalConfound ? "possible" : "no"}</td>
-                      <td>{m.contribution === null ? "—" : m.contribution.toFixed(2)}</td>
+              <div className="table-scroll wide">
+                <table className="claims">
+                  <thead>
+                    <tr>
+                      <th>Spike date</th>
+                      <th>Product sheet</th>
+                      <th>Term</th>
+                      <th>Kind</th>
+                      <th>Deviation</th>
+                      <th>Delay</th>
+                      <th>Seasonal confound</th>
+                      <th>Contribution</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {matches.map((m: CampaignMatch, i) => (
+                      <tr key={`${m.productId}-${m.date}-${i}`}>
+                        <td>{m.date}</td>
+                        <td>{m.productId}</td>
+                        <td className="claim">{m.term}</td>
+                        <td>{m.label}</td>
+                        <td>{m.score === null ? "—" : m.score.toFixed(2)}</td>
+                        <td>{m.delayDays === null ? "—" : `${m.delayDays}d`}</td>
+                        <td>{m.seasonalConfound ? "possible" : "no"}</td>
+                        <td>{m.contribution === null ? "—" : m.contribution.toFixed(2)}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </div>
         )}

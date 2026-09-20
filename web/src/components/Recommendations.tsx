@@ -29,12 +29,17 @@ export function Recommendations({ report }: { report: Report }) {
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("fr");
   const [site, setSite] = useState<SiteStatus | null>(null);
+  const [includeTrends, setIncludeTrends] = useState(false);
+  const trendsAvailable = Boolean(report.trends?.available);
 
   useEffect(() => {
     fetchRecommendations()
       .then((data) => {
         setPayload(data);
         setSelected(new Set(data.recommendations.map((r) => r.id)));
+        // Keep the toggle in step with what was generated, so regenerating a
+        // set that already used trends does not silently drop them.
+        setIncludeTrends(Boolean(data.used_trends));
       })
       .catch((e) => setError(String(e)));
     fetchSiteStatus().then(setSite).catch(() => undefined);
@@ -53,15 +58,16 @@ export function Recommendations({ report }: { report: Report }) {
     setBusy(true);
     setError(null);
     try {
-      const data = await generateRecommendations();
+      const data = await generateRecommendations(includeTrends && trendsAvailable);
       setPayload(data);
       setSelected(new Set(data.recommendations.map((r) => r.id)));
+      setIncludeTrends(Boolean(data.used_trends));
     } catch (e) {
       setError(String(e));
     } finally {
       setBusy(false);
     }
-  }, []);
+  }, [includeTrends, trendsAvailable]);
 
   const onGenerateSite = useCallback(async () => {
     setError(null);
@@ -92,6 +98,15 @@ export function Recommendations({ report }: { report: Report }) {
     return map;
   }, [report]);
 
+  // Two groups, one selection. Trends recommendations are shown apart because
+  // they are argued from search-interest context, not from a measured page
+  // feature - but they are picked in the same set and built into the same site.
+  const analysisRecs = useMemo(() => recommendations.filter((r) => r.basis !== "trends"), [recommendations]);
+  const trendsRecs = useMemo(() => recommendations.filter((r) => r.basis === "trends"), [recommendations]);
+  const trendsCount = trendsRecs.length;
+  const selectedTrends = trendsRecs.filter((r) => selected.has(r.id)).length;
+  const selectedAnalysis = selected.size - selectedTrends;
+
   const toggle = (id: string) =>
     setSelected((prev) => {
       const next = new Set(prev);
@@ -117,10 +132,29 @@ export function Recommendations({ report }: { report: Report }) {
             {payload?.available && (
               <span className="muted-note">
                 {payload.model} · {payload.recommendations.length} recommendations
+                {payload.used_trends ? " · includes trends context" : ""}
               </span>
             )}
             {busy && <span className="muted-note">Asking {`deepseek-chat`} — this takes a few seconds…</span>}
           </div>
+
+          <label className={`rec-trends${trendsAvailable ? "" : " disabled"}`}>
+            <input
+              type="checkbox"
+              checked={includeTrends && trendsAvailable}
+              disabled={!trendsAvailable || busy}
+              onChange={(e) => setIncludeTrends(e.target.checked)}
+            />
+            <span>
+              Include Google Trends to add recommendations
+              <small>
+                {trendsAvailable
+                  ? "Adds timing and focus recommendations from search-interest context. Context only — never evidence that a page or campaign performed."
+                  : "No trends export is present, so this option is unavailable. Run scripts/export_web_report.py to produce web/public/trends.json."}
+              </small>
+            </span>
+          </label>
+
           {error && <div className="scope-note" style={{ marginTop: 12 }}>{error}</div>}
         </div>
 
@@ -139,6 +173,13 @@ export function Recommendations({ report }: { report: Report }) {
               {report.scope.banks.length} banks · {report.headline.focus} scores{" "}
               {report.headline.score?.toFixed(2)} ({report.headline.verdict}).
             </div>
+            {trendsCount > 0 && (
+              <div className="muted-note" style={{ marginTop: 6 }}>
+                {trendsCount} further recommendation{trendsCount === 1 ? "" : "s"} come from
+                search-interest context and appear in their own section below. They can be
+                selected alongside the others for the website.
+              </div>
+            )}
           </div>
         )}
 
@@ -160,17 +201,51 @@ export function Recommendations({ report }: { report: Report }) {
               <span className="muted-note">Untick anything you do not want implemented.</span>
             </div>
 
-            <div className="rec-list">
-              {recommendations.map((r) => (
-                <RecommendationCard
-                  key={r.id}
-                  rec={r}
-                  featureLabels={featureLabels}
-                  checked={selected.has(r.id)}
-                  onToggle={() => toggle(r.id)}
-                />
-              ))}
-            </div>
+            {analysisRecs.length > 0 && (
+              <div className="rec-group">
+                <div className="rec-group-head">
+                  <h3>From the page analysis</h3>
+                  <span className="muted-note">
+                    Every recommendation names the measured features it was argued from.
+                  </span>
+                </div>
+                <div className="rec-list">
+                  {analysisRecs.map((r) => (
+                    <RecommendationCard
+                      key={r.id}
+                      rec={r}
+                      featureLabels={featureLabels}
+                      checked={selected.has(r.id)}
+                      onToggle={() => toggle(r.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {trendsRecs.length > 0 && (
+              <div className="rec-group rec-group-trends">
+                <div className="rec-group-head">
+                  <h3>From search-interest context</h3>
+                  <span className="muted-note">
+                    Kept apart from the analysis: these use Google Trends to suggest timing and
+                    focus, and cite no page feature as evidence. Search interest is context, never
+                    proof that a page or campaign performed — treat each as a hypothesis to test.
+                  </span>
+                </div>
+                <div className="rec-list">
+                  {trendsRecs.map((r) => (
+                    <RecommendationCard
+                      key={r.id}
+                      rec={r}
+                      featureLabels={featureLabels}
+                      checked={selected.has(r.id)}
+                      onToggle={() => toggle(r.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -181,7 +256,10 @@ export function Recommendations({ report }: { report: Report }) {
                 <div className="rec-summary-label">Build the website</div>
                 <div className="muted-note" style={{ marginTop: 4 }}>
                   Generates a ten-page ING-styled site implementing the {selected.size} selected
-                  recommendation{selected.size === 1 ? "" : "s"}.
+                  recommendation{selected.size === 1 ? "" : "s"}
+                  {selectedTrends > 0 && (
+                    <> ({selectedAnalysis} from the analysis, {selectedTrends} from trends)</>
+                  )}.
                 </div>
               </div>
               <div className="rec-build-actions">
@@ -282,11 +360,22 @@ function RecommendationCard({
           <span className="rec-field-k">What the data shows</span>
           <span>{rec.finding}</span>
         </div>
+        {rec.market_context && (
+          <div className="rec-field">
+            <span className="rec-field-k">Market context</span>
+            <span>{rec.market_context}</span>
+          </div>
+        )}
         <div className="rec-field">
           <span className="rec-field-k">What to do</span>
           <span>{rec.recommendation}</span>
         </div>
         <div className="rec-meta">
+          {rec.basis === "trends" && (
+            <span className="rec-basis-trends" title="From search-interest context — attention, not performance">
+              trends
+            </span>
+          )}
           {rec.features.map((f) => (
             <span key={f} className="rec-chip" title={f}>{featureLabels[f] ?? f}</span>
           ))}

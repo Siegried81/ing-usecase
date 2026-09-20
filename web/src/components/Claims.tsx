@@ -11,6 +11,7 @@ const cls = (v: string) =>
 export function DeckClaims({ claims }: { claims: Report["deckClaims"] }) {
   return (
     <div className="card">
+      <div className="table-scroll">
       <table className="claims">
         <thead>
           <tr><th>What the kickoff deck said</th><th>Verdict</th><th>What the data shows</th></tr>
@@ -25,6 +26,7 @@ export function DeckClaims({ claims }: { claims: Report["deckClaims"] }) {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

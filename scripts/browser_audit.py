@@ -32,7 +32,12 @@ from playwright.sync_api import sync_playwright
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 UI = "http://127.0.0.1:5173"
-API = "http://127.0.0.1:8010"
+# steph 20/09, FIXED: this polled :8010, but serve_web.py defaults to :8000 and
+# web/vite.config.ts proxies /api there. Against the documented dev setup the
+# request never connected, so wait_ready() swallowed the connection error and
+# retried until it raised a 420s TimeoutError - the audit looked like a slow
+# site generation instead of a wrong port. Keep these in step with the proxy.
+API = "http://127.0.0.1:8000"
 
 # 10 iterations: a spread of counts (1-8) so "more" and "less" are both
 # exercised, alternating direction, across the three languages.
