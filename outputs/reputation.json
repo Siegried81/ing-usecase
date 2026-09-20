@@ -1,0 +1,14 @@
+{
+  "available": true,
+  "banks": {
+    "argenta": null,
+    "belfius": null,
+    "bnp_paribas_fortis": null,
+    "bunq": null,
+    "crelan": null,
+    "ing": null,
+    "kbc": null,
+    "n26": null,
+    "revolut": null
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "ing": {
+    "Bruxelles": 100,
+    "Région Flamande": 74,
+    "Wallonie": 98
+  },
+  "kbc": {
+    "Bruxelles": 37,
+    "Région Flamande": 100,
+    "Wallonie": 11
+  },
+  "bnp_paribas_fortis": {
+    "Bruxelles": 71,
+    "Région Flamande": 64,
+    "Wallonie": 100
+  },
+  "argenta": {
+    "Bruxelles": 30,
+    "Région Flamande": 100,
+    "Wallonie": 24
+  },
+  "crelan": {
+    "Bruxelles": 32,
+    "Région Flamande": 95,
+    "Wallonie": 100
+  },
+  "belfius": {
+    "Bruxelles": 83,
+    "Région Flamande": 69,
+    "Wallonie": 100
+  },
+  "revolut": {
+    "Bruxelles": 100,
+    "Région Flamande": 43,
+    "Wallonie": 52
+  },
+  "n26": {
+    "Bruxelles": 100,
+    "Région Flamande": 27,
+    "Wallonie": 43
+  },
+  "bunq": {
+    "Bruxelles": 100,
+    "Région Flamande": 73,
+    "Wallonie": 32
+  }
+}
