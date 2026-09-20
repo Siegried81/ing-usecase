@@ -1,12 +1,19 @@
-"""Academic paper search - a standalone utility, not a pipeline step.
+"""Academic paper search - an on-demand lookup, not a pipeline step.
 
 sieg 19/09, new module. The brief itself calls Semantic Scholar "Optionnel"
 and names no concrete per-bank metric to compute from it (unlike personas,
 cross-sell, or news themes, which all have a defined output shape). Building
-a report.json/UI section around "articles that exist" with no metric would be
-inventing scope nobody asked for - so this stays exactly what it is: a small
-lookup for whoever is writing the business narrative to pull supporting
-references (e.g. "cross-selling bancaire", "comportement client") on demand.
+a report.json section or an automatic per-bank/per-insight citation around
+"articles that exist" with no metric would still be inventing scope nobody
+asked for - so this function itself stays exactly what it always was.
+
+sieg 20/09: wired into streamlit_app.py's new Research page (a search box,
+run on demand by whoever is writing the business narrative) - not into
+report.json or the FastAPI/React UI, and still no per-bank metric. The
+distinction that matters is manual/on-demand vs. automatic-and-cited-as-
+evidence: a human deciding a search result is relevant to what they are
+writing is fine, an unreviewed feature-name-to-paper match presented as
+"supporting evidence" in the report would not be.
 
 No API key is required for Semantic Scholar's public Graph API at low volume;
 SEMANTIC_SCHOLAR_API_KEY only raises the rate limit, so this degrades to

@@ -55,8 +55,13 @@ list of concrete, prioritised recommendations for ING's own campaign pages.
 Hard rules, no exceptions:
 - Use ONLY the numbers and feature names present in the analysis. Never invent a figure, a rate,
   a conversion number, or a competitor's wording.
-- Every recommendation MUST name the measured features it is argued from, using the exact
-  feature identifiers given in the analysis (for example "cta_above_fold", "second_person_ratio").
+- In prose ("finding" and "recommendation" text), refer to a measured signal by its human-readable
+  "label" (for example "Page brightness"), written naturally into the sentence - never paste a raw
+  snake_case feature id or a long decimal into prose. Round figures to one or two decimals when you
+  state them in a sentence.
+- The "features" array is different: it is machine-checked, so it MUST use the exact snake_case
+  feature identifiers from the analysis (for example "cta_above_fold", "second_person_ratio"), not
+  the labels.
 - A recommendation is a change ING can make to a page: copy, structure, layout, disclosure or
   call to action. Not market research, not a new product, not a data-collection exercise.
 - Respect the limitations: where the evidence is thin, say so rather than overclaiming.
@@ -108,6 +113,17 @@ class RecommendationSet:
         )
 
 
+def _round(value: object, digits: int = 2) -> object:
+    """Round a report number before it reaches the model. sieg 20/09.
+
+    The report stores full float precision (e.g. 0.5912291666666667) for
+    charts and exact recomputation; the model has no use for that precision
+    and was copying it verbatim into recommendation prose, which read as
+    unpolished. Rounding here changes formatting only, not the value the
+    guardrail above cares about (no new number is introduced)."""
+    return round(value, digits) if isinstance(value, float) else value
+
+
 def _digest(report: dict) -> str:
     """The slice of the report the model is allowed to see.
 
@@ -122,9 +138,9 @@ def _digest(report: dict) -> str:
         {
             "feature": g.get("feature"),
             "label": g.get("label"),
-            "focus_value": g.get("focusValue"),
-            "peer_mean": g.get("peerMean"),
-            "gap_sd": g.get("gapSd"),
+            "focus_value": _round(g.get("focusValue")),
+            "peer_mean": _round(g.get("peerMean")),
+            "gap_sd": _round(g.get("gapSd")),
             "direction": g.get("direction"),
             "trust": g.get("extraction"),
         }
@@ -134,9 +150,9 @@ def _digest(report: dict) -> str:
         {
             "feature": s.get("feature"),
             "label": s.get("label"),
-            "traditional_mean": s.get("traditional"),
-            "challenger_mean": s.get("challenger"),
-            "effect_size_d": s.get("effect"),
+            "traditional_mean": _round(s.get("traditional")),
+            "challenger_mean": _round(s.get("challenger")),
+            "effect_size_d": _round(s.get("effect")),
             "higher_at": s.get("higherAt"),
         }
         for s in report.get("separation", [])

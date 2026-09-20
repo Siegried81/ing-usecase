@@ -271,7 +271,8 @@ scripts/
   build_feature_docs.py          YAML -> markdown
   reextract_model_fields.py      sieg 19/09: backfill model_assisted fields on already-captured pages, no re-fetch
   geo_trends.py                  sieg 20/09: CLI for geo_trends.py (requires requirements-geo.txt)
-streamlit_app.py                 sieg 19/09: 8-page dashboard for share.streamlit.io (requirements-streamlit.txt)
+streamlit_app.py                 sieg 19/09: 9-page dashboard for share.streamlit.io (requirements-streamlit.txt)
+                                  sieg 20/09: added a Research page wiring in comparator/research.py
 tests/                           355 tests
 data/fixtures/                   synthetic sample (committed)
 data/raw/                        snapshots — gitignored, Dan's output
