@@ -154,7 +154,21 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
 
 
 def _has_animation(soup: BeautifulSoup, html: str) -> bool:
-    if soup.find(["video", "source"]):
+    # dan 21/09: was soup.find(["video", "source"]). A bare <source> is almost
+    # never video - it is <picture><source srcset> serving webp/avif, which is
+    # a STATIC responsive image. Measured across 16 real captures: 217 of 219
+    # <source> tags sat inside <picture>, so this branch reported "this page
+    # animates" for "this page serves modern image formats". It alone put ING
+    # at has_animation=0.4 and N26 at 1.0, and deck claim H3 ("ING is the only
+    # traditional bank using animation") is tested against exactly this column.
+    # A <video><source> is still caught, via its <video> parent.
+    #
+    # CSS keyframes stay in on purpose (team decision 21/09): the dictionary
+    # defines animated_asset_count as "GIF, video, Lottie, CSS keyframe
+    # animation", so dropping them would put this code at odds with its own
+    # contract. Known consequence: a page whose only motion is a spinner or a
+    # cookie-banner fade still counts as animated.
+    if soup.find("video"):
         return True
     if soup.find("img", src=lambda s: s and s.lower().endswith(".gif")):
         return True
