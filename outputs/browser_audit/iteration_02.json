@@ -1,0 +1,234 @@
+{
+  "iteration": 2,
+  "language": "nl",
+  "selected": [
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "direction": "down",
+  "pages": [
+    {
+      "slug": "index",
+      "title": "ING Spaarrekeningen: uw spaargeld, duidelijk en eenvoudig · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "comptes-epargne",
+      "title": "Spaarrekeningen | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "compte-a-terme",
+      "title": "Termijnrekening | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "compte-courant",
+      "title": "Zichtrekening | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "jeunes",
+      "title": "Jongeren | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "investir",
+      "title": "Beleggen | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "credit-hypothecaire",
+      "title": "Hypothecair krediet | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "ouvrir-compte",
+      "title": "Rekening openen bij ING | Snel en eenvoudig · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "pourquoi-ing",
+      "title": "Waarom ING | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    },
+    {
+      "slug": "contact",
+      "title": "Contact | ING België · ING",
+      "lang": "nl-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "nl"
+    }
+  ],
+  "issues": [],
+  "checked_after_interaction": [
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "manifest_recs": [
+    "R1",
+    "R2",
+    "R3"
+  ],
+  "fallbacks": [],
+  "opened_via_button": true,
+  "console_errors": [],
+  "failed_requests": [],
+  "mobile": {
+    "overflow_px": 0,
+    "h1_count": 1,
+    "cta_in_viewport": true,
+    "nav_link_count": 10,
+    "contrast_violation_count": 0
+  },
+  "screenshot": "outputs/browser_audit/iteration_02_index.png",
+  "recommendation_checks": [
+    {
+      "id": "R1",
+      "title": "Add a visible rate to the current-account pack page",
+      "features": [
+        "rate_shown",
+        "rate_value_pct"
+      ],
+      "checks": [
+        {
+          "feature": "rate_shown",
+          "label": "a rate is visible",
+          "pass": true,
+          "detail": "rate cue found on 1 page(s)"
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "Increase the number of calls to action on the page",
+      "features": [
+        "cta_count"
+      ],
+      "checks": [
+        {
+          "feature": "cta_count",
+          "label": "multiple calls to action",
+          "pass": true,
+          "detail": "CTA counts {'compte-courant': 7, 'ouvrir-compte': 7, 'index': 8}"
+        }
+      ]
+    },
+    {
+      "id": "R3",
+      "title": "Add alt text to every image",
+      "features": [
+        "images_have_alt_text"
+      ],
+      "checks": [
+        {
+          "feature": "images_have_alt_text",
+          "label": "images carry alt text",
+          "pass": true,
+          "detail": "30 images, 0 with empty alt"
+        }
+      ]
+    }
+  ],
+  "seconds": 36.7
+}

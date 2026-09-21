@@ -17,20 +17,20 @@
       ]
     },
     "belfius": {
-      "headline_count": 27,
+      "headline_count": 28,
       "themes": {
         "innovation_digital": 0,
-        "crisis_or_scandal": 9,
-        "financial_results": 0,
+        "crisis_or_scandal": 10,
+        "financial_results": 1,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 15,
-        "other": 3
+        "regulatory": 0,
+        "other": 17
       },
       "notable_headlines": [
+        "Belfius changes dividend policy ahead of potential 20% privatisation",
         "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
-        "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-        "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius"
+        "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing"
       ]
     },
     "beobank": {
@@ -39,24 +39,25 @@
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
         "financial_results": 0,
-        "product_launch": 4,
+        "product_launch": 0,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 1
+        "other": 5
       },
       "notable_headlines": [
         "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-        "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws"
+        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+        "Beobank trekt rente termijnrekeningen op"
       ]
     },
+    "bnp_paribas_fortis": null,
     "bunq": {
       "headline_count": 12,
       "themes": {
-        "innovation_digital": 1,
+        "innovation_digital": 2,
         "crisis_or_scandal": 4,
         "financial_results": 1,
-        "product_launch": 3,
+        "product_launch": 2,
         "esg_sustainability": 0,
         "regulatory": 1,
         "other": 2
@@ -65,6 +66,23 @@
         "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
         "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
         "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
+      ]
+    },
+    "cbc": {
+      "headline_count": 25,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 20,
+        "financial_results": 1,
+        "product_launch": 1,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 3
+      },
+      "notable_headlines": [
+        "CBC changes policy that said not to label 9/11 attacks 'terrorism' after criticism",
+        "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
+        "Scandale de la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC"
       ]
     },
     "crelan": {
@@ -85,20 +103,20 @@
     },
     "hellobank": null,
     "ing": {
-      "headline_count": 23,
+      "headline_count": 20,
       "themes": {
         "innovation_digital": 3,
         "crisis_or_scandal": 1,
-        "financial_results": 2,
-        "product_launch": 2,
-        "esg_sustainability": 1,
-        "regulatory": 4,
-        "other": 10
+        "financial_results": 0,
+        "product_launch": 1,
+        "esg_sustainability": 5,
+        "regulatory": 1,
+        "other": 9
       },
       "notable_headlines": [
-        "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
+        "Milieudefensie mag klimaatzaak tegen ING doorzetten",
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
+        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte"
       ]
     },
     "kbc": {
@@ -114,20 +132,21 @@
       },
       "notable_headlines": [
         "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-        "Jefferies start opvolging KBC met koopadvies",
-        "KBC relève sa cible sur Inventiva, le titre bondit"
+        "Meer winst voor KBC Ancora",
+        "Jefferies start opvolging KBC met koopadvies"
       ]
     },
+    "keytrade": null,
     "n26": {
-      "headline_count": 8,
+      "headline_count": 7,
       "themes": {
-        "innovation_digital": 0,
+        "innovation_digital": 1,
         "crisis_or_scandal": 0,
         "financial_results": 1,
         "product_launch": 1,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 6
+        "other": 4
       },
       "notable_headlines": [
         "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
@@ -143,13 +162,13 @@
         "financial_results": 0,
         "product_launch": 8,
         "esg_sustainability": 0,
-        "regulatory": 7,
-        "other": 4
+        "regulatory": 6,
+        "other": 5
       },
       "notable_headlines": [
         "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
         "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
-        "Revolut launches MiCA compliant EURR stablecoin in Europe"
+        "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud"
       ]
     },
     "vdk": null

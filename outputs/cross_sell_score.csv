@@ -2,11 +2,14 @@ bank,cross_sell_score
 argenta,0.0
 belfius,0.167
 beobank,0.0
+bnp_paribas_fortis,0.0
 bunq,0.333
+cbc,0.0
 crelan,0.333
 hellobank,0.5
 ing,0.167
 kbc,0.0
+keytrade,0.333
 n26,0.333
 revolut,0.167
 vdk,0.0

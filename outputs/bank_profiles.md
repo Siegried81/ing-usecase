@@ -1,4 +1,4 @@
-> **Scope: `current_account_pack` product family only** — 11 of 11 banks with usable captures.
+> **Scope: `current_account_pack` product family only** — 14 of 14 banks with usable captures.
 
 # Bank profile cards
 
@@ -34,12 +34,12 @@
 | rate prominence | above_fold |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | 1 |
+| aida coverage | 2 |
 | persuasion levers | authority |
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** numeric claim count well above the market average (+2.2 SD); animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD).
+**Signature:** numeric claim count well above the market average (+2.3 SD); animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD).
 
 ### belfius  (traditional)
 
@@ -78,7 +78,7 @@
 | lever count | - |
 | personas | student 100%, mass_market 100% |
 
-**Signature:** branch network cited as benefit well above the market average (+3.2 SD); hidden conditions behind free claim well above the market average (+2.0 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** branch network cited as benefit well above the market average (+3.6 SD); hidden conditions behind free claim well above the market average (+2.3 SD); youth student targeting well above the market average (+1.3 SD).
 
 ### beobank  (traditional)
 
@@ -104,7 +104,7 @@
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
-| formality score | 3 |
+| formality score | 4 |
 | second person ratio | 0.6 |
 | urgency markers | 0 |
 | primary product | Compte Go |
@@ -117,7 +117,46 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** mentions loyalty or referral well above the market average (+2.1 SD); is bundled offer well below the market average (-2.1 SD); animated asset count well below the market average (-1.6 SD).
+**Signature:** mentions loyalty or referral well above the market average (+2.4 SD); is bundled offer well below the market average (-1.9 SD); animated asset count well below the market average (-1.6 SD).
+
+### bnp_paribas_fortis  (traditional)
+
+*1 page(s) · current_account_pack · fr · captured 2026-09-21 07:34:20.281058+00:00 · source: real*
+
+| Field | Value |
+| --- | --- |
+| dominant colour | #ffffff |
+| brand colour share | 0 |
+| accent colour count | 4 |
+| accent locations | - |
+| background luminance | 0.84 |
+| image count | 17 |
+| dominant image type | photo |
+| people present | yes (all pages) |
+| animated | no |
+| image area share | 0.1 |
+| archetype | - |
+| hero image | yes (all pages) |
+| text image layout | - |
+| page height px | 6,387 |
+| cta count | 23 |
+| cta above fold | no |
+| word count | 2,199 |
+| readability band | hard |
+| formality score | 3 |
+| second person ratio | 0.58 |
+| urgency markers | 1 |
+| primary product | Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack) |
+| rate shown | no |
+| rate prominence | - |
+| benefit framing | rational |
+| fab level | feature |
+| aida coverage | - |
+| persuasion levers | - |
+| lever count | - |
+| personas | mass_market 100% |
+
+**Signature:** animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD); fast digital onboarding claim well above the market average (+1.3 SD).
 
 ### bunq  (challenger)
 
@@ -156,7 +195,46 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** background luminance well below the market average (-2.9 SD); urgency marker count well above the market average (+2.4 SD); people present well below the market average (-2.1 SD).
+**Signature:** background luminance well below the market average (-3.3 SD); urgency marker count well above the market average (+2.7 SD); rate shown well above the market average (+2.4 SD).
+
+### cbc  (traditional)
+
+*1 page(s) · current_account_pack · fr · captured 2026-09-21 07:42:35.967203+00:00 · source: real*
+
+| Field | Value |
+| --- | --- |
+| dominant colour | #ffffff |
+| brand colour share | 0 |
+| accent colour count | 4 |
+| accent locations | - |
+| background luminance | 0.87 |
+| image count | 12 |
+| dominant image type | illustration |
+| people present | no |
+| animated | yes (all pages) |
+| image area share | 0.05 |
+| archetype | - |
+| hero image | yes (all pages) |
+| text image layout | - |
+| page height px | 4,447 |
+| cta count | 11 |
+| cta above fold | no |
+| word count | 2,613 |
+| readability band | very_hard |
+| formality score | 4 |
+| second person ratio | 0.84 |
+| urgency markers | 0 |
+| primary product | Compte à vue 100% online - 100% gratuit |
+| rate shown | no |
+| rate prominence | - |
+| benefit framing | rational |
+| fab level | feature |
+| aida coverage | - |
+| persuasion levers | - |
+| lever count | - |
+| personas | mass_market 100% |
+
+**Signature:** people present well below the market average (-1.9 SD); is bundled offer well below the market average (-1.9 SD); has comparison table well above the market average (+1.3 SD).
 
 ### crelan  (traditional)
 
@@ -176,7 +254,7 @@
 | image area share | 0 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
-| text image layout | beside |
+| text image layout | overlaid |
 | page height px | 2,945 |
 | cta count | 42 |
 | cta above fold | no |
@@ -195,7 +273,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** image count well above the market average (+2.9 SD); cta count well above the market average (+2.6 SD); question count well above the market average (+2.3 SD).
+**Signature:** image count well above the market average (+3.2 SD); cta count well above the market average (+2.8 SD); question count well above the market average (+2.5 SD).
 
 ### hellobank  (traditional)
 
@@ -221,7 +299,7 @@
 | cta above fold | no |
 | word count | 1,661 |
 | readability band | hard |
-| formality score | 4 |
+| formality score | 3 |
 | second person ratio | 0.59 |
 | urgency markers | 0 |
 | primary product | Le compte de paiement all-in gratuit |
@@ -234,7 +312,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+2.8 SD); animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD).
+**Signature:** brand colour share well above the market average (+3.2 SD); animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD).
 
 ### ing  (traditional)
 
@@ -260,7 +338,7 @@
 | cta above fold | no |
 | word count | 3,148 |
 | readability band | hard |
-| formality score | 3.5 |
+| formality score | 3 |
 | second person ratio | 0.83 |
 | urgency markers | 0.5 |
 | primary product | ING Go (pack compte à vue) |
@@ -268,7 +346,7 @@
 | rate prominence | above_fold |
 | benefit framing | mixed |
 | fab level | benefit |
-| aida coverage | 3 |
+| aida coverage | 3.5 |
 | persuasion levers | reciprocity, scarcity |
 | lever count | 1.5 |
 | personas | mass_market 100%, student 50% |
@@ -304,15 +382,54 @@
 | urgency markers | 0.5 |
 | primary product | Compte Base KBC |
 | rate shown | no |
-| rate prominence | above_fold |
+| rate prominence | below_fold |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | 2 |
+| aida coverage | 3 |
 | persuasion levers | authority |
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** is bundled offer well below the market average (-2.1 SD); images have alt text well above the market average (+1.6 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** images have alt text well above the market average (+1.9 SD); is bundled offer well below the market average (-1.9 SD); has comparison table well above the market average (+1.3 SD).
+
+### keytrade  (challenger)
+
+*1 page(s) · current_account_pack · fr · captured 2026-09-21 07:42:57.763946+00:00 · source: real*
+
+| Field | Value |
+| --- | --- |
+| dominant colour | #e6f1f4 |
+| brand colour share | 0 |
+| accent colour count | 4 |
+| accent locations | - |
+| background luminance | 0.68 |
+| image count | 21 |
+| dominant image type | photo |
+| people present | yes (all pages) |
+| animated | yes (all pages) |
+| image area share | 0.26 |
+| archetype | - |
+| hero image | yes (all pages) |
+| text image layout | - |
+| page height px | 6,440 |
+| cta count | 4 |
+| cta above fold | no |
+| word count | 1,193 |
+| readability band | hard |
+| formality score | 2 |
+| second person ratio | 0.61 |
+| urgency markers | 0 |
+| primary product | KEYPACK - Le compte à vue en ligne |
+| rate shown | no |
+| rate prominence | - |
+| benefit framing | mixed |
+| fab level | feature |
+| aida coverage | - |
+| persuasion levers | - |
+| lever count | - |
+| personas | student 100%, mass_market 100% |
+
+**Signature:** disclaimer present well below the market average (-1.9 SD); formality score well below the market average (-1.4 SD); numeric claim count well below the market average (-1.4 SD).
 
 ### n26  (challenger)
 
@@ -347,11 +464,11 @@
 | benefit framing | mixed |
 | fab level | benefit |
 | aida coverage | 3 |
-| persuasion levers | authority, reciprocity |
-| lever count | 2 |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** first time investor targeting well above the market average (+3.2 SD); mentions loyalty or referral well above the market average (+2.1 SD); people present well below the market average (-2.1 SD).
+**Signature:** first time investor targeting well above the market average (+3.6 SD); subscription style framing well above the market average (+2.4 SD); mentions loyalty or referral well above the market average (+2.4 SD).
 
 ### revolut  (challenger)
 
@@ -377,7 +494,7 @@
 | cta above fold | no |
 | word count | 1,224 |
 | readability band | hard |
-| formality score | 3 |
+| formality score | 2 |
 | second person ratio | 0.79 |
 | urgency markers | 1 |
 | primary product | Compte courant |
@@ -385,12 +502,12 @@
 | rate prominence | above_fold |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | 4 |
-| persuasion levers | social_proof, authority, reciprocity |
+| aida coverage | 3 |
+| persuasion levers | social_proof, authority, liking |
 | lever count | 3 |
 | personas | mass_market 100%, entrepreneur_self_employed 100%, family 100% |
 
-**Signature:** institutional trust signal present well above the market average (+3.2 SD); disclaimer present well below the market average (-2.1 SD); rate shown well above the market average (+2.1 SD).
+**Signature:** institutional trust signal present well above the market average (+3.6 SD); rate shown well above the market average (+2.4 SD); subscription style framing well above the market average (+2.4 SD).
 
 ### vdk  (traditional)
 
@@ -429,4 +546,4 @@
 | lever count | - |
 | personas | student 100%, mass_market 100% |
 
-**Signature:** cta above fold well above the market average (+2.1 SD); formality score well above the market average (+2.1 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** cta above fold well above the market average (+2.4 SD); formality score well above the market average (+2.1 SD); youth student targeting well above the market average (+1.3 SD).

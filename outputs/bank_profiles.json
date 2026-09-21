@@ -5,11 +5,14 @@
       "argenta",
       "belfius",
       "beobank",
+      "bnp_paribas_fortis",
       "bunq",
+      "cbc",
       "crelan",
       "hellobank",
       "ing",
       "kbc",
+      "keytrade",
       "n26",
       "revolut",
       "vdk"
@@ -69,7 +72,7 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 1.0,
+        "aida_coverage": 2.0,
         "persuasion_levers": [
           "authority"
         ],
@@ -84,15 +87,15 @@
       "signature": [
         [
           "numeric_claim_count",
-          2.2335616912787084
+          2.295838725245495
         ],
         [
           "animated_asset_count",
-          -1.632993161855452
+          -1.5811388300841895
         ],
         [
           "has_animation",
-          -1.632993161855452
+          -1.5811388300841895
         ]
       ]
     },
@@ -161,15 +164,15 @@
       "signature": [
         [
           "branch_network_cited_as_benefit",
-          3.16227766016838
+          3.6055512754639896
         ],
         [
           "hidden_conditions_behind_free_claim",
-          1.9762098586449277
+          2.2885855374829744
         ],
         [
-          "has_comparison_table",
-          1.3228756555322954
+          "youth_student_targeting",
+          1.3416407864998738
         ]
       ]
     },
@@ -209,7 +212,7 @@
       "tone": {
         "word_count": 3310.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
+        "formality_score": 4.0,
         "second_person_ratio": 0.603,
         "urgency_markers": 0.0
       },
@@ -234,15 +237,88 @@
       "signature": [
         [
           "mentions_loyalty_or_referral",
-          2.121320343559643
+          2.449489742783178
         ],
         [
           "is_bundled_offer",
-          -2.121320343559643
+          -1.9148542155126758
         ],
         [
           "animated_asset_count",
-          -1.632993161855452
+          -1.5811388300841895
+        ]
+      ]
+    },
+    "bnp_paribas_fortis": {
+      "identity": {
+        "bank": "bnp_paribas_fortis",
+        "category": "traditional",
+        "pages_analysed": 1,
+        "product_family": "current_account_pack",
+        "language": "fr",
+        "mixed_language": false,
+        "captured": "2026-09-21 07:34:20.281058+00:00",
+        "data_source": "real"
+      },
+      "palette": {
+        "dominant_colour": "#ffffff",
+        "brand_colour_share": 0.0,
+        "accent_colour_count": 4.0,
+        "accent_locations": [],
+        "background_luminance": 0.843
+      },
+      "imagery": {
+        "image_count": 17.0,
+        "dominant_image_type": "photo",
+        "people_present": 1.0,
+        "animated": 0.0,
+        "image_area_share": 0.104
+      },
+      "layout": {
+        "archetype": null,
+        "hero_image": 1.0,
+        "text_image_layout": null,
+        "page_height_px": 6387.0,
+        "cta_count": 23.0,
+        "cta_above_fold": 0.0
+      },
+      "tone": {
+        "word_count": 2199.0,
+        "readability_band": "hard",
+        "formality_score": 3.0,
+        "second_person_ratio": 0.576,
+        "urgency_markers": 1.0
+      },
+      "value_proposition": {
+        "primary_product": "Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack)",
+        "rate_shown": 0.0,
+        "rate_prominence": null,
+        "benefit_framing": "rational",
+        "fab_level": "feature"
+      },
+      "marketing_principles": {
+        "aida_coverage": null,
+        "persuasion_levers": [],
+        "lever_count": null
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "share": 1.0
+        }
+      ],
+      "signature": [
+        [
+          "animated_asset_count",
+          -1.5811388300841895
+        ],
+        [
+          "has_animation",
+          -1.5811388300841895
+        ],
+        [
+          "fast_digital_onboarding_claim",
+          1.2924860661584994
         ]
       ]
     },
@@ -312,15 +388,88 @@
       "signature": [
         [
           "background_luminance",
-          -2.936738014825432
+          -3.2960567610473017
         ],
         [
           "urgency_marker_count",
-          2.422507915557546
+          2.694438717061496
         ],
         [
+          "rate_shown",
+          2.4494897427831783
+        ]
+      ]
+    },
+    "cbc": {
+      "identity": {
+        "bank": "cbc",
+        "category": "traditional",
+        "pages_analysed": 1,
+        "product_family": "current_account_pack",
+        "language": "fr",
+        "mixed_language": false,
+        "captured": "2026-09-21 07:42:35.967203+00:00",
+        "data_source": "real"
+      },
+      "palette": {
+        "dominant_colour": "#ffffff",
+        "brand_colour_share": 0.001,
+        "accent_colour_count": 4.0,
+        "accent_locations": [],
+        "background_luminance": 0.869
+      },
+      "imagery": {
+        "image_count": 12.0,
+        "dominant_image_type": "illustration",
+        "people_present": 0.0,
+        "animated": 1.0,
+        "image_area_share": 0.046
+      },
+      "layout": {
+        "archetype": null,
+        "hero_image": 1.0,
+        "text_image_layout": null,
+        "page_height_px": 4447.0,
+        "cta_count": 11.0,
+        "cta_above_fold": 0.0
+      },
+      "tone": {
+        "word_count": 2613.0,
+        "readability_band": "very_hard",
+        "formality_score": 4.0,
+        "second_person_ratio": 0.836,
+        "urgency_markers": 0.0
+      },
+      "value_proposition": {
+        "primary_product": "Compte \u00e0 vue 100% online - 100% gratuit",
+        "rate_shown": 0.0,
+        "rate_prominence": null,
+        "benefit_framing": "rational",
+        "fab_level": "feature"
+      },
+      "marketing_principles": {
+        "aida_coverage": null,
+        "persuasion_levers": [],
+        "lever_count": null
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "share": 1.0
+        }
+      ],
+      "signature": [
+        [
           "people_present",
-          -2.121320343559643
+          -1.9148542155126758
+        ],
+        [
+          "is_bundled_offer",
+          -1.9148542155126758
+        ],
+        [
+          "has_comparison_table",
+          1.3416407864998738
         ]
       ]
     },
@@ -356,7 +505,7 @@
       "layout": {
         "archetype": "hero_stacked",
         "hero_image": 1.0,
-        "text_image_layout": "beside",
+        "text_image_layout": "overlaid",
         "page_height_px": 2945.0,
         "cta_count": 42.0,
         "cta_above_fold": 0.0
@@ -391,15 +540,15 @@
       "signature": [
         [
           "image_count",
-          2.8630303534182366
+          3.248134674070106
         ],
         [
           "cta_count",
-          2.6012569884959484
+          2.759140179920933
         ],
         [
           "question_count",
-          2.3045951484552036
+          2.4966266345449633
         ]
       ]
     },
@@ -439,7 +588,7 @@
       "tone": {
         "word_count": 1661.0,
         "readability_band": "hard",
-        "formality_score": 4.0,
+        "formality_score": 3.0,
         "second_person_ratio": 0.595,
         "urgency_markers": 0.0
       },
@@ -464,15 +613,15 @@
       "signature": [
         [
           "brand_colour_share",
-          2.8124869366806395
+          3.1898957966439943
         ],
         [
           "animated_asset_count",
-          -1.632993161855452
+          -1.5811388300841895
         ],
         [
           "has_animation",
-          -1.632993161855452
+          -1.5811388300841895
         ]
       ]
     },
@@ -517,7 +666,7 @@
       "tone": {
         "word_count": 3148.5,
         "readability_band": "hard",
-        "formality_score": 3.5,
+        "formality_score": 3.0,
         "second_person_ratio": 0.829,
         "urgency_markers": 0.5
       },
@@ -529,7 +678,7 @@
         "fab_level": "benefit"
       },
       "marketing_principles": {
-        "aida_coverage": 3.0,
+        "aida_coverage": 3.5,
         "persuasion_levers": [
           "reciprocity",
           "scarcity"
@@ -549,15 +698,15 @@
       "signature": [
         [
           "numeric_claim_count",
-          1.3824354116921338
+          1.4302621861044647
         ],
         [
           "youth_student_targeting",
-          1.3228756555322951
+          1.3416407864998738
         ],
         [
           "cta_count",
-          -0.8697826633384587
+          -0.9197133933069777
         ]
       ]
     },
@@ -608,12 +757,12 @@
       "value_proposition": {
         "primary_product": "Compte Base KBC",
         "rate_shown": 0.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "below_fold",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 2.0,
+        "aida_coverage": 3.0,
         "persuasion_levers": [
           "authority"
         ],
@@ -627,16 +776,93 @@
       ],
       "signature": [
         [
-          "is_bundled_offer",
-          -2.121320343559643
+          "images_have_alt_text",
+          1.9148542155126764
         ],
         [
-          "images_have_alt_text",
-          1.632993161855452
+          "is_bundled_offer",
+          -1.9148542155126758
         ],
         [
           "has_comparison_table",
-          1.3228756555322954
+          1.3416407864998738
+        ]
+      ]
+    },
+    "keytrade": {
+      "identity": {
+        "bank": "keytrade",
+        "category": "challenger",
+        "pages_analysed": 1,
+        "product_family": "current_account_pack",
+        "language": "fr",
+        "mixed_language": false,
+        "captured": "2026-09-21 07:42:57.763946+00:00",
+        "data_source": "real"
+      },
+      "palette": {
+        "dominant_colour": "#e6f1f4",
+        "brand_colour_share": 0.0,
+        "accent_colour_count": 4.0,
+        "accent_locations": [],
+        "background_luminance": 0.683
+      },
+      "imagery": {
+        "image_count": 21.0,
+        "dominant_image_type": "photo",
+        "people_present": 1.0,
+        "animated": 1.0,
+        "image_area_share": 0.26
+      },
+      "layout": {
+        "archetype": null,
+        "hero_image": 1.0,
+        "text_image_layout": null,
+        "page_height_px": 6440.0,
+        "cta_count": 4.0,
+        "cta_above_fold": 0.0
+      },
+      "tone": {
+        "word_count": 1193.0,
+        "readability_band": "hard",
+        "formality_score": 2.0,
+        "second_person_ratio": 0.614,
+        "urgency_markers": 0.0
+      },
+      "value_proposition": {
+        "primary_product": "KEYPACK - Le compte \u00e0 vue en ligne",
+        "rate_shown": 0.0,
+        "rate_prominence": null,
+        "benefit_framing": "mixed",
+        "fab_level": "feature"
+      },
+      "marketing_principles": {
+        "aida_coverage": null,
+        "persuasion_levers": [],
+        "lever_count": null
+      },
+      "personas": [
+        {
+          "persona": "student",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "share": 1.0
+        }
+      ],
+      "signature": [
+        [
+          "disclaimer_present",
+          -1.9148542155126764
+        ],
+        [
+          "formality_score",
+          -1.4117731575135797
+        ],
+        [
+          "numeric_claim_count",
+          -1.397287841756235
         ]
       ]
     },
@@ -693,10 +919,9 @@
       "marketing_principles": {
         "aida_coverage": 3.0,
         "persuasion_levers": [
-          "authority",
-          "reciprocity"
+          "liking"
         ],
-        "lever_count": 2.0
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -707,15 +932,15 @@
       "signature": [
         [
           "first_time_investor_targeting",
-          3.1622776601683795
+          3.6055512754639896
+        ],
+        [
+          "subscription_style_framing",
+          2.4494897427831783
         ],
         [
           "mentions_loyalty_or_referral",
-          2.121320343559643
-        ],
-        [
-          "people_present",
-          -2.121320343559643
+          2.449489742783178
         ]
       ]
     },
@@ -757,7 +982,7 @@
       "tone": {
         "word_count": 1224.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
+        "formality_score": 2.0,
         "second_person_ratio": 0.792,
         "urgency_markers": 1.0
       },
@@ -769,11 +994,11 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 4.0,
+        "aida_coverage": 3.0,
         "persuasion_levers": [
           "social_proof",
           "authority",
-          "reciprocity"
+          "liking"
         ],
         "lever_count": 3.0
       },
@@ -794,15 +1019,15 @@
       "signature": [
         [
           "institutional_trust_signal_present",
-          3.1622776601683795
-        ],
-        [
-          "disclaimer_present",
-          -2.121320343559643
+          3.6055512754639896
         ],
         [
           "rate_shown",
-          2.1213203435596424
+          2.4494897427831783
+        ],
+        [
+          "subscription_style_framing",
+          2.4494897427831783
         ]
       ]
     },
@@ -871,15 +1096,15 @@
       "signature": [
         [
           "cta_above_fold",
-          2.1213203435596424
+          2.449489742783178
         ],
         [
           "formality_score",
-          2.084219669613948
+          2.0761369963434992
         ],
         [
-          "has_comparison_table",
-          1.3228756555322954
+          "youth_student_targeting",
+          1.3416407864998738
         ]
       ]
     }

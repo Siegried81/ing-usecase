@@ -1,0 +1,313 @@
+{
+  "iteration": 10,
+  "language": "fr",
+  "selected": [
+    "R1",
+    "R2",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8"
+  ],
+  "direction": "up",
+  "pages": [
+    {
+      "slug": "index",
+      "title": "Épargner avec ING | Comptes d'épargne, compte à terme et investissement · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "comptes-epargne",
+      "title": "Comptes d'épargne | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "compte-a-terme",
+      "title": "Compte à terme : taux fixe et durée fixe | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "compte-courant",
+      "title": "Compte courant : carte, virements et frais clairs | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "jeunes",
+      "title": "Compte pour jeunes et étudiants | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "investir",
+      "title": "Investir | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "credit-hypothecaire",
+      "title": "Crédit hypothécaire | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "ouvrir-compte",
+      "title": "Ouvrir un compte en ligne | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "pourquoi-ing",
+      "title": "Pourquoi ING | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    },
+    {
+      "slug": "contact",
+      "title": "Contact | ING Belgique · ING",
+      "lang": "fr-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 8,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "fr"
+    }
+  ],
+  "issues": [],
+  "checked_after_interaction": [
+    "R1",
+    "R2",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8"
+  ],
+  "manifest_recs": [
+    "R1",
+    "R2",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R8"
+  ],
+  "fallbacks": [],
+  "opened_via_button": true,
+  "console_errors": [],
+  "failed_requests": [],
+  "mobile": {
+    "overflow_px": 0,
+    "h1_count": 1,
+    "cta_in_viewport": true,
+    "nav_link_count": 10,
+    "contrast_violation_count": 0
+  },
+  "screenshot": "outputs/browser_audit/iteration_10_index.png",
+  "recommendation_checks": [
+    {
+      "id": "R1",
+      "title": "Add a visible rate to the current-account pack page",
+      "features": [
+        "rate_shown",
+        "rate_value_pct"
+      ],
+      "checks": [
+        {
+          "feature": "rate_shown",
+          "label": "a rate is visible",
+          "pass": true,
+          "detail": "rate cue found on 2 page(s)"
+        }
+      ]
+    },
+    {
+      "id": "R2",
+      "title": "Increase the number of calls to action on the page",
+      "features": [
+        "cta_count"
+      ],
+      "checks": [
+        {
+          "feature": "cta_count",
+          "label": "multiple calls to action",
+          "pass": true,
+          "detail": "CTA counts {'compte-courant': 8, 'ouvrir-compte': 8, 'index': 8}"
+        }
+      ]
+    },
+    {
+      "id": "R4",
+      "title": "Add a first-time-investor entry point",
+      "features": [
+        "first_time_investor_targeting"
+      ],
+      "checks": [
+        {
+          "feature": "first_time_investor_targeting",
+          "label": "first-time framing",
+          "pass": true,
+          "detail": "beginner cue on target pages: True"
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "title": "Keep the expat and cross-border angle, but make it explicit",
+      "features": [
+        "expat_cross_border_targeting"
+      ],
+      "checks": [
+        {
+          "feature": "expat_cross_border_targeting",
+          "label": "expat / cross-border angle",
+          "pass": true,
+          "detail": "expat cue on target pages: True"
+        }
+      ]
+    },
+    {
+      "id": "R6",
+      "title": "Keep the offer clear and do not bury it in figures",
+      "features": [
+        "value_prop_clarity",
+        "numeric_claim_count"
+      ],
+      "checks": [
+        {
+          "feature": "value_prop_clarity",
+          "label": "clear hero value proposition",
+          "pass": true,
+          "detail": "h1 lengths {'compte-courant': 37, 'ouvrir-compte': 49, 'index': 35}"
+        },
+        {
+          "feature": "aida_coverage_score",
+          "label": "full AIDA structure",
+          "pass": true,
+          "detail": "per page (sections, faq, cta-band): {'index': (6, 5, True), 'comptes-epargne': (6, 5, True), 'compte-a-terme': (5, 5, True), 'compte-courant': (6, 5, True), 'jeunes': (5, 5, True), 'investir': (6, 5, True), 'credit-hypothecaire': (5, 5, True), 'ouvrir-compte': (6, 5, True), 'pourquoi-ing': (6, 5, True), 'contact': (6, 5, True)}"
+        }
+      ]
+    },
+    {
+      "id": "R7",
+      "title": "Review the persuasion levers for consistency with the brand",
+      "features": [
+        "persuasion_lever_count"
+      ],
+      "checks": [
+        {
+          "feature": "persuasion_lever_count",
+          "label": "trust / persuasion cues",
+          "pass": true,
+          "detail": "trust cue present: True"
+        }
+      ]
+    },
+    {
+      "id": "R8",
+      "title": "Test a fuller campaign structure against the current page",
+      "features": [
+        "aida_coverage_score"
+      ],
+      "checks": [
+        {
+          "feature": "aida_coverage_score",
+          "label": "full AIDA structure",
+          "pass": true,
+          "detail": "per page (sections, faq, cta-band): {'index': (6, 5, True), 'comptes-epargne': (6, 5, True), 'compte-a-terme': (5, 5, True), 'compte-courant': (6, 5, True), 'jeunes': (5, 5, True), 'investir': (6, 5, True), 'credit-hypothecaire': (5, 5, True), 'ouvrir-compte': (6, 5, True), 'pourquoi-ing': (6, 5, True), 'contact': (6, 5, True)}"
+        }
+      ]
+    }
+  ],
+  "seconds": 39.6
+}
