@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T12:52:23+00:00",
+  "generated_at": "2026-09-21T13:13:54+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -52,7 +52,7 @@
   },
   "headline": {
     "focus": "ING",
-    "score": 0.211,
+    "score": 0.209,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
@@ -61,21 +61,21 @@
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.19,
+      "score": -0.199,
       "isFocus": false
     },
     {
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.179,
+      "score": -0.188,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.096,
+      "score": -0.106,
       "isFocus": false
     },
     {
@@ -89,63 +89,63 @@
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.049,
+      "score": -0.05,
       "isFocus": false
     },
     {
       "bank": "Vdk",
       "key": "vdk",
       "category": "traditional",
-      "score": -0.024,
+      "score": 0.02,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": 0.052,
+      "score": 0.041,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.141,
+      "score": 0.129,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.211,
+      "score": 0.209,
       "isFocus": true
     },
     {
       "bank": "Hellobank",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.225,
+      "score": 0.232,
       "isFocus": false
     },
     {
       "bank": "Keytrade",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.558,
+      "score": 0.563,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.912,
+      "score": 0.906,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.214,
+      "score": 1.215,
       "isFocus": false
     },
     {
@@ -168,6 +168,16 @@
       "direction": "above"
     },
     {
+      "feature": "mobile_first_design_signal",
+      "label": "Designed mobile-first",
+      "dimension": "layout_structure",
+      "extraction": "rubric",
+      "focusValue": 1.0,
+      "peerMean": 0.375,
+      "gapSd": 1.29,
+      "direction": "above"
+    },
+    {
       "feature": "youth_student_targeting",
       "label": "Targets students or young people",
       "dimension": "banking_domain",
@@ -175,6 +185,26 @@
       "focusValue": 1.0,
       "peerMean": 0.38461538461538464,
       "gapSd": 1.26,
+      "direction": "above"
+    },
+    {
+      "feature": "aida_desire",
+      "label": "Makes the offer feel worth having",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 1.0,
+      "peerMean": 0.42857142857142855,
+      "gapSd": 1.15,
+      "direction": "above"
+    },
+    {
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 3.5,
+      "peerMean": 2.7142857142857144,
+      "gapSd": 1.12,
       "direction": "above"
     },
     {
@@ -186,26 +216,6 @@
       "peerMean": 13.384615384615385,
       "gapSd": -1.06,
       "direction": "below"
-    },
-    {
-      "feature": "value_prop_clarity",
-      "label": "Clarity of the offer",
-      "dimension": "topics_value_prop",
-      "extraction": "rubric",
-      "focusValue": 4.0,
-      "peerMean": 3.5,
-      "gapSd": 1.0,
-      "direction": "above"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "dimension": "layout_structure",
-      "extraction": "rubric",
-      "focusValue": 1.0,
-      "peerMean": 0.5,
-      "gapSd": 1.0,
-      "direction": "above"
     },
     {
       "feature": "fast_digital_onboarding_claim",
@@ -228,26 +238,6 @@
       "direction": "above"
     },
     {
-      "feature": "aida_attention",
-      "label": "Opens with something that stops the reader",
-      "dimension": "marketing_principles",
-      "extraction": "rubric",
-      "focusValue": 0.5,
-      "peerMean": 0.16666666666666666,
-      "gapSd": 0.89,
-      "direction": "above"
-    },
-    {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "dimension": "marketing_principles",
-      "extraction": "rubric",
-      "focusValue": 3.5,
-      "peerMean": 3.0,
-      "gapSd": 0.87,
-      "direction": "above"
-    },
-    {
       "feature": "has_comparison_table",
       "label": "Includes a comparison table",
       "dimension": "layout_structure",
@@ -256,6 +246,16 @@
       "peerMean": 0.38461538461538464,
       "gapSd": -0.79,
       "direction": "below"
+    },
+    {
+      "feature": "background_luminance",
+      "label": "Page brightness",
+      "dimension": "colours_design",
+      "extraction": "automatic",
+      "focusValue": 0.8975,
+      "peerMean": 0.7241538461538461,
+      "gapSd": 0.73,
+      "direction": "above"
     }
   ],
   "excludedGaps": [
@@ -312,8 +312,8 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -321,8 +321,8 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -348,22 +348,22 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "clarity_score",
-      "label": "Clarity",
-      "extraction": "rubric",
-      "traditional": 3.8,
-      "challenger": 4.666666666666667,
-      "effect": 1.75,
-      "higherAt": "challenger"
-    },
-    {
       "feature": "formality_score",
       "label": "Formality of tone",
       "extraction": "rubric",
-      "traditional": 3.5,
+      "traditional": 3.4166666666666665,
       "challenger": 2.25,
-      "effect": -1.68,
+      "effect": -1.83,
       "higherAt": "traditional"
+    },
+    {
+      "feature": "mobile_first_design_signal",
+      "label": "Designed mobile-first",
+      "extraction": "rubric",
+      "traditional": 0.2857142857142857,
+      "challenger": 1.0,
+      "effect": 1.69,
+      "higherAt": "challenger"
     },
     {
       "feature": "hero_image_area_ratio",
@@ -375,13 +375,13 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "question_count",
-      "label": "Questions asked",
-      "extraction": "automatic",
-      "traditional": 20.166666666666668,
-      "challenger": 5.75,
-      "effect": -1.39,
-      "higherAt": "traditional"
+      "feature": "aida_desire",
+      "label": "Makes the offer feel worth having",
+      "extraction": "rubric",
+      "traditional": 0.3333333333333333,
+      "challenger": 1.0,
+      "effect": 1.53,
+      "higherAt": "challenger"
     }
   ],
   "banks": [
@@ -560,7 +560,7 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -580,9 +580,9 @@
         "Image area share": 0.109
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 7078.0,
         "Calls to action": 20.0,
         "Call to action visible without scrolling": 0.0
@@ -590,7 +590,7 @@
       "valueProposition": {
         "Primary product": "Compte Go",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -612,7 +612,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 3.3,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -638,7 +638,7 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -806,7 +806,7 @@
           "direction": "above"
         },
         {
-          "label": "Elements visible without scrolling",
+          "label": "Formality of tone",
           "sd": 1.0,
           "direction": "above"
         }
@@ -924,7 +924,7 @@
         "backgroundLuminance": 0.79
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": 2.0,
         "Persuasion levers": [
           "liking"
         ],
@@ -965,7 +965,7 @@
         },
         {
           "label": "Formality of tone",
-          "sd": -1.3,
+          "sd": -1.4,
           "direction": "below"
         }
       ],
@@ -1168,7 +1168,7 @@
         "backgroundLuminance": 0.878
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": 2.0,
         "Persuasion levers": [
           "authority"
         ],
@@ -1366,12 +1366,12 @@
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Targets expats",
           "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Subscription style framing",
+          "label": "Shows a rate",
           "sd": 2.4,
           "direction": "above"
         }
@@ -1463,20 +1463,20 @@
           "direction": "above"
         },
         {
-          "label": "Formality of tone",
-          "sd": 1.9,
-          "direction": "above"
-        },
-        {
           "label": "Includes a comparison table",
           "sd": 1.3,
           "direction": "above"
+        },
+        {
+          "label": "Figures and percentages quoted",
+          "sd": -1.2,
+          "direction": "below"
         }
       ],
       "tone": {
         "Words on the page": 3992.0,
         "Readability band": "hard",
-        "Formality of tone": 5.0,
+        "Formality of tone": 4.0,
         "Speaks to “you” rather than “we”": 0.797,
         "Urgency markers": 1.0
       },
@@ -1488,9 +1488,9 @@
         "Image area share": 0.114
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "hero_stacked",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
         "Calls to action": 17.0,
         "Call to action visible without scrolling": 1.0
@@ -1498,7 +1498,7 @@
       "valueProposition": {
         "Primary product": "Compte à vue You Count",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "mixed",
         "Fab level": "feature"
       },
@@ -1508,7 +1508,7 @@
         "backgroundLuminance": 0.857
       },
       "marketing": {
-        "Aida coverage": null,
+        "Aida coverage": 3.0,
         "Persuasion levers": [],
         "Lever count": null
       },
@@ -1520,7 +1520,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 3.3,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -1834,223 +1834,223 @@
         5.62,
         5.71,
         5.8,
-        10.38,
+        10.44,
         5.31,
-        9.03,
-        6.97,
-        5.42,
-        5.77,
-        7.68,
-        9.78,
-        10.55,
-        6.57
+        9.04,
+        7.06,
+        5.45,
+        5.8,
+        7.76,
+        9.8,
+        10.61,
+        6.48
       ],
       [
         5.62,
         0.0,
         6.19,
         6.44,
-        9.59,
+        9.66,
         4.63,
-        8.23,
-        7.08,
-        3.84,
-        5.45,
-        5.46,
-        9.06,
-        9.04,
-        4.96
+        8.25,
+        7.17,
+        3.88,
+        5.48,
+        5.57,
+        9.07,
+        9.11,
+        4.84
       ],
       [
         5.71,
         6.19,
         0.0,
         5.68,
-        10.67,
+        10.73,
         5.45,
-        7.26,
-        6.3,
-        5.55,
-        6.26,
-        7.29,
-        8.12,
-        10.58,
-        6.39
+        7.28,
+        6.39,
+        5.58,
+        6.29,
+        7.37,
+        8.14,
+        10.64,
+        6.3
       ],
       [
         5.8,
         6.44,
         5.68,
         0.0,
-        10.07,
+        10.13,
         6.45,
-        8.36,
-        7.6,
-        4.55,
-        7.0,
-        6.68,
-        9.08,
-        10.26,
-        6.66
+        8.38,
+        7.68,
+        4.58,
+        7.02,
+        6.77,
+        9.1,
+        10.32,
+        6.57
       ],
       [
-        10.38,
-        9.59,
-        10.67,
-        10.07,
+        10.44,
+        9.66,
+        10.73,
+        10.13,
         0.0,
-        10.61,
-        11.67,
+        10.67,
+        11.68,
         10.8,
-        9.39,
-        10.66,
+        9.4,
+        10.68,
         9.78,
-        12.03,
+        12.04,
         10.47,
-        9.89
+        9.66
       ],
       [
         5.31,
         4.63,
         5.45,
         6.45,
-        10.61,
+        10.67,
         0.0,
-        7.14,
-        6.73,
-        5.57,
-        2.9,
-        6.86,
-        9.29,
-        9.91,
-        4.94
+        7.16,
+        6.82,
+        5.59,
+        2.95,
+        6.95,
+        9.31,
+        9.97,
+        4.82
       ],
       [
-        9.03,
-        8.23,
-        7.26,
-        8.36,
-        11.67,
-        7.14,
-        0.0,
-        9.13,
-        8.02,
-        7.13,
-        7.81,
-        11.11,
-        10.61,
-        7.86
-      ],
-      [
-        6.97,
-        7.08,
-        6.3,
-        7.6,
-        10.8,
-        6.73,
-        9.13,
-        0.0,
-        6.17,
-        6.74,
-        6.81,
-        7.65,
-        10.34,
-        8.08
-      ],
-      [
-        5.42,
-        3.84,
-        5.55,
-        4.55,
-        9.39,
-        5.57,
-        8.02,
-        6.17,
-        0.0,
-        6.07,
-        5.24,
-        8.2,
-        9.02,
-        6.3
-      ],
-      [
-        5.77,
-        5.45,
-        6.26,
-        7.0,
-        10.66,
-        2.9,
-        7.13,
-        6.74,
-        6.07,
-        0.0,
-        6.91,
-        9.57,
-        9.3,
-        5.73
-      ],
-      [
-        7.68,
-        5.46,
-        7.29,
-        6.68,
-        9.78,
-        6.86,
-        7.81,
-        6.81,
-        5.24,
-        6.91,
-        0.0,
-        8.78,
-        8.79,
-        6.88
-      ],
-      [
-        9.78,
-        9.06,
-        8.12,
-        9.08,
-        12.03,
-        9.29,
-        11.11,
-        7.65,
-        8.2,
-        9.57,
-        8.78,
-        0.0,
-        10.3,
-        10.12
-      ],
-      [
-        10.55,
         9.04,
-        10.58,
-        10.26,
-        10.47,
-        9.91,
-        10.61,
-        10.34,
-        9.02,
-        9.3,
-        8.79,
-        10.3,
+        8.25,
+        7.28,
+        8.38,
+        11.68,
+        7.16,
         0.0,
-        9.89
+        9.14,
+        8.02,
+        7.13,
+        7.83,
+        11.11,
+        10.63,
+        7.66
       ],
       [
-        6.57,
-        4.96,
+        7.06,
+        7.17,
         6.39,
-        6.66,
-        9.89,
-        4.94,
-        7.86,
-        8.08,
+        7.68,
+        10.8,
+        6.82,
+        9.14,
+        0.0,
+        6.19,
+        6.76,
+        6.81,
+        7.67,
+        10.34,
+        7.81
+      ],
+      [
+        5.45,
+        3.88,
+        5.58,
+        4.58,
+        9.4,
+        5.59,
+        8.02,
+        6.19,
+        0.0,
+        6.07,
+        5.27,
+        8.2,
+        9.04,
+        6.05
+      ],
+      [
+        5.8,
+        5.48,
+        6.29,
+        7.02,
+        10.68,
+        2.95,
+        7.13,
+        6.76,
+        6.07,
+        0.0,
+        6.93,
+        9.57,
+        9.31,
+        5.46
+      ],
+      [
+        7.76,
+        5.57,
+        7.37,
+        6.77,
+        9.78,
+        6.95,
+        7.83,
+        6.81,
+        5.27,
+        6.93,
+        0.0,
+        8.8,
+        8.79,
+        6.55
+      ],
+      [
+        9.8,
+        9.07,
+        8.14,
+        9.1,
+        12.04,
+        9.31,
+        11.11,
+        7.67,
+        8.2,
+        9.57,
+        8.8,
+        0.0,
+        10.31,
+        9.96
+      ],
+      [
+        10.61,
+        9.11,
+        10.64,
+        10.32,
+        10.47,
+        9.97,
+        10.63,
+        10.34,
+        9.04,
+        9.31,
+        8.79,
+        10.31,
+        0.0,
+        9.67
+      ],
+      [
+        6.48,
+        4.84,
         6.3,
-        5.73,
-        6.88,
-        10.12,
-        9.89,
+        6.57,
+        9.66,
+        4.82,
+        7.66,
+        7.81,
+        6.05,
+        5.46,
+        6.55,
+        9.96,
+        9.67,
         0.0
       ]
     ]
@@ -2084,15 +2084,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 3.84
+      "distance": 3.88
     },
     {
       "bank": "BNP Paribas Fortis",
-      "distance": 4.55
+      "distance": 4.58
     },
     {
       "bank": "Keytrade",
-      "distance": 5.24
+      "distance": 5.27
     }
   ],
   "deckClaims": [
@@ -2150,23 +2150,261 @@
     ]
   },
   "validation": {
-    "ok": true,
+    "ok": false,
     "warnings": [
       "argenta: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "beobank: core feature(s) entirely missing: ['rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention', 'aida_interest'] ... - record a reason (DR-07)",
+      "beobank: core feature(s) entirely missing: ['aida_desire', 'aida_coverage_score', 'persuasion_lever_count'] - record a reason (DR-07)",
       "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "cbc: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
       "hellobank: core feature(s) entirely missing: ['rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention', 'aida_interest'] ... - record a reason (DR-07)"
     ]
   },
-  "generated": [],
-  "trends": null,
+  "generated": [
+    {
+      "variant": "on_brand",
+      "title": "On brand",
+      "headline": "A term account that keeps your goals clear",
+      "subheading": "Simple, transparent, and built around your plans.",
+      "body": [
+        "What if saving could feel simpler? What if you could fix a rate for a set term? What if you knew exactly what to expect? With a term account, you choose the term and the amount that suit you. No surprises. Just clarity.",
+        "Does your money deserve a clear home? Would you like to choose a term that suits you? Could a term account help you plan with more confidence? Many savers value knowing the rules up front. You can review the details before you decide.",
+        "Are you saving for a house? For a rainy day? For something that matters to you? A term account can be one part of your plan. You stay in control of your goal.",
+        "Do you want to keep things flexible? Do you prefer a fixed term? Do you like knowing the rules up front? You can compare the options and pick what feels right. The choice is yours.",
+        "Have you compared the details? Have you checked the conditions? Have you thought about what works for your budget? Take your time. We keep the information clear and easy to follow.",
+        "Is your current account working hard enough? Could you put idle money to better use? Would a clear overview help you decide? See how a term account works. Then decide if it fits.",
+        "Ready to take the next step? Want to see the terms? Curious about how it works? You can start online in a few steps. We’ll guide you through it.",
+        "Why wait until later? Why not explore your options today? Why not start when you’re ready? A term account can help you plan with clarity. See what’s possible."
+      ],
+      "cta": "Open your term account",
+      "additionalCtas": [
+        "Discover the details",
+        "Get started online"
+      ],
+      "layout": "hero_stacked",
+      "background": "light",
+      "accent": "#ff6200",
+      "imageBriefs": [
+        "Hero image: A bright, modern scene of a person reviewing their savings goals on a laptop, warm natural light, ING orange accent, optimistic mood.",
+        "Close-up of hands holding a simple paper plan with milestones, soft blurred background.",
+        "A calm home office with a coffee cup and notebook, a term account brochure on the desk.",
+        "A couple discussing a savings plan at a kitchen table, friendly and relaxed.",
+        "A smartphone showing a clear account overview screen, no readable rate figures, placeholders visible.",
+        "A person walking in a park, looking confident, seasonal light.",
+        "Abstract graphic of a safe and clear path, orange line leading forward.",
+        "A young professional opening a bank app on a tablet, bright room.",
+        "A family saving for a home, looking at house plans together.",
+        "A small business owner reviewing finances, focused but calm.",
+        "A stack of coins and a simple calendar, symbolising a fixed term.",
+        "A person planting a small plant, representing growth over time.",
+        "A clear checklist with tick boxes, minimal style.",
+        "A friendly bank advisor helping a customer, both smiling, no branding.",
+        "A laptop with a comparison table, blank cells and placeholders.",
+        "A rainy day window with a cup of tea, feeling of security.",
+        "A person checking their phone while commuting, easy access.",
+        "A clean desk with a notebook titled 'My goals', no rates shown.",
+        "A couple high-fiving over a savings milestone.",
+        "A single parent setting aside money for a child’s education.",
+        "A graphic of a lock and a key, symbolising fixed term clarity.",
+        "A person reviewing terms and conditions with a highlighter, calm.",
+        "A group of friends talking about money openly, supportive.",
+        "A person using a laptop in a bright cafe, relaxed.",
+        "A simple timeline graphic showing a term start and end, no dates or rates.",
+        "A hand placing a coin into a jar labelled 'future', no amounts.",
+        "A professional woman presenting a clear plan on a whiteboard.",
+        "A father and daughter counting coins, learning about saving.",
+        "A smartphone with a notification 'Step complete', no rates.",
+        "A calm sunset over a city skyline, feeling of future security.",
+        "A person closing a laptop with a satisfied smile, evening light.",
+        "Abstract ING orange shapes forming a shield and a growth arrow."
+      ],
+      "disclaimer": "Compliance placeholder: [RATE] and [AMOUNT] to be inserted. Terms, conditions, and risk information apply. This is not financial advice. Full legal text pending compliance review.",
+      "levers": [
+        "authority",
+        "social_proof",
+        "commitment"
+      ],
+      "model": "deepseek/deepseek-flash",
+      "promptHash": "bd17632eaea83f80",
+      "scorecard": [
+        {
+          "label": "Questions asked",
+          "target": "question_count between 17 and 32",
+          "actual": "24",
+          "result": "hit"
+        },
+        {
+          "label": "Urgency and deadline language",
+          "target": "urgency_marker_count between 0.47 and 0.87",
+          "actual": "0",
+          "result": "miss"
+        },
+        {
+          "label": "Images",
+          "target": "image_count between 23 and 42",
+          "actual": "32",
+          "result": "hit"
+        },
+        {
+          "label": "Calls to action",
+          "target": "cta_count between 1.87 and 3.47",
+          "actual": "3",
+          "result": "hit"
+        },
+        {
+          "label": "Opens with a large image",
+          "target": "hero_image_present = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Call to action visible without scrolling",
+          "target": "cta_above_fold = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Carries legal small print",
+          "target": "disclaimer_present = True",
+          "actual": "True",
+          "result": "hit"
+        }
+      ],
+      "hitRate": 0.86
+    },
+    {
+      "variant": "challenger_style",
+      "title": "Challenger style",
+      "headline": "What could a term account do for your money?",
+      "subheading": "Clear terms. No jargon. Just a fixed term and a rate you can see before you decide.",
+      "body": [
+        "What if saving could feel simpler? With a term account, you choose how long you set your money aside and you see the rate before you open. How long suits your plan? [RATE] is shown clearly where you apply, so you can compare terms without guesswork.",
+        "Are you saving for something specific? A deposit, a trip, a buffer for the unexpected? A term account can help you commit to a date. What would you like your money to be ready for?",
+        "What happens if you need access before the term ends? You should check the terms before you apply. Where can you find the details? They are in the summary box, alongside any early-access conditions.",
+        "A term account is built for savers who want a set period and a clear rate. You can open it online now, and you can learn more before you commit. Many savers use term accounts to plan ahead. If your plans change, the terms explain what happens next."
+      ],
+      "cta": "Open a term account",
+      "additionalCtas": [
+        "Discover the term options",
+        "Apply online in minutes",
+        "Get started with a term account",
+        "Sign up to see the rate",
+        "Learn more about fixed terms",
+        "Open your account today",
+        "Discover how term accounts work",
+        "Apply before the term window closes"
+      ],
+      "layout": "hero_stacked",
+      "background": "dark",
+      "accent": "#ff6200",
+      "imageBriefs": [
+        "Hero image: dark, low-luminance background with a large, softly lit phone screen showing a simple term account dashboard; no visible rates, no logos; one hand partially enters frame; generous negative space for headline and CTA above the fold.",
+        "Abstract shape: fixed term represented by a clean, segmented timeline with one highlighted segment; dark background, accent orange line; no text.",
+        "App screen close-up: term selection screen with duration choices and a placeholder for [RATE]; dark UI, minimal labels.",
+        "Lifestyle: a traveler at an airport lounge checking a banking app on a phone; low-light environment, no visible brand, cross-border context.",
+        "Two currencies represented by neutral banknote textures side by side, blurred and abstract, dark background, no real currency symbols.",
+        "Card grid: three minimal cards showing short term, medium term, and long term as icons only, on dark background, no rates.",
+        "Close-up of a calendar with a marked future date, soft shadows, no readable text, dark tones.",
+        "Person opening a laptop at a kitchen table at night, banking app glow on face, no screen details, minimal.",
+        "Abstract bar chart with stable upward steps, dark background, accent orange highlights, no numbers.",
+        "A secure lock icon merged with a simple savings box, dark background, accent orange, no text.",
+        "Expat context: a person in a cafe abroad reviewing account terms on a tablet; muted light, cross-border feel, no readable copy.",
+        "Mobile phone held over a dark desk, showing a learn-more style informational screen with empty placeholder blocks.",
+        "Split-screen: left side a calendar, right side a phone with a term account summary; dark palette, accent lines.",
+        "A simple line drawing of a hand placing a coin into a fixed-term slot, dark background, minimal.",
+        "Notification on a smartwatch showing a term milestone, dark strap, no readable rate, soft glow.",
+        "A quiet city skyline at dusk, representing long-term planning, dark blue and accent orange, no people.",
+        "Final image: a minimal checklist with an open-account icon, dark background, accent orange checkmark, no readable legal text."
+      ],
+      "disclaimer": "Compliance placeholder: insert approved legal text covering term conditions, rate availability, eligibility, withdrawal rules, and risk warnings.",
+      "levers": [
+        "authority",
+        "commitment",
+        "social_proof",
+        "scarcity"
+      ],
+      "model": "deepseek/deepseek-flash",
+      "promptHash": "aa03afa4f2ff415c",
+      "scorecard": [
+        {
+          "label": "Questions asked",
+          "target": "question_count between 5.60 and 10",
+          "actual": "9",
+          "result": "hit"
+        },
+        {
+          "label": "Urgency and deadline language",
+          "target": "urgency_marker_count between 0.35 and 0.65",
+          "actual": "0",
+          "result": "miss"
+        },
+        {
+          "label": "Images",
+          "target": "image_count between 12 and 22",
+          "actual": "17",
+          "result": "hit"
+        },
+        {
+          "label": "Calls to action",
+          "target": "cta_count between 6.30 and 12",
+          "actual": "9",
+          "result": "hit"
+        },
+        {
+          "label": "Opens with a large image",
+          "target": "hero_image_present = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Call to action visible without scrolling",
+          "target": "cta_above_fold = True",
+          "actual": "True",
+          "result": "hit"
+        },
+        {
+          "label": "Carries legal small print",
+          "target": "disclaimer_present = True",
+          "actual": "True",
+          "result": "hit"
+        }
+      ],
+      "hitRate": 0.86
+    }
+  ],
+  "trends": {
+    "available": true,
+    "source": "Dan's trends-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
+    "window": {
+      "start": "2021-09-12",
+      "end": "2026-09-20"
+    },
+    "covered": [
+      "Argenta",
+      "Belfius",
+      "Beobank",
+      "BNP Paribas Fortis",
+      "bunq",
+      "CBC",
+      "Crelan",
+      "Hello bank!",
+      "ING",
+      "KBC",
+      "Keytrade Bank",
+      "N26",
+      "Revolut",
+      "VDK Bank"
+    ],
+    "uncovered": [],
+    "n_series": 5764,
+    "n_anomalies": 262,
+    "data_url": "trends.json"
+  },
   "reputation": {
     "available": true,
     "banks": {
       "argenta": {
-        "headline_count": 4,
+        "headline_count": 5,
         "themes": {
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
@@ -2174,7 +2412,7 @@
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 3
+          "other": 4
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2189,6 +2427,10 @@
           "esg_sustainability": [],
           "regulatory": [],
           "other": [
+            {
+              "title": "Argenta Silver Reports Up to 96% Silver Recovery and 14,857 g/t Ag Concentrate from Initial Cleaner Flotation Tests at El Quevar",
+              "url": "https://investingnews.com/argenta-silver-reports-up-to-96-silver-recovery-and-14857-g-t-ag-concentrate-from-initial-cleaner-flotation-tests-at-el-quevar/"
+            },
             {
               "title": "Review: ACANSA/ACT 10 MINUTE PLAY SHOWCASE 2026 at Argenta Contemporary Theatre in North Little Rock",
               "url": "https://www.broadwayworld.com/little-rock/article/Review-ACANSAACT-10-MINUTE-PLAY-SHOWCASE-2026-at-Argenta-Contemporary-Theatre-in-North-Little-Rock-20260918"
@@ -2211,100 +2453,76 @@
         ]
       },
       "belfius": {
-        "headline_count": 30,
+        "headline_count": 28,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 7,
-          "financial_results": 1,
+          "crisis_or_scandal": 10,
+          "financial_results": 2,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 14,
+          "regulatory": 8,
           "other": 8
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [
             {
-              "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent",
-              "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
-            },
-            {
-              "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
-              "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
-            },
-            {
-              "title": "Belfius, première banque condamnée au pénal? Une cliente victime de phishing la poursuit",
-              "url": "https://www.dhnet.be/actu/belgique/2026/09/05/belfius-premiere-banque-condamnee-au-penal-une-cliente-victime-de-phishing-la-poursuit-2UEWGXE7TBG3TCJCH5FDPNV6DU/"
-            },
-            {
-              "title": "Une grande première qui en annonce d'autres? Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/05/une-grande-premiere-qui-en-annonce-dautres-belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing-V6VQATNRMBETTGOOBG32RWGYEI/"
-            },
-            {
-              "title": "Belfius voor strafrechter omdat het phishingslachtoffer niet terugbetaalde",
-              "url": "https://www.vrt.be/vrtnws/nl/2026/09/05/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachto/"
-            },
-            {
               "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent - RTBF Actus",
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
             },
             {
+              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
+              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
+            },
+            {
               "title": "Elle perd près de 100.000 euros après un faux appel de Card Stop : elle attaque Belfius au pénal",
               "url": "https://www.sudinfo.be/id1190087/article/2026-09-06/elle-perd-pres-de-100000-euros-apres-un-faux-appel-de-card-stop-elle-attaque"
+            },
+            {
+              "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+              "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+            },
+            {
+              "title": "Is de vervolging van Belfius goed nieuws voor phishingslachtoffers?",
+              "url": "https://www.demorgen.be/nieuws/is-de-vervolging-van-belfius-goed-nieuws-voor-phishingslachtoffers~b80ea5ff/"
+            },
+            {
+              "title": "Belfius voor strafrechter voor niet terugbetalen phishingslachtoffer",
+              "url": "https://www.demorgen.be/snelnieuws/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachtoffer~b154d9a8/"
+            },
+            {
+              "title": "Belfius voor strafrechter omdat het phishingslachtoffer niet terugbetaalde | VRT NWS Nieuws",
+              "url": "https://www.vrt.be/vrtnws/nl/2026/09/05/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachto/"
+            },
+            {
+              "title": "Belfius voor de strafrechter wegens niet terugbetalen aan slachtoffer van phishing",
+              "url": "https://www.standaard.be/economie/belfius-voor-de-strafrechter-wegens-niet-terugbetalen-aan-slachtoffer-van-phishing/35145140.html"
+            },
+            {
+              "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
+              "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
+            },
+            {
+              "title": "Arco-coöperanten dagvaarden kandidaat-investeerders in Belfius",
+              "url": "https://www.tijd.be/ondernemen/banken/arco-cooperanten-dagvaarden-kandidaat-investeerders-in-belfius/10684481.html"
             }
           ],
           "financial_results": [
             {
               "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
               "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
+            },
+            {
+              "title": "Belfius past dividend- en kapitaalstrategie aan met oog op gedeeltelijke privatisering",
+              "url": "https://businessam.be/belfius-past-dividend-en-kapitaalstrategie-aan-met-oog-op-gedeeltelijke-privatisering/"
             }
           ],
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [
             {
-              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
-              "url": "https://www.rtbf.be/article/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias-11783846"
-            },
-            {
-              "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/11/la-privatisation-partielle-de-belfius-avance-la-phase-2-du-processus-est-enclenchee-il-y-a-un-tres-grand-nombre-de-marques-dinteret-UR6BILHAXFD6BOVQKTYNMZS3EE/"
-            },
-            {
-              "title": "Toujours entouré d’un épais brouillard, le dossier Belfius revient sur la table du gouvernement ce vendredi",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/10/toujours-entoure-dun-epais-brouillard-le-dossier-belfius-revient-sur-la-table-du-gouvernement-ce-vendredi-2IIR62WOFJCFFCMBIG4IPP5JCU/"
-            },
-            {
-              "title": "Belfius: la Wallonie ne s'opposera pas à une opération sur les participations fédérales dans Ethias",
-              "url": "https://www.lavenir.net/actu/belgique/politique/2026/09/10/belfius-la-wallonie-ne-sopposera-pas-a-une-operation-sur-les-participations-federales-dans-ethias-H2XBKCIE7ZBPVF5ZZB22M522KU/"
-            },
-            {
-              "title": "Elio Di Rupo : la privatisation partielle de Belfius est “une aventure réactionnaire”",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/elio-di-rupo-la-privatisation-partielle-de-belfius-est-une-aventure-reactionnaire-WLCTFEFUFJBMDEZZGHWMPVBYKA/"
-            },
-            {
-              "title": "Privatisation partielle de Belfius, étudiants coincés à Gaza, survol de Bruxelles... : voici le programme de la rentrée du gouvernement fédéral",
-              "url": "https://www.lalibre.be/belgique/politique-belge/2026/09/07/privatisation-partielle-de-belfius-etudiants-coinces-a-gaza-survol-de-bruxelles-voici-le-programme-de-la-rentree-du-gouvernement-federal-ADAB42HGTRFKJEV2OD6RADOZTA/"
-            },
-            {
-              "title": "La vente partielle de Belfius se prépare… difficilement",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/08/28/la-vente-partielle-de-belfius-se-prepare-difficilement-UKQVSCQ7HVCSPHDKKJS633EHGE/"
-            },
-            {
-              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
-              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
-            },
-            {
-              "title": "De privatisering van Belfius kleurt Vlaams",
-              "url": "https://pal.be/2026/09/federale-regering-belfius-vlaams-verkocht/"
-            },
-            {
               "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
               "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
-            },
-            {
-              "title": "Du changement pour Belfius en vue de sa privatisation partielle",
-              "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
             },
             {
               "title": "Le gouvernement fédéral dissocie la vente de Belfius du dossier Ethias",
@@ -2317,28 +2535,28 @@
             {
               "title": "Privatisation de Belfius, étudiants gazaouis... plusieurs dossiers sur la table du kern ce vendredi",
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
+            },
+            {
+              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
+              "url": "https://www.7sur7.be/economie/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias~af19d35b/"
+            },
+            {
+              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias - RTBF Actus",
+              "url": "https://www.rtbf.be/article/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias-11783846"
+            },
+            {
+              "title": "Le gouvernement belge se voit d'emblée confronté à plusieurs dossiers épineux, notamment ceux concernant Gaza et Belfius",
+              "url": "https://fr.businessam.be/le-gouvernement-belge-se-voit-demblee-confronte-a-plusieurs-dossiers-epineux-notamment-ceux-concernant-gaza-et-belfius/"
+            },
+            {
+              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
+              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
             }
           ],
           "other": [
             {
-              "title": "La Commune d’Ouffet veut créer deux lieux d’accueil de la petite enfance : l’un, déjà connu, dans l’ancienne banque Belfius ; l’autre à Ellemelle",
-              "url": "https://www.lavenir.net/regions/huy-waremme/ouffet/2026/09/15/la-commune-douffet-veut-creer-deux-lieux-daccueil-de-la-petite-enfance-lun-deja-connu-dans-lancienne-banque-belfius-lautre-a-ellemelle-C26XOBP3YNFRFNOBEQIVJHWBKI/"
-            },
-            {
-              "title": "Belfius, la mauvaise affaire",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/belfius-la-mauvaise-affaire-26YV7QNA7NERPCCYEMYOCHQO6Y/"
-            },
-            {
-              "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu “une expérience unique” dans les tribunes",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
-            },
-            {
-              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
-              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
-            },
-            {
-              "title": "Roland Duchâtelet toont interesse in staatsbank Belfius",
-              "url": "https://www.tvl.be/nieuws/roland-duchatelet-toont-interesse-in-staatsbank-belfius-182629"
+              "title": "Du changement pour Belfius en vue de sa privatisation partielle",
+              "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
             },
             {
               "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
@@ -2349,31 +2567,47 @@
               "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
             },
             {
-              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
-              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
+              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            },
+            {
+              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
+              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
+            },
+            {
+              "title": "Verkoop Belfius verloopt ondermaats, partijen bieden met handrem op",
+              "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
+            },
+            {
+              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
+              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
+            },
+            {
+              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
+              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
             }
           ]
         },
         "notable_headlines": [
           {
-            "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
-            "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/11/la-privatisation-partielle-de-belfius-avance-la-phase-2-du-processus-est-enclenchee-il-y-a-un-tres-grand-nombre-de-marques-dinteret-UR6BILHAXFD6BOVQKTYNMZS3EE/"
-          },
-          {
             "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
             "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
           },
           {
-            "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
-            "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
+            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
-            "title": "Belfius, première banque condamnée au pénal? Une cliente victime de phishing la poursuit",
-            "url": "https://www.dhnet.be/actu/belgique/2026/09/05/belfius-premiere-banque-condamnee-au-penal-une-cliente-victime-de-phishing-la-poursuit-2UEWGXE7TBG3TCJCH5FDPNV6DU/"
+            "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+            "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
           },
           {
-            "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
-            "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
+            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+          },
+          {
+            "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
+            "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
           }
         ]
       },
@@ -2424,40 +2658,32 @@
             "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
           },
           {
-            "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-            "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
-          },
-          {
             "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
             "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
           },
           {
             "title": "Beobank trekt rente termijnrekeningen op",
             "url": "https://www.headliner.nl/item/beobank-trekt-rente-termijnrekeningen-op-vrt-197090"
+          },
+          {
+            "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+            "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
           }
         ]
       },
       "bnp_paribas_fortis": {
         "headline_count": 30,
         "themes": {
-          "innovation_digital": 3,
-          "crisis_or_scandal": 1,
-          "financial_results": 1,
-          "product_launch": 6,
-          "esg_sustainability": 0,
-          "regulatory": 2,
-          "other": 17
+          "innovation_digital": 1,
+          "crisis_or_scandal": 2,
+          "financial_results": 0,
+          "product_launch": 5,
+          "esg_sustainability": 1,
+          "regulatory": 1,
+          "other": 20
         },
         "theme_headlines": {
           "innovation_digital": [
-            {
-              "title": "Kaiko extends Series B funding round to $110 million with S&P Global, BNP Paribas",
-              "url": "https://biztoc.com/x/555fd990877658c0"
-            },
-            {
-              "title": "BNP says AI borrowing will end the credit bull market, and it is lending to AI too",
-              "url": "https://thenextweb.com/news/bnp-ai-bonds-credit-cycle-europe"
-            },
             {
               "title": "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten",
               "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
@@ -2465,90 +2691,50 @@
           ],
           "crisis_or_scandal": [
             {
-              "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
-            }
-          ],
-          "financial_results": [
-            {
-              "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
-            }
-          ],
-          "product_launch": [
-            {
-              "title": "Only one overseas fund is accepting new investors now; Baroda BNP Paribas Aqua reopens for SIPs and lump sums",
-              "url": "https://www.livemint.com/money/personal-finance/only-one-overseas-fund-is-accepting-new-investors-now-baroda-bnp-paribas-aqua-reopens-for-sips-and-lump-sums-11788594467610.html"
+              "title": "BNP Paribas : mise au point sur le litige soudanais",
+              "url": "https://www.boursier.com/actions/actualites/news/bnp-paribas-mise-au-point-sur-le-litige-soudanais-992368.html"
             },
             {
-              "title": "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu’à 175 € d’avantages à l’ouverture [Sponso]",
+              "title": "BNP Paribas vol vertrouwen in Soedanees aandeel voorafgaand aan beroepszaak",
+              "url": "https://nl.marketscreener.com/beursnieuws/bnp-paribas-vol-vertrouwen-in-soedanees-aandeel-voorafgaand-aan-beroepszaak-ce7858dad081f720"
+            }
+          ],
+          "financial_results": [],
+          "product_launch": [
+            {
+              "title": "Prêt étudiant 2026 : BNP Paribas propose un taux de 0,99 % pour la rentrée",
+              "url": "https://www.20minutes.fr/guide-achat/4245357-20260915-pret-etudiant-2026-bnp-paribas-propose-taux-0-99-rentree"
+            },
+            {
+              "title": "Prêt étudiant : derniers jours pour profiter d'un taux de seulement 0,99% chez BNP Paribas",
+              "url": "https://www.moneyvox.fr/credit/actualites/110415/pret-etudiant-derniers-jours-pour-profiter-un-taux-de-seulement-0-99-chez-bnp-paribas"
+            },
+            {
+              "title": "BNP Paribas : La banque qui facilite les projets des étudiants",
+              "url": "https://www.20minutes.fr/guide-achat/4245362-20260917-bnp-paribas-banque-facilite-quotidien-projets-etudiants"
+            },
+            {
+              "title": "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu'à 175 € d'avantages à l'ouverture -- Frandroid",
               "url": "https://www.frandroid.com/services/banque-en-ligne/3245209_bnp-paribas-propose-un-pret-etudiant-a-099-taeg-pour-la-rentree-2026-avec-jusqua-175-e-davantages-a-louverture"
             },
             {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
-              "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-              "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-            },
-            {
-              "title": "BNP Paribas Fortis verhoogt spaarrente",
-              "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+              "title": "BNP Paribas : 350 euros d'avantages pour les nouveaux clients",
+              "url": "https://www.moneyvox.fr/banque-en-ligne/actualites/110261/bnp-paribas-350-euros-avantages-pour-les-nouveaux-clients"
             }
           ],
-          "esg_sustainability": [],
+          "esg_sustainability": [
+            {
+              "title": "Rente op BNP-lening aan Picnic gaat meebewegen met duurzaamheidsprestaties",
+              "url": "https://www.banken.nl/nieuws/27398/rente-op-lening-van-220-miljoen-aan-picnic-gaat-meebewegen-met-duurzaamheidsprestaties"
+            }
+          ],
           "regulatory": [
             {
-              "title": "Banco Santander, BNP Paribas, Barclays push for faster EU banking reforms",
-              "url": "https://cryptobriefing.com/eu-banking-reform-santander-bnp-barclays/"
-            },
-            {
-              "title": "ZD Tech : Vol de 17 000 euros par SIM swapping, la justice tranche (enfin) et sanctionne Free avec la BNP Paribas",
-              "url": "https://www.zdnet.fr/actualites/zd-tech-vol-de-17-000-euros-par-sim-swapping-la-justice-tranche-enfin-et-sanctionne-free-avec-la-bnp-paribas-500400.htm"
+              "title": "Umicore - Transparantieverklaring van BNP Paribas Asset Management Holding en BNP Paribas Cardif | Analist.be",
+              "url": "https://www.analist.be/corporatenieuws/1487998-umicore-transparantieverklaring-van-bnp-paribas-asset-management-holding-en-bnp-paribas-cardif"
             }
           ],
           "other": [
-            {
-              "title": "BNP Government of Bangladesh reviews 101 pacts signed with India",
-              "url": "https://economictimes.indiatimes.com/news/economy/foreign-trade/bnp-government-of-bangladesh-reviews-101-pacts-signed-with-india/articleshow/134271573.cms"
-            },
-            {
-              "title": "Granules India promoter sells 1.72 crore shares worth Rs 1,500 crore; Goldman Sachs, BNP Paribas among investors",
-              "url": "https://economictimes.indiatimes.com/markets/stocks/news/granules-india-promoter-sells-1-72-crore-shares-worth-rs-1500-crore-goldman-sachs-bnp-paribas-among-investors/articleshow/134077487.cms"
-            },
-            {
-              "title": "BNP Paribas economist calls for three Fed rate hikes as inflation refuses to cool",
-              "url": "https://cryptobriefing.com/bnp-paribas-three-fed-rate-hikes/"
-            },
-            {
-              "title": "BNP Paribas economist suggests US may need three Fed rate hikes",
-              "url": "https://cryptobriefing.com/bnp-paribas-economist-suggests-us-may-need-three-fed-rate-hikes/"
-            },
-            {
-              "title": "US Market: J.P. Morgan, BNP Paribas expect ECB rate hike in December as inflation risks persist",
-              "url": "https://economictimes.indiatimes.com/markets/us-stocks/wall-street-guide/us-market-j-p-morgan-bnp-paribas-expect-ecb-rate-hike-in-december-as-inflation-risks-persist/articleshow/133755948.cms"
-            },
-            {
-              "title": "BNP Paribas said to handle half of India’s record MSCI trades",
-              "url": "https://economictimes.indiatimes.com/markets/stocks/news/bnp-paribas-said-to-handle-half-of-indias-record-msci-trades/articleshow/133708791.cms"
-            },
-            {
-              "title": "ZDNET Morning 07/09/2026 : Threadripper Halo : un monstre de puissance pour l'IA, SIM swapping : Free et BNP Paribas sanctionnés, Windows 11 : le programme Insider fait peau neuve,...",
-              "url": "https://www.zdnet.fr/actualites/zdnet-morning-07-09-2026-threadripper-halo-un-monstre-de-puissance-pour-lia-sim-swapping-free-et-bnp-paribas-sanctionnes-windows-11-le-programme-insider-fait-peau-neuve-502895.htm"
-            },
-            {
-              "title": "C’est la banque derrière La Bataille de Gaulle et Un p’tit truc en plus : pourquoi BNP Paribas finance un film sur deux au cinéma en France",
-              "url": null
-            },
-            {
-              "title": "BNP Paribas Fortis lanceert geldfestival voor jongeren",
-              "url": "https://www.investmentofficer.be/nl/nieuws/bnp-paribas-fortis-lanceert-geldfestival-voor-jongeren"
-            },
             {
               "title": "Mirza Abbas warns of conspiracies against BNP within and outside party",
               "url": "https://thefinancialexpress.com.bd/politics/mirza-abbas-warns-of-conspiracies-against-bnp-within-and-outside-party"
@@ -2580,39 +2766,87 @@
             {
               "title": "Sylhet BNP rift comes to light after local leaders boycott",
               "url": "https://www.tbsnews.net/bangladesh/sylhet-bnp-rift-comes-light-after-local-leaders-boycott-presidents-event-1545511"
+            },
+            {
+              "title": "BNP: A people's party born in a period of crisis",
+              "url": "https://www.agamirsomoy.com/en/bangladesh/politics/nzbgl2iuogp0"
+            },
+            {
+              "title": "BNP's 48th founding anniversary Tuesday",
+              "url": "https://www.dhakatribune.com/bangladesh/politics/418800/bnp%E2%80%99s-48th-founding-anniversary-on-tuesday"
+            },
+            {
+              "title": "3 Public Universities: VCs' greetings to BNP leaders raise ethical questions",
+              "url": "https://www.thedailystar.net/news/bangladesh/news/3-public-universities-vcs-greetings-bnp-leaders-raise-ethical-questions-4264541"
+            },
+            {
+              "title": "BNP wants to repay people's love through accountable governance: Tarique",
+              "url": "https://www.thedailystar.net/news/politics/news/bnp-wants-repay-peoples-love-through-accountable-governance-tarique-4261466"
+            },
+            {
+              "title": "PM: BNP wants to repay people's love by establishing accountable state",
+              "url": "https://www.dhakatribune.com/bangladesh/politics/418788/tarique-bnp-wants-to-repay-people%E2%80%99s-love-by"
+            },
+            {
+              "title": "BNP wants to repay people's love by establishing accountable state:",
+              "url": "https://www.tbsnews.net/bangladesh/politics/bnp-wants-repay-peoples-love-establishing-accountable-state-tarique-1529746"
+            },
+            {
+              "title": "BNP questions motive behind the long march programmes",
+              "url": "https://en.prothomalo.com/bangladesh/politics/s3vshtl9kb"
+            },
+            {
+              "title": "Baroda BNP Paribas Mutual Fund has declared change in the fund managers of its few schemes",
+              "url": "https://www.valueresearchonline.com/stories/229666/fund-manager-revisions-in-various-funds-of-baroda-bnp-paribas-mutual-fund/"
+            },
+            {
+              "title": "Avis d'analystes France : BNP change tout sur OVH, JP Morgan passe positif sur Sodexo",
+              "url": "https://www.boursedirect.fr/fr/actualites/categorie/recommandations/avis-d-analystes-france-bnp-change-tout-sur-ovh-jp-morgan-passe-positif-sur-sodexo-zone-bourse-9085d69d1c5c380de50ce727df509058104fdf70"
+            },
+            {
+              "title": "Croissance: après l'agriculture en 2026, l'industrie devra prendre le relais en 2027, selon BNP Paribas",
+              "url": "https://fr.le360.ma/economie/croissance-apres-lagriculture-en-2026-lindustrie-devra-prendre-le-relais-en-2027-selon-bnp-paribas_CBGJFLUOMZFZRO6KA7TGDB3PGM/"
+            },
+            {
+              "title": "Analistenadviezen Frankrijk: BNP gooit roer om bij OVH, JPMorgan positief over Sodexo",
+              "url": "https://nl.marketscreener.com/beursnieuws/analistenadviezen-frankrijk-bnp-gooit-roer-om-bij-ovh-jpmorgan-positief-over-sodexo-ce785bd3d88ef52d"
+            },
+            {
+              "title": "J.P. Morgan en BNP Paribas rekenen op ECB-renteverhoging in december door energierisico's",
+              "url": "https://www.iex.nl/Nieuws/876833/JP-Morgan-en-BNP-Paribas-rekenen-op-ECB-renteverhoging-in-december-door-energierisicos.aspx"
             }
           ]
         },
         "notable_headlines": [
           {
-            "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
-            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
+            "title": "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten",
+            "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
           },
           {
-            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-            "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
+            "title": "BNP Paribas : mise au point sur le litige soudanais",
+            "url": "https://www.boursier.com/actions/actualites/news/bnp-paribas-mise-au-point-sur-le-litige-soudanais-992368.html"
           },
           {
-            "title": "BNP Paribas Fortis verhoogt spaarrente",
-            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+            "title": "Rente op BNP-lening aan Picnic gaat meebewegen met duurzaamheidsprestaties",
+            "url": "https://www.banken.nl/nieuws/27398/rente-op-lening-van-220-miljoen-aan-picnic-gaat-meebewegen-met-duurzaamheidsprestaties"
           },
           {
-            "title": "BNP Paribas Fortis lanceert geldfestival voor jongeren",
-            "url": "https://www.investmentofficer.be/nl/nieuws/bnp-paribas-fortis-lanceert-geldfestival-voor-jongeren"
+            "title": "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu'à 175 € d'avantages à l'ouverture -- Frandroid",
+            "url": "https://www.frandroid.com/services/banque-en-ligne/3245209_bnp-paribas-propose-un-pret-etudiant-a-099-taeg-pour-la-rentree-2026-avec-jusqua-175-e-davantages-a-louverture"
           },
           {
-            "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
-            "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
+            "title": "J.P. Morgan en BNP Paribas rekenen op ECB-renteverhoging in december door energierisico's",
+            "url": "https://www.iex.nl/Nieuws/876833/JP-Morgan-en-BNP-Paribas-rekenen-op-ECB-renteverhoging-in-december-door-energierisicos.aspx"
           }
         ]
       },
       "bunq": {
-        "headline_count": 14,
+        "headline_count": 12,
         "themes": {
           "innovation_digital": 1,
-          "crisis_or_scandal": 5,
+          "crisis_or_scandal": 4,
           "financial_results": 1,
-          "product_launch": 3,
+          "product_launch": 2,
           "esg_sustainability": 0,
           "regulatory": 1,
           "other": 3
@@ -2626,16 +2860,12 @@
           ],
           "crisis_or_scandal": [
             {
-              "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
+              "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
               "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
             },
             {
               "title": "Bunq klaagt opnieuw deskundige aan die in een artikel over de bank werd geciteerd",
               "url": "https://www.nrc.nl/nieuws/2026/09/08/bunq-klaagt-opnieuw-deskundige-aan-die-in-een-artikel-over-de-bank-werd-geciteerd-a4936065"
-            },
-            {
-              "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-              "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
             },
             {
               "title": "Valt de nieuwe fintech-startup Bunq wel te vertrouwen qua privacy? - Silicon Canals",
@@ -2660,10 +2890,6 @@
             {
               "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
               "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
-            },
-            {
-              "title": "Bunq biedt 3,01% rente: let op je persoonlijke grens",
-              "url": "https://www.headliner.nl/item/bunq-biedt-3-01-rente-let-op-je-persoonlijke-grens-dagelijksestandaard-72252"
             }
           ],
           "esg_sustainability": [],
@@ -2675,12 +2901,12 @@
           ],
           "other": [
             {
-              "title": "Interview: bunq’s chief evangelist Joe Wilson on absorbing rate cuts and M&A strategy",
-              "url": "https://biztoc.com/x/1c0142063742b1b6"
-            },
-            {
               "title": "Interview: bunq's chief evangelist Joe Wilson on absorbing rate cuts and M&A strategy",
               "url": "https://www.retailbankerinternational.com/interviews/interview-bunqs-chief-evangelist-joe-wilson/"
+            },
+            {
+              "title": "Bunq biedt 3,01% rente: let op je persoonlijke grens",
+              "url": "https://www.headliner.nl/item/bunq-biedt-3-01-rente-let-op-je-persoonlijke-grens-dagelijksestandaard-72252"
             },
             {
               "title": "Het eenzame succes van bunq-baas Ali Niknam",
@@ -2694,10 +2920,6 @@
             "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
           },
           {
-            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
-            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
-          },
-          {
             "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
             "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
           },
@@ -2706,37 +2928,29 @@
             "url": "https://www.bobsguide.com/the-occs-charter-reality-check-why-bunq-and-wise-got-denied/"
           },
           {
-            "title": "Bunq klaagt opnieuw deskundige aan die in een artikel over de bank werd geciteerd",
-            "url": "https://www.nrc.nl/nieuws/2026/09/08/bunq-klaagt-opnieuw-deskundige-aan-die-in-een-artikel-over-de-bank-werd-geciteerd-a4936065"
+            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
+            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+          },
+          {
+            "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
+            "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
           }
         ]
       },
       "cbc": {
-        "headline_count": 29,
+        "headline_count": 23,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 21,
+          "crisis_or_scandal": 18,
           "financial_results": 1,
           "product_launch": 1,
           "esg_sustainability": 0,
-          "regulatory": 1,
-          "other": 5
+          "regulatory": 0,
+          "other": 3
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [
-            {
-              "title": "RCMP says relationships with allies 'strong' after report FBI stopped co-operation following CBC 9/11 memo",
-              "url": "https://www.cbc.ca/news/politics/cbc-9-11-memo-fbi-rcmp-new-york-times-9.7350004"
-            },
-            {
-              "title": "FBI stopped working with RCMP after CBC 9/11 memo, report says; Doug Ford takes back ‘endorsement’ of Toronto mayor; and more",
-              "url": "https://nationalpost.com/editors/afternoon-front-page-54"
-            },
-            {
-              "title": "FBI halted cooperation with RCMP after CBC 9/11 terrorism memo, N.Y. Times reports",
-              "url": "https://nationalpost.com/news/fbi-halted-cooperation-with-rcmp-after-cbc-9-11-terrorism-memo-n-y-times-reports"
-            },
             {
               "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
               "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
@@ -2823,21 +3037,8 @@
             }
           ],
           "esg_sustainability": [],
-          "regulatory": [
-            {
-              "title": "CBC supports AI regulation as data center debate heats up in Washington",
-              "url": "https://biztoc.com/x/b2e687c87aefe73f"
-            }
-          ],
+          "regulatory": [],
           "other": [
-            {
-              "title": "This Above All The Theatrical Life of Antoni Cimolino 2026 1080p CBC WEB-DL H264-Kitsune",
-              "url": "https://post.rlsbb.cc/this-above-all-the-theatrical-life-of-antoni-cimolino-2026-1080p-cbc-web-dl-h264-kitsune/"
-            },
-            {
-              "title": "CBC Atlantic journalists among RTDNA Awards East Region winners",
-              "url": "https://www.cbc.ca/news/canada/rtdna-award-winners-2026-9.7348943"
-            },
             {
               "title": "Your Guide To CBC Week 2026: Where To Network, Brunch & Party In DC",
               "url": "https://blackamericaweb.com/2026/09/14/your-guide-to-cbc-week-2026-where-to-network-brunch-party-in-dc/"
@@ -2854,24 +3055,24 @@
         },
         "notable_headlines": [
           {
-            "title": "FBI halted cooperation with RCMP after CBC 9/11 terrorism memo, N.Y. Times reports",
-            "url": "https://nationalpost.com/news/fbi-halted-cooperation-with-rcmp-after-cbc-9-11-terrorism-memo-n-y-times-reports"
-          },
-          {
-            "title": "FBI stopped working with RCMP after CBC 9/11 memo, report says; Doug Ford takes back ‘endorsement’ of Toronto mayor; and more",
-            "url": "https://nationalpost.com/editors/afternoon-front-page-54"
+            "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
+            "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
           },
           {
             "title": "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS",
             "url": "https://yournews.com/2026/08/28/7179320/cbc-directs-journalists-not-to-describe-9-11-attacks-as-terrorist/"
           },
           {
-            "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
-            "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
+            "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
+            "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
           },
           {
-            "title": "Scandale de la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
-            "url": "https://www.lapresse.ca/actualites/national/2026-09-18/scandale-de-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
+            "title": "Canadian 9/11 widow 'appalled' by CBC policy against using term 'terrorist attack'",
+            "url": "https://ca.news.yahoo.com/canadian-9-11-widow-appalled-193305286.html"
+          },
+          {
+            "title": "Controverse entourant la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
+            "url": "https://www.lapresse.ca/actualites/national/2026-09-18/controverse-entourant-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
           }
         ]
       },
@@ -2918,15 +3119,15 @@
       },
       "hellobank": null,
       "ing": {
-        "headline_count": 22,
+        "headline_count": 23,
         "themes": {
           "innovation_digital": 3,
           "crisis_or_scandal": 1,
-          "financial_results": 6,
-          "product_launch": 2,
-          "esg_sustainability": 5,
-          "regulatory": 1,
-          "other": 4
+          "financial_results": 5,
+          "product_launch": 3,
+          "esg_sustainability": 6,
+          "regulatory": 3,
+          "other": 3
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -2963,10 +3164,6 @@
               "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/nn-group-penalise-par-une-degradation-chez-ing-zone-bourse-fcecf2080c8c45af463359e4d950f4465eb77042"
             },
             {
-              "title": "ING passe à l'achat sur Ayvens, l'action se hisse dans le vert",
-              "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/ing-passe-a-l-achat-sur-ayvens-l-action-se-hisse-dans-le-vert-zone-bourse-41ad7e90b9503ecb42f4883efca831ad6f30591c"
-            },
-            {
               "title": "ING op de favorietenlijst van JPMorgan",
               "url": "https://www.belegger.nl/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
             },
@@ -2976,6 +3173,10 @@
             }
           ],
           "product_launch": [
+            {
+              "title": "ING Bank Romania launches two new innovations for mortgage loans",
+              "url": "https://business-review.eu/money/banking/ing-bank-romania-launches-two-new-innovations-for-mortgage-loans-299796"
+            },
             {
               "title": "ING s'apprête à entrer sur le marché des ETF",
               "url": "https://www.agefi.fr/etf/ing-sapprete-a-entrer-sur-le-marche-des-etf"
@@ -2995,12 +3196,16 @@
               "url": "https://www.accountant.nl/nieuws/2026/9/milieudefensie-mag-van-de-rechter-klimaatzaak-tegen-ing-doorzetten/"
             },
             {
-              "title": "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-              "url": "https://www.accountant.nl/nieuws/2026/9/milieudefensie-mag-van-de-rechter-klimaatzaak-tegen-ing-doorzetten/"
+              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
+              "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
             },
             {
-              "title": "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten van rechtbank",
-              "url": null
+              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
+              "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
+            },
+            {
+              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten van rechtbank",
+              "url": "https://www.welingelichtekringen.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
             },
             {
               "title": "Rechtbank laat klimaatzaak van Milieudefensie tegen ING doorgaan",
@@ -3009,49 +3214,53 @@
           ],
           "regulatory": [
             {
+              "title": "Euro braces for ECB tone today as ING sees a 25bp hike either way",
+              "url": "https://investinglive.com/central-banks/euro-braces-for-ecb-tone-today-as-ing-sees-a-25bp-hike-either-way"
+            },
+            {
               "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
               "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
-            }
-          ],
-          "other": [
-            {
-              "title": "ING announces change in Supervisory Board",
-              "url": "https://www.manilatimes.net/2026/08/25/tmt-newswire/globenewswire/ing-announces-change-in-supervisory-board/2411434"
-            },
-            {
-              "title": "ING Group: ING announces change in Supervisory Board",
-              "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69396279-ing-group-ing-announces-change-in-supervisory-board-399.htm"
-            },
-            {
-              "title": "ING announces change in Supervisory Board | Taiwan News | Aug. 25, 2026 14:15",
-              "url": "https://taiwannews.com.tw/en/news/6427460"
             },
             {
               "title": "La BCE devrait porter ce jeudi son taux de dépôt dans la borne haute des estimations du taux neutre, aller au-delà ferait courir le \" risque d'une récession \", selon ING",
               "url": "https://investir.lesechos.fr/marches-indices/devises-taux/la-bce-devrait-porter-ce-jeudi-son-taux-de-depot-dans-la-borne-haute-des-estimations-du-taux-neutre-aller-au-dela-ferait-courir-le-risque-dune-recession-selon-ing-2250695"
             }
+          ],
+          "other": [
+            {
+              "title": "ING Group: ING announces change in Supervisory Board",
+              "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69396279-ing-group-ing-announces-change-in-supervisory-board-399.htm"
+            },
+            {
+              "title": "ING announces change in Supervisory Board",
+              "url": "https://www.mykxlg.com/online_features/press_releases/ing-announces-change-in-supervisory-board/article_2bb74aff-5eeb-5f90-885c-0c1e3866d52e.html"
+            },
+            {
+              "title": "ING announces change in Supervisory Board | Taiwan News | Aug. 25, 2026 14:15",
+              "url": "https://taiwannews.com.tw/en/news/6427460"
+            }
           ]
         },
         "notable_headlines": [
           {
-            "title": "Rechtbank laat klimaatzaak van Milieudefensie tegen ING doorgaan",
-            "url": "https://www.banken.nl/nieuws/27391/rechtbank-laat-klimaatzaak-van-milieudefensie-tegen-ing-doorgaan"
+            "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
+            "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
+          },
+          {
+            "title": "ING Group: ING announces change in Supervisory Board",
+            "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69396279-ing-group-ing-announces-change-in-supervisory-board-399.htm"
+          },
+          {
+            "title": "ING Group: Progress on share buyback programme",
+            "url": "https://www.finanznachrichten.de/nachrichten-2026-09/69579315-ing-group-progress-on-share-buyback-programme-399.htm"
           },
           {
             "title": "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
             "url": "https://www.ftm.nl/artikelen/ing-hielp-drie-oliebedrijven-aan-bijna-een-miljard-dollar-ondanks-klimaatbelofte"
           },
           {
-            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
-          },
-          {
-            "title": "ING s'apprête à entrer sur le marché des ETF",
-            "url": "https://www.agefi.fr/etf/ing-sapprete-a-entrer-sur-le-marche-des-etf"
-          },
-          {
-            "title": "ING Group: Progress on share buyback programme",
-            "url": "https://www.finanznachrichten.de/nachrichten-2026-09/69579315-ing-group-progress-on-share-buyback-programme-399.htm"
+            "title": "ING: tarieven stijgen, maar AI zet verdienmodel onder druk · Accountancy Vanmorgen",
+            "url": "https://www.accountancyvanmorgen.nl/2026/08/20/ing-tarieven-stijgen-maar-ai-zet-verdienmodel-onder-druk/"
           }
         ]
       },
@@ -3187,12 +3396,12 @@
             "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
           },
           {
-            "title": "Meer winst voor KBC Ancora",
-            "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
-          },
-          {
             "title": "Jefferies start opvolging KBC met koopadvies",
             "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
+          },
+          {
+            "title": "Meer winst voor KBC Ancora",
+            "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
           },
           {
             "title": "KBC relève sa cible sur Inventiva, le titre bondit",
@@ -3211,10 +3420,10 @@
           "innovation_digital": 1,
           "crisis_or_scandal": 0,
           "financial_results": 1,
-          "product_launch": 3,
+          "product_launch": 1,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 3
+          "other": 5
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -3234,14 +3443,6 @@
             {
               "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
               "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
-            },
-            {
-              "title": "Former Revolut and N26 Executives Raise £2.7M for Wealth App - FinanceFeeds",
-              "url": "https://financefeeds.com/former-revolut-and-n26-executives-raise-2-7m-for-wealth-app/"
-            },
-            {
-              "title": "Former Revolut and N26 alumni raise £2.7 million to launch wealth management app",
-              "url": "https://www.finextra.com/newsarticle/48415/former-revolut-and-n26-alumni-raise-27-million-to-launch-wealth-management-app"
             }
           ],
           "esg_sustainability": [],
@@ -3252,8 +3453,16 @@
               "url": "https://www.westernpeople.ie/news/preferred-route-for-n26-foxford-to-mount-falcon-revealed_arid-108834.html"
             },
             {
+              "title": "Former Revolut and N26 Executives Raise £2.7M for Wealth App - FinanceFeeds",
+              "url": "https://financefeeds.com/former-revolut-and-n26-executives-raise-2-7m-for-wealth-app/"
+            },
+            {
               "title": "Preferred corridor for 'transformative' N26 route in Mayo is revealed",
               "url": "https://www.con-telegraph.ie/2026/08/26/preferred-corridor-for-transformative-n26-route-in-mayo-is-revealed/"
+            },
+            {
+              "title": "Former Revolut and N26 alumni raise £2.7 million to launch wealth management app",
+              "url": "https://www.finextra.com/newsarticle/48415/former-revolut-and-n26-alumni-raise-27-million-to-launch-wealth-management-app"
             },
             {
               "title": "Quels sont les frais N26 à l'étranger ?",
@@ -3263,20 +3472,16 @@
         },
         "notable_headlines": [
           {
-            "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
-            "url": "https://siliconcanals.com/n26-raises-775m/"
-          },
-          {
             "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
             "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
           },
           {
-            "title": "N26 data: Gen Z leads Europe's investing shift",
-            "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
+            "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
+            "url": "https://siliconcanals.com/n26-raises-775m/"
           },
           {
-            "title": "Former Revolut and N26 alumni raise £2.7 million to launch wealth management app",
-            "url": "https://www.finextra.com/newsarticle/48415/former-revolut-and-n26-alumni-raise-27-million-to-launch-wealth-management-app"
+            "title": "N26 data: Gen Z leads Europe's investing shift",
+            "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
           }
         ]
       },
@@ -3435,16 +3640,16 @@
             "url": "https://en.cryptonomist.ch/2026/09/16/revolut-crypto-breach-data/"
           },
           {
-            "title": "Revolut Extortion: Daily Passport Leaks Until Company Pays",
-            "url": "https://cryptonewsbytes.com/revolut-attackers-are-now-publishing-stolen-passports-and-selfies-daily-until-revolut-pays/"
-          },
-          {
             "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
             "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
           },
           {
             "title": "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud",
             "url": "https://www.techtimes.com/articles/325649/20260826/revolut-builds-its-own-banking-ai-pragma-foundation-model-beats-specialist-systems-fraud.htm"
+          },
+          {
+            "title": "Revolut Taps GXS Bank Founding CEO for Singapore Advisory Board in MAS License Push",
+            "url": "https://www.techtimes.com/articles/325555/20260825/revolut-taps-gxs-bank-founding-ceo-singapore-advisory-board-mas-license-push.htm"
           }
         ]
       },
