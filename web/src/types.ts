@@ -329,6 +329,124 @@ export interface GeoTrendsPayload {
   banks: Record<string, GeoTrendsBank>;
 }
 
+/** One row of config/feature_dictionary.yaml as the Data tab shows it. */
+export interface DictionaryFeature {
+  name: string;
+  label: string;
+  dimension: string;
+  type: string;
+  extraction: string;
+  comparability: string;
+  tier: string;
+  required: boolean;
+  nullable: boolean;
+  definition: string;
+  values: string[] | null;
+  range: [number, number] | null;
+  unit: string | null;
+}
+
+/** The collected dataset, flattened. `rows` are the raw page captures. */
+export interface DatasetTable {
+  columns: string[];
+  rows: Record<string, unknown>[];
+  page_count: number;
+  bank_count: number;
+}
+
+export interface CollectionBankStatus {
+  bank: string;
+  name: string;
+  category: string | null;
+  pages: number;
+  usable_pages: number;
+  in_scope: boolean;
+  excluded_no_page: boolean;
+}
+
+export interface CollectionPayload {
+  metrics: {
+    banks: number;
+    pages: number;
+    robots_allowed: number | null;
+    quality_ok: number | null;
+    manual_captures: number | null;
+    languages: string[];
+  };
+  banks: CollectionBankStatus[];
+  pages: Record<string, unknown>[];
+  commands: string[];
+  robots_note: string;
+}
+
+export interface RubricRater {
+  name: string;
+  label: string;
+  pages: number;
+  columns: string[];
+  rows: Record<string, unknown>[];
+}
+
+export interface RubricFeature {
+  name: string;
+  label: string;
+  definition: string;
+  values: string[] | null;
+  range: [number, number] | null;
+  rubric: Record<string, string> | null;
+  notes: string | null;
+}
+
+/** One row of comparator.rubric.agreement() - raw % match, chance not removed. */
+export interface AgreementRow {
+  feature: string;
+  pages: number;
+  agreement: number;
+  basis: string;
+}
+
+/** One row of comparator.rubric.kappa_agreement() - chance-corrected. */
+export interface KappaRow {
+  feature: string;
+  raters: string;
+  pages: number;
+  kappa: number;
+}
+
+export interface RubricPayload {
+  raters: RubricRater[];
+  agreement: AgreementRow[];
+  kappa: KappaRow[];
+  features: RubricFeature[];
+}
+
+/** Mirrors scripts/export_web_report.py's build_operations() output. */
+export interface Operations {
+  generated_at: string;
+  dataset: string;
+  product_family: string | null;
+  validation: { ok: boolean; warnings: string[] };
+  dictionary: DictionaryFeature[];
+  dataset_table: DatasetTable;
+  collection: CollectionPayload;
+  rubric: RubricPayload;
+}
+
+/** comparator/research.py - title, abstract, url, year. */
+export interface ResearchPaper {
+  title: string | null;
+  abstract: string | null;
+  url: string | null;
+  year: number | null;
+}
+
+/** One file in outputs/ offered for download by the backend. */
+export interface Deliverable {
+  name: string;
+  kind: string;
+  bytes: number;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;

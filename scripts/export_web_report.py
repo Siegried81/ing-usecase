@@ -32,6 +32,7 @@ from comparator import load_dictionary
 from comparator import ai_score  # sieg 19/09
 from comparator import cross_sell  # sieg 19/09
 from comparator import reputation  # sieg 19/09
+from comparator import rubric  # steve 21/09: the Rubric tab reads real sheets
 from comparator.analysis import (
     category_comparison,
     check_deck_claims,
@@ -50,6 +51,11 @@ from comparator.trends import build_trends_dashboard
 
 DEFAULT_DATASET = Path("data/processed/campaigns_scored.csv")
 DEFAULT_OUT = Path("web/public/report.json")
+# The operator surface (dictionary, dataset explorer, collection status, rubric)
+# travels separately from the business snapshot: report.json is one finding at
+# one capture date, while these four are the working material behind it.
+RUBRIC_DIR = Path("data/rubric")
+OPERATIONS_NAME = "operations.json"
 
 # Plain-language names for the features a business reader will actually see.
 # The dictionary's own definitions are precise and unreadable in a deck; these
@@ -440,6 +446,183 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     return report, context
 
 
+def _jsonable(value):
+    """Like _clean, but also turns pandas' NA scalars into JSON null."""
+    if value is None:
+        return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass
+    if isinstance(value, (pd.Timestamp, datetime)):
+        return value.isoformat()
+    if hasattr(value, "item"):
+        return value.item()
+    return value
+
+
+def _frame_rows(frame: pd.DataFrame) -> tuple[list[str], list[dict]]:
+    columns = [str(c) for c in frame.columns]
+    rows = [{c: _jsonable(r[c]) for c in frame.columns} for _, r in frame.iterrows()]
+    return columns, rows
+
+
+def _dictionary_payload(fd) -> list[dict]:
+    out = []
+    for f in fd.features:
+        out.append({
+            "name": f.name,
+            "label": label(f.name),
+            "dimension": f.dimension,
+            "type": f.type,
+            "extraction": f.extraction,
+            "comparability": f.comparability,
+            "tier": f.tier,
+            "required": bool(f.required),
+            "nullable": bool(f.nullable),
+            "definition": " ".join(f.definition.split()),
+            "values": f.values,
+            "range": f.range,
+            "unit": f.unit,
+        })
+    return out
+
+
+def _rubric_payload(fd) -> dict:
+    """The four rater sheets, agreement between them, and the scoring guide.
+
+    Read from data/rubric/*_scores.csv with the same reader the CLI uses
+    (comparator.rubric._read_sheet via read_sheets), so a sheet that flips
+    between comma and semicolon parses here exactly as it does in
+    `rubric_sheet.py agreement`. Missing sheets are an honest empty list, never
+    an error - the pipeline runs before anyone has scored anything.
+    """
+    sheets = []
+    raters = []
+    if RUBRIC_DIR.is_dir():
+        for path in sorted(RUBRIC_DIR.glob("*_scores.csv")):
+            frame = rubric.read_sheets([path])[0]
+            columns, rows = _frame_rows(frame)
+            name = path.stem.removesuffix("_scores")
+            raters.append({
+                "name": name,
+                "label": "Model (its own sheet)" if name == "model" else name.capitalize(),
+                "pages": int(len(frame)),
+                "columns": columns,
+                "rows": rows,
+            })
+            sheets.append(frame)
+
+    agreement_table = rubric.agreement(sheets, fd).table
+    kappa_table = rubric.kappa_agreement(sheets, fd).table
+
+    guide = []
+    for f in rubric.rubric_features(fd):
+        guide.append({
+            "name": f.name,
+            "label": label(f.name),
+            "definition": " ".join(f.definition.split()),
+            "values": f.values,
+            "range": f.range,
+            "rubric": (
+                {str(k): " ".join(str(v).split()) for k, v in f.rubric.items()}
+                if f.rubric else None
+            ),
+            "notes": " ".join(f.notes.split()) if f.notes else None,
+        })
+
+    return {
+        "raters": raters,
+        "agreement": _frame_rows(agreement_table)[1],
+        "kappa": _frame_rows(kappa_table)[1],
+        "features": guide,
+    }
+
+
+def build_operations(dataset: Path, *, family: str | None) -> dict:
+    """The operator payload: everything Streamlit showed that report.json does not.
+
+    Read from the same library calls as the business report (`read_dataset`,
+    `scope_to_family`), so the bank status here and the scope banner there cannot
+    disagree. No number is recomputed in the browser.
+    """
+    fd = load_dictionary()
+    df, validation = read_dataset(dataset, fd, tier="core", strict=False)
+    all_rows = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
+    usable = all_rows[all_rows.get("capture_quality", "ok") != "unusable"] \
+        if "capture_quality" in all_rows.columns else all_rows
+
+    options = family_options(usable)
+    if family == "auto":
+        comparable = options[options["comparable"]] if not options.empty else options
+        family = comparable.iloc[0]["product_family"] if not comparable.empty else None
+    _compared, scope = scope_to_family(usable, family)
+
+    in_scope = set(scope.banks)
+    dropped = set(scope.dropped_banks)
+
+    banks = []
+    for bank in sorted(all_rows["bank"].unique()):
+        rows = all_rows[all_rows["bank"] == bank]
+        categories = rows["bank_category"].dropna()
+        banks.append({
+            "bank": bank,
+            "name": bank_name(bank),
+            "category": str(categories.iloc[0]) if not categories.empty else None,
+            "pages": int(len(rows)),
+            "usable_pages": int((rows.get("capture_quality", "ok") != "unusable").sum())
+            if "capture_quality" in rows.columns else int(len(rows)),
+            "in_scope": bank in in_scope,
+            "excluded_no_page": bank in dropped,
+        })
+
+    quality = all_rows.get("capture_quality")
+    methods = all_rows.get("collection_method")
+
+    collection = {
+        "metrics": {
+            "banks": int(all_rows["bank"].nunique()),
+            "pages": int(len(all_rows)),
+            "robots_allowed": int(all_rows["robots_allowed"].sum())
+            if "robots_allowed" in all_rows.columns else None,
+            "quality_ok": int((quality == "ok").sum()) if quality is not None else None,
+            "manual_captures": int((methods == "manual_capture").sum()) if methods is not None else None,
+            "languages": sorted(all_rows["language"].dropna().unique().tolist())
+            if "language" in all_rows.columns else [],
+        },
+        "banks": banks,
+        "pages": _frame_rows(
+            all_rows[[c for c in (
+                "page_id", "bank", "product_family", "language", "collection_method",
+                "capture_quality", "data_source",
+            ) if c in all_rows.columns]]
+        )[1],
+        "commands": [
+            "python3 scripts/run_collection.py --config scripts/collection_targets.yaml --method headless",
+            "python3 scripts/import_captures.py --dir <folder> --merge-with data/processed/campaigns.csv",
+        ],
+        "robots_note": "Compliance: assert_can_fetch() checks robots.txt before each fetch (fail closed).",
+    }
+
+    columns, rows = _frame_rows(all_rows)
+    return {
+        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "dataset": str(dataset),
+        "product_family": scope.family,
+        "validation": {"ok": bool(validation.ok), "warnings": list(validation.warnings[:6])},
+        "dictionary": _dictionary_payload(fd),
+        "dataset_table": {
+            "columns": columns,
+            "rows": rows,
+            "page_count": int(len(all_rows)),
+            "bank_count": int(all_rows["bank"].nunique()),
+        },
+        "collection": collection,
+        "rubric": _rubric_payload(fd),
+    }
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
@@ -452,8 +635,12 @@ def main() -> int:
 
     report, trends = build_report(args.dataset, family=args.product_family, focus=args.focus,
                                   top_n=args.top_n, trends_dir=args.trends_dir)
+    operations = build_operations(args.dataset, family=args.product_family)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     args.out.write_text(json.dumps(report, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    operations_path = args.out.parent / OPERATIONS_NAME
+    operations_path.write_text(json.dumps(operations, indent=2, ensure_ascii=False), encoding="utf-8")
 
     trends_path = args.out.parent / "trends.json"
     if trends:
@@ -473,6 +660,9 @@ def main() -> int:
               f"{t['n_campaigns']} campaigns -> {trends_path.name}")
     else:
         print("  trends  : Dan's export not present - Trends tab will show an empty state")
+    print(f"  operators: {operations_path} — {len(operations['dictionary'])} features, "
+          f"{len(operations['dataset_table']['rows'])} dataset rows, "
+          f"{len(operations['rubric']['raters'])} rubric sheets")
     return 0
 
 

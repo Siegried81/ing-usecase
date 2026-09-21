@@ -25,6 +25,7 @@ spec.loader.exec_module(export_web_report)
 from comparator import ai_score  # noqa: E402
 from comparator.dictionary import load_dictionary  # noqa: E402
 from comparator.fixtures import build_fixture  # noqa: E402
+from comparator.rubric import rubric_features  # noqa: E402
 from comparator.schema import write_dataset  # noqa: E402
 
 
@@ -94,3 +95,56 @@ def test_cross_sell_matrix_is_square_over_the_product_taxonomy(report):
 def test_ing_personas_match_the_fixture_archetype(report):
     ing = next(b for b in report["banks"] if b["key"] == "ing")
     assert {p["persona"] for p in ing["personas"]} == {"family", "expat", "mass_market"}
+
+
+# steve 21/09: the operator surface (dictionary, dataset, collection, rubric)
+# moved out of Streamlit and into operations.json. These check its shape, not
+# the repo's own rubric sheets - a machine with no data/rubric must still build
+# an honest empty payload.
+@pytest.fixture(scope="module")
+def operations(tmp_path_factory):
+    import os
+    os.environ.pop("NEWSAPI_KEY", None)
+    os.environ.pop("NEWSAPI_AI_KEY", None)
+    fd = load_dictionary()
+    df = build_fixture(fd)
+    path = write_dataset(df, tmp_path_factory.mktemp("ops") / "campaigns.csv", fd)
+    return export_web_report.build_operations(path, family="term_account")
+
+
+def test_operations_dictionary_mirrors_the_feature_dictionary(operations):
+    fd = load_dictionary()
+    assert len(operations["dictionary"]) == len(fd)
+    names = {f["name"] for f in operations["dictionary"]}
+    assert names == set(fd.names)
+    first = operations["dictionary"][0]
+    for key in ("name", "dimension", "type", "extraction", "tier", "required", "definition"):
+        assert key in first
+
+
+def test_operations_dataset_table_is_the_analysed_rows(operations):
+    table = operations["dataset_table"]
+    assert table["page_count"] == len(table["rows"])
+    assert table["page_count"] > 0
+    assert table["bank_count"] > 0
+    assert "bank" in table["columns"] and "page_id" in table["columns"]
+
+
+def test_operations_collection_status_covers_every_bank(operations):
+    metrics = operations["collection"]["metrics"]
+    assert metrics["banks"] == len(operations["collection"]["banks"])
+    assert metrics["pages"] == operations["dataset_table"]["page_count"]
+    for bank in operations["collection"]["banks"]:
+        assert isinstance(bank["in_scope"], bool)
+    if operations["collection"]["pages"]:
+        assert "bank" in operations["collection"]["pages"][0]
+        assert "language" in operations["collection"]["pages"][0]
+
+
+def test_operations_rubric_payload_always_has_its_four_parts(operations):
+    rubric = operations["rubric"]
+    for key in ("raters", "agreement", "kappa", "features"):
+        assert isinstance(rubric[key], list)
+    # 13 rubric-scored features in the frozen dictionary.
+    assert len(rubric["features"]) == len(rubric_features())
+    assert all("definition" in f for f in rubric["features"])

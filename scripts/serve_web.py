@@ -30,9 +30,11 @@ import _bootstrap  # noqa: F401
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
+from comparator import research  # steve 21/09: the Research tab's live search
 from comparator.collection.llm_extractor import LLMExtractionError
 from comparator.recommendations import RecommendationSet, build_recommendations, select
 from comparator.site_generator import PAGES, generate_site
@@ -42,6 +44,12 @@ REPORT_PATH = REPO_ROOT / "web" / "public" / "report.json"
 TRENDS_PATH = REPO_ROOT / "web" / "public" / "trends.json"
 SITE_DIR = REPO_ROOT / "outputs" / "generated_site"
 RECS_PATH = REPO_ROOT / "outputs" / "web_recommendations.json"
+OUTPUTS_DIR = REPO_ROOT / "outputs"
+CAPTURES_DIR = REPO_ROOT / "data" / "raw"
+
+# The downloadable deliverables Streamlit offered on its Home page, in the same
+# extensions - the generated site's HTML is browsable, not a download.
+DOWNLOAD_SUFFIXES = (".png", ".csv", ".json", ".md")
 
 app = FastAPI(title="ING campaign comparator — recommendations and site generation")
 app.add_middleware(
@@ -215,6 +223,71 @@ def get_site_status() -> dict:
 
 SITE_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/site", StaticFiles(directory=str(SITE_DIR), html=True), name="site")
+
+
+# ---------------------------------------------------------------------------
+# Read-only views carried over from the Streamlit dashboard (steve 21/09).
+# These serve files the static bundle cannot: a live search, the generated
+# deliverables, and the raw page captures. Nothing here writes.
+# ---------------------------------------------------------------------------
+
+
+@app.get("/api/research/search")
+def get_research(q: str, limit: int = 5) -> dict:
+    """Semantic Scholar paper search, for sourcing claims in the narrative.
+
+    `search_papers` never raises and returns [] on a rate limit, so an empty
+    list is reported as "nothing back" in the UI rather than an error - the
+    same honest state the Streamlit page showed.
+    """
+    query = q.strip()
+    if not query:
+        raise HTTPException(status_code=400, detail="Empty query.")
+    limit = max(1, min(int(limit), 20))
+    return {"papers": research.search_papers(query, limit=limit), "available": True}
+
+
+def _download_files() -> list[Path]:
+    if not OUTPUTS_DIR.is_dir():
+        return []
+    return sorted(
+        p for p in OUTPUTS_DIR.iterdir()
+        if p.is_file() and p.suffix in DOWNLOAD_SUFFIXES
+    )
+
+
+@app.get("/api/downloads")
+def get_downloads() -> dict:
+    return {
+        "available": True,
+        "files": [
+            {"name": p.name, "kind": p.suffix.lstrip("."), "bytes": p.stat().st_size}
+            for p in _download_files()
+        ],
+    }
+
+
+@app.get("/api/downloads/{name}")
+def get_download(name: str) -> FileResponse:
+    # basename only: a crafted name must not escape outputs/.
+    if name != Path(name).name:
+        raise HTTPException(status_code=400, detail="Invalid file name.")
+    path = OUTPUTS_DIR / name
+    if not path.is_file():
+        raise HTTPException(status_code=404, detail=f"{name} not found in outputs/.")
+    return FileResponse(path, filename=name)
+
+
+@app.get("/api/capture/{bank}")
+def get_capture(bank: str) -> FileResponse:
+    """First screenshot for a bank, as the profiles page showed in Streamlit."""
+    if bank != Path(bank).name:
+        raise HTTPException(status_code=400, detail="Invalid bank.")
+    folder = CAPTURES_DIR / bank
+    if folder.is_dir():
+        for png in sorted(folder.glob("*.png")):
+            return FileResponse(png, filename=png.name)
+    raise HTTPException(status_code=404, detail=f"No capture for {bank}.")
 
 
 def main() -> int:

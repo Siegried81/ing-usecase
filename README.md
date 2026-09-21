@@ -46,7 +46,7 @@ Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.
 | --- | --- |
 | run collection, scoring, analysis and the export | [`docs/pipeline.md`](docs/pipeline.md) |
 | understand why it is built this way, and what it refuses to claim | [`docs/design.md`](docs/design.md) |
-| use the business web UI (Analysis, Trends, Reputation, Recommendations) | [`web/README.md`](web/README.md) |
+| use the web UI (Analysis, Trends, Reputation, Recommendations, plus the operator tabs: profiles, data, rubric, collection, research) | [`web/README.md`](web/README.md) |
 | know what was decided and when | [`docs/decisions.md`](docs/decisions.md) |
 | see the bank scope and compliance position | [`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md) |
 
@@ -138,8 +138,8 @@ scripts/
   run_analysis.py                the end-to-end chain
   run_collection.py              real captures: compliance -> scrape -> extract -> validate
   run_generation.py              CLI for step 5 (generation.py)
-  export_web_report.py           one JSON snapshot + trends payload for the business UI
-  serve_web.py                   backend for the UI's recommendations + generated site
+  export_web_report.py           one JSON snapshot + trends payload + the operator snapshot (dictionary/dataset/collection/rubric)
+  serve_web.py                   backend for the UI: recommendations, generated site, research search, downloads, captures
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
   rubric_sheet.py                emit / model / merge / agreement / report

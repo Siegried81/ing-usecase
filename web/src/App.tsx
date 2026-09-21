@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import type { Report } from "./types";
+import type { Operations, Report } from "./types";
+import { fetchOperations } from "./api";
+import { Section } from "./components/Section";
 import { ScopeBanner } from "./components/Scope";
 import { Positioning } from "./components/Positioning";
 import { PeerGaps, GroupSeparation } from "./components/Gaps";
@@ -14,23 +16,37 @@ import { Recommendations } from "./components/Recommendations";
 import { Trends } from "./components/Trends";
 import { Reputation } from "./components/Reputation";
 import { GeoTrends } from "./components/GeoTrends";
+import { Similarity } from "./components/Similarity";
+import { Home } from "./components/Home";
+import { Profiles } from "./components/Profiles";
+import { DataTab } from "./components/DataTab";
+import { Rubric } from "./components/Rubric";
+import { Collection } from "./components/Collection";
+import { Research } from "./components/Research";
 
-function Section({ title, lede, children }: { title: string; lede?: string; children: React.ReactNode }) {
-  return (
-    <section>
-      <div className="section-head">
-        <h2>{title}</h2>
-        {lede && <p>{lede}</p>}
-      </div>
-      {children}
-    </section>
-  );
-}
+type Tab =
+  | "home" | "analysis" | "profiles" | "data" | "rubric"
+  | "collection" | "trends" | "reputation" | "recommendations" | "research";
 
-type Tab = "analysis" | "trends" | "reputation" | "recommendations";
+const TABS: [Tab, string][] = [
+  ["home", "Home"],
+  ["analysis", "Analysis"],
+  ["profiles", "Bank profiles"],
+  ["data", "Data"],
+  ["rubric", "Rubric"],
+  ["collection", "Collection"],
+  ["trends", "Trends"],
+  ["reputation", "Reputation"],
+  ["recommendations", "Recommendations"],
+  ["research", "Research"],
+];
+
+/** The tabs fed by operations.json, which the exporter writes next to report.json. */
+const OPERATOR_TABS: Tab[] = ["home", "profiles", "data", "rubric", "collection"];
 
 export default function App() {
   const [report, setReport] = useState<Report | null>(null);
+  const [operations, setOperations] = useState<Operations | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("analysis");
 
@@ -39,6 +55,11 @@ export default function App() {
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${r.status}`))))
       .then(setReport)
       .catch((e) => setError(String(e)));
+    // The operator snapshot is optional: its absence must not take the
+    // business Analysis tab down with it.
+    fetchOperations()
+      .then(setOperations)
+      .catch(() => setOperations(null));
   }, []);
 
   if (error) {
@@ -61,6 +82,7 @@ export default function App() {
   const focusBank = report.banks.find((b) => b.name === headline.focus);
   const nearest = report.nearestToFocus[0];
   const biggest = report.peerGaps[0];
+  const needsOperations = OPERATOR_TABS.includes(tab) && !operations;
 
   return (
     <>
@@ -76,40 +98,60 @@ export default function App() {
 
       <div className="wrap">
         <div className="tabs" role="tablist">
-          <button
-            role="tab"
-            aria-selected={tab === "analysis"}
-            className={`tab${tab === "analysis" ? " active" : ""}`}
-            onClick={() => setTab("analysis")}
-          >
-            Analysis
-          </button>
-          <button
-            role="tab"
-            aria-selected={tab === "trends"}
-            className={`tab${tab === "trends" ? " active" : ""}`}
-            onClick={() => setTab("trends")}
-          >
-            Trends
-          </button>
-          <button
-            role="tab"
-            aria-selected={tab === "reputation"}
-            className={`tab${tab === "reputation" ? " active" : ""}`}
-            onClick={() => setTab("reputation")}
-          >
-            Reputation
-          </button>
-          <button
-            role="tab"
-            aria-selected={tab === "recommendations"}
-            className={`tab${tab === "recommendations" ? " active" : ""}`}
-            onClick={() => setTab("recommendations")}
-          >
-            Recommendations
-          </button>
+          {TABS.map(([key, label]) => (
+            <button
+              key={key}
+              role="tab"
+              aria-selected={tab === key}
+              className={`tab${tab === key ? " active" : ""}`}
+              onClick={() => setTab(key)}
+            >
+              {label}
+            </button>
+          ))}
         </div>
       </div>
+
+      {needsOperations && (
+        <div className="wrap">
+          <Section title="This view needs the operator snapshot" lede="It is written by the same exporter, from the same run.">
+            <div className="card">
+              <p style={{ margin: 0, color: "var(--ink-2)" }}>
+                <code>web/public/operations.json</code> was not found. Generate it with:
+              </p>
+              <ul className="command-list" style={{ marginTop: 10 }}>
+                <li><code>python3 scripts/export_web_report.py</code></li>
+              </ul>
+            </div>
+          </Section>
+        </div>
+      )}
+
+      {tab === "home" && operations && (
+        <div className="wrap"><Home report={report} operations={operations} /></div>
+      )}
+
+      {tab === "profiles" && operations && (
+        <div className="wrap">
+          <Profiles banks={report.banks} axes={report.aiScoreAxes} />
+        </div>
+      )}
+
+      {tab === "data" && operations && (
+        <div className="wrap"><DataTab operations={operations} /></div>
+      )}
+
+      {tab === "rubric" && operations && (
+        <div className="wrap"><Rubric rubric={operations.rubric} /></div>
+      )}
+
+      {tab === "collection" && operations && (
+        <div className="wrap"><Collection operations={operations} /></div>
+      )}
+
+      {tab === "research" && (
+        <div className="wrap"><Research /></div>
+      )}
 
       {tab === "trends" && (
         <div className="wrap">
@@ -192,6 +234,18 @@ export default function App() {
           lede="The features on which the two business models differ most. Descriptive only — with this many banks these are patterns to notice, not statistically tested effects."
         >
           <GroupSeparation rows={report.separation} />
+        </Section>
+
+        <Section
+          title="Similarity between banks"
+          lede="Euclidean distance in standardised feature space, lower is more similar. A closeness is a shared set of measurable choices, not a shared performance."
+        >
+          <Similarity
+            similarity={report.similarity}
+            clusters={report.clusters}
+            nearest={report.nearestToFocus}
+            focus={headline.focus}
+          />
         </Section>
 
         <Section

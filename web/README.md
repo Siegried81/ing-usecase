@@ -4,25 +4,66 @@ The findings surface for one analysis run, for the business audience (D-06),
 plus two model-backed actions: writing recommendations and building a website.
 
 ```bash
-python3 scripts/export_web_report.py --product-family auto   # writes report.json + trends.json
+python3 scripts/export_web_report.py --product-family auto   # writes report.json, trends.json + operations.json
 
-python3 scripts/serve_web.py --port 8000                      # recommendations + site backend
+python3 scripts/serve_web.py --port 8000                      # recommendations, site, research, downloads, captures
 cd web && npm install && npm run dev                          # http://localhost:5173
 
 npm run build                                                 # static bundle in web/dist/
 ```
 
-Vite proxies `/api` and `/site` to the backend, so the UI can generate
-recommendations and open the generated website without a second origin. `npm run
-build` still produces a folder that opens anywhere; the Analysis tab works from
-that build alone.
+`report.json` is the business snapshot; `operations.json` is the operator
+surface (feature dictionary, dataset explorer, collection status, rubric
+sheets). The exporter writes both in one run, from the same library calls, so
+the scope banner and the collection status cannot disagree. The Analysis,
+Trends, Reputation and Recommendations tabs work from a static build of
+`report.json` alone; the operator tabs need `operations.json`, and Research,
+downloads and page captures additionally need the backend.
 
-## Four tabs
+Vite proxies `/api` and `/site` to the backend, so the UI can generate
+recommendations, open the generated website, search papers and download the
+deliverables without a second origin. `npm run build` still produces a folder
+that opens anywhere; the Analysis tab works from that build alone.
+
+## The tabs
+
+**Home** is what was collected and which banks are in the comparison: four
+metrics, the validation verdict, per-bank collection status, and a download for
+every deliverable in `outputs/`. The file list is the one live call here,
+because those files are not part of the bundle.
 
 **Analysis** is the read-only snapshot described below. It reads a single
 `report.json` and talks to nothing. A snapshot is the honest shape for a finding:
-it is true for one dataset, at one capture date, under one scope. `npm run build`
-produces a folder that opens anywhere.
+it is true for one dataset, at one capture date, under one scope.
+
+**Bank profiles** expands the profile cards: one bank at a time, with its
+palette, the tone/imagery/layout/value-proposition/marketing fields, its
+z-score signature, its personas and its six-axis AI Score. The page capture is
+served by the backend at `/api/capture/{bank}` and degrades to a note when the
+backend is not running.
+
+**Data** is the dataset explorer and the feature dictionary. The filters only
+choose which stored rows to show, and the CSV export serialises exactly those
+rows — no value is recomputed in the browser. The dictionary is read-only
+forever: it is the frozen contract (P-04), and editing it from a form would undo
+the freeze rule.
+
+**Rubric** is the read-only view of `data/rubric/*_scores.csv` after the fact:
+every sheet, raw per-feature agreement, chance-corrected Cohen's kappa, and the
+scoring guide generated from the dictionary. It deliberately never merges the
+sheets into a single score and never marks agreement as settled — the
+disagreement is the finding until the wording is tightened. A live scoring
+screen must not exist in this shape: it must not show another rater's numbers,
+or the agreement becomes an artefact of who looked at what.
+
+**Collection** is the collection status and the pipeline commands. Read-only on
+purpose: collection is slow and needs a job model, and the robots.txt gate must
+stay server-side and non-overridable, so there is no "run collection" button.
+
+**Research** searches Semantic Scholar for papers to source a claim in the
+narrative. It is the one live external call in the operator surface, and it is
+deliberately a search box and nothing more — no per-bank metric is invented to
+justify it.
 
 **Trends** is Dan's Google Trends benchmark given a home of its own. The exporter
 writes the series separately to `trends.json` (it is ~800 KB of weekly points, too
@@ -134,20 +175,25 @@ confines any mention of a recommendation to the rationale.
 
 No pipeline control, no scoring, no dataset editing. Recommendations are written
 from an existing report, and the site from selected recommendations, but neither
-re-runs collection or analysis. The operator tooling is a separate question (see
-`docs/web_ui_proposal.md`).
+re-runs collection or analysis. The operator tabs are read-only views over the
+same files the CLI uses; the rubric page shows finished sheets, it does not score
+them, and there is no endpoint that writes a rubric cell. Run orchestration and a
+live scoring screen remain a separate question (see `docs/web_ui_proposal.md`).
 
 ## Keeping it honest
 
-`src/types.ts` mirrors `scripts/export_web_report.py`; the recommendation and
-site shapes mirror `src/comparator/recommendations.py` and
-`src/comparator/site_generator.py`. Change one, change the other. Every figure
-comes from the library through the exporter — the UI does no arithmetic of its
-own, so there is no second definition of any number on screen.
+`src/types.ts` mirrors `scripts/export_web_report.py` — both `build_report` and
+`build_operations`; the recommendation and site shapes mirror
+`src/comparator/recommendations.py` and `src/comparator/site_generator.py`.
+Change one, change the other. Every figure comes from the library through the
+exporter — the UI does no arithmetic of its own, so there is no second
+definition of any number on screen.
 
-The backend (`scripts/serve_web.py`) only orchestrates the two model calls and
-serves the result. It re-derives nothing: recommendations read `report.json`,
-the site reads the recommendations. One direction only.
+The backend (`scripts/serve_web.py`) only orchestrates the model calls, serves
+the generated site, searches Semantic Scholar, and streams the deliverables and
+page captures. It re-derives nothing: recommendations read `report.json`, the
+site reads the recommendations, downloads read `outputs/` verbatim. One
+direction only.
 
 ## Tested without a model
 
