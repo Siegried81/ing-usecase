@@ -152,9 +152,9 @@ section { margin: 40px 0; }
   .bar-row { grid-template-columns: 1fr 120px 76px; }
   .axis-row, .axis-scale { grid-template-columns: 96px 1fr 54px; }
   .axis-name { font-size: 13px; }
-  /* steph 20/09: four tabs do not fit a phone (463px of buttons in a 342px
-     bar), so the last one ran off the viewport. Wrap instead of overflowing. */
-  .tabs { flex-wrap: wrap; }
+  /* steph 20/09: four tabs did not fit a phone (463px of buttons in a 342px
+     bar), so the last one ran off the viewport. .tabs wraps at every width
+     now; this keeps the note where the phone case was reported. */
   /* A wide table squeezed into a phone collapses to one word per line. Give it
      a readable floor and let .table-scroll scroll it sideways instead. */
   .table-scroll.wide > .claims { min-width: 640px; }
@@ -168,11 +168,12 @@ section { margin: 40px 0; }
 .legend { font-size: 13px; color: var(--ink-3); margin-top: 10px; }
 
 /* ---------- tabs ---------- */
-.tabs { display: flex; gap: 4px; margin: 22px 0 6px; border-bottom: 1px solid var(--line); }
+.tabs { display: flex; flex-wrap: wrap; gap: 3px; margin: 22px 0 6px; border-bottom: 1px solid var(--line); }
 .tab {
-  appearance: none; background: none; border: 0; cursor: pointer;
+  appearance: none; background: none; border: 0; cursor: pointer; flex: none;
   font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--ink-3);
-  padding: 10px 16px; border-bottom: 2.5px solid transparent; margin-bottom: -1px;
+  padding: 10px 14px; border-bottom: 2.5px solid transparent; margin-bottom: -1px;
+  white-space: nowrap;
 }
 .tab:hover { color: var(--ink-2); }
 .tab.active { color: var(--ink); border-bottom-color: var(--focus-ring); }

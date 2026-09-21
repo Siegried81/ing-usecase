@@ -108,7 +108,7 @@ Trends rules, no exceptions:
   the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
 
 _REPUTATION_ADDENDUM = """You are ALSO given recent news headline THEMES (never sentiment) for some
-banks: counts of what real headlines about that bank were ABOUT in the last 90 days, plus up to 3
+banks: counts of what real headlines about that bank were ABOUT in the last 90 days, plus up to 5
 notable headlines.
 
 Reputation rules, no exceptions:

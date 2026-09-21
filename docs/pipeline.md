@@ -36,13 +36,27 @@ python3 scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv
 python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
 python3 scripts/rubric_sheet.py report --sheets data/rubric/*_scores.csv   # docs/day5_scoring_disagreement.md
 
-# 4. analyse, document, export for the business UI
+# 4. analyse, document, export for the web UI
 python3 scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv \
         --product-family auto --no-strict
 python3 scripts/build_feature_docs.py      # regenerate docs/feature_dictionary.md
-python3 scripts/export_web_report.py       # web/public/report.json + trends.json
+python3 scripts/export_web_report.py       # web/public/report.json + trends.json + operations.json
+python3 scripts/serve_web.py               # optional: recommendations, site, research, downloads, captures
 python3 -m pytest tests/ -q
 ```
+
+`export_web_report.py` writes two snapshots in one run, from the same library
+calls: `report.json` is the business surface the Analysis tab reads, and
+`operations.json` is the operator surface (feature dictionary, dataset table,
+collection status, rubric sheets with agreement and kappa). The React UI needs
+`operations.json` for its Home, Bank profiles, Data, Rubric, Collection and
+Research tabs; without it those tabs say so and the Analysis tab is unaffected.
+
+`serve_web.py` is optional and read-only apart from the two model calls. It adds
+four things a static bundle cannot hold: the recommendations and site generation
+(`/api/recommendations*`, `/api/site/*`), Semantic Scholar search
+(`/api/research/search`), the deliverables in `outputs/` (`/api/downloads`), and
+the page captures (`/api/capture/{bank}`). It re-derives no number.
 
 Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
 measures and what it cannot support, the profile cards as markdown and JSON, a
@@ -63,6 +77,8 @@ prose cannot drift away from the picture.
 | `data/rubric/*_scores.csv` | yes | the human and model scoring sheets |
 | `outputs/` | yes (team decision, see Housekeeping) | charts, tables, profiles, limitations, reputation |
 | `web/public/report.json` | yes | the one JSON snapshot the business UI reads |
+| `web/public/operations.json` | yes | the operator snapshot: dictionary, dataset, collection, rubric — read by the Home, Bank profiles, Data, Rubric and Collection tabs |
+| `web/public/trends.json` | yes | the Trends tab's series (written when Dan's export is present) |
 
 `scripts/reextract_model_fields.py` is not a no-op: it refreshes **every**
 model-assisted field on every row it touches, and the model is not deterministic,

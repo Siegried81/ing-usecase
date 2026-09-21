@@ -1,6 +1,8 @@
 {
   "generated_at": "2026-09-21T10:39:44+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
+  "generated_at": "2026-09-21T10:14:13+00:00",
+  "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
@@ -2192,6 +2194,367 @@
   "reputation": {
     "available": false,
     "banks": {}
+    "available": true,
+    "banks": {
+      "argenta": {
+        "headline_count": 4,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 3
+        },
+        "notable_headlines": [
+          {
+            "title": "Argenta a profité d'une hausse de son bénéfice au premier semestre",
+            "url": "https://www.lalibre.be/dernieres-depeches/2026/08/26/argenta-a-profite-dune-hausse-de-son-benefice-au-premier-semestre-MBCWP3LG4ZCJTJT4ER7AY2KU3U/"
+          }
+        ]
+      },
+      "belfius": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 7,
+          "financial_results": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 17,
+          "other": 5
+        },
+        "notable_headlines": [
+          {
+            "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
+            "url": null
+          },
+          {
+            "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
+            "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
+          },
+          {
+            "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
+            "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
+          },
+          {
+            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
+          },
+          {
+            "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
+            "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
+          }
+        ]
+      },
+      "beobank": {
+        "headline_count": 5,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 0,
+          "product_launch": 4,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 1
+        },
+        "notable_headlines": [
+          {
+            "title": "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+            "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
+          },
+          {
+            "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+            "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+          },
+          {
+            "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+            "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
+          },
+          {
+            "title": "Beobank trekt rente termijnrekeningen op",
+            "url": "https://www.headliner.nl/item/beobank-trekt-rente-termijnrekeningen-op-vrt-197090"
+          }
+        ]
+      },
+      "bnp_paribas_fortis": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 3,
+          "crisis_or_scandal": 3,
+          "financial_results": 1,
+          "product_launch": 6,
+          "esg_sustainability": 1,
+          "regulatory": 1,
+          "other": 15
+        },
+        "notable_headlines": [
+          {
+            "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
+            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
+          },
+          {
+            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
+            "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
+          },
+          {
+            "title": "BNP Paribas Fortis verhoogt spaarrente",
+            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+          },
+          {
+            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
+            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
+          },
+          {
+            "title": "BNP Paribas Fortis lanceert geldfestival voor jongeren",
+            "url": "https://www.investmentofficer.be/nl/nieuws/bnp-paribas-fortis-lanceert-geldfestival-voor-jongeren"
+          }
+        ]
+      },
+      "bunq": {
+        "headline_count": 14,
+        "themes": {
+          "innovation_digital": 1,
+          "crisis_or_scandal": 5,
+          "financial_results": 1,
+          "product_launch": 2,
+          "esg_sustainability": 0,
+          "regulatory": 1,
+          "other": 4
+        },
+        "notable_headlines": [
+          {
+            "title": "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
+            "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
+          },
+          {
+            "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
+            "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
+          },
+          {
+            "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
+            "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
+          },
+          {
+            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
+            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+          },
+          {
+            "title": "The OCC's charter reality check: Why bunq and Wise got denied | bobsguide",
+            "url": "https://www.bobsguide.com/the-occs-charter-reality-check-why-bunq-and-wise-got-denied/"
+          }
+        ]
+      },
+      "cbc": {
+        "headline_count": 29,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 21,
+          "financial_results": 1,
+          "product_launch": 1,
+          "esg_sustainability": 0,
+          "regulatory": 1,
+          "other": 5
+        },
+        "notable_headlines": [
+          {
+            "title": "FBI halted cooperation with RCMP after CBC 9/11 terrorism memo, N.Y. Times reports",
+            "url": "https://nationalpost.com/news/fbi-halted-cooperation-with-rcmp-after-cbc-9-11-terrorism-memo-n-y-times-reports"
+          },
+          {
+            "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
+            "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
+          },
+          {
+            "title": "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS",
+            "url": "https://yournews.com/2026/08/28/7179320/cbc-directs-journalists-not-to-describe-9-11-attacks-as-terrorist/"
+          },
+          {
+            "title": "Le groupe audiovisuel public canadien CBC, cible de critiques, utilisera le mot \"terrorisme\" pour qualifier le 11-Septembre",
+            "url": "https://www.bfmtv.com/international/amerique-nord/canada/le-groupe-audiovisuel-public-canadien-cbc-cible-de-critiques-utilisera-le-mot-terrorisme-pour-qualifier-le-11-septembre_AN-202608290057.html"
+          },
+          {
+            "title": "Scandale de la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
+            "url": "https://www.lapresse.ca/actualites/national/2026-09-18/scandale-de-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
+          }
+        ]
+      },
+      "crelan": {
+        "headline_count": 2,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 1,
+          "other": 0
+        },
+        "notable_headlines": [
+          {
+            "title": "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
+            "url": "https://www.lalibre.be/dernieres-depeches/2026/09/01/crelan-enregistre-un-benefice-en-forte-hausse-sur-le-premier-semestre-QYM65O4QHBBELGP7KHXN5SXLDE/"
+          },
+          {
+            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
+          }
+        ]
+      },
+      "hellobank": null,
+      "ing": {
+        "headline_count": 24,
+        "themes": {
+          "innovation_digital": 3,
+          "crisis_or_scandal": 2,
+          "financial_results": 2,
+          "product_launch": 2,
+          "esg_sustainability": 5,
+          "regulatory": 5,
+          "other": 5
+        },
+        "notable_headlines": [
+          {
+            "title": "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
+            "url": "https://www.accountant.nl/nieuws/2026/9/milieudefensie-mag-van-de-rechter-klimaatzaak-tegen-ing-doorzetten/"
+          },
+          {
+            "title": "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
+            "url": "https://www.ftm.nl/artikelen/ing-hielp-drie-oliebedrijven-aan-bijna-een-miljard-dollar-ondanks-klimaatbelofte"
+          },
+          {
+            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
+            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+          },
+          {
+            "title": "Vervangen van iDEAL door Wero heeft gevolgen voor je betalingen. ING-klant Anthonie stapt teleurgesteld over naar andere bank",
+            "url": "https://www.leidschdagblad.nl/extra/ombudsteam/vervangen-van-ideal-door-wero-heeft-gevolgen-voor-je-betalingen.-ing-klant-anthonie-stapt-teleurgesteld-over-naar-andere-bank/161418496.html"
+          },
+          {
+            "title": "ING s'apprête à entrer sur le marché des ETF",
+            "url": "https://www.agefi.fr/etf/ing-sapprete-a-entrer-sur-le-marche-des-etf"
+          }
+        ]
+      },
+      "kbc": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 3,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 27
+        },
+        "notable_headlines": [
+          {
+            "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
+            "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
+          },
+          {
+            "title": "Meer winst voor KBC Ancora",
+            "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
+          },
+          {
+            "title": "Ageas dans le vert avec des propos de KBC Securities",
+            "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/ageas-dans-le-vert-avec-des-propos-de-kbc-securities-zone-bourse-0bd7d9d93f8eedd391f3734aefe98badbe7c01c3"
+          },
+          {
+            "title": "Inventiva : KBC relève sa cible sur Inventiva, le titre bondit",
+            "url": "https://www.tradingsat.com/inventiva-FR0013233012/actualites/inventiva-kbc-releve-sa-cible-sur-inventiva-le-titre-bondit-1169092.html"
+          },
+          {
+            "title": "Wolters kluwer : Wolters Kluwer en léger repli, KBC réduit sa cible",
+            "url": "https://www.tradingsat.com/wolters-kluwer-NL0000395903/actualites/wolters-kluwer-wolters-kluwer-en-leger-repli-kbc-reduit-sa-cible-1168998.html"
+          }
+        ]
+      },
+      "keytrade": null,
+      "n26": {
+        "headline_count": 11,
+        "themes": {
+          "innovation_digital": 1,
+          "crisis_or_scandal": 0,
+          "financial_results": 1,
+          "product_launch": 1,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 8
+        },
+        "notable_headlines": [
+          {
+            "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
+            "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
+          },
+          {
+            "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
+            "url": "https://siliconcanals.com/n26-raises-775m/"
+          },
+          {
+            "title": "N26 data: Gen Z leads Europe's investing shift",
+            "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
+          },
+          {
+            "title": "Quels sont les frais N26 à l'étranger ?",
+            "url": "https://www.moneyvox.fr/banque-en-ligne/actualites/104009/quels-sont-les-frais-n26-a-etranger"
+          }
+        ]
+      },
+      "revolut": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 21,
+          "financial_results": 0,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 9
+        },
+        "notable_headlines": [
+          {
+            "title": "Revolut Hit With $3,000,000 Monero Ransom Demand After 680 Customer Accounts Breached",
+            "url": "https://dailyhodl.com/2026/09/17/revolut-hit-with-3000000-monero-ransom-demand-after-680-customer-accounts-breached/"
+          },
+          {
+            "title": "Revolut plans a dual London and Nasdaq listing, Storonsky tells Les Echos",
+            "url": "https://thenextweb.com/news/revolut-dual-listing-london-stock-exchange-nasdaq"
+          },
+          {
+            "title": "Hackers Want $3 Million in Monero for Revolut’s Stolen Bitcoin Records. What Affected Customers Should Do Now",
+            "url": "https://biztoc.com/x/4fcd471d3e3c60cd"
+          },
+          {
+            "title": "Revolut says no ransom demand received after reported data breach: Report",
+            "url": "https://cryptobriefing.com/revolut-says-no-ransom-demand-received-after-reported-data-breach-report/"
+          },
+          {
+            "title": "Revolut looking at dual IPO in London and New York",
+            "url": "https://www.rte.ie/news/business/2026/0917/1591960-revolut-ipo/"
+          }
+        ]
+      },
+      "vdk": {
+        "headline_count": 1,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 0
+        },
+        "notable_headlines": [
+          {
+            "title": "Tout en lettres d’or chez VDK",
+            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
+          }
+        ]
+      }
+    }
   },
   "geoTrends": {
     "available": true,

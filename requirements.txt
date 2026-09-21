@@ -30,3 +30,9 @@ python-dotenv==1.2.2
 # sieg 18/09: NOT adding pytrends/streamlit/plotly here - that's
 # kbc-ing-benchmark/'s own tool, already pinned in its own
 # kbc-ing-benchmark/requirements.txt. This file stays the main pipeline's.
+
+# sieg 21/09: scripts/serve_web.py (recommendations + site backend) needs
+# these but they were never added here - ModuleNotFoundError for anyone who
+# hadn't already installed them by hand.
+fastapi==0.141.1
+uvicorn==0.53.0

@@ -138,3 +138,37 @@ the performance claim:
 Neither makes this a performance study. **No performance data exists in this
 project**: nothing links a design choice to a click, a conversion or a sale. Every
 recommendation is a hypothesis ING could test, never a cause (PRD 5.2).
+
+## The web surface, and what it is not
+
+The React UI in `web/` is the surface the business reader uses. It has ten tabs
+and they fall into two groups.
+
+**Findings.** Analysis carries the scope banner, the focus verdict, the peer
+gaps, the group separation, the similarity matrix, the bank cards, the personas,
+the AI Score, cross-sell, the regional search interest, the deck-claim verdicts
+and the generated limitations. Trends, Reputation and Recommendations are the
+three signal tabs described above.
+
+**Operator views.** Home, Bank profiles, Data, Rubric, Collection and Research
+are the read-only views that used to live in `streamlit_app.py`. They read
+`operations.json`, which `export_web_report.py` writes from the same library
+calls as `report.json`, so the scope banner and the collection status cannot
+disagree. Two boundaries are deliberate and enforced by the shape of the code:
+
+- **No pipeline control and no dataset editing.** There is no endpoint that
+  writes a dataset row, a rubric cell or the dictionary. The dictionary is the
+  frozen contract (P-04); a form that edited it would undo the freeze rule, and
+  a form that edited an extracted feature would destroy the audit trail. The one
+  writable thing in the whole system remains a rubric sheet, and only through
+  `rubric_sheet.py` by the rater who owns it.
+- **No live scoring screen.** The Rubric tab shows finished sheets, already
+  merged and already compared. It does not show one rater another rater's
+  numbers while they score, because NFR-05's agreement figure is only meaningful
+  if the judgements were independent — a live screen that displayed a
+  neighbouring score would make the number measure visibility, not agreement.
+
+The UI does no arithmetic. Every number on screen is computed in Python and
+handed over already qualified: the exporter ships the values and the labels that
+say how far each may be trusted, and the browser only formats them. That is why
+`src/types.ts` and `scripts/export_web_report.py` have to change together.
