@@ -1,0 +1,215 @@
+{
+  "iteration": 3,
+  "language": "en",
+  "selected": [
+    "R4",
+    "R5"
+  ],
+  "direction": "up",
+  "pages": [
+    {
+      "slug": "index",
+      "title": "ING Savings | Save, grow and reach your goals · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "comptes-epargne",
+      "title": "Savings accounts | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 6,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "compte-a-terme",
+      "title": "Term account | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "compte-courant",
+      "title": "Current Account | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "jeunes",
+      "title": "Youth account | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 7,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "investir",
+      "title": "Invest | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 6,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "credit-hypothecaire",
+      "title": "Mortgage | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 6,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "ouvrir-compte",
+      "title": "Open an account | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 6,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "pourquoi-ing",
+      "title": "Why ING | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 5,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    },
+    {
+      "slug": "contact",
+      "title": "Contact us | ING Belgium · ING",
+      "lang": "en-BE",
+      "h1_count": 1,
+      "h1_in_viewport": true,
+      "cta_in_viewport": true,
+      "cta_count": 6,
+      "nav_link_count": 10,
+      "img_broken": 0,
+      "img_empty_alt": 0,
+      "overflow_px": 0,
+      "contrast_violation_count": 0,
+      "detected_language": "en"
+    }
+  ],
+  "issues": [],
+  "checked_after_interaction": [
+    "R4",
+    "R5"
+  ],
+  "manifest_recs": [
+    "R4",
+    "R5"
+  ],
+  "fallbacks": [],
+  "opened_via_button": true,
+  "console_errors": [],
+  "failed_requests": [],
+  "mobile": {
+    "overflow_px": 0,
+    "h1_count": 1,
+    "cta_in_viewport": true,
+    "nav_link_count": 10,
+    "contrast_violation_count": 0
+  },
+  "screenshot": "outputs/browser_audit/iteration_03_index.png",
+  "recommendation_checks": [
+    {
+      "id": "R4",
+      "title": "Add a first-time-investor entry point",
+      "features": [
+        "first_time_investor_targeting"
+      ],
+      "checks": [
+        {
+          "feature": "first_time_investor_targeting",
+          "label": "first-time framing",
+          "pass": true,
+          "detail": "beginner cue on target pages: True"
+        }
+      ]
+    },
+    {
+      "id": "R5",
+      "title": "Keep the expat and cross-border angle, but make it explicit",
+      "features": [
+        "expat_cross_border_targeting"
+      ],
+      "checks": [
+        {
+          "feature": "expat_cross_border_targeting",
+          "label": "expat / cross-border angle",
+          "pass": true,
+          "detail": "expat cue on target pages: True"
+        }
+      ]
+    }
+  ],
+  "seconds": 31.0
+}

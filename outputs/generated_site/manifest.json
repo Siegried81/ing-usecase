@@ -1,0 +1,190 @@
+{
+  "language": "en",
+  "locale": "en-BE",
+  "generated_at": "2026-09-21T06:46:57+00:00",
+  "model": "deepseek/deepseek-flash",
+  "explained": true,
+  "pages": [
+    {
+      "slug": "index",
+      "nav": "Home",
+      "title": "Savings and everyday accounts | ING Belgium",
+      "file": "index.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R11"
+      ]
+    },
+    {
+      "slug": "comptes-epargne",
+      "nav": "Savings accounts",
+      "title": "Savings accounts | ING Belgium",
+      "file": "comptes-epargne.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R10"
+      ]
+    },
+    {
+      "slug": "compte-a-terme",
+      "nav": "Term account",
+      "title": "Term account: a fixed rate for a fixed term | ING Belgium",
+      "file": "compte-a-terme.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R10"
+      ]
+    },
+    {
+      "slug": "compte-courant",
+      "nav": "Current account",
+      "title": "Current account | ING Belgium",
+      "file": "compte-courant.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R1",
+        "R2",
+        "R3",
+        "R4",
+        "R5",
+        "R6",
+        "R7",
+        "R9",
+        "R11"
+      ]
+    },
+    {
+      "slug": "jeunes",
+      "nav": "Youth",
+      "title": "Youth account: open one for your child | ING",
+      "file": "jeunes.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R8"
+      ]
+    },
+    {
+      "slug": "investir",
+      "nav": "Invest",
+      "title": "Invest | ING Belgium",
+      "file": "investir.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "slug": "credit-hypothecaire",
+      "nav": "Mortgage",
+      "title": "Mortgage | ING Belgium",
+      "file": "credit-hypothecaire.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R2",
+        "R3"
+      ]
+    },
+    {
+      "slug": "ouvrir-compte",
+      "nav": "Open an account",
+      "title": "Open an account | ING Belgium",
+      "file": "ouvrir-compte.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R2",
+        "R4",
+        "R8",
+        "R9"
+      ]
+    },
+    {
+      "slug": "pourquoi-ing",
+      "nav": "Why ING",
+      "title": "Why ING | ING Belgium",
+      "file": "pourquoi-ing.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R2",
+        "R3",
+        "R5"
+      ]
+    },
+    {
+      "slug": "contact",
+      "nav": "Contact",
+      "title": "Contact us | ING Belgium",
+      "file": "contact.html",
+      "used_fallback": false,
+      "recommendations_implemented": [
+        "R2",
+        "R3"
+      ]
+    }
+  ],
+  "recommendations": [
+    {
+      "id": "R1",
+      "title": "Cut the number of quoted figures per page",
+      "priority": "high"
+    },
+    {
+      "id": "R2",
+      "title": "Add more calls to action",
+      "priority": "high"
+    },
+    {
+      "id": "R3",
+      "title": "Put conditions beside every 'free' claim",
+      "priority": "high"
+    },
+    {
+      "id": "R4",
+      "title": "Add an explicit mobile-first layout signal",
+      "priority": "high"
+    },
+    {
+      "id": "R5",
+      "title": "Shorten the campaign pages",
+      "priority": "medium"
+    },
+    {
+      "id": "R6",
+      "title": "Add a comparison table",
+      "priority": "medium"
+    },
+    {
+      "id": "R7",
+      "title": "Shrink the opening image",
+      "priority": "medium"
+    },
+    {
+      "id": "R8",
+      "title": "Give the student messages their own calls to action",
+      "priority": "medium"
+    },
+    {
+      "id": "R9",
+      "title": "Be ready for the early-September current-account window",
+      "priority": "high"
+    },
+    {
+      "id": "R10",
+      "title": "Prepare the savings page in the same window",
+      "priority": "medium"
+    },
+    {
+      "id": "R11",
+      "title": "Set a standing refresh point for the account-pack season",
+      "priority": "low"
+    }
+  ],
+  "asset_warnings": []
+}

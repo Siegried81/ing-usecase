@@ -1,0 +1,97 @@
+/* ING house style, reusing the palette of ing.be: orange #FF6200, ING blue
+   #000066, black and white. Type falls back through the ING stack to system
+   sans, because the licensed ING fonts are not redistributed with a demo. */
+:root{--orange:#ff6200;--blue:#000066;--ink:#08080b;--panel:#141419;--line:#3a3a44;
+--muted:#c7c8cf;--radius:22px;--maxw:1180px;
+--sans:"ING Me",ui-sans-serif,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}
+body{margin:0;background:#000;color:#fff;font-family:var(--sans);font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+.skip-link{position:absolute;left:-9999px;top:0;background:#fff;color:#111;padding:10px 16px;z-index:100}
+.skip-link:focus{left:16px;top:12px}
+:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.utility{background:#fff;color:#111;font-size:13px}
+.utility .wrap{display:flex;gap:22px;align-items:center;height:44px}
+.utility a{color:#45454d}
+.utility .u-active{font-weight:700;color:#111}
+.utility .u-lang{margin-left:auto;color:#45454d}
+.masthead{background:#000;border-bottom:1px solid var(--line);padding-top:14px}
+.masthead-in{display:flex;align-items:center;gap:20px;padding-bottom:12px}
+.logo img{height:34px;display:block}
+.search{flex:1;display:flex;align-items:center;background:#232329;border:1px solid #4a4a55;border-radius:999px;padding:8px 16px;max-width:520px}
+.search input{flex:1;background:none;border:0;color:#fff;font-size:14px;outline:none}
+.search input::placeholder{color:#c7c8cf}
+.search span{color:var(--orange)}
+.actions{display:flex;align-items:center;gap:18px;font-size:14px;white-space:nowrap}
+.pill-outline{border:1.5px solid #fff;border-radius:999px;padding:8px 18px;font-weight:600}
+.pill-fill{background:#7a7aec;border-radius:999px;padding:9px 20px;font-weight:700;color:#0a0a0f}
+.mainnav{border-top:1px solid var(--line)}
+.mainnav .wrap{display:flex;gap:26px;flex-wrap:wrap;padding:12px 24px;font-size:14.5px}
+.mainnav a{color:#e2e2e8;padding:2px 0}
+.mainnav a.active{color:#fff;font-weight:700;box-shadow:inset 0 -3px 0 var(--orange)}
+.hero{background:radial-gradient(1200px 500px at 80% -10%,#241606 0,#000 60%);padding:56px 0 44px}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:40px;align-items:center}
+.eyebrow{color:#ff8a3d;font-weight:700;letter-spacing:.08em;text-transform:uppercase;font-size:12.5px}
+.hero h1{font-size:clamp(34px,5vw,58px);line-height:1.05;letter-spacing:-.02em;margin:10px 0 14px}
+.lede{color:var(--muted);font-size:19px;max-width:52ch;margin:0 0 24px}
+.hero-cta{display:flex;gap:12px;flex-wrap:wrap}
+.hero-illu{width:100%;max-height:360px;object-fit:contain;display:block}
+.btn{display:inline-block;border-radius:12px;padding:14px 24px;font-weight:700;font-size:15px}
+.btn-primary{background:var(--orange);color:#0a0a0f}
+.btn-dark{background:#000;color:#fff;border:1.5px solid #000}
+.btn-ghost{border:1.5px solid #fff;color:#fff}
+.block{padding:52px 0}
+.block.alt{background:var(--panel)}
+.block h2{font-size:clamp(24px,3vw,34px);letter-spacing:-.015em;margin:0 0 14px}
+.block p{color:var(--muted);font-size:16.5px;max-width:72ch}
+.block ul{color:var(--muted);font-size:16.5px;max-width:72ch;padding-left:20px}
+.block ul li{margin:6px 0}
+.block .btn{margin-top:14px}
+/* Explained mode. The box hugs the content column (.wrap), not the full band.
+   Closed: a quiet orange outline. Open: the (i) balloon plus a SLOW yellow
+   flicker - yellow on purpose, so the "explanation open" state cannot be
+   mistaken for the ING-orange brand treatment. */
+.wrap.explained{position:relative;border-radius:18px;padding:26px 30px;box-shadow:0 0 0 1.5px rgba(255,98,0,.85),0 0 20px 4px rgba(255,98,0,.20);transition:box-shadow .3s ease}
+.wrap.explained.note-open{animation:recglow 3.2s ease-in-out infinite}
+@keyframes recglow{
+  0%{box-shadow:0 0 0 2px #ffd400,0 0 12px 3px rgba(255,212,0,.30)}
+  50%{box-shadow:0 0 0 3px #ffd400,0 0 30px 10px rgba(255,212,0,.70)}
+  100%{box-shadow:0 0 0 2px #ffd400,0 0 12px 3px rgba(255,212,0,.30)}
+}
+.rec-explain{position:relative;display:flex;justify-content:flex-end;margin-top:20px}
+.rec-note-btn{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--orange);background:transparent;color:var(--orange);font-weight:800;font-style:italic;font-family:Georgia,"Times New Roman",serif;font-size:16px;line-height:1;cursor:pointer;flex:none}
+.rec-note-btn:hover,.rec-note-btn:focus-visible{border-color:#ffd400;color:#ffd400}
+.rec-note{display:none;position:absolute;right:0;bottom:calc(100% + 12px);width:min(560px,86vw);background:#1b1b21;border:1px solid #5a5a66;border-radius:14px;padding:14px 18px;box-shadow:0 20px 44px rgba(0,0,0,.55);z-index:6;text-align:left}
+.rec-note::after{content:"";position:absolute;right:13px;bottom:-7px;width:12px;height:12px;background:#1b1b21;border-right:1px solid #5a5a66;border-bottom:1px solid #5a5a66;transform:rotate(45deg)}
+.rec-explain.open .rec-note{display:block}
+.rec-note-head{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.rec-note-k{font-size:11.5px;letter-spacing:.07em;text-transform:uppercase;color:#ff8a3d;font-weight:700}
+.rec-note-tag{background:var(--orange);color:#0a0a0f;font-weight:700;font-size:11.5px;border-radius:999px;padding:2px 9px}
+.rec-note-title{color:#ffd9bd;font-size:13px}
+.rec-note-body{margin:8px 0 0;color:#fff;font-size:14.5px;max-width:78ch}
+/* The bar above the site turns the whole explanation layer off, so the site
+   can be shown as normal; the choice is remembered across the ten pages. */
+.explain-bar{position:sticky;top:0;z-index:30;background:#101014;border-bottom:1px solid var(--line)}
+.explain-bar .wrap{display:flex;align-items:center;min-height:48px}
+.explain-toggle{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;cursor:pointer}
+.explain-toggle input{width:16px;height:16px;accent-color:var(--orange)}
+html.explanations-off .wrap.explained{padding:0 24px;box-shadow:none;animation:none}
+html.explanations-off .rec-explain{display:none}
+details{border-bottom:1px solid var(--line);padding:16px 0}
+summary{cursor:pointer;font-weight:650;font-size:16.5px;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::before{content:"+";color:var(--orange);font-weight:700;margin-right:10px}
+details[open] summary::before{content:"–"}
+details div{color:var(--muted);padding:10px 0 2px 22px;max-width:78ch}
+.cta-band{background:var(--orange);color:#0a0a0f;padding:44px 0}
+.cta-band .wrap{display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.cta-band h2{margin:0;font-size:clamp(22px,3vw,30px)}
+.foot{background:#000;border-top:1px solid var(--line);padding:44px 0 60px}
+.foot-logo{height:30px;margin-bottom:22px}
+.foot-cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:22px;margin-bottom:26px}
+.foot-cols strong{display:block;margin-bottom:8px;color:#fff}
+.foot-cols a{display:block;color:var(--muted);font-size:14px;padding:3px 0}
+.disclaimer{color:var(--muted);font-size:12.5px;max-width:80ch;border-top:1px solid var(--line);padding-top:18px}
+.foot-legal{color:var(--muted);font-size:12px;max-width:80ch}
+@media(max-width:820px){.hero-grid{grid-template-columns:1fr}.actions{display:none}.masthead-in{gap:12px}}
