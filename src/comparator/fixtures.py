@@ -57,7 +57,7 @@ ARCHETYPES: dict[str, dict] = {
         subscription=False,  # sieg 19/09
     ),
     "argenta": dict(
-        category="traditional", brand="#e94e1b", words=(470, 60), images=(4, 1),
+        category="traditional", brand="#00814d", words=(470, 60), images=(4, 1),
         animated=(0, 0), bg=0.99, brand_share=0.08, hero=False, adjacent=True,
         img_type="photo", formality=4, layout="long_form", people=True,
         accents=["text", "buttons"], levers=["liking"],

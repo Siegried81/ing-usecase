@@ -169,6 +169,47 @@ def test_extract_counts_ctas_by_keyword():
     assert result["cta_count"] == 2  # "Discover more", "Open an account"
 
 
+def test_responsive_picture_sources_are_not_animation():
+    # dan 21/09: regression - _has_animation() used to match a bare <source>,
+    # so <picture><source srcset> (a STATIC responsive image, standard on every
+    # modern site) counted as motion. Measured on 16 real captures: 217 of 219
+    # <source> tags were inside <picture>. This is what deck claim H3 ("ING is
+    # the only traditional bank using animation") was being tested against.
+    html = """<html><body>
+    <picture>
+      <source srcset="hero.avif" type="image/avif">
+      <source srcset="hero.webp" type="image/webp">
+      <img src="hero.jpg" alt="hero">
+    </picture>
+    </body></html>"""
+    result = extract(html, language="en")
+    assert result["has_animation"] is False
+    assert result["animated_asset_count"] == 0
+
+
+def test_video_still_counts_as_animation():
+    # The <video> parent fires, so a <video><source> is still detected -
+    # only the BARE <source> case changed.
+    html = """<html><body>
+    <video autoplay loop><source src="clip.mp4" type="video/mp4"></video>
+    </body></html>"""
+    result = extract(html, language="en")
+    assert result["has_animation"] is True
+
+
+def test_css_keyframes_still_count_as_animation():
+    # dan 21/09, team decision: CSS motion stays in scope. The dictionary
+    # defines animated_asset_count as "GIF, video, Lottie, CSS keyframe
+    # animation", so the detector must keep matching it or the code and the
+    # contract disagree. Pinned as a test so the <picture> fix above cannot be
+    # widened into dropping CSS by accident.
+    html = """<html><head><style>
+    @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+    </style></head><body><p>Texte.</p></body></html>"""
+    result = extract(html, language="en")
+    assert result["has_animation"] is True
+
+
 def test_extract_counts_french_imperative_ctas():
     # sieg 15/09: regression - verified live on kbc.be, real buttons say
     # "Ouvrez un compte à vue" (imperative), not "ouvrir" (infinitive, the
