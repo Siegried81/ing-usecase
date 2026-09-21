@@ -90,7 +90,7 @@ ING's `urgency_marker_count` is 3.5 against a peer mean of 1.10 (+2.46 SD) —
 the largest gap of any measured feature. Its `persuasion_lever_count` (3.5
 vs peer mean 2.08, +1.94 SD) is the second-largest — this one is rubric-
 sourced and reflects a merged view of the human sheets (Siegried 25 pages, Dan 11,
-overlapping on 11; Stephane's 9 are machine-proposed and adopted — see the Status
+overlapping on 10; Stephane's 9 are machine-proposed and adopted — see the Status
 table), so the peer mean is thinner than the measured features' and should be
 quoted with that caveat. ING also claims fast digital onboarding at 0.75
 against a peer mean of 0.23 (+1.52 SD) — the third-largest gap.

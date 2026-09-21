@@ -510,8 +510,9 @@ functions.
 
 **A correction that came out of writing it down.** The README still said Dan was at
 0/23 rubric pages, and that no feature had two independent human raters. That was
-false against the sheets on disk: Dan's sheet has 11 scored pages and overlaps
-Siegried's on all 11, so the first genuine human-vs-human agreement exists. The
+false against the sheets on disk: Dan's sheet has 11 scored pages and shares
+10 of them with a scored Siegried page, so the first genuine human-vs-human
+agreement exists. The
 status paragraph was corrected with the operator work. The remaining rubric problem
 is coverage and wording — six features sit below the 60% bar, and the six banks
 added this week have no judged layer at all — not the absence of a second rater.

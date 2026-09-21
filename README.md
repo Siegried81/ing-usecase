@@ -26,10 +26,10 @@ Revolut came back through a static fetch. BNP is in too: its edge returns HTTP
 503 to every headless client but serves a real headful browser, so that target
 uses `method: headful`. There is no manual-capture-only bank left. **The rubric
 is no longer zero-handed**: Siegried has scored 25 pages, Dan 11, and the two
-overlap on 11 pages — so two independent human raters now exist, which is what
+overlap on 10 pages — so two independent human raters now exist, which is what
 NFR-05 asks for. Stephane's 9 pages were machine-proposed from the screenshots
 and adopted (the sheet's notes column says so), and they do not count as an
-independent human. Agreement is measurable for all 13 features over 9–11 pages
+independent human. Agreement is measurable for all 13 features over 9–15 pages
 and **six** now sit below the module's 60% bar (`aida_desire` 0.00,
 `persuasion_levers` 0.11, `accent_locations` 0.20, `rate_prominence` 0.27,
 `text_image_layout` 0.50, `aida_attention` 0.55), so the rubric work is
@@ -42,7 +42,7 @@ tightening wording, not filling the first sheet.
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated for every compared bank (real data) |
 | Real captures (D-02) | **50 pages / 14 banks / 7 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
-| Rubric scoring (Day 5) | **two independent human raters now overlap on 11 pages** (Siegried 25 scored, Dan 11); Stephane's 9 are machine-proposed and adopted, recorded as such in the sheet. Agreement is measurable for all 13 features over 9–11 pages, and `rubric_sheet.py` flags six below its 60% bar (listed above). The model's own sheet is never a pre-fill |
+| Rubric scoring (Day 5) | **two independent human raters now overlap on 10 pages** (Siegried 25 scored, Dan 11); Stephane's 9 are machine-proposed and adopted, recorded as such in the sheet. Agreement is measurable for all 13 features over 9–15 pages, and `rubric_sheet.py` flags six below its 60% bar (listed above). The model's own sheet is never a pre-fill |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
 Test suite: **387 passing, 1 skipped**. Pinned model: `deepseek-flash`.
@@ -165,7 +165,7 @@ outputs/                         charts and tables — tracked, regenerated ever
 
 ## Next
 
-1. **Finish the rubric properly.** Two independent humans now overlap on 11 pages
+1. **Finish the rubric properly.** Two independent humans now overlap on 10 pages
    (Siegried, Dan), so the first real agreement number exists; the work left is
    coverage — Dan's remaining pages, the 14 rows whose screenshots are not on this
    machine, and tightening the wording for the six features below the 60% bar.
