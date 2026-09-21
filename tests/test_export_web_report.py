@@ -40,6 +40,9 @@ def report(tmp_path_factory):
     # ambiguity.
     import os
     os.environ.pop("NEWSAPI_KEY", None)
+    # steve 21/09: second key slot (newsapi.ai) - both must go, or this test
+    # makes real network calls and asserts the wrong availability state.
+    os.environ.pop("NEWSAPI_AI_KEY", None)
     fd = load_dictionary()
     df = build_fixture(fd)
     path = write_dataset(df, tmp_path_factory.mktemp("data") / "campaigns.csv", fd)

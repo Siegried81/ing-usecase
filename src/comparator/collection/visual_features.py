@@ -33,6 +33,11 @@ BRAND_COLOURS: dict[str, str] = {
     "ing": "#ff6200", "kbc": "#00aeef", "bnp_paribas_fortis": "#00915a",
     "argenta": "#e94e1b", "crelan": "#009640", "belfius": "#c8102e",
     "revolut": "#0666eb", "n26": "#36a18b", "bunq": "#3394ff",
+    # steve 21/09: sourced from each site rather than guessed. vdk from its own
+    # logo.svg fills (#E30613 primary), beobank from its declared theme-color
+    # (#5F3A99), hellobank from the dominant cyan on its rendered page, which
+    # matches the #11BAD5/#4EC1D3 in its CSS.
+    "vdk": "#e30613", "hellobank": "#00b4c8", "beobank": "#5f3a99",
 }
 # Euclidean RGB distance below which a pixel counts as "brand colour" - not a
 # perceptual colour-distance metric (that would need Lab space), good enough

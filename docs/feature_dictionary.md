@@ -30,7 +30,7 @@
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
 | `page_id` | string | automatic | cross_language | core | Unique key for the page-capture. Format {bank}_{product_family}_{language}_{nn}. |
-| `bank` | categorical<br>`ing` · `kbc` · `bnp_paribas_fortis` · `argenta` · `crelan` · `belfius` · `revolut` · `n26` · `bunq` | automatic | cross_language | core | Bank whose page this is. |
+| `bank` | categorical<br>`ing` · `kbc` · `bnp_paribas_fortis` · `argenta` · `crelan` · `belfius` · `revolut` · `n26` · `bunq` · `vdk` · `hellobank` · `beobank` | automatic | cross_language | core | Bank whose page this is. |
 | `bank_category` | categorical<br>`traditional` · `challenger` | automatic | cross_language | core | Traditional incumbent or digital challenger. The axis BO-02 asks about. |
 | `product_family` | categorical<br>`term_account` · `current_account_pack` · `savings_account` · `mortgage` · `investment` · `pension` · `other` | automatic | cross_language | core | Product family the page promotes. Comparisons are only valid within one family (DR-04). |
 | `page_role` | categorical<br>`campaign_landing` · `product_detail` · `comparison` · `other` | automatic | cross_language | extended | What the page is for within the funnel. |

@@ -9,8 +9,8 @@ Search interest (Google Trends, Belgium) for the captured bank/product pairs.
 CONTEXT ONLY - this is what people searched for, not what a campaign achieved.
 
 bank       product_family  last_12m_mean  baseline_mean  change_pct vs_baseline  weeks
- ing current_account_pack            0.1            0.3       -64.7       lower   1572
  kbc current_account_pack            1.2            2.3       -48.2       lower   1048
+ ing current_account_pack            0.1            0.3       -64.7       lower   1572
 
-No trends data at all for: argenta, belfius, bnp_paribas_fortis, bunq, crelan, n26, revolut.
+No trends data at all for: argenta, belfius, beobank, bunq, crelan, hellobank, n26, vdk.
 ```

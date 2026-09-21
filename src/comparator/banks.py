@@ -20,6 +20,12 @@ BANK_CATEGORY: dict[str, str] = {
     # CBC is KBC Group's francophone brand, a separate search entity in Dan's
     # Trends benchmark but the same incumbent model.
     "cbc": "traditional",
+    # steve 21/09: collected live in the current_account_pack family. Hello bank!
+    # is BNP Paribas Fortis's digital brand, classified traditional for the same
+    # reason cbc is: the institution behind it is an incumbent.
+    "vdk": "traditional",
+    "hellobank": "traditional",
+    "beobank": "traditional",
     "revolut": "challenger",
     "n26": "challenger",
     "bunq": "challenger",

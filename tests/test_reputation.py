@@ -63,6 +63,7 @@ def test_classify_headlines_returns_none_on_bad_json():
 
 def test_bank_snapshot_is_none_without_an_api_key(monkeypatch):
     monkeypatch.delenv("NEWSAPI_KEY", raising=False)
+    monkeypatch.delenv("NEWSAPI_AI_KEY", raising=False)
     assert reputation.bank_snapshot("ING") is None
 
 
@@ -80,6 +81,7 @@ def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
 
 def test_build_dashboard_is_unavailable_without_a_key(monkeypatch):
     monkeypatch.delenv("NEWSAPI_KEY", raising=False)
+    monkeypatch.delenv("NEWSAPI_AI_KEY", raising=False)
     dashboard = reputation.build_dashboard([("ing", "ING")])
     assert dashboard == {"available": False, "banks": {}}
 
