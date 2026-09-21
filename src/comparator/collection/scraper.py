@@ -357,6 +357,8 @@ def scrape(
     language: str,
     method: str = "auto",
     screenshot_path: str | Path | None = None,
+    wait_until: str = "networkidle",
+    timeout_ms: int | None = None,
 ) -> dict:
     """Compliant fetch + full automatic extraction for one page.
 
@@ -370,6 +372,7 @@ def scrape(
     method:
       "auto"     - render if this machine can, else fall back to static and say so.
       "headless" - require the browser; raise RenderUnavailable if absent.
+      "headful"  - require a real, visible Chrome; for hosts that refuse headless.
       "static"   - never launch a browser (fast, and what the tests use).
 
     The rendered DOM is also what gets parsed, so a JavaScript-built page is read
@@ -380,15 +383,24 @@ def scrape(
     so a headless-rendered page can still hand back a relative hero <img src>
     just like a static one did on belfius.be (see _hero_image_url()).
     """
-    if method not in {"auto", "headless", "static"}:
+    if method not in {"auto", "headless", "headful", "static"}:
         raise ValueError(f"unknown method {method!r}")
 
     rendered = None
-    if method in {"auto", "headless"}:
+    if method in {"auto", "headless", "headful"}:
         try:
-            rendered = render(url, screenshot_path=screenshot_path)
+            # steph 21/09: real, visible Chrome for hosts that refuse headless
+            # clients; same single request, same robots gate.
+            extra: dict = {"wait_until": wait_until}
+            if timeout_ms:
+                extra["timeout_ms"] = timeout_ms
+            if method == "headful":
+                rendered = render(url, screenshot_path=screenshot_path,
+                                  headless=False, channel="chrome", **extra)
+            else:
+                rendered = render(url, screenshot_path=screenshot_path, **extra)
         except RenderUnavailable:
-            if method == "headless":
+            if method in {"headless", "headful"}:
                 raise
             logger.warning(
                 "headless rendering unavailable, falling back to static fetch for %s - "
@@ -400,7 +412,7 @@ def scrape(
         html = rendered.html
         features = extract(html, language=language, page_url=url)
         features.update(rendered.features)  # geometry overrides the None placeholders
-        features["collection_method"] = "headless_render"
+        features["collection_method"] = "headful_render" if method == "headful" else "headless_render"
         features["http_status"] = rendered.http_status
         features["shadow_hosts_flattened"] = rendered.shadow_hosts
         features["_screenshot"] = rendered.screenshot

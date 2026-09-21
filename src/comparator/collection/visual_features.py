@@ -38,6 +38,10 @@ BRAND_COLOURS: dict[str, str] = {
     # (#5F3A99), hellobank from the dominant cyan on its rendered page, which
     # matches the #11BAD5/#4EC1D3 in its CSS.
     "vdk": "#e30613", "hellobank": "#00b4c8", "beobank": "#5f3a99",
+    # steve 21/09: sourced from each site. CBC from its own logos-cbc.svg fills
+    # (#0097db accent next to a #0d2a50 navy), keytrade from its declared
+    # theme-color (#03B3D9), both confirmed against the rendered page.
+    "cbc": "#0097db", "keytrade": "#03b3d9",
 }
 # Euclidean RGB distance below which a pixel counts as "brand colour" - not a
 # perceptual colour-distance metric (that would need Lab space), good enough

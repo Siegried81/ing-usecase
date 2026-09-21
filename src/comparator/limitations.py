@@ -174,10 +174,10 @@ def assess(
     standing += [
         "**No performance data exists in this project.** Nothing links a design choice to a click, "
         "a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause "
-        "(PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* "
-        "and does not change this: it measures what people searched for, not what a campaign "
-        "achieved, it covers three of the nine banks, and the pages captured are today's pages "
-        "rather than the pages live during any older spike.",
+        "(PRD 5.2). Google Trends search interest is available as *context* and does not change "
+        "this: it measures what people searched for, not what a campaign achieved, it covers only "
+        "the banks in Dan's export rather than every bank compared here, and the pages captured "
+        "are today's pages rather than the pages live during any older spike.",
         "Only the open web is covered. Social media, in-app and email banners are out of scope and "
         "may well be where a bank's real communication happens.",
         "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice "

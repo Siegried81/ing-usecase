@@ -41,11 +41,26 @@ pages:
     url: "https://www.ing.be/fr/particuliers/epargner"
     language: fr
 
+  # steph 21/09: BNP refuses headless clients outright - every headless variant
+  # (bundled Chromium, real Chrome, browser or bot User-Agent) returned HTTP 503
+  # on every path including the homepage, while the same URL in a headful
+  # browser returned 200. `method: headful` launches a real visible Chrome for
+  # this host only. robots.txt allows both paths, one request is still made, and
+  # nothing rotates IP or identity - see docs/decisions.md 21/09.
   - bank: bnp_paribas_fortis
     bank_category: traditional
     product_family: mortgage
     page_role: campaign_landing
+    method: headful
     url: "https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire"
+    language: fr
+
+  - bank: bnp_paribas_fortis
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    method: headful
+    url: "https://www.bnpparibasfortis.be/fr/public/particuliers/banque-au-quotidien/comptes-bancaires/compte-a-vue-comparer"
     language: fr
 
   # sieg 15/09: added for the deck-claims work (C3/C4/C9 need Revolut).
@@ -135,6 +150,28 @@ pages:
     product_family: current_account_pack
     page_role: campaign_landing
     url: "https://www.hellobank.be/fr/notre-offre/comptes-et-cartes/compte-all-in-gratuit"
+    language: fr
+
+  # steve 21/09: CBC (KBC Group's francophone brand) serves headless normally.
+  - bank: cbc
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.cbc.be/particuliers/fr/produits/paiements/comptes-a-vue/compte-bancaire-gratuit.html"
+    language: fr
+
+  # steve 21/09: Keytrade's KeyPack is its current-account package. Its site
+  # never reaches networkidle (consent + analytics keep loading) and the
+  # headless client stalls, so this target uses the headful browser and a
+  # lighter navigation wait - the page is readable long before it goes idle.
+  - bank: keytrade
+    bank_category: challenger
+    product_family: current_account_pack
+    page_role: campaign_landing
+    method: headful
+    wait_until: domcontentloaded
+    timeout_ms: 60000
+    url: "https://www.keytradebank.be/fr/banque/keypack"
     language: fr
 
   - bank: beobank

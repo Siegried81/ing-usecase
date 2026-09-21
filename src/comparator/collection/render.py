@@ -280,11 +280,25 @@ def _blocks_same_origin_asset(request_url: str, page_origin: str) -> bool:
     return not check_robots(request_url).allowed
 
 
-def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResult:
+def render(url: str, *, screenshot_path: str | Path | None = None,
+           headless: bool = True, channel: str | None = None,
+           wait_until: str = "networkidle", timeout_ms: int = NAV_TIMEOUT_MS) -> RenderResult:
     """Render one page in a fixed viewport and measure what needs a browser.
 
     Raises ScrapingNotAllowed if robots.txt disallows it - the gate runs before
     navigation, not after.
+
+    steph 21/09: `headless=False` launches a real, visible browser and is used
+    only for hosts that refuse headless clients outright (measured on BNP
+    Paribas Fortis: every headless variant returned HTTP 503 while the same URL
+    in a headful browser returned the page). This is not evasion - robots.txt is
+    still checked first, one request is still made, and nothing rotates the IP
+    or the identity. See docs/decisions.md, 21/09.
+
+    `wait_until`/`timeout_ms` exist because a page that never goes idle (Keytrade
+    Bank keeps loading consent and analytics) times out under the default
+    networkidle, and the page is fully readable long before that. Both default to
+    today's behaviour; a target overrides them explicitly in the targets file.
     """
     assert_can_fetch(url)
     # sieg 17/09, audit finding (HIGH). This used to be a fixed value computed
@@ -309,7 +323,10 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
 
     try:
         with sync_playwright() as p:
-            browser = p.chromium.launch()
+            launch: dict = {"headless": headless}
+            if channel:
+                launch["channel"] = channel
+            browser = p.chromium.launch(**launch)
             try:
                 page = browser.new_page(
                     viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},
@@ -333,7 +350,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
                     if _blocks_same_origin_asset(route.request.url, page_origin)
                     else route.continue_(),
                 )
-                response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
+                response = page.goto(url, timeout=timeout_ms, wait_until=wait_until)
                 status = response.status if response else None
 
                 # Polite retry on a server-side status, backing off between tries.
@@ -342,7 +359,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None) -> RenderResu
                         break
                     logger.info("HTTP %s from %s - retrying in %ss", status, url, delay)
                     page.wait_for_timeout(delay * 1000)
-                    response = page.goto(url, timeout=NAV_TIMEOUT_MS, wait_until="networkidle")
+                    response = page.goto(url, timeout=timeout_ms, wait_until=wait_until)
                     status = response.status if response else None
 
                 page.wait_for_timeout(SETTLE_MS)

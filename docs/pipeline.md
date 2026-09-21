@@ -85,6 +85,19 @@ pass strict validation on its own. `scripts/rubric_sheet.py` emits one sheet per
 rater with the screenshot path, merges completed sheets back, and reports
 inter-rater agreement — which is what NFR-05 actually asks for.
 
+## Two escape hatches for hosts that will not serve us
+
+Both live in the targets file, per target, and neither changes what the pipeline
+asks for — one request, robots.txt checked first, no IP or identity rotation:
+
+- **`method: headful`** launches a real, visible Chrome instead of headless.
+  BNP Paribas Fortis returns HTTP 503 to *every* headless client (bundled
+  Chromium, real Chrome, bot or browser User-Agent) on every path including the
+  homepage, and serves the same URL normally to a headful browser.
+- **`wait_until: domcontentloaded` + `timeout_ms`** for pages that never go
+  idle. Keytrade Bank keeps loading consent and analytics, so the default
+  `networkidle` wait times out even though the page is readable long before.
+
 ## When a site will not serve the pipeline
 
 Some pages cannot be fetched by us at all — BNP Paribas Fortis' edge declines

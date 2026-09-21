@@ -16,13 +16,14 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 <!-- steve 21/09: refreshed after the Day 6 gate and a full re-collection with
 four new banks. The previous table still described 9 banks / 23 pages. -->
-**21/09, after the Day 6 gate.** The comparison now covers **11 banks across 13
+**21/09, after the Day 6 gate.** The comparison now covers **14 banks across 16
 pages** in the `current_account_pack` family, with **nothing excluded** — up from
 9 banks, which had been held back by Belfius having no page in the compared
-family. 16 pages were collected (14 usable); Belfius's own current-account page,
-vdk, hellobank and beobank were added, and Revolut came back through a static
-fetch after its headless render was refused. BNP Paribas Fortis (HTTP 503)
-remains the one manual-capture-only page. **The rubric is the live blocker**:
+family and by BNP Paribas Fortis serving us nothing at all. Belfius's own
+current-account page, vdk, hellobank, beobank, CBC and Keytrade were added, and
+Revolut came back through a static fetch. BNP is in too: its edge returns HTTP
+503 to every headless client but serves a real headful browser, so that target
+uses `method: headful`. There is no manual-capture-only bank left. **The rubric is the live blocker**:
 Siegried has scored all 23 pages, Stephane's sheet now covers the 9 pages whose
 screenshots are on this machine but those values were machine-proposed and
 adopted (the sheet's notes column says so), and Dan is at 0/23 — so no feature
@@ -34,7 +35,7 @@ yet carries two *independent* human raters.
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated, 10/10 compared banks (real data) |
-| Real captures (D-02) | 16 pages / 10 banks; every bank has a page in the compared family; BNP + Revolut via manual capture |
+| Real captures (D-02) | 19 pages / 14 banks collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
 | Rubric scoring (Day 5) | **still the live blocker**: Siegried 23/23 pages; Stephane 9/23 — machine-proposed from the screenshots and adopted, recorded as such in the sheet; Dan 0/23. Agreement is now measurable for all 13 features over 9–10 pages, and `rubric_sheet.py` flags three below its 60% bar (`persuasion_levers` 0.14, `accent_locations` 0.33, `text_image_layout` 0.56). The model's own sheet is never a pre-fill |
 
 Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.

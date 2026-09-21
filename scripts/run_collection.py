@@ -78,6 +78,8 @@ def collect_one(
 
     try:
         scraped = scrape(target["url"], language=language, method=method,
+                         wait_until=target.get("wait_until", "networkidle"),
+                         timeout_ms=target.get("timeout_ms"),
                          screenshot_path=shot_path)
     except ScrapingNotAllowed as exc:
         logger.warning("skipping %s: %s", page_id, exc)
@@ -154,7 +156,7 @@ def collect_one(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--method", default="auto", choices=["auto", "headless", "static"],
+        "--method", default="auto", choices=["auto", "headless", "headful", "static"],
         help="auto: render if possible, else static (and say so). headless: require a "
              "browser. static: never launch one - leaves the five geometry features "
              "empty, which fails strict validation.",
@@ -171,7 +173,10 @@ def main() -> None:
     counters: dict[str, int] = {}
     for target in targets:
         counters[target["bank"]] = counters.get(target["bank"], 0) + 1
-        row = collect_one(target, counters[target["bank"]], method=args.method, raw_dir=args.raw_dir)
+        # a target may override the run-wide method: some hosts refuse headless
+        # clients but serve a real browser (see the headful comment in scraper.py)
+        row = collect_one(target, counters[target["bank"]],
+                          method=target.get("method", args.method), raw_dir=args.raw_dir)
         if row:
             rows.append(row)
 

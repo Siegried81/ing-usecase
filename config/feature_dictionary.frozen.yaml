@@ -127,7 +127,7 @@ features:
     # became collectable in the current_account_pack family (freeze rule allows
     # pure additions; see scripts/check_schema_freeze.py).
     values: [ing, kbc, bnp_paribas_fortis, argenta, crelan, belfius, revolut, n26, bunq,
-             vdk, hellobank, beobank]
+             vdk, hellobank, beobank, cbc, keytrade]
     extraction: automatic
     source: manual
     comparability: cross_language
@@ -218,7 +218,9 @@ features:
       is identical, but there is no HTTP status of our own and the capture time
       is the person's, not the pipeline's.
     type: categorical
-    values: [static_fetch, headless_render, manual_capture]
+    # steve 21/09: headful_render added - real visible Chrome for hosts that
+    # refuse headless clients (BNP Paribas Fortis). Freeze rule: addition.
+    values: [static_fetch, headless_render, headful_render, manual_capture]
     extraction: automatic
     source: derived
     comparability: cross_language

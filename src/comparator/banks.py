@@ -26,6 +26,10 @@ BANK_CATEGORY: dict[str, str] = {
     "vdk": "traditional",
     "hellobank": "traditional",
     "beobank": "traditional",
+    # steve 21/09: CBC is KBC Group's francophone brand (traditional, like cbc's
+    # own entry above); Keytrade Bank is a branchless direct bank since 1998,
+    # so it sits with the challengers on the business-model axis.
+    "keytrade": "challenger",
     "revolut": "challenger",
     "n26": "challenger",
     "bunq": "challenger",

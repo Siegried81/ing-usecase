@@ -1,19 +1,22 @@
 {
-  "generated_at": "2026-09-21T06:46:57+00:00",
+  "generated_at": "2026-09-21T08:03:12+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
-    "pages": 13,
+    "pages": 16,
     "banks": [
       "Argenta",
       "Belfius",
       "Beobank",
+      "BNP Paribas Fortis",
       "bunq",
+      "CBC",
       "Crelan",
       "Hellobank",
       "ING",
       "KBC",
+      "Keytrade",
       "N26",
       "Revolut",
       "Vdk"
@@ -22,6 +25,8 @@
       "Argenta",
       "Belfius",
       "Beobank",
+      "BNP Paribas Fortis",
+      "CBC",
       "Crelan",
       "Hellobank",
       "ING",
@@ -30,107 +35,124 @@
     ],
     "challenger": [
       "bunq",
+      "Keytrade",
       "N26",
       "Revolut"
     ],
     "excluded": [],
-    "uncollectable": [
-      {
-        "bank": "BNP Paribas Fortis",
-        "reason": "HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor"
-      }
-    ],
+    "uncollectable": [],
     "languages": [
       "fr",
       "nl"
     ],
     "captured_from": "2026-09-21T04:47:57.410618+00:00",
-    "captured_to": "2026-09-21T05:16:29.898050+00:00",
-    "total_collected": 16,
+    "captured_to": "2026-09-21T07:42:57.763946+00:00",
+    "total_collected": 19,
     "n_features": 25
   },
   "headline": {
     "focus": "ING",
-    "score": 0.131,
+    "score": 0.201,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
   "positioning": [
     {
-      "bank": "Argenta",
-      "key": "argenta",
-      "category": "traditional",
-      "score": -0.113,
-      "isFocus": false
-    },
-    {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.092,
+      "score": -0.241,
+      "isFocus": false
+    },
+    {
+      "bank": "Argenta",
+      "key": "argenta",
+      "category": "traditional",
+      "score": -0.21,
+      "isFocus": false
+    },
+    {
+      "bank": "CBC",
+      "key": "cbc",
+      "category": "traditional",
+      "score": -0.039,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": -0.061,
-      "isFocus": false
-    },
-    {
-      "bank": "Vdk",
-      "key": "vdk",
-      "category": "traditional",
-      "score": -0.013,
+      "score": -0.026,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.002,
+      "score": -0.013,
+      "isFocus": false
+    },
+    {
+      "bank": "Vdk",
+      "key": "vdk",
+      "category": "traditional",
+      "score": 0.022,
+      "isFocus": false
+    },
+    {
+      "bank": "BNP Paribas Fortis",
+      "key": "bnp_paribas_fortis",
+      "category": "traditional",
+      "score": 0.059,
       "isFocus": false
     },
     {
       "bank": "Hellobank",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.048,
+      "score": 0.086,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": 0.097,
+      "score": 0.16,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.131,
+      "score": 0.201,
       "isFocus": true
+    },
+    {
+      "bank": "Keytrade",
+      "key": "keytrade",
+      "category": "challenger",
+      "score": 0.639,
+      "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.892,
-      "isFocus": false
-    },
-    {
-      "bank": "Revolut",
-      "key": "revolut",
-      "category": "challenger",
-      "score": 0.984,
+      "score": 0.962,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.124,
+      "score": 1.129,
+      "isFocus": false
+    },
+    {
+      "bank": "Revolut",
+      "key": "revolut",
+      "category": "challenger",
+      "score": 1.269,
       "isFocus": false
     }
   ],
@@ -141,8 +163,8 @@
       "dimension": "tone_messaging",
       "extraction": "automatic",
       "focusValue": 25.5,
-      "peerMean": 12.1,
-      "gapSd": 1.61,
+      "peerMean": 12.153846153846153,
+      "gapSd": 1.62,
       "direction": "above"
     },
     {
@@ -151,8 +173,18 @@
       "dimension": "banking_domain",
       "extraction": "model_assisted",
       "focusValue": 1.0,
-      "peerMean": 0.3,
-      "gapSd": 1.53,
+      "peerMean": 0.3076923076923077,
+      "gapSd": 1.5,
+      "direction": "above"
+    },
+    {
+      "feature": "hero_image_area_ratio",
+      "label": "Size of the opening image",
+      "dimension": "visuals",
+      "extraction": "automatic",
+      "focusValue": 0.533,
+      "peerMean": 0.25675,
+      "gapSd": 1.14,
       "direction": "above"
     },
     {
@@ -160,9 +192,19 @@
       "label": "Clarity of the offer",
       "dimension": "topics_value_prop",
       "extraction": "rubric",
-      "focusValue": 5.0,
-      "peerMean": 3.8333333333333335,
-      "gapSd": 1.3,
+      "focusValue": 4.0,
+      "peerMean": 3.5,
+      "gapSd": 1.0,
+      "direction": "above"
+    },
+    {
+      "feature": "mobile_first_design_signal",
+      "label": "Designed mobile-first",
+      "dimension": "layout_structure",
+      "extraction": "rubric",
+      "focusValue": 1.0,
+      "peerMean": 0.5,
+      "gapSd": 1.0,
       "direction": "above"
     },
     {
@@ -171,28 +213,8 @@
       "dimension": "layout_structure",
       "extraction": "automatic",
       "focusValue": 3.0,
-      "peerMean": 13.75,
-      "gapSd": -0.95,
-      "direction": "below"
-    },
-    {
-      "feature": "hero_image_area_ratio",
-      "label": "Size of the opening image",
-      "dimension": "visuals",
-      "extraction": "automatic",
-      "focusValue": 0.533,
-      "peerMean": 0.29355555555555557,
-      "gapSd": 0.9,
-      "direction": "above"
-    },
-    {
-      "feature": "has_comparison_table",
-      "label": "Includes a comparison table",
-      "dimension": "layout_structure",
-      "extraction": "automatic",
-      "focusValue": 0.0,
-      "peerMean": 0.4,
-      "gapSd": -0.82,
+      "peerMean": 13.5,
+      "gapSd": -0.99,
       "direction": "below"
     },
     {
@@ -201,8 +223,18 @@
       "dimension": "banking_domain",
       "extraction": "model_assisted",
       "focusValue": 0.5,
-      "peerMean": 0.2,
-      "gapSd": 0.75,
+      "peerMean": 0.15384615384615385,
+      "gapSd": 0.96,
+      "direction": "above"
+    },
+    {
+      "feature": "aida_attention",
+      "label": "Opens with something that stops the reader",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 0.5,
+      "peerMean": 0.16666666666666666,
+      "gapSd": 0.89,
       "direction": "above"
     },
     {
@@ -211,29 +243,19 @@
       "dimension": "layout_structure",
       "extraction": "automatic",
       "focusValue": 9465.0,
-      "peerMean": 6610.5,
-      "gapSd": 0.72,
+      "peerMean": 6397.375,
+      "gapSd": 0.88,
       "direction": "above"
     },
     {
-      "feature": "aida_desire",
-      "label": "Makes the offer feel worth having",
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
       "dimension": "marketing_principles",
       "extraction": "rubric",
-      "focusValue": 1.0,
-      "peerMean": 0.6666666666666666,
-      "gapSd": 0.71,
+      "focusValue": 3.5,
+      "peerMean": 3.0,
+      "gapSd": 0.87,
       "direction": "above"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "dimension": "layout_structure",
-      "extraction": "rubric",
-      "focusValue": 0.0,
-      "peerMean": 0.3333333333333333,
-      "gapSd": -0.71,
-      "direction": "below"
     }
   ],
   "excludedGaps": [
@@ -243,6 +265,10 @@
     },
     {
       "label": "Distinct accent colours",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Gives a reason to keep reading",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -268,12 +294,21 @@
   ],
   "separation": [
     {
-      "feature": "people_present",
-      "label": "People present",
-      "extraction": "model_assisted",
-      "traditional": 1.0,
-      "challenger": 0.3333333333333333,
-      "effect": -2.71,
+      "feature": "total_image_area_ratio",
+      "label": "Share of the page that is imagery",
+      "extraction": "automatic",
+      "traditional": 0.10158333333333336,
+      "challenger": 0.338,
+      "effect": 2.02,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "formality_score",
+      "label": "Formality of tone",
+      "extraction": "rubric",
+      "traditional": 3.5,
+      "challenger": 2.25,
+      "effect": -1.95,
       "higherAt": "traditional"
     },
     {
@@ -281,8 +316,8 @@
       "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
-      "challenger": 0.6666666666666666,
-      "effect": 2.71,
+      "challenger": 0.5,
+      "effect": 1.87,
       "higherAt": "challenger"
     },
     {
@@ -290,71 +325,62 @@
       "label": "Shows a rate",
       "extraction": "automatic",
       "traditional": 0.0,
-      "challenger": 0.6666666666666666,
-      "effect": 2.71,
+      "challenger": 0.5,
+      "effect": 1.87,
       "higherAt": "challenger"
     },
     {
-      "feature": "total_image_area_ratio",
-      "label": "Share of the page that is imagery",
-      "extraction": "automatic",
-      "traditional": 0.10690000000000002,
-      "challenger": 0.377,
-      "effect": 2.1,
-      "higherAt": "challenger"
-    },
-    {
-      "feature": "aida_attention",
-      "label": "Opens with something that stops the reader",
+      "feature": "clarity_score",
+      "label": "Clarity",
       "extraction": "rubric",
-      "traditional": 0.0,
-      "challenger": 0.6666666666666666,
-      "effect": 2.0,
-      "higherAt": "challenger"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "extraction": "rubric",
-      "traditional": 0.0,
-      "challenger": 0.6666666666666666,
-      "effect": 2.0,
+      "traditional": 3.8,
+      "challenger": 4.666666666666667,
+      "effect": 1.75,
       "higherAt": "challenger"
     },
     {
       "feature": "above_fold_element_count",
       "label": "Elements visible without scrolling",
       "extraction": "automatic",
-      "traditional": 34.9,
-      "challenger": 20.5,
-      "effect": -1.77,
+      "traditional": 36.166666666666664,
+      "challenger": 23.0,
+      "effect": -1.69,
       "higherAt": "traditional"
-    },
-    {
-      "feature": "page_height_px",
-      "label": "Page length",
-      "extraction": "automatic",
-      "traditional": 5909.1,
-      "challenger": 11570.0,
-      "effect": 1.61,
-      "higherAt": "challenger"
     },
     {
       "feature": "background_luminance",
       "label": "Page brightness",
       "extraction": "automatic",
-      "traditional": 0.8581,
-      "challenger": 0.5179999999999999,
-      "effect": -1.6,
+      "traditional": 0.8577499999999999,
+      "challenger": 0.55925,
+      "effect": -1.56,
       "higherAt": "traditional"
     },
     {
-      "feature": "hero_image_area_ratio",
-      "label": "Size of the opening image",
+      "feature": "question_count",
+      "label": "Questions asked",
       "extraction": "automatic",
-      "traditional": 0.26260000000000006,
-      "challenger": 0.628,
-      "effect": 1.58,
+      "traditional": 20.166666666666668,
+      "challenger": 5.75,
+      "effect": -1.39,
+      "higherAt": "traditional"
+    },
+    {
+      "feature": "mobile_first_design_signal",
+      "label": "Designed mobile-first",
+      "extraction": "rubric",
+      "traditional": 0.4,
+      "challenger": 1.0,
+      "effect": 1.34,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "page_height_px",
+      "label": "Page length",
+      "extraction": "automatic",
+      "traditional": 5827.083333333333,
+      "challenger": 9860.0,
+      "effect": 1.21,
       "higherAt": "challenger"
     }
   ],
@@ -367,7 +393,7 @@
       "signature": [
         {
           "label": "Figures and percentages quoted",
-          "sd": 2.2,
+          "sd": 2.3,
           "direction": "above"
         },
         {
@@ -416,7 +442,7 @@
         "backgroundLuminance": 0.886
       },
       "marketing": {
-        "Aida coverage": 1.0,
+        "Aida coverage": 2.0,
         "Persuasion levers": [
           "authority"
         ],
@@ -447,16 +473,16 @@
       "signature": [
         {
           "label": "Cites its branch network",
-          "sd": 3.2,
+          "sd": 3.6,
           "direction": "above"
         },
         {
           "label": "“Free” with conditions attached",
-          "sd": 2.0,
+          "sd": 2.3,
           "direction": "above"
         },
         {
-          "label": "Includes a comparison table",
+          "label": "Targets students or young people",
           "sd": 1.3,
           "direction": "above"
         }
@@ -530,12 +556,12 @@
       "signature": [
         {
           "label": "Mentions loyalty or referral",
-          "sd": 2.1,
+          "sd": 2.4,
           "direction": "above"
         },
         {
           "label": "Sells a bundle",
-          "sd": -2.1,
+          "sd": -1.9,
           "direction": "below"
         },
         {
@@ -547,7 +573,7 @@
       "tone": {
         "Words on the page": 3310.0,
         "Readability band": "hard",
-        "Formality of tone": 3.0,
+        "Formality of tone": 4.0,
         "Speaks to “you” rather than “we”": 0.603,
         "Urgency markers": 0.0
       },
@@ -601,6 +627,84 @@
       "crossSellScore": 0.0
     },
     {
+      "key": "bnp_paribas_fortis",
+      "name": "BNP Paribas Fortis",
+      "category": "traditional",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Animated elements",
+          "sd": -1.6,
+          "direction": "below"
+        },
+        {
+          "label": "Uses animation",
+          "sd": -1.6,
+          "direction": "below"
+        },
+        {
+          "label": "Promises fast digital sign-up",
+          "sd": 1.3,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 2199.0,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.576,
+        "Urgency markers": 1.0
+      },
+      "imagery": {
+        "Images": 17.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 0.0,
+        "Image area share": 0.104
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 6387.0,
+        "Calls to action": 23.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack)",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": null,
+        "Benefit framing": "rational",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.843
+      },
+      "marketing": {
+        "Aida coverage": null,
+        "Persuasion levers": [],
+        "Lever count": null
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 10.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 1.2,
+        "innovation": 0.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.0
+    },
+    {
       "key": "bunq",
       "name": "bunq",
       "category": "challenger",
@@ -608,18 +712,18 @@
       "signature": [
         {
           "label": "Page brightness",
-          "sd": -2.9,
+          "sd": -3.3,
           "direction": "below"
         },
         {
           "label": "Urgency and deadline language",
-          "sd": 2.4,
+          "sd": 2.7,
           "direction": "above"
         },
         {
-          "label": "People present",
-          "sd": -2.1,
-          "direction": "below"
+          "label": "Shows a rate",
+          "sd": 2.4,
+          "direction": "above"
         }
       ],
       "tone": {
@@ -681,6 +785,84 @@
       "crossSellScore": 0.333
     },
     {
+      "key": "cbc",
+      "name": "CBC",
+      "category": "traditional",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "People present",
+          "sd": -1.9,
+          "direction": "below"
+        },
+        {
+          "label": "Sells a bundle",
+          "sd": -1.9,
+          "direction": "below"
+        },
+        {
+          "label": "Includes a comparison table",
+          "sd": 1.3,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 2613.0,
+        "Readability band": "very_hard",
+        "Formality of tone": 4.0,
+        "Speaks to “you” rather than “we”": 0.836,
+        "Urgency markers": 0.0
+      },
+      "imagery": {
+        "Images": 12.0,
+        "Dominant image type": "illustration",
+        "People present": 0.0,
+        "Animated": 1.0,
+        "Image area share": 0.046
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 4447.0,
+        "Calls to action": 11.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Compte à vue 100% online - 100% gratuit",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": null,
+        "Benefit framing": "rational",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.001,
+        "backgroundLuminance": 0.869
+      },
+      "marketing": {
+        "Aida coverage": null,
+        "Persuasion levers": [],
+        "Lever count": null
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 10.0,
+        "trust": 0.0,
+        "cross_sell": 0.0,
+        "personalisation": 1.2,
+        "innovation": 5.0,
+        "simplicity": 0.0
+      },
+      "crossSellScore": 0.0
+    },
+    {
       "key": "crelan",
       "name": "Crelan",
       "category": "traditional",
@@ -688,17 +870,17 @@
       "signature": [
         {
           "label": "Images",
-          "sd": 2.9,
+          "sd": 3.2,
           "direction": "above"
         },
         {
           "label": "Calls to action",
-          "sd": 2.6,
+          "sd": 2.8,
           "direction": "above"
         },
         {
           "label": "Questions asked",
-          "sd": 2.3,
+          "sd": 2.5,
           "direction": "above"
         }
       ],
@@ -719,7 +901,7 @@
       "layout": {
         "Archetype": "hero_stacked",
         "Hero image": 1.0,
-        "Text and image arrangement": "beside",
+        "Text and image arrangement": "overlaid",
         "Page length": 2945.0,
         "Calls to action": 42.0,
         "Call to action visible without scrolling": 0.0
@@ -768,7 +950,7 @@
       "signature": [
         {
           "label": "Brand colour on the page",
-          "sd": 2.8,
+          "sd": 3.2,
           "direction": "above"
         },
         {
@@ -785,7 +967,7 @@
       "tone": {
         "Words on the page": 1661.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": 0.595,
         "Urgency markers": 0.0
       },
@@ -863,7 +1045,7 @@
       "tone": {
         "Words on the page": 3148.5,
         "Readability band": "hard",
-        "Formality of tone": 3.5,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": 0.829,
         "Urgency markers": 0.5
       },
@@ -895,7 +1077,7 @@
         "backgroundLuminance": 0.8985000000000001
       },
       "marketing": {
-        "Aida coverage": 3.0,
+        "Aida coverage": 3.5,
         "Persuasion levers": [
           "reciprocity",
           "scarcity"
@@ -915,7 +1097,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 8.3,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
@@ -931,14 +1113,14 @@
       "pages": 2,
       "signature": [
         {
-          "label": "Sells a bundle",
-          "sd": -2.1,
-          "direction": "below"
+          "label": "Images carry alt text",
+          "sd": 1.9,
+          "direction": "above"
         },
         {
-          "label": "Images carry alt text",
-          "sd": 1.6,
-          "direction": "above"
+          "label": "Sells a bundle",
+          "sd": -1.9,
+          "direction": "below"
         },
         {
           "label": "Includes a comparison table",
@@ -971,7 +1153,7 @@
       "valueProposition": {
         "Primary product": "Compte Base KBC",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": "above_fold",
+        "How prominently the rate is shown": "below_fold",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -981,7 +1163,7 @@
         "backgroundLuminance": 0.878
       },
       "marketing": {
-        "Aida coverage": 2.0,
+        "Aida coverage": 3.0,
         "Persuasion levers": [
           "authority"
         ],
@@ -1005,6 +1187,89 @@
       "crossSellScore": 0.0
     },
     {
+      "key": "keytrade",
+      "name": "Keytrade",
+      "category": "challenger",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Carries legal small print",
+          "sd": -1.9,
+          "direction": "below"
+        },
+        {
+          "label": "Formality of tone",
+          "sd": -1.4,
+          "direction": "below"
+        },
+        {
+          "label": "Figures and percentages quoted",
+          "sd": -1.4,
+          "direction": "below"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1193.0,
+        "Readability band": "hard",
+        "Formality of tone": 2.0,
+        "Speaks to “you” rather than “we”": 0.614,
+        "Urgency markers": 0.0
+      },
+      "imagery": {
+        "Images": 21.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": 0.26
+      },
+      "layout": {
+        "Archetype": null,
+        "Hero image": 1.0,
+        "Text and image arrangement": null,
+        "Page length": 6440.0,
+        "Calls to action": 4.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "KEYPACK - Le compte à vue en ligne",
+        "Shows a rate": 0.0,
+        "How prominently the rate is shown": null,
+        "Benefit framing": "mixed",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#e6f1f4",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.683
+      },
+      "marketing": {
+        "Aida coverage": null,
+        "Persuasion levers": [],
+        "Lever count": null
+      },
+      "personas": [
+        {
+          "persona": "student",
+          "label": "Student",
+          "share": 1.0
+        },
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 5.0,
+        "trust": 0.0,
+        "cross_sell": 10.0,
+        "personalisation": 2.5,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.333
+    },
+    {
       "key": "n26",
       "name": "N26",
       "category": "challenger",
@@ -1012,18 +1277,18 @@
       "signature": [
         {
           "label": "Targets first-time investors",
-          "sd": 3.2,
+          "sd": 3.6,
+          "direction": "above"
+        },
+        {
+          "label": "Subscription style framing",
+          "sd": 2.4,
           "direction": "above"
         },
         {
           "label": "Mentions loyalty or referral",
-          "sd": 2.1,
+          "sd": 2.4,
           "direction": "above"
-        },
-        {
-          "label": "People present",
-          "sd": -2.1,
-          "direction": "below"
         }
       ],
       "tone": {
@@ -1063,10 +1328,9 @@
       "marketing": {
         "Aida coverage": 3.0,
         "Persuasion levers": [
-          "authority",
-          "reciprocity"
+          "liking"
         ],
-        "Lever count": 2.0
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -1076,7 +1340,7 @@
         }
       ],
       "aiScore": {
-        "digital": 3.3,
+        "digital": 6.7,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -1093,24 +1357,24 @@
       "signature": [
         {
           "label": "Invokes institutional trust",
-          "sd": 3.2,
+          "sd": 3.6,
           "direction": "above"
         },
         {
-          "label": "Carries legal small print",
-          "sd": -2.1,
-          "direction": "below"
+          "label": "Shows a rate",
+          "sd": 2.4,
+          "direction": "above"
         },
         {
-          "label": "Shows a rate",
-          "sd": 2.1,
+          "label": "Subscription style framing",
+          "sd": 2.4,
           "direction": "above"
         }
       ],
       "tone": {
         "Words on the page": 1224.0,
         "Readability band": "hard",
-        "Formality of tone": 3.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.792,
         "Urgency markers": 1.0
       },
@@ -1142,11 +1406,11 @@
         "backgroundLuminance": 0.973
       },
       "marketing": {
-        "Aida coverage": 4.0,
+        "Aida coverage": 3.0,
         "Persuasion levers": [
           "social_proof",
           "authority",
-          "reciprocity"
+          "liking"
         ],
         "Lever count": 3.0
       },
@@ -1185,7 +1449,7 @@
       "signature": [
         {
           "label": "Call to action visible without scrolling",
-          "sd": 2.1,
+          "sd": 2.4,
           "direction": "above"
         },
         {
@@ -1194,7 +1458,7 @@
           "direction": "above"
         },
         {
-          "label": "Includes a comparison table",
+          "label": "Targets students or young people",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1310,9 +1574,9 @@
       [
         0,
         0,
-        3,
+        4,
         1,
-        5,
+        6,
         0,
         4
       ],
@@ -1366,17 +1630,17 @@
       {
         "from": "Current-account packs",
         "to": "Investment",
-        "count": 5
+        "count": 6
+      },
+      {
+        "from": "Current-account packs",
+        "to": "Savings accounts",
+        "count": 4
       },
       {
         "from": "Current-account packs",
         "to": "Other",
         "count": 4
-      },
-      {
-        "from": "Current-account packs",
-        "to": "Savings accounts",
-        "count": 3
       },
       {
         "from": "Current-account packs",
@@ -1548,11 +1812,14 @@
       "Argenta",
       "Belfius",
       "Beobank",
+      "BNP Paribas Fortis",
       "bunq",
+      "CBC",
       "Crelan",
       "Hellobank",
       "ING",
       "KBC",
+      "Keytrade",
       "N26",
       "Revolut",
       "Vdk"
@@ -1560,145 +1827,226 @@
     "matrix": [
       [
         0.0,
-        6.43,
-        5.89,
-        8.24,
-        8.66,
-        6.08,
-        5.34,
-        5.64,
-        8.47,
-        8.47,
+        6.79,
+        5.93,
+        4.18,
+        8.43,
+        6.12,
+        9.0,
+        6.39,
+        5.51,
+        5.66,
+        7.07,
+        8.9,
+        9.0,
+        6.47
+      ],
+      [
+        6.79,
+        0.0,
+        7.73,
+        7.19,
+        9.64,
+        6.71,
+        8.82,
+        7.91,
+        5.13,
+        6.45,
+        6.59,
+        8.25,
+        9.2,
         6.32
       ],
       [
-        6.43,
+        5.93,
+        7.73,
         0.0,
-        7.51,
-        9.17,
-        8.33,
-        7.47,
-        4.68,
+        5.03,
+        9.24,
+        5.88,
+        7.54,
+        5.94,
+        6.27,
+        5.72,
+        6.99,
+        7.81,
+        9.6,
+        6.8
+      ],
+      [
+        4.18,
+        7.19,
+        5.03,
+        0.0,
+        7.25,
+        5.68,
+        7.39,
+        4.63,
+        4.94,
+        5.86,
+        5.87,
+        8.2,
+        7.97,
+        6.54
+      ],
+      [
+        8.43,
+        9.64,
+        9.24,
+        7.25,
+        0.0,
+        7.86,
+        9.55,
+        8.6,
+        7.93,
+        8.35,
+        7.83,
+        9.15,
+        8.89,
+        7.87
+      ],
+      [
         6.12,
-        7.72,
-        8.42,
-        5.83
+        6.71,
+        5.88,
+        5.68,
+        7.86,
+        0.0,
+        7.89,
+        6.78,
+        5.41,
+        4.33,
+        6.68,
+        7.99,
+        8.77,
+        5.96
       ],
       [
-        5.89,
+        9.0,
+        8.82,
+        7.54,
+        7.39,
+        9.55,
+        7.89,
+        0.0,
+        8.54,
+        7.21,
+        7.03,
+        6.76,
+        9.23,
+        9.25,
+        7.82
+      ],
+      [
+        6.39,
+        7.91,
+        5.94,
+        4.63,
+        8.6,
+        6.78,
+        8.54,
+        0.0,
+        5.67,
+        6.82,
+        6.38,
+        8.16,
+        8.73,
+        7.52
+      ],
+      [
+        5.51,
+        5.13,
+        6.27,
+        4.94,
+        7.93,
+        5.41,
+        7.21,
+        5.67,
+        0.0,
+        5.3,
+        4.65,
+        7.21,
         7.51,
-        0.0,
-        8.67,
-        7.2,
-        5.8,
-        6.1,
-        5.37,
-        7.41,
-        8.93,
-        7.03
+        5.85
       ],
       [
-        8.24,
-        9.17,
-        8.67,
-        0.0,
-        9.06,
-        8.46,
-        7.64,
-        8.03,
-        8.45,
-        8.44,
-        7.84
-      ],
-      [
-        8.66,
-        8.33,
-        7.2,
-        9.06,
-        0.0,
-        8.3,
-        6.95,
-        6.78,
-        8.66,
-        8.53,
-        7.51
-      ],
-      [
-        6.08,
-        7.47,
-        5.8,
-        8.46,
-        8.3,
-        0.0,
-        5.57,
-        6.85,
-        7.87,
-        8.26,
-        7.03
-      ],
-      [
-        5.34,
-        4.68,
-        6.1,
-        7.64,
-        6.95,
-        5.57,
-        0.0,
-        5.26,
+        5.66,
+        6.45,
+        5.72,
+        5.86,
+        8.35,
+        4.33,
+        7.03,
         6.82,
-        6.96,
-        5.46
-      ],
-      [
-        5.64,
-        6.12,
-        5.37,
-        8.03,
-        6.78,
-        6.85,
-        5.26,
+        5.3,
         0.0,
-        7.82,
-        7.49,
-        5.74
+        5.78,
+        8.29,
+        7.85,
+        5.77
       ],
       [
-        8.47,
-        7.72,
-        7.41,
-        8.45,
-        8.66,
-        7.87,
-        6.82,
-        7.82,
+        7.07,
+        6.59,
+        6.99,
+        5.87,
+        7.83,
+        6.68,
+        6.76,
+        6.38,
+        4.65,
+        5.78,
         0.0,
-        8.92,
-        8.39
+        7.81,
+        6.81,
+        6.16
       ],
       [
-        8.47,
-        8.42,
-        8.93,
-        8.44,
-        8.53,
-        8.26,
-        6.96,
-        7.49,
-        8.92,
+        8.9,
+        8.25,
+        7.81,
+        8.2,
+        9.15,
+        7.99,
+        9.23,
+        8.16,
+        7.21,
+        8.29,
+        7.81,
         0.0,
-        8.18
+        9.55,
+        8.85
       ],
       [
+        9.0,
+        9.2,
+        9.6,
+        7.97,
+        8.89,
+        8.77,
+        9.25,
+        8.73,
+        7.51,
+        7.85,
+        6.81,
+        9.55,
+        0.0,
+        8.93
+      ],
+      [
+        6.47,
         6.32,
-        5.83,
-        7.03,
-        7.84,
-        7.51,
-        7.03,
-        5.46,
-        5.74,
-        8.39,
-        8.18,
+        6.8,
+        6.54,
+        7.87,
+        5.96,
+        7.82,
+        7.52,
+        5.85,
+        5.77,
+        6.16,
+        8.85,
+        8.93,
         0.0
       ]
     ]
@@ -1707,37 +2055,40 @@
     {
       "cluster": 1,
       "banks": [
-        "bunq",
-        "Revolut"
+        "Argenta",
+        "Belfius",
+        "Beobank",
+        "BNP Paribas Fortis",
+        "CBC",
+        "Crelan",
+        "Hellobank",
+        "ING",
+        "KBC",
+        "Keytrade",
+        "Vdk"
       ]
     },
     {
       "cluster": 2,
       "banks": [
-        "Argenta",
-        "Belfius",
-        "Beobank",
-        "Crelan",
-        "Hellobank",
-        "ING",
-        "KBC",
+        "bunq",
         "N26",
-        "Vdk"
+        "Revolut"
       ]
     }
   ],
   "nearestToFocus": [
     {
+      "bank": "Keytrade",
+      "distance": 4.65
+    },
+    {
+      "bank": "BNP Paribas Fortis",
+      "distance": 4.94
+    },
+    {
       "bank": "Belfius",
-      "distance": 4.68
-    },
-    {
-      "bank": "KBC",
-      "distance": 5.26
-    },
-    {
-      "bank": "Argenta",
-      "distance": 5.34
+      "distance": 5.13
     }
   ],
   "deckClaims": [
@@ -1760,7 +2111,7 @@
       "bank": "ing",
       "claim": "ING is the only traditional bank using animation",
       "verdict": "not supported",
-      "evidence": "ing=1.00; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk']"
+      "evidence": "ing=1.00; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk', 'cbc']"
     },
     {
       "id": "H4",
@@ -1778,18 +2129,16 @@
     }
   ],
   "limitations": {
-    "blocking": [
-      "**bnp_paribas_fortis** could not be captured: HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor. Source: https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire. The row is excluded; the bank is effectively absent."
-    ],
+    "blocking": [],
     "material": [
-      "The usable pages span **3 different product families** (['current_account_pack', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
+      "The usable pages span **4 different product families** (['current_account_pack', 'mortgage', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **2 languages** (['fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default."
     ],
     "standing": [
       "Rubric features carry the opinion of the people who scored them. Inter-rater agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the data presentation (NFR-05).",
       "Model-assisted features were all produced by `deepseek/deepseek-flash`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.",
       "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-21** and no later. Campaign pages change without notice (DR-05).",
-      "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.",
+      "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers only the banks in Dan's export rather than every bank compared here, and the pages captured are today's pages rather than the pages live during any older spike.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
       "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is deterministic: the same dataset produces a byte-identical prompt, and each generated artefact records that prompt's fingerprint. The model is the variable part — identical requests usually return identical copy but not always, because temperature controls sampling and not how the model routes internally. Treat a committed campaign as one sample rather than as the output.",
@@ -1799,11 +2148,11 @@
   "validation": {
     "ok": true,
     "warnings": [
-      "1 row(s) have capture_quality=unusable (['bnp_paribas_fortis']) - MUST be excluded from analysis. See capture_quality_note for why.",
       "argenta: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "belfius: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
+      "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "beobank: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
-      "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct', 'section_count'] - record a reason (DR-07)",
+      "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
+      "cbc: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
       "crelan: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)"
     ]
   },
@@ -1817,7 +2166,9 @@
     },
     "covered": [
       "Argenta",
+      "BNP Paribas Fortis",
       "bunq",
+      "CBC",
       "Crelan",
       "ING",
       "KBC",
@@ -1828,6 +2179,7 @@
       "Belfius",
       "Beobank",
       "Hellobank",
+      "Keytrade",
       "Vdk"
     ],
     "n_series": 33536,
@@ -1854,20 +2206,20 @@
         ]
       },
       "belfius": {
-        "headline_count": 27,
+        "headline_count": 28,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 10,
-          "financial_results": 0,
+          "crisis_or_scandal": 11,
+          "financial_results": 1,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 15,
-          "other": 2
+          "regulatory": 13,
+          "other": 3
         },
         "notable_headlines": [
+          "Belfius changes dividend policy ahead of potential 20% privatisation",
           "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
-          "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-          "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius"
+          "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing"
         ]
       },
       "beobank": {
@@ -1883,25 +2235,59 @@
         },
         "notable_headlines": [
           "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-          "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+          "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
           "Beobank trekt rente termijnrekeningen op"
+        ]
+      },
+      "bnp_paribas_fortis": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 1,
+          "crisis_or_scandal": 2,
+          "financial_results": 0,
+          "product_launch": 5,
+          "esg_sustainability": 1,
+          "regulatory": 1,
+          "other": 20
+        },
+        "notable_headlines": [
+          "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu'à 175 € d'avantages à l'ouverture -- Frandroid",
+          "BNP Paribas : mise au point sur le litige soudanais",
+          "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten"
         ]
       },
       "bunq": {
         "headline_count": 12,
         "themes": {
-          "innovation_digital": 1,
+          "innovation_digital": 2,
           "crisis_or_scandal": 4,
           "financial_results": 1,
           "product_launch": 2,
           "esg_sustainability": 0,
           "regulatory": 1,
-          "other": 3
+          "other": 2
         },
         "notable_headlines": [
           "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
           "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
           "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
+        ]
+      },
+      "cbc": {
+        "headline_count": 25,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 20,
+          "financial_results": 0,
+          "product_launch": 1,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 4
+        },
+        "notable_headlines": [
+          "CBC changes policy that said not to label 9/11 attacks 'terrorism' after criticism",
+          "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
+          "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS"
         ]
       },
       "crelan": {
@@ -1912,8 +2298,8 @@
           "financial_results": 1,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 1,
-          "other": 0
+          "regulatory": 0,
+          "other": 1
         },
         "notable_headlines": [
           "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
@@ -1922,32 +2308,32 @@
       },
       "hellobank": null,
       "ing": {
-        "headline_count": 21,
+        "headline_count": 22,
         "themes": {
-          "innovation_digital": 4,
+          "innovation_digital": 3,
           "crisis_or_scandal": 1,
-          "financial_results": 2,
-          "product_launch": 1,
+          "financial_results": 4,
+          "product_launch": 2,
           "esg_sustainability": 5,
-          "regulatory": 0,
-          "other": 8
+          "regulatory": 1,
+          "other": 6
         },
         "notable_headlines": [
           "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
           "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
-          "Vervangen van iDEAL door Wero heeft gevolgen voor je betalingen. ING-klant Anthonie stapt teleurgesteld over naar andere bank"
+          "ING Group: Progress on share buyback programme"
         ]
       },
       "kbc": {
         "headline_count": 26,
         "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
+          "innovation_digital": 4,
+          "crisis_or_scandal": 1,
           "financial_results": 3,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 23
+          "other": 18
         },
         "notable_headlines": [
           "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
@@ -1955,8 +2341,9 @@
           "Ahold Delhaize op TopPick lijst bij KBC"
         ]
       },
+      "keytrade": null,
       "n26": {
-        "headline_count": 7,
+        "headline_count": 8,
         "themes": {
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
@@ -1964,7 +2351,7 @@
           "product_launch": 1,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 5
+          "other": 6
         },
         "notable_headlines": [
           "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
@@ -1980,13 +2367,13 @@
           "financial_results": 0,
           "product_launch": 8,
           "esg_sustainability": 0,
-          "regulatory": 7,
-          "other": 4
+          "regulatory": 6,
+          "other": 5
         },
         "notable_headlines": [
           "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
           "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
-          "Revolut Euro Stablecoin Launch Expands in Europe"
+          "Revolut launches MiCA compliant EURR stablecoin in Europe"
         ]
       },
       "vdk": null
