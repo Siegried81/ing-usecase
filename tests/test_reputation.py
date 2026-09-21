@@ -37,14 +37,14 @@ class _FakeResponse:
 def test_fetch_headlines_extracts_titles_and_urls():
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
         {"articles": [
-            {"title": "ING launches new app", "url": "https://news.example/1"},
-            {"title": "ING reports Q3 results", "url": "https://news.example/2"},
+            {"title": "ING launches new app", "url": "https://www.lesoir.be/1"},
+            {"title": "ING reports Q3 results", "url": "https://www.rtbf.be/2"},
         ]}
     )):
         headlines = reputation.fetch_headlines("ING bank", "fake-key")
     assert headlines == [
-        {"title": "ING launches new app", "url": "https://news.example/1"},
-        {"title": "ING reports Q3 results", "url": "https://news.example/2"},
+        {"title": "ING launches new app", "url": "https://www.lesoir.be/1"},
+        {"title": "ING reports Q3 results", "url": "https://www.rtbf.be/2"},
     ]
 
 
@@ -54,12 +54,36 @@ def test_fetch_headlines_keeps_the_first_url_seen_when_deduplicating():
     # with the first occurrence.
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
         {"articles": [
-            {"title": "ING launches new app", "url": "https://news.example/first"},
-            {"title": "  ing launches new app  ", "url": "https://news.example/dupe"},
+            {"title": "ING launches new app", "url": "https://www.lesoir.be/first"},
+            {"title": "  ing launches new app  ", "url": "https://www.lesoir.be/dupe"},
         ]}
     )):
         headlines = reputation.fetch_headlines("ING bank", "fake-key")
-    assert headlines == [{"title": "ING launches new app", "url": "https://news.example/first"}]
+    assert headlines == [{"title": "ING launches new app", "url": "https://www.lesoir.be/first"}]
+
+
+def test_fetch_headlines_drops_non_belgian_sources_even_when_the_language_matches():
+    # sieg 21/09: regression test - a Dutch accountancy trade site
+    # (accountancyvanmorgen.nl) matched language=nl and inflated a bank's theme
+    # count with a story that was never about the Belgian entity.
+    with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
+        {"articles": [
+            {"title": "ING tarieven stijgen", "url": "https://www.accountancyvanmorgen.nl/1"},
+            {"title": "ING Belgique augmente ses tarifs", "url": "https://www.lesoir.be/1"},
+        ]}
+    )):
+        headlines = reputation.fetch_headlines("ING bank", "fake-key")
+    assert headlines == [{"title": "ING Belgique augmente ses tarifs", "url": "https://www.lesoir.be/1"}]
+
+
+def test_is_belgian_source():
+    assert reputation._is_belgian_source("https://www.lesoir.be/some-article") is True
+    assert reputation._is_belgian_source("https://www.brusselstimes.com/some-article") is True
+    # sieg 21/09: regression - lavenir.net (L'Avenir, a real Belgian regional paper) was
+    # wrongly dropped for not being a .be domain before it was added to the allowlist.
+    assert reputation._is_belgian_source("https://www.lavenir.net/regions/huy-waremme/1") is True
+    assert reputation._is_belgian_source("https://www.accountancyvanmorgen.nl/1") is False
+    assert reputation._is_belgian_source(None) is False
 
 
 def test_fetch_headlines_returns_empty_list_on_request_failure():

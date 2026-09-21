@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T13:13:54+00:00",
+  "generated_at": "2026-09-21T13:39:18+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -312,8 +312,8 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -321,8 +321,8 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -560,7 +560,7 @@
           "direction": "above"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -638,7 +638,7 @@
           "direction": "above"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -1366,12 +1366,12 @@
           "direction": "above"
         },
         {
-          "label": "Targets expats",
+          "label": "Shows a rate",
           "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Subscription style framing",
           "sd": 2.4,
           "direction": "above"
         }
@@ -2404,7 +2404,7 @@
     "available": true,
     "banks": {
       "argenta": {
-        "headline_count": 5,
+        "headline_count": 1,
         "themes": {
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
@@ -2412,7 +2412,7 @@
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 4
+          "other": 0
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2426,24 +2426,7 @@
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [],
-          "other": [
-            {
-              "title": "Argenta Silver Reports Up to 96% Silver Recovery and 14,857 g/t Ag Concentrate from Initial Cleaner Flotation Tests at El Quevar",
-              "url": "https://investingnews.com/argenta-silver-reports-up-to-96-silver-recovery-and-14857-g-t-ag-concentrate-from-initial-cleaner-flotation-tests-at-el-quevar/"
-            },
-            {
-              "title": "Review: ACANSA/ACT 10 MINUTE PLAY SHOWCASE 2026 at Argenta Contemporary Theatre in North Little Rock",
-              "url": "https://www.broadwayworld.com/little-rock/article/Review-ACANSAACT-10-MINUTE-PLAY-SHOWCASE-2026-at-Argenta-Contemporary-Theatre-in-North-Little-Rock-20260918"
-            },
-            {
-              "title": "Argenta flat in Mid‑Levels West sells for HK$81.2 million, over ten per cent below its 2014 purchase price",
-              "url": "https://www.dimsumdaily.hk/argenta-flat-in-mid%E2%80%91levels-west-sells-for-hk81-2-million-over-ten-per-cent-below-its-2014-purchase-price/"
-            },
-            {
-              "title": "Review: HANDS ON A HARDBODY at Argenta Contemporary Theatre in North Little Rock",
-              "url": "https://www.broadwayworld.com/little-rock/article/Review-HANDS-ON-A-HARDBODY-at-Argenta-Contemporary-Theatre-in-North-Little-Rock-20260831"
-            }
-          ]
+          "other": []
         },
         "notable_headlines": [
           {
@@ -2456,12 +2439,12 @@
         "headline_count": 28,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 10,
+          "crisis_or_scandal": 9,
           "financial_results": 2,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 8,
-          "other": 8
+          "regulatory": 14,
+          "other": 3
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2471,16 +2454,16 @@
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
             },
             {
-              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
-              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
-            },
-            {
               "title": "Elle perd près de 100.000 euros après un faux appel de Card Stop : elle attaque Belfius au pénal",
               "url": "https://www.sudinfo.be/id1190087/article/2026-09-06/elle-perd-pres-de-100000-euros-apres-un-faux-appel-de-card-stop-elle-attaque"
             },
             {
               "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
               "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+            },
+            {
+              "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
+              "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
             },
             {
               "title": "Is de vervolging van Belfius goed nieuws voor phishingslachtoffers?",
@@ -2497,10 +2480,6 @@
             {
               "title": "Belfius voor de strafrechter wegens niet terugbetalen aan slachtoffer van phishing",
               "url": "https://www.standaard.be/economie/belfius-voor-de-strafrechter-wegens-niet-terugbetalen-aan-slachtoffer-van-phishing/35145140.html"
-            },
-            {
-              "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
-              "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
             },
             {
               "title": "Arco-coöperanten dagvaarden kandidaat-investeerders in Belfius",
@@ -2525,6 +2504,10 @@
               "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
             },
             {
+              "title": "Du changement pour Belfius en vue de sa privatisation partielle",
+              "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
+            },
+            {
               "title": "Le gouvernement fédéral dissocie la vente de Belfius du dossier Ethias",
               "url": "https://www.lesoir.be/770418/article/2026-09-11/le-gouvernement-federal-dissocie-la-vente-de-belfius-du-dossier-ethias"
             },
@@ -2535,6 +2518,14 @@
             {
               "title": "Privatisation de Belfius, étudiants gazaouis... plusieurs dossiers sur la table du kern ce vendredi",
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
+            },
+            {
+              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            },
+            {
+              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
+              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
             },
             {
               "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
@@ -2549,32 +2540,6 @@
               "url": "https://fr.businessam.be/le-gouvernement-belge-se-voit-demblee-confronte-a-plusieurs-dossiers-epineux-notamment-ceux-concernant-gaza-et-belfius/"
             },
             {
-              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
-              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
-            }
-          ],
-          "other": [
-            {
-              "title": "Du changement pour Belfius en vue de sa privatisation partielle",
-              "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
-            },
-            {
-              "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
-              "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
-            },
-            {
-              "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu \"une expérience unique\" dans les tribunes",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
-            },
-            {
-              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
-            },
-            {
-              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
-              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
-            },
-            {
               "title": "Verkoop Belfius verloopt ondermaats, partijen bieden met handrem op",
               "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
             },
@@ -2585,6 +2550,24 @@
             {
               "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
               "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
+            },
+            {
+              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
+              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
+            }
+          ],
+          "other": [
+            {
+              "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
+              "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
+            },
+            {
+              "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu \"une expérience unique\" dans les tribunes",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
+            },
+            {
+              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
+              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
             }
           ]
         },
@@ -2594,25 +2577,25 @@
             "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
           },
           {
-            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
-            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
-          },
-          {
             "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
             "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
           },
           {
-            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
             "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
             "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
+          },
+          {
+            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
           }
         ]
       },
       "beobank": {
-        "headline_count": 5,
+        "headline_count": 4,
         "themes": {
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
@@ -2620,7 +2603,7 @@
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 5
+          "other": 4
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2645,10 +2628,6 @@
             {
               "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
               "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
-            },
-            {
-              "title": "Beobank trekt rente termijnrekeningen op",
-              "url": "https://www.headliner.nl/item/beobank-trekt-rente-termijnrekeningen-op-vrt-197090"
             }
           ]
         },
@@ -2662,25 +2641,21 @@
             "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
           },
           {
-            "title": "Beobank trekt rente termijnrekeningen op",
-            "url": "https://www.headliner.nl/item/beobank-trekt-rente-termijnrekeningen-op-vrt-197090"
-          },
-          {
             "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
             "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
           }
         ]
       },
       "bnp_paribas_fortis": {
-        "headline_count": 30,
+        "headline_count": 3,
         "themes": {
           "innovation_digital": 1,
-          "crisis_or_scandal": 2,
+          "crisis_or_scandal": 0,
           "financial_results": 0,
-          "product_launch": 5,
-          "esg_sustainability": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
           "regulatory": 1,
-          "other": 20
+          "other": 1
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -2689,45 +2664,10 @@
               "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
             }
           ],
-          "crisis_or_scandal": [
-            {
-              "title": "BNP Paribas : mise au point sur le litige soudanais",
-              "url": "https://www.boursier.com/actions/actualites/news/bnp-paribas-mise-au-point-sur-le-litige-soudanais-992368.html"
-            },
-            {
-              "title": "BNP Paribas vol vertrouwen in Soedanees aandeel voorafgaand aan beroepszaak",
-              "url": "https://nl.marketscreener.com/beursnieuws/bnp-paribas-vol-vertrouwen-in-soedanees-aandeel-voorafgaand-aan-beroepszaak-ce7858dad081f720"
-            }
-          ],
+          "crisis_or_scandal": [],
           "financial_results": [],
-          "product_launch": [
-            {
-              "title": "Prêt étudiant 2026 : BNP Paribas propose un taux de 0,99 % pour la rentrée",
-              "url": "https://www.20minutes.fr/guide-achat/4245357-20260915-pret-etudiant-2026-bnp-paribas-propose-taux-0-99-rentree"
-            },
-            {
-              "title": "Prêt étudiant : derniers jours pour profiter d'un taux de seulement 0,99% chez BNP Paribas",
-              "url": "https://www.moneyvox.fr/credit/actualites/110415/pret-etudiant-derniers-jours-pour-profiter-un-taux-de-seulement-0-99-chez-bnp-paribas"
-            },
-            {
-              "title": "BNP Paribas : La banque qui facilite les projets des étudiants",
-              "url": "https://www.20minutes.fr/guide-achat/4245362-20260917-bnp-paribas-banque-facilite-quotidien-projets-etudiants"
-            },
-            {
-              "title": "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu'à 175 € d'avantages à l'ouverture -- Frandroid",
-              "url": "https://www.frandroid.com/services/banque-en-ligne/3245209_bnp-paribas-propose-un-pret-etudiant-a-099-taeg-pour-la-rentree-2026-avec-jusqua-175-e-davantages-a-louverture"
-            },
-            {
-              "title": "BNP Paribas : 350 euros d'avantages pour les nouveaux clients",
-              "url": "https://www.moneyvox.fr/banque-en-ligne/actualites/110261/bnp-paribas-350-euros-avantages-pour-les-nouveaux-clients"
-            }
-          ],
-          "esg_sustainability": [
-            {
-              "title": "Rente op BNP-lening aan Picnic gaat meebewegen met duurzaamheidsprestaties",
-              "url": "https://www.banken.nl/nieuws/27398/rente-op-lening-van-220-miljoen-aan-picnic-gaat-meebewegen-met-duurzaamheidsprestaties"
-            }
-          ],
+          "product_launch": [],
+          "esg_sustainability": [],
           "regulatory": [
             {
               "title": "Umicore - Transparantieverklaring van BNP Paribas Asset Management Holding en BNP Paribas Cardif | Analist.be",
@@ -2736,346 +2676,28 @@
           ],
           "other": [
             {
-              "title": "Mirza Abbas warns of conspiracies against BNP within and outside party",
-              "url": "https://thefinancialexpress.com.bd/politics/mirza-abbas-warns-of-conspiracies-against-bnp-within-and-outside-party"
-            },
-            {
-              "title": "BNP struggling to restore order within",
-              "url": "https://www.thedailystar.net/news/politics/news/bnp-struggling-restore-order-within-4261761"
-            },
-            {
-              "title": "Union parishad polls: Picking a single candidate BNP's biggest challenge",
-              "url": "https://www.thedailystar.net/news/politics/news/union-parishad-polls-picking-single-candidate-bnps-biggest-challenge-4265071"
-            },
-            {
-              "title": "'Uniting BNP in Faridganj Is My Main Goal': Motahar Hossain Patwary",
-              "url": "https://dailynewnation.com/news/853341"
-            },
-            {
-              "title": "PM greets BNP on 48th founding anniversary",
-              "url": "https://tob.news/pm-greets-bnp-on-48th-founding-anniversary/"
-            },
-            {
-              "title": "BNP's 48th founding anniversary celebrated",
-              "url": "https://thefinancialexpress.com.bd/politics/bnps-48th-founding-anniversary-celebrated"
-            },
-            {
-              "title": "BNP's 48th founding anniv today",
-              "url": "https://dailynewnation.com/news/853053"
-            },
-            {
-              "title": "Sylhet BNP rift comes to light after local leaders boycott",
-              "url": "https://www.tbsnews.net/bangladesh/sylhet-bnp-rift-comes-light-after-local-leaders-boycott-presidents-event-1545511"
-            },
-            {
-              "title": "BNP: A people's party born in a period of crisis",
-              "url": "https://www.agamirsomoy.com/en/bangladesh/politics/nzbgl2iuogp0"
-            },
-            {
-              "title": "BNP's 48th founding anniversary Tuesday",
-              "url": "https://www.dhakatribune.com/bangladesh/politics/418800/bnp%E2%80%99s-48th-founding-anniversary-on-tuesday"
-            },
-            {
-              "title": "3 Public Universities: VCs' greetings to BNP leaders raise ethical questions",
-              "url": "https://www.thedailystar.net/news/bangladesh/news/3-public-universities-vcs-greetings-bnp-leaders-raise-ethical-questions-4264541"
-            },
-            {
-              "title": "BNP wants to repay people's love through accountable governance: Tarique",
-              "url": "https://www.thedailystar.net/news/politics/news/bnp-wants-repay-peoples-love-through-accountable-governance-tarique-4261466"
-            },
-            {
-              "title": "PM: BNP wants to repay people's love by establishing accountable state",
-              "url": "https://www.dhakatribune.com/bangladesh/politics/418788/tarique-bnp-wants-to-repay-people%E2%80%99s-love-by"
-            },
-            {
-              "title": "BNP wants to repay people's love by establishing accountable state:",
-              "url": "https://www.tbsnews.net/bangladesh/politics/bnp-wants-repay-peoples-love-establishing-accountable-state-tarique-1529746"
-            },
-            {
-              "title": "BNP questions motive behind the long march programmes",
-              "url": "https://en.prothomalo.com/bangladesh/politics/s3vshtl9kb"
-            },
-            {
-              "title": "Baroda BNP Paribas Mutual Fund has declared change in the fund managers of its few schemes",
-              "url": "https://www.valueresearchonline.com/stories/229666/fund-manager-revisions-in-various-funds-of-baroda-bnp-paribas-mutual-fund/"
-            },
-            {
-              "title": "Avis d'analystes France : BNP change tout sur OVH, JP Morgan passe positif sur Sodexo",
-              "url": "https://www.boursedirect.fr/fr/actualites/categorie/recommandations/avis-d-analystes-france-bnp-change-tout-sur-ovh-jp-morgan-passe-positif-sur-sodexo-zone-bourse-9085d69d1c5c380de50ce727df509058104fdf70"
-            },
-            {
-              "title": "Croissance: après l'agriculture en 2026, l'industrie devra prendre le relais en 2027, selon BNP Paribas",
-              "url": "https://fr.le360.ma/economie/croissance-apres-lagriculture-en-2026-lindustrie-devra-prendre-le-relais-en-2027-selon-bnp-paribas_CBGJFLUOMZFZRO6KA7TGDB3PGM/"
-            },
-            {
-              "title": "Analistenadviezen Frankrijk: BNP gooit roer om bij OVH, JPMorgan positief over Sodexo",
-              "url": "https://nl.marketscreener.com/beursnieuws/analistenadviezen-frankrijk-bnp-gooit-roer-om-bij-ovh-jpmorgan-positief-over-sodexo-ce785bd3d88ef52d"
-            },
-            {
-              "title": "J.P. Morgan en BNP Paribas rekenen op ECB-renteverhoging in december door energierisico's",
-              "url": "https://www.iex.nl/Nieuws/876833/JP-Morgan-en-BNP-Paribas-rekenen-op-ECB-renteverhoging-in-december-door-energierisicos.aspx"
+              "title": "BNP Paribas Fortis verhoogt spaarrente",
+              "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
             }
           ]
         },
         "notable_headlines": [
+          {
+            "title": "BNP Paribas Fortis verhoogt spaarrente",
+            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+          },
           {
             "title": "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten",
             "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
           },
           {
-            "title": "BNP Paribas : mise au point sur le litige soudanais",
-            "url": "https://www.boursier.com/actions/actualites/news/bnp-paribas-mise-au-point-sur-le-litige-soudanais-992368.html"
-          },
-          {
-            "title": "Rente op BNP-lening aan Picnic gaat meebewegen met duurzaamheidsprestaties",
-            "url": "https://www.banken.nl/nieuws/27398/rente-op-lening-van-220-miljoen-aan-picnic-gaat-meebewegen-met-duurzaamheidsprestaties"
-          },
-          {
-            "title": "BNP Paribas propose un prêt étudiant à 0,99 % TAEG pour la rentrée 2026, avec jusqu'à 175 € d'avantages à l'ouverture -- Frandroid",
-            "url": "https://www.frandroid.com/services/banque-en-ligne/3245209_bnp-paribas-propose-un-pret-etudiant-a-099-taeg-pour-la-rentree-2026-avec-jusqua-175-e-davantages-a-louverture"
-          },
-          {
-            "title": "J.P. Morgan en BNP Paribas rekenen op ECB-renteverhoging in december door energierisico's",
-            "url": "https://www.iex.nl/Nieuws/876833/JP-Morgan-en-BNP-Paribas-rekenen-op-ECB-renteverhoging-in-december-door-energierisicos.aspx"
+            "title": "Umicore - Transparantieverklaring van BNP Paribas Asset Management Holding en BNP Paribas Cardif | Analist.be",
+            "url": "https://www.analist.be/corporatenieuws/1487998-umicore-transparantieverklaring-van-bnp-paribas-asset-management-holding-en-bnp-paribas-cardif"
           }
         ]
       },
-      "bunq": {
-        "headline_count": 12,
-        "themes": {
-          "innovation_digital": 1,
-          "crisis_or_scandal": 4,
-          "financial_results": 1,
-          "product_launch": 2,
-          "esg_sustainability": 0,
-          "regulatory": 1,
-          "other": 3
-        },
-        "theme_headlines": {
-          "innovation_digital": [
-            {
-              "title": "bunq: Who Becomes Britain's Front Door Into Cryptocurrency?",
-              "url": "https://fintechmagazine.com/news/bunq-examines-fca-crypto-rules-and-uk-digital-trust"
-            }
-          ],
-          "crisis_or_scandal": [
-            {
-              "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-              "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
-            },
-            {
-              "title": "Bunq klaagt opnieuw deskundige aan die in een artikel over de bank werd geciteerd",
-              "url": "https://www.nrc.nl/nieuws/2026/09/08/bunq-klaagt-opnieuw-deskundige-aan-die-in-een-artikel-over-de-bank-werd-geciteerd-a4936065"
-            },
-            {
-              "title": "Valt de nieuwe fintech-startup Bunq wel te vertrouwen qua privacy? - Silicon Canals",
-              "url": "https://siliconcanals.com/valt-de-nieuwe-fintech-startup-bunq-wel-te-vertrouwen-qua-privacy/"
-            },
-            {
-              "title": "NRC: bunq registreerde domein 'mijn.ing' en kreeg er AI-merknaam Finn voor terug",
-              "url": "https://internet.headliner.nl/item/nrc-bunq-registreerde-domein-mijn-ing-en-kreeg-er-ai-merknaam-finn-voor-terug-tweakers-222889"
-            }
-          ],
-          "financial_results": [
-            {
-              "title": "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
-              "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
-            }
-          ],
-          "product_launch": [
-            {
-              "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
-              "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
-            },
-            {
-              "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
-              "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
-            }
-          ],
-          "esg_sustainability": [],
-          "regulatory": [
-            {
-              "title": "The OCC's charter reality check: Why bunq and Wise got denied | bobsguide",
-              "url": "https://www.bobsguide.com/the-occs-charter-reality-check-why-bunq-and-wise-got-denied/"
-            }
-          ],
-          "other": [
-            {
-              "title": "Interview: bunq's chief evangelist Joe Wilson on absorbing rate cuts and M&A strategy",
-              "url": "https://www.retailbankerinternational.com/interviews/interview-bunqs-chief-evangelist-joe-wilson/"
-            },
-            {
-              "title": "Bunq biedt 3,01% rente: let op je persoonlijke grens",
-              "url": "https://www.headliner.nl/item/bunq-biedt-3-01-rente-let-op-je-persoonlijke-grens-dagelijksestandaard-72252"
-            },
-            {
-              "title": "Het eenzame succes van bunq-baas Ali Niknam",
-              "url": "https://www.nrc.nl/nieuws/2026/09/21/het-eenzame-succes-van-bunq-baas-ali-niknam-a4937139"
-            }
-          ]
-        },
-        "notable_headlines": [
-          {
-            "title": "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
-            "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
-          },
-          {
-            "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
-            "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
-          },
-          {
-            "title": "The OCC's charter reality check: Why bunq and Wise got denied | bobsguide",
-            "url": "https://www.bobsguide.com/the-occs-charter-reality-check-why-bunq-and-wise-got-denied/"
-          },
-          {
-            "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-            "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
-          },
-          {
-            "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
-            "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
-          }
-        ]
-      },
-      "cbc": {
-        "headline_count": 23,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 18,
-          "financial_results": 1,
-          "product_launch": 1,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 3
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [
-            {
-              "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
-              "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
-            },
-            {
-              "title": "LILLEY: If CBC can't call 9/11 terrorism, why should anyone trust it?",
-              "url": "https://torontosun.com/opinion/columnists/cbc-9-11-terrorism-trust"
-            },
-            {
-              "title": "KINSELLA: CBC's 9/11 climbdown acknowledges historical reality",
-              "url": "https://torontosun.com/opinion/columnists/cbc-9-11-climbdown-acknowledges-historical-reality"
-            },
-            {
-              "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
-              "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
-            },
-            {
-              "title": "LILLEY: CBC's 9/11 retreat doesn't fix its terrorism problem",
-              "url": "https://torontosun.com/opinion/columnists/cbcs-9-11-retreat-doesnt-fix-its-terrorism-problem"
-            },
-            {
-              "title": "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS",
-              "url": "https://yournews.com/2026/08/28/7179320/cbc-directs-journalists-not-to-describe-9-11-attacks-as-terrorist/"
-            },
-            {
-              "title": "Canadian 9/11 widow 'appalled' by CBC policy against using term 'terrorist attack'",
-              "url": "https://ca.news.yahoo.com/canadian-9-11-widow-appalled-193305286.html"
-            },
-            {
-              "title": "GUNTER: CBC flip-flop on calling 9/11 'terrorism' exercise in disinformation",
-              "url": "https://torontosun.com/opinion/columnists/lorne-gunter-cbc-directive-not-to-call-9-11-terrorism-is-sheer-disinformation/wcm/3ee631ca-486f-4e6f-a7cb-44bba3217305"
-            },
-            {
-              "title": "Après plusieurs critiques, CBC change sa politique sur les attaques...",
-              "url": "https://www.ledevoir.com/culture/medias/1005002/apres-plusieurs-critiques-cbc-change-politique-attaques-11-septembre"
-            },
-            {
-              "title": "Le média d'Etat canadien CBC réécrit le 11 septembre : \"ce n'était pas un attentat terroriste\" - Dreuz",
-              "url": "https://www.dreuz.com/2026/08/le-media-detat-canadien-cbc-reecrit-le-11-septembre-ce-netait-pas-un-attentat-terroriste-331217.html"
-            },
-            {
-              "title": "Une politique de CBC sur les attaques du 11-Septembre déplaît aux républicains",
-              "url": "https://www.lapresse.ca/actualites/2026-08-28/une-politique-de-cbc-sur-les-attaques-du-11-septembre-deplait-aux-republicains.php"
-            },
-            {
-              "title": "Une politique de CBC sur les attaques du 11 septembre déplaît aux républicains | L'actualité",
-              "url": "https://lactualite.com/actualites/une-politique-de-cbc-sur-les-attaques-du-11-septembre-deplait-aux-republicains/"
-            },
-            {
-              "title": "CBC et Trump: l'énorme gaffe",
-              "url": "https://www.journaldequebec.com/2026/09/01/cbc-et-trump-lenorme-gaffe"
-            },
-            {
-              "title": "\"Une déformation malhonnête de l'histoire\" : critiqué, le groupe canadien CBC utilisera finalement le mot \"terrorisme\" pour qualifier le 11-Septembre",
-              "url": "https://www.lefigaro.fr/international/une-deformation-malhonnete-de-l-histoire-critique-le-groupe-canadien-cbc-utilisera-finalement-le-mot-terrorisme-pour-qualifier-le-11-septembre-20260829"
-            },
-            {
-              "title": "Le groupe audiovisuel public canadien CBC, cible de critiques, utilisera le mot \"terrorisme\" pour qualifier le 11-Septembre",
-              "url": "https://www.bfmtv.com/international/amerique-nord/canada/le-groupe-audiovisuel-public-canadien-cbc-cible-de-critiques-utilisera-le-mot-terrorisme-pour-qualifier-le-11-septembre_AN-202608290057.html"
-            },
-            {
-              "title": "Après plusieurs critiques, CBC change sa politique sur les attaques du 11-Septembre",
-              "url": "https://www.lapresse.ca/actualites/2026-08-28/apres-plusieurs-critiques-cbc-change-sa-politique-sur-les-attaques-du-11-septembre.php"
-            },
-            {
-              "title": "Controverse entourant la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
-              "url": "https://www.lapresse.ca/actualites/national/2026-09-18/controverse-entourant-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
-            },
-            {
-              "title": "Scandale de la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
-              "url": "https://www.lapresse.ca/actualites/national/2026-09-18/scandale-de-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
-            }
-          ],
-          "financial_results": [
-            {
-              "title": "CBC cuts Cyprus growth outlook as Middle East conflict hits economy",
-              "url": "https://cyprus-mail.com/2026/09/17/cbc-cuts-cyprus-growth-outlook-as-middle-east-conflict-hits-economy"
-            }
-          ],
-          "product_launch": [
-            {
-              "title": "Marlo Miazga lanceert M Media met persoonlijke CBC-documentaire over zelfmoord van zoon",
-              "url": "https://www.headliner.nl/artikelen/marlo-miazga-lanceert-m-media-persoonlijke-cbc-documentaire-zelfmoord-zoon-123797"
-            }
-          ],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
-            {
-              "title": "Your Guide To CBC Week 2026: Where To Network, Brunch & Party In DC",
-              "url": "https://blackamericaweb.com/2026/09/14/your-guide-to-cbc-week-2026-where-to-network-brunch-party-in-dc/"
-            },
-            {
-              "title": "CBC Roundup: Congresswoman Analilia Mejia (NJ-11) - Unbought. Unbossed. For All of Us.",
-              "url": "https://www.dailykos.com/stories/2026/9/17/800097615/community/cbc-roundup/"
-            },
-            {
-              "title": "Combronde : le CBC entame sa saison avec des matchs dès 15 heures et une rencontre phare à 21 heures",
-              "url": "https://www.lamontagne.fr/combronde-63460/actualites/combronde-le-cbc-entame-sa-saison-avec-des-matchs-des-15-heures-et-une-rencontre-phare-a-21-heures_15048629/"
-            }
-          ]
-        },
-        "notable_headlines": [
-          {
-            "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
-            "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
-          },
-          {
-            "title": "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS",
-            "url": "https://yournews.com/2026/08/28/7179320/cbc-directs-journalists-not-to-describe-9-11-attacks-as-terrorist/"
-          },
-          {
-            "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
-            "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
-          },
-          {
-            "title": "Canadian 9/11 widow 'appalled' by CBC policy against using term 'terrorist attack'",
-            "url": "https://ca.news.yahoo.com/canadian-9-11-widow-appalled-193305286.html"
-          },
-          {
-            "title": "Controverse entourant la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
-            "url": "https://www.lapresse.ca/actualites/national/2026-09-18/controverse-entourant-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
-          }
-        ]
-      },
+      "bunq": null,
+      "cbc": null,
       "crelan": {
         "headline_count": 2,
         "themes": {
@@ -3119,174 +2741,60 @@
       },
       "hellobank": null,
       "ing": {
-        "headline_count": 23,
+        "headline_count": 2,
         "themes": {
-          "innovation_digital": 3,
-          "crisis_or_scandal": 1,
-          "financial_results": 5,
-          "product_launch": 3,
-          "esg_sustainability": 6,
-          "regulatory": 3,
-          "other": 3
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 0,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 2
         },
         "theme_headlines": {
-          "innovation_digital": [
-            {
-              "title": "Consumentenbond wil dat ING niet stopt met scanner voor Wero-betalingen",
-              "url": "https://www.security.nl/posting/953063/Consumentenbond+wil+dat+ING+niet+stopt+met+scanner+voor+Wero-betalingen?channel=rss"
-            },
-            {
-              "title": "Vervangen van iDEAL door Wero heeft gevolgen voor je betalingen. ING-klant Anthonie stapt teleurgesteld over naar andere bank",
-              "url": "https://www.leidschdagblad.nl/extra/ombudsteam/vervangen-van-ideal-door-wero-heeft-gevolgen-voor-je-betalingen.-ing-klant-anthonie-stapt-teleurgesteld-over-naar-andere-bank/161418496.html"
-            },
-            {
-              "title": "ING: tarieven stijgen, maar AI zet verdienmodel onder druk · Accountancy Vanmorgen",
-              "url": "https://www.accountancyvanmorgen.nl/2026/08/20/ing-tarieven-stijgen-maar-ai-zet-verdienmodel-onder-druk/"
-            }
-          ],
-          "crisis_or_scandal": [
-            {
-              "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-              "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
-            }
-          ],
-          "financial_results": [
-            {
-              "title": "ING Group: ING to redeem Perpetual Capital Securities",
-              "url": "https://www.finanznachrichten.de/nachrichten-2026-09/69602262-ing-group-ing-to-redeem-perpetual-capital-securities-399.htm"
-            },
-            {
-              "title": "ING Group: Progress on share buyback programme",
-              "url": "https://www.finanznachrichten.de/nachrichten-2026-09/69579315-ing-group-progress-on-share-buyback-programme-399.htm"
-            },
-            {
-              "title": "NN Group pénalisé par une dégradation chez ING",
-              "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/nn-group-penalise-par-une-degradation-chez-ing-zone-bourse-fcecf2080c8c45af463359e4d950f4465eb77042"
-            },
-            {
-              "title": "ING op de favorietenlijst van JPMorgan",
-              "url": "https://www.belegger.nl/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
-            },
-            {
-              "title": "Beursblik: ING op de favorietenlijst van JPMorgan",
-              "url": "https://www.beursgorilla.nl/Nieuws/877298/Beursblik-ING-op-de-favorietenlijst-van-JPMorgan.aspx"
-            }
-          ],
-          "product_launch": [
-            {
-              "title": "ING Bank Romania launches two new innovations for mortgage loans",
-              "url": "https://business-review.eu/money/banking/ing-bank-romania-launches-two-new-innovations-for-mortgage-loans-299796"
-            },
-            {
-              "title": "ING s'apprête à entrer sur le marché des ETF",
-              "url": "https://www.agefi.fr/etf/ing-sapprete-a-entrer-sur-le-marche-des-etf"
-            },
-            {
-              "title": "ING brengt bezittingen en uitgaven samen in één financieel overzicht",
-              "url": "https://www.emerce.nl/wire/ing-brengt-bezittingen-uitgaven-samen-n-financieel-overzicht"
-            }
-          ],
-          "esg_sustainability": [
-            {
-              "title": "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
-              "url": "https://www.ftm.nl/artikelen/ing-hielp-drie-oliebedrijven-aan-bijna-een-miljard-dollar-ondanks-klimaatbelofte"
-            },
-            {
-              "title": "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-              "url": "https://www.accountant.nl/nieuws/2026/9/milieudefensie-mag-van-de-rechter-klimaatzaak-tegen-ing-doorzetten/"
-            },
-            {
-              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
-              "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
-            },
-            {
-              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
-              "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
-            },
-            {
-              "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten van rechtbank",
-              "url": "https://www.welingelichtekringen.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
-            },
-            {
-              "title": "Rechtbank laat klimaatzaak van Milieudefensie tegen ING doorgaan",
-              "url": "https://www.banken.nl/nieuws/27391/rechtbank-laat-klimaatzaak-van-milieudefensie-tegen-ing-doorgaan"
-            }
-          ],
-          "regulatory": [
-            {
-              "title": "Euro braces for ECB tone today as ING sees a 25bp hike either way",
-              "url": "https://investinglive.com/central-banks/euro-braces-for-ecb-tone-today-as-ing-sees-a-25bp-hike-either-way"
-            },
+          "innovation_digital": [],
+          "crisis_or_scandal": [],
+          "financial_results": [],
+          "product_launch": [],
+          "esg_sustainability": [],
+          "regulatory": [],
+          "other": [
             {
               "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
               "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
             },
             {
-              "title": "La BCE devrait porter ce jeudi son taux de dépôt dans la borne haute des estimations du taux neutre, aller au-delà ferait courir le \" risque d'une récession \", selon ING",
-              "url": "https://investir.lesechos.fr/marches-indices/devises-taux/la-bce-devrait-porter-ce-jeudi-son-taux-de-depot-dans-la-borne-haute-des-estimations-du-taux-neutre-aller-au-dela-ferait-courir-le-risque-dune-recession-selon-ing-2250695"
-            }
-          ],
-          "other": [
-            {
-              "title": "ING Group: ING announces change in Supervisory Board",
-              "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69396279-ing-group-ing-announces-change-in-supervisory-board-399.htm"
-            },
-            {
-              "title": "ING announces change in Supervisory Board",
-              "url": "https://www.mykxlg.com/online_features/press_releases/ing-announces-change-in-supervisory-board/article_2bb74aff-5eeb-5f90-885c-0c1e3866d52e.html"
-            },
-            {
-              "title": "ING announces change in Supervisory Board | Taiwan News | Aug. 25, 2026 14:15",
-              "url": "https://taiwannews.com.tw/en/news/6427460"
+              "title": "ING op de favorietenlijst van JPMorgan",
+              "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
             }
           ]
         },
         "notable_headlines": [
           {
-            "title": "Milieudefensie mag klimaatzaak tegen ING doorzetten",
-            "url": "https://nieuws.nl/economie/milieudefensie-mag-klimaatzaak-tegen-ing-doorzetten-van-rechtbank"
+            "title": "ING op de favorietenlijst van JPMorgan",
+            "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
           },
           {
-            "title": "ING Group: ING announces change in Supervisory Board",
-            "url": "https://www.finanznachrichten.de/nachrichten-2026-08/69396279-ing-group-ing-announces-change-in-supervisory-board-399.htm"
-          },
-          {
-            "title": "ING Group: Progress on share buyback programme",
-            "url": "https://www.finanznachrichten.de/nachrichten-2026-09/69579315-ing-group-progress-on-share-buyback-programme-399.htm"
-          },
-          {
-            "title": "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
-            "url": "https://www.ftm.nl/artikelen/ing-hielp-drie-oliebedrijven-aan-bijna-een-miljard-dollar-ondanks-klimaatbelofte"
-          },
-          {
-            "title": "ING: tarieven stijgen, maar AI zet verdienmodel onder druk · Accountancy Vanmorgen",
-            "url": "https://www.accountancyvanmorgen.nl/2026/08/20/ing-tarieven-stijgen-maar-ai-zet-verdienmodel-onder-druk/"
+            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
           }
         ]
       },
       "kbc": {
-        "headline_count": 26,
+        "headline_count": 3,
         "themes": {
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
-          "financial_results": 3,
+          "financial_results": 1,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 23
+          "other": 2
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [],
           "financial_results": [
-            {
-              "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-              "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
-            },
-            {
-              "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million | Taiwan News | Aug. 28, 2026 23:40",
-              "url": "https://taiwannews.com.tw/en/news/6430030"
-            },
             {
               "title": "Meer winst voor KBC Ancora",
               "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
@@ -3297,359 +2805,70 @@
           "regulatory": [],
           "other": [
             {
-              "title": "KBC 18: Who Is Sitamarhi's 'Lady Tarzan' Madhubala? She Won Rs 3.20 Lakh And Impressed Amitabh Bachchan",
-              "url": "https://www.newsx.com/entertainment/kbc-18-who-is-sitamarhis-lady-tarzan-madhubala-she-won-rs-320-lakh-and-impressed-amitabh-bachchan-272867/"
-            },
-            {
-              "title": "ରିଟାୟରମେଣ୍ଟ ଚର୍ଚ୍ଚାରେ ବିଗ୍ ବି | Special Report On Amitabh Bachchan Quitting KBC | Big B Retirement",
-              "url": "https://kanaknews.com/videos/society/%E0%AC%B0%E0%AC%9F%E0%AD%9F%E0%AC%B0%E0%AC%AE%E0%AC%A3%E0%AC%9F-%E0%AC%9A%E0%AC%B0%E0%AC%9A%E0%AC%9A%E0%AC%B0-%E0%AC%AC%E0%AC%97-%E0%AC%AC-special-report-on-amitabh-bachchan-quitting-kbc-big-b-retirement-12542808"
-            },
-            {
-              "title": "Gemini enters KBC: Google adds AI-powered lifeline, trivia and quizzes",
-              "url": "https://www.storyboard18.com/media-and-entertainment/gemini-enters-kbc-google-adds-ai-powered-lifeline-trivia-and-quizzes-110248.htm"
-            },
-            {
-              "title": "KBC 18: Why Did Amitabh Bachchan Call Hosting The Show A 'Heart-Breaking Experience'?",
-              "url": "https://www.newsx.com/?p=270086"
-            },
-            {
-              "title": "Google Launches Interactive KBC Experience in Gemini in India",
-              "url": "https://themobileindian.com/news/google-launches-interactive-kbc-experience-in-gemini-in-india"
-            },
-            {
-              "title": "ବିଗ୍ ବି'ଙ୍କ ଆଖିରେ ଲୁହ! |Special Report On Transgender Doctor Prachi Rathod on KBC 18|Big B Emotional",
-              "url": "https://kanaknews.com/videos/society/%E0%AC%AC%E0%AC%97-%E0%AC%AC%E0%AC%99%E0%AC%95-%E0%AC%86%E0%AC%96%E0%AC%B0-%E0%AC%B2%E0%AC%B9-special-report-on-transgender-doctor-prachi-rathod-on-kbc-18big-b-emotional-12456533"
-            },
-            {
-              "title": "BPCL's KBC Season 18 Association: Connecting mass reach with new age viewing habits",
-              "url": "https://indiantelevision.com/mam/bpcls-kbc-season-18-association-connecting-mass-reach-with-new-age-viewing-habits/"
-            },
-            {
-              "title": "KBC 18 Controversy: Sunil Pal Questions Amitabh Bachchan Over Gaurav Gupta, Gaurav Kapoor's Entry, Says '15th Question' Will Be Asked To Big B",
-              "url": "https://www.newsx.com/entertainment/kbc-18-controversy-sunil-pal-questions-amitabh-bachchan-over-gaurav-gupta-gaurav-kapoors-entry-says-15th-question-will-be-asked-to-big-b-270586/"
-            },
-            {
-              "title": "Amitabh Bachchan KBC Season: Reveals Tough Side of Hosting",
-              "url": "https://indtoday.com/amitabh-bachchan-kbc-season-reveals-tough-side-of-hosting/"
-            },
-            {
-              "title": "Google launches KBC-style quiz with AI assistant Gemini -- How to play Kaun Banega Crorepati on your phone | Mint",
-              "url": "https://www.livemint.com/ai/google-launches-kbc-style-quiz-with-ai-assistant-gemini-how-to-play-kaun-banega-crorepati-on-your-phone-11788854822408.html"
-            },
-            {
-              "title": "KBC 18: Mohali Banker Who Lost His Sight In 2009 Reaches Rs 12.5 Lakh Question -- What Happened Next?",
-              "url": "https://www.newsx.com/entertainment/kbc-18-mohali-banker-who-lost-his-sight-in-2009-reaches-rs-125-lakh-question-what-happened-next-270362/"
-            },
-            {
-              "title": "Google Gemini adds 4 interactive features to KBC: Trivia, Sanket Suchak, Sanket Sawaal and Quiz",
-              "url": "https://www.fonearena.com/blog/491954/google-gemini-interactive-features.html"
-            },
-            {
-              "title": "Cybeart Targets ₹100 Crore India Offline Retail Revenue, Signs Exclusive National Distribution with KBC Computech to Scale Gaming Peripherals",
-              "url": "https://newspatrolling.com/cybeart-targets-%E2%82%B9100-crore-india-offline-retail-revenue-signs-exclusive-national-distribution-with-kbc-computech-to-scale-gaming-peripherals/"
-            },
-            {
-              "title": "EU explores partnership with KBC to strengthen public broadcasting",
-              "url": "https://www.kbc.co.ke/eu-explores-partnership-with-kbc-to-strengthen-public-broadcasting/"
-            },
-            {
-              "title": "De KBC à une carrière solo, Narah Diouf trace sa voix - Metrodakar",
-              "url": "https://www.metrodakar.net/de-kbc-a-une-carriere-solo-narah-diouf-trace-sa-voix/"
-            },
-            {
-              "title": "De KBC à une carrière solo, Narah Diouf trace sa voix",
-              "url": "https://www.senenews.com/senenews-people/de-kbc-a-une-carriere-solo-narah-diouf-trace-sa-voix_599252.html"
-            },
-            {
-              "title": "Ageas dans le vert avec des propos de KBC Securities",
-              "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/ageas-dans-le-vert-avec-des-propos-de-kbc-securities-zone-bourse-0bd7d9d93f8eedd391f3734aefe98badbe7c01c3"
-            },
-            {
-              "title": "Inventiva : KBC relève sa cible sur Inventiva, le titre bondit",
-              "url": "https://www.tradingsat.com/inventiva-FR0013233012/actualites/inventiva-kbc-releve-sa-cible-sur-inventiva-le-titre-bondit-1169092.html"
-            },
-            {
-              "title": "KBC relève sa cible sur Inventiva, le titre bondit",
-              "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/kbc-releve-sa-cible-sur-inventiva-le-titre-bondit-zone-bourse-3768ec0b9fd6d90e4e2b5900a22f574bcf6a28a3"
-            },
-            {
-              "title": "Wolters kluwer : Wolters Kluwer en léger repli, KBC réduit sa cible",
-              "url": "https://www.tradingsat.com/wolters-kluwer-NL0000395903/actualites/wolters-kluwer-wolters-kluwer-en-leger-repli-kbc-reduit-sa-cible-1168998.html"
-            },
-            {
               "title": "Jefferies start opvolging KBC met koopadvies",
               "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
             },
             {
               "title": "Beursblik: Jefferies start opvolging KBC met koopadvies",
               "url": "https://www.deaandeelhouder.be/nieuws/2026/09/16/beursblik-jefferies-start-opvolging-kbc-met-koopadvies/"
-            },
-            {
-              "title": "Ahold Delhaize op TopPick lijst bij KBC",
-              "url": "https://www.deaandeelhouder.nl/columns/ahold-delhaize-op-toppick-lijst-bij-kbc/"
             }
           ]
         },
         "notable_headlines": [
-          {
-            "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-            "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
-          },
           {
             "title": "Jefferies start opvolging KBC met koopadvies",
             "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
           },
           {
+            "title": "Beursblik: Jefferies start opvolging KBC met koopadvies",
+            "url": "https://www.deaandeelhouder.be/nieuws/2026/09/16/beursblik-jefferies-start-opvolging-kbc-met-koopadvies/"
+          },
+          {
             "title": "Meer winst voor KBC Ancora",
             "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
-          },
-          {
-            "title": "KBC relève sa cible sur Inventiva, le titre bondit",
-            "url": "https://www.boursedirect.fr/fr/actualites/categorie/commentaires-sur-l-evolution-des-valeurs-en-cours-de-seance/kbc-releve-sa-cible-sur-inventiva-le-titre-bondit-zone-bourse-3768ec0b9fd6d90e4e2b5900a22f574bcf6a28a3"
-          },
-          {
-            "title": "Ahold Delhaize op TopPick lijst bij KBC",
-            "url": "https://www.deaandeelhouder.nl/columns/ahold-delhaize-op-toppick-lijst-bij-kbc/"
           }
         ]
       },
       "keytrade": null,
-      "n26": {
-        "headline_count": 8,
-        "themes": {
-          "innovation_digital": 1,
-          "crisis_or_scandal": 0,
-          "financial_results": 1,
-          "product_launch": 1,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 5
-        },
-        "theme_headlines": {
-          "innovation_digital": [
-            {
-              "title": "N26 data: Gen Z leads Europe's investing shift",
-              "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
-            }
-          ],
-          "crisis_or_scandal": [],
-          "financial_results": [
-            {
-              "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
-              "url": "https://siliconcanals.com/n26-raises-775m/"
-            }
-          ],
-          "product_launch": [
-            {
-              "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
-              "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
-            }
-          ],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
-            {
-              "title": "Preferred route for N26 Foxford to Mount Falcon revealed",
-              "url": "https://www.westernpeople.ie/news/preferred-route-for-n26-foxford-to-mount-falcon-revealed_arid-108834.html"
-            },
-            {
-              "title": "Former Revolut and N26 Executives Raise £2.7M for Wealth App - FinanceFeeds",
-              "url": "https://financefeeds.com/former-revolut-and-n26-executives-raise-2-7m-for-wealth-app/"
-            },
-            {
-              "title": "Preferred corridor for 'transformative' N26 route in Mayo is revealed",
-              "url": "https://www.con-telegraph.ie/2026/08/26/preferred-corridor-for-transformative-n26-route-in-mayo-is-revealed/"
-            },
-            {
-              "title": "Former Revolut and N26 alumni raise £2.7 million to launch wealth management app",
-              "url": "https://www.finextra.com/newsarticle/48415/former-revolut-and-n26-alumni-raise-27-million-to-launch-wealth-management-app"
-            },
-            {
-              "title": "Quels sont les frais N26 à l'étranger ?",
-              "url": "https://www.moneyvox.fr/banque-en-ligne/actualites/104009/quels-sont-les-frais-n26-a-etranger"
-            }
-          ]
-        },
-        "notable_headlines": [
-          {
-            "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
-            "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
-          },
-          {
-            "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
-            "url": "https://siliconcanals.com/n26-raises-775m/"
-          },
-          {
-            "title": "N26 data: Gen Z leads Europe's investing shift",
-            "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
-          }
-        ]
-      },
+      "n26": null,
       "revolut": {
-        "headline_count": 30,
+        "headline_count": 3,
         "themes": {
           "innovation_digital": 2,
-          "crisis_or_scandal": 9,
+          "crisis_or_scandal": 1,
           "financial_results": 0,
-          "product_launch": 8,
+          "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 6,
-          "other": 5
+          "regulatory": 0,
+          "other": 0
         },
         "theme_headlines": {
           "innovation_digital": [
             {
-              "title": "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud",
-              "url": "https://www.techtimes.com/articles/325649/20260826/revolut-builds-its-own-banking-ai-pragma-foundation-model-beats-specialist-systems-fraud.htm"
+              "title": "Ouvrir un compte chez Revolut est il interéssant pour vous?",
+              "url": "https://www.test-achats.be/argent/comptes-a-vue/news/revolut-est-il-interessant-pour-vous"
             },
             {
-              "title": "Revolut Research : la nouvelle frontière de l'intelligence artificielle dans les services financiers",
-              "url": "https://fr.cryptonomist.ch/2026/08/25/revolut-research-la-nouvelle-frontiere-de-lintelligence-artificielle-dans-les-services-financiers/"
+              "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
+              "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
             }
           ],
           "crisis_or_scandal": [
             {
-              "title": "Revolut Keeps Getting Breached. The Fines Were Never the Problem.: By Igor Kostyuchenok",
-              "url": "https://www.finextra.com/blogposting/32861/revolut-keeps-getting-breached-the-fines-were-never-the-problem"
-            },
-            {
-              "title": "Revolut Extortion: Daily Passport Leaks Until Company Pays",
-              "url": "https://cryptonewsbytes.com/revolut-attackers-are-now-publishing-stolen-passports-and-selfies-daily-until-revolut-pays/"
-            },
-            {
-              "title": "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
-              "url": "https://en.cryptonomist.ch/2026/09/16/revolut-crypto-breach-data/"
-            },
-            {
-              "title": "Revolut Data Leak Exposes Sensitive Bitcoin and Identity Info",
-              "url": "https://en.cryptonomist.ch/2026/09/12/revolut-data-leak/"
-            },
-            {
-              "title": "Revolut Data Breach: Fake Government Email Exposed KYC",
-              "url": "https://cryptonewsbytes.com/revolut-handed-passports-and-bitcoin-records-to-fake-government-request-here-is-everything-we-know/"
-            },
-            {
-              "title": "Une faille cryptographique chez Revolut expose les données de 680 comptes à forte valeur",
-              "url": "https://fr.cryptonomist.ch/2026/09/17/violation-de-la-crypto-chez-revolut-de-faux-e-mails-du-gouvernement-italien-ont-expose-680-baleines-de-la-crypto-monnaie/"
-            },
-            {
-              "title": "Une fuite de données chez Revolut expose des informations sensibles sur le Bitcoin et l'identité",
-              "url": "https://fr.cryptonomist.ch/2026/09/12/un-faux-e-mail-gouvernemental-a-t-il-provoque-la-fuite-de-donnees-chez-revolut/"
-            },
-            {
-              "title": "Fuite de données Revolut : suis-je concerné ?",
-              "url": "https://cryptoticker.io/fr/fuite-donnees-revolut-suis-je-concerne/"
-            },
-            {
-              "title": "Fuite de données Revolut : que faire, fichiers publiés",
-              "url": "https://cryptoticker.io/fr/fuite-donnees-revolut-que-faire/"
+              "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
+              "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
             }
           ],
           "financial_results": [],
-          "product_launch": [
-            {
-              "title": "Revolut Pay, Acquiring and Gateway Join Yuno in Single Merchant Connection",
-              "url": "https://www.techtimes.com/articles/327119/20260909/revolut-pay-acquiring-gateway-join-yuno-single-merchant-connection.htm"
-            },
-            {
-              "title": "Revolut Euro Stablecoin Launch Expands in Europe",
-              "url": "https://en.cryptonomist.ch/2026/08/26/revolut-euro-stablecoin-launch/"
-            },
-            {
-              "title": "Revolut's EURR Launches With 374 Tokens in Circulation",
-              "url": "https://financefeeds.com/revolut-launches-eurr-on-two-networks-in-a-three-country-pilot/"
-            },
-            {
-              "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
-              "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
-            },
-            {
-              "title": "Le lancement du stablecoin euro de Revolut s'étend en Europe",
-              "url": "https://fr.cryptonomist.ch/2026/08/26/le-lancement-du-stablecoin-en-euro-de-revolut-setend-alors-que-lentreprise-abandonne-lusdt-en-europe/"
-            },
-            {
-              "title": "Revolut Lance EURR Face Au Squeeze De Tether En Europe",
-              "url": "https://viralmag.fr/revolut-lance-eurr-face-au-squeeze-de-tether-en-europe/"
-            },
-            {
-              "title": "Revolut Lance EURR Stablecoin Euro MiCA Conforme",
-              "url": "https://viralmag.fr/revolut-lance-eurr-stablecoin-euro-mica-conforme/"
-            },
-            {
-              "title": "Revolut se lance dans l'assurance crédit : découvrez sa stratégie pour devenir votre banque principale",
-              "url": "https://www.capital.fr/entreprises-marches/revolut-lance-son-assurance-credit-comment-la-fintech-se-transforme-en-banque-a-part-entiere-1530167"
-            }
-          ],
+          "product_launch": [],
           "esg_sustainability": [],
-          "regulatory": [
-            {
-              "title": "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
-              "url": "https://www.techtimes.com/articles/326716/20260904/occ-grants-revolut-us-bank-charter-four-key-services-need-separate-sign-off.htm"
-            },
-            {
-              "title": "Revolut Taps GXS Bank Founding CEO for Singapore Advisory Board in MAS License Push",
-              "url": "https://www.techtimes.com/articles/325555/20260825/revolut-taps-gxs-bank-founding-ceo-singapore-advisory-board-mas-license-push.htm"
-            },
-            {
-              "title": "Revolut wins US charter with limits on four products",
-              "url": "https://www.americanbanker.com/news/revolut-wins-us-charter-with-limits-on-four-products"
-            },
-            {
-              "title": "Revolut US Banking License Gains Key Preliminary Approval",
-              "url": "https://en.cryptonomist.ch/2026/09/03/revolut-us-banking-license/"
-            },
-            {
-              "title": "La licence bancaire américaine de Revolut obtient une approbation préliminaire clé",
-              "url": "https://fr.cryptonomist.ch/2026/09/03/la-licence-bancaire-americaine-de-revolut-approuvee-par-locc-plus-que-deux-autorisations-a-obtenir/"
-            },
-            {
-              "title": "Revolut Prépare Banque Et Stablecoin Aux États-Unis",
-              "url": "https://viralmag.fr/revolut-prepare-banque-et-stablecoin-aux-etats-unis/"
-            }
-          ],
-          "other": [
-            {
-              "title": "Revolut casinos UK: Top Revolut casino brands reviewed",
-              "url": "https://www.independent.co.uk/games/revolut-casinos-b3034243.html"
-            },
-            {
-              "title": "Is Revolut Good for Crypto in 2026?",
-              "url": "https://dailycoin.com/is-revolut-good-for-crypto-hodlers-overview/"
-            },
-            {
-              "title": "Revolut Business Vs Monzo Business UK 2026 Comparison",
-              "url": "https://www.forbes.com/advisor/uk/banking/revolut-business-vs-monzo-business/"
-            },
-            {
-              "title": "Casinos that accept Revolut: Top sites ranked and reviewed",
-              "url": "https://www.independent.co.uk/games/casinos-that-accept-revolut-b3034243.html"
-            },
-            {
-              "title": "\"Je n'ai plus aucune raison d'avoir un compte ailleurs\": comment Revolut a séduit 8 millions de Français et bousculé le marché bancaire",
-              "url": "https://rmc.bfmtv.com/conso/banque-et-assurance/je-n-ai-plus-aucune-raison-d-avoir-un-compte-ailleurs-comment-revolut-a-seduit-8-millions-de-francais-et-bouscule-le-marche-bancaire_AN-202608260386.html"
-            }
-          ]
+          "regulatory": [],
+          "other": []
         },
         "notable_headlines": [
           {
-            "title": "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
-            "url": "https://www.techtimes.com/articles/326716/20260904/occ-grants-revolut-us-bank-charter-four-key-services-need-separate-sign-off.htm"
-          },
-          {
-            "title": "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
-            "url": "https://en.cryptonomist.ch/2026/09/16/revolut-crypto-breach-data/"
-          },
-          {
-            "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
-            "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
-          },
-          {
-            "title": "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud",
-            "url": "https://www.techtimes.com/articles/325649/20260826/revolut-builds-its-own-banking-ai-pragma-foundation-model-beats-specialist-systems-fraud.htm"
-          },
-          {
-            "title": "Revolut Taps GXS Bank Founding CEO for Singapore Advisory Board in MAS License Push",
-            "url": "https://www.techtimes.com/articles/325555/20260825/revolut-taps-gxs-bank-founding-ceo-singapore-advisory-board-mas-license-push.htm"
+            "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
+            "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
           }
         ]
       },
