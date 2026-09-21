@@ -22,6 +22,11 @@ sieg 21/09: `notable_headlines` now carries each headline's source URL
 alongside its title, so the web UI can link out to the article. The URL is
 looked up locally against what we actually fetched, never produced by the
 model.
+
+sieg 21/09: every fetched headline is now also checked against
+`_is_belgian_source()` - language alone let through a Dutch accountancy
+trade site (accountancyvanmorgen.nl) writing about "ING" that had nothing
+to do with ING Belgium, because Dutch is spoken well beyond Belgium too.
 """
 
 from __future__ import annotations
@@ -30,6 +35,7 @@ import json
 import os
 import re
 from datetime import date, timedelta
+from urllib.parse import urlparse
 
 import requests
 from pydantic import BaseModel, Field, ValidationError
@@ -58,6 +64,35 @@ PROVIDER_LANGUAGES = {
 }
 # Bound on what one bank sends to the classifier, after de-duplication.
 MAX_HEADLINES = 30
+
+# sieg 21/09: language alone cannot tell "about Belgium" from "published anywhere the
+# language is spoken" - a Dutch accountancy trade site (accountancyvanmorgen.nl) matched
+# lang=nl and inflated a bank's theme count with a story that was never about the
+# Belgian entity. Neither provider's `getArticles`/`everything` response carries a
+# reliable per-article country field to check instead (Event Registry has one, but only
+# via a separate source-info lookup, not worth the extra call here), so this stays a
+# domain check. newsapi.org's `domains` param narrows the fetch itself; this list plus
+# _is_belgian_source() below is the second, provider-independent guard that actually
+# decides what stays.
+BELGIAN_NEWS_DOMAINS = (
+    "rtbf.be,lesoir.be,lalibre.be,dhnet.be,sudinfo.be,7sur7.be,levif.be,lecho.be,"
+    "bruzz.be,brusselstimes.com,hln.be,standaard.be,nieuwsblad.be,demorgen.be,"
+    "vrt.be,tijd.be,knack.be,gva.be,hbvl.be,lavenir.net"
+)
+# sieg 21/09: caught by the regression test below - lavenir.net (L'Avenir, a real
+# Belgian regional paper) was wrongly dropped because it isn't a .be domain. The
+# allowlist is for exactly this: known Belgian outlets on a non-.be TLD.
+_BELGIAN_DOMAIN_ALLOWLIST = frozenset(BELGIAN_NEWS_DOMAINS.split(","))
+
+
+def _is_belgian_source(url: str | None) -> bool:
+    """A .be domain, or a known Belgian outlet that isn't (lavenir.net, brusselstimes.com).
+    Never a language check - see module note above. Necessarily incomplete: a legitimate
+    Belgian outlet on an unlisted non-.be domain would still be dropped."""
+    if not url:
+        return False
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    return host.endswith(".be") or host in _BELGIAN_DOMAIN_ALLOWLIST
 
 
 def _bank_token(bank_name: str) -> str:
@@ -144,10 +179,12 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             # newsapi.org searches the whole article body by default, which
             # returned football and politics stories for the word "bank". Keep
             # the match in the title/description, where the bank is named.
+            # `domains` narrows the fetch to Belgian outlets - see BELGIAN_NEWS_DOMAINS.
             response = requests.get(
                 NEWSAPI_URL,
                 params={"q": query, "language": language, "sortBy": "publishedAt",
-                        "pageSize": page_size, "searchIn": "title,description"},
+                        "pageSize": page_size, "searchIn": "title,description",
+                        "domains": BELGIAN_NEWS_DOMAINS},
                 headers={"X-Api-Key": api_key},
                 timeout=timeout,
             )
@@ -155,9 +192,12 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             articles = response.json().get("articles", [])
     except (requests.RequestException, ValueError, AttributeError, TypeError):
         return []
+    # sieg 21/09: newsapi.ai has no domain filter to narrow the fetch with, so this
+    # second check is the one both providers actually rely on - see _is_belgian_source().
     return [
         {"title": a["title"], "url": a.get("url")}
-        for a in articles if isinstance(a, dict) and a.get("title")
+        for a in articles
+        if isinstance(a, dict) and a.get("title") and _is_belgian_source(a.get("url"))
     ]
 
 
