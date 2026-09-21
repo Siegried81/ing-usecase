@@ -6,13 +6,6 @@
 
 .env
 
-# Raw captures - large, and third-party brand assets we do not redistribute
-data/raw/
-data/processed/
-
-# Generated analysis outputs
-outputs/
-
 # Python
 __pycache__/
 *.py[cod]
@@ -22,11 +15,6 @@ venv/
 
 # sieg 15/09: local-only working file, not for the shared repo
 CLAUDE.md
-
-# steph 16/09: the synthetic fixture is a dev/test tool (src/comparator/fixtures.py
-# builds it in memory for the test suite). Committing a synthetic DATA file invites
-# someone to run the analysis on it and read the result as a finding.
-data/fixtures/
 
 # web UI build artefacts
 web/node_modules/
@@ -39,3 +27,9 @@ benchmark_backup_*.db
 data/*.log
 campaigns_streamlit_log.txt
 streamlit_log.txt
+
+# NOTE (steph 21/09): the dataset and output rules were removed at stephane's
+# request, so data/raw/, data/processed/, data/fixtures/ and outputs/ are now
+# trackable. data/raw holds third-party brand assets (page captures and
+# screenshots) that were previously not redistributed - confirm that is still
+# acceptable before pushing them.
