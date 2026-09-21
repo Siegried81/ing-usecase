@@ -35,7 +35,7 @@ yet carries two *independent* human raters.
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated, 10/10 compared banks (real data) |
-| Real captures (D-02) | 19 pages / 14 banks collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
+| Real captures (D-02) | **50 pages / 14 banks / 7 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
 | Rubric scoring (Day 5) | **still the live blocker**: Siegried 23/23 pages; Stephane 9/23 — machine-proposed from the screenshots and adopted, recorded as such in the sheet; Dan 0/23. Agreement is now measurable for all 13 features over 9–10 pages, and `rubric_sheet.py` flags three below its 60% bar (`persuasion_levers` 0.14, `accent_locations` 0.33, `text_image_layout` 0.56). The model's own sheet is never a pre-fill |
 
 Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.
@@ -144,14 +144,16 @@ scripts/
   build_feature_docs.py          YAML -> markdown
   rubric_sheet.py                emit / model / merge / agreement / report
   reextract_model_fields.py      backfill model_assisted fields from saved HTML, no re-fetch
+  fix_rate_fields.py             re-derive rate_shown/rate_value_pct from saved HTML, no LLM call
+  fix_cta_count.py               re-derive cta_count/cta_above_fold from saved HTML, no LLM call
   import_captures.py             import pages a person saved from a normal browser
   browser_audit.py               Playwright audit of the UI + generated site
 streamlit_app.py                 dashboard for share.streamlit.io (requirements-streamlit.txt)
-tests/                           368 tests, no network calls
+tests/                           388 tests, no network calls
 data/rubric/                     human + model scoring sheets (tracked)
-data/raw/                        snapshots — gitignored
-data/processed/                  datasets — gitignored
-outputs/                         charts and tables — regenerated every run
+data/raw/                        snapshots (tracked since 21/09 — see Next)
+data/processed/                  datasets (tracked since 21/09)
+outputs/                         charts and tables — tracked, regenerated every run
 ```
 
 ## Next
@@ -164,5 +166,8 @@ outputs/                         charts and tables — regenerated every run
    traditional/challenger split is not carried by two challengers alone.
 3. **Re-run the analysis after scoring**, then the web export, so the profile
    cards carry judged features rather than model-judged ones.
-4. **Decide on `outputs/` in git** — it is regenerated on every run yet tracked,
-   so each analysis produces a large binary diff.
+4. **Keep the tracked-data decision under review** — `data/raw/`, `data/processed/`
+   and `outputs/` are committed by team decision (21/09), so a collection or
+   analysis run now produces a large diff, including binary charts and screenshots.
+   Revisit if the diffs stop being reviewable; the `.gitignore` rules are one
+   revert away.

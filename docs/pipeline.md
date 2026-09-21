@@ -57,19 +57,26 @@ prose cannot drift away from the picture.
 
 | Path | Tracked? | What |
 | --- | --- | --- |
-| `data/raw/<bank>/` | no (gitignored) | HTML snapshots + screenshots, one pair per page |
-| `data/processed/campaigns.csv` | no | the collected dataset (auto features + model-assisted) |
-| `data/processed/campaigns_scored.csv` | no | the same rows with rubric scores merged in — what analysis reads |
+| `data/raw/<bank>/` | yes (since 21/09, see Housekeeping) | HTML snapshots + screenshots, one pair per page |
+| `data/processed/campaigns.csv` | yes (since 21/09) | the collected dataset (auto features + model-assisted) |
+| `data/processed/campaigns_scored.csv` | yes (since 21/09) | the same rows with rubric scores merged in — what analysis reads |
 | `data/rubric/*_scores.csv` | yes | the human and model scoring sheets |
-| `outputs/` | yes (team decision, see below) | charts, tables, profiles, limitations, reputation |
+| `outputs/` | yes (team decision, see Housekeeping) | charts, tables, profiles, limitations, reputation |
 | `web/public/report.json` | yes | the one JSON snapshot the business UI reads |
 
 `scripts/reextract_model_fields.py` is not a no-op: it refreshes **every**
 model-assisted field on every row it touches, and the model is not deterministic,
 so re-running it changes personas/cross-sell/imagery values. Only run it to fix a
 specific gap (a timed-out extraction), and prefer note-taking over repeated runs.
-`scripts/fix_rate_fields.py` is the deterministic alternative for the two rate
-columns specifically — no LLM call.
+
+The deterministic alternatives re-read `snapshot_html_path` and touch only the
+columns whose detector changed — no LLM call, no re-fetch, so nothing else on the
+row is re-rolled:
+
+- `scripts/fix_rate_fields.py` — `rate_shown`, `rate_value_pct` (the `_rate()`
+  keyword-proximity fix, sieg 20/09).
+- `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold` (the distinct,
+  chrome-excluding CTA count, steph 21/09).
 
 ## Two things a range check cannot catch
 
@@ -152,10 +159,13 @@ bank snapshot rather than a false "not configured".
 
 ## Housekeeping
 
-`outputs/` is committed to git even though it is regenerated on every run (and
-`.gitignore` lists it; the files stay tracked, which is why they keep showing up
-as modified). That is a standing team decision to revisit: committing regenerated
-charts means every analysis run produces a large binary diff.
+**Since 21/09 the data is tracked.** The `data/raw/`, `data/processed/`,
+`data/fixtures/` and `outputs/` rules were removed from `.gitignore`, so the
+captures, the datasets and the regenerated charts are all committed. A fresh
+clone can therefore run the analysis without collecting first.
 
-`data/raw/` and `data/processed/` are gitignored, so a fresh clone has no
-captures and analysis cannot run until collection does.
+The trade-off is explicit: every collection or analysis run now produces a large
+diff, including binary screenshots and charts, and `data/raw/` carries the banks'
+own page captures and brand assets. Runtime artefacts stay ignored — `.env`,
+`benchmark.db` and its backups, `*.log`, `web/dist/`, caches. If the diffs stop
+being reviewable, restoring the four rules is one commit.

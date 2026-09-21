@@ -201,3 +201,21 @@ direction only.
 the suite still makes no network calls. It covers the local logic: dropping an
 invented feature id, retrying a bad response, selecting a subset in order, and
 rendering ten pages with a marked fallback when a page fails.
+
+## Browser audit
+
+`scripts/browser_audit.py` drives the real UI with Playwright — tick
+recommendations down and up, pick a language, press Generate, open the result
+through the actual Browse link — then audits all ten pages in the browser:
+recommendation expression per selected recommendation (by feature, multilingual
+cues), a single `h1`, an above-fold CTA, the full ten-link nav, rendered-text
+WCAG contrast, broken or alt-less images, horizontal overflow at 1440px and
+375px, console errors and failed requests, and single-language copy.
+
+It is a harness rather than a unit test: both servers must be running and it
+makes real model calls. Ten iterations (1–8 recommendations selected, alternating
+"start from all" and "start from none", across fr/nl/en) is what found the empty
+hero `alt=""`, the fallback page's English summary under Dutch chrome, and the
+selected recommendation that could be silently absent — which `generate_page`'s
+coverage check now retries. Results land in `outputs/browser_audit/`
+(`summary.md`, `results.json`, per-iteration screenshots).

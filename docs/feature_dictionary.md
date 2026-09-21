@@ -30,14 +30,14 @@
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
 | `page_id` | string | automatic | cross_language | core | Unique key for the page-capture. Format {bank}_{product_family}_{language}_{nn}. |
-| `bank` | categorical<br>`ing` · `kbc` · `bnp_paribas_fortis` · `argenta` · `crelan` · `belfius` · `revolut` · `n26` · `bunq` · `vdk` · `hellobank` · `beobank` | automatic | cross_language | core | Bank whose page this is. |
+| `bank` | categorical<br>`ing` · `kbc` · `bnp_paribas_fortis` · `argenta` · `crelan` · `belfius` · `revolut` · `n26` · `bunq` · `vdk` · `hellobank` · `beobank` · `cbc` · `keytrade` | automatic | cross_language | core | Bank whose page this is. |
 | `bank_category` | categorical<br>`traditional` · `challenger` | automatic | cross_language | core | Traditional incumbent or digital challenger. The axis BO-02 asks about. |
 | `product_family` | categorical<br>`term_account` · `current_account_pack` · `savings_account` · `mortgage` · `investment` · `pension` · `other` | automatic | cross_language | core | Product family the page promotes. Comparisons are only valid within one family (DR-04). |
 | `page_role` | categorical<br>`campaign_landing` · `product_detail` · `comparison` · `other` | automatic | cross_language | extended | What the page is for within the funnel. |
 | `url` | string | automatic | cross_language | core | Full source URL as fetched. |
 | `language` | categorical<br>`nl` · `fr` · `en` | automatic | cross_language | core | Language of the page version captured.<br>*Controls every within_language feature. Fixing one language is decision 2 in the plan.* |
 | `captured_at` | datetime | automatic | cross_language | core | UTC timestamp of the fetch. Every conclusion is valid for this date only. |
-| `collection_method` | categorical<br>`static_fetch` · `headless_render` · `manual_capture` | automatic | cross_language | core | How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02). manual_capture is a page a person opened in a normal browser and saved, used where an edge/CDN declines automated traffic - the content is identical, but there is no HTTP status of our own and the capture time is the person's, not the pipeline's. |
+| `collection_method` | categorical<br>`static_fetch` · `headless_render` · `headful_render` · `manual_capture` | automatic | cross_language | core | How the page was retrieved. Static fetch misses JavaScript-built layout (risk R-02). manual_capture is a page a person opened in a normal browser and saved, used where an edge/CDN declines automated traffic - the content is identical, but there is no HTTP status of our own and the capture time is the person's, not the pipeline's. |
 | `robots_allowed` | boolean | automatic | cross_language | core | Whether robots.txt allowed this path for the user agent used, checked before fetching. Carried in the row so compliance evidence travels with the data (LC-01).<br>*A row with robots_allowed = false must never exist. The validator treats it as a hard error.* |
 | `snapshot_html_path` | string | automatic | cross_language | core | Relative path to the stored raw HTML snapshot. |
 | `screenshot_path` | string | automatic | cross_language | core | Relative path to the stored full-page screenshot. |

@@ -141,6 +141,21 @@ TLS handshake fails; and **AXA Bank no longer exists as a brand** — it merged 
 Crelan, and axa.be now redirects to insurance. Keytrade Bank remains unresolved:
 JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
 
+### steve 21/09 — the dataset now spans every family each bank promotes
+
+The comparison had been one family (`current_account_pack`) because that is what
+the targets file listed. It now holds **50 pages across 14 banks and 7 families**:
+`current_account_pack` 16, `investment` 9, `savings_account` 9, `pension` 7,
+`mortgage` 5, `term_account` 3, `other` 1. Product pages were discovered from each
+bank's own navigation and every one was verified by rendering it before
+collection — the automated picks included investor-relations pages, calculators
+and a jargon glossary, all dropped (the list is in the 21/09 decisions entry).
+
+`product_family` is still the comparison key (DR-04): the families are *stored*
+together, and a comparison is only valid within one of them. Banks whose sites
+publish fewer comparable landing pages contribute fewer rows — Revolut and bunq
+have one each (app-first sites), Keytrade, N26 and Hellobank three.
+
 ## 2. Product family and language
 
 **Language:** French, consistently, across every page collected so far —

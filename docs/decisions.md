@@ -406,3 +406,66 @@ Bank Belgium**'s current account is business-only; **bpost bank** no longer
 exists as a brand, absorbed into BNP Paribas Fortis; and **AXA Bank Belgium**
 merged into Crelan. That leaves the family comparison at 16 pages / 14 banks with
 nothing excluded, ING at 0.201.
+
+---
+
+**steph 21/09, `cta_count` counts distinct calls to action, not keyword-matching
+links.** `collection/scraper.py::_count_ctas()` counted every `<a>` or `<button>`
+whose label contained one of a fixed list of verbs — chrome and duplicates
+included — so the feature mostly measured how often a page repeats
+"En savoir plus"-style links. Measured on the stored captures: Crelan scored 42
+(20 distinct labels, some repeated 4x), BNP 23, beobank 20, against ING's 4. Slide
+12 read that as "ING is behind on calls to action", implying three calls to action
+per ING page, which the number never meant.
+
+The detector now skips `<nav>`, `<footer>` and the matching ARIA landmark roles,
+drops hidden elements, and counts distinct `(label, href)` pairs. `<header>` is
+deliberately kept: a top-of-page CTA is something a visitor clicks, and dropping
+it would have removed ING's own "Ouvrir un compte" button from a feature about
+calls to action. No dictionary change was needed — it already defined the feature
+as "Number of distinct call-to-action buttons or links", so the code was wrong,
+not the contract.
+
+Re-derived rather than re-collected, by the new `scripts/fix_cta_count.py`
+(deterministic, no LLM call, no re-fetch — same reasoning as
+`fix_rate_fields.py`): Crelan 42→2, BNP 23→13, beobank 20→9, vdk 17→3, ING 4/2→1/0.
+The finding survives — ING 0.5 against a peer mean of 5.65 is still the largest
+negative gap in the comparison — but the magnitude was roughly 5x inflated, and
+the honest reading is "fewest distinct CTAs", not "three CTAs".
+
+Known limit: the detector is still keyword-based, so an icon-only button or a
+differently-worded CTA is not counted at all. ING's `fr_03` scoring 0 means no
+keyword-matching CTA in the page body, not that the page has no call to action.
+
+---
+
+**steve 21/09, the dataset now covers every family, not just current accounts.**
+`campaigns.csv` went from 19 rows (almost all `current_account_pack`) to **50
+rows across 14 banks and 7 families**. Product pages were discovered from each
+bank's own navigation, then every candidate was **rendered and quality-gated
+before collection** - that pass is what caught the automated picks that were not
+product pages at all: Argenta's `en-termes-simples` is a jargon glossary, CBC's
+mortgage link pointed at the *business* segment, Crelan returned the same hub URL
+for both savings and investment, vdk's "investment" was a simulator, Belfius's was
+investor relations, and two were calculators. Those are dropped rather than
+stored with a wrong family, which would have quietly confounded every
+family-scoped comparison.
+
+Two things surfaced in the merge and are worth knowing next time:
+
+- **Collection writes list fields as Python reprs.** `target_personas` and
+  `cross_sold_products` arrived as the *string* `"['family', 'investor']"`, which
+  the validator reads as a single member outside the enum, so the merged dataset
+  failed validation on 50 rows. Fixed by normalising every list-typed column
+  (`ast.literal_eval` then split on `|`) before `write_dataset`. The old rows only
+  passed because they had been written by an earlier path that formatted them
+  canonically.
+- **Page ids had to be re-keyed by URL.** Re-collecting the current-account pages
+  renumbers `bank_family_lang_NN` from the target order, so merging by page id
+  would have silently replaced one page with another. The merge matches on the
+  normalised URL instead, keeps the existing id for a page already in the
+  dataset, and only mints a new id for a genuinely new page.
+
+The report snapshot still covers one family at a time (`--product-family auto`),
+which is what DR-04 requires; the other six are now in the dataset ready for their
+own run.

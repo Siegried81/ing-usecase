@@ -92,7 +92,9 @@ committed synthetic CSV sitting next to `run_analysis.py` is an invitation to ru
 it and read the result as a finding.
 
 `scripts/make_fixture.py` still writes one to `data/fixtures/` if you want it for
-local development. That path is gitignored. Everything in `outputs/` comes from
+local development. The ignore rule for that path was removed on 21/09 with the
+other data rules, so nothing stops a fixture from being committed any more — do
+not commit it. Everything in `outputs/` comes from
 `data/processed/campaigns.csv` — real captures.
 
 ## What analysis answers

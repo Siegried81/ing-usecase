@@ -13,7 +13,10 @@
         "other": 3
       },
       "notable_headlines": [
-        "Argenta a profité d'une hausse de son bénéfice au premier semestre"
+        {
+          "title": "Argenta a profité d'une hausse de son bénéfice au premier semestre",
+          "url": "https://www.lalibre.be/dernieres-depeches/2026/08/26/argenta-a-profite-dune-hausse-de-son-benefice-au-premier-semestre-MBCWP3LG4ZCJTJT4ER7AY2KU3U/"
+        }
       ]
     },
     "belfius": {
@@ -24,13 +27,22 @@
         "financial_results": 1,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 0,
-        "other": 17
+        "regulatory": 11,
+        "other": 6
       },
       "notable_headlines": [
-        "Belfius changes dividend policy ahead of potential 20% privatisation",
-        "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
-        "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing"
+        {
+          "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
+          "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
+        },
+        {
+          "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+          "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+        },
+        {
+          "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+          "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+        }
       ]
     },
     "beobank": {
@@ -45,44 +57,71 @@
         "other": 5
       },
       "notable_headlines": [
-        "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
-        "Beobank trekt rente termijnrekeningen op"
+        {
+          "title": "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+          "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
+        },
+        {
+          "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+          "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
+        },
+        {
+          "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+          "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+        }
       ]
     },
     "bnp_paribas_fortis": null,
     "bunq": {
       "headline_count": 12,
       "themes": {
-        "innovation_digital": 2,
+        "innovation_digital": 1,
         "crisis_or_scandal": 4,
         "financial_results": 1,
-        "product_launch": 2,
+        "product_launch": 3,
         "esg_sustainability": 0,
         "regulatory": 1,
         "other": 2
       },
       "notable_headlines": [
-        "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
-        "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
+        {
+          "title": "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
+          "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
+        },
+        {
+          "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
+          "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
+        },
+        {
+          "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
+          "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+        }
       ]
     },
     "cbc": {
-      "headline_count": 25,
+      "headline_count": 23,
       "themes": {
         "innovation_digital": 0,
-        "crisis_or_scandal": 20,
+        "crisis_or_scandal": 18,
         "financial_results": 1,
-        "product_launch": 1,
+        "product_launch": 0,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 3
+        "other": 4
       },
       "notable_headlines": [
-        "CBC changes policy that said not to label 9/11 attacks 'terrorism' after criticism",
-        "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
-        "Scandale de la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC"
+        {
+          "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
+          "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
+        },
+        {
+          "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
+          "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
+        },
+        {
+          "title": "Canadian 9/11 widow 'appalled' by CBC policy against using term 'terrorist attack'",
+          "url": "https://ca.news.yahoo.com/canadian-9-11-widow-appalled-193305286.html"
+        }
       ]
     },
     "crelan": {
@@ -97,26 +136,41 @@
         "other": 1
       },
       "notable_headlines": [
-        "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
-        "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?"
+        {
+          "title": "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
+          "url": "https://www.lalibre.be/dernieres-depeches/2026/09/01/crelan-enregistre-un-benefice-en-forte-hausse-sur-le-premier-semestre-QYM65O4QHBBELGP7KHXN5SXLDE/"
+        },
+        {
+          "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+          "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
+        }
       ]
     },
     "hellobank": null,
     "ing": {
-      "headline_count": 20,
+      "headline_count": 23,
       "themes": {
         "innovation_digital": 3,
         "crisis_or_scandal": 1,
-        "financial_results": 0,
-        "product_launch": 1,
+        "financial_results": 3,
+        "product_launch": 2,
         "esg_sustainability": 5,
         "regulatory": 1,
-        "other": 9
+        "other": 8
       },
       "notable_headlines": [
-        "Milieudefensie mag klimaatzaak tegen ING doorzetten",
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
-        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte"
+        {
+          "title": "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
+          "url": "https://www.accountant.nl/nieuws/2026/9/milieudefensie-mag-van-de-rechter-klimaatzaak-tegen-ing-doorzetten/"
+        },
+        {
+          "title": "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
+          "url": "https://www.ftm.nl/artikelen/ing-hielp-drie-oliebedrijven-aan-bijna-een-miljard-dollar-ondanks-klimaatbelofte"
+        },
+        {
+          "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
+          "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+        }
       ]
     },
     "kbc": {
@@ -131,44 +185,71 @@
         "other": 23
       },
       "notable_headlines": [
-        "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-        "Meer winst voor KBC Ancora",
-        "Jefferies start opvolging KBC met koopadvies"
+        {
+          "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
+          "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
+        },
+        {
+          "title": "Jefferies start opvolging KBC met koopadvies",
+          "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
+        },
+        {
+          "title": "Ahold Delhaize op TopPick lijst bij KBC",
+          "url": "https://www.deaandeelhouder.nl/columns/ahold-delhaize-op-toppick-lijst-bij-kbc/"
+        }
       ]
     },
     "keytrade": null,
     "n26": {
-      "headline_count": 7,
+      "headline_count": 8,
       "themes": {
-        "innovation_digital": 1,
+        "innovation_digital": 0,
         "crisis_or_scandal": 0,
         "financial_results": 1,
-        "product_launch": 1,
+        "product_launch": 2,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 4
+        "other": 5
       },
       "notable_headlines": [
-        "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
-        "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
-        "N26 data: Gen Z leads Europe's investing shift"
+        {
+          "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
+          "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
+        },
+        {
+          "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
+          "url": "https://siliconcanals.com/n26-raises-775m/"
+        },
+        {
+          "title": "N26 data: Gen Z leads Europe's investing shift",
+          "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
+        }
       ]
     },
     "revolut": {
       "headline_count": 30,
       "themes": {
-        "innovation_digital": 2,
+        "innovation_digital": 3,
         "crisis_or_scandal": 9,
         "financial_results": 0,
         "product_launch": 8,
         "esg_sustainability": 0,
         "regulatory": 6,
-        "other": 5
+        "other": 4
       },
       "notable_headlines": [
-        "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
-        "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
-        "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud"
+        {
+          "title": "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
+          "url": "https://www.techtimes.com/articles/326716/20260904/occ-grants-revolut-us-bank-charter-four-key-services-need-separate-sign-off.htm"
+        },
+        {
+          "title": "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
+          "url": "https://en.cryptonomist.ch/2026/09/16/revolut-crypto-breach-data/"
+        },
+        {
+          "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
+          "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
+        }
       ]
     },
     "vdk": null

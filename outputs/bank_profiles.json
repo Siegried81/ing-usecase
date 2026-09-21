@@ -28,12 +28,12 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:50:56.762501+00:00",
+        "captured": "2026-09-21 09:20:48.680190+00:00",
         "data_source": "real"
       },
       "palette": {
         "dominant_colour": "#ffffff",
-        "brand_colour_share": 0.0,
+        "brand_colour_share": 0.004,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "icons",
@@ -65,7 +65,7 @@
         "urgency_markers": 2.0
       },
       "value_proposition": {
-        "primary_product": "Formule Silver / Formule Gold / Formule Green",
+        "primary_product": "La Formule Silver / Gold / Green",
         "rate_shown": 0.0,
         "rate_prominence": "above_fold",
         "benefit_framing": "rational",
@@ -90,12 +90,12 @@
           2.295838725245495
         ],
         [
-          "animated_asset_count",
-          -1.5811388300841895
+          "urgency_marker_count",
+          1.5513435037626795
         ],
         [
-          "has_animation",
-          -1.5811388300841895
+          "has_comparison_table",
+          1.3416407864998738
         ]
       ]
     },
@@ -107,7 +107,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:52:24.553758+00:00",
+        "captured": "2026-09-21 09:22:20.400045+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -119,7 +119,7 @@
       },
       "imagery": {
         "image_count": 18.0,
-        "dominant_image_type": "photo",
+        "dominant_image_type": "illustration",
         "people_present": 1.0,
         "animated": 1.0,
         "image_area_share": 0.149
@@ -133,14 +133,14 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1811.0,
+        "word_count": 1812.0,
         "readability_band": "hard",
         "formality_score": 4.0,
         "second_person_ratio": 0.688,
         "urgency_markers": 0.0
       },
       "value_proposition": {
-        "primary_product": "Comptes de paiement Beats (packs Beats Pulse / New / Star)",
+        "primary_product": "Comptes de paiement Beats",
         "rate_shown": 0.0,
         "rate_prominence": null,
         "benefit_framing": "rational",
@@ -153,26 +153,22 @@
       },
       "personas": [
         {
-          "persona": "student",
-          "share": 1.0
-        },
-        {
           "persona": "mass_market",
           "share": 1.0
         }
       ],
       "signature": [
         [
-          "branch_network_cited_as_benefit",
-          3.6055512754639896
+          "page_height_px",
+          1.3526020144170228
         ],
         [
-          "hidden_conditions_behind_free_claim",
-          2.2885855374829744
-        ],
-        [
-          "youth_student_targeting",
+          "has_comparison_table",
           1.3416407864998738
+        ],
+        [
+          "above_fold_element_count",
+          -1.1878325680353041
         ]
       ]
     },
@@ -184,7 +180,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:53:15.178665+00:00",
+        "captured": "2026-09-21 09:24:24.629230+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -240,12 +236,12 @@
           2.449489742783178
         ],
         [
-          "is_bundled_offer",
-          -1.9148542155126758
+          "above_fold_element_count",
+          1.3302225919638269
         ],
         [
           "animated_asset_count",
-          -1.5811388300841895
+          -1.2924860661584991
         ]
       ]
     },
@@ -257,7 +253,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 07:34:20.281058+00:00",
+        "captured": "2026-09-21 09:19:26.497823+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -285,12 +281,12 @@
       "tone": {
         "word_count": 2199.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
+        "formality_score": 4.0,
         "second_person_ratio": 0.576,
         "urgency_markers": 1.0
       },
       "value_proposition": {
-        "primary_product": "Packs de comptes de paiement (Pack Easy Guide, Pack Easy Go, Hello Pack)",
+        "primary_product": "Packs de comptes de paiement (Easy Guide, Easy Go, Hello Pack)",
         "rate_shown": 0.0,
         "rate_prominence": null,
         "benefit_framing": "rational",
@@ -305,20 +301,24 @@
         {
           "persona": "mass_market",
           "share": 1.0
+        },
+        {
+          "persona": "student",
+          "share": 1.0
         }
       ],
       "signature": [
         [
-          "animated_asset_count",
-          -1.5811388300841895
-        ],
-        [
-          "has_animation",
-          -1.5811388300841895
-        ],
-        [
           "fast_digital_onboarding_claim",
-          1.2924860661584994
+          2.2885855374829744
+        ],
+        [
+          "hidden_conditions_behind_free_claim",
+          1.820930936000652
+        ],
+        [
+          "animated_asset_count",
+          -1.2924860661584991
         ]
       ]
     },
@@ -330,7 +330,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:52:02.520571+00:00",
+        "captured": "2026-09-21 09:21:59.497148+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -366,11 +366,11 @@
         "urgency_markers": 3.0
       },
       "value_proposition": {
-        "primary_product": "bunq Free - compte bancaire gratuit",
+        "primary_product": "bunq Free - Ton compte bancaire gratuit",
         "rate_shown": 1.0,
         "rate_prominence": "below_fold",
-        "benefit_framing": "rational",
-        "fab_level": "feature"
+        "benefit_framing": "mixed",
+        "fab_level": "advantage"
       },
       "marketing_principles": {
         "aida_coverage": 4.0,
@@ -383,20 +383,24 @@
         {
           "persona": "mass_market",
           "share": 1.0
+        },
+        {
+          "persona": "expat",
+          "share": 1.0
         }
       ],
       "signature": [
         [
+          "people_present",
+          -3.6055512754639896
+        ],
+        [
           "background_luminance",
-          -3.2960567610473017
+          -3.1611637518995117
         ],
         [
           "urgency_marker_count",
           2.694438717061496
-        ],
-        [
-          "rate_shown",
-          2.4494897427831783
         ]
       ]
     },
@@ -408,7 +412,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 07:42:35.967203+00:00",
+        "captured": "2026-09-21 09:23:42.897338+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -420,8 +424,8 @@
       },
       "imagery": {
         "image_count": 12.0,
-        "dominant_image_type": "illustration",
-        "people_present": 0.0,
+        "dominant_image_type": "photo",
+        "people_present": 1.0,
         "animated": 1.0,
         "image_area_share": 0.046
       },
@@ -460,16 +464,16 @@
       ],
       "signature": [
         [
-          "people_present",
-          -1.9148542155126758
-        ],
-        [
           "is_bundled_offer",
-          -1.9148542155126758
+          -1.5811388300841895
         ],
         [
           "has_comparison_table",
           1.3416407864998738
+        ],
+        [
+          "above_fold_element_count",
+          1.0154656969639355
         ]
       ]
     },
@@ -481,7 +485,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:51:31.641247+00:00",
+        "captured": "2026-09-21 09:21:23.281754+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -544,7 +548,7 @@
         ],
         [
           "cta_count",
-          2.759140179920933
+          2.7396136304238676
         ],
         [
           "question_count",
@@ -560,7 +564,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:52:54.155180+00:00",
+        "captured": "2026-09-21 09:23:24.270564+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -572,7 +576,7 @@
       },
       "imagery": {
         "image_count": 15.0,
-        "dominant_image_type": "photo",
+        "dominant_image_type": "illustration",
         "people_present": 1.0,
         "animated": 0.0,
         "image_area_share": 0.322
@@ -588,7 +592,7 @@
       "tone": {
         "word_count": 1661.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
+        "formality_score": 2.0,
         "second_person_ratio": 0.595,
         "urgency_markers": 0.0
       },
@@ -613,15 +617,15 @@
       "signature": [
         [
           "brand_colour_share",
-          3.1898957966439943
+          3.2402011834325175
         ],
         [
-          "animated_asset_count",
+          "is_bundled_offer",
           -1.5811388300841895
         ],
         [
-          "has_animation",
-          -1.5811388300841895
+          "formality_score",
+          -1.2924860661584994
         ]
       ]
     },
@@ -633,26 +637,26 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:50:20.974430+00:00",
+        "captured": "2026-09-21 04:50:37.835795+00:00",
         "data_source": "real"
       },
       "palette": {
         "dominant_colour": "#ffffff",
-        "brand_colour_share": 0.0155,
+        "brand_colour_share": 0.011,
         "accent_colour_count": 4.0,
         "accent_locations": [
           "background",
           "buttons",
-          "imagery",
-          "text"
+          "text",
+          "imagery"
         ],
-        "background_luminance": 0.8985000000000001
+        "background_luminance": 0.8975
       },
       "imagery": {
         "image_count": 30.5,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
+        "animated": 0.5,
         "image_area_share": 0.133
       },
       "layout": {
@@ -660,7 +664,7 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 9465.0,
-        "cta_count": 3.0,
+        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -702,11 +706,11 @@
         ],
         [
           "youth_student_targeting",
-          1.3416407864998738
+          1.1547005383792517
         ],
         [
           "cta_count",
-          -0.9197133933069777
+          -0.9841330517056611
         ]
       ]
     },
@@ -718,7 +722,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": true,
-        "captured": "2026-09-21 04:47:57.410618+00:00",
+        "captured": "2026-09-21 04:48:14.259669+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -744,7 +748,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3806.5,
-        "cta_count": 7.5,
+        "cta_count": 4.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -781,7 +785,7 @@
         ],
         [
           "is_bundled_offer",
-          -1.9148542155126758
+          -1.5811388300841895
         ],
         [
           "has_comparison_table",
@@ -797,7 +801,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 07:42:57.763946+00:00",
+        "captured": "2026-09-21 09:24:07.526900+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -833,8 +837,8 @@
         "primary_product": "KEYPACK - Le compte \u00e0 vue en ligne",
         "rate_shown": 0.0,
         "rate_prominence": null,
-        "benefit_framing": "mixed",
-        "fab_level": "feature"
+        "benefit_framing": "rational",
+        "fab_level": "benefit"
       },
       "marketing_principles": {
         "aida_coverage": null,
@@ -843,11 +847,11 @@
       },
       "personas": [
         {
-          "persona": "student",
+          "persona": "mass_market",
           "share": 1.0
         },
         {
-          "persona": "mass_market",
+          "persona": "investor",
           "share": 1.0
         }
       ],
@@ -857,12 +861,12 @@
           -1.9148542155126764
         ],
         [
-          "formality_score",
-          -1.4117731575135797
+          "hidden_conditions_behind_free_claim",
+          1.820930936000652
         ],
         [
-          "numeric_claim_count",
-          -1.397287841756235
+          "cta_contrast_ratio",
+          -1.483632577196052
         ]
       ]
     },
@@ -874,7 +878,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:48:38.821353+00:00",
+        "captured": "2026-09-21 09:18:01.533404+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -889,9 +893,9 @@
       },
       "imagery": {
         "image_count": 29.0,
-        "dominant_image_type": "render_3d",
-        "people_present": 0.0,
-        "animated": 1.0,
+        "dominant_image_type": "photo",
+        "people_present": 1.0,
+        "animated": 0.0,
         "image_area_share": 0.587
       },
       "layout": {
@@ -935,12 +939,12 @@
           3.6055512754639896
         ],
         [
-          "subscription_style_framing",
-          2.4494897427831783
+          "total_image_area_ratio",
+          2.8653107969818024
         ],
         [
-          "mentions_loyalty_or_referral",
-          2.449489742783178
+          "subscription_style_framing",
+          2.4494897427831783
         ]
       ]
     },
@@ -952,7 +956,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 05:16:29.898050+00:00",
+        "captured": "2026-09-21 09:19:48.600289+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -962,28 +966,28 @@
         "accent_locations": [
           "background"
         ],
-        "background_luminance": 0.973
+        "background_luminance": 0.532
       },
       "imagery": {
         "image_count": 10.0,
-        "dominant_image_type": "photo",
+        "dominant_image_type": "render_3d",
         "people_present": 1.0,
         "animated": 1.0,
-        "image_area_share": null
+        "image_area_share": 0.243
       },
       "layout": {
         "archetype": "hero_stacked",
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
-        "page_height_px": null,
-        "cta_count": 5.0,
+        "page_height_px": 6615.0,
+        "cta_count": 7.0,
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1224.0,
+        "word_count": 1352.0,
         "readability_band": "hard",
         "formality_score": 2.0,
-        "second_person_ratio": 0.792,
+        "second_person_ratio": 0.759,
         "urgency_markers": 1.0
       },
       "value_proposition": {
@@ -1008,11 +1012,15 @@
           "share": 1.0
         },
         {
+          "persona": "family",
+          "share": 1.0
+        },
+        {
           "persona": "entrepreneur_self_employed",
           "share": 1.0
         },
         {
-          "persona": "family",
+          "persona": "expat",
           "share": 1.0
         }
       ],
@@ -1022,11 +1030,11 @@
           3.6055512754639896
         ],
         [
-          "rate_shown",
+          "expat_cross_border_targeting",
           2.4494897427831783
         ],
         [
-          "subscription_style_framing",
+          "rate_shown",
           2.4494897427831783
         ]
       ]
@@ -1039,7 +1047,7 @@
         "product_family": "current_account_pack",
         "language": "fr",
         "mixed_language": false,
-        "captured": "2026-09-21 04:52:37.792840+00:00",
+        "captured": "2026-09-21 09:22:47.278245+00:00",
         "data_source": "real"
       },
       "palette": {
@@ -1075,7 +1083,7 @@
         "primary_product": "Compte \u00e0 vue You Count",
         "rate_shown": 0.0,
         "rate_prominence": null,
-        "benefit_framing": "rational",
+        "benefit_framing": "mixed",
         "fab_level": "feature"
       },
       "marketing_principles": {
@@ -1087,10 +1095,6 @@
         {
           "persona": "student",
           "share": 1.0
-        },
-        {
-          "persona": "mass_market",
-          "share": 1.0
         }
       ],
       "signature": [
@@ -1100,10 +1104,10 @@
         ],
         [
           "formality_score",
-          2.0761369963434992
+          1.9007148031742636
         ],
         [
-          "youth_student_targeting",
+          "has_comparison_table",
           1.3416407864998738
         ]
       ]
