@@ -516,3 +516,19 @@ agreement exists. The
 status paragraph was corrected with the operator work. The remaining rubric problem
 is coverage and wording — six features sit below the 60% bar, and the six banks
 added this week have no judged layer at all — not the absence of a second rater.
+
+**sieg 21/09, scope restored from one product family back to all seven — this
+should have had an entry the day it happened, and didn't.** `data/processed/campaigns.csv`
+had silently narrowed to `current_account_pack` only (19 rows) sometime after the
+current_account_pack expansion work this week — `run_collection.py` overwrites its
+output from whatever `collection_targets.yaml` lists at that moment, it does not merge
+with a prior run, and the config file had been trimmed down to current_account_pack
+targets while adding vdk/hellobank/beobank/cbc/keytrade. Nothing in this log recorded
+the families (savings_account, mortgage, pension, investment, term_account, other)
+dropping out, even though every other scope change here has a dated entry. Stephane's
+"campaigns.csv now covers every bank and every product family it promotes" re-collection
+restored it: 50 rows, 14 banks, 7 product families (current_account_pack 16, investment 9,
+savings_account 9, pension 7, mortgage 5, term_account 3, other 1). This matches D01's
+already-recorded decision ("the team wants a complete analysis... not one family narrowed
+for like-for-like comparison") - the earlier narrowing was an accidental side effect of a
+config-file overwrite, not a scope decision anyone made.
