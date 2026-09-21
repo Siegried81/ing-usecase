@@ -47,21 +47,21 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
                   </div>
                 ))}
               {snapshot.notable_headlines.length > 0 && (
-                <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-3)" }}>
-                  {/* sieg 21/09: link to the source when reputation.py found one -
+                <div style={{ marginTop: 10, display: "grid", gap: 4 }}>
+                  {/* sieg 21/09: all of the (up to 5) notable headlines, not just the
+                      first - each links to its source when reputation.py found one,
                       never a URL the model produced itself. */}
-                  {snapshot.notable_headlines[0].url ? (
-                    <a
-                      href={snapshot.notable_headlines[0].url}
-                      target="_blank"
-                      rel="noreferrer"
-                      style={{ color: "inherit" }}
-                    >
-                      {snapshot.notable_headlines[0].title} ↗
-                    </a>
-                  ) : (
-                    snapshot.notable_headlines[0].title
-                  )}
+                  {snapshot.notable_headlines.map((h, i) => (
+                    <div key={i} style={{ fontSize: 12.5, color: "var(--ink-3)" }}>
+                      {h.url ? (
+                        <a href={h.url} target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
+                          {h.title} ↗
+                        </a>
+                      ) : (
+                        h.title
+                      )}
+                    </div>
+                  ))}
                 </div>
               )}
             </>
