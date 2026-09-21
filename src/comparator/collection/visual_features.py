@@ -31,7 +31,10 @@ REQUEST_TIMEOUT_S = 15
 # synthetic-only fields this module has no business depending on.
 BRAND_COLOURS: dict[str, str] = {
     "ing": "#ff6200", "kbc": "#00aeef", "bnp_paribas_fortis": "#00915a",
-    "argenta": "#e94e1b", "crelan": "#009640", "belfius": "#c8102e",
+    # dan 18/09: was #e94e1b (pre-rebrand red-orange), which made
+    # brand_colour_share ~0 for every Argenta row. Sampled off the live
+    # capture's own chrome - logo, nav CTAs, checkmarks, form submit.
+    "argenta": "#00814d", "crelan": "#009640", "belfius": "#c8102e",
     "revolut": "#0666eb", "n26": "#36a18b", "bunq": "#3394ff",
     # steve 21/09: sourced from each site rather than guessed. vdk from its own
     # logo.svg fills (#E30613 primary), beobank from its declared theme-color
