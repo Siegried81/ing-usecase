@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-09-21T13:29:53+00:00",
+  "generated_at": "2026-09-21T13:13:54+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
-    "ok": true,
+    "ok": false,
     "warnings": [
       "argenta: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "beobank: core feature(s) entirely missing: ['rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention', 'aida_interest'] ... - record a reason (DR-07)",
+      "beobank: core feature(s) entirely missing: ['aida_desire', 'aida_coverage_score', 'persuasion_lever_count'] - record a reason (DR-07)",
       "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "cbc: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
       "hellobank: core feature(s) entirely missing: ['rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention', 'aida_interest'] ... - record a reason (DR-07)"
@@ -2277,9 +2277,9 @@
         "mobile_first_design_signal": false,
         "aida_attention": false,
         "aida_interest": true,
-        "aida_desire": true,
+        "aida_desire": false,
         "aida_action": true,
-        "aida_coverage_score": 3,
+        "aida_coverage_score": 2,
         "persuasion_levers": [
           "authority"
         ],
@@ -3370,9 +3370,9 @@
         "mobile_first_design_signal": false,
         "aida_attention": false,
         "aida_interest": true,
-        "aida_desire": true,
+        "aida_desire": false,
         "aida_action": true,
-        "aida_coverage_score": 3,
+        "aida_coverage_score": 2,
         "persuasion_levers": [
           "liking"
         ],
@@ -3680,15 +3680,15 @@
         "question_count": 28,
         "urgency_marker_count": 1,
         "numeric_claim_count": 3,
-        "formality_score": 5,
-        "clarity_score": null,
+        "formality_score": 4,
+        "clarity_score": 4,
         "primary_product": "Compte à vue You Count",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature",
-        "value_prop_clarity": null,
+        "value_prop_clarity": 5,
         "disclaimer_present": true,
         "disclaimer_word_share": 0.007,
         "image_count": 5,
@@ -3710,24 +3710,26 @@
         ],
         "brand_colour_share": 0.0,
         "accent_colour_count": 4,
-        "accent_locations": [],
+        "accent_locations": [
+          "buttons, background"
+        ],
         "background_luminance": 0.857,
         "cta_contrast_ratio": 10.25,
         "page_height_px": 4290,
         "section_count": 5,
         "cta_count": 17,
         "cta_above_fold": true,
-        "text_image_layout": null,
+        "text_image_layout": "overlaid",
         "text_to_image_ratio": 798.4,
         "above_fold_element_count": 37,
         "has_comparison_table": true,
-        "layout_archetype": null,
-        "mobile_first_design_signal": null,
-        "aida_attention": null,
-        "aida_interest": null,
-        "aida_desire": null,
-        "aida_action": null,
-        "aida_coverage_score": null,
+        "layout_archetype": "hero_stacked",
+        "mobile_first_design_signal": false,
+        "aida_attention": true,
+        "aida_interest": true,
+        "aida_desire": false,
+        "aida_action": true,
+        "aida_coverage_score": 3,
         "persuasion_levers": [],
         "persuasion_lever_count": null,
         "audience_segment": "retail",
@@ -4141,14 +4143,14 @@
         "urgency_marker_count": 0,
         "numeric_claim_count": 14,
         "formality_score": 4,
-        "clarity_score": null,
+        "clarity_score": 5,
         "primary_product": "Compte Go",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
-        "value_prop_clarity": null,
+        "value_prop_clarity": 4,
         "disclaimer_present": true,
         "disclaimer_word_share": 0.016,
         "image_count": 16,
@@ -4170,23 +4172,25 @@
         ],
         "brand_colour_share": 0.012,
         "accent_colour_count": 4,
-        "accent_locations": [],
+        "accent_locations": [
+          "buttons, text"
+        ],
         "background_luminance": 0.851,
         "cta_contrast_ratio": 8.32,
         "page_height_px": 7078,
         "section_count": 18,
         "cta_count": 20,
         "cta_above_fold": false,
-        "text_image_layout": null,
+        "text_image_layout": "beside",
         "text_to_image_ratio": 206.88,
         "above_fold_element_count": 45,
         "has_comparison_table": false,
-        "layout_archetype": null,
-        "mobile_first_design_signal": null,
-        "aida_attention": null,
-        "aida_interest": null,
+        "layout_archetype": "split_columns",
+        "mobile_first_design_signal": false,
+        "aida_attention": false,
+        "aida_interest": true,
         "aida_desire": null,
-        "aida_action": null,
+        "aida_action": true,
         "aida_coverage_score": null,
         "persuasion_levers": [],
         "persuasion_lever_count": null,
@@ -14154,16 +14158,16 @@
         "basis": "exact match"
       },
       {
-        "feature": "layout_archetype",
-        "pages": 11,
-        "agreement": 0.64,
-        "basis": "exact match"
-      },
-      {
         "feature": "value_prop_clarity",
         "pages": 11,
         "agreement": 0.64,
         "basis": "within 1 point"
+      },
+      {
+        "feature": "layout_archetype",
+        "pages": 11,
+        "agreement": 0.64,
+        "basis": "exact match"
       },
       {
         "feature": "mobile_first_design_signal",
@@ -14216,15 +14220,9 @@
         "kappa": -0.102
       },
       {
-        "feature": "aida_interest",
+        "feature": "aida_action",
         "raters": "siegried vs stephane",
         "pages": 9,
-        "kappa": 0.0
-      },
-      {
-        "feature": "aida_interest",
-        "raters": "dan vs stephane",
-        "pages": 8,
         "kappa": 0.0
       },
       {
@@ -14234,9 +14232,15 @@
         "kappa": 0.0
       },
       {
-        "feature": "aida_action",
+        "feature": "aida_interest",
         "raters": "siegried vs stephane",
         "pages": 9,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_interest",
+        "raters": "dan vs stephane",
+        "pages": 8,
         "kappa": 0.0
       },
       {
@@ -14282,13 +14286,13 @@
         "kappa": 0.125
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "clarity_score",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
       },
       {
-        "feature": "clarity_score",
+        "feature": "mobile_first_design_signal",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
@@ -14330,7 +14334,7 @@
         "kappa": 0.308
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "aida_desire",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333
@@ -14342,7 +14346,7 @@
         "kappa": 0.333
       },
       {
-        "feature": "aida_desire",
+        "feature": "mobile_first_design_signal",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333

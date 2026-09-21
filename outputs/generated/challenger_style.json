@@ -1,0 +1,52 @@
+{
+  "headline": "What could a term account do for your money?",
+  "subheading": "Clear terms. No jargon. Just a fixed term and a rate you can see before you decide.",
+  "body_paragraphs": [
+    "What if saving could feel simpler? With a term account, you choose how long you set your money aside and you see the rate before you open. How long suits your plan? [RATE] is shown clearly where you apply, so you can compare terms without guesswork.",
+    "Are you saving for something specific? A deposit, a trip, a buffer for the unexpected? A term account can help you commit to a date. What would you like your money to be ready for?",
+    "What happens if you need access before the term ends? You should check the terms before you apply. Where can you find the details? They are in the summary box, alongside any early-access conditions.",
+    "A term account is built for savers who want a set period and a clear rate. You can open it online now, and you can learn more before you commit. Many savers use term accounts to plan ahead. If your plans change, the terms explain what happens next."
+  ],
+  "cta_label": "Open a term account",
+  "additional_cta_labels": [
+    "Discover the term options",
+    "Apply online in minutes",
+    "Get started with a term account",
+    "Sign up to see the rate",
+    "Learn more about fixed terms",
+    "Open your account today",
+    "Discover how term accounts work",
+    "Apply before the term window closes"
+  ],
+  "layout_archetype": "hero_stacked",
+  "background_style": "dark",
+  "accent_colour_hex": "#ff6200",
+  "image_briefs": [
+    "Hero image: dark, low-luminance background with a large, softly lit phone screen showing a simple term account dashboard; no visible rates, no logos; one hand partially enters frame; generous negative space for headline and CTA above the fold.",
+    "Abstract shape: fixed term represented by a clean, segmented timeline with one highlighted segment; dark background, accent orange line; no text.",
+    "App screen close-up: term selection screen with duration choices and a placeholder for [RATE]; dark UI, minimal labels.",
+    "Lifestyle: a traveler at an airport lounge checking a banking app on a phone; low-light environment, no visible brand, cross-border context.",
+    "Two currencies represented by neutral banknote textures side by side, blurred and abstract, dark background, no real currency symbols.",
+    "Card grid: three minimal cards showing short term, medium term, and long term as icons only, on dark background, no rates.",
+    "Close-up of a calendar with a marked future date, soft shadows, no readable text, dark tones.",
+    "Person opening a laptop at a kitchen table at night, banking app glow on face, no screen details, minimal.",
+    "Abstract bar chart with stable upward steps, dark background, accent orange highlights, no numbers.",
+    "A secure lock icon merged with a simple savings box, dark background, accent orange, no text.",
+    "Expat context: a person in a cafe abroad reviewing account terms on a tablet; muted light, cross-border feel, no readable copy.",
+    "Mobile phone held over a dark desk, showing a learn-more style informational screen with empty placeholder blocks.",
+    "Split-screen: left side a calendar, right side a phone with a term account summary; dark palette, accent lines.",
+    "A simple line drawing of a hand placing a coin into a fixed-term slot, dark background, minimal.",
+    "Notification on a smartwatch showing a term milestone, dark strap, no readable rate, soft glow.",
+    "A quiet city skyline at dusk, representing long-term planning, dark blue and accent orange, no people.",
+    "Final image: a minimal checklist with an open-account icon, dark background, accent orange checkmark, no readable legal text."
+  ],
+  "disclaimer_placeholder": "Compliance placeholder: insert approved legal text covering term conditions, rate availability, eligibility, withdrawal rules, and risk warnings.",
+  "persuasion_levers_used": [
+    "authority",
+    "commitment",
+    "social_proof",
+    "scarcity"
+  ],
+  "_prompt_sha256_16": "aa03afa4f2ff415c",
+  "_model": "deepseek/deepseek-flash"
+}
