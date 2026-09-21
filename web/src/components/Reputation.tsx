@@ -1,12 +1,58 @@
-import type { Report } from "../types";
+import type { Report, ReputationHeadline } from "../types";
 
 const themeLabel = (theme: string) => theme.replace(/_/g, " ");
+
+/** sieg 21/09: hover popup on a theme's count - the full list of articles it is made of. */
+function ThemeCount({ count, headlines }: { count: number; headlines: ReputationHeadline[] }) {
+  if (headlines.length === 0) return <span className="sd above">{count}</span>;
+  return (
+    <span className="sd above rep-theme-count">
+      {count}
+      <div className="rep-theme-popup">
+        {headlines.map((h, i) =>
+          h.url ? (
+            <a key={i} href={h.url} target="_blank" rel="noreferrer">
+              {h.title}
+            </a>
+          ) : (
+            <span key={i}>{h.title}</span>
+          ),
+        )}
+      </div>
+    </span>
+  );
+}
+
+/** sieg 21/09: every headline for a bank, in one collapsible dropdown - not just the
+ * up-to-5 "notable" ones. Native <details>, so it works without JS state and on touch
+ * (the per-theme hover above does not). */
+function AllSources({ themeHeadlines }: { themeHeadlines: Record<string, ReputationHeadline[]> }) {
+  const all = Object.values(themeHeadlines).flat();
+  if (all.length === 0) return null;
+  return (
+    <details className="rep-sources">
+      <summary>{all.length} source{all.length === 1 ? "" : "s"}</summary>
+      <div className="rep-sources-list">
+        {all.map((h, i) =>
+          h.url ? (
+            <a key={i} href={h.url} target="_blank" rel="noreferrer">
+              {h.title}
+            </a>
+          ) : (
+            <span key={i}>{h.title}</span>
+          ),
+        )}
+      </div>
+    </details>
+  );
+}
 
 /**
  * sieg 19/09: NewsAPI headline themes per bank - counts only, never sentiment
  * (see comparator/reputation.py's docstring for why). Mirrors Trends.tsx's
  * "not configured, nothing else affected" empty state when NEWSAPI_KEY isn't set.
- * sieg 21/09: the notable headline links out to its source when one was found.
+ * sieg 21/09: hovering a theme's count opens every article behind it (ThemeCount),
+ * and "N sources" below opens every article for the bank, of any theme (AllSources).
  */
 export function Reputation({ reputation }: { reputation: Report["reputation"] }) {
   if (!reputation.available) {
@@ -42,28 +88,11 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
                 .sort(([, a], [, b]) => b - a)
                 .map(([theme, count]) => (
                   <div className="sig" key={theme}>
-                    <span className="sd above">{count}</span>
+                    <ThemeCount count={count} headlines={snapshot.theme_headlines[theme] ?? []} />
                     <span>{themeLabel(theme)}</span>
                   </div>
                 ))}
-              {snapshot.notable_headlines.length > 0 && (
-                <div style={{ marginTop: 10, display: "grid", gap: 4 }}>
-                  {/* sieg 21/09: all of the (up to 5) notable headlines, not just the
-                      first - each links to its source when reputation.py found one,
-                      never a URL the model produced itself. */}
-                  {snapshot.notable_headlines.map((h, i) => (
-                    <div key={i} style={{ fontSize: 12.5, color: "var(--ink-3)" }}>
-                      {h.url ? (
-                        <a href={h.url} target="_blank" rel="noreferrer" style={{ color: "inherit" }}>
-                          {h.title} ↗
-                        </a>
-                      ) : (
-                        h.title
-                      )}
-                    </div>
-                  ))}
-                </div>
-              )}
+              <AllSources themeHeadlines={snapshot.theme_headlines} />
             </>
           )}
         </div>

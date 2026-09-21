@@ -72,11 +72,11 @@ def test_classify_headlines_returns_none_for_an_empty_list():
 
 
 def test_classify_headlines_parses_a_valid_response():
-    payload = '{"theme_counts": {"innovation_digital": 2, "crisis_or_scandal": 0}, "notable_headlines": ["ING launches new app"]}'
+    payload = '{"theme_headlines": {"innovation_digital": ["ING launches new app"], "crisis_or_scandal": []}, "notable_headlines": ["ING launches new app"]}'
     with patch("comparator.reputation._call_llm", return_value=(payload, "test/model")):
         result = reputation.classify_headlines(["ING launches new app"], "ING")
     assert result is not None
-    assert result.theme_counts["innovation_digital"] == 2
+    assert result.theme_headlines["innovation_digital"] == ["ING launches new app"]
     assert result.notable_headlines == ["ING launches new app"]
 
 
@@ -95,7 +95,8 @@ def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
     with patch("comparator.reputation.fetch_headlines",
                return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
         with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
-            theme_counts={"innovation_digital": 1}, notable_headlines=["ING launches new app"],
+            theme_headlines={"innovation_digital": ["ING launches new app"]},
+            notable_headlines=["ING launches new app"],
         )):
             snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
     assert snapshot["headline_count"] == 1
@@ -104,13 +105,29 @@ def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
     assert snapshot["themes"]["crisis_or_scandal"] == 0
 
 
+def test_bank_snapshot_theme_headlines_carry_their_url_and_cover_every_theme():
+    # sieg 21/09: the hover popup needs the full per-theme article list, not just a count.
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
+        with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
+            theme_headlines={"innovation_digital": ["ING launches new app"]},
+            notable_headlines=["ING launches new app"],
+        )):
+            snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
+    assert set(snapshot["theme_headlines"]) == set(reputation.THEMES)
+    assert snapshot["theme_headlines"]["innovation_digital"] == [
+        {"title": "ING launches new app", "url": "https://news.example/1"}
+    ]
+    assert snapshot["theme_headlines"]["crisis_or_scandal"] == []
+
+
 def test_bank_snapshot_attaches_the_source_url_to_each_notable_headline():
     # sieg 21/09: the URL is looked up locally against what was fetched, never
     # produced by the model.
     with patch("comparator.reputation.fetch_headlines",
                return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
         with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
-            theme_counts={}, notable_headlines=["ING launches new app"],
+            theme_headlines={}, notable_headlines=["ING launches new app"],
         )):
             snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
     assert snapshot["notable_headlines"] == [
@@ -124,7 +141,7 @@ def test_bank_snapshot_gives_a_null_url_when_the_model_did_not_copy_verbatim():
     with patch("comparator.reputation.fetch_headlines",
                return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
         with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
-            theme_counts={}, notable_headlines=["ing launches a new app"],
+            theme_headlines={}, notable_headlines=["ing launches a new app"],
         )):
             snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
     assert snapshot["notable_headlines"] == [{"title": "ing launches a new app", "url": None}]
