@@ -107,3 +107,39 @@ pages:
     page_role: campaign_landing
     url: "https://www.bunq.com/fr-be/personal/plans/bunq-free"
     language: fr
+
+  # steve 21/09: Belfius was in scope but sat out every comparison because its
+  # only capture was a pension page (family "other"). This is its own current-
+  # account page, found through the site's products navigation, so Belfius can
+  # be compared like for like. Collected live, no manual save needed.
+  - bank: belfius
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.belfius.be/retail/fr/produits/paiement/compte-bancaire/"
+    language: fr
+
+  # steve 21/09: three more banks verified collectable live (robots allowed,
+  # HTTP 200, quality=ok). Found through each site's own navigation, French
+  # for comparability with the rest of the dataset. Added to the frozen bank
+  # enum in the same change.
+  - bank: vdk
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.vdk.be/fr/particuliers/services-bancaires-au-quotidien/comptes-de-paiement/compte-vue-you-count"
+    language: fr
+
+  - bank: hellobank
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.hellobank.be/fr/notre-offre/comptes-et-cartes/compte-all-in-gratuit"
+    language: fr
+
+  - bank: beobank
+    bank_category: traditional
+    product_family: current_account_pack
+    page_role: campaign_landing
+    url: "https://www.beobank.be/fr/payer/comptes-courants/compte-go.html"
+    language: fr

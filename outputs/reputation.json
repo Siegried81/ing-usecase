@@ -1,14 +1,154 @@
 {
   "available": true,
   "banks": {
-    "argenta": null,
-    "belfius": null,
-    "bnp_paribas_fortis": null,
-    "bunq": null,
-    "crelan": null,
-    "ing": null,
-    "kbc": null,
-    "n26": null,
-    "revolut": null
+    "argenta": {
+      "headline_count": 4,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 1,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 3
+      },
+      "notable_headlines": [
+        "Argenta a profité d'une hausse de son bénéfice au premier semestre"
+      ]
+    },
+    "belfius": {
+      "headline_count": 30,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 10,
+        "financial_results": 0,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 12,
+        "other": 8
+      },
+      "notable_headlines": [
+        "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
+        "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
+        "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias"
+      ]
+    },
+    "beobank": {
+      "headline_count": 5,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 0,
+        "product_launch": 4,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 1
+      },
+      "notable_headlines": [
+        "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+        "Beobank trekt rente termijnrekeningen op"
+      ]
+    },
+    "bunq": {
+      "headline_count": 14,
+      "themes": {
+        "innovation_digital": 1,
+        "crisis_or_scandal": 5,
+        "financial_results": 1,
+        "product_launch": 2,
+        "esg_sustainability": 0,
+        "regulatory": 1,
+        "other": 4
+      },
+      "notable_headlines": [
+        "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
+        "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals"
+      ]
+    },
+    "crelan": {
+      "headline_count": 2,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 1,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 1
+      },
+      "notable_headlines": [
+        "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
+        "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?"
+      ]
+    },
+    "hellobank": null,
+    "ing": {
+      "headline_count": 26,
+      "themes": {
+        "innovation_digital": 4,
+        "crisis_or_scandal": 2,
+        "financial_results": 2,
+        "product_launch": 3,
+        "esg_sustainability": 5,
+        "regulatory": 1,
+        "other": 9
+      },
+      "notable_headlines": [
+        "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
+        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’"
+      ]
+    },
+    "kbc": {
+      "headline_count": 30,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 3,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 27
+      },
+      "notable_headlines": [
+        "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
+        "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million | Taiwan News | Aug. 28, 2026 23:40",
+        "Meer winst voor KBC Ancora"
+      ]
+    },
+    "n26": {
+      "headline_count": 11,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 1,
+        "product_launch": 1,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 9
+      },
+      "notable_headlines": [
+        "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
+        "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
+        "N26 data: Gen Z leads Europe's investing shift"
+      ]
+    },
+    "vdk": {
+      "headline_count": 1,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 1,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 0
+      },
+      "notable_headlines": [
+        "Tout en lettres d’or chez VDK"
+      ]
+    }
   }
 }

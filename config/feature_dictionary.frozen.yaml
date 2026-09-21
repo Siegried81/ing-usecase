@@ -123,7 +123,11 @@ features:
     dimension: provenance
     definition: Bank whose page this is.
     type: categorical
-    values: [ing, kbc, bnp_paribas_fortis, argenta, crelan, belfius, revolut, n26, bunq]
+    # steve 21/09: vdk, hellobank and beobank added to the bank enum when they
+    # became collectable in the current_account_pack family (freeze rule allows
+    # pure additions; see scripts/check_schema_freeze.py).
+    values: [ing, kbc, bnp_paribas_fortis, argenta, crelan, belfius, revolut, n26, bunq,
+             vdk, hellobank, beobank]
     extraction: automatic
     source: manual
     comparability: cross_language
