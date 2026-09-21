@@ -1,14 +1,97 @@
 {
-  "generated_at": "2026-09-21T05:03:52+00:00",
+  "generated_at": "2026-09-21T06:55:37+00:00",
   "model": "deepseek/deepseek-flash",
-  "summary": "Measured on the same 29 features as the other banks in the Belgian set, ING's current-account pack pages sit clearly with the traditional banks (position score 0.18), and their signature is volume rather than clarity: more figures and percentages, more persuasion techniques and more student targeting than peers, but far fewer calls to action and no comparison table at all. ING's offer is rated clearer than peers while its overall clarity score sits slightly below the peer mean. No performance data exists in this project and five of thirteen rubric features were unscored at capture, so every recommendation below is a hypothesis for ING to test, not a proven cause.",
+  "summary": "Measured on the same 25 features, ING sits clearly with the traditional banks (position score 0.13): its offer is clearer than the peer mean (5.0 vs 3.83) and it quotes far more figures (25.5 vs 12.1), but it has by far the fewest calls to action (3.0 vs 13.75), no comparison table and no mobile-first design signal. The two priorities are therefore to turn the campaign pages into a shorter, mobile-first route with repeated calls to action, and to place conditions beside every 'free' claim. None of this is performance evidence: the captured pages span three product families and two languages and come from a single capture day, so every recommendation below is a hypothesis to test.",
   "recommendations": [
     {
       "id": "R1",
-      "title": "Add a comparison table to the current-account pages",
+      "title": "Cut the number of quoted figures per page",
       "priority": "high",
-      "finding": "No ING page in the measured set includes a comparison table, against a peer mean of 0.44, one of ING's two largest negative gaps at about -0.9 SD.",
-      "recommendation": "Add a compact comparison table on the current-account pack page that lines the packs up side by side on price, included services and conditions, and place it directly above the main call to action.",
+      "finding": "Figures and percentages quoted is ING's largest positive deviation: 25.5 per page against a peer mean of 12.1, a gap of 1.61 standard deviations. Clarity of the offer is also above the peer mean (5.0 vs 3.83), so the volume of numbers is not the thing carrying the clarity.",
+      "recommendation": "On the current-account and index pages, keep only the figures that carry the offer itself (fee, bonus, headline conditions) in the main flow and move every supporting number into a secondary block; test the trimmed page against the current one.",
+      "features": [
+        "numeric_claim_count"
+      ],
+      "page_targets": [
+        "index",
+        "compte-courant"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
+      "id": "R2",
+      "title": "Add more calls to action",
+      "priority": "high",
+      "finding": "Calls to action is ING's largest negative gap: 3.0 per page against a peer mean of 13.75, 0.95 standard deviations below. The opening image occupies 0.53 of the page against a peer mean of 0.29, so the few calls to action that exist compete with imagery for attention.",
+      "recommendation": "Repeat one primary call to action at the top, immediately after the offer block and at the end of the current-account and opening-account pages, so that no section of the page ends without a next step.",
+      "features": [
+        "cta_count",
+        "hero_image_area_ratio"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "index",
+        "ouvrir-compte"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
+      "id": "R3",
+      "title": "Put conditions beside every 'free' claim",
+      "priority": "high",
+      "finding": "ING shows 'free' with conditions attached more often than its peers: 0.5 against a peer mean of 0.2, 0.75 standard deviations above. This feature was scored by a model on a sample of human labels, so treat it as a signal to check on the live pages rather than a precise measurement.",
+      "recommendation": "On the current-account and index pages, place the qualifying conditions directly next to each 'free' claim instead of in a footnote or a separate conditions block further down the page.",
+      "features": [
+        "hidden_conditions_behind_free_claim"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "index"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
+      "id": "R4",
+      "title": "Add an explicit mobile-first layout signal",
+      "priority": "high",
+      "finding": "Designed mobile-first is absent from ING's pages (0.0) against a peer mean of 0.33, while challenger pages in the same set score 0.67. This is a rubric judgement by the people who scored the pages, so inter-rater agreement matters when reading it.",
+      "recommendation": "Rework the current-account and opening-account pages so that the offer, the price and the primary call to action form a single readable column at mobile width before any desktop-only element (side-by-side text and image, wide tables) is added.",
+      "features": [
+        "mobile_first_design_signal"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "ouvrir-compte",
+        "index"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
+      "id": "R5",
+      "title": "Shorten the campaign pages",
+      "priority": "medium",
+      "finding": "Page length is 9,465 px against a peer mean of 6,610.5, 0.72 standard deviations above, and ING already quotes more than twice the peer mean of figures on the same pages. Longer pages here go together with more numbers rather than with more offer.",
+      "recommendation": "Collapse or remove the repeating benefit blocks and duplicated conditions at the bottom of the current-account and index pages, so the offer and its conditions fit into noticeably fewer screens.",
+      "features": [
+        "page_height_px"
+      ],
+      "page_targets": [
+        "index",
+        "compte-courant"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
+      "id": "R6",
+      "title": "Add a comparison table",
+      "priority": "medium",
+      "finding": "Includes a comparison table is 0.0 for ING against a peer mean of 0.4, one of ING's clearest structural gaps (0.82 standard deviations below). The feature is detected automatically, so this is a clean count rather than a judgement.",
+      "recommendation": "Add a compact pack-comparison table to the current-account page and a package overview to the index page, lining up the monthly fee, the card and the included services across ING's own packs.",
       "features": [
         "has_comparison_table"
       ],
@@ -20,113 +103,14 @@
       "market_context": null
     },
     {
-      "id": "R2",
-      "title": "Increase the number of calls to action",
-      "priority": "high",
-      "finding": "ING shows 3.0 calls to action per page against a peer mean of 14.72, a gap of about -1.0 SD, and it is one of the three features that most distinguishes ING from the market.",
-      "recommendation": "Add repeated, clearly worded calls to action at each decision point - after the offer summary, after the comparison table and at the foot of the page - all pointing to the same opening flow rather than introducing new destinations.",
-      "features": [
-        "cta_count"
-      ],
-      "page_targets": [
-        "compte-courant",
-        "ouvrir-compte",
-        "index"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
-      "id": "R3",
-      "title": "Build out the student and young-audience page",
-      "priority": "high",
-      "finding": "Targeting of students or young people is ING's largest signature gap, at 1.0 against a peer mean of 0.22 (about +1.5 SD), though this feature is model-assisted and should be read as a direction rather than a firm measurement.",
-      "recommendation": "Give the jeunes page its own offer framing, proof points and call to action instead of reusing generic current-account copy, and link it prominently from the main current-account page.",
-      "features": [
-        "youth_student_targeting"
-      ],
-      "page_targets": [
-        "jeunes",
-        "compte-courant"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
-      "id": "R4",
-      "title": "Shorten the current-account page",
-      "priority": "medium",
-      "finding": "ING's current-account pages run to about 9,465 px against a peer mean of about 6,611 px (about +0.7 SD), so the page carries substantially more scroll than its peers.",
-      "recommendation": "Cut the page back towards peer length by merging or removing supporting sections, and move secondary detail such as fee schedules and legal text behind a disclosure rather than keeping all of it in the main scroll.",
-      "features": [
-        "page_height_px"
-      ],
-      "page_targets": [
-        "compte-courant"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
-      "id": "R5",
-      "title": "Reduce the opening image",
-      "priority": "medium",
-      "finding": "The opening image takes about 0.53 of the page at ING against a peer mean of about 0.29 (about +0.9 SD), and it is ING's largest positive layout gap.",
-      "recommendation": "Shrink the hero image and spend the freed space on the offer statement and a call to action, keeping the overlaid text-on-image arrangement ING already uses rather than returning to text beside picture.",
-      "features": [
-        "hero_image_area_ratio"
-      ],
-      "page_targets": [
-        "compte-courant",
-        "index"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
-      "id": "R6",
-      "title": "Pair every figure with a plain-language payoff",
-      "priority": "medium",
-      "finding": "ING quotes 25.5 figures or percentages per page against a peer mean of 12.44 (about +1.3 SD), yet its clarity score of 4.5 sits below the peer mean of 4.8, so the highest number volume in the set is not producing the highest clarity.",
-      "recommendation": "For each numeric claim on the current-account and savings pages add one short sentence saying what the number means for the reader, and drop any figure that is not used in the decision itself.",
-      "features": [
-        "numeric_claim_count",
-        "clarity_score"
-      ],
-      "page_targets": [
-        "compte-courant",
-        "comptes-epargne",
-        "compte-a-terme"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
       "id": "R7",
-      "title": "Carry ING's strongest persuasion techniques onto the pages that lack them",
+      "title": "Shrink the opening image",
       "priority": "medium",
-      "finding": "ING uses 3.5 persuasion techniques per page against a peer mean of 2.0 (about +2.1 SD), a rubric-based judgement, while its advantage on offer clarity is narrower (5.0 against 4.4).",
-      "recommendation": "Take the two or three persuasion techniques that recur on ING's strongest current-account page and apply them consistently to the savings, term-account and youth pages, keeping the meaning identical across the French and Dutch versions.",
+      "finding": "Size of the opening image is 0.53 of the page against a peer mean of 0.29, 0.9 standard deviations above, while calls to action sit well below the peer mean at 3.0 against 13.75. The opening image is the largest single element ING commits to before the offer appears.",
+      "recommendation": "Reduce the opening image on the index and current-account pages and use the freed space to bring the offer and one call to action above the fold.",
       "features": [
-        "persuasion_lever_count",
-        "value_prop_clarity"
-      ],
-      "page_targets": [
-        "comptes-epargne",
-        "compte-a-terme",
-        "jeunes"
-      ],
-      "basis": "analysis",
-      "market_context": null
-    },
-    {
-      "id": "R8",
-      "title": "Stop treating animation as a differentiator",
-      "priority": "low",
-      "finding": "ING carries 1.0 animated elements per page against a peer mean of 0.67, but the deck claim that ING is the only traditional bank using animation is not supported - KBC, Crelan, Belfius and Vdk all score above zero. The claim that ING no longer places text next to picture is supported: its most common layout is overlaid.",
-      "recommendation": "Keep animation as a supporting detail and keep the overlaid text-on-image layout, but do not build the page's argument on motion; put that effort into the offer statement and the calls to action instead.",
-      "features": [
-        "animated_asset_count"
+        "hero_image_area_ratio",
+        "cta_count"
       ],
       "page_targets": [
         "index",
@@ -136,46 +120,63 @@
       "market_context": null
     },
     {
+      "id": "R8",
+      "title": "Give the student messages their own calls to action",
+      "priority": "medium",
+      "finding": "Targets students or young people is 1.0 for ING against a peer mean of 0.3, 1.53 standard deviations above — a model-assisted score, so weaker evidence than the automatic counts — while the same pages carry the profile's weakest call-to-action density (3.0 against 13.75).",
+      "recommendation": "On the young-customers page, attach a direct call to action and the conditions of any free offer to each student message rather than leaving all of them to one closing block, and mirror the same pattern on the opening-account page.",
+      "features": [
+        "youth_student_targeting",
+        "cta_count"
+      ],
+      "page_targets": [
+        "jeunes",
+        "ouvrir-compte"
+      ],
+      "basis": "analysis",
+      "market_context": null
+    },
+    {
       "id": "R9",
-      "title": "Have the current-account pack page ready before the campaign window",
+      "title": "Be ready for the early-September current-account window",
       "priority": "high",
-      "finding": "ING search interest for its current-account terms shows a sustained trend for the French term on 2026-08-30 and 2026-09-06 and an isolated spike for the Dutch term on 2026-09-06, with sustained trends continuing to 2026-09-13. Those dates sit inside the 'Level up your banking' repositioning window, whose matched campaigns follow by 1 to 8 days. Any link between that attention and a page change is a hypothesis to verify, not evidence.",
-      "recommendation": "Finalise the compte-courant pack page and its calls to action before the campaign window opens - offer wording aligned with the pack names used in the campaign - rather than updating the page after attention has already peaked.",
+      "finding": "Search interest in ING's current-account terms moved in early September 2026: 'compte à vue ING' shows a sustained trend on 30 August and 6 September 2026 (index 2, score 2.05) and 'ING zichtrekening' an isolated spike on 6 September 2026 (index 7, score 1.63). The same context records an older isolated spike for 'ING zichtrekening' on 22 September 2024 (index 19, score 4.71), and the September 2026 readings are matched to the 'Level up your banking' campaign waves one and eight days earlier, with some rows flagged for seasonal confounding. This is an attention pattern, not proof that any page or campaign caused anything; the link is a hypothesis to verify.",
+      "recommendation": "Have the current-account page's pack offer, pricing and primary call to action finalised and live before the early-September window, and check that the French-language entry path is as ready as the Dutch one.",
       "features": [],
       "page_targets": [
         "compte-courant",
-        "index"
+        "ouvrir-compte"
       ],
       "basis": "trends",
-      "market_context": "ING current-account terms moved on 2026-08-30, 2026-09-06 and 2026-09-13 - one isolated spike and repeated sustained trends - within the 'Level up your banking' campaign window."
+      "market_context": "A sustained-trend pattern on ING's current-account search terms on 30 August and 6 September 2026, plus a Dutch-language isolated spike on 6 September 2026, inside the search window running 2021-09-12 to 2026-09-13."
     },
     {
       "id": "R10",
-      "title": "Prioritise the savings page in the same window",
+      "title": "Prepare the savings page in the same window",
       "priority": "medium",
-      "finding": "Search interest for ING savings shows sustained trends on two consecutive dates, 2026-09-06 and 2026-09-13, putting savings attention alongside current-account attention in the same window. Whether this reflects the campaign or ordinary seasonality is unverified: the 2026-09-06 match is flagged as seasonally confounded, the 2026-09-13 one is not.",
-      "recommendation": "Bring the comptes-epargne page to the same level of readiness as the current-account page for that window - offer statement, figures and a call to action - and have the compte-a-terme page ready as the follow-on destination for visitors who want a fixed term.",
+      "finding": "'compte épargne ING' shows a sustained trend on 6 September 2026 and again on 13 September 2026, matched to the same 'Level up your banking' campaign with delays of 1 and 8 days; the 13 September reading is the one that is not flagged as seasonally confounded. Whether the searches reflect the campaign is unproven, and no search figure says anything about what any page achieved.",
+      "recommendation": "Schedule the savings page refresh into the same delivery slot as the current-account page, completed ahead of the 6 September 2026 window, so the page is not being edited while that attention is open.",
       "features": [],
       "page_targets": [
         "comptes-epargne",
         "compte-a-terme"
       ],
       "basis": "trends",
-      "market_context": "ING savings search interest showed sustained-trend anomalies on 2026-09-06 and 2026-09-13, the second not flagged as seasonally confounded."
+      "market_context": "Repeated sustained-trend readings on ING's French savings term on 6 and 13 September 2026, the second without a seasonal-confound flag, in a window ending 2026-09-13."
     },
     {
       "id": "R11",
-      "title": "Schedule current-account page refreshes ahead of spring and summer",
+      "title": "Set a standing refresh point for the account-pack season",
       "priority": "low",
-      "finding": "Current-account search terms for KBC, a bank covered by the trends data, show isolated spikes clustered between March and August: 2026-03-22 at 27, 2026-05-17 at 19, 2026-07-26 at 25, 2025-08-31 at 27 and 2025-03-16 at 21. No claim is made for banks without trends data, and whether this competitor attention affects ING at all is a hypothesis to verify.",
-      "recommendation": "Plan ING's current-account page reviews and any offer refresh so the page is at its strongest entering those spring and summer windows, rather than refreshing after the attention has passed.",
+      "finding": "KBC, which is also covered by this search context, shows repeated isolated spikes on 'KBC zichtrekening' on 31 August 2025 (index 27, score 2.354), 16 March 2026 (index 21, score 1.743), 17 May 2026 (index 19, score 1.539) and 26 July 2026 (index 25, score 2.15), and on 'Compte Plus KBC' on 10 August 2025 (index 21, score 10.027) — a recurring pattern across seasons, against a single ING account-term spike on 22 September 2024. This is weak, indirect evidence of category seasonality and it covers only the banks marked as covered; it is explicitly a hypothesis, not an outcome.",
+      "recommendation": "Set a standing internal review point ahead of the late-summer period each year at which the current-account and index pages are refreshed, so the pack offer is current before that window rather than during it.",
       "features": [],
       "page_targets": [
         "compte-courant",
         "index"
       ],
       "basis": "trends",
-      "market_context": "KBC current-account term anomalies cluster between March and August across 2025 and 2026, with values between 19 and 27."
+      "market_context": "Recurring isolated spikes in KBC's Dutch current-account search term across late summer 2025 and March, May and July 2026, against a single ING account-term spike on 22 September 2024, within a window ending 2026-09-13."
     }
   ],
   "used_trends": true

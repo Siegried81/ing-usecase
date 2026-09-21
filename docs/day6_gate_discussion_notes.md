@@ -1,12 +1,14 @@
 # Day 6 gate — discussion notes
 
 > **steve 21/09, gate day.** The per-bank table below predates this morning's
-> re-collection: the chain now runs for **10 banks / 12 pages** with nothing
+> re-collection: the chain now runs for **11 banks / 13 pages** with nothing
 > excluded (Belfius has a current-account page; vdk, hellobank and beobank were
-> added), headless geometry renders in this environment, and BNP Paribas Fortis
-> (503) and Revolut (403) remain manual-capture only. The one blocker below is
-> unchanged and is now the single open item: **a second and third human rater** —
-> Siegried's sheet is complete at 23/23, Dan and Stephane are still at 0/23.
+> added; Revolut returned via a static fetch), headless geometry renders in this
+> environment, and BNP Paribas Fortis (503) remains manual-capture only. The one
+> blocker below is unchanged: **an independent second human rater**. Siegried's
+> sheet is complete at 23/23; Stephane's 9 pages were machine-proposed and
+> adopted (the sheet says so); Dan is still at 0/23. Agreement is now measurable
+> for all 13 features, with three below the module's 60% bar.
 
 sieg 15/09, prepared ahead of the Monday gate review. Per the plan (section
 6): the team asks one question — does the chain run end-to-end, from a URL to

@@ -4,8 +4,17 @@ sieg 16/09, rewritten 20/09 the night before the Day 6 gate. Written for the
 business audience per the plan: what this means for ING, no method detail —
 the "how" lives in D-07 and the code, not here.
 
+> **steve 21/09 (second update).** The rubric consensus moved after the first
+> update below: Stephane's sheet was filled for nine pages (machine-proposed and
+> adopted), which shifted 15 columns — all five AIDA booleans on ten pages, the
+> persuasion levers on six — and re-ordered ING's peer gaps. ING is now **0.131**;
+> the leading gaps are figures quoted (+1.61 SD), student targeting (+1.53 SD) and
+> **clarity of the offer (+1.30 SD, rubric-sourced, so it moved with the
+> consensus)**. Treat the per-feature figures below as superseded by
+> `report.json`.
+
 > **steve 21/09 — read this first.** The comparison has moved again since this
-> draft: it is now **10 banks / 12 pages / 29 features with nothing excluded**
+> draft: it is now **11 banks / 13 pages / 25 features with nothing excluded**
 > (Belfius's own current-account page replaced the pension page that kept it out,
 > and vdk/hellobank/beobank were added), and ING's traditional↔challenger score in
 > `report.json` is now **0.183**, not the 0.362 quoted throughout below. The
@@ -37,12 +46,12 @@ the old draft's numbers are wrong for the run they described — they simply
 describe an earlier, smaller or less accurate dataset. This version replaces
 them rather than reconciling them line by line.
 
-**21/09, the scope changed again.** The compared set grew from 9 banks to **10
-banks / 12 pages / 29 features, nothing excluded**: Belfius now has a
+**21/09, the scope changed again.** The compared set grew from 9 banks to **11
+banks / 13 pages / 25 features, nothing excluded**: Belfius now has a
 current-account page (its earlier capture was a pension page in another family,
 which is why it had been sitting out), and three newly-verified banks joined —
 **vdk, hellobank, beobank** — through the freeze rule's addition path. ING's
-score in the regenerated `report.json` is **0.183**. This narrative's per-feature
+score in the regenerated `report.json` was 0.183 then and is **0.131** now. This narrative's per-feature
 figures were read off the 20/09 run, so they are one snapshot behind; the next
 pass (after the rubric session) rewrites them against the 10-bank dataset.
 

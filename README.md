@@ -16,14 +16,17 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 <!-- steve 21/09: refreshed after the Day 6 gate and a full re-collection with
 four new banks. The previous table still described 9 banks / 23 pages. -->
-**21/09, after the Day 6 gate.** The comparison now covers **10 banks across 12
+**21/09, after the Day 6 gate.** The comparison now covers **11 banks across 13
 pages** in the `current_account_pack` family, with **nothing excluded** — up from
 9 banks, which had been held back by Belfius having no page in the compared
-family. 16 pages were collected (14 usable); BNP Paribas Fortis (HTTP 503) and
-Revolut (HTTP 403) remain the two manual-capture-only pages. **The rubric session
-is the live blocker**: Siegried has scored all 23 pages, Dan and Stephane have
-scored none, so the 13 judgement features rest on one human plus the model's own
-`formality_score` until a second and third rater finish.
+family. 16 pages were collected (14 usable); Belfius's own current-account page,
+vdk, hellobank and beobank were added, and Revolut came back through a static
+fetch after its headless render was refused. BNP Paribas Fortis (HTTP 503)
+remains the one manual-capture-only page. **The rubric is the live blocker**:
+Siegried has scored all 23 pages, Stephane's sheet now covers the 9 pages whose
+screenshots are on this machine but those values were machine-proposed and
+adopted (the sheet's notes column says so), and Dan is at 0/23 — so no feature
+yet carries two *independent* human raters.
 
 | Deliverable | State |
 | --- | --- |
@@ -32,7 +35,7 @@ scored none, so the 13 judgement features rest on one human plus the model's own
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated, 10/10 compared banks (real data) |
 | Real captures (D-02) | 16 pages / 10 banks; every bank has a page in the compared family; BNP + Revolut via manual capture |
-| Rubric scoring (Day 5) | **still the live blocker**: Siegried has scored all 23 pages across the 13 features (a few cells blank — `text_image_layout` 20/23, `persuasion_levers` 18/23); Dan and Stephane are at **0/23**, so no feature yet has two independent human raters. The model sheet (third rater, `formality_score` only, 14 pages) is never a pre-fill |
+| Rubric scoring (Day 5) | **still the live blocker**: Siegried 23/23 pages; Stephane 9/23 — machine-proposed from the screenshots and adopted, recorded as such in the sheet; Dan 0/23. Agreement is now measurable for all 13 features over 9–10 pages, and `rubric_sheet.py` flags three below its 60% bar (`persuasion_levers` 0.14, `accent_locations` 0.33, `text_image_layout` 0.56). The model's own sheet is never a pre-fill |
 
 Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.
 
@@ -152,10 +155,10 @@ outputs/                         charts and tables — regenerated every run
 
 ## Next
 
-1. **Finish the joint scoring session** — the single remaining blocker. Siegried's
-   sheet is complete; `data/rubric/{dan,stephane}_scores.csv` need filling so the
-   13 judgement-based features have more than one human rater and the NFR-05
-   agreement figure means something.
+1. **Finish the rubric properly** — the single remaining blocker. Dan's sheet, the
+   14 rows whose screenshots are not on this machine, and a genuinely independent
+   second human: an adopted machine sheet measures the model, not agreement. Then
+   tighten the wording for the three features below the 60% bar.
 2. **Recover BNP Paribas Fortis and Revolut** via the manual-capture path, so the
    traditional/challenger split is not carried by two challengers alone.
 3. **Re-run the analysis after scoring**, then the web export, so the profile
