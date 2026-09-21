@@ -180,7 +180,7 @@ class TrendsContext:
             # the question itself changed.
             return (
                 "No per-product search-interest context. Dan's Trends pipeline was narrowed to "
-                "brand notoriety (three brand sheets, no product sheets), because most smaller "
+                "brand notoriety (brand sheets only, no product sheets), because most smaller "
                 "banks' product terms flattened to near-zero once normalised against ING in the "
                 "same request. Per-product interest is therefore unanswerable, not merely "
                 "uncollected. Brand-level share of search replaces it with a different question - "
@@ -283,14 +283,22 @@ def context_or_none(df: pd.DataFrame, export_dir: str | Path = DEFAULT_EXPORT_DI
 
 
 # -----------------------------------------------------------------------------
-# The full Trends tab - series, anomalies and campaign scorecards.
+# The full Trends tab - brand search series and anomalies.
 # -----------------------------------------------------------------------------
 # steph 18/09. The module above answers one narrow question ("is interest in
 # this bank/product unusually high lately?") and feeds search_interest_context.md.
-# Dan's export carries far more: a five-year weekly series per term, the spikes
-# he detects, and the catalogue of real campaigns matched to those spikes. That
-# is a tab of its own, and the guardrails in this file's docstring apply to all
-# of it: context, never an outcome, never regressed onto a page feature.
+# Dan's export carries more: a five-year weekly series per term and the spikes he
+# detects. That is a tab of its own, and the guardrails in this file's docstring
+# apply to all of it: context, never an outcome, never regressed onto a page
+# feature.
+#
+# dan 21/09: the campaign catalogue that used to live here is GONE. It matched
+# real ad campaigns to detected spikes and scored them, which reads as "this
+# campaign caused this spike" no matter how many caveats surround it - and this
+# project has no performance data to support that reading (PRD 5.2, plan risk
+# P-08). The tab now answers one question only: how much do people search for
+# each bank. Dan's own pipeline still holds the catalogue if it is ever wanted
+# back; nothing was deleted upstream.
 
 
 def display_term(term: str) -> str:
@@ -411,13 +419,13 @@ def anomalies_frame(series: pd.DataFrame) -> pd.DataFrame:
 
 
 # -----------------------------------------------------------------------------
-# Share of search - nine banks on one scale (steph 21/09)
+# Share of search - every bank on one scale (steph 21/09)
 # -----------------------------------------------------------------------------
 # Google Trends returns at most 5 terms per request and its 0-100 values are
 # only comparable WITHIN one request, because each request is rescaled to its
-# own peak. Nine banks therefore need three requests, chained through anchors
-# (ING and KBC, byte-identical in all three) whose ratio between requests gives
-# the factor that puts everything on one scale.
+# own peak. More banks than that therefore need several requests, chained
+# through anchors (ING and KBC, byte-identical in every sheet) whose ratio
+# between requests gives the factor that puts everything on one scale.
 #
 # That chaining is Dan's pipeline step (analysis/share_of_search.py), stored in
 # his brand_share_of_search table and exported as a CSV. We READ it. Re-deriving
@@ -432,7 +440,7 @@ def anomalies_frame(series: pd.DataFrame) -> pd.DataFrame:
 
 @dataclass
 class ShareOfSearch:
-    """Each bank's share of the nine-bank brand-search panel."""
+    """Each bank's share of the brand-search panel."""
 
     ranking: list[dict]
     window_start: str | None
@@ -490,7 +498,7 @@ def load_share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.Data
 
 
 def share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> ShareOfSearch | None:
-    """Rank the nine banks by share of brand search. None when the export is absent."""
+    """Rank every bank by share of brand search. None when the export is absent."""
     try:
         frame = load_share_of_search(export_dir)
     except TrendsUnavailable:
@@ -610,93 +618,6 @@ def share_timeseries(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> list[dict]:
     return sorted(series, key=lambda s: s["bank"])
 
 
-def load_campaign_scorecards(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    path = Path(export_dir) / "campaign_scorecards.csv"
-    return pd.read_csv(path) if path.is_file() else pd.DataFrame()
-
-
-def load_campaign_matches(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    path = Path(export_dir) / "campaign_matches.csv"
-    return pd.read_csv(path) if path.is_file() else pd.DataFrame()
-
-
-def _scorecard_rows(frame: pd.DataFrame) -> list[dict]:
-    rows = []
-    for _, r in frame.iterrows():
-        bank_code = str(r.get("bank", ""))
-        targets = [t for t in str(r.get("target_fiches") or "").split(";") if t]
-        rows.append({
-            "id": int(r["id"]),
-            "bank": BANK_DISPLAY.get(bank_code, bank_code),
-            "key": BANK_MAP.get(bank_code, bank_code.lower()),
-            "name": r.get("name"),
-            "language": r.get("language"),
-            "startDate": _iso(r.get("start_date")),
-            "endDate": _iso(r.get("end_date")),
-            "confidence": r.get("date_confidence"),
-            "type": r.get("campaign_type"),
-            "targetFiches": targets,
-            "status": r.get("status"),
-            "reason": _iso(r.get("not_scorable_reason")),
-            "anomalyCount": int(_number(r.get("anomaly_count")) or 0),
-            "fichesTouched": int(_number(r.get("fiches_touched")) or 0),
-            "seasonalConfounds": int(_number(r.get("seasonal_confound_count")) or 0),
-            "rawScore": round(_number(r.get("raw_score")) or 0.0, 3),
-            "finalScore": round(_number(r.get("final_score")) or 0.0, 3),
-        })
-    return rows
-
-
-def _match_rows(frame: pd.DataFrame) -> list[dict]:
-    rows = []
-    for _, r in frame.iterrows():
-        confound = r.get("possible_seasonal_confound")
-        rows.append({
-            "campaignId": int(r["campaign_id"]),
-            "campaignName": r.get("campaign_name"),
-            "campaignBank": BANK_DISPLAY.get(str(r.get("campaign_bank")), r.get("campaign_bank")),
-            "productId": r.get("product_id"),
-            "term": display_term(str(r.get("term"))),
-            "date": _iso(r.get("date")),
-            "type": r.get("anomaly_type"),
-            "label": ANOMALY_TYPES.get(str(r.get("anomaly_type")), r.get("anomaly_type")),
-            "score": _number(r.get("deviation_score")),
-            "delayDays": None if _number(r.get("delay_days")) is None else int(_number(r.get("delay_days"))),
-            "seasonalConfound": bool(confound) if not (isinstance(confound, float) and pd.isna(confound)) else False,
-            "contribution": _number(r.get("contribution")),
-        })
-    return rows
-
-
-def _campaign_rollup(scorecards: list[dict]) -> tuple[list[dict], list[dict]]:
-    """Per-bank campaign summary and type mix, computed here so the UI does no arithmetic."""
-    order: list[str] = []
-    for card in scorecards:
-        if card["bank"] not in order:
-            order.append(card["bank"])
-
-    summary, by_type = [], []
-    for bank in order:
-        rows = [c for c in scorecards if c["bank"] == bank]
-        scorable = [c for c in rows if c["status"] == "scorable"]
-        total = sum(c["finalScore"] for c in scorable)
-        hits = sum(1 for c in scorable if c["finalScore"] > 0)
-        summary.append({
-            "bank": bank,
-            "catalogued": len(rows),
-            "scorable": len(scorable),
-            "totalScore": round(total, 3),
-            "averageScore": round(total / len(scorable), 3) if scorable else 0.0,
-            "successRate": round(hits / len(scorable), 3) if scorable else 0.0,
-        })
-        mix = {"brand": 0, "product": 0, "sponsoring": 0, "csr": 0, "other": 0}
-        for c in rows:
-            key = str(c["type"] or "other")
-            mix[key] = mix.get(key, 0) + 1
-        by_type.append({"bank": bank, **mix})
-    return summary, by_type
-
-
 def _display_for_key(key: str) -> str:
     for code, canonical in BANK_MAP.items():
         if canonical == key:
@@ -777,9 +698,6 @@ def build_trends_dashboard(
     covered = [k for k in captured_keys if k in present_keys]
     uncovered = [k for k in captured_keys if k not in present_keys]
 
-    scorecards = _scorecard_rows(load_campaign_scorecards(export_dir))
-    matches = _match_rows(load_campaign_matches(export_dir))
-    summary, by_type = _campaign_rollup(scorecards)
     share = share_of_search(export_dir)
 
     return {
@@ -828,14 +746,6 @@ def build_trends_dashboard(
              "date": e["date"], "label": e["label"]}
             for e in KNOWN_EVENTS
         ],
-        "campaigns": {
-            "catalogued": len(scorecards),
-            "scorable": sum(1 for c in scorecards if c["status"] == "scorable"),
-            "scorecards": sorted(scorecards, key=lambda c: c["finalScore"], reverse=True),
-            "matches": matches,
-            "summary": summary,
-            "byType": by_type,
-        },
         "guardrail": (
             "Google Trends measures what people searched for, not what any campaign "
             "achieved. It is context, never an outcome: nothing here links a page or a "

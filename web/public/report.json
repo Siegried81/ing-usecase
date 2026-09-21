@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T10:25:52+00:00",
+  "generated_at": "2026-09-21T10:39:44+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -2187,7 +2187,6 @@
     "uncovered": [],
     "n_series": 5764,
     "n_anomalies": 262,
-    "n_campaigns": 21,
     "data_url": "trends.json"
   },
   "reputation": {

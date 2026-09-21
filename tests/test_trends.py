@@ -179,37 +179,12 @@ def test_anomalies_frame_keys_by_product_term_and_bank():
 
 
 # --- the full Trends tab: the dashboard payload ------------------------------
-def _campaign_exports(export_dir: Path) -> None:
-    pd.DataFrame([
-        {"id": 1, "bank": "ING", "name": "Level up", "language": "FR+NL",
-         "start_date": "2026-09-05", "end_date": None, "date_confidence": "exact",
-         "campaign_type": "brand", "target_fiches": "compte_a_vue;compte_epargne",
-         "status": "scorable", "not_scorable_reason": None, "anomaly_count": 2,
-         "fiches_touched": 2, "seasonal_confound_count": 1, "raw_score": 4.0,
-         "breadth_multiplier": 1.5, "final_score": 6.0},
-        {"id": 2, "bank": "KBC", "name": "Kate", "language": "NL",
-         "start_date": "2025-10", "end_date": None, "date_confidence": "approximate",
-         "campaign_type": "product", "target_fiches": "app_mobile",
-         "status": "scorable", "not_scorable_reason": None, "anomaly_count": 0,
-         "fiches_touched": 0, "seasonal_confound_count": 0, "raw_score": 0.0,
-         "breadth_multiplier": 1.0, "final_score": 0.0},
-    ]).to_csv(export_dir / "campaign_scorecards.csv", index=False)
-    pd.DataFrame([
-        {"campaign_id": 1, "campaign_name": "Level up", "campaign_bank": "ING",
-         "product_id": "compte_a_vue", "term": "ING zichtrekening", "anomaly_bank": "ING",
-         "date": "2026-09-06", "anomaly_type": "sustained_trend", "deviation_score": 2.05,
-         "delay_days": 1, "possible_seasonal_confound": True,
-         "overlapping_campaign_ids": None, "contribution": 1.23},
-    ]).to_csv(export_dir / "campaign_matches.csv", index=False)
-
-
 def test_dashboard_is_none_when_the_export_is_absent(tmp_path, campaigns):
     assert build_trends_dashboard(campaigns, tmp_path / "nope") is None
 
 
-def test_dashboard_carries_series_anomalies_and_campaigns(tmp_path, campaigns):
+def test_dashboard_carries_series_and_anomalies(tmp_path, campaigns):
     _export(tmp_path)
-    _campaign_exports(tmp_path / "export")
 
     dashboard = build_trends_dashboard(campaigns, tmp_path / "export")
     assert dashboard is not None and dashboard["available"]
@@ -223,14 +198,17 @@ def test_dashboard_carries_series_anomalies_and_campaigns(tmp_path, campaigns):
     # Coverage names the banks Dan has no search sheet for.
     assert "revolut" in [u.lower() for u in dashboard["coverage"]["uncovered"]]
 
-    campaigns_out = dashboard["campaigns"]
-    assert campaigns_out["catalogued"] == 2
-    assert campaigns_out["scorable"] == 2
-    ing = next(s for s in campaigns_out["summary"] if s["bank"] == "ING")
-    kbc = next(s for s in campaigns_out["summary"] if s["bank"] == "KBC")
-    assert ing["totalScore"] == 6.0 and ing["successRate"] == 1.0
-    assert kbc["successRate"] == 0.0
-    assert campaigns_out["matches"][0]["campaignId"] == 1
+
+def test_dashboard_no_longer_carries_a_campaign_catalogue(tmp_path, campaigns):
+    """dan 21/09: the catalogue matched real ad campaigns to detected spikes and
+    scored them. However it was captioned, a reader takes "this campaign scored 6
+    on these spikes" as cause and effect - and this project has no performance
+    data that could support that (PRD 5.2, plan risk P-08). The tab answers one
+    question now: how much each bank is searched for. Pinned as a test so the
+    block cannot drift back in with the next export refresh."""
+    _export(tmp_path)
+    dashboard = build_trends_dashboard(campaigns, tmp_path / "export")
+    assert "campaigns" not in dashboard
 
 
 def test_dashboard_attaches_anomalies_to_the_right_term(tmp_path, campaigns):

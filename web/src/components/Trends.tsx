@@ -1,7 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
 import type {
-  CampaignMatch,
-  CampaignScore,
   TrendAnomaly,
   ShareOfSearch,
   TrendsPayload,
@@ -12,8 +10,6 @@ import type {
 const TERM_COLOURS = ["#2a78d6", "#eb6834", "#1a7f4b", "#8a5cf6", "#9a6a00"];
 
 const CHART = { w: 760, h: 300, top: 14, right: 16, bottom: 28, left: 42 };
-
-const pct = (v: number) => `${Math.round(v * 100)}%`;
 
 /**
  * Google Trends measures search attention, not campaign performance. This tab
@@ -29,7 +25,6 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
   const [error, setError] = useState<string | null>(null);
   const [bankKey, setBankKey] = useState<string>("");
   const [productId, setProductId] = useState<string>("");
-  const [campaignId, setCampaignId] = useState<number | null>(null);
   const [anomalySortKey, setAnomalySortKey] = useState<"date" | "term" | "label" | "value" | "score">("score");
   const [anomalySortDir, setAnomalySortDir] = useState<"asc" | "desc">("desc");
 
@@ -50,7 +45,6 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         const focus = payload.banks.find((b) => b.key === "ing") ?? payload.banks[0];
         setBankKey(focus?.key ?? "");
         setProductId(focus?.products[0]?.id ?? "");
-        setCampaignId(payload.campaigns.scorecards[0]?.id ?? null);
       })
       .catch((e) => setError(String(e)));
   }, [summary]);
@@ -104,10 +98,6 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
     }
     return ((av as number) - (bv as number)) * dir;
   });
-  const selectedCampaign = data.campaigns.scorecards.find((c) => c.id === campaignId) ?? null;
-  const matches = selectedCampaign
-    ? data.campaigns.matches.filter((m) => m.campaignId === selectedCampaign.id)
-    : [];
 
   return (
     <>
@@ -120,7 +110,6 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         <span>
           {data.window.start} → {data.window.end}
         </span>
-        <span>{data.campaigns.catalogued} campaigns catalogued</span>
       </div>
 
       {data.coverage.uncovered.length > 0 && (
@@ -134,12 +123,13 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
 
       <section>
         <div className="section-head">
-          <h2>Search interest by bank and product</h2>
+          <h2>How much each bank is searched for</h2>
           <p>
-            Weekly Google search interest in Belgium over five years (0–100, relative within a
-            sheet). Markers are the anomalies Dan&rsquo;s own detector flags: a diamond is a single
-            week, a dot is two or more consecutive weeks above both the term&rsquo;s baseline and its
-            normal seasonal level.
+            The weekly series behind the ranking above: Google search interest in Belgium over
+            five years, 0–100 relative to the peak <em>within each request</em> — which is why two
+            banks from different requests cannot be compared here, only in the chained ranking.
+            Markers are flagged weeks: a diamond is a single week, a dot is two or more consecutive
+            weeks above both the term&rsquo;s own baseline and its normal seasonal level.
           </p>
         </div>
 
@@ -238,154 +228,10 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
         )}
       </section>
 
-      <section>
-        <div className="section-head">
-          <h2>Campaigns matched to those spikes</h2>
-          <p>
-            Dan catalogued real ING, KBC and CBC campaigns by hand and matched them to detected
-            anomalies. A match is a date coincidence to verify, not proof that the campaign moved
-            the search number — most rows carry a possible seasonal confound.
-          </p>
-        </div>
-
-        <div className="card">
-          <div className="table-scroll wide">
-            <table className="claims">
-              <thead>
-                <tr>
-                  <th>Bank</th>
-                  <th>Catalogued</th>
-                  <th>Scorable</th>
-                  <th>Total score</th>
-                  <th>Average</th>
-                  <th>With a matched spike</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.campaigns.summary.map((s) => (
-                  <tr key={s.bank}>
-                    <td className="claim">{s.bank}</td>
-                    <td>{s.catalogued}</td>
-                    <td>{s.scorable}</td>
-                    <td>{s.totalScore.toFixed(2)}</td>
-                    <td>{s.averageScore.toFixed(2)}</td>
-                    <td>{pct(s.successRate)}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="muted-note" style={{ marginTop: 10 }}>
-            A brand or sponsoring campaign is structurally less likely to match a product term —
-            read the score with its type, not against a product campaign.
-          </p>
-        </div>
-
-        <div className="card" style={{ marginTop: 14 }}>
-          <div className="table-scroll wide">
-            <table className="claims">
-              <thead>
-                <tr>
-                  <th>Score</th>
-                  <th>Bank</th>
-                  <th>Campaign</th>
-                  <th>Type</th>
-                  <th>Spikes</th>
-                  <th>Sheets</th>
-                  <th>Dates</th>
-                </tr>
-              </thead>
-              <tbody>
-                {data.campaigns.scorecards.map((c) => (
-                  <CampaignRow
-                    key={c.id}
-                    campaign={c}
-                    selected={c.id === campaignId}
-                    onSelect={() => setCampaignId(c.id)}
-                  />
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {selectedCampaign && (
-          <div className="card" style={{ marginTop: 14 }}>
-            <h3 className="sub-h">{selectedCampaign.name}</h3>
-            {matches.length === 0 ? (
-              <p className="muted-note">
-                No detected spike falls in this campaign&rsquo;s window — the campaign is catalogued
-                but unmatched.
-              </p>
-            ) : (
-              <div className="table-scroll wide">
-                <table className="claims">
-                  <thead>
-                    <tr>
-                      <th>Spike date</th>
-                      <th>Product sheet</th>
-                      <th>Term</th>
-                      <th>Kind</th>
-                      <th>Deviation</th>
-                      <th>Delay</th>
-                      <th>Seasonal confound</th>
-                      <th>Contribution</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {matches.map((m: CampaignMatch, i) => (
-                      <tr key={`${m.productId}-${m.date}-${i}`}>
-                        <td>{m.date}</td>
-                        <td>{m.productId}</td>
-                        <td className="claim">{m.term}</td>
-                        <td>{m.label}</td>
-                        <td>{m.score === null ? "—" : m.score.toFixed(2)}</td>
-                        <td>{m.delayDays === null ? "—" : `${m.delayDays}d`}</td>
-                        <td>{m.seasonalConfound ? "possible" : "no"}</td>
-                        <td>{m.contribution === null ? "—" : m.contribution.toFixed(2)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </div>
-        )}
-      </section>
     </>
   );
 }
 
-function CampaignRow({
-  campaign,
-  selected,
-  onSelect,
-}: {
-  campaign: CampaignScore;
-  selected: boolean;
-  onSelect: () => void;
-}) {
-  return (
-    <tr className={selected ? "campaign-row selected" : "campaign-row"} onClick={onSelect}>
-      <td className="score-cell">{campaign.finalScore.toFixed(2)}</td>
-      <td>{campaign.bank}</td>
-      <td className="claim">{campaign.name}</td>
-      <td>{campaign.type}</td>
-      <td>{campaign.anomalyCount}</td>
-      <td>{campaign.fichesTouched}</td>
-      <td>
-        {campaign.startDate ?? "—"}
-        {campaign.endDate ? ` → ${campaign.endDate}` : ""}
-        {campaign.confidence !== "exact" ? ` (${campaign.confidence})` : ""}
-      </td>
-    </tr>
-  );
-}
-
-/**
- * A small SVG line chart. No chart library: the repo's other charts are
- * hand-drawn too, and a dependency for one tab is not worth the bundle.
- */
 function TermChart({
   terms,
   events,
@@ -487,7 +333,7 @@ function TermChart({
  * Share of search: the ranking answers "who is first", the sentence under it
  * answers "and why", and the method sits folded underneath.
  *
- * The order is the point. Nine overlaid series cannot answer "who leads", so
+ * The order is the point. A dozen overlaid series cannot answer "who leads", so
  * the sorted bars come first and the weekly detail is demoted below the fold.
  * Every figure is handed over by comparator/trends.py; nothing is computed
  * here and no sentence is hardcoded, so a later collection run cannot leave a
@@ -571,7 +417,10 @@ function ShareOfSearchView({ share }: { share: ShareOfSearch }) {
       </div>
 
       <details>
-        <summary>How nine banks fit on one scale</summary>
+        {/* counted, not written: this said "nine" while the panel had grown to 14 */}
+        <summary>
+          How {share.ranking.length} banks fit on one scale
+        </summary>
         <p>{share.method.why}</p>
         <p>{share.method.aggregation}</p>
         <p>

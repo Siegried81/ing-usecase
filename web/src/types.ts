@@ -184,7 +184,6 @@ export interface TrendsSummary {
   uncovered: string[];
   n_series: number;
   n_anomalies: number;
-  n_campaigns: number;
   data_url: string;
 }
 
@@ -227,58 +226,9 @@ export interface TrendEvent {
   label: string;
 }
 
-export interface CampaignScore {
-  id: number;
-  bank: string;
-  key: string;
-  name: string;
-  language: string;
-  startDate: string | null;
-  endDate: string | null;
-  confidence: string;
-  type: string;
-  targetFiches: string[];
-  status: string;
-  reason: string | null;
-  anomalyCount: number;
-  fichesTouched: number;
-  seasonalConfounds: number;
-  rawScore: number;
-  finalScore: number;
-}
 
-export interface CampaignMatch {
-  campaignId: number;
-  campaignName: string;
-  campaignBank: string;
-  productId: string;
-  term: string;
-  date: string;
-  type: string;
-  label: string;
-  score: number | null;
-  delayDays: number | null;
-  seasonalConfound: boolean;
-  contribution: number | null;
-}
 
-export interface CampaignSummary {
-  bank: string;
-  catalogued: number;
-  scorable: number;
-  totalScore: number;
-  averageScore: number;
-  successRate: number;
-}
 
-export interface CampaignTypeMix {
-  bank: string;
-  brand: number;
-  product: number;
-  sponsoring: number;
-  csr: number;
-  other: number;
-}
 
 /** One bank's standing in the nine-bank brand-search panel.
  * `lowConfidence` means the raw 0-100 series never cleared the measurable
@@ -333,14 +283,6 @@ export interface TrendsPayload {
   shareOfSearch: ShareOfSearch | null;
   banks: TrendBank[];
   events: TrendEvent[];
-  campaigns: {
-    catalogued: number;
-    scorable: number;
-    scorecards: CampaignScore[];
-    matches: CampaignMatch[];
-    summary: CampaignSummary[];
-    byType: CampaignTypeMix[];
-  };
   guardrail: string;
 }
 
