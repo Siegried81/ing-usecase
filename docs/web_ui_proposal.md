@@ -48,7 +48,7 @@ analysis. I would build that first and treat the rest as optional.
 | Provenance | a UI that lets someone hand-edit an extracted feature destroys the audit trail. Rubric scores are the one exception, because they are human by design |
 
 **A tradeoff worth stating once.** Dan already has a working Streamlit app in
-`kbc-ing-benchmark/`. Streamlit would get 80% of the value below in about a day;
+`trends-benchmark/`. Streamlit would get 80% of the value below in about a day;
 React is roughly 4–5 days for the full scope. With 8 working days left and two
 presentations to deliver, that is a real cost. If the goal is *a usable tool for
 the team*, Streamlit wins. If the goal is *something to show the business on

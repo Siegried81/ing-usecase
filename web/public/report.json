@@ -1,4 +1,6 @@
 {
+  "generated_at": "2026-09-21T10:39:44+00:00",
+  "dataset": "data\\processed\\campaigns_scored.csv",
   "generated_at": "2026-09-21T10:14:13+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
@@ -2163,35 +2165,35 @@
   "generated": [],
   "trends": {
     "available": true,
-    "source": "Dan's kbc-ing-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
+    "source": "Dan's trends-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
     "window": {
       "start": "2021-09-12",
-      "end": "2026-09-13"
+      "end": "2026-09-20"
     },
     "covered": [
       "Argenta",
+      "Belfius",
+      "Beobank",
       "BNP Paribas Fortis",
       "bunq",
       "CBC",
       "Crelan",
+      "Hello bank!",
       "ING",
       "KBC",
+      "Keytrade Bank",
       "N26",
-      "Revolut"
+      "Revolut",
+      "VDK Bank"
     ],
-    "uncovered": [
-      "Belfius",
-      "Beobank",
-      "Hellobank",
-      "Keytrade",
-      "Vdk"
-    ],
-    "n_series": 33536,
-    "n_anomalies": 1155,
-    "n_campaigns": 21,
+    "uncovered": [],
+    "n_series": 5764,
+    "n_anomalies": 262,
     "data_url": "trends.json"
   },
   "reputation": {
+    "available": false,
+    "banks": {}
     "available": true,
     "banks": {
       "argenta": {

@@ -184,7 +184,6 @@ export interface TrendsSummary {
   uncovered: string[];
   n_series: number;
   n_anomalies: number;
-  n_campaigns: number;
   data_url: string;
 }
 
@@ -227,57 +226,53 @@ export interface TrendEvent {
   label: string;
 }
 
-export interface CampaignScore {
-  id: number;
+
+
+
+
+/** One bank's standing in the nine-bank brand-search panel.
+ * `lowConfidence` means the raw 0-100 series never cleared the measurable
+ * floor because it shared a Google Trends request with a term peaking at 100 -
+ * the share is quantisation as much as measurement. Never hide such a row;
+ * label it. */
+export interface ShareOfSearchRow {
+  rank: number;
   bank: string;
   key: string;
-  name: string;
-  language: string;
-  startDate: string | null;
-  endDate: string | null;
-  confidence: string;
-  type: string;
-  targetFiches: string[];
-  status: string;
-  reason: string | null;
-  anomalyCount: number;
-  fichesTouched: number;
-  seasonalConfounds: number;
-  rawScore: number;
-  finalScore: number;
+  segment: string;
+  sharePct: number;
+  rawPeak: number;
+  lowConfidence: boolean;
+  sourceSheet: string;
 }
 
-export interface CampaignMatch {
-  campaignId: number;
-  campaignName: string;
-  campaignBank: string;
-  productId: string;
-  term: string;
-  date: string;
-  type: string;
-  label: string;
-  score: number | null;
-  delayDays: number | null;
-  seasonalConfound: boolean;
-  contribution: number | null;
-}
-
-export interface CampaignSummary {
-  bank: string;
-  catalogued: number;
-  scorable: number;
-  totalScore: number;
-  averageScore: number;
-  successRate: number;
-}
-
-export interface CampaignTypeMix {
-  bank: string;
-  brand: number;
-  product: number;
-  sponsoring: number;
-  csr: number;
-  other: number;
+/** Share of search across more banks than one Trends request can hold.
+ * Every figure here is computed in comparator/trends.py - the UI does no
+ * arithmetic, so there is no second definition of any number on screen. */
+export interface ShareOfSearch {
+  ranking: ShareOfSearchRow[];
+  series: { bank: string; key: string; points: TrendPoint[] }[];
+  window: { start: string | null; end: string | null };
+  weeks: number;
+  headline: {
+    sentence: string;
+    leader: string;
+    leaderShare: number;
+    focusRank: number | null;
+    focusShare: number | null;
+    traditionalShare: number;
+    challengerShare: number;
+    segmentSentence: string;
+  };
+  method: {
+    why: string;
+    referenceSheet: string;
+    anchors: string[];
+    scaleFactors: Record<string, number>;
+    aggregation: string;
+  };
+  lowConfidence: string[];
+  caveat: string;
 }
 
 export interface TrendsPayload {
@@ -285,16 +280,9 @@ export interface TrendsPayload {
   source: string;
   window: { start: string | null; end: string | null };
   coverage: { covered: string[]; uncovered: string[] };
+  shareOfSearch: ShareOfSearch | null;
   banks: TrendBank[];
   events: TrendEvent[];
-  campaigns: {
-    catalogued: number;
-    scorable: number;
-    scorecards: CampaignScore[];
-    matches: CampaignMatch[];
-    summary: CampaignSummary[];
-    byType: CampaignTypeMix[];
-  };
   guardrail: string;
 }
 

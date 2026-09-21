@@ -77,7 +77,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--trends-dir", type=Path, default=None,
-        help="Dan's kbc-ing-benchmark/export directory. Adds search-interest CONTEXT "
+        help="Dan's trends-benchmark/export directory. Adds search-interest CONTEXT "
              "for ING/KBC/CBC. Skipped silently when absent.",
     )
     parser.add_argument(
@@ -323,7 +323,7 @@ def main() -> int:
         print(trends_ctx.render())
         (args.outdir / "search_interest_context.md").write_text(
             "# Search interest context\n\n"
-            "> Google Trends, via Dan's kbc-ing-benchmark. **Context, not performance.**\n"
+            "> Google Trends, via Dan's trends-benchmark. **Context, not performance.**\n"
             "> This is what people searched for, not what any campaign achieved, and the\n"
             "> pages captured are today's pages - not the pages live during an older spike.\n\n"
             "```\n" + trends_ctx.render() + "\n```\n", encoding="utf-8")

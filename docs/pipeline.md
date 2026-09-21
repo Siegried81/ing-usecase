@@ -163,7 +163,7 @@ paragraph.
 
 Both optional signals degrade instead of failing:
 
-- **Trends** (`web/public/trends.json`) needs Dan's `kbc-ing-benchmark/export/`.
+- **Trends** (`web/public/trends.json`) needs Dan's `trends-benchmark/export/`.
   Absent, the exporter writes no `trends.json` and the tab shows an empty state.
 - **Reputation** (`outputs/reputation.json`, and the `reputation` block in
   `report.json`) needs `NEWSAPI_KEY` and/or `NEWSAPI_AI_KEY`. With neither set,
