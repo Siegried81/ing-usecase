@@ -43,11 +43,21 @@ renders an empty state; nothing else is affected. The pipeline only reads Dan's 
 export — it does not need `pytrends`, `streamlit` or `plotly`.
 
 **Reputation** shows recent news headline *themes* per bank (innovation,
-crisis, results, ...) from NewsAPI, classified by one structured model call -
-counts only, deliberately never sentiment (see
-`comparator/reputation.py`'s docstring for why). Renders an honest "not
-configured" state when `NEWSAPI_KEY` is unset, same pattern as Trends when
-Dan's export is missing - nothing else is affected either way.
+crisis, results, ...), classified by one structured model call - counts only,
+deliberately never sentiment (see `comparator/reputation.py`'s docstring for
+why). Two differently named companies are supported at once: `NEWSAPI_KEY`
+(newsapi.org) and `NEWSAPI_AI_KEY` (newsapi.ai / Event Registry). Headlines from
+every configured key are **merged and de-duplicated**, and each is queried in
+**English, French and Dutch** - Belgian bank news is mostly not in English
+("Belfius" returned 0 English title matches against 22 French and 11 Dutch).
+Event Registry is sorted by relevance inside a 90-day window and newsapi.org is
+restricted to title/description, because its body search answered a query for
+"bank" with football and politics.
+
+With neither key set it renders an honest "not configured" state, same pattern as
+Trends when Dan's export is missing. Note that `available: true` means *a key is
+configured*, not that articles were returned: a working key with a thin 90-day
+window yields an empty bank snapshot rather than claiming the tab is unconfigured.
 
 **Recommendations** is the one place a model is allowed to opine. It asks the
 pinned model to turn this run's own numbers into advice, shows each
@@ -55,6 +65,16 @@ recommendation next to the features it was argued from, and lets a reader **tick
 the ones worth implementing**. Only the ticked subset is passed to the site
 builder. A feature id the model invented is dropped before the list is shown, so
 nothing links to evidence that does not exist.
+
+**Include Google Trends** is an opt-in on the same tab. Ticked, the model gets a
+deterministic slice of `trends.json` - the run's captured banks, the measured
+product family, the last 24 months - as an explicitly fenced *context-only*
+block, and adds 2-4 **timing and focus** recommendations on top of the analysis
+ones. They come back tagged `basis: "trends"`, render in their own visually
+separated group, and are forbidden by the prompt from citing a page feature as
+evidence: search interest is never proof that a page or campaign performed. The
+toggle loads already-ticked when the saved set used trends, so regenerating does
+not silently drop them.
 
 The **Generate ING website** button turns the selected recommendations into ten
 HTML pages in ING's house style - orange `#FF6200`, ING blue `#000066`, black and
@@ -68,6 +88,29 @@ off as generated. When it is ready, **Browse generated website** opens it.
 The site is written to `outputs/generated_site/` and served at `/site/`. Nothing
 in the generated copy invents a rate, fee or product term: placeholders like
 `[TAUX]` mark every figure a compliance team would have to supply.
+
+**Explain each section** is the second checkbox on the build row. With it on, the
+model also tags each section with the recommendations it implements and a
+one-sentence rationale in the page language, and the renderer puts a glowing box
+around every section that acts on a recommendation - drawn on the content column,
+not the full-bleed band. A round **(i)** button sits at the end of that section;
+clicking it opens a balloon *above* it naming the recommendation ids and titles
+with the rationale. While a balloon is open that section's glow switches from a
+quiet ING-orange outline to a **slow yellow flicker** (3.2s), yellow on purpose
+so the "explanation open" state cannot be mistaken for the brand treatment.
+
+A slim bar above the site ("Show recommendation explanations") turns the whole
+layer off so the site can be shown as a normal site, and the choice is remembered
+across the ten pages via `localStorage`. Pages that no recommendation targets are
+told to borrow the site-wide advice that genuinely applies, and a page that comes
+back with no cited section at all is retried - every page gets at least one box.
+
+Explanation mode is also what forced the copy rules into the page prompt: the
+first explained run produced meta copy ("Add alt text to every image", "When we
+review this page"), so the prompt now states that all copy is customer product
+copy, bans references to the page, the analysis or the recommendations, leaves
+structural recommendations (alt text, CTA count, contrast) to the template, and
+confines any mention of a recommendation to the rationale.
 
 ## What it deliberately does
 

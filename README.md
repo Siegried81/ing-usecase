@@ -14,226 +14,95 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- sieg 20/09: refreshed the night before the Day 6 gate (Mon 21). The table below was still
-describing 18/09 (7 banks, Belfius/BNP "absent for an undocumented reason") while the dataset had
-moved past it - see docs/D01 and docs/day6_gate_discussion_notes.md for the per-bank detail. -->
-Day 5 of 10 (sieg 20/09), the night before the Day 6 gate (Mon 21 Sep). All 9 banks are now in the
-analysis (Belfius's earlier absence from `bank_profiles.json` was a scope gap - it had no page in
-the compared product family - not a bug; it now has one). 23 real pages across 9 banks, up from 14.
-`config/feature_dictionary.yaml` is at 104 features (3 additive fields since Day 2: `target_personas`,
-`cross_sold_products`, `subscription_style_framing`). **The rubric session is the live blocker**:
-Siegried has scored all 23 pages; Dan and Stephane are at 0/23
-(`data/rubric/{dan,stephane}_scores.csv`) - the 13 human-scored features stay blank for every bank
-until at least one more independent rater finishes, per `outputs/limitations.md`. Headless-render
-geometry fields (`page_height_px` and three others) still wait on a working Chromium in the
-collection environment.
+<!-- steve 21/09: refreshed after the Day 6 gate and a full re-collection with
+four new banks. The previous table still described 9 banks / 23 pages. -->
+**21/09, after the Day 6 gate.** The comparison now covers **10 banks across 12
+pages** in the `current_account_pack` family, with **nothing excluded** — up from
+9 banks, which had been held back by Belfius having no page in the compared
+family. 16 pages were collected (14 usable); BNP Paribas Fortis (HTTP 503) and
+Revolut (HTTP 403) remain the two manual-capture-only pages. **The rubric session
+is the live blocker**: Siegried has scored all 23 pages, Dan and Stephane have
+scored none, so the 13 judgement features rest on one human plus the model's own
+`formality_score` until a second and third rater finish.
 
 | Deliverable | State |
 | --- | --- |
-| Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — 104 features, `feature_dictionary.frozen.yaml` in sync |
-| Dataset schema + validator (D-04) | built and tested |
+| Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — **104 features**, both dictionary copies in sync |
+| Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
-| Bank profile cards | generated, 9/9 banks (real data) |
-| Real captures (D-02) | 9/9 banks, 23 pages; BNP's manual-capture path confirmed working |
-| Rubric scoring (Day 5) | Siegried: 23/23. Dan, Stephane: 0/23. Model column filled in separately as a third rater |
+| Bank profile cards | generated, 10/10 compared banks (real data) |
+| Real captures (D-02) | 16 pages / 10 banks; every bank has a page in the compared family; BNP + Revolut via manual capture |
+| Rubric scoring (Day 5) | **still the live blocker**: Siegried has scored all 23 pages across the 13 features (a few cells blank — `text_image_layout` 20/23, `persuasion_levers` 18/23); Dan and Stephane are at **0/23**, so no feature yet has two independent human raters. The model sheet (third rater, `formality_score` only, 14 pages) is never a pre-fill |
 
-## Quick start
+Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.
+
+## Start here
+
+| I want to… | Read |
+| --- | --- |
+| run collection, scoring, analysis and the export | [`docs/pipeline.md`](docs/pipeline.md) |
+| understand why it is built this way, and what it refuses to claim | [`docs/design.md`](docs/design.md) |
+| use the business web UI (Analysis, Trends, Reputation, Recommendations) | [`web/README.md`](web/README.md) |
+| know what was decided and when | [`docs/decisions.md`](docs/decisions.md) |
+| see the bank scope and compliance position | [`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md) |
+
+### Every document in the repo
+
+| File | What it is |
+| --- | --- |
+| [`docs/pipeline.md`](docs/pipeline.md) | **runbook** — commands in order, where data lands, the quality gate, manual capture, optional signals |
+| [`docs/design.md`](docs/design.md) | **design** — the feature-dictionary contract, the freeze rule, one pinned model, what the validator refuses, what analysis answers |
+| [`docs/decisions.md`](docs/decisions.md) | **decision log** — what was decided, when, and why (dated entries) |
+| [`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md) | **scope + compliance** — banks in scope, product family and language choices, per-domain robots.txt findings |
+| [`docs/D06_business_narrative.md`](docs/D06_business_narrative.md) | **business narrative (D-06)** — draft insights for the ING audience; figures pending re-verification after the 21/09 scope change |
+| [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | **generated** from `config/feature_dictionary.yaml` by `scripts/build_feature_docs.py` — never edit by hand |
+| [`data/rubric/SCORING_GUIDE.md`](data/rubric/SCORING_GUIDE.md) | how a human rater fills the 13 judgement-based features |
+| [`docs/day5_scoring_disagreement.md`](docs/day5_scoring_disagreement.md) | **generated** from the scoring sheets by `scripts/rubric_sheet.py report` |
+| [`docs/day5_scoring_disagreement_template.md`](docs/day5_scoring_disagreement_template.md) | the template that generated file renders |
+| [`docs/day6_gate_discussion_notes.md`](docs/day6_gate_discussion_notes.md) | Day 6 gate notes and the per-bank pipeline status |
+| [`docs/stakeholder_questions_18-09.md`](docs/stakeholder_questions_18-09.md) | the ten questions put to Diego and Victor |
+| [`docs/web_ui_proposal.md`](docs/web_ui_proposal.md) | the accepted UI proposal — superseded by `web/README.md` |
+| [`web/README.md`](web/README.md) | the business web UI: four tabs, recommendations, generated site + explanation mode |
+| [`outputs/charts.md`](outputs/charts.md) | **generated** by `scripts/run_analysis.py` — what each chart measures and cannot support |
+| [`outputs/bank_profiles.md`](outputs/bank_profiles.md) | **generated** — one profile card per compared bank |
+| [`outputs/limitations.md`](outputs/limitations.md) | **generated (D-09)** — what this run cannot support, from the dataset itself |
+| [`outputs/search_interest_context.md`](outputs/search_interest_context.md) | **generated** — the search-interest context paragraph the Trends work produces |
 
 ```bash
 pip install -r requirements.txt
-cp .env.example .env        # then fill in DEEPSEEK_API_KEY - .env is gitignored
-
-python3 scripts/make_fixture.py           # synthetic dataset, for wiring only
-python3 scripts/run_analysis.py           # the full chain: profiles, positioning, charts
-python3 scripts/run_generation.py         # step 5: generate 2 variants and score them
-python3 scripts/run_generation.py --dry-run   # ...without calling a model
-python3 scripts/check_schema_freeze.py    # enforce the Day 2 freeze rule
-
-# real data
-python3 scripts/run_collection.py --config scripts/collection_targets.yaml --method headless
-python3 scripts/rubric_sheet.py emit      # scoring sheets for the 13 human-scored features
-python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
-python3 scripts/rubric_sheet.py model     # model scores as a third rater
-python3 scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv
-python3 scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv \
-        --product-family auto --no-strict
-python3 scripts/build_feature_docs.py     # regenerate docs/feature_dictionary.md
-python3 -m pytest tests/ -q               # 259 tests
+cp .env.example .env        # DEEPSEEK_API_KEY; optionally NEWSAPI_KEY / NEWSAPI_AI_KEY
+python3 scripts/run_analysis.py                 # end-to-end on real captures
+python3 -m pytest tests/ -q                     # 368 passing, no network
 ```
 
-Outputs land in `outputs/`: four charts, `charts.md` explaining what each one
-measures and what it cannot support, the profile cards as markdown and JSON, and
-a CSV per analysis step.
+## The short version of the design
 
-`charts.md` is generated, not written by hand — `outputs/` is wiped on every run,
-and the "what this run shows" paragraphs are built from the same objects the
-charts are drawn from, so the prose cannot drift away from the picture.
+- **One measuring stick.** Every number comes from `config/feature_dictionary.yaml`;
+  the schema, validator and docs are derived from it, and each feature declares
+  how far it can be trusted (`automatic`, `rubric`, `model_assisted`, `derived`)
+  and how it may be compared (`cross_language`, `within_language`,
+  `within_capture_window`).
+- **One pinned model.** `deepseek-flash` labels every bank, so a difference
+  between banks is a difference between banks, not between two judges (NFR-02).
+- **Judgement is labelled.** Human-scored, model-scored and measured values look
+  different on screen, and the rubric model writes to its own sheet so the
+  agreement figure keeps measuring agreement.
+- **No performance data exists here.** Nothing links a design choice to a click, a
+  conversion or a sale. Every recommendation is a hypothesis ING could test.
+- **Three signals beside the page data, all fenced off from that claim:** search
+  interest (Trends tab, context only), news themes (Reputation tab, never
+  sentiment), and generated campaigns (scored with the same extractor as real
+  pages, and marked as generated).
 
-## The feature dictionary is the contract
-
-`config/feature_dictionary.yaml` is the single source of truth. The dataset schema,
-the validator and `docs/feature_dictionary.md` are all derived from it, so they
-cannot drift apart. Edit the YAML; never edit the generated markdown.
-
-Each feature declares:
-
-- **extraction** — `automatic` (code, reproducible), `rubric` (human, against a
-  written scale), `model_assisted` (LLM/vision, prompt recorded), or `derived`.
-  This is what determines how far a value can be trusted.
-- **comparability** — `cross_language`, `within_language` (word counts and
-  readability cannot cross NL/FR/EN), or `within_capture_window` (rates move).
-- **tier** — `core` is the Day 6 MVP minimum (66 features); `extended` is added
-  only after the gate passes (35 features).
-
-**Freeze rule:** after the Day 2 freeze, columns may be *added* but never renamed
-or removed without all three of us agreeing. The analysis code depends on them.
-
-Two checks enforce it, deliberately:
-
-- `tests/test_schema.py::test_dictionary_matches_frozen_snapshot` — byte equality
-  against `feature_dictionary.frozen.yaml`. Catches an *accidental* edit.
-- `scripts/check_schema_freeze.py` — the rule itself. Additions pass; renames,
-  removals, type changes, narrowed ranges or categories, tier demotions and
-  tightened nullability fail, naming the feature.
-
-Byte equality alone is not the rule: it fails on an addition (which the rule
-permits) and it *passes* on a rename, because updating both files makes the bytes
-match again. A rename is the change that actually breaks analysis code.
-
-## One model labels every bank
-
-DeepSeek `deepseek-chat` is the pinned model ([D6](docs/decisions.md)). Put the
-key in `.env` (gitignored); `scripts/_bootstrap.py` loads it, so no `export` is
-needed. A real environment variable still wins over the file. Never put a key in
-`.env.example` — that file is tracked and public. About a
-quarter of the dictionary is model-assisted, and the provider chain falls back
-when one is rate-limited — so a run could label ING with one model and Revolut
-with another. Every row now records `extraction_model`, and `validate()` warns
-when a dataset mixes models and names which banks got which. A difference between
-banks has to be a difference between banks, not between two judges (NFR-02).
-
-## Two things a range check cannot catch
-
-**A capture can be honestly measured and still be the wrong page.** The first live
-collection returned ING as an unrendered JavaScript shell (16 words — the `<title>`,
-twice) and BNP Paribas Fortis as a maintenance notice. Every numeric feature on
-those rows was in range. `collection/quality.py` judges whether a capture looks
-like a campaign page at all, and the verdict travels with the row in
-`capture_quality`. Analysis excludes `unusable` rows and says which.
-
-**13 core features are scored by a person**, so a collected dataset can never pass
-strict validation on its own. `scripts/rubric_sheet.py` emits one sheet per rater
-with the screenshot path, merges completed sheets back, and reports inter-rater
-agreement — which is what NFR-05 actually asks for.
-
-## Limitations are generated, not remembered
-
-`outputs/limitations.md` (D-09) is written from the dataset on every run. If two
-captures failed it names them and why; if the focus bank is missing it says which
-questions that makes unanswerable; if the rubric is unscored it says so. A
-limitation nobody can quietly drop on Day 9 is worth more than a well-written
-paragraph.
-
-## When a site will not serve the pipeline
-
-Some pages cannot be fetched by us at all — BNP's edge declines automated
-traffic outright (diagnosed in `scripts/run_collection.py`, and not worked
-around: getting past it would need IP rotation, which LC-04 forbids).
-
-`scripts/import_captures.py` imports pages a person saved from a normal browser:
-
-```bash
-python3 scripts/import_captures.py --dir <folder> --merge-with data/processed/campaigns.csv
-```
-
-A human opening a public page and saving it is ordinary use of a public website,
-not automation getting past a control. The importer still **re-checks robots.txt**
-for every recovered URL rather than trusting that someone checked earlier, and it
-recovers the URL from the browser's own "saved from url" comment so there is no
-hand-written manifest to drift.
-
-A manual capture carries `collection_method = manual_capture`, **no
-`http_status`** (we made no request — writing 200 would claim a response nobody
-received) and **no `page_height_px`** (a browser save is a *viewport* screenshot,
-not a full-page one, so the height genuinely cannot be measured). A live capture
-that worked is always preferred over a manual one for the same page.
-
-Chrome writes shadow DOM out as `<template shadowrootmode>`, which BeautifulSoup
-does not walk into — Siegried's saved ING pages parsed as 14 words while carrying
-4,858 inside templates. `extract()` flattens those, so a manual capture and a live
-capture are measured the same way.
-
-## Compare like for like, not everything at once
-
-`--product-family current_account_pack` (or `auto`) restricts the comparison to
-one product family. Pooling families confounds every cross-bank difference with
-the product — a mortgage page and a current-account page differ because the
-*products* differ (DR-04). Every run carried that as a limitation; it did not
-have to be one. The runner prints which families are comparable, and refuses to
-continue if one side of the traditional/challenger split is empty.
-
-## The model scores as a third rater, never as a pre-fill
-
-`scripts/rubric_sheet.py model` scores the 9 text-inferable rubric features with
-the pinned model into its **own** sheet. It never touches the human sheets —
-a pre-filled sheet gets rubber-stamped, and the NFR-05 agreement figure would
-then measure how persuasive the model's guess was rather than how well two
-people agree. As a separate rater, model-vs-human agreement is measurable with
-the same machinery, which is what FR-18 asks for.
-
-The 4 vision-only features (`accent_locations`, `text_image_layout`,
-`layout_archetype`, `mobile_first_design_signal`) stay blank and stay human: the
-pinned model has no vision and the extractor only sends text, so scoring them
-would be guessing from the wrong evidence.
-
-## Integration with the rest of the team
-
-**Rubric scoring is one workflow, not two.** `scripts/rubric_sheet.py report`
-renders Siegried's `docs/day5_scoring_disagreement_template.md` **from** the
-completed CSV sheets, so the agreement figure that goes in the deck is computed
-rather than retyped. The "why" and "rubric fix" columns stay empty on purpose —
-those are the judgements the session exists to produce.
-
-**Search interest is context, never an outcome.** `src/comparator/trends.py`
-joins Dan's `kbc-ing-benchmark` Google Trends exports to the campaign dataset on
-bank + product family (`--trends-dir`), and degrades to nothing when the exports
-are absent. It covers ING, KBC and CBC only, it measures what people searched
-for rather than what a campaign achieved, and the pages captured are today's
-pages — so it does **not** make this a performance study. The module refuses to
-emit a per-page number for exactly that reason: a per-page column would end up
-regressed against page features and called performance.
-
-**One `.env` mechanism.** `scripts/_bootstrap.py` now uses `python-dotenv`
-(Siegried's dependency) instead of the hand-rolled parser it started with.
-
-## Step 5 — campaign generation (stretch)
-
-`scripts/run_generation.py` derives a numeric target from the data (ING's own
-levels for the on-brand variant; the challenger group's medians for the
-challenger-style one), asks the model for a campaign, renders it to HTML, and
-scores it **with the same extractor that reads real bank pages**. The loop only
-means something because there is exactly one measuring stick in this repo.
-
-Targets never include a feature the guardrails forbid hitting — you cannot ask a
-generator to match a bank's density of figures while forbidding it to invent
-figures. Hitting the target means the generator followed instructions; it says
-nothing about whether the campaign would perform better (plan risk P-08).
-
-## What the validator refuses
-
-`comparator.schema.validate` is deliberately strict — a silent schema drift on
-Day 6 costs more than a loud failure on Day 2. It fails on missing required
-columns, columns absent from the dictionary, values outside a declared range or
-category, duplicate `page_id`, nulls in a non-nullable feature, and — as a hard
-compliance gate — **any row whose `robots_allowed` is false** (LC-01).
-
-It warns, rather than fails, on synthetic or LLM-generated rows and on a bank
-missing a core feature entirely (DR-07).
+Details, including the freeze rule and the validator's refusals, are in
+[`docs/design.md`](docs/design.md).
 
 ## Layout
 
 ```
 config/feature_dictionary.yaml   the contract
+docs/                            scope, decisions, design, runbook, UI proposal
+web/                             React business UI (+ its own README)
 src/comparator/
   dictionary.py                  loads and self-checks the dictionary
   schema.py                      dataset types, validation, read/write
@@ -250,77 +119,46 @@ src/comparator/
   collection/                    compliance, scraper, headless render, LLM, quality gate
   rubric.py                      scoring sheets, merge, inter-rater agreement
   limitations.py                 D-09, generated from the dataset
-  trends.py                      bridge to Dan's Google Trends benchmark: series, anomalies, campaigns (Trends tab)
+  trends.py                      bridge to Dan's Google Trends benchmark (Trends tab)
   rubric_model.py                model as a third rater (text-inferable only)
   derive.py                      recompute derived features after any change
   banks.py                       canonical bank -> category facts
-  ai_score.py                    sieg 19/09: 6-axis composite score per bank, deterministic, no LLM call
-  cross_sell.py                  sieg 19/09: cross-sell score + product co-occurrence matrix
-  reputation.py                  sieg 19/09: optional NewsAPI headline themes (never sentiment)
-  market_context.py              sieg 19/09: thin standalone Finnhub lookup, not wired into the pipeline
-  research.py                    sieg 19/09: thin standalone Semantic Scholar lookup, not wired into the pipeline
-  geo_trends.py                  sieg 20/09: Google Trends by Belgian region (own pytrends calls)
+  ai_score.py                    6-axis composite score per bank, deterministic, no LLM call
+  cross_sell.py                  cross-sell score + product co-occurrence matrix
+  reputation.py                  optional news headline themes, newsapi.org and/or newsapi.ai
+  market_context.py              thin standalone Finnhub lookup, not wired into the pipeline
+  research.py                    thin standalone Semantic Scholar lookup, not wired into the pipeline
+  geo_trends.py                  Google Trends by Belgian region (own pytrends calls)
 scripts/
   make_fixture.py                write the synthetic dataset
   run_analysis.py                the end-to-end chain
   run_collection.py              real captures: compliance -> scrape -> extract -> validate
   run_generation.py              CLI for step 5 (generation.py)
-  export_web_report.py           one JSON snapshot + trends payload for the business web UI
+  export_web_report.py           one JSON snapshot + trends payload for the business UI
   serve_web.py                   backend for the UI's recommendations + generated site
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
-  reextract_model_fields.py      sieg 19/09: backfill model_assisted fields on already-captured pages, no re-fetch
-  geo_trends.py                  sieg 20/09: CLI for geo_trends.py (requires requirements-geo.txt)
-streamlit_app.py                 sieg 19/09: 9-page dashboard for share.streamlit.io (requirements-streamlit.txt)
-                                  sieg 20/09: added a Research page wiring in comparator/research.py
-tests/                           355 tests
-data/fixtures/                   synthetic sample (committed)
-data/raw/                        snapshots — gitignored, Dan's output
-outputs/                         charts and tables — wiped and regenerated on every
-                                  run; sieg 16/09: currently COMMITTED to git despite
-                                  that (no .gitignore rule for it) - team decision
-                                  needed on whether that is intentional
+  rubric_sheet.py                emit / model / merge / agreement / report
+  reextract_model_fields.py      backfill model_assisted fields from saved HTML, no re-fetch
+  import_captures.py             import pages a person saved from a normal browser
+  browser_audit.py               Playwright audit of the UI + generated site
+streamlit_app.py                 dashboard for share.streamlit.io (requirements-streamlit.txt)
+tests/                           368 tests, no network calls
+data/rubric/                     human + model scoring sheets (tracked)
+data/raw/                        snapshots — gitignored
+data/processed/                  datasets — gitignored
+outputs/                         charts and tables — regenerated every run
 ```
-
-## No synthetic data in the repo
-
-`src/comparator/fixtures.py` builds a synthetic dataset **in memory** for the test
-suite. Nothing synthetic is committed and nothing synthetic reaches `outputs/`.
-
-That is deliberate. The fixture's per-bank archetypes were written *from* the
-claims in the ING kickoff deck, so an analysis run against it always confirms
-them — `check_deck_claims` comes back "supported" every time, by construction. A
-committed synthetic CSV sitting next to `run_analysis.py` is an invitation to run
-it and read the result as a finding.
-
-`scripts/make_fixture.py` still writes one to `data/fixtures/` if you want it for
-local development. That path is gitignored.
-
-Everything in `outputs/` comes from `data/processed/campaigns.csv` — real captures.
-
-## What analysis answers
-
-| Question | Function | PRD |
-| --- | --- | --- |
-| Where does ING stand vs competitors? | `ing_vs_peers` | BO-01, FR-09 |
-| Traditional or challenger? | `positioning_axis` | BO-02 |
-| Which banks communicate alike? | `similarity_matrix`, `cluster_banks` | BO-03 |
-| What recurring patterns cross the whole market? | `recurring_patterns` | BO-04 |
-| What separates the two groups? | `category_comparison` | FR-08 |
-| Which gaps are worth arguing from, with evidence? | `insight_candidates` | BO-06, FR-10 |
-| Do the deck's observations hold? | `check_deck_claims` | FR-14 |
-
-BO-05 (reusable feature framework) isn't a function - it's demonstrated by
-adding a bank via config, not code (FR-16). BO-07 (compliant, reproducible
-method) lives in `collection/compliance.py` and `schema.py`, not here.
-
-Sample sizes are small by design (PRD risk R-03). Nothing here computes a p-value
-or claims significance — Cohen's d is reported as a description of separation, not
-as a test.
 
 ## Next
 
-1. **Day 2 — freeze the schema** with Dan. Open points in `docs/feature_dictionary.md`.
-2. **Day 2 — Dan's five hand-collected rows** in this format, replacing the fixture.
-3. **Days 3–5 — rubric definitions** from Siegried for the 14 judgement-based features.
-4. **Day 5 — joint scoring session**; inter-rater disagreement gets reported, not hidden.
+1. **Finish the joint scoring session** — the single remaining blocker. Siegried's
+   sheet is complete; `data/rubric/{dan,stephane}_scores.csv` need filling so the
+   13 judgement-based features have more than one human rater and the NFR-05
+   agreement figure means something.
+2. **Recover BNP Paribas Fortis and Revolut** via the manual-capture path, so the
+   traditional/challenger split is not carried by two challengers alone.
+3. **Re-run the analysis after scoring**, then the web export, so the profile
+   cards carry judged features rather than model-judged ones.
+4. **Decide on `outputs/` in git** — it is regenerated on every run yet tracked,
+   so each analysis produces a large binary diff.

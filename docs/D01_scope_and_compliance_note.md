@@ -100,6 +100,47 @@ Two real gaps, not "not yet configured":
   (`page_height_px` and three others) stay empty on every real row,
   unchanged since 16/09.
 
+### steve 21/09 update — the scope is now 10 banks / 12 pages, nothing excluded
+
+Two things changed since the table above. **Headless rendering works in this
+environment now** — every live capture carries `page_height_px` and the other
+geometry fields (Belfius's current-account page, for example, reports 11,110 px),
+so the "still not available, unchanged since 16/09" note above is superseded.
+And the bank list grew, through the freeze rule's *addition* path rather than a
+rename: new values inside the `bank` enumeration are additions, so
+`check_schema_freeze.py` passes and both dictionary copies move together.
+
+| Bank | Category | Live capture | Notes |
+| --- | --- | --- | --- |
+| ING | traditional | yes | 2 current-account pages + a savings page |
+| KBC | traditional | yes | fr + nl |
+| Belfius | traditional | yes | **new**: its own current-account page. Its only earlier capture was a pension page (`other`), which is what kept it out of every comparison |
+| Argenta | traditional | yes | |
+| Crelan | traditional | yes | |
+| **vdk** | traditional | yes | **new**: `compte-vue-you-count`, robots allowed, 1222 words |
+| **hellobank** | traditional | yes | **new**: BNP Paribas Fortis's digital brand, `compte-all-in-gratuit`, 861 words. Classified traditional for the same reason `cbc` is: the institution behind it is an incumbent |
+| **beobank** | traditional | yes | **new**: `compte-go`, 2184 words |
+| N26 | challenger | yes | |
+| bunq | challenger | yes | |
+| BNP Paribas Fortis | traditional | **no** | HTTP 503 from its edge; manual-capture path only |
+| Revolut | challenger | **no** | HTTP 403; manual-capture path only |
+
+The three new banks were added to `config/feature_dictionary.yaml` **and**
+`.frozen.yaml`, `src/comparator/banks.py::BANK_CATEGORY` and
+`src/comparator/collection/visual_features.py::BRAND_COLOURS`. Brand colours were
+sourced rather than guessed: vdk `#e30613` from its own `logo.svg` fills, beobank
+`#5f3a99` from its declared `theme-color`, hellobank `#00b4c8` from the dominant
+cyan on its rendered page (consistent with the `#11BAD5`/`#4EC1D3` in its CSS).
+`brand_colour_share` is meaningless without the right hex, so a guess would have
+produced a confident wrong number.
+
+**Checked and rejected for this family** (documented so nobody re-checks them):
+MeDirect and Deutsche Bank Belgium offer savings/term only; Triodos' current
+account is business-only; CPH is savings/term/mortgage; Santander Consumer Bank's
+TLS handshake fails; and **AXA Bank no longer exists as a brand** — it merged into
+Crelan, and axa.be now redirects to insurance. Keytrade Bank remains unresolved:
+JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
+
 ## 2. Product family and language
 
 **Language:** French, consistently, across every page collected so far —
@@ -112,11 +153,13 @@ first, current-account packs second if capacity allows." **Decision:**
 superseded — the team wants a complete analysis, so every product family a
 bank actually promotes on its campaign pages is in scope, not one family
 narrowed for like-for-like comparison. What is actually collected reflects
-this: `current_account_pack` (KBC, N26, configured for Revolut),
-`savings_account` (ING), `mortgage` (BNP Paribas Fortis), `other`/pension
-(Belfius). `category_comparison`/`check_deck_claims` and any
-like-for-like read (DR-04) should compare within the same `product_family`
-value, not across the full dataset.
+this: `current_account_pack` (ING, KBC, Belfius, Argenta, Crelan, vdk,
+hellobank, beobank, N26 and bunq — the family the analysis compares),
+`savings_account` (ING), `mortgage` (BNP Paribas Fortis) and `other`/pension
+(Belfius, whose current-account page is now the one that counts).
+`category_comparison`/`check_deck_claims` and any like-for-like read (DR-04)
+should compare within the same `product_family` value, not across the full
+dataset.
 
 ## 3. Compliance / robots.txt findings
 

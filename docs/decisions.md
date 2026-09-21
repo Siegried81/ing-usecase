@@ -298,3 +298,71 @@ Lesson for next time a dataset-affecting fix lands: **both**
 `run_analysis.py` **and** `rubric_sheet.py merge` (then
 `export_web_report.py`) need a re-run - they read different files, and only
 running one silently leaves the other's output behind.
+
+---
+
+**steve 21/09, Trends can inform recommendations - as marked context, never as
+evidence.** The Recommendations tab gained an opt-in **Include Google Trends**
+checkbox. Ticked, `build_recommendations(report, include_trends=True, trends=...)`
+gets a deterministic digest of `trends.json` - the run's captured banks, the
+measured product family, the last 24 months, ~8 KB - fenced in the prompt as
+*context only*. The model adds 2-4 **timing and focus** recommendations on top of
+the analysis ones, tagged `basis: "trends"`, rendered in their own group, and
+forbidden from citing a page feature as evidence. This deliberately keeps the line
+`trends.py` already drew: a search spike is not proof that a page or campaign
+performed, so trends may change *when* something is prioritised, never *what* the
+page evidence says. `used_trends` travels with the saved set so the toggle reloads
+ticked, and payloads saved before this change still load (`basis` defaults to
+`analysis`).
+
+**steve 21/09, explained generation, and the meta-copy trap it exposed.** The
+generated site gained an **Explain each section** checkbox: the model tags each
+section with the recommendation ids it implements plus a rationale, and the
+renderer draws a glowing box on the content column with an **(i)** button whose
+balloon opens above it. Opening one switches that section to a slow yellow
+flicker, deliberately not ING orange, and a bar above the site turns the whole
+layer off (remembered across pages). The first real explained run produced *meta
+copy* - sections about the recommendations ("Add alt text to every image", "When
+we review this page") - because the page prompt said a recommendation was only
+"implemented" if a reader could see it. The prompt now states the copy is customer
+product copy, bans references to the page/analysis/recommendations, leaves
+structural recommendations (alt text, CTA count, contrast) to the template, and
+confines any mention of a recommendation to `rationale`. A page with no cited
+section is retried; pages no recommendation targets borrow the site-wide advice
+that applies. Ten of ten pages verified to carry boxes with zero meta phrases.
+
+**steve 21/09, two same-named news APIs, used together.** The reputation signal
+was returning nothing because the configured key was from **newsapi.ai**
+(Event Registry) while `reputation.py` called **newsapi.org** - different
+companies, different auth, different key shapes (UUID vs 32-hex). The module now
+reads both `NEWSAPI_KEY` and `NEWSAPI_AI_KEY`, queries every configured source and
+de-duplicates. Two further measured fixes: headlines are fetched in **English,
+French and Dutch** (Belfius: 0 English title matches against 22 French / 11
+Dutch - this is what put Belfius, Crelan, Beobank, MeDirect and vdk on the board),
+and Event Registry is sorted by **relevance inside a 90-day window** (`"KBC"`
+alone → 24 title matches; `"KBC bank"` → 0) while newsapi.org is restricted to
+title/description because its body search answered "bank" with football and
+politics. The whole-word guard now rejects `f—ing` / `f***ing` / `bruising` for
+"ING". Reputation is still themes only, never sentiment.
+
+**steve 21/09, bank scope extended to twelve, via the freeze rule's addition
+path.** `current_account_pack` now compares **10 banks / 12 pages / 29 features
+with nothing excluded**. Belfius's own current-account page replaced the pension
+page that had kept it out of every comparison, and three banks verified
+collectable live (robots allowed, HTTP 200, `quality=ok`) joined the frozen `bank`
+enum, `BANK_CATEGORY` and `BRAND_COLOURS`: **vdk**, **hellobank**, **beobank**.
+Brand colours were sourced, not guessed - vdk `#e30613` from its own `logo.svg`
+fills, beobank `#5f3a99` from its declared `theme-color`, hellobank `#00b4c8` from
+the dominant cyan on its rendered page. `check_schema_freeze.py` passes and both
+dictionary copies move together. Checked and rejected for this family: MeDirect
+and Deutsche Bank Belgium have no retail current account, Triodos' is
+business-only, Santander's fetch fails, and **AXA Bank no longer exists as a brand**
+(merged into Crelan). BNP Paribas Fortis (HTTP 503) and Revolut (HTTP 403) stay
+manual-capture only.
+
+**steve 21/09, README split into a runbook and a design doc.** The README had
+grown into overview + runbook + design + integration notes at once. It now points
+at [`pipeline.md`](pipeline.md) for how to run the chain and
+[`design.md`](design.md) for why it is built this way, and keeps the status table,
+the contract summary and the layout map. The UI guide stayed in `web/README.md`,
+which gained the explanation mode, the trends opt-in and the second news key.

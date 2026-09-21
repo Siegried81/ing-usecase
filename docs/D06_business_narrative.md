@@ -4,10 +4,20 @@ sieg 16/09, rewritten 20/09 the night before the Day 6 gate. Written for the
 business audience per the plan: what this means for ING, no method detail —
 the "how" lives in D-07 and the code, not here.
 
-Every number below is read live from `outputs/`/`report.json` on the current
-dataset (9 banks, 15 pages on current-account packs, 24 comparable features)
-— nothing here is typed in from memory, and nothing here has been
-hand-verified against an older run the way the previous draft's numbers were.
+> **steve 21/09 — read this first.** The comparison has moved again since this
+> draft: it is now **10 banks / 12 pages / 29 features with nothing excluded**
+> (Belfius's own current-account page replaced the pension page that kept it out,
+> and vdk/hellobank/beobank were added), and ING's traditional↔challenger score in
+> `report.json` is now **0.183**, not the 0.362 quoted throughout below. The
+> individual figures in this narrative were verified against the 20/09 snapshot,
+> so treat them as **pending re-verification**, not as current. Re-run
+> `docs/D06`'s numbers after the rubric session closes — the same re-check that
+> caught three stale figures on 20/09.
+
+Every number below is read live from `outputs/`/`report.json` on the dataset as
+it stood when each line was written — nothing here is typed in from memory, and
+nothing here has been hand-verified against an older run the way the previous
+draft's numbers were.
 Each insight is traceable to a specific feature and source page (NFR-03) and
 stated as a hypothesis to test, never a cause — no performance data exists in
 this project (PRD 5.2), so nothing here claims that a design choice produces
@@ -26,6 +36,15 @@ re-run after any change to `campaigns.csv`, not just `run_analysis.py`, or
 the old draft's numbers are wrong for the run they described — they simply
 describe an earlier, smaller or less accurate dataset. This version replaces
 them rather than reconciling them line by line.
+
+**21/09, the scope changed again.** The compared set grew from 9 banks to **10
+banks / 12 pages / 29 features, nothing excluded**: Belfius now has a
+current-account page (its earlier capture was a pension page in another family,
+which is why it had been sitting out), and three newly-verified banks joined —
+**vdk, hellobank, beobank** — through the freeze rule's addition path. ING's
+score in the regenerated `report.json` is **0.183**. This narrative's per-feature
+figures were read off the 20/09 run, so they are one snapshot behind; the next
+pass (after the rubric session) rewrites them against the 10-bank dataset.
 
 ---
 

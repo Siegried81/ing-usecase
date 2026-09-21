@@ -1,5 +1,11 @@
 # Ten questions for Diego and Victor — 18/09
 
+> **steve 21/09:** kept as written — these are the questions, not the answers.
+> Question 1 is worth re-reading beside the code, because the project's central
+> guardrail follows from it: with no CTR or accept-rate data, nothing here may
+> claim that a design choice changes an outcome, and every recommendation in the
+> web UI is stated as a hypothesis to test rather than a cause (PRD 5.2).
+
 steph 18/09. Ordered by how much the answer changes what we do, because the
 meeting may run short. Each one says what prompted it, so none of them is a
 question we could have answered ourselves.

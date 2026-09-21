@@ -1,5 +1,15 @@
 # Proposal — a web UI over the comparator
 
+> **Status, steve 21/09: superseded by what was actually built.** This is kept as
+> the proposal that was accepted and amended, not as a description of the current
+> UI. A React business UI now exists — four tabs (Analysis, Trends, Reputation,
+> Recommendations), the recommendations flow, and the generated-site builder with
+> its explanation mode. For the shipped behaviour read
+> [`../web/README.md`](../web/README.md); for how to run it,
+> [`pipeline.md`](pipeline.md). Two things here never happened as written: the
+> operator rubric-scoring UI (the work moved to `scripts/rubric_sheet.py` and the
+> joint session) and the dataset-editing endpoints.
+
 steph 17/09. For the team to accept, amend or reject before anything is built.
 
 ## The short version

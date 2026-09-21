@@ -1,5 +1,13 @@
 # Day 6 gate — discussion notes
 
+> **steve 21/09, gate day.** The per-bank table below predates this morning's
+> re-collection: the chain now runs for **10 banks / 12 pages** with nothing
+> excluded (Belfius has a current-account page; vdk, hellobank and beobank were
+> added), headless geometry renders in this environment, and BNP Paribas Fortis
+> (503) and Revolut (403) remain manual-capture only. The one blocker below is
+> unchanged and is now the single open item: **a second and third human rater** —
+> Siegried's sheet is complete at 23/23, Dan and Stephane are still at 0/23.
+
 sieg 15/09, prepared ahead of the Monday gate review. Per the plan (section
 6): the team asks one question — does the chain run end-to-end, from a URL to
 a scored, comparable row, to a bank profile, for every bank in scope? Thirty
