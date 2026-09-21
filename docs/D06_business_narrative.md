@@ -66,7 +66,7 @@ one by one:
 | --- | --- |
 | Belfius is pretty verbose | **Not supported** |
 | KBC is straight to the point | **Not supported** |
-| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too |
+| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too | #Sieg 20/09: false
 | ING no longer places text next to picture | **Not supported** — "beside" is still ING's most common layout |
 | Revolut uses very little text | **Not supported** |
 

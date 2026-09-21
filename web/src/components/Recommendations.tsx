@@ -30,17 +30,20 @@ export function Recommendations({ report }: { report: Report }) {
   const [language, setLanguage] = useState("fr");
   const [site, setSite] = useState<SiteStatus | null>(null);
   const [includeTrends, setIncludeTrends] = useState(false);
+  const [includeReputation, setIncludeReputation] = useState(false); // sieg 21/09
   const [explainSite, setExplainSite] = useState(false);
   const trendsAvailable = Boolean(report.trends?.available);
+  const reputationAvailable = Boolean(report.reputation?.available); // sieg 21/09
 
   useEffect(() => {
     fetchRecommendations()
       .then((data) => {
         setPayload(data);
         setSelected(new Set(data.recommendations.map((r) => r.id)));
-        // Keep the toggle in step with what was generated, so regenerating a
-        // set that already used trends does not silently drop them.
+        // Keep the toggles in step with what was generated, so regenerating a
+        // set that already used trends/reputation does not silently drop them.
         setIncludeTrends(Boolean(data.used_trends));
+        setIncludeReputation(Boolean(data.used_reputation));
       })
       .catch((e) => setError(String(e)));
     fetchSiteStatus().then(setSite).catch(() => undefined);
@@ -59,16 +62,20 @@ export function Recommendations({ report }: { report: Report }) {
     setBusy(true);
     setError(null);
     try {
-      const data = await generateRecommendations(includeTrends && trendsAvailable);
+      const data = await generateRecommendations(
+        includeTrends && trendsAvailable,
+        includeReputation && reputationAvailable, // sieg 21/09
+      );
       setPayload(data);
       setSelected(new Set(data.recommendations.map((r) => r.id)));
       setIncludeTrends(Boolean(data.used_trends));
+      setIncludeReputation(Boolean(data.used_reputation));
     } catch (e) {
       setError(String(e));
     } finally {
       setBusy(false);
     }
-  }, [includeTrends, trendsAvailable]);
+  }, [includeTrends, trendsAvailable, includeReputation, reputationAvailable]);
 
   const onGenerateSite = useCallback(async () => {
     setError(null);
@@ -99,14 +106,24 @@ export function Recommendations({ report }: { report: Report }) {
     return map;
   }, [report]);
 
-  // Two groups, one selection. Trends recommendations are shown apart because
-  // they are argued from search-interest context, not from a measured page
-  // feature - but they are picked in the same set and built into the same site.
-  const analysisRecs = useMemo(() => recommendations.filter((r) => r.basis !== "trends"), [recommendations]);
+  // Three groups, one selection. Trends and reputation recommendations are
+  // shown apart because they are argued from context, not from a measured
+  // page feature - but they are all picked in the same set and built into
+  // the same site. sieg 21/09: added the reputation group.
+  const analysisRecs = useMemo(
+    () => recommendations.filter((r) => r.basis !== "trends" && r.basis !== "reputation"),
+    [recommendations],
+  );
   const trendsRecs = useMemo(() => recommendations.filter((r) => r.basis === "trends"), [recommendations]);
+  const reputationRecs = useMemo(
+    () => recommendations.filter((r) => r.basis === "reputation"),
+    [recommendations],
+  );
   const trendsCount = trendsRecs.length;
+  const reputationCount = reputationRecs.length;
   const selectedTrends = trendsRecs.filter((r) => selected.has(r.id)).length;
-  const selectedAnalysis = selected.size - selectedTrends;
+  const selectedReputation = reputationRecs.filter((r) => selected.has(r.id)).length;
+  const selectedAnalysis = selected.size - selectedTrends - selectedReputation;
 
   const toggle = (id: string) =>
     setSelected((prev) => {
@@ -134,6 +151,7 @@ export function Recommendations({ report }: { report: Report }) {
               <span className="muted-note">
                 {payload.model} · {payload.recommendations.length} recommendations
                 {payload.used_trends ? " · includes trends context" : ""}
+                {payload.used_reputation ? " · includes reputation context" : ""}
               </span>
             )}
             {busy && <span className="muted-note">Asking {`deepseek-chat`} — this takes a few seconds…</span>}
@@ -152,6 +170,24 @@ export function Recommendations({ report }: { report: Report }) {
                 {trendsAvailable
                   ? "Adds timing and focus recommendations from search-interest context. Context only — never evidence that a page or campaign performed."
                   : "No trends export is present, so this option is unavailable. Run scripts/export_web_report.py to produce web/public/trends.json."}
+              </small>
+            </span>
+          </label>
+
+          {/* sieg 21/09: same opt-in pattern as trends, for news headline themes. */}
+          <label className={`rec-trends${reputationAvailable ? "" : " disabled"}`}>
+            <input
+              type="checkbox"
+              checked={includeReputation && reputationAvailable}
+              disabled={!reputationAvailable || busy}
+              onChange={(e) => setIncludeReputation(e.target.checked)}
+            />
+            <span>
+              Include Reputation to add recommendations
+              <small>
+                {reputationAvailable
+                  ? "Adds recommendations comparing what a page claims to what the press covers about the bank. Context only — never sentiment, never evidence that a page or campaign performed."
+                  : "No reputation data is present (NEWSAPI_KEY / NEWSAPI_AI_KEY not configured), so this option is unavailable."}
               </small>
             </span>
           </label>
@@ -178,6 +214,13 @@ export function Recommendations({ report }: { report: Report }) {
               <div className="muted-note" style={{ marginTop: 6 }}>
                 {trendsCount} further recommendation{trendsCount === 1 ? "" : "s"} come from
                 search-interest context and appear in their own section below. They can be
+                selected alongside the others for the website.
+              </div>
+            )}
+            {reputationCount > 0 && (
+              <div className="muted-note" style={{ marginTop: 6 }}>
+                {reputationCount} further recommendation{reputationCount === 1 ? "" : "s"} come
+                from news-theme context and appear in their own section below. They can be
                 selected alongside the others for the website.
               </div>
             )}
@@ -247,6 +290,32 @@ export function Recommendations({ report }: { report: Report }) {
                 </div>
               </div>
             )}
+
+            {/* sieg 21/09: mirrors the trends group above, for reputation. */}
+            {reputationRecs.length > 0 && (
+              <div className="rec-group rec-group-reputation">
+                <div className="rec-group-head">
+                  <h3>From news-theme context</h3>
+                  <span className="muted-note">
+                    Kept apart from the analysis: these compare what a page claims to what the
+                    press covers about the bank, and cite no page feature as evidence. Theme
+                    counts are context, never sentiment or proof that a page or campaign
+                    performed — treat each as a hypothesis to test.
+                  </span>
+                </div>
+                <div className="rec-list">
+                  {reputationRecs.map((r) => (
+                    <RecommendationCard
+                      key={r.id}
+                      rec={r}
+                      featureLabels={featureLabels}
+                      checked={selected.has(r.id)}
+                      onToggle={() => toggle(r.id)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -258,8 +327,12 @@ export function Recommendations({ report }: { report: Report }) {
                 <div className="muted-note" style={{ marginTop: 4 }}>
                   Generates a ten-page ING-styled site implementing the {selected.size} selected
                   recommendation{selected.size === 1 ? "" : "s"}
-                  {selectedTrends > 0 && (
-                    <> ({selectedAnalysis} from the analysis, {selectedTrends} from trends)</>
+                  {(selectedTrends > 0 || selectedReputation > 0) && (
+                    <>
+                      {" "}({selectedAnalysis} from the analysis
+                      {selectedTrends > 0 && <>, {selectedTrends} from trends</>}
+                      {selectedReputation > 0 && <>, {selectedReputation} from reputation</>})
+                    </>
                   )}.
                 </div>
               </div>
@@ -380,6 +453,12 @@ function RecommendationCard({
             <span>{rec.market_context}</span>
           </div>
         )}
+        {rec.reputation_context && (
+          <div className="rec-field">
+            <span className="rec-field-k">Reputation context</span>
+            <span>{rec.reputation_context}</span>
+          </div>
+        )}
         <div className="rec-field">
           <span className="rec-field-k">What to do</span>
           <span>{rec.recommendation}</span>
@@ -388,6 +467,11 @@ function RecommendationCard({
           {rec.basis === "trends" && (
             <span className="rec-basis-trends" title="From search-interest context — attention, not performance">
               trends
+            </span>
+          )}
+          {rec.basis === "reputation" && (
+            <span className="rec-basis-reputation" title="From news-theme context — coverage, not performance">
+              reputation
             </span>
           )}
           {rec.features.map((f) => (

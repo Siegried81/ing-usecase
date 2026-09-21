@@ -3,6 +3,10 @@
 All network calls are mocked - requests.get for NewsAPI, _call_llm for the
 single theme-classification call - per this repo's rule against real HTTP in
 tests.
+
+sieg 21/09: fetch_headlines/_mentions now carry {"title", "url"} pairs instead
+of bare title strings, so a notable headline can link back to its source -
+tests updated for the new shape, plus new coverage for the title->url lookup.
 """
 
 from __future__ import annotations
@@ -30,12 +34,32 @@ class _FakeResponse:
         return self._payload
 
 
-def test_fetch_headlines_extracts_titles():
+def test_fetch_headlines_extracts_titles_and_urls():
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
-        {"articles": [{"title": "ING launches new app"}, {"title": "ING reports Q3 results"}]}
+        {"articles": [
+            {"title": "ING launches new app", "url": "https://news.example/1"},
+            {"title": "ING reports Q3 results", "url": "https://news.example/2"},
+        ]}
     )):
         headlines = reputation.fetch_headlines("ING bank", "fake-key")
-    assert headlines == ["ING launches new app", "ING reports Q3 results"]
+    assert headlines == [
+        {"title": "ING launches new app", "url": "https://news.example/1"},
+        {"title": "ING reports Q3 results", "url": "https://news.example/2"},
+    ]
+
+
+def test_fetch_headlines_keeps_the_first_url_seen_when_deduplicating():
+    # sieg 21/09: the same story arrives translated/syndicated - dedup by
+    # title (case/whitespace-insensitive) must not drop the URL that came
+    # with the first occurrence.
+    with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
+        {"articles": [
+            {"title": "ING launches new app", "url": "https://news.example/first"},
+            {"title": "  ing launches new app  ", "url": "https://news.example/dupe"},
+        ]}
+    )):
+        headlines = reputation.fetch_headlines("ING bank", "fake-key")
+    assert headlines == [{"title": "ING launches new app", "url": "https://news.example/first"}]
 
 
 def test_fetch_headlines_returns_empty_list_on_request_failure():
@@ -68,7 +92,8 @@ def test_bank_snapshot_is_none_without_an_api_key(monkeypatch):
 
 
 def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
-    with patch("comparator.reputation.fetch_headlines", return_value=["ING launches new app"]):
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
         with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
             theme_counts={"innovation_digital": 1}, notable_headlines=["ING launches new app"],
         )):
@@ -77,6 +102,32 @@ def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
     assert set(snapshot["themes"]) == set(reputation.THEMES)
     assert snapshot["themes"]["innovation_digital"] == 1
     assert snapshot["themes"]["crisis_or_scandal"] == 0
+
+
+def test_bank_snapshot_attaches_the_source_url_to_each_notable_headline():
+    # sieg 21/09: the URL is looked up locally against what was fetched, never
+    # produced by the model.
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
+        with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
+            theme_counts={}, notable_headlines=["ING launches new app"],
+        )):
+            snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
+    assert snapshot["notable_headlines"] == [
+        {"title": "ING launches new app", "url": "https://news.example/1"}
+    ]
+
+
+def test_bank_snapshot_gives_a_null_url_when_the_model_did_not_copy_verbatim():
+    # The model is instructed to copy headlines verbatim, but is never trusted
+    # to - a near-miss must not invent or drop the headline, just its link.
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
+        with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
+            theme_counts={}, notable_headlines=["ing launches a new app"],
+        )):
+            snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
+    assert snapshot["notable_headlines"] == [{"title": "ing launches a new app", "url": None}]
 
 
 def test_build_dashboard_is_unavailable_without_a_key(monkeypatch):
