@@ -3,6 +3,7 @@ import type {
   CampaignMatch,
   CampaignScore,
   TrendAnomaly,
+  ShareOfSearch,
   TrendsPayload,
   TrendsSummary,
 } from "../types";
@@ -19,7 +20,7 @@ const pct = (v: number) => `${Math.round(v * 100)}%`;
  * exists to give that context a home of its own - and to keep the sentence that
  * says so above every number, rather than in a footnote a reader can skip.
  *
- * Dan's benchmark is a separate project (kbc-ing-benchmark/); we read its
+ * Dan's benchmark is a separate project (trends-benchmark/); we read its
  * export and never recompute its numbers differently. Anomaly detection here is
  * a port of his thresholds, tested against the same inputs.
  */
@@ -65,7 +66,7 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
       <div className="card">
         <h2 style={{ marginTop: 0 }}>No search-interest data</h2>
         <p style={{ color: "var(--ink-2)" }}>
-          Dan&rsquo;s Google Trends export (<code>kbc-ing-benchmark/export/</code>) is not present,
+          Dan&rsquo;s Google Trends export (<code>trends-benchmark/export/</code>) is not present,
           so this tab is skipped. Nothing else is affected.
         </p>
         <p className="muted-note">
@@ -128,6 +129,8 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
           the comparator, but not a search term in Dan&rsquo;s benchmark.
         </div>
       )}
+
+      {data.shareOfSearch && <ShareOfSearchView share={data.shareOfSearch} />}
 
       <section>
         <div className="section-head">
@@ -477,5 +480,109 @@ function TermChart({
         );
       })}
     </svg>
+  );
+}
+
+/**
+ * Share of search: the ranking answers "who is first", the sentence under it
+ * answers "and why", and the method sits folded underneath.
+ *
+ * The order is the point. Nine overlaid series cannot answer "who leads", so
+ * the sorted bars come first and the weekly detail is demoted below the fold.
+ * Every figure is handed over by comparator/trends.py; nothing is computed
+ * here and no sentence is hardcoded, so a later collection run cannot leave a
+ * stale conclusion on screen.
+ */
+function ShareOfSearchView({ share }: { share: ShareOfSearch }) {
+  const max = Math.max(...share.ranking.map((r) => r.sharePct), 1);
+
+  return (
+    <section>
+      <div className="section-head">
+        <h2>Share of brand search</h2>
+        <p>
+          Which bank Belgians looked up, across {share.ranking.length} banks and {share.weeks}{" "}
+          weeks ({share.window.start} → {share.window.end}).
+        </p>
+      </div>
+
+      <div className="card">
+        <p className="headline-sentence" style={{ fontSize: "1.1rem", marginTop: 0 }}>
+          {share.headline.sentence}
+        </p>
+        <p style={{ color: "var(--muted)", marginBottom: 0 }}>{share.headline.segmentSentence}</p>
+      </div>
+
+      <div className="card">
+        <table className="share-table" style={{ width: "100%", borderCollapse: "collapse" }}>
+          <tbody>
+            {share.ranking.map((row) => (
+              <tr key={row.key}>
+                <td style={{ width: "2rem", color: "var(--muted)" }}>{row.rank}</td>
+                {/* wide enough for the longest name plus its badge on one line -
+                    "Keytrade Bank" + "low confidence" wrapped at 12rem */}
+                <td style={{ width: "16rem", whiteSpace: "nowrap" }}>
+                  {row.bank}
+                  {row.lowConfidence && (
+                    <span
+                      className="badge"
+                      style={{ marginLeft: "0.4rem" }}
+                      title={`Raw series peaks at ${row.rawPeak}/100`}
+                    >
+                      low confidence
+                    </span>
+                  )}
+                </td>
+                <td>
+                  <div
+                    style={{
+                      width: `${(row.sharePct / max) * 100}%`,
+                      minWidth: row.sharePct > 0 ? "2px" : 0,
+                      height: "14px",
+                      borderRadius: "3px",
+                      background:
+                        row.key === "ing"
+                          ? "#eb6834"
+                          : row.segment === "challenger"
+                            ? "#8a5cf6"
+                            : "#2a78d6",
+                    }}
+                  />
+                </td>
+                <td style={{ width: "4.5rem", textAlign: "right" }}>{row.sharePct.toFixed(1)}%</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {share.lowConfidence.length > 0 && (
+        <div className="scope-note">
+          <strong>Read these with care:</strong> {share.lowConfidence.join(", ")}. Their raw series
+          never clears the measurable floor, because Google Trends rescales every request to its own
+          peak and these brands share a request with a term that reaches 100. A share near zero here
+          means &ldquo;too small to separate from zero at this scale&rdquo;, not &ldquo;nobody
+          searched for it&rdquo;.
+        </div>
+      )}
+
+      <div className="scope-note">
+        <strong>Attention, not market.</strong> {share.caveat}
+      </div>
+
+      <details>
+        <summary>How nine banks fit on one scale</summary>
+        <p>{share.method.why}</p>
+        <p>{share.method.aggregation}</p>
+        <p>
+          Reference request: <code>{share.method.referenceSheet}</code>. Anchors:{" "}
+          {share.method.anchors.join(" + ")}. Scale factors applied:{" "}
+          {Object.entries(share.method.scaleFactors)
+            .map(([sheet, factor]) => `${sheet} ×${factor}`)
+            .join(", ")}
+          .
+        </p>
+      </details>
+    </section>
   );
 }

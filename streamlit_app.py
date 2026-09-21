@@ -39,7 +39,7 @@ DATA = REPO / "data" / "processed"
 OUTPUTS = REPO / "outputs"
 RUBRIC = REPO / "data" / "rubric"
 CONFIG = REPO / "config"
-KBCH = REPO / "kbc-ing-benchmark"
+KBCH = REPO / "trends-benchmark"
 
 st.set_page_config(page_title="Banking Campaigns Comparator", layout="wide")
 
@@ -454,13 +454,13 @@ def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
     st.title("📈 Trends (Google)")
     st.caption(
         "Google Trends Belgium — ING vs competitors. "
-        "Separate pipeline in `kbc-ing-benchmark/` (Streamlit + pytrends)."
+        "Separate pipeline in `trends-benchmark/` (Streamlit + pytrends)."
     )
 
     st.subheader("Dedicated dashboard")
     st.markdown("""
     The Trends pipeline has its own Streamlit app:
-    `cd kbc-ing-benchmark && streamlit run app.py`
+    `cd trends-benchmark && streamlit run app.py`
     """)
 
     st.subheader("What's in the repo")
@@ -473,7 +473,7 @@ def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
                 key=f"trends_dl_{f.name}",
             )
     else:
-        st.info("No kbc-ing-benchmark/export found in this repo checkout.")
+        st.info("No trends-benchmark/export found in this repo checkout.")
 
 
 # ── page 9: Research ─────────────────────────────────────────────────────

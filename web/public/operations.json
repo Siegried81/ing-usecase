@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-21T10:01:46+00:00",
-  "dataset": "data/processed/campaigns_scored.csv",
+  "generated_at": "2026-09-21T10:25:53+00:00",
+  "dataset": "data\\processed\\campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
     "ok": true,
@@ -11337,10 +11337,10 @@
         "basis": "exact match"
       },
       {
-        "feature": "value_prop_clarity",
+        "feature": "mobile_first_design_signal",
         "pages": 11,
         "agreement": 0.64,
-        "basis": "within 1 point"
+        "basis": "exact match"
       },
       {
         "feature": "layout_archetype",
@@ -11349,10 +11349,10 @@
         "basis": "exact match"
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "value_prop_clarity",
         "pages": 11,
         "agreement": 0.64,
-        "basis": "exact match"
+        "basis": "within 1 point"
       },
       {
         "feature": "aida_desire",
@@ -11367,13 +11367,13 @@
         "basis": "within 1 point"
       },
       {
-        "feature": "aida_interest",
+        "feature": "aida_action",
         "pages": 11,
         "agreement": 0.91,
         "basis": "exact match"
       },
       {
-        "feature": "aida_action",
+        "feature": "aida_interest",
         "pages": 11,
         "agreement": 0.91,
         "basis": "exact match"
@@ -11405,18 +11405,6 @@
         "kappa": -0.102
       },
       {
-        "feature": "aida_action",
-        "raters": "siegried vs stephane",
-        "pages": 9,
-        "kappa": 0.0
-      },
-      {
-        "feature": "aida_action",
-        "raters": "dan vs siegried",
-        "pages": 10,
-        "kappa": 0.0
-      },
-      {
         "feature": "aida_interest",
         "raters": "siegried vs stephane",
         "pages": 9,
@@ -11426,6 +11414,18 @@
         "feature": "aida_interest",
         "raters": "dan vs stephane",
         "pages": 8,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_action",
+        "raters": "dan vs siegried",
+        "pages": 10,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_action",
+        "raters": "siegried vs stephane",
+        "pages": 9,
         "kappa": 0.0
       },
       {
@@ -11471,13 +11471,13 @@
         "kappa": 0.125
       },
       {
-        "feature": "clarity_score",
+        "feature": "mobile_first_design_signal",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "clarity_score",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
@@ -11513,9 +11513,9 @@
         "kappa": 0.308
       },
       {
-        "feature": "persuasion_levers",
+        "feature": "mobile_first_design_signal",
         "raters": "dan vs stephane",
-        "pages": 7,
+        "pages": 8,
         "kappa": 0.333
       },
       {
@@ -11525,9 +11525,9 @@
         "kappa": 0.333
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "persuasion_levers",
         "raters": "dan vs stephane",
-        "pages": 8,
+        "pages": 7,
         "kappa": 0.333
       },
       {

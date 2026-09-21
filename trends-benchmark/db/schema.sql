@@ -66,6 +66,22 @@ CREATE TABLE IF NOT EXISTS term_validation (
     UNIQUE (scope, product_id, bank, slot_language, term, call_index)
 );
 
+-- Share-of-search chaining (analysis/share_of_search.py): rescales the 3
+-- generic-brand sheets onto one common 0-100 scale via their shared ING/KBC
+-- anchor, then derives each bank's weekly share of the 9-bank panel. Fully
+-- derived from trends_data - wiped and recomputed on every run, same
+-- refresh policy as `anomalies`.
+CREATE TABLE IF NOT EXISTS brand_share_of_search (
+    bank TEXT NOT NULL,
+    date TEXT NOT NULL,
+    source_fiche TEXT NOT NULL,
+    raw_value INTEGER NOT NULL,
+    scale_factor REAL NOT NULL,
+    rescaled_value REAL NOT NULL,
+    share_pct REAL NOT NULL,
+    UNIQUE (bank, date)
+);
+
 -- Downstream pipeline (campaigns/): catalogs real ad/marketing campaigns and
 -- matches them against anomalies already detected above. Populated by
 -- campaigns/load_campaigns.py, consumed by campaigns/scoring.py.

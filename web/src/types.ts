@@ -280,11 +280,57 @@ export interface CampaignTypeMix {
   other: number;
 }
 
+/** One bank's standing in the nine-bank brand-search panel.
+ * `lowConfidence` means the raw 0-100 series never cleared the measurable
+ * floor because it shared a Google Trends request with a term peaking at 100 -
+ * the share is quantisation as much as measurement. Never hide such a row;
+ * label it. */
+export interface ShareOfSearchRow {
+  rank: number;
+  bank: string;
+  key: string;
+  segment: string;
+  sharePct: number;
+  rawPeak: number;
+  lowConfidence: boolean;
+  sourceSheet: string;
+}
+
+/** Share of search across more banks than one Trends request can hold.
+ * Every figure here is computed in comparator/trends.py - the UI does no
+ * arithmetic, so there is no second definition of any number on screen. */
+export interface ShareOfSearch {
+  ranking: ShareOfSearchRow[];
+  series: { bank: string; key: string; points: TrendPoint[] }[];
+  window: { start: string | null; end: string | null };
+  weeks: number;
+  headline: {
+    sentence: string;
+    leader: string;
+    leaderShare: number;
+    focusRank: number | null;
+    focusShare: number | null;
+    traditionalShare: number;
+    challengerShare: number;
+    segmentSentence: string;
+  };
+  method: {
+    why: string;
+    referenceSheet: string;
+    anchors: string[];
+    scaleFactors: Record<string, number>;
+    aggregation: string;
+  };
+  lowConfidence: string[];
+  caveat: string;
+}
+
 export interface TrendsPayload {
   available: boolean;
   source: string;
   window: { start: string | null; end: string | null };
   coverage: { covered: string[]; uncovered: string[] };
+  shareOfSearch: ShareOfSearch | null;
   banks: TrendBank[];
   events: TrendEvent[];
   campaigns: {
