@@ -41,23 +41,23 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **What this run shows.** ING scores **0.21** — clearly with the traditional banks. Computed over 30 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.22 and the most traditional challenger at 0.56, a gap of 0.33. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.23 and the most traditional challenger at 0.56, a gap of 0.33. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| cbc | traditional | -0.19 |
-| argenta | traditional | -0.18 |
-| beobank | traditional | -0.10 |
+| cbc | traditional | -0.20 |
+| argenta | traditional | -0.19 |
+| beobank | traditional | -0.11 |
 | kbc | traditional | -0.09 |
 | crelan | traditional | -0.05 |
-| vdk | traditional | -0.02 |
-| bnp_paribas_fortis | traditional | 0.05 |
-| belfius | traditional | 0.14 |
+| vdk | traditional | 0.02 |
+| bnp_paribas_fortis | traditional | 0.04 |
+| belfius | traditional | 0.13 |
 | ing **(focus)** | traditional | 0.21 |
-| hellobank | traditional | 0.22 |
+| hellobank | traditional | 0.23 |
 | keytrade | challenger | 0.56 |
 | n26 | challenger | 0.91 |
-| bunq | challenger | 1.21 |
+| bunq | challenger | 1.22 |
 | revolut | challenger | 1.32 |
 
 **What it cannot tell you.** The axis is defined by the banks in this dataset. Add or remove a bank and the centroids move, so a score is a position *within this sample*, not an absolute coordinate. It also says nothing about which end is better.
@@ -79,13 +79,13 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.22 a
 | Feature | Dimension | ing | Peer mean | Gap (SD) |
 | --- | --- | --- | --- | --- |
 | numeric_claim_count | tone_messaging | 25.50 | 12.15 | 1.62 |
+| mobile_first_design_signal | layout_structure | 1.00 | 0.38 | 1.29 |
 | youth_student_targeting | banking_domain | 1.00 | 0.38 | 1.26 |
+| aida_desire | marketing_principles | 1.00 | 0.43 | 1.15 |
+| aida_coverage_score | marketing_principles | 3.50 | 2.71 | 1.12 |
 | cta_count | layout_structure | 2.00 | 13.38 | -1.06 |
-| value_prop_clarity | topics_value_prop | 4.00 | 3.50 | 1.00 |
-| mobile_first_design_signal | layout_structure | 1.00 | 0.50 | 1.00 |
 | fast_digital_onboarding_claim | banking_domain | 0.50 | 0.15 | 0.96 |
 | page_height_px | layout_structure | 9,465 | 6,414 | 0.91 |
-| aida_attention | marketing_principles | 0.50 | 0.17 | 0.89 |
 
 **What it cannot tell you.** With 13 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 
@@ -108,11 +108,11 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.22 a
 | background_luminance | 0.86 | 0.45 | -2.81 |
 | above_fold_element_count | 36.58 | 21.50 | -2.10 |
 | expat_cross_border_targeting | 0.00 | 0.50 | 1.87 |
-| rate_shown | 0.00 | 0.50 | 1.87 |
 | subscription_style_framing | 0.00 | 0.50 | 1.87 |
+| rate_shown | 0.00 | 0.50 | 1.87 |
 | total_image_area_ratio | 0.10 | 0.31 | 1.85 |
-| clarity_score | 3.80 | 4.67 | 1.75 |
-| formality_score | 3.50 | 2.25 | -1.68 |
+| formality_score | 3.42 | 2.25 | -1.83 |
+| mobile_first_design_signal | 0.29 | 1.00 | 1.69 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 
@@ -128,7 +128,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.22 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **belfius** (3.8), **bnp_paribas_fortis** (4.5), **keytrade** (5.2).
+**What this run shows.** The banks closest to ING are **belfius** (3.9), **bnp_paribas_fortis** (4.6), **keytrade** (5.3).
 
 | Cluster | Banks |
 | --- | --- |

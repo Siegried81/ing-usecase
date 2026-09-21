@@ -89,16 +89,16 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | - |
+| accent locations | buttons, text |
 | background luminance | 0.85 |
 | image count | 16 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | no |
 | image area share | 0.11 |
-| archetype | - |
+| archetype | split_columns |
 | hero image | yes (all pages) |
-| text image layout | - |
+| text image layout | beside |
 | page height px | 7,078 |
 | cta count | 20 |
 | cta above fold | no |
@@ -109,7 +109,7 @@
 | urgency markers | 0 |
 | primary product | Compte Go |
 | rate shown | no |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | - |
@@ -234,7 +234,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** is bundled offer well below the market average (-1.6 SD); has comparison table well above the market average (+1.3 SD); above fold element count well above the market average (+1.0 SD).
+**Signature:** is bundled offer well below the market average (-1.6 SD); has comparison table well above the market average (+1.3 SD); formality score well above the market average (+1.0 SD).
 
 ### crelan  (traditional)
 
@@ -268,7 +268,7 @@
 | rate prominence | above_fold |
 | benefit framing | rational |
 | fab level | advantage |
-| aida coverage | 3 |
+| aida coverage | 2 |
 | persuasion levers | liking |
 | lever count | 1 |
 | personas | mass_market 100% |
@@ -312,7 +312,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+3.2 SD); is bundled offer well below the market average (-1.6 SD); formality score well below the market average (-1.3 SD).
+**Signature:** brand colour share well above the market average (+3.2 SD); is bundled offer well below the market average (-1.6 SD); formality score well below the market average (-1.4 SD).
 
 ### ing  (traditional)
 
@@ -385,7 +385,7 @@
 | rate prominence | below_fold |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | 3 |
+| aida coverage | 2 |
 | persuasion levers | authority |
 | lever count | 1 |
 | personas | mass_market 100% |
@@ -518,32 +518,32 @@
 | dominant colour | #ffffff |
 | brand colour share | 0 |
 | accent colour count | 4 |
-| accent locations | - |
+| accent locations | buttons, background |
 | background luminance | 0.86 |
 | image count | 5 |
 | dominant image type | photo |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
 | image area share | 0.11 |
-| archetype | - |
+| archetype | hero_stacked |
 | hero image | yes (all pages) |
-| text image layout | - |
+| text image layout | overlaid |
 | page height px | 4,290 |
 | cta count | 17 |
 | cta above fold | yes (all pages) |
 | word count | 3,992 |
 | readability band | hard |
-| formality score | 5 |
+| formality score | 4 |
 | second person ratio | 0.8 |
 | urgency markers | 1 |
 | primary product | Compte à vue You Count |
 | rate shown | no |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | - |
+| aida coverage | 3 |
 | persuasion levers | - |
 | lever count | - |
 | personas | student 100% |
 
-**Signature:** cta above fold well above the market average (+2.4 SD); formality score well above the market average (+1.9 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** cta above fold well above the market average (+2.4 SD); has comparison table well above the market average (+1.3 SD); numeric claim count well below the market average (-1.2 SD).

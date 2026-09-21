@@ -187,7 +187,9 @@
         "dominant_colour": "#ffffff",
         "brand_colour_share": 0.012,
         "accent_colour_count": 4.0,
-        "accent_locations": [],
+        "accent_locations": [
+          "buttons, text"
+        ],
         "background_luminance": 0.851
       },
       "imagery": {
@@ -198,9 +200,9 @@
         "image_area_share": 0.109
       },
       "layout": {
-        "archetype": null,
+        "archetype": "split_columns",
         "hero_image": 1.0,
-        "text_image_layout": null,
+        "text_image_layout": "beside",
         "page_height_px": 7078.0,
         "cta_count": 20.0,
         "cta_above_fold": 0.0
@@ -215,7 +217,7 @@
       "value_proposition": {
         "primary_product": "Compte Go",
         "rate_shown": 0.0,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
@@ -472,8 +474,8 @@
           1.3416407864998738
         ],
         [
-          "above_fold_element_count",
-          1.0154656969639355
+          "formality_score",
+          1.0289915108550531
         ]
       ]
     },
@@ -529,7 +531,7 @@
         "fab_level": "advantage"
       },
       "marketing_principles": {
-        "aida_coverage": 3.0,
+        "aida_coverage": 2.0,
         "persuasion_levers": [
           "liking"
         ],
@@ -625,7 +627,7 @@
         ],
         [
           "formality_score",
-          -1.2924860661584994
+          -1.3719886811400708
         ]
       ]
     },
@@ -766,7 +768,7 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 3.0,
+        "aida_coverage": 2.0,
         "persuasion_levers": [
           "authority"
         ],
@@ -1054,7 +1056,9 @@
         "dominant_colour": "#ffffff",
         "brand_colour_share": 0.0,
         "accent_colour_count": 4.0,
-        "accent_locations": [],
+        "accent_locations": [
+          "buttons, background"
+        ],
         "background_luminance": 0.857
       },
       "imagery": {
@@ -1065,9 +1069,9 @@
         "image_area_share": 0.114
       },
       "layout": {
-        "archetype": null,
+        "archetype": "hero_stacked",
         "hero_image": 1.0,
-        "text_image_layout": null,
+        "text_image_layout": "overlaid",
         "page_height_px": 4290.0,
         "cta_count": 17.0,
         "cta_above_fold": 1.0
@@ -1075,19 +1079,19 @@
       "tone": {
         "word_count": 3992.0,
         "readability_band": "hard",
-        "formality_score": 5.0,
+        "formality_score": 4.0,
         "second_person_ratio": 0.797,
         "urgency_markers": 1.0
       },
       "value_proposition": {
         "primary_product": "Compte \u00e0 vue You Count",
         "rate_shown": 0.0,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
+        "aida_coverage": 3.0,
         "persuasion_levers": [],
         "lever_count": null
       },
@@ -1103,12 +1107,12 @@
           2.449489742783178
         ],
         [
-          "formality_score",
-          1.9007148031742636
-        ],
-        [
           "has_comparison_table",
           1.3416407864998738
+        ],
+        [
+          "numeric_claim_count",
+          -1.166467431318627
         ]
       ]
     }

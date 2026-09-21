@@ -23,12 +23,12 @@
       "headline_count": 28,
       "themes": {
         "innovation_digital": 0,
-        "crisis_or_scandal": 10,
-        "financial_results": 1,
+        "crisis_or_scandal": 12,
+        "financial_results": 4,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 11,
-        "other": 6
+        "regulatory": 7,
+        "other": 5
       },
       "notable_headlines": [
         {
@@ -40,8 +40,16 @@
           "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
         },
         {
+          "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+          "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
+        },
+        {
           "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
           "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+        },
+        {
+          "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
+          "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
         }
       ]
     },
@@ -62,12 +70,20 @@
           "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
         },
         {
+          "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+          "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+        },
+        {
           "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
           "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
         },
         {
-          "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
-          "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+          "title": "Beobank trekt rente termijnrekeningen op",
+          "url": "https://www.headliner.nl/item/beobank-trekt-rente-termijnrekeningen-op-vrt-197090"
+        },
+        {
+          "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
+          "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
         }
       ]
     },
@@ -89,38 +105,54 @@
           "url": "https://siliconcanals.com/amsterdam-bunq-report-q4-profits/"
         },
         {
-          "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
-          "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
+          "title": "The OCC's charter reality check: Why bunq and Wise got denied | bobsguide",
+          "url": "https://www.bobsguide.com/the-occs-charter-reality-check-why-bunq-and-wise-got-denied/"
         },
         {
           "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
           "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+        },
+        {
+          "title": "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
+          "url": "https://siliconcanals.com/bunq-launches-genai-finn/"
+        },
+        {
+          "title": "Dutch challenger bank bunq introduces Apple Pay in the Netherlands - Silicon Canals",
+          "url": "https://siliconcanals.com/bunqintroduces-apple-pay-in-netherlands/"
         }
       ]
     },
     "cbc": {
-      "headline_count": 23,
+      "headline_count": 25,
       "themes": {
         "innovation_digital": 0,
-        "crisis_or_scandal": 18,
+        "crisis_or_scandal": 20,
         "financial_results": 1,
-        "product_launch": 0,
+        "product_launch": 1,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 4
+        "other": 3
       },
       "notable_headlines": [
         {
-          "title": "CBC changed its terrorism policy for 9/11 -- but still not for Hamas",
-          "url": "https://thecjn.ca/news/cbc-changed-its-terrorism-policy-for-9-11-but-still-not-for-hamas/"
+          "title": "CBC changes policy that said not to label 9/11 attacks 'terrorism' after criticism",
+          "url": "https://www.castanetkamloops.net/news/Canada/629544/CBC-changes-policy-that-said-not-to-label-9-11-attacks-terrorism-after-criticism"
         },
         {
           "title": "FBI Director Blasts CBC's Editorial Choice Not To Call 9/11 A Terrorist Attack",
           "url": "https://www.zerohedge.com/political/fbi-director-blasts-cbcs-editorial-choice-not-call-911-terrorist-attack"
         },
         {
+          "title": "CBC Directs Journalists Not to Describe 9/11 Attacks as 'Terrorist Attacks' - [your]NEWS",
+          "url": "https://yournews.com/2026/08/28/7179320/cbc-directs-journalists-not-to-describe-9-11-attacks-as-terrorist/"
+        },
+        {
           "title": "Canadian 9/11 widow 'appalled' by CBC policy against using term 'terrorist attack'",
           "url": "https://ca.news.yahoo.com/canadian-9-11-widow-appalled-193305286.html"
+        },
+        {
+          "title": "Controverse entourant la CBC | Le FBI a temporairement interrompu sa collaboration avec la GRC",
+          "url": "https://www.lapresse.ca/actualites/national/2026-09-18/controverse-entourant-la-cbc/le-fbi-a-temporairement-interrompu-sa-collaboration-avec-la-grc.php"
         }
       ]
     },
@@ -132,8 +164,8 @@
         "financial_results": 1,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 0,
-        "other": 1
+        "regulatory": 1,
+        "other": 0
       },
       "notable_headlines": [
         {
@@ -150,13 +182,13 @@
     "ing": {
       "headline_count": 23,
       "themes": {
-        "innovation_digital": 3,
+        "innovation_digital": 4,
         "crisis_or_scandal": 1,
-        "financial_results": 3,
+        "financial_results": 2,
         "product_launch": 2,
         "esg_sustainability": 5,
-        "regulatory": 1,
-        "other": 8
+        "regulatory": 0,
+        "other": 9
       },
       "notable_headlines": [
         {
@@ -170,6 +202,14 @@
         {
           "title": "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
           "url": "https://www.nrc.nl/nieuws/2026/09/18/brutaal-en-nietsontziend-met-pesterijen-probeerde-bunq-topman-ali-niknam-concurrent-ing-af-te-troeven-fuck-you-very-much-a4935677"
+        },
+        {
+          "title": "ING: tarieven stijgen, maar AI zet verdienmodel onder druk · Accountancy Vanmorgen",
+          "url": "https://www.accountancyvanmorgen.nl/2026/08/20/ing-tarieven-stijgen-maar-ai-zet-verdienmodel-onder-druk/"
+        },
+        {
+          "title": "ING s'apprête à entrer sur le marché des ETF",
+          "url": "https://www.agefi.fr/etf/ing-sapprete-a-entrer-sur-le-marche-des-etf"
         }
       ]
     },
@@ -178,51 +218,67 @@
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
-        "financial_results": 3,
+        "financial_results": 10,
         "product_launch": 0,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 23
+        "other": 16
       },
       "notable_headlines": [
-        {
-          "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-          "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
-        },
         {
           "title": "Jefferies start opvolging KBC met koopadvies",
           "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
         },
         {
+          "title": "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
+          "url": "https://www.manilatimes.net/2026/08/28/tmt-newswire/globenewswire/kbc-ancora-closes-financial-year-20252026-with-a-profit-of-eur-3894-million/2414293"
+        },
+        {
+          "title": "Meer winst voor KBC Ancora",
+          "url": "https://www.deaandeelhouder.be/nieuws/2026/08/28/meer-winst-voor-kbc-ancora-5/"
+        },
+        {
           "title": "Ahold Delhaize op TopPick lijst bij KBC",
           "url": "https://www.deaandeelhouder.nl/columns/ahold-delhaize-op-toppick-lijst-bij-kbc/"
+        },
+        {
+          "title": "Inventiva : KBC relève sa cible sur Inventiva, le titre bondit",
+          "url": "https://www.tradingsat.com/inventiva-FR0013233012/actualites/inventiva-kbc-releve-sa-cible-sur-inventiva-le-titre-bondit-1169092.html"
         }
       ]
     },
     "keytrade": null,
     "n26": {
-      "headline_count": 8,
+      "headline_count": 7,
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
         "financial_results": 1,
-        "product_launch": 2,
+        "product_launch": 1,
         "esg_sustainability": 0,
         "regulatory": 0,
         "other": 5
       },
       "notable_headlines": [
         {
-          "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
-          "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
-        },
-        {
           "title": "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
           "url": "https://siliconcanals.com/n26-raises-775m/"
         },
         {
+          "title": "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
+          "url": "https://siliconcanals.com/n26-launches-n26-crypto/"
+        },
+        {
           "title": "N26 data: Gen Z leads Europe's investing shift",
           "url": "https://fintech.global/2026/08/26/n26-data-gen-z-leads-europes-investing-shift/"
+        },
+        {
+          "title": "Quels sont les frais N26 à l'étranger ?",
+          "url": "https://www.moneyvox.fr/banque-en-ligne/actualites/104009/quels-sont-les-frais-n26-a-etranger"
+        },
+        {
+          "title": "Former Revolut and N26 Executives Raise £2.7M for Wealth App - FinanceFeeds",
+          "url": "https://financefeeds.com/former-revolut-and-n26-executives-raise-2-7m-for-wealth-app/"
         }
       ]
     },
@@ -232,10 +288,10 @@
         "innovation_digital": 3,
         "crisis_or_scandal": 9,
         "financial_results": 0,
-        "product_launch": 8,
+        "product_launch": 7,
         "esg_sustainability": 0,
         "regulatory": 6,
-        "other": 4
+        "other": 5
       },
       "notable_headlines": [
         {
@@ -243,12 +299,20 @@
           "url": "https://www.techtimes.com/articles/326716/20260904/occ-grants-revolut-us-bank-charter-four-key-services-need-separate-sign-off.htm"
         },
         {
+          "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
+          "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
+        },
+        {
           "title": "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
           "url": "https://en.cryptonomist.ch/2026/09/16/revolut-crypto-breach-data/"
         },
         {
-          "title": "Revolut launches MiCA compliant EURR stablecoin in Europe",
-          "url": "https://crypto.news/revolut-launches-mica-compliant-eurr-stablecoin-in-europe/"
+          "title": "Revolut Builds Its Own Banking AI: PRAGMA Foundation Model Beats Specialist Systems at Fraud",
+          "url": "https://www.techtimes.com/articles/325649/20260826/revolut-builds-its-own-banking-ai-pragma-foundation-model-beats-specialist-systems-fraud.htm"
+        },
+        {
+          "title": "Revolut Taps GXS Bank Founding CEO for Singapore Advisory Board in MAS License Push",
+          "url": "https://www.techtimes.com/articles/325555/20260825/revolut-taps-gxs-bank-founding-ceo-singapore-advisory-board-mas-license-push.htm"
         }
       ]
     },
