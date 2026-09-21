@@ -469,3 +469,49 @@ Two things surfaced in the merge and are worth knowing next time:
 The report snapshot still covers one family at a time (`--product-family auto`),
 which is what DR-04 requires; the other six are now in the dataset ready for their
 own run.
+
+---
+
+**steve 21/09, the Streamlit dashboard's views move into the React UI as the
+operator tabs.** Decision: the read-only pages that used to exist only in
+`streamlit_app.py` — Home, Bank profiles, Data, Rubric, Collection and Research —
+now render in `web/` too, and `export_web_report.py` writes the data they need.
+The Streamlit file stays in the repository for share.streamlit.io, but it is no
+longer the only place those views exist.
+
+**Why move them.** Two dashboards reading the same files is two places for a
+figure to go stale, and it was already happening: the Streamlit Analysis page had
+hand-typed numbers that looked like a run but were not read from anywhere, and the
+Home page's bank status came from `bank_profiles.json` while the React scope banner
+came from `report.json`. One surface, one snapshot, one definition of every number.
+
+**What was decided about the boundary.** Four things were deliberately *not*
+carried over, because the proposal (`docs/web_ui_proposal.md`) had already argued
+against them and the argument still holds:
+
+- no pipeline control — collection is slow, needs a job model, and the robots gate
+  must stay server-side and not be overridable from a browser;
+- no dataset editing — the audit trail on an extracted feature is the whole point;
+- no dictionary editing — it is the frozen contract (P-04), and the Data tab shows
+  it read-only, permanently;
+- no live scoring screen — the Rubric tab shows finished sheets, because a screen
+  that showed a rater another rater's scores would make the agreement figure
+  measure visibility rather than independent judgement (NFR-05).
+
+**How it is plumbed.** A new `build_operations()` in `scripts/export_web_report.py`
+writes `web/public/operations.json` next to `report.json`, from the same
+`read_dataset` / `scope_to_family` calls, so the collection status and the scope
+banner cannot disagree. `serve_web.py` grew four read-only endpoints for the things
+a static bundle cannot hold: `/api/research/search` (Semantic Scholar, the one live
+external call), `/api/downloads` and `/api/downloads/{name}` (the files in
+`outputs/`), and `/api/capture/{bank}` (the page screenshots). The React UI fetches
+the endpoint rather than re-deriving anything; `src/types.ts` mirrors both export
+functions.
+
+**A correction that came out of writing it down.** The README still said Dan was at
+0/23 rubric pages, and that no feature had two independent human raters. That was
+false against the sheets on disk: Dan's sheet has 11 scored pages and overlaps
+Siegried's on all 11, so the first genuine human-vs-human agreement exists. The
+status paragraph was corrected with the operator work. The remaining rubric problem
+is coverage and wording — six features sit below the 60% bar, and the six banks
+added this week have no judged layer at all — not the absence of a second rater.

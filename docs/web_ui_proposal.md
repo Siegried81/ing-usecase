@@ -2,13 +2,16 @@
 
 > **Status, steve 21/09: superseded by what was actually built.** This is kept as
 > the proposal that was accepted and amended, not as a description of the current
-> UI. A React business UI now exists — four tabs (Analysis, Trends, Reputation,
-> Recommendations), the recommendations flow, and the generated-site builder with
-> its explanation mode. For the shipped behaviour read
-> [`../web/README.md`](../web/README.md); for how to run it,
-> [`pipeline.md`](pipeline.md). Two things here never happened as written: the
-> operator rubric-scoring UI (the work moved to `scripts/rubric_sheet.py` and the
-> joint session) and the dataset-editing endpoints.
+> UI. A React UI now exists with ten tabs: the four business tabs (Analysis,
+> Trends, Reputation, Recommendations), the recommendations flow and the
+> generated-site builder with its explanation mode, and — added last — the
+> read-only operator tabs (Home, Bank profiles, Data, Rubric, Collection,
+> Research) that carry over what `streamlit_app.py` showed. For the shipped
+> behaviour read [`../web/README.md`](../web/README.md); for how to run it,
+> [`pipeline.md`](pipeline.md). Two things here still never happened as written:
+> the operator **scoring** UI (writing is still `scripts/rubric_sheet.py` and the
+> joint session — the Rubric tab only reads finished sheets) and the
+> dataset-editing endpoints, which are deliberately absent.
 
 steph 17/09. For the team to accept, amend or reject before anything is built.
 

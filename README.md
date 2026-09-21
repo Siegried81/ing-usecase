@@ -14,8 +14,9 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- steve 21/09: refreshed after the Day 6 gate and a full re-collection with
-four new banks. The previous table still described 9 banks / 23 pages. -->
+<!-- steve 21/09: refreshed again after the operator tabs shipped into the
+React UI. Two claims were already stale before that: the rubric row still
+said Dan 0/23, and the profile row still said 10 banks. -->
 **21/09, after the Day 6 gate.** The comparison now covers **14 banks across 16
 pages** in the `current_account_pack` family, with **nothing excluded** — up from
 9 banks, which had been held back by Belfius having no page in the compared
@@ -23,22 +24,28 @@ family and by BNP Paribas Fortis serving us nothing at all. Belfius's own
 current-account page, vdk, hellobank, beobank, CBC and Keytrade were added, and
 Revolut came back through a static fetch. BNP is in too: its edge returns HTTP
 503 to every headless client but serves a real headful browser, so that target
-uses `method: headful`. There is no manual-capture-only bank left. **The rubric is the live blocker**:
-Siegried has scored all 23 pages, Stephane's sheet now covers the 9 pages whose
-screenshots are on this machine but those values were machine-proposed and
-adopted (the sheet's notes column says so), and Dan is at 0/23 — so no feature
-yet carries two *independent* human raters.
+uses `method: headful`. There is no manual-capture-only bank left. **The rubric
+is no longer zero-handed**: Siegried has scored 25 pages, Dan 11, and the two
+overlap on 11 pages — so two independent human raters now exist, which is what
+NFR-05 asks for. Stephane's 9 pages were machine-proposed from the screenshots
+and adopted (the sheet's notes column says so), and they do not count as an
+independent human. Agreement is measurable for all 13 features over 9–11 pages
+and **six** now sit below the module's 60% bar (`aida_desire` 0.00,
+`persuasion_levers` 0.11, `accent_locations` 0.20, `rate_prominence` 0.27,
+`text_image_layout` 0.50, `aida_attention` 0.55), so the rubric work is
+tightening wording, not filling the first sheet.
 
 | Deliverable | State |
 | --- | --- |
 | Feature dictionary v0.1 (D-03) | frozen (Day 2), additions since allowed by the freeze rule — **104 features**, both dictionary copies in sync |
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
-| Bank profile cards | generated, 10/10 compared banks (real data) |
+| Bank profile cards | generated for every compared bank (real data) |
 | Real captures (D-02) | **50 pages / 14 banks / 7 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
-| Rubric scoring (Day 5) | **still the live blocker**: Siegried 23/23 pages; Stephane 9/23 — machine-proposed from the screenshots and adopted, recorded as such in the sheet; Dan 0/23. Agreement is now measurable for all 13 features over 9–10 pages, and `rubric_sheet.py` flags three below its 60% bar (`persuasion_levers` 0.14, `accent_locations` 0.33, `text_image_layout` 0.56). The model's own sheet is never a pre-fill |
+| Rubric scoring (Day 5) | **two independent human raters now overlap on 11 pages** (Siegried 25 scored, Dan 11); Stephane's 9 are machine-proposed and adopted, recorded as such in the sheet. Agreement is measurable for all 13 features over 9–11 pages, and `rubric_sheet.py` flags six below its 60% bar (listed above). The model's own sheet is never a pre-fill |
+| Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
-Test suite: **368 passing, 1 skipped**. Pinned model: `deepseek-flash`.
+Test suite: **387 passing, 1 skipped**. Pinned model: `deepseek-flash`.
 
 ## Start here
 
@@ -106,7 +113,7 @@ Details, including the freeze rule and the validator's refusals, are in
 ```
 config/feature_dictionary.yaml   the contract
 docs/                            scope, decisions, design, runbook, UI proposal
-web/                             React business UI (+ its own README)
+web/                             React UI: the findings snapshot + the read-only operator views (+ its own README)
 src/comparator/
   dictionary.py                  loads and self-checks the dictionary
   schema.py                      dataset types, validation, read/write
@@ -148,8 +155,8 @@ scripts/
   fix_cta_count.py               re-derive cta_count/cta_above_fold from saved HTML, no LLM call
   import_captures.py             import pages a person saved from a normal browser
   browser_audit.py               Playwright audit of the UI + generated site
-streamlit_app.py                 dashboard for share.streamlit.io (requirements-streamlit.txt)
-tests/                           388 tests, no network calls
+streamlit_app.py                 earlier dashboard for share.streamlit.io; its views now live in the React UI's operator tabs
+tests/                           387 tests, no network calls
 data/rubric/                     human + model scoring sheets (tracked)
 data/raw/                        snapshots (tracked since 21/09 — see Next)
 data/processed/                  datasets (tracked since 21/09)
@@ -158,12 +165,13 @@ outputs/                         charts and tables — tracked, regenerated ever
 
 ## Next
 
-1. **Finish the rubric properly** — the single remaining blocker. Dan's sheet, the
-   14 rows whose screenshots are not on this machine, and a genuinely independent
-   second human: an adopted machine sheet measures the model, not agreement. Then
-   tighten the wording for the three features below the 60% bar.
-2. **Recover BNP Paribas Fortis and Revolut** via the manual-capture path, so the
-   traditional/challenger split is not carried by two challengers alone.
+1. **Finish the rubric properly.** Two independent humans now overlap on 11 pages
+   (Siegried, Dan), so the first real agreement number exists; the work left is
+   coverage — Dan's remaining pages, the 14 rows whose screenshots are not on this
+   machine, and tightening the wording for the six features below the 60% bar.
+2. **Extend collection coverage** — the manual-capture path is no longer needed for
+   BNP Paribas Fortis or Revolut (both captured), but the rubric still has to reach
+   the six banks added this week, whose judged features are blank rather than guessed.
 3. **Re-run the analysis after scoring**, then the web export, so the profile
    cards carry judged features rather than model-judged ones.
 4. **Keep the tracked-data decision under review** — `data/raw/`, `data/processed/`

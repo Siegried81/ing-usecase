@@ -168,11 +168,11 @@ section { margin: 40px 0; }
 .legend { font-size: 13px; color: var(--ink-3); margin-top: 10px; }
 
 /* ---------- tabs ---------- */
-.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 22px 0 6px; border-bottom: 1px solid var(--line); }
+.tabs { display: flex; flex-wrap: wrap; gap: 3px; margin: 22px 0 6px; border-bottom: 1px solid var(--line); }
 .tab {
   appearance: none; background: none; border: 0; cursor: pointer; flex: none;
   font-family: var(--sans); font-size: 15px; font-weight: 600; color: var(--ink-3);
-  padding: 10px 16px; border-bottom: 2.5px solid transparent; margin-bottom: -1px;
+  padding: 10px 14px; border-bottom: 2.5px solid transparent; margin-bottom: -1px;
   white-space: nowrap;
 }
 .tab:hover { color: var(--ink-2); }
