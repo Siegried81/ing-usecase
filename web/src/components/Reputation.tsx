@@ -1,12 +1,34 @@
-import type { Report } from "../types";
+import type { Report, ReputationHeadline } from "../types";
 
 const themeLabel = (theme: string) => theme.replace(/_/g, " ");
+
+/** sieg 21/09: hover popup on a theme's count - the full list of articles it is made of. */
+function ThemeCount({ count, headlines }: { count: number; headlines: ReputationHeadline[] }) {
+  if (headlines.length === 0) return <span className="sd above">{count}</span>;
+  return (
+    <span className="sd above rep-theme-count">
+      {count}
+      <div className="rep-theme-popup">
+        {headlines.map((h, i) =>
+          h.url ? (
+            <a key={i} href={h.url} target="_blank" rel="noreferrer">
+              {h.title}
+            </a>
+          ) : (
+            <span key={i}>{h.title}</span>
+          ),
+        )}
+      </div>
+    </span>
+  );
+}
 
 /**
  * sieg 19/09: NewsAPI headline themes per bank - counts only, never sentiment
  * (see comparator/reputation.py's docstring for why). Mirrors Trends.tsx's
  * "not configured, nothing else affected" empty state when NEWSAPI_KEY isn't set.
- * sieg 21/09: the notable headline links out to its source when one was found.
+ * sieg 21/09: the notable headline links out to its source when one was found, and
+ * hovering a theme's count opens every article behind it (ThemeCount above).
  */
 export function Reputation({ reputation }: { reputation: Report["reputation"] }) {
   if (!reputation.available) {
@@ -42,7 +64,7 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
                 .sort(([, a], [, b]) => b - a)
                 .map(([theme, count]) => (
                   <div className="sig" key={theme}>
-                    <span className="sd above">{count}</span>
+                    <ThemeCount count={count} headlines={snapshot.theme_headlines[theme] ?? []} />
                     <span>{themeLabel(theme)}</span>
                   </div>
                 ))}
