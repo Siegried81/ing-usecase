@@ -97,10 +97,11 @@ sentiment or opinion, only what each headline is ABOUT. Apply the same criteria 
 headline.
 
 Return ONLY a JSON object with exactly these keys:
-- "theme_counts": object mapping each of "innovation_digital", "crisis_or_scandal",
+- "theme_headlines": object mapping each of "innovation_digital", "crisis_or_scandal",
   "financial_results", "product_launch", "esg_sustainability", "regulatory", "other" to an
-  integer count of how many of the given headlines belong to that theme (every headline
-  counted exactly once, into its single best-fitting theme)
+  array of the headline strings, taken verbatim from the input, that belong to that theme
+  (every input headline appears in exactly one theme's array, its single best fit - an empty
+  array for a theme with no headlines)
 - "notable_headlines": array of up to 5 headline strings, taken verbatim from the input, that
   best illustrate why this bank is in the news right now, most important first
 
@@ -108,7 +109,9 @@ No preamble, no markdown fences, JSON only."""
 
 
 class ReputationModel(BaseModel):
-    theme_counts: dict[str, int] = Field(default_factory=dict)
+    # sieg 21/09: was theme_counts (int only) - now the full per-theme headline list, so the
+    # UI can show which articles a count is made of on hover, not just the number.
+    theme_headlines: dict[str, list[str]] = Field(default_factory=dict)
     notable_headlines: list[str] = Field(default_factory=list)
 
 
@@ -249,9 +252,16 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
     # kind of figure this project never lets a model invent.
     url_by_title = {h["title"]: h.get("url") for h in headlines}
     notable = [{"title": t, "url": url_by_title.get(t)} for t in classified.notable_headlines]
+    # sieg 21/09: every headline under its theme, with its URL - lets the UI show, on
+    # hover over a theme's count, the full list of articles that count is made of.
+    theme_headlines = {
+        t: [{"title": h, "url": url_by_title.get(h)} for h in classified.theme_headlines.get(t, [])]
+        for t in THEMES
+    }
     return {
         "headline_count": len(headlines),
-        "themes": {t: classified.theme_counts.get(t, 0) for t in THEMES},
+        "themes": {t: len(theme_headlines[t]) for t in THEMES},
+        "theme_headlines": theme_headlines,
         "notable_headlines": notable,
     }
 

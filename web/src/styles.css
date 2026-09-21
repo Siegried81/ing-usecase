@@ -109,6 +109,19 @@ section { margin: 40px 0; }
 .sig .sd { font-variant-numeric: tabular-nums; font-weight: 650; flex: none; }
 .sig .sd.above { color: var(--challenger); }
 .sig .sd.below { color: var(--traditional); }
+/* sieg 21/09: hover a Reputation theme count to see every article behind it. */
+.rep-theme-count { position: relative; cursor: help; text-decoration: underline dotted; text-underline-offset: 3px; }
+.rep-theme-popup {
+  display: none; position: absolute; top: calc(100% + 6px); left: 0; z-index: 20;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 12px; min-width: 240px; max-width: 340px; box-shadow: 0 8px 24px rgba(0,0,0,.14);
+  font-size: 12.5px; font-weight: 400; font-variant-numeric: normal; color: var(--ink-2);
+  flex-direction: column; gap: 7px; text-align: left;
+}
+.rep-theme-count:hover .rep-theme-popup, .rep-theme-count:focus-within .rep-theme-popup { display: flex; }
+.rep-theme-popup a, .rep-theme-popup span { color: var(--ink-2); }
+.rep-theme-popup a { text-decoration: underline; }
+.rep-theme-popup a:hover { color: var(--ink); }
 
 /* ---------- generated ---------- */
 .synthetic {
