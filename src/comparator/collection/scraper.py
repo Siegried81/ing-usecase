@@ -141,16 +141,63 @@ def _count_terms(text: str, terms) -> int:
     return sum(1 for t in tokens if t in term_set)
 
 
+# steph 21/09: navigation and footer chrome is excluded from cta_count.
+_CTA_CHROME_TAGS = {"nav", "footer"}
+_CTA_CHROME_ROLES = {"navigation", "contentinfo"}
+
+
+def _in_chrome(el) -> bool:
+    """True when the element sits in navigation or footer chrome.
+
+    steph 21/09: cta_count counted every keyword-matching <a>/<button> in the
+    document, so a page's score was largely a count of how often its menu and
+    footer repeat "En savoir plus"-style links. Measured on the current dataset:
+    Crelan scored 42 of which 20 were distinct labels repeated up to 4 times in
+    link lists, against ING's 4, and slide 12 read that as "ING is behind on
+    calls to action". It was measuring link repetition, not calls to action.
+    Chrome is excluded now; a CTA a visitor can click in the page body counts.
+    """
+    for parent in (el, *el.parents):
+        name = getattr(parent, "name", None)
+        if name in _CTA_CHROME_TAGS:
+            return True
+        get = getattr(parent, "get", None)
+        if get is not None and get("role") in _CTA_CHROME_ROLES:
+            return True
+    return False
+
+
+def _is_hidden(el) -> bool:
+    return el.get("aria-hidden") == "true" or el.has_attr("hidden")
+
+
 def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
+    """Distinct calls to action, ignoring chrome (see _in_chrome).
+
+    steph 21/09: now counts distinct (label, href) pairs, which is what the
+    dictionary says the feature is - "Number of distinct call-to-action buttons
+    or links". Before, four links to four product pages all labelled "En savoir
+    plus" counted as four, and a link repeated in a menu counted once per
+    occurrence. The above-fold value keeps the old heuristic (document-order
+    index < 5), so it is still not a real viewport check - see the module
+    docstring - but it is now evaluated after chrome is dropped.
+    """
     candidates = soup.find_all(["a", "button"])
-    count, above_fold_guess = 0, False
+    seen: set[tuple[str, str]] = set()
+    above_fold_guess = False
     for i, el in enumerate(candidates):
-        label = el.get_text(strip=True).lower()
-        if any(k in label for k in _CTA_KEYWORDS):
-            count += 1
-            if i < 5:  # heuristic only - a real above-the-fold check needs rendering
-                above_fold_guess = True
-    return count, above_fold_guess
+        if _is_hidden(el) or _in_chrome(el):
+            continue
+        label = " ".join(el.get_text(separator=" ", strip=True).lower().split())
+        if not any(k in label for k in _CTA_KEYWORDS):
+            continue
+        key = (label, (el.get("href") or "").strip())
+        if key in seen:
+            continue
+        seen.add(key)
+        if i < 5:  # heuristic only - a real above-the-fold check needs rendering
+            above_fold_guess = True
+    return len(seen), above_fold_guess
 
 
 def _has_animation(soup: BeautifulSoup, html: str) -> bool:

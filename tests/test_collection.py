@@ -222,6 +222,45 @@ def test_extract_counts_french_imperative_ctas():
     assert result["cta_count"] == 2
 
 
+def test_cta_count_deduplicates_repeated_links():
+    # steph 21/09: the same label+href repeated is one call to action, not four.
+    # This is the shape Crelan's product lists had ("En savoir plus sur X" x4).
+    html = """<html><body>
+    <a href="/habitation">En savoir plus sur habitation</a>
+    <a href="/habitation">En savoir plus sur habitation</a>
+    <a href="/habitation">En savoir plus sur habitation</a>
+    <a href="/mobilite">En savoir plus sur mobilite</a>
+    </body></html>"""
+    result = extract(html, language="fr")
+    assert result["cta_count"] == 2
+
+
+def test_cta_count_ignores_navigation_and_footer_chrome():
+    # slide 12's "ING is behind on calls to action" came from counting menu and
+    # footer link lists. A body CTA still counts; chrome does not.
+    html = """<html><body>
+    <nav><a href="/a">Ouvrir un compte</a><a href="/b">En savoir plus</a></nav>
+    <header><a href="/c">Ouvrir un compte</a></header>
+    <p>Texte.</p>
+    <a href="/d">Ouvrir un compte</a>
+    <footer><a href="/e">En savoir plus sur habitation</a><a href="/f">En savoir plus</a></footer>
+    </body></html>"""
+    result = extract(html, language="fr")
+    # only the body CTA and the header CTA survive (header is not chrome: a
+    # top-of-page CTA is something a visitor clicks)
+    assert result["cta_count"] == 2
+
+
+def test_cta_count_ignores_hidden_links():
+    html = """<html><body>
+    <a href="/a" aria-hidden="true">Ouvrir un compte</a>
+    <a href="/b" hidden>En savoir plus</a>
+    <a href="/c">Ouvrir un compte</a>
+    </body></html>"""
+    result = extract(html, language="fr")
+    assert result["cta_count"] == 1
+
+
 def test_extract_detects_comparison_table():
     result = extract(SAMPLE_HTML, language="en")
     assert result["has_comparison_table"] is True
