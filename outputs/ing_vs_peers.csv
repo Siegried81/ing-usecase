@@ -1,41 +1,41 @@
 feature,dimension,extraction,ing_value,peer_mean,peer_std,peer_n,gap_sd,reportable,note,percentile,direction
-persuasion_lever_count,marketing_principles,derived,3.5,2.0,0.7071067811865476,4,2.1213203435596424,True,,100.0,above peers
-youth_student_targeting,banking_domain,model_assisted,1.0,0.2222222222222222,0.41573970964154905,9,1.8708286933869707,True,,77.77777777777779,above peers
-numeric_claim_count,tone_messaging,automatic,25.5,12.444444444444445,8.693690063119357,9,1.5017277428534335,True,,88.88888888888889,above peers
-value_prop_clarity,topics_value_prop,rubric,5.0,4.4,0.48989794855663565,5,1.2247448713915883,True,,60.0,above peers
-cta_count,layout_structure,automatic,3.0,14.722222222222221,11.540053704648555,9,-1.0157857599484381,True,,11.11111111111111,below peers
+persuasion_lever_count,marketing_principles,derived,3.5,2.2,0.7483314773547882,5,1.7371980724307583,True,,100.0,above peers
+numeric_claim_count,tone_messaging,automatic,25.5,12.1,8.312039460926542,10,1.6121193917559078,True,,90.0,above peers
+youth_student_targeting,banking_domain,model_assisted,1.0,0.3,0.45825756949558405,10,1.5275252316519463,True,,70.0,above peers
+value_prop_clarity,topics_value_prop,rubric,5.0,4.0,1.0,6,1.0,True,,66.66666666666666,above peers
+cta_count,layout_structure,automatic,3.0,13.75,11.329717560469017,10,-0.9488321260106488,True,,10.0,below peers
 hero_image_area_ratio,visuals,automatic,0.533,0.29355555555555557,0.2667508663366588,9,0.8976332400819585,True,,88.88888888888889,above peers
-has_comparison_table,layout_structure,automatic,0.0,0.4444444444444444,0.4969039949999533,9,-0.8944271909999157,True,,0.0,below peers
-clarity_score,tone_messaging,rubric,4.5,4.8,0.39999999999999997,5,-0.7499999999999997,True,,20.0,below peers
+has_comparison_table,layout_structure,automatic,0.0,0.4,0.4898979485566356,10,-0.8164965809277261,True,,0.0,below peers
+hidden_conditions_behind_free_claim,banking_domain,model_assisted,0.5,0.2,0.4000000000000001,10,0.7499999999999998,True,,80.0,above peers
 page_height_px,layout_structure,automatic,9465.0,6610.5,3951.6846759044147,9,0.7223501453457178,True,,77.77777777777779,above peers
-animated_asset_count,visuals,automatic,1.0,0.6666666666666666,0.4714045207910317,9,0.7071067811865476,True,,33.33333333333333,above peers
-has_animation,visuals,derived,1.0,0.6666666666666666,0.4714045207910317,9,0.7071067811865476,True,,33.33333333333333,above peers
-hidden_conditions_behind_free_claim,banking_domain,model_assisted,0.5,0.2222222222222222,0.41573970964154905,9,0.6681531047810609,True,,77.77777777777779,above peers
-fast_digital_onboarding_claim,banking_domain,model_assisted,0.5,0.2222222222222222,0.41573970964154905,9,0.6681531047810609,True,,77.77777777777779,above peers
-background_luminance,colours_design,automatic,0.8985000000000001,0.7207777777777777,0.2696016723397595,9,0.6592029666576098,True,,100.0,above peers
+animated_asset_count,visuals,automatic,1.0,0.7,0.45825756949558394,10,0.6546536707079773,True,,30.0,above peers
+has_animation,visuals,derived,1.0,0.7,0.45825756949558394,10,0.6546536707079773,True,,30.0,above peers
+images_have_alt_text,banking_domain,automatic,0.0,0.3,0.45825756949558394,10,-0.6546536707079772,True,,0.0,below peers
 above_fold_element_count,layout_structure,automatic,26.5,32.611111111111114,9.4215408558667,9,-0.648631811356609,True,,33.33333333333333,below peers
-people_present,visuals,model_assisted,1.0,0.7777777777777778,0.41573970964154905,9,0.5345224838248487,True,,22.22222222222222,above peers
-cta_above_fold,layout_structure,automatic,0.0,0.2222222222222222,0.41573970964154905,9,-0.5345224838248487,True,,0.0,below peers
-is_bundled_offer,banking_domain,model_assisted,1.0,0.7777777777777778,0.41573970964154905,9,0.5345224838248487,True,,22.22222222222222,above peers
-mentions_loyalty_or_referral,banking_domain,automatic,0.0,0.2222222222222222,0.41573970964154905,9,-0.5345224838248487,True,,0.0,below peers
-images_have_alt_text,banking_domain,automatic,0.0,0.2222222222222222,0.41573970964154905,9,-0.5345224838248487,True,,0.0,below peers
-image_count,visuals,automatic,30.5,20.77777777777778,19.21676223033641,9,0.5059240524334688,True,,88.88888888888889,above peers
-disclaimer_present,topics_value_prop,automatic,1.0,0.8888888888888888,0.3142696805273545,9,0.3535533905932739,True,,11.11111111111111,above peers
-rate_shown,topics_value_prop,automatic,0.0,0.1111111111111111,0.31426968052735443,9,-0.3535533905932738,True,,0.0,below peers
-subscription_style_framing,banking_domain,model_assisted,0.0,0.1111111111111111,0.31426968052735443,9,-0.3535533905932738,True,,0.0,below peers
-branch_network_cited_as_benefit,banking_domain,model_assisted,0.0,0.1111111111111111,0.31426968052735443,9,-0.3535533905932738,True,,0.0,below peers
-first_time_investor_targeting,banking_domain,model_assisted,0.0,0.1111111111111111,0.31426968052735443,9,-0.3535533905932738,True,,0.0,below peers
-brand_colour_share,colours_design,automatic,0.0155,0.011555555555555555,0.01768936347772055,9,0.22298396714005028,True,,77.77777777777779,above peers
-urgency_marker_count,tone_messaging,automatic,0.5,0.7222222222222222,1.0304020550550783,9,-0.2156655464068768,True,,55.55555555555556,below peers
+image_count,visuals,automatic,30.5,19.7,18.515128949051366,10,0.5833067665755223,True,,90.0,above peers
+background_luminance,colours_design,automatic,0.8985000000000001,0.746,0.26672457704531094,10,0.5717508363471638,True,,90.0,above peers
+rate_shown,topics_value_prop,automatic,0.0,0.2,0.4000000000000001,10,-0.49999999999999994,True,,0.0,below peers
+cta_above_fold,layout_structure,automatic,0.0,0.2,0.4000000000000001,10,-0.49999999999999994,True,,0.0,below peers
+subscription_style_framing,banking_domain,model_assisted,0.0,0.2,0.4000000000000001,10,-0.49999999999999994,True,,0.0,below peers
+mentions_loyalty_or_referral,banking_domain,automatic,0.0,0.2,0.4000000000000001,10,-0.49999999999999994,True,,0.0,below peers
+disclaimer_present,topics_value_prop,automatic,1.0,0.8,0.4,10,0.4999999999999999,True,,20.0,above peers
+people_present,visuals,model_assisted,1.0,0.8,0.4,10,0.4999999999999999,True,,20.0,above peers
+is_bundled_offer,banking_domain,model_assisted,1.0,0.8,0.4,10,0.4999999999999999,True,,20.0,above peers
+fast_digital_onboarding_claim,banking_domain,model_assisted,0.5,0.3,0.45825756949558394,10,0.43643578047198484,True,,70.0,above peers
+clarity_score,tone_messaging,rubric,4.5,4.666666666666667,0.4714045207910317,6,-0.3535533905932744,True,,33.33333333333333,below peers
+institutional_trust_signal_present,banking_domain,model_assisted,0.0,0.1,0.30000000000000004,10,-0.3333333333333333,True,,0.0,below peers
+branch_network_cited_as_benefit,banking_domain,model_assisted,0.0,0.1,0.30000000000000004,10,-0.3333333333333333,True,,0.0,below peers
+first_time_investor_targeting,banking_domain,model_assisted,0.0,0.1,0.30000000000000004,10,-0.3333333333333333,True,,0.0,below peers
+brand_colour_share,colours_design,automatic,0.0155,0.0104,0.017135927170713584,10,0.29762031252771853,True,,80.0,above peers
+urgency_marker_count,tone_messaging,automatic,0.5,0.75,0.9810708435174292,10,-0.25482359571881275,True,,50.0,below peers
+aida_coverage_score,marketing_principles,derived,3.0,3.1666666666666665,0.6871842709362768,6,-0.24253562503633275,True,,16.666666666666664,below peers
 total_image_area_ratio,visuals,automatic,0.133,0.16833333333333333,0.17336281800509204,9,-0.20381148472272476,True,,55.55555555555556,below peers
 cta_contrast_ratio,colours_design,automatic,7.01,7.716666666666667,3.9148236798666227,9,-0.18051047108480323,True,,44.44444444444444,below peers
-question_count,tone_messaging,automatic,17.0,18.88888888888889,13.093208115868016,9,-0.1442647876802396,True,,55.55555555555556,below peers
-formality_score,tone_messaging,rubric,3.5,3.611111111111111,0.8089010988089465,9,-0.1373605639486891,True,,33.33333333333333,below peers
-aida_coverage_score,marketing_principles,derived,3.0,3.0,0.6324555320336759,5,0.0,True,,20.0,below peers
-hero_image_present,visuals,automatic,1.0,1.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-accent_colour_count,colours_design,automatic,4.0,4.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-green_product_specific_benefit,banking_domain,model_assisted,0.0,0.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-institutional_trust_signal_present,banking_domain,model_assisted,0.0,0.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-secondary_bank_positioning,banking_domain,model_assisted,0.0,0.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-expat_cross_border_targeting,banking_domain,model_assisted,0.0,0.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-senior_preretirement_targeting,banking_domain,model_assisted,0.0,0.0,0.0,9,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+question_count,tone_messaging,automatic,17.0,17.0,13.65283853270081,10,0.0,True,,60.0,below peers
+formality_score,tone_messaging,rubric,3.5,3.5,0.806225774829855,10,0.0,True,,50.0,below peers
+hero_image_present,visuals,automatic,1.0,1.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+accent_colour_count,colours_design,automatic,4.0,4.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+green_product_specific_benefit,banking_domain,model_assisted,0.0,0.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+secondary_bank_positioning,banking_domain,model_assisted,0.0,0.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+expat_cross_border_targeting,banking_domain,model_assisted,0.0,0.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+senior_preretirement_targeting,banking_domain,model_assisted,0.0,0.0,0.0,10,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers

@@ -12,5 +12,5 @@ bank       product_family  last_12m_mean  baseline_mean  change_pct vs_baseline 
  kbc current_account_pack            1.2            2.3       -48.2       lower   1048
  ing current_account_pack            0.1            0.3       -64.7       lower   1572
 
-No trends data at all for: argenta, belfius, beobank, bunq, crelan, hellobank, n26, vdk.
+No trends data at all for: argenta, belfius, beobank, bunq, crelan, hellobank, n26, revolut, vdk.
 ```

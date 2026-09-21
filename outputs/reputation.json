@@ -17,20 +17,20 @@
       ]
     },
     "belfius": {
-      "headline_count": 30,
+      "headline_count": 26,
       "themes": {
         "innovation_digital": 0,
-        "crisis_or_scandal": 10,
+        "crisis_or_scandal": 9,
         "financial_results": 0,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 12,
-        "other": 8
+        "regulatory": 14,
+        "other": 3
       },
       "notable_headlines": [
-        "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
-        "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
-        "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias"
+        "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
+        "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+        "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius"
       ]
     },
     "beobank": {
@@ -46,25 +46,25 @@
       },
       "notable_headlines": [
         "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
-        "Beobank trekt rente termijnrekeningen op"
+        "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
+        "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws"
       ]
     },
     "bunq": {
-      "headline_count": 14,
+      "headline_count": 12,
       "themes": {
         "innovation_digital": 1,
-        "crisis_or_scandal": 5,
+        "crisis_or_scandal": 4,
         "financial_results": 1,
         "product_launch": 2,
         "esg_sustainability": 0,
         "regulatory": 1,
-        "other": 4
+        "other": 3
       },
       "notable_headlines": [
         "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
-        "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals"
+        "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
       ]
     },
     "crelan": {
@@ -85,41 +85,41 @@
     },
     "hellobank": null,
     "ing": {
-      "headline_count": 26,
+      "headline_count": 24,
       "themes": {
         "innovation_digital": 4,
-        "crisis_or_scandal": 2,
+        "crisis_or_scandal": 1,
         "financial_results": 2,
-        "product_launch": 3,
+        "product_launch": 2,
         "esg_sustainability": 5,
-        "regulatory": 1,
-        "other": 9
+        "regulatory": 3,
+        "other": 7
       },
       "notable_headlines": [
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
         "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’"
+        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte"
       ]
     },
     "kbc": {
-      "headline_count": 30,
+      "headline_count": 26,
       "themes": {
-        "innovation_digital": 0,
-        "crisis_or_scandal": 0,
+        "innovation_digital": 2,
+        "crisis_or_scandal": 1,
         "financial_results": 3,
-        "product_launch": 0,
+        "product_launch": 2,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 27
+        "other": 18
       },
       "notable_headlines": [
         "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-        "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million | Taiwan News | Aug. 28, 2026 23:40",
-        "Meer winst voor KBC Ancora"
+        "Jefferies start opvolging KBC met koopadvies",
+        "KBC relève sa cible sur Inventiva, le titre bondit"
       ]
     },
     "n26": {
-      "headline_count": 11,
+      "headline_count": 8,
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
@@ -127,7 +127,7 @@
         "product_launch": 1,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 9
+        "other": 6
       },
       "notable_headlines": [
         "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
@@ -135,20 +135,23 @@
         "N26 data: Gen Z leads Europe's investing shift"
       ]
     },
-    "vdk": {
-      "headline_count": 1,
+    "revolut": {
+      "headline_count": 30,
       "themes": {
-        "innovation_digital": 0,
-        "crisis_or_scandal": 0,
-        "financial_results": 1,
-        "product_launch": 0,
+        "innovation_digital": 3,
+        "crisis_or_scandal": 9,
+        "financial_results": 0,
+        "product_launch": 8,
         "esg_sustainability": 0,
-        "regulatory": 0,
-        "other": 0
+        "regulatory": 7,
+        "other": 3
       },
       "notable_headlines": [
-        "Tout en lettres d’or chez VDK"
+        "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
+        "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
+        "Revolut launches MiCA compliant EURR stablecoin in Europe"
       ]
-    }
+    },
+    "vdk": null
   }
 }

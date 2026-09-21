@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-21T05:02:14+00:00",
+  "generated_at": "2026-09-21T05:24:12+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
-    "pages": 12,
+    "pages": 13,
     "banks": [
       "Argenta",
       "Belfius",
@@ -15,6 +15,7 @@
       "ING",
       "KBC",
       "N26",
+      "Revolut",
       "Vdk"
     ],
     "traditional": [
@@ -29,17 +30,14 @@
     ],
     "challenger": [
       "bunq",
-      "N26"
+      "N26",
+      "Revolut"
     ],
     "excluded": [],
     "uncollectable": [
       {
         "bank": "BNP Paribas Fortis",
         "reason": "HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor"
-      },
-      {
-        "bank": "Revolut",
-        "reason": "HTTP 403 - the server did not serve the page; only 17 words - not a campaign page"
       }
     ],
     "languages": [
@@ -47,85 +45,92 @@
       "nl"
     ],
     "captured_from": "2026-09-21T04:47:57.410618+00:00",
-    "captured_to": "2026-09-21T04:53:15.178665+00:00",
+    "captured_to": "2026-09-21T05:16:29.898050+00:00",
     "total_collected": 16,
-    "n_features": 29
+    "n_features": 25
   },
   "headline": {
     "focus": "ING",
-    "score": 0.183,
+    "score": 0.132,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
   "positioning": [
     {
-      "bank": "KBC",
-      "key": "kbc",
+      "bank": "Beobank",
+      "key": "beobank",
       "category": "traditional",
-      "score": -0.149,
-      "isFocus": false
-    },
-    {
-      "bank": "Crelan",
-      "key": "crelan",
-      "category": "traditional",
-      "score": -0.127,
+      "score": -0.114,
       "isFocus": false
     },
     {
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.108,
-      "isFocus": false
-    },
-    {
-      "bank": "Beobank",
-      "key": "beobank",
-      "category": "traditional",
-      "score": -0.074,
-      "isFocus": false
-    },
-    {
-      "bank": "Vdk",
-      "key": "vdk",
-      "category": "traditional",
-      "score": -0.005,
+      "score": -0.109,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.11,
+      "score": -0.055,
+      "isFocus": false
+    },
+    {
+      "bank": "KBC",
+      "key": "kbc",
+      "category": "traditional",
+      "score": -0.016,
+      "isFocus": false
+    },
+    {
+      "bank": "Vdk",
+      "key": "vdk",
+      "category": "traditional",
+      "score": 0.022,
       "isFocus": false
     },
     {
       "bank": "Hellobank",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.169,
+      "score": 0.058,
+      "isFocus": false
+    },
+    {
+      "bank": "Crelan",
+      "key": "crelan",
+      "category": "traditional",
+      "score": 0.083,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.183,
+      "score": 0.132,
       "isFocus": true
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.981,
+      "score": 0.861,
+      "isFocus": false
+    },
+    {
+      "bank": "Revolut",
+      "key": "revolut",
+      "category": "challenger",
+      "score": 1.009,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.019,
+      "score": 1.13,
       "isFocus": false
     }
   ],
@@ -136,18 +141,8 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 3.5,
-      "peerMean": 2.0,
-      "gapSd": 2.12,
-      "direction": "above"
-    },
-    {
-      "feature": "youth_student_targeting",
-      "label": "Targets students or young people",
-      "dimension": "banking_domain",
-      "extraction": "model_assisted",
-      "focusValue": 1.0,
-      "peerMean": 0.2222222222222222,
-      "gapSd": 1.87,
+      "peerMean": 2.2,
+      "gapSd": 1.74,
       "direction": "above"
     },
     {
@@ -156,8 +151,18 @@
       "dimension": "tone_messaging",
       "extraction": "automatic",
       "focusValue": 25.5,
-      "peerMean": 12.444444444444445,
-      "gapSd": 1.5,
+      "peerMean": 12.1,
+      "gapSd": 1.61,
+      "direction": "above"
+    },
+    {
+      "feature": "youth_student_targeting",
+      "label": "Targets students or young people",
+      "dimension": "banking_domain",
+      "extraction": "model_assisted",
+      "focusValue": 1.0,
+      "peerMean": 0.3,
+      "gapSd": 1.53,
       "direction": "above"
     },
     {
@@ -166,8 +171,8 @@
       "dimension": "topics_value_prop",
       "extraction": "rubric",
       "focusValue": 5.0,
-      "peerMean": 4.4,
-      "gapSd": 1.22,
+      "peerMean": 4.0,
+      "gapSd": 1.0,
       "direction": "above"
     },
     {
@@ -176,8 +181,8 @@
       "dimension": "layout_structure",
       "extraction": "automatic",
       "focusValue": 3.0,
-      "peerMean": 14.722222222222221,
-      "gapSd": -1.02,
+      "peerMean": 13.75,
+      "gapSd": -0.95,
       "direction": "below"
     },
     {
@@ -196,19 +201,19 @@
       "dimension": "layout_structure",
       "extraction": "automatic",
       "focusValue": 0.0,
-      "peerMean": 0.4444444444444444,
-      "gapSd": -0.89,
+      "peerMean": 0.4,
+      "gapSd": -0.82,
       "direction": "below"
     },
     {
-      "feature": "clarity_score",
-      "label": "Clarity",
-      "dimension": "tone_messaging",
-      "extraction": "rubric",
-      "focusValue": 4.5,
-      "peerMean": 4.8,
-      "gapSd": -0.75,
-      "direction": "below"
+      "feature": "hidden_conditions_behind_free_claim",
+      "label": "“Free” with conditions attached",
+      "dimension": "banking_domain",
+      "extraction": "model_assisted",
+      "focusValue": 0.5,
+      "peerMean": 0.2,
+      "gapSd": 0.75,
+      "direction": "above"
     },
     {
       "feature": "page_height_px",
@@ -226,8 +231,8 @@
       "dimension": "visuals",
       "extraction": "automatic",
       "focusValue": 1.0,
-      "peerMean": 0.6666666666666666,
-      "gapSd": 0.71,
+      "peerMean": 0.7,
+      "gapSd": 0.65,
       "direction": "above"
     }
   ],
@@ -245,10 +250,6 @@
       "note": "every peer has the same value - no spread to measure against"
     },
     {
-      "label": "Invokes institutional trust",
-      "note": "every peer has the same value - no spread to measure against"
-    },
-    {
       "label": "Positions as a second bank",
       "note": "every peer has the same value - no spread to measure against"
     },
@@ -263,39 +264,30 @@
   ],
   "separation": [
     {
-      "feature": "background_luminance",
-      "label": "Page brightness",
-      "extraction": "automatic",
-      "traditional": 0.8581,
-      "challenger": 0.2905,
-      "effect": -4.18,
-      "higherAt": "traditional"
-    },
-    {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
+      "feature": "people_present",
+      "label": "People present",
       "extraction": "model_assisted",
-      "traditional": 0.0,
-      "challenger": 0.5,
-      "effect": 2.24,
-      "higherAt": "challenger"
+      "traditional": 1.0,
+      "challenger": 0.3333333333333333,
+      "effect": -2.71,
+      "higherAt": "traditional"
     },
     {
       "feature": "rate_shown",
       "label": "Shows a rate",
       "extraction": "automatic",
       "traditional": 0.0,
-      "challenger": 0.5,
-      "effect": 2.24,
+      "challenger": 0.6666666666666666,
+      "effect": 2.71,
       "higherAt": "challenger"
     },
     {
-      "feature": "first_time_investor_targeting",
-      "label": "Targets first-time investors",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
-      "challenger": 0.5,
-      "effect": 2.24,
+      "challenger": 0.6666666666666666,
+      "effect": 2.71,
       "higherAt": "challenger"
     },
     {
@@ -317,6 +309,15 @@
       "higherAt": "traditional"
     },
     {
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
+      "extraction": "rubric",
+      "traditional": 2.8,
+      "challenger": 3.6666666666666665,
+      "effect": 1.75,
+      "higherAt": "challenger"
+    },
+    {
       "feature": "page_height_px",
       "label": "Page length",
       "extraction": "automatic",
@@ -324,6 +325,15 @@
       "challenger": 11570.0,
       "effect": 1.61,
       "higherAt": "challenger"
+    },
+    {
+      "feature": "background_luminance",
+      "label": "Page brightness",
+      "extraction": "automatic",
+      "traditional": 0.8581,
+      "challenger": 0.5179999999999999,
+      "effect": -1.6,
+      "higherAt": "traditional"
     },
     {
       "feature": "hero_image_area_ratio",
@@ -335,21 +345,12 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "extraction": "rubric",
-      "traditional": 2.8,
-      "challenger": 3.5,
-      "effect": 1.37,
-      "higherAt": "challenger"
-    },
-    {
       "feature": "question_count",
       "label": "Questions asked",
       "extraction": "automatic",
       "traditional": 20.8,
-      "challenger": 8.0,
-      "effect": -1.13,
+      "challenger": 5.333333333333333,
+      "effect": -1.41,
       "higherAt": "traditional"
     }
   ],
@@ -362,17 +363,17 @@
       "signature": [
         {
           "label": "Figures and percentages quoted",
-          "sd": 2.1,
+          "sd": 2.2,
           "direction": "above"
         },
         {
           "label": "Animated elements",
-          "sd": -1.5,
+          "sd": -1.6,
           "direction": "below"
         },
         {
           "label": "Uses animation",
-          "sd": -1.5,
+          "sd": -1.6,
           "direction": "below"
         }
       ],
@@ -440,17 +441,17 @@
       "signature": [
         {
           "label": "Cites its branch network",
-          "sd": 3.0,
+          "sd": 3.2,
           "direction": "above"
         },
         {
           "label": "“Free” with conditions attached",
-          "sd": 1.9,
+          "sd": 2.0,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
-          "sd": 1.5,
+          "label": "Includes a comparison table",
+          "sd": 1.3,
           "direction": "above"
         }
       ],
@@ -522,25 +523,25 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Sells a bundle",
-          "sd": -2.0,
-          "direction": "below"
-        },
-        {
           "label": "Mentions loyalty or referral",
-          "sd": 2.0,
+          "sd": 2.1,
           "direction": "above"
         },
         {
+          "label": "Sells a bundle",
+          "sd": -2.1,
+          "direction": "below"
+        },
+        {
           "label": "Animated elements",
-          "sd": -1.5,
+          "sd": -1.6,
           "direction": "below"
         }
       ],
       "tone": {
         "Words on the page": 3310.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": 0.603,
         "Urgency markers": 0.0
       },
@@ -600,19 +601,19 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Shows a rate",
-          "sd": 3.0,
-          "direction": "above"
-        },
-        {
           "label": "Page brightness",
-          "sd": -2.8,
+          "sd": -2.9,
           "direction": "below"
         },
         {
           "label": "Urgency and deadline language",
-          "sd": 2.3,
+          "sd": 2.4,
           "direction": "above"
+        },
+        {
+          "label": "People present",
+          "sd": -2.1,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -682,18 +683,18 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Carries legal small print",
-          "sd": -3.0,
-          "direction": "below"
-        },
-        {
           "label": "Images",
-          "sd": 2.7,
+          "sd": 2.9,
           "direction": "above"
         },
         {
           "label": "Calls to action",
-          "sd": 2.5,
+          "sd": 2.6,
+          "direction": "above"
+        },
+        {
+          "label": "Questions asked",
+          "sd": 2.3,
           "direction": "above"
         }
       ],
@@ -763,24 +764,24 @@
       "signature": [
         {
           "label": "Brand colour on the page",
-          "sd": 2.7,
-          "direction": "above"
-        },
-        {
-          "label": "Promises fast digital sign-up",
-          "sd": 1.9,
+          "sd": 2.8,
           "direction": "above"
         },
         {
           "label": "Animated elements",
-          "sd": -1.5,
+          "sd": -1.6,
+          "direction": "below"
+        },
+        {
+          "label": "Uses animation",
+          "sd": -1.6,
           "direction": "below"
         }
       ],
       "tone": {
         "Words on the page": 1661.0,
         "Readability band": "hard",
-        "Formality of tone": 3.0,
+        "Formality of tone": 4.0,
         "Speaks to “you” rather than “we”": 0.595,
         "Urgency markers": 0.0
       },
@@ -840,12 +841,12 @@
       "pages": 2,
       "signature": [
         {
-          "label": "Targets students or young people",
-          "sd": 1.5,
+          "label": "Figures and percentages quoted",
+          "sd": 1.4,
           "direction": "above"
         },
         {
-          "label": "Figures and percentages quoted",
+          "label": "Targets students or young people",
           "sd": 1.3,
           "direction": "above"
         },
@@ -929,16 +930,16 @@
       "signature": [
         {
           "label": "Sells a bundle",
-          "sd": -2.0,
+          "sd": -2.1,
           "direction": "below"
         },
         {
           "label": "Images carry alt text",
-          "sd": 2.0,
+          "sd": 1.6,
           "direction": "above"
         },
         {
-          "label": "Elements visible without scrolling",
+          "label": "Includes a comparison table",
           "sd": 1.3,
           "direction": "above"
         }
@@ -946,7 +947,7 @@
       "tone": {
         "Words on the page": null,
         "Readability band": "very_hard",
-        "Formality of tone": 3.5,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": null,
         "Urgency markers": 0.5
       },
@@ -1010,18 +1011,18 @@
       "signature": [
         {
           "label": "Targets first-time investors",
-          "sd": 3.0,
+          "sd": 3.2,
           "direction": "above"
         },
         {
-          "label": "Subscription style framing",
-          "sd": 3.0,
+          "label": "Mentions loyalty or referral",
+          "sd": 2.1,
           "direction": "above"
         },
         {
-          "label": "Share of the page that is imagery",
-          "sd": 2.6,
-          "direction": "above"
+          "label": "People present",
+          "sd": -2.1,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -1084,6 +1085,98 @@
       "crossSellScore": 0.333
     },
     {
+      "key": "revolut",
+      "name": "Revolut",
+      "category": "challenger",
+      "pages": 1,
+      "signature": [
+        {
+          "label": "Invokes institutional trust",
+          "sd": 3.2,
+          "direction": "above"
+        },
+        {
+          "label": "Carries legal small print",
+          "sd": -2.1,
+          "direction": "below"
+        },
+        {
+          "label": "Shows a rate",
+          "sd": 2.1,
+          "direction": "above"
+        }
+      ],
+      "tone": {
+        "Words on the page": 1224.0,
+        "Readability band": "hard",
+        "Formality of tone": 3.0,
+        "Speaks to “you” rather than “we”": 0.792,
+        "Urgency markers": 1.0
+      },
+      "imagery": {
+        "Images": 10.0,
+        "Dominant image type": "photo",
+        "People present": 1.0,
+        "Animated": 1.0,
+        "Image area share": null
+      },
+      "layout": {
+        "Archetype": "hero_stacked",
+        "Hero image": 1.0,
+        "Text and image arrangement": "overlaid",
+        "Page length": null,
+        "Calls to action": 5.0,
+        "Call to action visible without scrolling": 0.0
+      },
+      "valueProposition": {
+        "Primary product": "Compte courant",
+        "Shows a rate": 1.0,
+        "How prominently the rate is shown": "above_fold",
+        "Benefit framing": "mixed",
+        "Fab level": "feature"
+      },
+      "palette": {
+        "dominant": "#ffffff",
+        "brandShare": 0.0,
+        "backgroundLuminance": 0.973
+      },
+      "marketing": {
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "social_proof",
+          "authority",
+          "reciprocity"
+        ],
+        "Lever count": 3.0
+      },
+      "personas": [
+        {
+          "persona": "mass_market",
+          "label": "Mass market",
+          "share": 1.0
+        },
+        {
+          "persona": "entrepreneur_self_employed",
+          "label": "Entrepreneur / self-employed",
+          "share": 1.0
+        },
+        {
+          "persona": "family",
+          "label": "Family",
+          "share": 1.0
+        }
+      ],
+      "aiScore": {
+        "digital": 10.0,
+        "trust": 3.3,
+        "cross_sell": 10.0,
+        "personalisation": 3.8,
+        "innovation": 5.0,
+        "simplicity": 2.5
+      },
+      "crossSellScore": 0.167
+    },
+    {
       "key": "vdk",
       "name": "Vdk",
       "category": "traditional",
@@ -1091,17 +1184,17 @@
       "signature": [
         {
           "label": "Call to action visible without scrolling",
-          "sd": 2.0,
+          "sd": 2.1,
           "direction": "above"
         },
         {
           "label": "Formality of tone",
-          "sd": 1.8,
+          "sd": 2.0,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
-          "sd": 1.5,
+          "label": "Includes a comparison table",
+          "sd": 1.3,
           "direction": "above"
         }
       ],
@@ -1218,7 +1311,7 @@
         0,
         3,
         1,
-        4,
+        5,
         0,
         4
       ],
@@ -1272,7 +1365,7 @@
       {
         "from": "Current-account packs",
         "to": "Investment",
-        "count": 4
+        "count": 5
       },
       {
         "from": "Current-account packs",
@@ -1460,127 +1553,151 @@
       "ING",
       "KBC",
       "N26",
+      "Revolut",
       "Vdk"
     ],
     "matrix": [
       [
         0.0,
-        6.9,
-        5.94,
-        9.27,
+        6.43,
+        5.88,
+        8.24,
+        8.66,
+        6.08,
+        5.34,
+        5.64,
+        8.36,
+        8.47,
+        6.31
+      ],
+      [
+        6.43,
+        0.0,
+        7.5,
+        9.17,
+        8.33,
+        7.47,
+        4.68,
+        6.12,
+        7.61,
+        8.42,
+        5.83
+      ],
+      [
+        5.88,
+        7.5,
+        0.0,
+        8.67,
+        7.2,
+        5.8,
+        6.1,
+        5.37,
+        7.52,
+        8.93,
+        7.03
+      ],
+      [
+        8.24,
+        9.17,
+        8.67,
+        0.0,
         9.06,
-        6.57,
-        5.99,
-        5.97,
-        10.1,
-        6.51
+        8.46,
+        7.64,
+        8.03,
+        8.74,
+        8.44,
+        7.83
       ],
       [
-        6.9,
-        0.0,
-        7.8,
-        9.45,
-        9.31,
-        7.92,
-        4.69,
-        7.0,
-        8.7,
-        6.27
-      ],
-      [
-        5.94,
-        7.8,
-        0.0,
-        9.95,
-        7.72,
-        6.37,
-        6.53,
-        5.59,
-        9.03,
-        6.65
-      ],
-      [
-        9.27,
-        9.45,
-        9.95,
-        0.0,
-        10.79,
-        8.89,
-        8.22,
-        9.82,
-        10.43,
-        9.18
-      ],
-      [
+        8.66,
+        8.33,
+        7.2,
         9.06,
-        9.31,
-        7.72,
-        10.79,
         0.0,
-        9.16,
-        8.06,
-        7.07,
-        10.8,
-        7.94
+        8.29,
+        6.95,
+        6.78,
+        8.76,
+        8.53,
+        7.51
       ],
       [
-        6.57,
+        6.08,
+        7.47,
+        5.8,
+        8.46,
+        8.29,
+        0.0,
+        5.57,
+        6.85,
+        7.76,
+        8.26,
+        7.03
+      ],
+      [
+        5.34,
+        4.68,
+        6.1,
+        7.64,
+        6.95,
+        5.57,
+        0.0,
+        5.26,
+        6.82,
+        6.96,
+        5.46
+      ],
+      [
+        5.64,
+        6.12,
+        5.37,
+        8.03,
+        6.78,
+        6.85,
+        5.26,
+        0.0,
         7.92,
-        6.37,
-        8.89,
-        9.16,
-        0.0,
-        5.96,
-        7.58,
-        8.96,
-        7.75
+        7.49,
+        5.73
       ],
       [
-        5.99,
-        4.69,
-        6.53,
-        8.22,
-        8.06,
-        5.96,
+        8.36,
+        7.61,
+        7.52,
+        8.74,
+        8.76,
+        7.76,
+        6.82,
+        7.92,
         0.0,
-        6.16,
-        7.88,
-        5.77
+        9.01,
+        8.07
       ],
       [
-        5.97,
-        7.0,
-        5.59,
-        9.82,
-        7.07,
-        7.58,
-        6.16,
+        8.47,
+        8.42,
+        8.93,
+        8.44,
+        8.53,
+        8.26,
+        6.96,
+        7.49,
+        9.01,
         0.0,
-        9.52,
-        5.63
+        8.17
       ],
       [
-        10.1,
-        8.7,
-        9.03,
-        10.43,
-        10.8,
-        8.96,
-        7.88,
-        9.52,
-        0.0,
-        9.24
-      ],
-      [
-        6.51,
-        6.27,
-        6.65,
-        9.18,
-        7.94,
-        7.75,
-        5.77,
-        5.63,
-        9.24,
+        6.31,
+        5.83,
+        7.03,
+        7.83,
+        7.51,
+        7.03,
+        5.46,
+        5.73,
+        8.07,
+        8.17,
         0.0
       ]
     ]
@@ -1589,6 +1706,13 @@
     {
       "cluster": 1,
       "banks": [
+        "bunq",
+        "Revolut"
+      ]
+    },
+    {
+      "cluster": 2,
+      "banks": [
         "Argenta",
         "Belfius",
         "Beobank",
@@ -1596,29 +1720,23 @@
         "Hellobank",
         "ING",
         "KBC",
+        "N26",
         "Vdk"
-      ]
-    },
-    {
-      "cluster": 2,
-      "banks": [
-        "bunq",
-        "N26"
       ]
     }
   ],
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 4.69
+      "distance": 4.68
     },
     {
-      "bank": "Vdk",
-      "distance": 5.77
+      "bank": "KBC",
+      "distance": 5.26
     },
     {
-      "bank": "Hellobank",
-      "distance": 5.96
+      "bank": "Argenta",
+      "distance": 5.34
     }
   ],
   "deckClaims": [
@@ -1654,18 +1772,16 @@
       "id": "H5",
       "bank": "revolut",
       "claim": "Revolut uses very little text",
-      "verdict": "not testable",
-      "evidence": "feature absent from the dataset"
+      "verdict": "not supported",
+      "evidence": "revolut='long'; lowest is argenta='long'"
     }
   ],
   "limitations": {
     "blocking": [
       "**bnp_paribas_fortis** could not be captured: HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor. Source: https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire. The row is excluded; the bank is effectively absent.",
-      "**revolut** could not be captured: HTTP 403 - the server did not serve the page; only 17 words - not a campaign page. Source: https://www.revolut.com/fr-BE/bank-account/. The row is excluded; the bank is effectively absent.",
       "**5 of 13 rubric features are unscored** (['mobile_first_design_signal', 'aida_attention', 'aida_interest', 'aida_desire'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`)."
     ],
     "material": [
-      "Only **2 challenger bank(s)** in the usable data. A group mean over 2 bank(s) is an anecdote; effect sizes between the groups are descriptive shorthand, not evidence of a market pattern.",
       "The usable pages span **3 different product families** (['current_account_pack', 'other', 'savings_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **2 languages** (['fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default."
     ],
@@ -1686,7 +1802,7 @@
       "aida_interest: required feature is entirely empty",
       "aida_desire: required feature is entirely empty",
       "aida_action: required feature is entirely empty",
-      "2 row(s) have capture_quality=unusable (['bnp_paribas_fortis', 'revolut']) - MUST be excluded from analysis. See capture_quality_note for why.",
+      "1 row(s) have capture_quality=unusable (['bnp_paribas_fortis']) - MUST be excluded from analysis. See capture_quality_note for why.",
       "argenta: core feature(s) entirely missing: ['rate_value_pct', 'aida_attention', 'aida_interest', 'aida_desire', 'aida_action'] ... - record a reason (DR-07)"
     ]
   },
@@ -1704,7 +1820,8 @@
       "Crelan",
       "ING",
       "KBC",
-      "N26"
+      "N26",
+      "Revolut"
     ],
     "uncovered": [
       "Belfius",
@@ -1739,17 +1856,17 @@
         "headline_count": 26,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 12,
+          "crisis_or_scandal": 9,
           "financial_results": 0,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 10,
-          "other": 4
+          "regulatory": 11,
+          "other": 6
         },
         "notable_headlines": [
           "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
           "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-          "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius"
+          "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius"
         ]
       },
       "beobank": {
@@ -1758,32 +1875,32 @@
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
           "financial_results": 0,
-          "product_launch": 0,
+          "product_launch": 4,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 5
+          "other": 1
         },
         "notable_headlines": [
           "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-          "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
-          "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws"
+          "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+          "Beobank trekt rente termijnrekeningen op"
         ]
       },
       "bunq": {
-        "headline_count": 14,
+        "headline_count": 12,
         "themes": {
-          "innovation_digital": 1,
-          "crisis_or_scandal": 5,
+          "innovation_digital": 2,
+          "crisis_or_scandal": 3,
           "financial_results": 1,
-          "product_launch": 3,
+          "product_launch": 2,
           "esg_sustainability": 0,
           "regulatory": 1,
           "other": 3
         },
         "notable_headlines": [
           "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
-          "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. ‘Fuck you very much’",
-          "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals"
+          "Amsterdam's neobank bunq launches GenAI platform 'Finn': Know more - Silicon Canals",
+          "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
         ]
       },
       "crelan": {
@@ -1798,25 +1915,25 @@
           "other": 1
         },
         "notable_headlines": [
-          "Crelan enregistre un bénéfice en forte hausse sur le premier semestre",
-          "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?"
+          "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+          "Crelan enregistre un bénéfice en forte hausse sur le premier semestre"
         ]
       },
       "hellobank": null,
       "ing": {
         "headline_count": 23,
         "themes": {
-          "innovation_digital": 3,
+          "innovation_digital": 4,
           "crisis_or_scandal": 1,
           "financial_results": 0,
-          "product_launch": 3,
+          "product_launch": 2,
           "esg_sustainability": 5,
-          "regulatory": 3,
-          "other": 8
+          "regulatory": 0,
+          "other": 11
         },
         "notable_headlines": [
           "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-          "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
+          "ING announces change in Supervisory Board",
           "ING Group: Progress on share buyback programme"
         ]
       },
@@ -1833,8 +1950,8 @@
         },
         "notable_headlines": [
           "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
-          "Meer winst voor KBC Ancora",
-          "Jefferies start opvolging KBC met koopadvies"
+          "Jefferies start opvolging KBC met koopadvies",
+          "KBC relève sa cible sur Inventiva, le titre bondit"
         ]
       },
       "n26": {
@@ -1852,6 +1969,23 @@
           "German fintech unicorn N26 launches cryptocurrency trading product, N26 Crypto - Silicon Canals",
           "Highest valued fintech in Germany: N26 raises €775M+ at over €7.76B valuation; to hire 1000 new employees - Silicon Canals",
           "N26 data: Gen Z leads Europe's investing shift"
+        ]
+      },
+      "revolut": {
+        "headline_count": 30,
+        "themes": {
+          "innovation_digital": 2,
+          "crisis_or_scandal": 9,
+          "financial_results": 0,
+          "product_launch": 8,
+          "esg_sustainability": 0,
+          "regulatory": 6,
+          "other": 5
+        },
+        "notable_headlines": [
+          "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",
+          "Revolut Crypto Breach Exposes Data of 680 High-Value Accounts",
+          "Revolut launches MiCA compliant EURR stablecoin in Europe"
         ]
       },
       "vdk": null

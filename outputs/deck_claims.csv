@@ -3,4 +3,4 @@ H1,belfius,Belfius is pretty verbose,word_count_band,not supported,belfius='long
 H2,kbc,KBC is straight to the point,word_count_band,supported,kbc='long'; lowest traditional is kbc='long'
 H3,ing,ING is the only traditional bank using animation,has_animation,not supported,"ing=1.00; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk']"
 H4,ing,ING no longer places text next to picture,text_image_layout,supported,ing's most common text_image_layout: 'overlaid' (claim: not 'beside')
-H5,revolut,Revolut uses very little text,word_count_band,not testable,feature absent from the dataset
+H5,revolut,Revolut uses very little text,word_count_band,not supported,revolut='long'; lowest is argenta='long'
