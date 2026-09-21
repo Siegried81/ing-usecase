@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T10:01:46+00:00",
+  "generated_at": "2026-09-21T10:14:14+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -9968,7 +9968,7 @@
       {
         "name": "siegried",
         "label": "Siegried",
-        "pages": 23,
+        "pages": 28,
         "columns": [
           "rater",
           "page_id",
@@ -10015,7 +10015,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": true,
             "persuasion_levers": null,
             "Notes": null
@@ -10040,7 +10040,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": null,
             "Notes": null
@@ -10065,7 +10065,7 @@
             "mobile_first_design_signal": true,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "liking|social_proof",
             "Notes": "authority? no authority cuz notice is mandatory by compliance"
@@ -10084,15 +10084,15 @@
             "clarity_score": 3.0,
             "rate_prominence": "below_fold",
             "value_prop_clarity": 3.0,
-            "accent_locations": "background",
-            "text_image_layout": null,
-            "layout_archetype": "hero_stacked",
+            "accent_locations": "buttons, text",
+            "text_image_layout": "stacked",
+            "layout_archetype": "split_columns",
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": false,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": false,
-            "persuasion_levers": null,
+            "persuasion_levers": " then card_grid",
             "Notes": null
           },
           {
@@ -10115,7 +10115,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": true,
             "persuasion_levers": "liking|commitment",
             "Notes": null
@@ -10140,7 +10140,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "commitment|liking|reciprocity",
             "Notes": "financial details, \"technical sheet\", no authority cuz notice is mandatory by compliance"
@@ -10165,7 +10165,7 @@
             "mobile_first_design_signal": true,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "liking|social_proof|reciprocity",
             "Notes": null
@@ -10190,7 +10190,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "liking",
             "Notes": "no authority cuz notice is mandatory by compliance"
@@ -10215,7 +10215,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "authority|social_proof|reciprocity|scarcity",
             "Notes": null
@@ -10240,7 +10240,7 @@
             "mobile_first_design_signal": true,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "reciprocity|scarcity|social_proof",
             "Notes": "grid_card if we scroll, no images stacked or not?), first scarcity"
@@ -10265,7 +10265,7 @@
             "mobile_first_design_signal": true,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "reciprocity|scarcity|social_proof|authority",
             "Notes": "rate at the beginning of the text, no authority cuz notice is mandatory by compliance"
@@ -10290,7 +10290,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "social_proof|reciprocity|scarcity",
             "Notes": null
@@ -10315,7 +10315,7 @@
             "mobile_first_design_signal": true,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": true,
             "persuasion_levers": null,
             "Notes": null
@@ -10340,7 +10340,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "scarcity|reciprocity",
             "Notes": "hub page (>< produit), reciprocity for cashbacks (11%)"
@@ -10365,7 +10365,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "authority|liking",
             "Notes": "first authority"
@@ -10390,7 +10390,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "authority|liking",
             "Notes": null
@@ -10415,7 +10415,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "authority|liking",
             "Notes": null
@@ -10440,7 +10440,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "social_proof|authority|liking",
             "Notes": null
@@ -10465,7 +10465,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": false,
             "persuasion_levers": null,
             "Notes": null
@@ -10490,7 +10490,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "authority|reciprocity",
             "Notes": "balance appears"
@@ -10515,7 +10515,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": false,
             "aida_interest": true,
-            "aida_desire": false,
+            "aida_desire": "FALSE",
             "aida_action": true,
             "persuasion_levers": "reciprocity",
             "Notes": "?? Not sure"
@@ -10540,7 +10540,7 @@
             "mobile_first_design_signal": false,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "liking",
             "Notes": "balance"
@@ -10565,9 +10565,134 @@
             "mobile_first_design_signal": true,
             "aida_attention": true,
             "aida_interest": true,
-            "aida_desire": true,
+            "aida_desire": "TRUE",
             "aida_action": true,
             "persuasion_levers": "social_proof|authority|reciprocity",
+            "Notes": null
+          },
+          {
+            "rater": "siegried",
+            "page_id": "vdk_current_account_pack_fr_01",
+            "bank": "vdk",
+            "bank_category": "traditional",
+            "product_family": "current_account_pack",
+            "language": "fr",
+            "url": "https://www.vdk.be/fr/particuliers/services-bancaires-au-quotidien/comptes-de-paiement/compte-vue-you-count",
+            "screenshot_path": "data/raw/vdk/current_account_pack_fr_01.png",
+            "capture_quality": "ok",
+            "formality_score": 2.0,
+            "clarity_score": 4.0,
+            "rate_prominence": "absent",
+            "value_prop_clarity": 5.0,
+            "accent_locations": "buttons, background",
+            "text_image_layout": "overlaid",
+            "layout_archetype": "hero_stacked",
+            "mobile_first_design_signal": false,
+            "aida_attention": true,
+            "aida_interest": true,
+            "aida_desire": "FALSE",
+            "aida_action": true,
+            "persuasion_levers": null,
+            "Notes": null
+          },
+          {
+            "rater": "siegried",
+            "page_id": "hellobank_current_account_pack_fr_01",
+            "bank": "hellobank",
+            "bank_category": "traditional",
+            "product_family": "current_account_pack",
+            "language": "fr",
+            "url": "https://www.hellobank.be/fr/notre-offre/comptes-et-cartes/compte-all-in-gratuit",
+            "screenshot_path": "data/raw/hellobank/current_account_pack_fr_01.png",
+            "capture_quality": "ok",
+            "formality_score": null,
+            "clarity_score": null,
+            "rate_prominence": null,
+            "value_prop_clarity": null,
+            "accent_locations": null,
+            "text_image_layout": null,
+            "layout_archetype": null,
+            "mobile_first_design_signal": null,
+            "aida_attention": null,
+            "aida_interest": null,
+            "aida_desire": null,
+            "aida_action": null,
+            "persuasion_levers": null,
+            "Notes": null
+          },
+          {
+            "rater": "siegried",
+            "page_id": "beobank_current_account_pack_fr_01",
+            "bank": "beobank",
+            "bank_category": "traditional",
+            "product_family": "current_account_pack",
+            "language": "fr",
+            "url": "https://www.beobank.be/fr/payer/comptes-courants/compte-go.html",
+            "screenshot_path": "data/raw/beobank/current_account_pack_fr_01.png",
+            "capture_quality": "ok",
+            "formality_score": 3.0,
+            "clarity_score": 5.0,
+            "rate_prominence": "absent",
+            "value_prop_clarity": 4.0,
+            "accent_locations": "buttons, text",
+            "text_image_layout": "beside",
+            "layout_archetype": "split_columns",
+            "mobile_first_design_signal": false,
+            "aida_attention": false,
+            "aida_interest": true,
+            "aida_desire": "fals",
+            "aida_action": true,
+            "persuasion_levers": null,
+            "Notes": null
+          },
+          {
+            "rater": "siegried",
+            "page_id": "cbc_current_account_pack_fr_01",
+            "bank": "cbc",
+            "bank_category": "traditional",
+            "product_family": "current_account_pack",
+            "language": "fr",
+            "url": "https://www.cbc.be/particuliers/fr/produits/paiements/comptes-a-vue/compte-bancaire-gratuit.html",
+            "screenshot_path": "data/raw/cbc/current_account_pack_fr_01.png",
+            "capture_quality": "ok",
+            "formality_score": null,
+            "clarity_score": null,
+            "rate_prominence": null,
+            "value_prop_clarity": null,
+            "accent_locations": null,
+            "text_image_layout": null,
+            "layout_archetype": null,
+            "mobile_first_design_signal": null,
+            "aida_attention": null,
+            "aida_interest": null,
+            "aida_desire": null,
+            "aida_action": null,
+            "persuasion_levers": null,
+            "Notes": null
+          },
+          {
+            "rater": "siegried",
+            "page_id": "keytrade_current_account_pack_fr_01",
+            "bank": "keytrade",
+            "bank_category": "challenger",
+            "product_family": "current_account_pack",
+            "language": "fr",
+            "url": "https://www.keytradebank.be/fr/banque/keypack",
+            "screenshot_path": "data/raw/keytrade/current_account_pack_fr_01.png",
+            "capture_quality": "ok",
+            "formality_score": null,
+            "clarity_score": null,
+            "rate_prominence": null,
+            "value_prop_clarity": null,
+            "accent_locations": null,
+            "text_image_layout": null,
+            "layout_archetype": null,
+            "mobile_first_design_signal": null,
+            "aida_attention": null,
+            "aida_interest": null,
+            "aida_desire": null,
+            "aida_action": null,
+            "persuasion_levers": null,
             "Notes": null
           }
         ]
@@ -11307,6 +11432,12 @@
     ],
     "agreement": [
       {
+        "feature": "aida_desire",
+        "pages": 11,
+        "agreement": 0.0,
+        "basis": "exact match"
+      },
+      {
         "feature": "persuasion_levers",
         "pages": 9,
         "agreement": 0.11,
@@ -11337,16 +11468,16 @@
         "basis": "exact match"
       },
       {
-        "feature": "value_prop_clarity",
-        "pages": 11,
-        "agreement": 0.64,
-        "basis": "within 1 point"
-      },
-      {
         "feature": "layout_archetype",
         "pages": 11,
         "agreement": 0.64,
         "basis": "exact match"
+      },
+      {
+        "feature": "value_prop_clarity",
+        "pages": 11,
+        "agreement": 0.64,
+        "basis": "within 1 point"
       },
       {
         "feature": "mobile_first_design_signal",
@@ -11355,10 +11486,10 @@
         "basis": "exact match"
       },
       {
-        "feature": "aida_desire",
-        "pages": 11,
-        "agreement": 0.82,
-        "basis": "exact match"
+        "feature": "formality_score",
+        "pages": 15,
+        "agreement": 0.87,
+        "basis": "within 1 point"
       },
       {
         "feature": "clarity_score",
@@ -11377,12 +11508,6 @@
         "pages": 11,
         "agreement": 0.91,
         "basis": "exact match"
-      },
-      {
-        "feature": "formality_score",
-        "pages": 13,
-        "agreement": 0.92,
-        "basis": "within 1 point"
       }
     ],
     "kappa": [
@@ -11405,18 +11530,6 @@
         "kappa": -0.102
       },
       {
-        "feature": "aida_action",
-        "raters": "siegried vs stephane",
-        "pages": 9,
-        "kappa": 0.0
-      },
-      {
-        "feature": "aida_action",
-        "raters": "dan vs siegried",
-        "pages": 10,
-        "kappa": 0.0
-      },
-      {
         "feature": "aida_interest",
         "raters": "siegried vs stephane",
         "pages": 9,
@@ -11426,6 +11539,18 @@
         "feature": "aida_interest",
         "raters": "dan vs stephane",
         "pages": 8,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_action",
+        "raters": "dan vs siegried",
+        "pages": 10,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_action",
+        "raters": "siegried vs stephane",
+        "pages": 9,
         "kappa": 0.0
       },
       {
@@ -11471,13 +11596,13 @@
         "kappa": 0.125
       },
       {
-        "feature": "clarity_score",
+        "feature": "mobile_first_design_signal",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "clarity_score",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
@@ -11501,6 +11626,12 @@
         "kappa": 0.222
       },
       {
+        "feature": "formality_score",
+        "raters": "model/deepseek-flash vs siegried",
+        "pages": 12,
+        "kappa": 0.238
+      },
+      {
         "feature": "text_image_layout",
         "raters": "siegried vs stephane",
         "pages": 9,
@@ -11513,6 +11644,12 @@
         "kappa": 0.308
       },
       {
+        "feature": "mobile_first_design_signal",
+        "raters": "dan vs stephane",
+        "pages": 8,
+        "kappa": 0.333
+      },
+      {
         "feature": "persuasion_levers",
         "raters": "dan vs stephane",
         "pages": 7,
@@ -11520,12 +11657,6 @@
       },
       {
         "feature": "aida_desire",
-        "raters": "dan vs stephane",
-        "pages": 8,
-        "kappa": 0.333
-      },
-      {
-        "feature": "mobile_first_design_signal",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333
@@ -11547,12 +11678,6 @@
         "raters": "dan vs siegried",
         "pages": 10,
         "kappa": 0.39
-      },
-      {
-        "feature": "formality_score",
-        "raters": "model/deepseek-flash vs siegried",
-        "pages": 10,
-        "kappa": 0.412
       },
       {
         "feature": "formality_score",
@@ -11585,19 +11710,7 @@
         "kappa": 0.6
       },
       {
-        "feature": "aida_desire",
-        "raters": "siegried vs stephane",
-        "pages": 9,
-        "kappa": 0.609
-      },
-      {
         "feature": "mobile_first_design_signal",
-        "raters": "dan vs siegried",
-        "pages": 10,
-        "kappa": 0.615
-      },
-      {
-        "feature": "aida_desire",
         "raters": "dan vs siegried",
         "pages": 10,
         "kappa": 0.615

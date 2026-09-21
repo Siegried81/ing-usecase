@@ -101,8 +101,8 @@ Return ONLY a JSON object with exactly these keys:
   "financial_results", "product_launch", "esg_sustainability", "regulatory", "other" to an
   integer count of how many of the given headlines belong to that theme (every headline
   counted exactly once, into its single best-fitting theme)
-- "notable_headlines": array of up to 3 headline strings, taken verbatim from the input, that
-  best illustrate why this bank is in the news right now
+- "notable_headlines": array of up to 5 headline strings, taken verbatim from the input, that
+  best illustrate why this bank is in the news right now, most important first
 
 No preamble, no markdown fences, JSON only."""
 
