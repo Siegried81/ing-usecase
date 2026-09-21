@@ -104,6 +104,7 @@ def get_recommendations() -> dict:
 
 class RecommendationRequest(BaseModel):
     include_trends: bool = False
+    include_reputation: bool = False  # sieg 21/09
 
 
 @app.post("/api/recommendations/generate")
@@ -113,6 +114,12 @@ def post_recommendations(request: RecommendationRequest | None = None) -> dict:
     With `include_trends`, the Trends tab snapshot (`web/public/trends.json`) is
     added to the prompt as context. Search interest never becomes evidence of
     performance; the additional recommendations are labelled by `basis`.
+
+    sieg 21/09: `include_reputation` does the same for news headline themes.
+    No separate file to load - report.json already carries the reputation
+    dashboard - so a missing signal surfaces as the same LLMExtractionError ->
+    502 path build_recommendations already uses for trends, rather than a
+    second pre-flight 409 check.
     """
     include_trends = bool(request and request.include_trends)
     trends = _load_trends() if include_trends else None
@@ -121,8 +128,12 @@ def post_recommendations(request: RecommendationRequest | None = None) -> dict:
             status_code=409,
             detail="No trends data available. Run: python3 scripts/export_web_report.py",
         )
+    include_reputation = bool(request and request.include_reputation)
     try:
-        result = build_recommendations(_read_report(), include_trends=include_trends, trends=trends)
+        result = build_recommendations(
+            _read_report(), include_trends=include_trends, trends=trends,
+            include_reputation=include_reputation,
+        )
     except LLMExtractionError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc
     payload = result.to_dict()

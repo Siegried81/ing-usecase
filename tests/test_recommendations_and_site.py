@@ -22,6 +22,7 @@ from comparator.recommendations import (  # noqa: E402
     Recommendation,
     RecommendationSet,
     _digest,
+    _reputation_digest,
     _trends_digest,
     build_recommendations,
     parse_response,
@@ -128,6 +129,47 @@ _RAW_TRENDS = json.dumps({
          "recommendation": "Have the savings page ready before the next peak",
          "features": [], "page_targets": ["comptes-epargne"], "basis": "trends",
          "market_context": "Savings searches ran above baseline in March 2026."},
+    ],
+})
+
+# sieg 21/09: a trimmed reputation dashboard - one bank with a classified theme
+# and a notable headline, one bank this run compared but reputation.py found
+# nothing for, one theme-free bank (must be dropped, it adds nothing to argue
+# from).
+_REPUTATION_REPORT = {
+    **_REPORT,
+    "banks": [
+        {"key": "ing", "name": "ING"},
+        {"key": "kbc", "name": "KBC"},
+    ],
+    "reputation": {
+        "available": True,
+        "banks": {
+            "ing": {
+                "headline_count": 3,
+                "themes": {"innovation_digital": 2, "crisis_or_scandal": 0},
+                "notable_headlines": [
+                    {"title": "ING launches new banking app", "url": "https://news.example/ing-app"},
+                ],
+            },
+            "kbc": {"headline_count": 0, "themes": {}, "notable_headlines": []},
+        },
+    },
+}
+
+_RAW_REPUTATION = json.dumps({
+    "summary": "ING is clear but under-equipped to convert.",
+    "recommendations": [
+        {"title": "Add a visible rate", "priority": "high", "finding": "rate_shown is 0.0",
+         "recommendation": "Show the rate above the fold", "features": ["rate_shown"],
+         "page_targets": ["index"], "basis": "analysis", "market_context": None,
+         "reputation_context": None},
+        {"title": "Back up the digital claim", "priority": "medium",
+         "finding": "The press covers ING under innovation_digital, so the claim has outside support",
+         "recommendation": "Cite the app launch coverage near the digital-onboarding claim",
+         "features": [], "page_targets": ["index"], "basis": "reputation",
+         "market_context": None,
+         "reputation_context": "2 innovation_digital headlines, including the app launch."},
     ],
 })
 
@@ -245,7 +287,74 @@ def test_from_dict_defaults_basis_for_recommendations_saved_before_trends():
     restored = RecommendationSet.from_dict(saved)
     assert restored.recommendations[0].basis == "analysis"
     assert restored.recommendations[0].market_context is None
+    assert restored.recommendations[0].reputation_context is None
     assert restored.used_trends is False
+    assert restored.used_reputation is False
+
+
+def test_reputation_digest_keeps_only_banks_with_a_classified_theme():
+    digest = _reputation_digest(_REPUTATION_REPORT)
+    assert digest is not None
+    assert "ING launches new banking app" in digest
+    assert "innovation_digital" in digest
+    # KBC was compared but reputation.py found nothing usable for it - and a
+    # theme-free bank must not pad the digest with an empty entry.
+    assert "KBC" not in digest
+
+
+def test_reputation_digest_is_none_when_reputation_was_never_configured():
+    report = {**_REPUTATION_REPORT, "reputation": {"available": False, "banks": {}}}
+    assert _reputation_digest(report) is None
+
+
+def test_reputation_digest_is_none_when_no_compared_bank_has_a_snapshot():
+    report = {**_REPUTATION_REPORT, "reputation": {"available": True, "banks": {}}}
+    assert _reputation_digest(report) is None
+
+
+def test_build_recommendations_with_reputation_adds_context_and_marks_basis(monkeypatch):
+    seen: dict[str, str] = {}
+
+    def fake_llm(prompt, *, system_prompt, timeout):
+        seen["prompt"] = prompt
+        seen["system"] = system_prompt
+        return _RAW_REPUTATION, "deepseek/deepseek-chat"
+
+    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
+    result = build_recommendations(_REPUTATION_REPORT, include_reputation=True)
+
+    assert "news headline themes" in seen["prompt"]
+    assert "ING launches new banking app" in seen["prompt"]
+    assert "CONTEXT, never evidence" in seen["system"]
+    assert result.used_reputation is True
+    assert result.used_trends is False
+    assert [r.basis for r in result.recommendations] == ["analysis", "reputation"]
+    assert result.recommendations[1].reputation_context.startswith("2 innovation_digital")
+    # A reputation recommendation may not carry page-feature evidence either.
+    assert result.recommendations[1].features == []
+
+
+def test_build_recommendations_refuses_reputation_when_none_is_available():
+    report = {**_REPUTATION_REPORT, "reputation": {"available": False, "banks": {}}}
+    with pytest.raises(LLMExtractionError):
+        build_recommendations(report, include_reputation=True)
+
+
+def test_build_recommendations_can_combine_trends_and_reputation(monkeypatch):
+    seen: dict[str, str] = {}
+
+    def fake_llm(prompt, *, system_prompt, timeout):
+        seen["prompt"] = prompt
+        seen["system"] = system_prompt
+        return _RAW_TRENDS, "m"
+
+    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
+    combined_report = {**_REPUTATION_REPORT, "banks": _REPUTATION_REPORT["banks"]}
+    build_recommendations(combined_report, include_trends=True, trends=_TRENDS, include_reputation=True)
+    assert "Google Trends" in seen["prompt"]
+    assert "news headline themes" in seen["prompt"]
+    assert '"trends"' in seen["system"]
+    assert '"reputation"' in seen["system"]
 
 
 def test_select_keeps_only_the_chosen_ids_in_the_original_order():

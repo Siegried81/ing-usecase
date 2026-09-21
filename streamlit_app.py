@@ -137,8 +137,7 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
 
     st.subheader("Project status")
     st.info(
-        "Day 5/10 — weekend before Day 6 gate (Mon 21 Sep). "
-        "The analysis pipeline works end-to-end on real captures. "
+        "Day 6/10: The analysis pipeline works end-to-end on real captures. "
         "The 13 rubric features are being scored."
     )
 

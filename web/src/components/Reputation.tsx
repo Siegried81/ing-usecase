@@ -6,6 +6,7 @@ const themeLabel = (theme: string) => theme.replace(/_/g, " ");
  * sieg 19/09: NewsAPI headline themes per bank - counts only, never sentiment
  * (see comparator/reputation.py's docstring for why). Mirrors Trends.tsx's
  * "not configured, nothing else affected" empty state when NEWSAPI_KEY isn't set.
+ * sieg 21/09: the notable headline links out to its source when one was found.
  */
 export function Reputation({ reputation }: { reputation: Report["reputation"] }) {
   if (!reputation.available) {
@@ -47,7 +48,20 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
                 ))}
               {snapshot.notable_headlines.length > 0 && (
                 <div style={{ marginTop: 10, fontSize: 12.5, color: "var(--ink-3)" }}>
-                  {snapshot.notable_headlines[0]}
+                  {/* sieg 21/09: link to the source when reputation.py found one -
+                      never a URL the model produced itself. */}
+                  {snapshot.notable_headlines[0].url ? (
+                    <a
+                      href={snapshot.notable_headlines[0].url}
+                      target="_blank"
+                      rel="noreferrer"
+                      style={{ color: "inherit" }}
+                    >
+                      {snapshot.notable_headlines[0].title} ↗
+                    </a>
+                  ) : (
+                    snapshot.notable_headlines[0].title
+                  )}
                 </div>
               )}
             </>

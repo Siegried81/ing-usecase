@@ -17,6 +17,11 @@ defend claim this project does not need to make.
 ONE structured LLM call per bank (a batch of headlines in, one classification
 out) - same "single call, fixed prompt + schema, no agent" rule as
 `collection/llm_extractor.py`.
+
+sieg 21/09: `notable_headlines` now carries each headline's source URL
+alongside its title, so the web UI can link out to the article. The URL is
+looked up locally against what we actually fetched, never produced by the
+model.
 """
 
 from __future__ import annotations
@@ -108,8 +113,13 @@ class ReputationModel(BaseModel):
 
 
 def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
-                        page_size: int, timeout: int) -> list[str]:
-    """Titles for one provider in one language. Empty list on any failure."""
+                        page_size: int, timeout: int) -> list[dict]:
+    """Title + source URL pairs for one provider in one language. Empty list on any failure.
+
+    sieg 21/09: keep the URL alongside the title (both APIs already return it) so a
+    notable headline can link back to its source - was title-only before, which left
+    the web UI with no way to open the article.
+    """
     try:
         if provider == "newsapi.ai":
             # Relevance, not date: Event Registry matches the whole article, so
@@ -142,46 +152,49 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             articles = response.json().get("articles", [])
     except (requests.RequestException, ValueError, AttributeError, TypeError):
         return []
-    return [a["title"] for a in articles if isinstance(a, dict) and a.get("title")]
+    return [
+        {"title": a["title"], "url": a.get("url")}
+        for a in articles if isinstance(a, dict) and a.get("title")
+    ]
 
 
-def _fetch_from(provider: str, query: str, api_key: str, page_size: int, timeout: int) -> list[str]:
-    """Titles from one provider, across every language it publishes in.
+def _fetch_from(provider: str, query: str, api_key: str, page_size: int, timeout: int) -> list[dict]:
+    """Title/URL pairs from one provider, across every language it publishes in.
 
     One language failing (or hitting a rate limit) leaves the others intact, so
     a bank still gets whatever was returned rather than nothing.
     """
-    titles: list[str] = []
+    headlines: list[dict] = []
     for language in PROVIDER_LANGUAGES[provider]:
-        titles.extend(_fetch_for_language(provider, query, api_key, language, page_size, timeout))
-    return titles
+        headlines.extend(_fetch_for_language(provider, query, api_key, language, page_size, timeout))
+    return headlines
 
 
 def fetch_headlines(query: str, api_key: str | None = None, *,
-                    page_size: int = 20, timeout: int = 20) -> list[str]:
-    """Recent headline titles mentioning `query`, merged across configured keys.
+                    page_size: int = 20, timeout: int = 20) -> list[dict]:
+    """Recent {"title", "url"} headlines mentioning `query`, merged across configured keys.
 
     Passing `api_key` pins the query to that one key (and picks the provider from
     the key's shape); leaving it out uses every key in the environment.
     """
     if api_key:
         provider = "newsapi.ai" if _is_newsapi_ai_key(api_key) else "newsapi.org"
-        titles = _fetch_from(provider, query, api_key, page_size, timeout)
+        headlines = _fetch_from(provider, query, api_key, page_size, timeout)
     else:
-        titles = []
+        headlines = []
         for provider, key in configured_sources():
-            titles.extend(_fetch_from(provider, query, key, page_size, timeout))
+            headlines.extend(_fetch_from(provider, query, key, page_size, timeout))
 
     # De-duplicate across languages and across providers: the same story arrives
     # translated (fr + nl) and syndicated (both APIs), and counting it twice
     # would inflate one bank's themes against another's.
     seen: set[str] = set()
-    merged: list[str] = []
-    for title in titles:
-        marker = title.strip().lower()
+    merged: list[dict] = []
+    for headline in headlines:
+        marker = headline["title"].strip().lower()
         if marker and marker not in seen:
             seen.add(marker)
-            merged.append(title)
+            merged.append(headline)
     return merged
 
 
@@ -202,7 +215,7 @@ def classify_headlines(headlines: list[str], bank_name: str) -> ReputationModel 
         return None
 
 
-def _mentions(headlines: list[str], bank_name: str) -> list[str]:
+def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     """Keep only headlines where the bank's name appears as a whole word.
 
     steve 21/09: newsapi.ai's keyword search stems and matches substrings ("ING"
@@ -217,7 +230,7 @@ def _mentions(headlines: list[str], bank_name: str) -> list[str]:
     # the character before the token to be neither a word character nor the
     # punctuation that glues a suffix onto one.
     pattern = re.compile(rf"(?<![\w\u2010-\u2015*'’\-])\b{re.escape(token)}\b", re.IGNORECASE)
-    return [h for h in headlines if pattern.search(h)]
+    return [h for h in headlines if pattern.search(h["title"])]
 
 
 def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
@@ -226,13 +239,20 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
         return None
     matched = _mentions(fetch_headlines(f'"{_bank_token(bank_name)}"', api_key), bank_name)
     headlines = matched[:MAX_HEADLINES]
-    classified = classify_headlines(headlines, bank_name)
+    titles = [h["title"] for h in headlines]
+    classified = classify_headlines(titles, bank_name)
     if classified is None:
         return None
+    # sieg 21/09: the model returns notable headlines verbatim (SYSTEM_PROMPT
+    # requires it) - look each one up in what we actually fetched to attach its
+    # real URL. Never let the model produce the URL itself: that is exactly the
+    # kind of figure this project never lets a model invent.
+    url_by_title = {h["title"]: h.get("url") for h in headlines}
+    notable = [{"title": t, "url": url_by_title.get(t)} for t in classified.notable_headlines]
     return {
         "headline_count": len(headlines),
         "themes": {t: classified.theme_counts.get(t, 0) for t in THEMES},
-        "notable_headlines": classified.notable_headlines,
+        "notable_headlines": notable,
     }
 
 

@@ -115,9 +115,10 @@ export interface GeneratedCampaign {
 
 export type Priority = "high" | "medium" | "low";
 
-/** Analysis recommendations come from the measured pages; trends ones are
- *  added on top from search-interest context and never cite page features. */
-export type RecommendationBasis = "analysis" | "trends";
+/** Analysis recommendations come from the measured pages; trends and
+ *  reputation ones are added on top from context (search interest / news
+ *  themes) and never cite page features. sieg 21/09: added "reputation". */
+export type RecommendationBasis = "analysis" | "trends" | "reputation";
 
 export interface Recommendation {
   id: string;
@@ -129,6 +130,7 @@ export interface Recommendation {
   page_targets: string[];
   basis?: RecommendationBasis;
   market_context?: string | null;
+  reputation_context?: string | null;
 }
 
 export interface RecommendationPayload {
@@ -138,6 +140,7 @@ export interface RecommendationPayload {
   summary: string | null;
   recommendations: Recommendation[];
   used_trends?: boolean;
+  used_reputation?: boolean;
 }
 
 export interface SitePage {
@@ -295,11 +298,17 @@ export interface TrendsPayload {
   guardrail: string;
 }
 
+/** sieg 21/09: a notable headline, with its source URL when one was found. */
+export interface ReputationHeadline {
+  title: string;
+  url: string | null;
+}
+
 /** sieg 19/09: comparator/reputation.py - themes only, never sentiment. */
 export interface BankReputation {
   headline_count: number;
   themes: Record<string, number>;
-  notable_headlines: string[];
+  notable_headlines: ReputationHeadline[];
 }
 
 export interface ReputationPayload {

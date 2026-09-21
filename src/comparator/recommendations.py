@@ -22,6 +22,11 @@ Guardrails, because a recommendation is where this kind of project goes wrong:
     window they came from. They are context, never evidence - the same line
     trends.py draws - so the prompt may use them for timing and focus only, and
     a trends recommendation is never allowed to cite a page feature as proof.
+  * Reputation (`include_reputation`, sieg 21/09) is the same idea for news
+    headline themes: opt-in, `basis="reputation"`, context never evidence -
+    the same line reputation.py draws - and never allowed to cite a page
+    feature as proof either. Unlike trends it needs no separate payload: the
+    dashboard already travels inside `report["reputation"]`.
 """
 
 from __future__ import annotations
@@ -34,10 +39,11 @@ from typing import Literal
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
+from comparator.reputation import RECENT_DAYS  # sieg 21/09
 from comparator.trends import PRODUCT_MAP
 
 Priority = Literal["high", "medium", "low"]
-Basis = Literal["analysis", "trends"]
+Basis = Literal["analysis", "trends", "reputation"]
 
 
 class RecommendationModel(BaseModel):
@@ -51,6 +57,10 @@ class RecommendationModel(BaseModel):
     page_targets: list[str] = Field(default_factory=list)
     basis: Basis = "analysis"
     market_context: str | None = Field(default=None, description="search-interest context, trends basis only")
+    # sieg 21/09: mirrors market_context for the reputation basis.
+    reputation_context: str | None = Field(
+        default=None, description="news-theme context, reputation basis only"
+    )
 
 
 class RecommendationSetModel(BaseModel):
@@ -80,20 +90,6 @@ Hard rules, no exceptions:
 _PAGE_KEYS = ("index, comptes-epargne, compte-a-terme, compte-courant, jeunes, investir, "
               "credit-hypothecaire, ouvrir-compte, pourquoi-ing, contact")
 
-_OUTPUT_SPEC = f"""Return ONLY a JSON object with exactly these keys:
-"summary" (2-3 sentences, the single most important thing the analysis says about ING), and
-"recommendations" (array of 6 to 8 objects). Each recommendation object has exactly:
-  "title" (short, imperative),
-  "priority" (one of "high","medium","low"),
-  "finding" (what the data shows, referencing the feature and the gap),
-  "recommendation" (the specific change to make on the page),
-  "features" (array of exact feature identifiers from the analysis this is based on),
-  "page_targets" (array of page keys, from this list only: {_PAGE_KEYS}),
-  "basis" (always "analysis"),
-  "market_context" (always null).
-
-No preamble, no markdown fences, JSON only."""
-
 _TRENDS_ADDENDUM = """You are ALSO given Google Trends search-interest context for Belgium: weekly
 search interest per bank and product, with anomalies a separate detector flagged. Use it to add
 recommendations that the page measurements alone cannot support.
@@ -111,24 +107,67 @@ Trends rules, no exceptions:
 - Trends recommendations must NOT cite page features as evidence; leave "features" empty and put
   the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
 
-_TRENDS_OUTPUT_SPEC = f"""Return ONLY a JSON object with exactly these keys:
+_REPUTATION_ADDENDUM = """You are ALSO given recent news headline THEMES (never sentiment) for some
+banks: counts of what real headlines about that bank were ABOUT in the last 90 days, plus up to 3
+notable headlines.
+
+Reputation rules, no exceptions:
+- Theme counts are CONTEXT, never evidence that a page or campaign performed. They say what a bank
+  is currently in the news ABOUT, nothing more.
+- Use ONLY the theme names, counts and headlines given. Never invent a headline, a count, or an
+  outlet, and never describe a theme as positive or negative - themes are topics, not sentiment.
+- A reputation-based recommendation compares what ING's OWN page claims against what the press is
+  actually covering right now (for example: a page claims digital leadership but the news themes
+  show nothing under innovation_digital), or flags a theme ING should be careful not to amplify with
+  unrelated framing on the page (for example: heavy urgency language next to a crisis_or_scandal
+  theme).
+- Reputation recommendations must NOT cite page features as evidence; leave "features" empty and put
+  the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
+
+def _system_prompt(*, with_trends: bool, with_reputation: bool) -> str:
+    """Assemble the system prompt from whichever optional context blocks apply.
+
+    sieg 21/09: reputation joins trends as a second, independent opt-in context.
+    Built from parts rather than one hardcoded constant per combination (trends
+    only / reputation only / both / neither), so a third context later is one
+    more addendum, not four more near-duplicate strings.
+    """
+    parts = [_BASE_RULES]
+    bases = ['"analysis"']
+    extra_counts: list[str] = []
+    if with_trends:
+        parts.append(_TRENDS_ADDENDUM)
+        bases.append('"trends"')
+        extra_counts.append("2 to 4 more from search-interest context")
+    if with_reputation:
+        parts.append(_REPUTATION_ADDENDUM)
+        bases.append('"reputation"')
+        extra_counts.append("1 to 3 more from news-theme context")
+
+    extra_text = f" (plus {'; '.join(extra_counts)})" if extra_counts else ""
+    extra_bases = [b.strip('"') for b in bases if b != '"analysis"']
+    empty_features_note = (
+        f"; empty for a {' or '.join(extra_bases)} recommendation" if extra_bases else ""
+    )
+    output_spec = f"""Return ONLY a JSON object with exactly these keys:
 "summary" (2-3 sentences, the single most important thing the analysis says about ING), and
-"recommendations" (array of 8 to 12 objects: first the 6 to 8 analysis recommendations, then the
-2 to 4 additional trends recommendations). Each recommendation object has exactly:
+"recommendations" (array of 6 to 8 analysis recommendations{extra_text}). Each recommendation object
+has exactly:
   "title" (short, imperative),
   "priority" (one of "high","medium","low"),
   "finding" (what the data shows),
   "recommendation" (the specific change to make on the page),
-  "features" (exact feature identifiers from the analysis; empty for a trends recommendation),
+  "features" (exact feature identifiers from the analysis{empty_features_note}),
   "page_targets" (array of page keys, from this list only: {_PAGE_KEYS}),
-  "basis" (one of "analysis","trends"),
-  "market_context" (null for analysis; for trends, one or two sentences naming the attention
-   pattern and the window it comes from).
+  "basis" (one of {", ".join(bases)}),
+  "market_context" (null unless basis is "trends"; then one or two sentences naming the attention
+   pattern and the window it comes from),
+  "reputation_context" (null unless basis is "reputation"; then one or two sentences naming the
+   theme(s) and headline count this recommendation is drawn from).
 
 No preamble, no markdown fences, JSON only."""
-
-SYSTEM_PROMPT = _BASE_RULES + "\n\n" + _OUTPUT_SPEC
-SYSTEM_PROMPT_WITH_TRENDS = _BASE_RULES + "\n\n" + _TRENDS_ADDENDUM + "\n\n" + _TRENDS_OUTPUT_SPEC
+    parts.append(output_spec)
+    return "\n\n".join(parts)
 
 
 @dataclass
@@ -142,6 +181,7 @@ class Recommendation:
     page_targets: list[str] = field(default_factory=list)
     basis: Basis = "analysis"
     market_context: str | None = None
+    reputation_context: str | None = None
 
 
 @dataclass
@@ -151,6 +191,7 @@ class RecommendationSet:
     summary: str
     recommendations: list[Recommendation]
     used_trends: bool = False
+    used_reputation: bool = False
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -163,6 +204,7 @@ class RecommendationSet:
             summary=payload.get("summary", ""),
             recommendations=[Recommendation(**r) for r in payload.get("recommendations", [])],
             used_trends=bool(payload.get("used_trends", False)),
+            used_reputation=bool(payload.get("used_reputation", False)),
         )
 
 
@@ -374,6 +416,43 @@ def _trends_digest(trends: dict, report: dict, *, per_product: int = 6) -> str |
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
+def _reputation_digest(report: dict) -> str | None:
+    """The slice of the reputation dashboard the model is allowed to see.
+
+    sieg 21/09. Unlike trends, reputation needs no separate payload argument:
+    `report["reputation"]` already carries `build_dashboard()`'s output (see
+    export_web_report.py). Only banks this run actually compared, and only
+    ones with at least one classified theme, so the model never reasons about
+    a bank reputation.py could not fetch anything for. Returns None when
+    reputation was never configured or nothing covers this run's banks - same
+    fall-back-cleanly pattern as `_trends_digest`.
+    """
+    dashboard = report.get("reputation") or {}
+    if not dashboard.get("available"):
+        return None
+
+    snapshots = dashboard.get("banks", {})
+    banks: list[dict] = []
+    for entry in report.get("banks", []):
+        snapshot = snapshots.get(entry.get("key"))
+        if not snapshot:
+            continue
+        themes = {t: c for t, c in snapshot.get("themes", {}).items() if c > 0}
+        if not themes:
+            continue
+        banks.append({
+            "bank": entry.get("name"),
+            "headline_count": snapshot.get("headline_count", 0),
+            "themes": themes,
+            "notable_headlines": [
+                h.get("title") for h in snapshot.get("notable_headlines", []) if h.get("title")
+            ],
+        })
+    if not banks:
+        return None
+    return json.dumps({"window_days": RECENT_DAYS, "banks": banks}, ensure_ascii=False, indent=2)
+
+
 def parse_response(raw: str) -> RecommendationSetModel:
     cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
     return RecommendationSetModel.model_validate(json.loads(cleaned))
@@ -384,6 +463,7 @@ def build_recommendations(
     *,
     include_trends: bool = False,
     trends: dict | None = None,
+    include_reputation: bool = False,
     retries: int = 1,
 ) -> RecommendationSet:
     """Ask the pinned model for recommendations, then verify them against the report.
@@ -396,11 +476,22 @@ def build_recommendations(
     a recent, captured-banks-only digest and added to the prompt as CONTEXT. The
     model is told to add trends recommendations on top of the analysis ones; they
     come back with `basis="trends"` and cannot cite page features.
+
+    When `include_reputation` is set (sieg 21/09), `report["reputation"]` - already
+    part of the report, no separate argument needed - is sliced the same way and
+    added as a second, independent CONTEXT block. Those recommendations come back
+    with `basis="reputation"` and cannot cite page features either.
     """
     trends_digest = _trends_digest(trends, report) if (include_trends and trends) else None
     if include_trends and not trends_digest:
         raise LLMExtractionError(
             "trends context was requested but no trends data covers this run's banks"
+        )
+
+    reputation_digest = _reputation_digest(report) if include_reputation else None
+    if include_reputation and not reputation_digest:
+        raise LLMExtractionError(
+            "reputation context was requested but no reputation data covers this run's banks"
         )
 
     prompt = (
@@ -412,8 +503,13 @@ def build_recommendations(
             "\n\nGoogle Trends search-interest context (Belgium) - CONTEXT ONLY, "
             "not performance data:\n\n" + trends_digest
         )
+    if reputation_digest:
+        prompt += (
+            "\n\nRecent news headline themes (Belgium) - CONTEXT ONLY, never "
+            "sentiment or performance data:\n\n" + reputation_digest
+        )
 
-    system_prompt = SYSTEM_PROMPT_WITH_TRENDS if trends_digest else SYSTEM_PROMPT
+    system_prompt = _system_prompt(with_trends=bool(trends_digest), with_reputation=bool(reputation_digest))
     last_error: Exception | None = None
     for _ in range(retries + 1):
         raw, model_id = _call_llm(prompt, system_prompt=system_prompt, timeout=180)
@@ -435,6 +531,7 @@ def build_recommendations(
                 page_targets=list(dict.fromkeys(r.page_targets)),
                 basis=r.basis,
                 market_context=(r.market_context or "").strip() or None,
+                reputation_context=(r.reputation_context or "").strip() or None,
             )
             for i, r in enumerate(parsed.recommendations)
         ]
@@ -444,6 +541,7 @@ def build_recommendations(
             summary=parsed.summary.strip(),
             recommendations=recommendations,
             used_trends=bool(trends_digest),
+            used_reputation=bool(reputation_digest),
         )
 
     raise LLMExtractionError(f"recommendation generation failed: {last_error}")
@@ -458,4 +556,5 @@ def select(recommendation_set: RecommendationSet, selected_ids: list[str]) -> Re
         summary=recommendation_set.summary,
         recommendations=[r for r in recommendation_set.recommendations if r.id in wanted],
         used_trends=recommendation_set.used_trends,
+        used_reputation=recommendation_set.used_reputation,
     )
