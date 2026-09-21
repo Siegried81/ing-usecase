@@ -35,6 +35,7 @@ import json
 import os
 import re
 from datetime import date, timedelta
+from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
@@ -276,10 +277,46 @@ def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     return [h for h in headlines if pattern.search(h["title"])]
 
 
+# sieg 21/09: newsapi.org's free tier is 100 requests/24h (50/12h) - re-running
+# export_web_report.py a handful of times in one afternoon exhausted it, and every
+# bank's signal silently thinned out (bank_snapshot degrades to None on a failed
+# fetch, by design - see its docstring). A same-day cache means iterating on
+# unrelated code (the UI, the prompt wording) doesn't re-spend quota that was
+# already spent finding this run's headlines. Only a REAL snapshot is cached -
+# never a None, because bank_snapshot returns None both when a bank genuinely has
+# no matching headlines and when the fetch failed (rate limit, timeout, bad key);
+# caching that would freeze a quota outage into a permanent "nothing found".
+CACHE_PATH = Path("data/processed/reputation_cache.json")
+
+
+def _load_cache() -> dict:
+    if not CACHE_PATH.is_file():
+        return {}
+    try:
+        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_cache(cache: dict) -> None:
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
-    """None when NEWSAPI_KEY is absent, or nothing could be fetched/classified."""
+    """None when NEWSAPI_KEY is absent, or nothing could be fetched/classified.
+
+    Reuses today's cached snapshot for this bank when there is one - see the
+    CACHE_PATH note above for why only a successful snapshot is ever cached.
+    """
     if not api_key and not configured_sources():
         return None
+    cache = _load_cache()
+    today = date.today().isoformat()
+    cached = cache.get(bank_name)
+    if cached and cached.get("cached_on") == today:
+        return cached["snapshot"]
+
     matched = _mentions(fetch_headlines(f'"{_bank_token(bank_name)}"', api_key), bank_name)
     headlines = matched[:MAX_HEADLINES]
     titles = [h["title"] for h in headlines]
@@ -298,12 +335,15 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
         t: [{"title": h, "url": url_by_title.get(h)} for h in classified.theme_headlines.get(t, [])]
         for t in THEMES
     }
-    return {
+    snapshot = {
         "headline_count": len(headlines),
         "themes": {t: len(theme_headlines[t]) for t in THEMES},
         "theme_headlines": theme_headlines,
         "notable_headlines": notable,
     }
+    cache[bank_name] = {"cached_on": today, "snapshot": snapshot}
+    _save_cache(cache)
+    return snapshot
 
 
 def build_dashboard(banks: list[tuple[str, str]], *, api_key: str | None = None) -> dict:

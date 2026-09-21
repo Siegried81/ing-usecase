@@ -34,6 +34,13 @@ class _FakeResponse:
         return self._payload
 
 
+@pytest.fixture(autouse=True)
+def _isolated_cache(monkeypatch, tmp_path):
+    """sieg 21/09: bank_snapshot() now reads/writes a same-day cache file - point every
+    test at a throwaway path so none of them touch the real data/processed/ cache."""
+    monkeypatch.setattr(reputation, "CACHE_PATH", tmp_path / "reputation_cache.json")
+
+
 def test_fetch_headlines_extracts_titles_and_urls():
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
         {"articles": [
@@ -169,6 +176,31 @@ def test_bank_snapshot_gives_a_null_url_when_the_model_did_not_copy_verbatim():
         )):
             snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
     assert snapshot["notable_headlines"] == [{"title": "ing launches a new app", "url": None}]
+
+
+def test_bank_snapshot_reuses_a_same_day_cached_result_without_refetching():
+    # sieg 21/09: newsapi.org's free tier is 100 req/24h - iterating on unrelated
+    # code within the same day must not re-spend it on banks already fetched.
+    fetch = patch("comparator.reputation.fetch_headlines",
+                  return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}])
+    classify = patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
+        theme_headlines={}, notable_headlines=["ING launches new app"],
+    ))
+    with fetch as fetch_mock, classify as classify_mock:
+        first = reputation.bank_snapshot("ING", api_key="fake-key")
+        second = reputation.bank_snapshot("ING", api_key="fake-key")
+    assert first == second
+    assert fetch_mock.call_count == 1
+    assert classify_mock.call_count == 1
+
+
+def test_bank_snapshot_does_not_cache_a_failed_fetch():
+    # A None (no headlines, or the fetch/classify failed - bank_snapshot cannot tell
+    # which) must never be cached: caching it would freeze a quota outage into a
+    # permanent "nothing found" for the rest of the day.
+    with patch("comparator.reputation.fetch_headlines", return_value=[]):
+        assert reputation.bank_snapshot("ING", api_key="fake-key") is None
+    assert reputation._load_cache() == {}
 
 
 def test_build_dashboard_is_unavailable_without_a_key(monkeypatch):
