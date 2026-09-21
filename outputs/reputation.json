@@ -17,14 +17,14 @@
       ]
     },
     "belfius": {
-      "headline_count": 26,
+      "headline_count": 27,
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 9,
         "financial_results": 0,
         "product_launch": 0,
         "esg_sustainability": 0,
-        "regulatory": 14,
+        "regulatory": 15,
         "other": 3
       },
       "notable_headlines": [
@@ -56,10 +56,10 @@
         "innovation_digital": 1,
         "crisis_or_scandal": 4,
         "financial_results": 1,
-        "product_launch": 2,
+        "product_launch": 3,
         "esg_sustainability": 0,
         "regulatory": 1,
-        "other": 3
+        "other": 2
       },
       "notable_headlines": [
         "Amsterdam-based bunq becomes first EU neobank to report quarterly profits: Know more - Silicon Canals",
@@ -85,32 +85,32 @@
     },
     "hellobank": null,
     "ing": {
-      "headline_count": 24,
+      "headline_count": 23,
       "themes": {
-        "innovation_digital": 4,
+        "innovation_digital": 3,
         "crisis_or_scandal": 1,
         "financial_results": 2,
         "product_launch": 2,
-        "esg_sustainability": 5,
-        "regulatory": 3,
-        "other": 7
+        "esg_sustainability": 1,
+        "regulatory": 4,
+        "other": 10
       },
       "notable_headlines": [
-        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'",
         "Milieudefensie mag van de rechter klimaatzaak tegen ING doorzetten",
-        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte"
+        "ING hielp drie oliebedrijven aan bijna een miljard dollar, ondanks klimaatbelofte",
+        "Brutaal en nietsontziend: met pesterijen probeerde bunq-topman Ali Niknam concurrent ING af te troeven. 'Fuck you very much'"
       ]
     },
     "kbc": {
       "headline_count": 26,
       "themes": {
-        "innovation_digital": 2,
-        "crisis_or_scandal": 1,
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
         "financial_results": 3,
-        "product_launch": 2,
+        "product_launch": 0,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 18
+        "other": 23
       },
       "notable_headlines": [
         "KBC Ancora closes financial year 2025/2026 with a profit of EUR 389.4 million",
@@ -138,13 +138,13 @@
     "revolut": {
       "headline_count": 30,
       "themes": {
-        "innovation_digital": 3,
+        "innovation_digital": 2,
         "crisis_or_scandal": 9,
         "financial_results": 0,
         "product_launch": 8,
         "esg_sustainability": 0,
         "regulatory": 7,
-        "other": 3
+        "other": 4
       },
       "notable_headlines": [
         "OCC Grants Revolut US Bank Charter; Four Key Services Need Separate Sign-Off",

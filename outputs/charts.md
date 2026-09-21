@@ -41,21 +41,21 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **What this run shows.** ING scores **0.13** — clearly with the traditional banks. Computed over 25 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.13 and the most traditional challenger at 0.86, a gap of 0.73. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.13 and the most traditional challenger at 0.89, a gap of 0.76. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| beobank | traditional | -0.11 |
 | argenta | traditional | -0.11 |
+| beobank | traditional | -0.09 |
 | belfius | traditional | -0.06 |
-| kbc | traditional | -0.02 |
-| vdk | traditional | 0.02 |
-| hellobank | traditional | 0.06 |
-| crelan | traditional | 0.08 |
+| vdk | traditional | -0.01 |
+| kbc | traditional | 0.00 |
+| hellobank | traditional | 0.05 |
+| crelan | traditional | 0.10 |
 | ing **(focus)** | traditional | 0.13 |
-| n26 | challenger | 0.86 |
-| revolut | challenger | 1.01 |
-| bunq | challenger | 1.13 |
+| n26 | challenger | 0.89 |
+| revolut | challenger | 0.98 |
+| bunq | challenger | 1.12 |
 
 **What it cannot tell you.** The axis is defined by the banks in this dataset. Add or remove a bank and the centroids move, so a score is a position *within this sample*, not an absolute coordinate. It also says nothing about which end is better.
 
@@ -71,18 +71,18 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.13 a
 
 **A gap is not a fault.** Being 2 SD from the peer mean might be a deliberate brand choice or a weakness. The chart finds where to look; deciding which is a judgement call that belongs in the business narrative.
 
-**What this run shows.** The largest gap is **persuasion lever count** at +1.7 SD (ing 3.50 against a peer mean of 2.20).
+**What this run shows.** The largest gap is **numeric claim count** at +1.6 SD (ing 25.50 against a peer mean of 12.10).
 
 | Feature | Dimension | ing | Peer mean | Gap (SD) |
 | --- | --- | --- | --- | --- |
-| persuasion_lever_count | marketing_principles | 3.50 | 2.20 | 1.74 |
 | numeric_claim_count | tone_messaging | 25.50 | 12.10 | 1.61 |
 | youth_student_targeting | banking_domain | 1.00 | 0.30 | 1.53 |
-| value_prop_clarity | topics_value_prop | 5.00 | 4.00 | 1.00 |
+| value_prop_clarity | topics_value_prop | 5.00 | 3.83 | 1.30 |
 | cta_count | layout_structure | 3.00 | 13.75 | -0.95 |
 | hero_image_area_ratio | visuals | 0.53 | 0.29 | 0.90 |
 | has_comparison_table | layout_structure | 0.00 | 0.40 | -0.82 |
 | hidden_conditions_behind_free_claim | banking_domain | 0.50 | 0.20 | 0.75 |
+| page_height_px | layout_structure | 9,465 | 6,610 | 0.72 |
 
 **What it cannot tell you.** With 10 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 
@@ -103,13 +103,13 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.13 a
 | Feature | Traditional | Challenger | Cohen's d |
 | --- | --- | --- | --- |
 | people_present | 1.00 | 0.33 | -2.71 |
-| rate_shown | 0.00 | 0.67 | 2.71 |
 | subscription_style_framing | 0.00 | 0.67 | 2.71 |
+| rate_shown | 0.00 | 0.67 | 2.71 |
 | total_image_area_ratio | 0.11 | 0.38 | 2.10 |
+| aida_attention | 0.00 | 0.67 | 2.00 |
+| mobile_first_design_signal | 0.00 | 0.67 | 2.00 |
 | above_fold_element_count | 34.90 | 20.50 | -1.77 |
-| aida_coverage_score | 2.80 | 3.67 | 1.75 |
 | page_height_px | 5,909 | 11,570 | 1.61 |
-| background_luminance | 0.86 | 0.52 | -1.60 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 

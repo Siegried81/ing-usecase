@@ -11,7 +11,6 @@
 ### Blocking — a question cannot be answered at all
 
 - **bnp_paribas_fortis** could not be captured: HTTP 503 - the server did not serve the page; error or maintenance page - matched 'currently doing maintenance'; only 87 words, below the 120-word plausibility floor. Source: https://www.bnpparibasfortis.be/fr/public/particuliers/emprunter/pret-immobilier/pret-hypothecaire. The row is excluded; the bank is effectively absent.
-- **5 of 13 rubric features are unscored** (['mobile_first_design_signal', 'aida_attention', 'aida_interest', 'aida_desire'] ...). Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion levers — is therefore absent from the comparison. Run the Day 5 scoring session (`scripts/rubric_sheet.py emit`).
 
 ### Material — findings survive, but weakened
 
@@ -20,6 +19,7 @@
 
 ### Standing — true regardless of how much we collect
 
+- Rubric features carry the opinion of the people who scored them. Inter-rater agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the data presentation (NFR-05).
 - Model-assisted features were all produced by `deepseek/deepseek-flash`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.
 - Every conclusion is valid for the capture window **2026-09-21 to 2026-09-21** and no later. Campaign pages change without notice (DR-05).
 - **No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available for ING, KBC and CBC as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers three of the nine banks, and the pages captured are today's pages rather than the pages live during any older spike.
@@ -31,7 +31,6 @@
 ## Next steps
 
 1. **Recover a usable capture for bnp_paribas_fortis.** It has no usable page, so it is absent from every comparison. See its capture_quality_note for what failed.
-2. **Score the 5 unscored rubric feature(s).** Vision-only features cannot be model-scored; they need a human with the screenshot.
-3. **Run the Day 5 scoring session.** Two independent human raters, then report agreement alongside the model's own sheet. Until then the judgement-based dimensions carry one model's opinion and nothing to check it against.
-4. **Make generation attributable.** Store the generated artefact and its prompt hash and evaluate that, rather than regenerating on every run.
-5. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.
+2. **Run the Day 5 scoring session.** Two independent human raters, then report agreement alongside the model's own sheet. Until then the judgement-based dimensions carry one model's opinion and nothing to check it against.
+3. **Make generation attributable.** Store the generated artefact and its prompt hash and evaluate that, rather than regenerating on every run.
+4. **Extend beyond the open web.** Social media and in-app banners, using the same feature framework — the extension the brief names, and the reason the framework is worth keeping.

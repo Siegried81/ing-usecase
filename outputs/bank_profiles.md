@@ -34,9 +34,9 @@
 | rate prominence | above_fold |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | 2 |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 1 |
+| persuasion levers | authority |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** numeric claim count well above the market average (+2.2 SD); animated asset count well below the market average (-1.6 SD); has animation well below the market average (-1.6 SD).
@@ -152,8 +152,8 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 4 |
-| persuasion levers | liking, social_proof, reciprocity |
-| lever count | 3 |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** background luminance well below the market average (-2.9 SD); urgency marker count well above the market average (+2.4 SD); people present well below the market average (-2.1 SD).
@@ -176,7 +176,7 @@
 | image area share | 0 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
-| text image layout | overlaid |
+| text image layout | beside |
 | page height px | 2,945 |
 | cta count | 42 |
 | cta above fold | no |
@@ -245,7 +245,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.02 |
 | accent colour count | 4 |
-| accent locations | buttons, icons, imagery |
+| accent locations | background, buttons, imagery, text |
 | background luminance | 0.9 |
 | image count | 30.5 |
 | dominant image type | photo |
@@ -269,8 +269,8 @@
 | benefit framing | mixed |
 | fab level | benefit |
 | aida coverage | 3 |
-| persuasion levers | reciprocity, scarcity, social_proof, authority |
-| lever count | 3.5 |
+| persuasion levers | reciprocity, scarcity |
+| lever count | 1.5 |
 | personas | mass_market 100%, student 50% |
 
 **Signature:** numeric claim count well above the market average (+1.4 SD); youth student targeting well above the market average (+1.3 SD); cta count well below the market average (-0.9 SD).
@@ -284,7 +284,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0 |
 | accent colour count | 4 |
-| accent locations | buttons, imagery, icons |
+| accent locations | buttons, icons, imagery |
 | background luminance | 0.88 |
 | image count | 8 |
 | dominant image type | photo |
@@ -307,9 +307,9 @@
 | rate prominence | above_fold |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | 3 |
-| persuasion levers | authority, liking |
-| lever count | 2 |
+| aida coverage | 2 |
+| persuasion levers | authority |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** is bundled offer well below the market average (-2.1 SD); images have alt text well above the market average (+1.6 SD); has comparison table well above the market average (+1.3 SD).
@@ -330,7 +330,7 @@
 | people present | no |
 | animated | yes (all pages) |
 | image area share | 0.59 |
-| archetype | split_columns |
+| archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
@@ -338,7 +338,7 @@
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
-| formality score | 4 |
+| formality score | 3 |
 | second person ratio | 0.78 |
 | urgency markers | 0 |
 | primary product | N26 Standard, le compte bancaire gratuit |
@@ -429,4 +429,4 @@
 | lever count | - |
 | personas | student 100%, mass_market 100% |
 
-**Signature:** cta above fold well above the market average (+2.1 SD); formality score well above the market average (+2.0 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** cta above fold well above the market average (+2.1 SD); formality score well above the market average (+2.1 SD); has comparison table well above the market average (+1.3 SD).

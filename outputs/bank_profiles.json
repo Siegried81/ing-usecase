@@ -69,9 +69,11 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 2.0,
-        "persuasion_levers": [],
-        "lever_count": null
+        "aida_coverage": 1.0,
+        "persuasion_levers": [
+          "authority"
+        ],
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -297,11 +299,9 @@
       "marketing_principles": {
         "aida_coverage": 4.0,
         "persuasion_levers": [
-          "liking",
-          "social_proof",
-          "reciprocity"
+          "liking"
         ],
-        "lever_count": 3.0
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -356,7 +356,7 @@
       "layout": {
         "archetype": "hero_stacked",
         "hero_image": 1.0,
-        "text_image_layout": "overlaid",
+        "text_image_layout": "beside",
         "page_height_px": 2945.0,
         "cta_count": 42.0,
         "cta_above_fold": 0.0
@@ -492,9 +492,10 @@
         "brand_colour_share": 0.0155,
         "accent_colour_count": 4.0,
         "accent_locations": [
+          "background",
           "buttons",
-          "icons",
-          "imagery"
+          "imagery",
+          "text"
         ],
         "background_luminance": 0.8985000000000001
       },
@@ -531,11 +532,9 @@
         "aida_coverage": 3.0,
         "persuasion_levers": [
           "reciprocity",
-          "scarcity",
-          "social_proof",
-          "authority"
+          "scarcity"
         ],
-        "lever_count": 3.5
+        "lever_count": 1.5
       },
       "personas": [
         {
@@ -579,8 +578,8 @@
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
-          "imagery",
-          "icons"
+          "icons",
+          "imagery"
         ],
         "background_luminance": 0.878
       },
@@ -614,12 +613,11 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 3.0,
+        "aida_coverage": 2.0,
         "persuasion_levers": [
-          "authority",
-          "liking"
+          "authority"
         ],
-        "lever_count": 2.0
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -671,7 +669,7 @@
         "image_area_share": 0.587
       },
       "layout": {
-        "archetype": "split_columns",
+        "archetype": "hero_stacked",
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 8005.0,
@@ -681,7 +679,7 @@
       "tone": {
         "word_count": 2019.0,
         "readability_band": "hard",
-        "formality_score": 4.0,
+        "formality_score": 3.0,
         "second_person_ratio": 0.78,
         "urgency_markers": 0.0
       },
@@ -877,7 +875,7 @@
         ],
         [
           "formality_score",
-          1.9513309067639726
+          2.084219669613948
         ],
         [
           "has_comparison_table",
