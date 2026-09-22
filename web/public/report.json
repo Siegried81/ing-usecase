@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T13:39:18+00:00",
+  "generated_at": "2026-09-22T07:38:22+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -312,8 +312,8 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -321,8 +321,8 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -560,7 +560,7 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -638,7 +638,7 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -1366,12 +1366,12 @@
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Targets expats",
           "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Subscription style framing",
+          "label": "Shows a rate",
           "sd": 2.4,
           "direction": "above"
         }
@@ -2435,19 +2435,39 @@
         ]
       },
       "belfius": {
-        "headline_count": 28,
+        "headline_count": 30,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 9,
-          "financial_results": 2,
+          "crisis_or_scandal": 8,
+          "financial_results": 3,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 14,
-          "other": 3
+          "regulatory": 13,
+          "other": 6
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [
+            {
+              "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent",
+              "url": null
+            },
+            {
+              "title": "Belfius, la mauvaise affaire",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/belfius-la-mauvaise-affaire-26YV7QNA7NERPCCYEMYOCHQO6Y/"
+            },
+            {
+              "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
+              "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
+            },
+            {
+              "title": "Belfius, première banque condamnée au pénal? Une cliente victime de phishing la poursuit",
+              "url": "https://www.dhnet.be/actu/belgique/2026/09/05/belfius-premiere-banque-condamnee-au-penal-une-cliente-victime-de-phishing-la-poursuit-2UEWGXE7TBG3TCJCH5FDPNV6DU/"
+            },
+            {
+              "title": "Une grande première qui en annonce d'autres? Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/05/une-grande-premiere-qui-en-annonce-dautres-belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing-V6VQATNRMBETTGOOBG32RWGYEI/"
+            },
             {
               "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent - RTBF Actus",
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
@@ -2459,30 +2479,6 @@
             {
               "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
               "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
-            },
-            {
-              "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
-              "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
-            },
-            {
-              "title": "Is de vervolging van Belfius goed nieuws voor phishingslachtoffers?",
-              "url": "https://www.demorgen.be/nieuws/is-de-vervolging-van-belfius-goed-nieuws-voor-phishingslachtoffers~b80ea5ff/"
-            },
-            {
-              "title": "Belfius voor strafrechter voor niet terugbetalen phishingslachtoffer",
-              "url": "https://www.demorgen.be/snelnieuws/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachtoffer~b154d9a8/"
-            },
-            {
-              "title": "Belfius voor strafrechter omdat het phishingslachtoffer niet terugbetaalde | VRT NWS Nieuws",
-              "url": "https://www.vrt.be/vrtnws/nl/2026/09/05/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachto/"
-            },
-            {
-              "title": "Belfius voor de strafrechter wegens niet terugbetalen aan slachtoffer van phishing",
-              "url": "https://www.standaard.be/economie/belfius-voor-de-strafrechter-wegens-niet-terugbetalen-aan-slachtoffer-van-phishing/35145140.html"
-            },
-            {
-              "title": "Arco-coöperanten dagvaarden kandidaat-investeerders in Belfius",
-              "url": "https://www.tijd.be/ondernemen/banken/arco-cooperanten-dagvaarden-kandidaat-investeerders-in-belfius/10684481.html"
             }
           ],
           "financial_results": [
@@ -2491,13 +2487,49 @@
               "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
             },
             {
-              "title": "Belfius past dividend- en kapitaalstrategie aan met oog op gedeeltelijke privatisering",
-              "url": "https://businessam.be/belfius-past-dividend-en-kapitaalstrategie-aan-met-oog-op-gedeeltelijke-privatisering/"
+              "title": "Belfius devrait verser 955 millions d'euros à l'Etat belge cette année",
+              "url": "https://www.lesoir.be/772223/article/2026-09-21/belfius-devrait-verser-955-millions-deuros-letat-belge-cette-annee"
+            },
+            {
+              "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
             }
           ],
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [
+            {
+              "title": "Nouveauté chez Belfius : l’entreprise veut ouvrir son capital",
+              "url": null
+            },
+            {
+              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
+              "url": "https://www.rtbf.be/article/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias-11783846"
+            },
+            {
+              "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
+              "url": null
+            },
+            {
+              "title": "Toujours entouré d’un épais brouillard, le dossier Belfius revient sur la table du gouvernement ce vendredi",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/10/toujours-entoure-dun-epais-brouillard-le-dossier-belfius-revient-sur-la-table-du-gouvernement-ce-vendredi-2IIR62WOFJCFFCMBIG4IPP5JCU/"
+            },
+            {
+              "title": "Belfius: la Wallonie ne s'opposera pas à une opération sur les participations fédérales dans Ethias",
+              "url": "https://www.lavenir.net/actu/belgique/politique/2026/09/10/belfius-la-wallonie-ne-sopposera-pas-a-une-operation-sur-les-participations-federales-dans-ethias-H2XBKCIE7ZBPVF5ZZB22M522KU/"
+            },
+            {
+              "title": "Elio Di Rupo : la privatisation partielle de Belfius est “une aventure réactionnaire”",
+              "url": null
+            },
+            {
+              "title": "Privatisation partielle de Belfius, étudiants coincés à Gaza, survol de Bruxelles... : voici le programme de la rentrée du gouvernement fédéral",
+              "url": "https://www.lalibre.be/belgique/politique-belge/2026/09/07/privatisation-partielle-de-belfius-etudiants-coinces-a-gaza-survol-de-bruxelles-voici-le-programme-de-la-rentree-du-gouvernement-federal-ADAB42HGTRFKJEV2OD6RADOZTA/"
+            },
+            {
+              "title": "La vente partielle de Belfius se prépare… difficilement",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/08/28/la-vente-partielle-de-belfius-se-prepare-difficilement-UKQVSCQ7HVCSPHDKKJS633EHGE/"
+            },
             {
               "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
               "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
@@ -2517,45 +2549,21 @@
             {
               "title": "Privatisation de Belfius, étudiants gazaouis... plusieurs dossiers sur la table du kern ce vendredi",
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
-            },
-            {
-              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
-            },
-            {
-              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
-              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
-            },
-            {
-              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
-              "url": "https://www.7sur7.be/economie/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias~af19d35b/"
-            },
-            {
-              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias - RTBF Actus",
-              "url": "https://www.rtbf.be/article/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias-11783846"
-            },
-            {
-              "title": "Le gouvernement belge se voit d'emblée confronté à plusieurs dossiers épineux, notamment ceux concernant Gaza et Belfius",
-              "url": "https://fr.businessam.be/le-gouvernement-belge-se-voit-demblee-confronte-a-plusieurs-dossiers-epineux-notamment-ceux-concernant-gaza-et-belfius/"
-            },
-            {
-              "title": "Verkoop Belfius verloopt ondermaats, partijen bieden met handrem op",
-              "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
-            },
-            {
-              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
-              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
-            },
-            {
-              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
-              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
-            },
-            {
-              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
-              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
             }
           ],
           "other": [
+            {
+              "title": "Voici la stratégie de Belfius pour attirer de nouveaux investisseurs",
+              "url": "https://www.dhnet.be/conso/argent/2026/09/21/voici-la-strategie-de-belfius-pour-attirer-de-nouveaux-investisseurs-7LOXJTDHFZECZGD3NSWFTBYHSU/"
+            },
+            {
+              "title": "La Commune d’Ouffet veut créer deux lieux d’accueil de la petite enfance : l’un, déjà connu, dans l’ancienne banque Belfius ; l’autre à Ellemelle",
+              "url": "https://www.lavenir.net/regions/huy-waremme/ouffet/2026/09/15/la-commune-douffet-veut-creer-deux-lieux-daccueil-de-la-petite-enfance-lun-deja-connu-dans-lancienne-banque-belfius-lautre-a-ellemelle-C26XOBP3YNFRFNOBEQIVJHWBKI/"
+            },
+            {
+              "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu “une expérience unique” dans les tribunes",
+              "url": null
+            },
             {
               "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
               "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
@@ -2572,24 +2580,24 @@
         },
         "notable_headlines": [
           {
-            "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
-            "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
+            "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
+            "url": null
           },
           {
-            "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-            "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+            "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
+            "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
           },
           {
             "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
             "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
-            "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
-            "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
+            "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
+            "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
           },
           {
-            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
+            "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
           }
         ]
       },
@@ -2646,15 +2654,15 @@
         ]
       },
       "bnp_paribas_fortis": {
-        "headline_count": 3,
+        "headline_count": 8,
         "themes": {
           "innovation_digital": 1,
-          "crisis_or_scandal": 0,
-          "financial_results": 0,
+          "crisis_or_scandal": 1,
+          "financial_results": 1,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 1,
-          "other": 1
+          "other": 4
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -2663,8 +2671,18 @@
               "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
             }
           ],
-          "crisis_or_scandal": [],
-          "financial_results": [],
+          "crisis_or_scandal": [
+            {
+              "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
+              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
+            }
+          ],
+          "financial_results": [
+            {
+              "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
+            }
+          ],
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [
@@ -2675,6 +2693,18 @@
           ],
           "other": [
             {
+              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
+              "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
+            },
+            {
+              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
+              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
+            },
+            {
+              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
+              "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
+            },
+            {
               "title": "BNP Paribas Fortis verhoogt spaarrente",
               "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
             }
@@ -2682,16 +2712,20 @@
         },
         "notable_headlines": [
           {
-            "title": "BNP Paribas Fortis verhoogt spaarrente",
-            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+            "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
+            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
+          },
+          {
+            "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
+            "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
           },
           {
             "title": "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten",
             "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
           },
           {
-            "title": "Umicore - Transparantieverklaring van BNP Paribas Asset Management Holding en BNP Paribas Cardif | Analist.be",
-            "url": "https://www.analist.be/corporatenieuws/1487998-umicore-transparantieverklaring-van-bnp-paribas-asset-management-holding-en-bnp-paribas-cardif"
+            "title": "BNP Paribas Fortis verhoogt spaarrente",
+            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
           }
         ]
       },
@@ -2770,12 +2804,12 @@
         },
         "notable_headlines": [
           {
-            "title": "ING op de favorietenlijst van JPMorgan",
-            "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
-          },
-          {
             "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
             "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
+          },
+          {
+            "title": "ING op de favorietenlijst van JPMorgan",
+            "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
           }
         ]
       },
@@ -2831,28 +2865,35 @@
       "keytrade": null,
       "n26": null,
       "revolut": {
-        "headline_count": 3,
+        "headline_count": 8,
         "themes": {
-          "innovation_digital": 2,
-          "crisis_or_scandal": 1,
+          "innovation_digital": 0,
+          "crisis_or_scandal": 5,
           "financial_results": 0,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 0
+          "other": 3
         },
         "theme_headlines": {
-          "innovation_digital": [
+          "innovation_digital": [],
+          "crisis_or_scandal": [
             {
-              "title": "Ouvrir un compte chez Revolut est il interéssant pour vous?",
-              "url": "https://www.test-achats.be/argent/comptes-a-vue/news/revolut-est-il-interessant-pour-vous"
+              "title": "Les données de 680 clients de la banque en ligne Revolut divulguées, dont 10 en Belgique",
+              "url": "https://www.rtbf.be/article/les-donnees-de-680-clients-de-la-banque-en-ligne-revolut-divulguees-dont-10-en-belgique-11784476"
             },
             {
-              "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
-              "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
-            }
-          ],
-          "crisis_or_scandal": [
+              "title": "Revolut victime d'une fuite de données : certains clients belges sont concernés",
+              "url": "https://www.dhnet.be/actu/belgique/2026/09/13/revolut-victime-dune-fuite-de-donnees-certains-clients-belges-sont-concernes-342DOBZSQ5GYZE47ARNWSWZ3AE/"
+            },
+            {
+              "title": "Attention si vous avez un compte chez Revolut : les données de clients belges de la banque ont fuité",
+              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/13/attention-si-vous-avez-un-compte-chez-revolut-les-donnees-de-clients-belges-de-la-banque-ont-fuite-7TDA5767IRABHGJSOLIGRVFV3Y/"
+            },
+            {
+              "title": "Les données de clients belges de la banque Revolut ont fuité : voici comment le fraudeur a procédé pour duper la banque",
+              "url": null
+            },
             {
               "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
               "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
@@ -2862,16 +2903,76 @@
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [],
+          "other": [
+            {
+              "title": "Le CEO de BNPP Fortis reste confiant malgré un contexte difficile, et répond à la concurrence: \"Nous avons des atouts que Revolut n’a pas\"",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/le-ceo-de-bnpp-fortis-reste-confiant-malgre-un-contexte-difficile-et-repond-a-la-concurrence-nous-avons-des-atouts-que-revolut-na-pas-C7FVDVKWANFPPO4IHA62DJT6YM/"
+            },
+            {
+              "title": "Ouvrir un compte chez Revolut est il interéssant pour vous?",
+              "url": "https://www.test-achats.be/argent/comptes-a-vue/news/revolut-est-il-interessant-pour-vous"
+            },
+            {
+              "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
+              "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
+            }
+          ]
+        },
+        "notable_headlines": [
+          {
+            "title": "Les données de 680 clients de la banque en ligne Revolut divulguées, dont 10 en Belgique",
+            "url": "https://www.rtbf.be/article/les-donnees-de-680-clients-de-la-banque-en-ligne-revolut-divulguees-dont-10-en-belgique-11784476"
+          },
+          {
+            "title": "Les données de clients belges de la banque Revolut ont fuité : voici comment le fraudeur a procédé pour duper la banque",
+            "url": null
+          },
+          {
+            "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
+            "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
+          },
+          {
+            "title": "Revolut victime d'une fuite de données : certains clients belges sont concernés",
+            "url": "https://www.dhnet.be/actu/belgique/2026/09/13/revolut-victime-dune-fuite-de-donnees-certains-clients-belges-sont-concernes-342DOBZSQ5GYZE47ARNWSWZ3AE/"
+          },
+          {
+            "title": "Attention si vous avez un compte chez Revolut : les données de clients belges de la banque ont fuité",
+            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/13/attention-si-vous-avez-un-compte-chez-revolut-les-donnees-de-clients-belges-de-la-banque-ont-fuite-7TDA5767IRABHGJSOLIGRVFV3Y/"
+          }
+        ]
+      },
+      "vdk": {
+        "headline_count": 1,
+        "themes": {
+          "innovation_digital": 0,
+          "crisis_or_scandal": 0,
+          "financial_results": 1,
+          "product_launch": 0,
+          "esg_sustainability": 0,
+          "regulatory": 0,
+          "other": 0
+        },
+        "theme_headlines": {
+          "innovation_digital": [],
+          "crisis_or_scandal": [],
+          "financial_results": [
+            {
+              "title": "Tout en lettres d’or chez VDK",
+              "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
+            }
+          ],
+          "product_launch": [],
+          "esg_sustainability": [],
+          "regulatory": [],
           "other": []
         },
         "notable_headlines": [
           {
-            "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
-            "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
+            "title": "Tout en lettres d’or chez VDK",
+            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
           }
         ]
-      },
-      "vdk": null
+      }
     }
   },
   "geoTrends": {

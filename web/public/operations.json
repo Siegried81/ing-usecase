@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-21T13:39:18+00:00",
+  "generated_at": "2026-09-22T07:38:22+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -14158,16 +14158,16 @@
         "basis": "exact match"
       },
       {
-        "feature": "layout_archetype",
-        "pages": 11,
-        "agreement": 0.64,
-        "basis": "exact match"
-      },
-      {
         "feature": "value_prop_clarity",
         "pages": 11,
         "agreement": 0.64,
         "basis": "within 1 point"
+      },
+      {
+        "feature": "layout_archetype",
+        "pages": 11,
+        "agreement": 0.64,
+        "basis": "exact match"
       },
       {
         "feature": "mobile_first_design_signal",
@@ -14220,15 +14220,9 @@
         "kappa": -0.102
       },
       {
-        "feature": "aida_interest",
+        "feature": "aida_action",
         "raters": "siegried vs stephane",
         "pages": 9,
-        "kappa": 0.0
-      },
-      {
-        "feature": "aida_interest",
-        "raters": "dan vs stephane",
-        "pages": 8,
         "kappa": 0.0
       },
       {
@@ -14238,9 +14232,15 @@
         "kappa": 0.0
       },
       {
-        "feature": "aida_action",
+        "feature": "aida_interest",
         "raters": "siegried vs stephane",
         "pages": 9,
+        "kappa": 0.0
+      },
+      {
+        "feature": "aida_interest",
+        "raters": "dan vs stephane",
+        "pages": 8,
         "kappa": 0.0
       },
       {
@@ -14286,13 +14286,13 @@
         "kappa": 0.125
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "clarity_score",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
       },
       {
-        "feature": "clarity_score",
+        "feature": "mobile_first_design_signal",
         "raters": "siegried vs stephane",
         "pages": 9,
         "kappa": 0.182
@@ -14334,7 +14334,7 @@
         "kappa": 0.308
       },
       {
-        "feature": "mobile_first_design_signal",
+        "feature": "aida_desire",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333
@@ -14346,7 +14346,7 @@
         "kappa": 0.333
       },
       {
-        "feature": "aida_desire",
+        "feature": "mobile_first_design_signal",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333

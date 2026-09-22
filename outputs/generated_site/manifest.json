@@ -1,22 +1,20 @@
 {
   "language": "en",
   "locale": "en-BE",
-  "generated_at": "2026-09-21T13:13:54+00:00",
+  "generated_at": "2026-09-22T07:38:22+00:00",
   "model": "deepseek/deepseek-flash",
   "explained": true,
   "pages": [
     {
       "slug": "index",
       "nav": "Home",
-      "title": "Savings with ING | See the rate, keep your money reachable",
+      "title": "Savings accounts | ING Belgium",
       "file": "index.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R2",
-        "R4",
-        "R8",
-        "R11"
+        "R3",
+        "R6"
       ]
     },
     {
@@ -26,27 +24,23 @@
       "file": "comptes-epargne.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7",
-        "R13"
+        "R2"
       ]
     },
     {
       "slug": "compte-a-terme",
       "nav": "Term account",
-      "title": "Term account: a fixed rate for a term you choose | ING Belgium",
+      "title": "Term account: a fixed rate for a fixed term | ING Belgium",
       "file": "compte-a-terme.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7",
-        "R13"
+        "R2"
       ]
     },
     {
       "slug": "compte-courant",
       "nav": "Current account",
-      "title": "Current account with card, app and clear fees | ING Belgium",
+      "title": "Current account: packs, card and fees | ING Belgium",
       "file": "compte-courant.html",
       "used_fallback": false,
       "recommendations_implemented": [
@@ -61,17 +55,17 @@
         "R10",
         "R11",
         "R12",
-        "R14"
+        "R13"
       ]
     },
     {
       "slug": "jeunes",
       "nav": "Youth",
-      "title": "An account for your child | ING Belgium",
+      "title": "Youth account for children and students | ING Belgium",
       "file": "jeunes.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R6"
+        "R5"
       ]
     },
     {
@@ -81,8 +75,8 @@
       "file": "investir.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7"
+        "R2",
+        "R6"
       ]
     },
     {
@@ -92,23 +86,22 @@
       "file": "credit-hypothecaire.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R4",
-        "R7"
+        "R2",
+        "R6"
       ]
     },
     {
       "slug": "ouvrir-compte",
       "nav": "Open an account",
-      "title": "Open an account online | ING Belgium",
+      "title": "Open an account | ING Belgium",
       "file": "ouvrir-compte.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R2",
-        "R5",
-        "R9",
-        "R10",
-        "R14"
+        "R4",
+        "R7",
+        "R8",
+        "R12"
       ]
     },
     {
@@ -118,91 +111,88 @@
       "file": "pourquoi-ing.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R8",
-        "R12"
+        "R9",
+        "R10",
+        "R13"
       ]
     },
     {
       "slug": "contact",
       "nav": "Contact",
-      "title": "Contact ING Belgium | Ask your question",
+      "title": "Contact ING | Ask your question and reach a person",
       "file": "contact.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R1",
-        "R3"
+        "R7",
+        "R11",
+        "R12"
       ]
     }
   ],
   "recommendations": [
     {
       "id": "R1",
-      "title": "Add repeated calls to action across the current-account pages",
+      "title": "Restore calls to action on the current-account pages",
       "priority": "high"
     },
     {
       "id": "R2",
-      "title": "Add a comparison table to the current-account pack pages",
-      "priority": "high"
+      "title": "Audit the volume of figures quoted",
+      "priority": "medium"
     },
     {
       "id": "R3",
-      "title": "Reduce the density of figures and attach disclosure to each one",
-      "priority": "high"
+      "title": "Shorten the page and give it a clearer spine",
+      "priority": "medium"
     },
     {
       "id": "R4",
-      "title": "Shorten the longest pages and fold detail into expandable blocks",
+      "title": "Add a comparison table to the pack pages",
       "priority": "medium"
     },
     {
       "id": "R5",
-      "title": "Make the fast sign-up promise specific",
+      "title": "Give students and young people a dedicated entry point",
       "priority": "medium"
     },
     {
       "id": "R6",
-      "title": "Give the student and young-audience message its own path",
+      "title": "Complete the AIDA sequence instead of the desire stage alone",
       "priority": "medium"
     },
     {
       "id": "R7",
-      "title": "Reuse the strongest offer framing on the pages that lack it",
-      "priority": "medium"
-    },
-    {
-      "id": "R8",
-      "title": "Test lower-brightness backgrounds with stronger contrast",
+      "title": "Extend the mobile-first treatment across the whole journey",
       "priority": "low"
     },
     {
+      "id": "R8",
+      "title": "Have the pack message ready before the next annual search window",
+      "priority": "high"
+    },
+    {
       "id": "R9",
-      "title": "Have the opening-account pages comparison-ready before the late-summer window",
+      "title": "Study Crelan as the momentum benchmark",
       "priority": "medium"
     },
     {
       "id": "R10",
-      "title": "Sequence switching and account-transfer content around peer migration periods",
-      "priority": "medium"
-    },
-    {
-      "id": "R11",
-      "title": "Keep a standing short neobank comparison block ready for recurring spikes",
+      "title": "Keep challenger conventions off the main pack page",
       "priority": "low"
     },
     {
+      "id": "R11",
+      "title": "Answer the transfer-limit question on the page",
+      "priority": "medium"
+    },
+    {
       "id": "R12",
-      "title": "Keep ING's leadership claims specific rather than broad",
+      "title": "Separate urgency language from security and access messaging",
       "priority": "medium"
     },
     {
       "id": "R13",
-      "title": "Keep urgency framing away from sustainability and rate-disclosure blocks",
-      "priority": "medium"
-    },
-    {
-      "id": "R14",
-      "title": "State price and conditions in the same block as the headline offer",
+      "title": "Do not lean on unsupported innovation framing",
       "priority": "low"
     }
   ],
