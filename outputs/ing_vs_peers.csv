@@ -1,45 +1,45 @@
 feature,dimension,extraction,ing_value,peer_mean,peer_std,peer_n,gap_sd,reportable,note,percentile,direction
 numeric_claim_count,tone_messaging,automatic,25.5,12.153846153846153,8.25410064845304,13,1.6169119343916827,True,,92.3076923076923,above peers
+mobile_first_design_signal,layout_structure,rubric,1.0,0.375,0.4841229182759271,8,1.2909944487358056,True,,62.5,above peers
 youth_student_targeting,banking_domain,model_assisted,1.0,0.38461538461538464,0.48650425541051995,13,1.2649110640673518,True,,61.53846153846154,above peers
+aida_desire,marketing_principles,rubric,1.0,0.42857142857142855,0.49487165930539345,7,1.1547005383792517,True,,57.14285714285714,above peers
+aida_coverage_score,marketing_principles,derived,3.5,2.7142857142857144,0.6998542122237652,7,1.1226827987756232,True,,85.71428571428571,above peers
 cta_count,layout_structure,automatic,2.0,13.384615384615385,10.724081180211352,13,-1.0615935475780327,True,,0.0,below peers
-value_prop_clarity,topics_value_prop,rubric,4.0,3.5,0.5,6,1.0,True,,50.0,above peers
-mobile_first_design_signal,layout_structure,rubric,1.0,0.5,0.5,6,1.0,True,,50.0,above peers
 fast_digital_onboarding_claim,banking_domain,model_assisted,0.5,0.15384615384615385,0.36080121229410994,13,0.959403223600247,True,,84.61538461538461,above peers
 page_height_px,layout_structure,automatic,9465.0,6414.115384615385,3337.441570527699,13,0.914138734989816,True,,84.61538461538461,above peers
-aida_attention,marketing_principles,rubric,0.5,0.16666666666666666,0.372677996249965,6,0.8944271909999159,True,,83.33333333333334,above peers
-aida_coverage_score,marketing_principles,derived,3.5,3.0,0.5773502691896257,6,0.8660254037844387,True,,83.33333333333334,above peers
 has_comparison_table,layout_structure,automatic,0.0,0.38461538461538464,0.48650425541051995,13,-0.7905694150420948,True,,0.0,below peers
 background_luminance,colours_design,automatic,0.8975,0.7241538461538461,0.23664151601228328,13,0.7325263832283596,True,,100.0,above peers
 hero_image_area_ratio,visuals,automatic,0.533,0.31392307692307697,0.3062014072063483,13,0.7154667415662388,True,,84.61538461538461,above peers
 image_count,visuals,automatic,30.5,19.0,16.38479595422349,13,0.7018701991852182,True,,92.3076923076923,above peers
 is_bundled_offer,banking_domain,model_assisted,1.0,0.6923076923076923,0.46153846153846156,13,0.6666666666666666,True,,30.76923076923077,above peers
 hidden_conditions_behind_free_claim,banking_domain,model_assisted,0.5,0.23076923076923078,0.42132504423474315,13,0.6390096504226938,True,,76.92307692307693,above peers
+aida_attention,marketing_principles,rubric,0.5,0.25,0.4330127018922193,8,0.5773502691896258,True,,75.0,above peers
 disclaimer_present,topics_value_prop,automatic,1.0,0.7692307692307693,0.42132504423474315,13,0.5477225575051661,True,,23.076923076923077,above peers
 images_have_alt_text,banking_domain,automatic,0.0,0.23076923076923078,0.4213250442347432,13,-0.5477225575051661,True,,0.0,below peers
-aida_desire,marketing_principles,rubric,1.0,0.8333333333333334,0.372677996249965,6,0.44721359549995776,True,,16.666666666666664,above peers
 rate_shown,topics_value_prop,automatic,0.0,0.15384615384615385,0.36080121229410994,13,-0.42640143271122094,True,,0.0,below peers
 subscription_style_framing,banking_domain,model_assisted,0.0,0.15384615384615385,0.36080121229410994,13,-0.42640143271122094,True,,0.0,below peers
 mentions_loyalty_or_referral,banking_domain,automatic,0.0,0.15384615384615385,0.36080121229410994,13,-0.42640143271122094,True,,0.0,below peers
 expat_cross_border_targeting,banking_domain,model_assisted,0.0,0.15384615384615385,0.36080121229410994,13,-0.42640143271122094,True,,0.0,below peers
 cta_above_fold,layout_structure,automatic,0.0,0.15384615384615385,0.36080121229411,13,-0.42640143271122083,True,,0.0,below peers
+clarity_score,tone_messaging,rubric,4.0,4.25,0.6614378277661477,8,-0.3779644730092272,True,,12.5,below peers
+value_prop_clarity,topics_value_prop,rubric,4.0,3.75,0.6614378277661477,8,0.3779644730092272,True,,37.5,above peers
 above_fold_element_count,layout_structure,automatic,29.0,32.57692307692308,9.844651327665881,13,-0.36333669501032,True,,38.46153846153847,below peers
 cta_contrast_ratio,colours_design,automatic,7.01,8.947692307692309,5.437717498880677,13,-0.3563429523676381,True,,38.46153846153847,below peers
 institutional_trust_signal_present,banking_domain,model_assisted,0.0,0.07692307692307693,0.26646935501059654,13,-0.28867513459481287,True,,0.0,below peers
 first_time_investor_targeting,banking_domain,model_assisted,0.0,0.07692307692307693,0.26646935501059654,13,-0.28867513459481287,True,,0.0,below peers
 people_present,visuals,model_assisted,1.0,0.9230769230769231,0.26646935501059654,13,0.28867513459481264,True,,7.6923076923076925,above peers
-clarity_score,tone_messaging,rubric,4.0,4.166666666666667,0.6871842709362768,6,-0.2425356250363334,True,,16.666666666666664,below peers
-formality_score,tone_messaging,rubric,3.0,3.230769230769231,0.9730085108210398,13,-0.23717082451262853,True,,30.76923076923077,below peers
 animated_asset_count,visuals,automatic,0.5,0.6153846153846154,0.48650425541051995,13,-0.2371708245126285,True,,38.46153846153847,below peers
 has_animation,visuals,derived,0.5,0.6153846153846154,0.48650425541051995,13,-0.2371708245126285,True,,38.46153846153847,below peers
 persuasion_lever_count,marketing_principles,derived,1.5,1.3333333333333333,0.7453559924999299,6,0.22360679774997907,True,,83.33333333333334,above peers
 total_image_area_ratio,visuals,automatic,0.133,0.16676923076923078,0.15280513173327545,13,-0.2209953971190946,True,,53.84615384615385,below peers
+formality_score,tone_messaging,rubric,3.0,3.1538461538461537,0.8634593969478327,13,-0.17817416127494945,True,,30.76923076923077,below peers
 urgency_marker_count,tone_messaging,automatic,0.5,0.6538461538461539,0.9069097017347382,13,-0.16963778593599418,True,,53.84615384615385,below peers
 brand_colour_share,colours_design,automatic,0.011,0.008384615384615386,0.015494606811296838,13,0.16879322252164433,True,,76.92307692307693,above peers
 question_count,tone_messaging,automatic,17.0,16.23076923076923,12.765059559678138,13,0.06026064865851403,True,,61.53846153846154,above peers
 hero_image_present,visuals,automatic,1.0,1.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 accent_colour_count,colours_design,automatic,4.0,4.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-aida_interest,marketing_principles,rubric,1.0,1.0,0.0,6,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
-aida_action,marketing_principles,rubric,1.0,1.0,0.0,6,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+aida_interest,marketing_principles,rubric,1.0,1.0,0.0,8,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+aida_action,marketing_principles,rubric,1.0,1.0,0.0,8,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 green_product_specific_benefit,banking_domain,model_assisted,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 secondary_bank_positioning,banking_domain,model_assisted,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 branch_network_cited_as_benefit,banking_domain,model_assisted,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers

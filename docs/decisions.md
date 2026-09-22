@@ -519,6 +519,24 @@ added this week have no judged layer at all — not the absence of a second rate
 
 ---
 
+**sieg 21/09, scope restored from one product family back to all seven — this
+should have had an entry the day it happened, and didn't.** `data/processed/campaigns.csv`
+had silently narrowed to `current_account_pack` only (19 rows) sometime after the
+current_account_pack expansion work this week — `run_collection.py` overwrites its
+output from whatever `collection_targets.yaml` lists at that moment, it does not merge
+with a prior run, and the config file had been trimmed down to current_account_pack
+targets while adding vdk/hellobank/beobank/cbc/keytrade. Nothing in this log recorded
+the families (savings_account, mortgage, pension, investment, term_account, other)
+dropping out, even though every other scope change here has a dated entry. Stephane's
+"campaigns.csv now covers every bank and every product family it promotes" re-collection
+restored it: 50 rows, 14 banks, 7 product families (current_account_pack 16, investment 9,
+savings_account 9, pension 7, mortgage 5, term_account 3, other 1). This matches D01's
+already-recorded decision ("the team wants a complete analysis... not one family narrowed
+for like-for-like comparison") - the earlier narrowing was an accidental side effect of a
+config-file overwrite, not a scope decision anyone made.
+
+---
+
 **dan 21/09, the anomaly feature is removed from the Trends tab.** Z-score +
 seasonal-ratio spike detection (`isolated_spike` / `sustained_trend`) was a
 legacy of the earlier, product-level pipeline, where the question was "is
@@ -536,3 +554,7 @@ rank stability. `KNOWN_EVENTS` is kept: it annotates a series without claiming
 anything about it. `trends-benchmark/campaigns/` was built entirely on the
 removed table and is left orphaned on disk, not deleted — see section 12 of
 `trends-benchmark/docs/pipeline_google_trends.md`.
+
+<!-- sieg 22/09: merge conflict resolution for PR #56 - both entries kept, sieg's
+     scope-restoration note first (dated context for D01), dan's anomaly-removal
+     note second. No content dropped from either side. -->

@@ -454,6 +454,8 @@ export interface ReputationHeadline {
 export interface BankReputation {
   headline_count: number;
   themes: Record<string, number>;
+  /** sieg 21/09: every headline behind a theme's count, for the hover popup. */
+  theme_headlines: Record<string, ReputationHeadline[]>;
   notable_headlines: ReputationHeadline[];
 }
 

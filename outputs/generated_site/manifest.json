@@ -1,27 +1,22 @@
 {
   "language": "en",
   "locale": "en-BE",
-  "generated_at": "2026-09-21T10:01:45+00:00",
+  "generated_at": "2026-09-21T13:13:54+00:00",
   "model": "deepseek/deepseek-flash",
   "explained": true,
   "pages": [
     {
       "slug": "index",
       "nav": "Home",
-      "title": "Savings with ING Belgium | ING",
+      "title": "Savings with ING | See the rate, keep your money reachable",
       "file": "index.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
         "R2",
-        "R3",
         "R4",
-        "R6",
-        "R7",
         "R8",
-        "R10",
-        "R11",
-        "R12"
+        "R11"
       ]
     },
     {
@@ -31,25 +26,27 @@
       "file": "comptes-epargne.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R9",
-        "R12"
+        "R3",
+        "R7",
+        "R13"
       ]
     },
     {
       "slug": "compte-a-terme",
       "nav": "Term account",
-      "title": "Term account: a fixed rate for a fixed term | ING Belgium",
+      "title": "Term account: a fixed rate for a term you choose | ING Belgium",
       "file": "compte-a-terme.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R9",
-        "R12"
+        "R3",
+        "R7",
+        "R13"
       ]
     },
     {
       "slug": "compte-courant",
       "nav": "Current account",
-      "title": "Current account | ING Belgium",
+      "title": "Current account with card, app and clear fees | ING Belgium",
       "file": "compte-courant.html",
       "used_fallback": false,
       "recommendations_implemented": [
@@ -57,19 +54,24 @@
         "R2",
         "R3",
         "R4",
+        "R5",
+        "R6",
         "R8",
+        "R9",
         "R10",
-        "R11"
+        "R11",
+        "R12",
+        "R14"
       ]
     },
     {
       "slug": "jeunes",
       "nav": "Youth",
-      "title": "Youth account for children and students | ING Belgium",
+      "title": "An account for your child | ING Belgium",
       "file": "jeunes.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R5"
+        "R6"
       ]
     },
     {
@@ -79,8 +81,8 @@
       "file": "investir.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R4",
-        "R12"
+        "R3",
+        "R7"
       ]
     },
     {
@@ -90,8 +92,8 @@
       "file": "credit-hypothecaire.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R1",
-        "R4"
+        "R4",
+        "R7"
       ]
     },
     {
@@ -102,8 +104,11 @@
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R6",
-        "R8"
+        "R2",
+        "R5",
+        "R9",
+        "R10",
+        "R14"
       ]
     },
     {
@@ -113,84 +118,92 @@
       "file": "pourquoi-ing.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R4",
-        "R7",
-        "R11"
+        "R8",
+        "R12"
       ]
     },
     {
       "slug": "contact",
       "nav": "Contact",
-      "title": "Contact ING Belgium: chat, call or find your answer",
+      "title": "Contact ING Belgium | Ask your question",
       "file": "contact.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R3",
-        "R4"
+        "R3"
       ]
     }
   ],
   "recommendations": [
     {
       "id": "R1",
-      "title": "Add repeated, labelled calls to action down the page",
+      "title": "Add repeated calls to action across the current-account pages",
       "priority": "high"
     },
     {
       "id": "R2",
-      "title": "Add an at-a-glance comparison table",
+      "title": "Add a comparison table to the current-account pack pages",
       "priority": "high"
     },
     {
       "id": "R3",
-      "title": "Cut the vertical sprawl and fold detail into expandable blocks",
-      "priority": "medium"
+      "title": "Reduce the density of figures and attach disclosure to each one",
+      "priority": "high"
     },
     {
       "id": "R4",
-      "title": "Keep the numbers, but pair each one with plain language",
+      "title": "Shorten the longest pages and fold detail into expandable blocks",
       "priority": "medium"
     },
     {
       "id": "R5",
-      "title": "Extend the youth and student framing onto its own page",
+      "title": "Make the fast sign-up promise specific",
       "priority": "medium"
     },
     {
       "id": "R6",
-      "title": "Make the fast digital sign-up promise concrete on the opening-account page",
+      "title": "Give the student and young-audience message its own path",
       "priority": "medium"
     },
     {
       "id": "R7",
-      "title": "Close the campaign structure with an action, not a summary",
-      "priority": "low"
+      "title": "Reuse the strongest offer framing on the pages that lack it",
+      "priority": "medium"
     },
     {
       "id": "R8",
-      "title": "Have the current-account page finalised for the early-September window",
-      "priority": "high"
+      "title": "Test lower-brightness backgrounds with stronger contrast",
+      "priority": "low"
     },
     {
       "id": "R9",
-      "title": "Prepare the savings pages for the same window",
+      "title": "Have the opening-account pages comparison-ready before the late-summer window",
       "priority": "medium"
     },
     {
       "id": "R10",
-      "title": "Schedule current-account pushes away from the competitor's spike weeks",
-      "priority": "low"
+      "title": "Sequence switching and account-transfer content around peer migration periods",
+      "priority": "medium"
     },
     {
       "id": "R11",
-      "title": "Audit sustainability wording on the product pages",
-      "priority": "medium"
+      "title": "Keep a standing short neobank comparison block ready for recurring spikes",
+      "priority": "low"
     },
     {
       "id": "R12",
-      "title": "Put fees and conditions next to the action, without pressure framing",
+      "title": "Keep ING's leadership claims specific rather than broad",
       "priority": "medium"
+    },
+    {
+      "id": "R13",
+      "title": "Keep urgency framing away from sustainability and rate-disclosure blocks",
+      "priority": "medium"
+    },
+    {
+      "id": "R14",
+      "title": "State price and conditions in the same block as the headline offer",
+      "priority": "low"
     }
   ],
   "asset_warnings": []

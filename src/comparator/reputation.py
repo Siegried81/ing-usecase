@@ -22,6 +22,11 @@ sieg 21/09: `notable_headlines` now carries each headline's source URL
 alongside its title, so the web UI can link out to the article. The URL is
 looked up locally against what we actually fetched, never produced by the
 model.
+
+sieg 21/09: every fetched headline is now also checked against
+`_is_belgian_source()` - language alone let through a Dutch accountancy
+trade site (accountancyvanmorgen.nl) writing about "ING" that had nothing
+to do with ING Belgium, because Dutch is spoken well beyond Belgium too.
 """
 
 from __future__ import annotations
@@ -30,6 +35,8 @@ import json
 import os
 import re
 from datetime import date, timedelta
+from pathlib import Path
+from urllib.parse import urlparse
 
 import requests
 from pydantic import BaseModel, Field, ValidationError
@@ -58,6 +65,35 @@ PROVIDER_LANGUAGES = {
 }
 # Bound on what one bank sends to the classifier, after de-duplication.
 MAX_HEADLINES = 30
+
+# sieg 21/09: language alone cannot tell "about Belgium" from "published anywhere the
+# language is spoken" - a Dutch accountancy trade site (accountancyvanmorgen.nl) matched
+# lang=nl and inflated a bank's theme count with a story that was never about the
+# Belgian entity. Neither provider's `getArticles`/`everything` response carries a
+# reliable per-article country field to check instead (Event Registry has one, but only
+# via a separate source-info lookup, not worth the extra call here), so this stays a
+# domain check. newsapi.org's `domains` param narrows the fetch itself; this list plus
+# _is_belgian_source() below is the second, provider-independent guard that actually
+# decides what stays.
+BELGIAN_NEWS_DOMAINS = (
+    "rtbf.be,lesoir.be,lalibre.be,dhnet.be,sudinfo.be,7sur7.be,levif.be,lecho.be,"
+    "bruzz.be,brusselstimes.com,hln.be,standaard.be,nieuwsblad.be,demorgen.be,"
+    "vrt.be,tijd.be,knack.be,gva.be,hbvl.be,lavenir.net"
+)
+# sieg 21/09: caught by the regression test below - lavenir.net (L'Avenir, a real
+# Belgian regional paper) was wrongly dropped because it isn't a .be domain. The
+# allowlist is for exactly this: known Belgian outlets on a non-.be TLD.
+_BELGIAN_DOMAIN_ALLOWLIST = frozenset(BELGIAN_NEWS_DOMAINS.split(","))
+
+
+def _is_belgian_source(url: str | None) -> bool:
+    """A .be domain, or a known Belgian outlet that isn't (lavenir.net, brusselstimes.com).
+    Never a language check - see module note above. Necessarily incomplete: a legitimate
+    Belgian outlet on an unlisted non-.be domain would still be dropped."""
+    if not url:
+        return False
+    host = urlparse(url).netloc.lower().removeprefix("www.")
+    return host.endswith(".be") or host in _BELGIAN_DOMAIN_ALLOWLIST
 
 
 def _bank_token(bank_name: str) -> str:
@@ -97,10 +133,11 @@ sentiment or opinion, only what each headline is ABOUT. Apply the same criteria 
 headline.
 
 Return ONLY a JSON object with exactly these keys:
-- "theme_counts": object mapping each of "innovation_digital", "crisis_or_scandal",
+- "theme_headlines": object mapping each of "innovation_digital", "crisis_or_scandal",
   "financial_results", "product_launch", "esg_sustainability", "regulatory", "other" to an
-  integer count of how many of the given headlines belong to that theme (every headline
-  counted exactly once, into its single best-fitting theme)
+  array of the headline strings, taken verbatim from the input, that belong to that theme
+  (every input headline appears in exactly one theme's array, its single best fit - an empty
+  array for a theme with no headlines)
 - "notable_headlines": array of up to 5 headline strings, taken verbatim from the input, that
   best illustrate why this bank is in the news right now, most important first
 
@@ -108,7 +145,9 @@ No preamble, no markdown fences, JSON only."""
 
 
 class ReputationModel(BaseModel):
-    theme_counts: dict[str, int] = Field(default_factory=dict)
+    # sieg 21/09: was theme_counts (int only) - now the full per-theme headline list, so the
+    # UI can show which articles a count is made of on hover, not just the number.
+    theme_headlines: dict[str, list[str]] = Field(default_factory=dict)
     notable_headlines: list[str] = Field(default_factory=list)
 
 
@@ -141,10 +180,12 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             # newsapi.org searches the whole article body by default, which
             # returned football and politics stories for the word "bank". Keep
             # the match in the title/description, where the bank is named.
+            # `domains` narrows the fetch to Belgian outlets - see BELGIAN_NEWS_DOMAINS.
             response = requests.get(
                 NEWSAPI_URL,
                 params={"q": query, "language": language, "sortBy": "publishedAt",
-                        "pageSize": page_size, "searchIn": "title,description"},
+                        "pageSize": page_size, "searchIn": "title,description",
+                        "domains": BELGIAN_NEWS_DOMAINS},
                 headers={"X-Api-Key": api_key},
                 timeout=timeout,
             )
@@ -152,9 +193,12 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             articles = response.json().get("articles", [])
     except (requests.RequestException, ValueError, AttributeError, TypeError):
         return []
+    # sieg 21/09: newsapi.ai has no domain filter to narrow the fetch with, so this
+    # second check is the one both providers actually rely on - see _is_belgian_source().
     return [
         {"title": a["title"], "url": a.get("url")}
-        for a in articles if isinstance(a, dict) and a.get("title")
+        for a in articles
+        if isinstance(a, dict) and a.get("title") and _is_belgian_source(a.get("url"))
     ]
 
 
@@ -233,10 +277,46 @@ def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     return [h for h in headlines if pattern.search(h["title"])]
 
 
+# sieg 21/09: newsapi.org's free tier is 100 requests/24h (50/12h) - re-running
+# export_web_report.py a handful of times in one afternoon exhausted it, and every
+# bank's signal silently thinned out (bank_snapshot degrades to None on a failed
+# fetch, by design - see its docstring). A same-day cache means iterating on
+# unrelated code (the UI, the prompt wording) doesn't re-spend quota that was
+# already spent finding this run's headlines. Only a REAL snapshot is cached -
+# never a None, because bank_snapshot returns None both when a bank genuinely has
+# no matching headlines and when the fetch failed (rate limit, timeout, bad key);
+# caching that would freeze a quota outage into a permanent "nothing found".
+CACHE_PATH = Path("data/processed/reputation_cache.json")
+
+
+def _load_cache() -> dict:
+    if not CACHE_PATH.is_file():
+        return {}
+    try:
+        return json.loads(CACHE_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}
+
+
+def _save_cache(cache: dict) -> None:
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
-    """None when NEWSAPI_KEY is absent, or nothing could be fetched/classified."""
+    """None when NEWSAPI_KEY is absent, or nothing could be fetched/classified.
+
+    Reuses today's cached snapshot for this bank when there is one - see the
+    CACHE_PATH note above for why only a successful snapshot is ever cached.
+    """
     if not api_key and not configured_sources():
         return None
+    cache = _load_cache()
+    today = date.today().isoformat()
+    cached = cache.get(bank_name)
+    if cached and cached.get("cached_on") == today:
+        return cached["snapshot"]
+
     matched = _mentions(fetch_headlines(f'"{_bank_token(bank_name)}"', api_key), bank_name)
     headlines = matched[:MAX_HEADLINES]
     titles = [h["title"] for h in headlines]
@@ -249,11 +329,21 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
     # kind of figure this project never lets a model invent.
     url_by_title = {h["title"]: h.get("url") for h in headlines}
     notable = [{"title": t, "url": url_by_title.get(t)} for t in classified.notable_headlines]
-    return {
+    # sieg 21/09: every headline under its theme, with its URL - lets the UI show, on
+    # hover over a theme's count, the full list of articles that count is made of.
+    theme_headlines = {
+        t: [{"title": h, "url": url_by_title.get(h)} for h in classified.theme_headlines.get(t, [])]
+        for t in THEMES
+    }
+    snapshot = {
         "headline_count": len(headlines),
-        "themes": {t: classified.theme_counts.get(t, 0) for t in THEMES},
+        "themes": {t: len(theme_headlines[t]) for t in THEMES},
+        "theme_headlines": theme_headlines,
         "notable_headlines": notable,
     }
+    cache[bank_name] = {"cached_on": today, "snapshot": snapshot}
+    _save_cache(cache)
+    return snapshot
 
 
 def build_dashboard(banks: list[tuple[str, str]], *, api_key: str | None = None) -> dict:

@@ -1,16 +1,9 @@
 # Search interest context
 
-> Google Trends, via Dan's kbc-ing-benchmark. **Context, not performance.**
+> Google Trends, via Dan's trends-benchmark. **Context, not performance.**
 > This is what people searched for, not what any campaign achieved, and the
 > pages captured are today's pages - not the pages live during an older spike.
 
 ```
-Search interest (Google Trends, Belgium) for the captured bank/product pairs.
-CONTEXT ONLY - this is what people searched for, not what a campaign achieved.
-
-bank       product_family  last_12m_mean  baseline_mean  change_pct vs_baseline  weeks
- kbc current_account_pack            1.2            2.3       -48.2       lower   1048
- ing current_account_pack            0.1            0.3       -64.7       lower   1572
-
-No trends data at all for: argenta, belfius, beobank, bnp_paribas_fortis, bunq, cbc, crelan, hellobank, keytrade, n26, revolut, vdk.
+No per-product search-interest context. Dan's Trends pipeline was narrowed to brand notoriety (brand sheets only, no product sheets), because most smaller banks' product terms flattened to near-zero once normalised against ING in the same request. Per-product interest is therefore unanswerable, not merely uncollected. Brand-level share of search replaces it with a different question - how attention splits across banks - and is reported in the Trends tab.
 ```
