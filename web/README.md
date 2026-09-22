@@ -107,15 +107,18 @@ the ones worth implementing**. Only the ticked subset is passed to the site
 builder. A feature id the model invented is dropped before the list is shown, so
 nothing links to evidence that does not exist.
 
-**Include Google Trends** is an opt-in on the same tab. Ticked, the model gets a
-deterministic slice of `trends.json` - the run's captured banks, the measured
-product family, the last 24 months - as an explicitly fenced *context-only*
-block, and adds 2-4 **timing and focus** recommendations on top of the analysis
-ones. They come back tagged `basis: "trends"`, render in their own visually
-separated group, and are forbidden by the prompt from citing a page feature as
-evidence: search interest is never proof that a page or campaign performed. The
-toggle loads already-ticked when the saved set used trends, so regenerating does
-not silently drop them.
+**From search-interest context** is the one section on this tab the model does
+not write. The Trends tab picks the competitor brands worth studying - the
+traditional bank with the largest share of brand search, the one whose share
+rose fastest, and the measurable challenger - and `comparator/benchmarks.py`
+reports what each of their pages measurably does differently from ING's, then
+what all of them share and where they part company. Every figure is a z-score
+from the same feature set as the analysis above.
+
+The two halves are joined on the bank name and nothing else. Search interest
+chooses WHO to look at; the dataset says WHAT they do. Saying they are searched
+for BECAUSE their pages do this is the claim the project has no data for, so the
+caveat travels in the payload rather than sitting in a footnote.
 
 The **Generate ING website** button turns the selected recommendations into ten
 HTML pages in ING's house style - orange `#FF6200`, ING blue `#000066`, black and

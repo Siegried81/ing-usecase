@@ -1,5 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { Priority, Recommendation, Report, SiteStatus } from "../types";
+import type {
+  BenchmarkBank,
+  Priority,
+  Recommendation,
+  Report,
+  SearchInterestLessons,
+  SiteStatus,
+} from "../types";
 import {
   fetchRecommendations,
   fetchSiteStatus,
@@ -29,10 +36,8 @@ export function Recommendations({ report }: { report: Report }) {
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("fr");
   const [site, setSite] = useState<SiteStatus | null>(null);
-  const [includeTrends, setIncludeTrends] = useState(false);
   const [includeReputation, setIncludeReputation] = useState(false); // sieg 21/09
   const [explainSite, setExplainSite] = useState(false);
-  const trendsAvailable = Boolean(report.trends?.available);
   const reputationAvailable = Boolean(report.reputation?.available); // sieg 21/09
 
   useEffect(() => {
@@ -40,9 +45,8 @@ export function Recommendations({ report }: { report: Report }) {
       .then((data) => {
         setPayload(data);
         setSelected(new Set(data.recommendations.map((r) => r.id)));
-        // Keep the toggles in step with what was generated, so regenerating a
-        // set that already used trends/reputation does not silently drop them.
-        setIncludeTrends(Boolean(data.used_trends));
+        // Keep the toggle in step with what was generated, so regenerating a
+        // set that already used reputation does not silently drop it.
         setIncludeReputation(Boolean(data.used_reputation));
       })
       .catch((e) => setError(String(e)));
@@ -63,19 +67,17 @@ export function Recommendations({ report }: { report: Report }) {
     setError(null);
     try {
       const data = await generateRecommendations(
-        includeTrends && trendsAvailable,
         includeReputation && reputationAvailable, // sieg 21/09
       );
       setPayload(data);
       setSelected(new Set(data.recommendations.map((r) => r.id)));
-      setIncludeTrends(Boolean(data.used_trends));
       setIncludeReputation(Boolean(data.used_reputation));
     } catch (e) {
       setError(String(e));
     } finally {
       setBusy(false);
     }
-  }, [includeTrends, trendsAvailable, includeReputation, reputationAvailable]);
+  }, [includeReputation, reputationAvailable]);
 
   const onGenerateSite = useCallback(async () => {
     setError(null);
@@ -106,24 +108,23 @@ export function Recommendations({ report }: { report: Report }) {
     return map;
   }, [report]);
 
-  // Three groups, one selection. Trends and reputation recommendations are
+  // steph 22/09: "From search-interest context" is the computed benchmark
+  // section now - the model writes nothing from search interest any more.
+  // Two groups, one selection. Reputation recommendations are
   // shown apart because they are argued from context, not from a measured
   // page feature - but they are all picked in the same set and built into
   // the same site. sieg 21/09: added the reputation group.
   const analysisRecs = useMemo(
-    () => recommendations.filter((r) => r.basis !== "trends" && r.basis !== "reputation"),
+    () => recommendations.filter((r) => r.basis !== "reputation"),
     [recommendations],
   );
-  const trendsRecs = useMemo(() => recommendations.filter((r) => r.basis === "trends"), [recommendations]);
   const reputationRecs = useMemo(
     () => recommendations.filter((r) => r.basis === "reputation"),
     [recommendations],
   );
-  const trendsCount = trendsRecs.length;
   const reputationCount = reputationRecs.length;
-  const selectedTrends = trendsRecs.filter((r) => selected.has(r.id)).length;
   const selectedReputation = reputationRecs.filter((r) => selected.has(r.id)).length;
-  const selectedAnalysis = selected.size - selectedTrends - selectedReputation;
+  const selectedAnalysis = selected.size - selectedReputation;
 
   const toggle = (id: string) =>
     setSelected((prev) => {
@@ -150,31 +151,13 @@ export function Recommendations({ report }: { report: Report }) {
             {payload?.available && (
               <span className="muted-note">
                 {payload.model} · {payload.recommendations.length} recommendations
-                {payload.used_trends ? " · includes trends context" : ""}
                 {payload.used_reputation ? " · includes reputation context" : ""}
               </span>
             )}
             {busy && <span className="muted-note">Asking {`deepseek-chat`} — this takes a few seconds…</span>}
           </div>
 
-          <label className={`rec-trends${trendsAvailable ? "" : " disabled"}`}>
-            <input
-              type="checkbox"
-              checked={includeTrends && trendsAvailable}
-              disabled={!trendsAvailable || busy}
-              onChange={(e) => setIncludeTrends(e.target.checked)}
-            />
-            <span>
-              Include Google Trends to add recommendations
-              <small>
-                {trendsAvailable
-                  ? "Adds timing and focus recommendations from search-interest context. Context only — never evidence that a page or campaign performed."
-                  : "No trends export is present, so this option is unavailable. Run scripts/export_web_report.py to produce web/public/trends.json."}
-              </small>
-            </span>
-          </label>
-
-          {/* sieg 21/09: same opt-in pattern as trends, for news headline themes. */}
+          {/* sieg 21/09: opt-in context, for news headline themes. */}
           <label className={`rec-trends${reputationAvailable ? "" : " disabled"}`}>
             <input
               type="checkbox"
@@ -210,13 +193,6 @@ export function Recommendations({ report }: { report: Report }) {
               {report.scope.banks.length} banks · {report.headline.focus} scores{" "}
               {report.headline.score?.toFixed(2)} ({report.headline.verdict}).
             </div>
-            {trendsCount > 0 && (
-              <div className="muted-note" style={{ marginTop: 6 }}>
-                {trendsCount} further recommendation{trendsCount === 1 ? "" : "s"} come from
-                search-interest context and appear in their own section below. They can be
-                selected alongside the others for the website.
-              </div>
-            )}
             {reputationCount > 0 && (
               <div className="muted-note" style={{ marginTop: 6 }}>
                 {reputationCount} further recommendation{reputationCount === 1 ? "" : "s"} come
@@ -267,31 +243,11 @@ export function Recommendations({ report }: { report: Report }) {
               </div>
             )}
 
-            {trendsRecs.length > 0 && (
-              <div className="rec-group rec-group-trends">
-                <div className="rec-group-head">
-                  <h3>From search-interest context</h3>
-                  <span className="muted-note">
-                    Kept apart from the analysis: these use Google Trends to suggest timing and
-                    focus, and cite no page feature as evidence. Search interest is context, never
-                    proof that a page or campaign performed — treat each as a hypothesis to test.
-                  </span>
-                </div>
-                <div className="rec-list">
-                  {trendsRecs.map((r) => (
-                    <RecommendationCard
-                      key={r.id}
-                      rec={r}
-                      featureLabels={featureLabels}
-                      checked={selected.has(r.id)}
-                      onToggle={() => toggle(r.id)}
-                    />
-                  ))}
-                </div>
-              </div>
+            {report.searchInterestLessons && (
+              <SearchInterestSection lessons={report.searchInterestLessons} />
             )}
 
-            {/* sieg 21/09: mirrors the trends group above, for reputation. */}
+            {/* sieg 21/09: the model's second context group. */}
             {reputationRecs.length > 0 && (
               <div className="rec-group rec-group-reputation">
                 <div className="rec-group-head">
@@ -327,11 +283,10 @@ export function Recommendations({ report }: { report: Report }) {
                 <div className="muted-note" style={{ marginTop: 4 }}>
                   Generates a ten-page ING-styled site implementing the {selected.size} selected
                   recommendation{selected.size === 1 ? "" : "s"}
-                  {(selectedTrends > 0 || selectedReputation > 0) && (
+                  {selectedReputation > 0 && (
                     <>
-                      {" "}({selectedAnalysis} from the analysis
-                      {selectedTrends > 0 && <>, {selectedTrends} from trends</>}
-                      {selectedReputation > 0 && <>, {selectedReputation} from reputation</>})
+                      {" "}({selectedAnalysis} from the analysis, {selectedReputation} from
+                      reputation)
                     </>
                   )}.
                 </div>
@@ -447,12 +402,6 @@ function RecommendationCard({
           <span className="rec-field-k">What the data shows</span>
           <span>{rec.finding}</span>
         </div>
-        {rec.market_context && (
-          <div className="rec-field">
-            <span className="rec-field-k">Market context</span>
-            <span>{rec.market_context}</span>
-          </div>
-        )}
         {rec.reputation_context && (
           <div className="rec-field">
             <span className="rec-field-k">Reputation context</span>
@@ -464,11 +413,6 @@ function RecommendationCard({
           <span>{rec.recommendation}</span>
         </div>
         <div className="rec-meta">
-          {rec.basis === "trends" && (
-            <span className="rec-basis-trends" title="From search-interest context — attention, not performance">
-              trends
-            </span>
-          )}
           {rec.basis === "reputation" && (
             <span className="rec-basis-reputation" title="From news-theme context — coverage, not performance">
               reputation
@@ -495,5 +439,160 @@ function Section({ title, lede, children }: { title: string; lede?: string; chil
       </div>
       {children}
     </section>
+  );
+}
+
+/** A z-score gap read out loud. The number stays next to the words. */
+function GapNote({ gap }: { gap: number }) {
+  return (
+    <span className="muted-note" style={{ whiteSpace: "nowrap" }}>
+      {gap > 0 ? "+" : ""}
+      {gap} sd
+    </span>
+  );
+}
+
+function BenchmarkCard({ bank, focus }: { bank: BenchmarkBank; focus: string }) {
+  return (
+    <div
+      style={{
+        border: "1px solid var(--line)",
+        borderRadius: "var(--radius)",
+        padding: 16,
+        background: "var(--surface)",
+      }}
+    >
+      <div style={{ fontWeight: 700 }}>{bank.bank}</div>
+      <div className="muted-note" style={{ marginBottom: 10 }}>
+        {bank.roleLabel}
+        {bank.lastSharePct !== null && <> · {bank.lastSharePct}% of brand search</>}
+        {bank.relativeSlopePctPerYear !== null && (
+          <>
+            {" "}
+            · {bank.relativeSlopePctPerYear > 0 ? "+" : ""}
+            {bank.relativeSlopePctPerYear}% per year
+          </>
+        )}
+      </div>
+
+      {bank.lessons.length === 0 ? (
+        <p className="muted-note" style={{ margin: 0 }}>
+          Nothing on its pages separates it from {focus} in the measured set.
+        </p>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {bank.lessons.map((l) => (
+            <li
+              key={l.feature}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "5px 0",
+                borderBottom: "1px solid var(--line-2)",
+                fontSize: "14px",
+              }}
+            >
+              <span>
+                {l.label} — <strong>{l.direction === "above" ? "more" : "less"}</strong> than{" "}
+                {focus}
+              </span>
+              <GapNote gap={l.gapSd} />
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="muted-note" style={{ marginTop: 8 }}>
+        {bank.pages} page{bank.pages === 1 ? "" : "s"} measured
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Search interest picks the brands; the measured features say what they do.
+ *
+ * The two halves come from different sources and are joined on the bank name
+ * and nothing else. Saying "they get searched for BECAUSE their pages do this"
+ * is the one claim this project has no data for, so the caveat travels with
+ * the payload rather than sitting in a footnote.
+ */
+function SearchInterestSection({ lessons }: { lessons: SearchInterestLessons }) {
+  const focus = lessons.focus.toUpperCase();
+  return (
+    <div className="rec-group rec-group-trends">
+      <div className="rec-group-head">
+        <h3>From search-interest context</h3>
+        <span className="muted-note">
+          Google Trends picked these {lessons.banks.length} brands, on brand-search attention
+          alone. What follows is what their pages measurably do differently from {focus}, on the
+          same standardised features as the analysis above — never proof that those choices are
+          why they are searched for.
+        </span>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gap: 12,
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+          marginBottom: 14,
+        }}
+      >
+        {lessons.banks.map((b) => (
+          <BenchmarkCard key={b.key} bank={b} focus={focus} />
+        ))}
+      </div>
+
+      {lessons.common.length > 0 && (
+        <div className="card" style={{ marginBottom: 12 }}>
+          <h4 className="sub-h">What all {lessons.banks.length} have in common</h4>
+          <p className="muted-note" style={{ marginTop: 0 }}>
+            Choices every one of them makes and {focus} does not — the closest this data comes to
+            a shared pattern.
+          </p>
+          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
+            {lessons.common.map((c) => (
+              <li key={c.feature} style={{ padding: "3px 0" }}>
+                {c.label} — all {lessons.banks.length} sit {c.direction} the market average (
+                {c.meanZ > 0 ? "+" : ""}
+                {c.meanZ} sd on average), {focus} sits {c.direction === "above" ? "below" : "above"}{" "}
+                it ({c.focusZ > 0 ? "+" : ""}
+                {c.focusZ} sd).
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {lessons.divergent.length > 0 && (
+        <div className="card" style={{ marginBottom: 12 }}>
+          <h4 className="sub-h">Where they part company</h4>
+          <p className="muted-note" style={{ marginTop: 0 }}>
+            On these there is no single lesson to take: the brands sit on opposite sides of the
+            market average.
+          </p>
+          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
+            {lessons.divergent.map((d) => (
+              <li key={d.feature} style={{ padding: "3px 0" }}>
+                {d.label} —{" "}
+                {d.values.map((v, i) => (
+                  <span key={v.key}>
+                    {i > 0 && ", "}
+                    {v.bank} {v.z > 0 ? "+" : ""}
+                    {v.z}
+                  </span>
+                ))}{" "}
+                sd.
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="scope-note">
+        <strong>Attention, not explanation.</strong> {lessons.caveat}
+      </div>
+    </div>
   );
 }

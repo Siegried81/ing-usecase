@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-22T07:38:22+00:00",
-  "dataset": "data/processed/campaigns_scored.csv",
+  "generated_at": "2026-09-22T08:53:08+00:00",
+  "dataset": "data\\processed\\campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
@@ -312,8 +312,8 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -321,8 +321,8 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
       "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
@@ -560,7 +560,7 @@
           "direction": "above"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -638,7 +638,7 @@
           "direction": "above"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -1366,12 +1366,12 @@
           "direction": "above"
         },
         {
-          "label": "Targets expats",
+          "label": "Shows a rate",
           "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Subscription style framing",
           "sd": 2.4,
           "direction": "above"
         }
@@ -2398,6 +2398,279 @@
     "uncovered": [],
     "n_series": 5764,
     "data_url": "trends.json"
+  },
+  "searchInterestLessons": {
+    "focus": "ing",
+    "banks": [
+      {
+        "bank": "KBC",
+        "key": "kbc",
+        "role": "attention",
+        "roleLabel": "largest share of brand search among traditional banks",
+        "lastSharePct": 20.13,
+        "relativeSlopePctPerYear": -2.8,
+        "trendDirection": "down",
+        "pages": 2,
+        "lessons": [
+          {
+            "feature": "is_bundled_offer",
+            "z": -1.58,
+            "focusZ": 0.63,
+            "gapSd": -2.21,
+            "direction": "below",
+            "label": "Sells a bundle"
+          },
+          {
+            "feature": "has_comparison_table",
+            "z": 1.34,
+            "focusZ": -0.75,
+            "gapSd": 2.09,
+            "direction": "above",
+            "label": "Includes a comparison table"
+          },
+          {
+            "feature": "image_count",
+            "z": -0.74,
+            "focusZ": 0.66,
+            "gapSd": -1.4,
+            "direction": "below",
+            "label": "Images"
+          },
+          {
+            "feature": "numeric_claim_count",
+            "z": 0.22,
+            "focusZ": 1.43,
+            "gapSd": -1.21,
+            "direction": "below",
+            "label": "Figures and percentages quoted"
+          }
+        ]
+      },
+      {
+        "bank": "Crelan",
+        "key": "crelan",
+        "role": "momentum",
+        "roleLabel": "fastest-rising share of brand search among traditional banks",
+        "lastSharePct": 8.96,
+        "relativeSlopePctPerYear": 16.4,
+        "trendDirection": "up",
+        "pages": 1,
+        "lessons": [
+          {
+            "feature": "cta_count",
+            "z": 2.74,
+            "focusZ": -0.98,
+            "gapSd": 3.72,
+            "direction": "above",
+            "label": "Calls to action"
+          },
+          {
+            "feature": "image_count",
+            "z": 3.25,
+            "focusZ": 0.66,
+            "gapSd": 2.58,
+            "direction": "above",
+            "label": "Images"
+          },
+          {
+            "feature": "question_count",
+            "z": 2.5,
+            "focusZ": 0.06,
+            "gapSd": 2.44,
+            "direction": "above",
+            "label": "Questions asked"
+          },
+          {
+            "feature": "disclaimer_present",
+            "z": -1.91,
+            "focusZ": 0.52,
+            "gapSd": -2.44,
+            "direction": "below",
+            "label": "Carries legal small print"
+          }
+        ]
+      },
+      {
+        "bank": "Revolut",
+        "key": "revolut",
+        "role": "challenger",
+        "roleLabel": "the challenger with enough search volume to measure",
+        "lastSharePct": 3.22,
+        "relativeSlopePctPerYear": 37.8,
+        "trendDirection": "up",
+        "pages": 1,
+        "lessons": [
+          {
+            "feature": "institutional_trust_signal_present",
+            "z": 3.61,
+            "focusZ": -0.28,
+            "gapSd": 3.88,
+            "direction": "above",
+            "label": "Invokes institutional trust"
+          },
+          {
+            "feature": "rate_shown",
+            "z": 2.45,
+            "focusZ": -0.41,
+            "gapSd": 2.86,
+            "direction": "above",
+            "label": "Shows a rate"
+          },
+          {
+            "feature": "numeric_claim_count",
+            "z": -0.47,
+            "focusZ": 1.43,
+            "gapSd": -1.9,
+            "direction": "below",
+            "label": "Figures and percentages quoted"
+          },
+          {
+            "feature": "background_luminance",
+            "z": -0.88,
+            "focusZ": 0.69,
+            "gapSd": -1.57,
+            "direction": "below",
+            "label": "Page brightness"
+          }
+        ]
+      }
+    ],
+    "common": [
+      {
+        "feature": "images_have_alt_text",
+        "meanZ": 1.91,
+        "focusZ": -0.52,
+        "direction": "above",
+        "label": "Images carry alt text"
+      },
+      {
+        "feature": "cta_contrast_ratio",
+        "meanZ": 1.13,
+        "focusZ": -0.34,
+        "direction": "above",
+        "label": "Call-to-action contrast"
+      },
+      {
+        "feature": "animated_asset_count",
+        "meanZ": 0.84,
+        "focusZ": -0.23,
+        "direction": "above",
+        "label": "Animated elements"
+      }
+    ],
+    "divergent": [
+      {
+        "feature": "image_count",
+        "spreadSd": 3.98,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": -0.74
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": 3.25
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": -0.61
+          }
+        ],
+        "label": "Images"
+      },
+      {
+        "feature": "question_count",
+        "spreadSd": 3.82,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": 0.3
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": 2.5
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": -1.32
+          }
+        ],
+        "label": "Questions asked"
+      },
+      {
+        "feature": "cta_count",
+        "spreadSd": 3.54,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": -0.8
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": 2.74
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": -0.52
+          }
+        ],
+        "label": "Calls to action"
+      },
+      {
+        "feature": "disclaimer_present",
+        "spreadSd": 2.44,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": 0.52
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": -1.91
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": -1.91
+          }
+        ],
+        "label": "Carries legal small print"
+      },
+      {
+        "feature": "is_bundled_offer",
+        "spreadSd": 2.21,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": -1.58
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": 0.63
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": 0.63
+          }
+        ],
+        "label": "Sells a bundle"
+      }
+    ],
+    "caveat": "These three brands were selected on search attention alone. What follows is what their pages measurably do differently - not a demonstration that those choices are why they are searched for. This data cannot show that."
   },
   "reputation": {
     "available": true,

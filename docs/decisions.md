@@ -558,3 +558,25 @@ removed table and is left orphaned on disk, not deleted — see section 12 of
 <!-- sieg 22/09: merge conflict resolution for PR #56 - both entries kept, sieg's
      scope-restoration note first (dated context for D01), dan's anomaly-removal
      note second. No content dropped from either side. -->
+---
+
+**steph 22/09, the model no longer writes from search interest.** The
+Recommendations tab's opt-in **Include Google Trends** checkbox, its digest,
+its prompt addendum and the `basis: "trends"` group are removed. The advice it
+produced was about *timing* — when to have a page ready — which is the weakest
+thing this data supports: Trends shows which brands are searched for, never
+why, so a model asked to turn that into a page action can only speculate.
+
+In its place the same section now answers a question the data can carry.
+Trends selects three brands on attention alone (largest share among the
+traditional banks, fastest-rising, and the measurable challenger);
+`comparator/benchmarks.py` then reports what their pages measurably do
+differently from ING's, what all three share, and where they disagree — all of
+it z-scores from the feature set the analysis already uses.
+
+The two halves stay separate on purpose and are joined on the bank name only.
+The caveat travels in the payload: these brands were picked on attention, and
+nothing here shows that their page choices are why. A set saved while the old
+basis existed still loads — those entries are dropped rather than rendered as
+analysis recommendations.
+

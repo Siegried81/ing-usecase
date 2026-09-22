@@ -115,10 +115,11 @@ export interface GeneratedCampaign {
 
 export type Priority = "high" | "medium" | "low";
 
-/** Analysis recommendations come from the measured pages; trends and
- *  reputation ones are added on top from context (search interest / news
- *  themes) and never cite page features. sieg 21/09: added "reputation". */
-export type RecommendationBasis = "analysis" | "trends" | "reputation";
+/** Analysis recommendations come from the measured pages; reputation ones are
+ *  added on top from news-theme context and never cite page features.
+ *  steph 22/09: the trends basis is gone - search interest now feeds the
+ *  computed benchmark section instead of the model. */
+export type RecommendationBasis = "analysis" | "reputation";
 
 export interface Recommendation {
   id: string;
@@ -129,7 +130,6 @@ export interface Recommendation {
   features: string[];
   page_targets: string[];
   basis?: RecommendationBasis;
-  market_context?: string | null;
   reputation_context?: string | null;
 }
 
@@ -139,7 +139,6 @@ export interface RecommendationPayload {
   model?: string;
   summary: string | null;
   recommendations: Recommendation[];
-  used_trends?: boolean;
   used_reputation?: boolean;
 }
 
@@ -595,6 +594,46 @@ export interface Deliverable {
   bytes: number;
 }
 
+/** One measured page choice, on the same z-scores as the profile cards.
+ *  `gapSd` is this bank minus the focus bank, in standard deviations. */
+export interface BenchmarkLesson {
+  feature: string;
+  label: string;
+  z: number;
+  focusZ: number;
+  gapSd: number;
+  direction: "above" | "below";
+}
+
+export interface BenchmarkBank {
+  bank: string;
+  key: string;
+  role: string;
+  roleLabel: string;
+  lastSharePct: number | null;
+  relativeSlopePctPerYear: number | null;
+  trendDirection: "up" | "flat" | "down" | null;
+  pages: number;
+  lessons: BenchmarkLesson[];
+}
+
+/** What the search-interest benchmarks do on their pages. Search interest
+ *  selects the brands; every figure here comes from the measured features.
+ *  The two are joined on the bank name and nothing else - see
+ *  comparator/benchmarks.py for why that line matters. */
+export interface SearchInterestLessons {
+  focus: string;
+  banks: BenchmarkBank[];
+  common: { feature: string; label: string; meanZ: number; focusZ: number; direction: "above" | "below" }[];
+  divergent: {
+    feature: string;
+    label: string;
+    spreadSd: number;
+    values: { bank: string; key: string; z: number }[];
+  }[];
+  caveat: string;
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;
@@ -615,6 +654,7 @@ export interface Report {
   validation: { ok: boolean; warnings: string[] };
   generated: GeneratedCampaign[];
   trends: TrendsSummary | null;
+  searchInterestLessons: SearchInterestLessons | null;
   reputation: ReputationPayload;
   geoTrends: GeoTrendsPayload;
 }

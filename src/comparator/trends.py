@@ -946,11 +946,17 @@ def _rank_stability(measurable: list[str], shares: dict[str, list[float]], block
     }
 
 
+def _bank_key(bank: str) -> str:
+    """Display name back to the comparator's bank key."""
+    return next((k for code, k in BANK_MAP.items() if BANK_DISPLAY.get(code) == bank), "")
+
+
 def _benchmark_entry(bank: str, roles: list[str], shares: dict, trajectories: dict, ing_last: float) -> dict:
     trajectory = trajectories[bank]
     last = shares[bank][-1]
     return {
         "bank": bank,
+        "key": _bank_key(bank),
         "roles": roles,
         "lastSharePct": last,
         "deltaPts": trajectory["deltaPts"],
@@ -969,8 +975,7 @@ def _benchmark_scope(
         return {}
     ing_last = subject_shares[-1]
 
-    def key_of(bank: str) -> str:
-        return next((k for code, k in BANK_MAP.items() if BANK_DISPLAY.get(code) == bank), "")
+    key_of = _bank_key
 
     traditional = [
         b for b in measurable

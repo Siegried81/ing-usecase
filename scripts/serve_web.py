@@ -41,7 +41,6 @@ from comparator.site_generator import PAGES, generate_site
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 REPORT_PATH = REPO_ROOT / "web" / "public" / "report.json"
-TRENDS_PATH = REPO_ROOT / "web" / "public" / "trends.json"
 SITE_DIR = REPO_ROOT / "outputs" / "generated_site"
 RECS_PATH = REPO_ROOT / "outputs" / "web_recommendations.json"
 OUTPUTS_DIR = REPO_ROOT / "outputs"
@@ -79,12 +78,6 @@ def _load_recommendations() -> dict | None:
     return None
 
 
-def _load_trends() -> dict | None:
-    if TRENDS_PATH.is_file():
-        return json.loads(TRENDS_PATH.read_text(encoding="utf-8"))
-    return None
-
-
 def _save_recommendations(payload: dict) -> None:
     RECS_PATH.parent.mkdir(parents=True, exist_ok=True)
     RECS_PATH.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -104,14 +97,20 @@ def health() -> dict:
 
 @app.get("/api/recommendations")
 def get_recommendations() -> dict:
+    """The saved set, normalised through RecommendationSet.
+
+    steph 22/09: going through from_dict rather than returning the file
+    verbatim is what drops entries a saved set carries but this version can no
+    longer represent - a search-interest recommendation written before the
+    model stopped writing them would otherwise render as an analysis one.
+    """
     saved = _load_recommendations()
     if saved is None:
         return {"available": False, "recommendations": [], "summary": None}
-    return {"available": True, **saved}
+    return {"available": True, **RecommendationSet.from_dict(saved).to_dict()}
 
 
 class RecommendationRequest(BaseModel):
-    include_trends: bool = False
     include_reputation: bool = False  # sieg 21/09
 
 
@@ -119,28 +118,15 @@ class RecommendationRequest(BaseModel):
 def post_recommendations(request: RecommendationRequest | None = None) -> dict:
     """One model call over the analysis snapshot. Synchronous; the UI shows a wait state.
 
-    With `include_trends`, the Trends tab snapshot (`web/public/trends.json`) is
-    added to the prompt as context. Search interest never becomes evidence of
-    performance; the additional recommendations are labelled by `basis`.
-
-    sieg 21/09: `include_reputation` does the same for news headline themes.
-    No separate file to load - report.json already carries the reputation
-    dashboard - so a missing signal surfaces as the same LLMExtractionError ->
-    502 path build_recommendations already uses for trends, rather than a
-    second pre-flight 409 check.
+    sieg 21/09: `include_reputation` adds news headline themes. No separate
+    file to load - report.json already carries the reputation dashboard - so a
+    missing signal surfaces through the LLMExtractionError -> 502 path rather
+    than a pre-flight check.
     """
-    include_trends = bool(request and request.include_trends)
-    trends = _load_trends() if include_trends else None
-    if include_trends and trends is None:
-        raise HTTPException(
-            status_code=409,
-            detail="No trends data available. Run: python3 scripts/export_web_report.py",
-        )
     include_reputation = bool(request and request.include_reputation)
     try:
         result = build_recommendations(
-            _read_report(), include_trends=include_trends, trends=trends,
-            include_reputation=include_reputation,
+            _read_report(), include_reputation=include_reputation,
         )
     except LLMExtractionError as exc:
         raise HTTPException(status_code=502, detail=str(exc)) from exc

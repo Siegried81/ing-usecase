@@ -17,33 +17,32 @@ Guardrails, because a recommendation is where this kind of project goes wrong:
     against the report before the list leaves this module.
   * `selected` is carried through so the UI can pass a subset to site
     generation without this module knowing anything about the site.
-  * Trends (`include_trends`) are opt-in and add recommendations on top of the
-    analysis ones. They are labelled `basis="trends"` and carry the search
-    window they came from. They are context, never evidence - the same line
-    trends.py draws - so the prompt may use them for timing and focus only, and
-    a trends recommendation is never allowed to cite a page feature as proof.
-  * Reputation (`include_reputation`, sieg 21/09) is the same idea for news
-    headline themes: opt-in, `basis="reputation"`, context never evidence -
-    the same line reputation.py draws - and never allowed to cite a page
-    feature as proof either. Unlike trends it needs no separate payload: the
-    dashboard already travels inside `report["reputation"]`.
+  * Reputation (`include_reputation`, sieg 21/09) is an opt-in second context:
+    news headline themes, `basis="reputation"`, context never evidence - the
+    same line reputation.py draws - and never allowed to cite a page feature as
+    proof. It needs no separate payload: the dashboard already travels inside
+    `report["reputation"]`.
+
+  steph 22/09: the model no longer writes anything from search interest. The
+  Trends tab selects which competitor brands are worth studying and
+  comparator/benchmarks.py reports what their pages measurably do - computed
+  end to end, so there is nothing left here for a model to add.
 """
 
 from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from datetime import date, datetime, timedelta, timezone
+from datetime import datetime, timezone
 from typing import Literal
 
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
 from comparator.reputation import RECENT_DAYS  # sieg 21/09
-from comparator.trends import PRODUCT_MAP
 
 Priority = Literal["high", "medium", "low"]
-Basis = Literal["analysis", "trends", "reputation"]
+Basis = Literal["analysis", "reputation"]
 
 
 class RecommendationModel(BaseModel):
@@ -56,8 +55,7 @@ class RecommendationModel(BaseModel):
     features: list[str] = Field(default_factory=list)
     page_targets: list[str] = Field(default_factory=list)
     basis: Basis = "analysis"
-    market_context: str | None = Field(default=None, description="search-interest context, trends basis only")
-    # sieg 21/09: mirrors market_context for the reputation basis.
+    # sieg 21/09: the reputation basis names the themes it was drawn from.
     reputation_context: str | None = Field(
         default=None, description="news-theme context, reputation basis only"
     )
@@ -90,27 +88,6 @@ Hard rules, no exceptions:
 _PAGE_KEYS = ("index, comptes-epargne, compte-a-terme, compte-courant, jeunes, investir, "
               "credit-hypothecaire, ouvrir-compte, pourquoi-ing, contact")
 
-_TRENDS_ADDENDUM = """You are ALSO given Google Trends brand-search context for Belgium: each
-bank's share of brand search attention, how that share moved year by year, and which competitor
-brands are worth studying. Use it to add recommendations that the page measurements alone cannot
-support.
-
-Trends rules, no exceptions:
-- Share of search is a share of ATTENTION, never of customers, revenue or market.
-  It is CONTEXT, never evidence that anything worked.
-- A trajectory is a description, NOT an effect. Never say a bank's share moved BECAUSE of a
-  campaign, a page, a product or any action: this data contains no cause, and nothing in it links
-  a brand to a reason. Say that attention moved; never say why.
-- Banks marked low confidence have too little search volume to read. Never quote their share, their
-  trajectory or their rank, and never compare them to a measurable bank.
-- Use ONLY the figures given in the context. Never invent, average or extrapolate a search number,
-  and never add a period the context does not list.
-- A trends-based recommendation is about TIMING, SEQUENCING or MARKET FOCUS: when to make a change,
-  which competitor to study, or which period a message must be ready for. It is still an action on
-  an ING page.
-- Trends recommendations must NOT cite page features as evidence; leave "features" empty and put
-  the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
-
 _REPUTATION_ADDENDUM = """You are ALSO given recent news headline THEMES (never sentiment) for some
 banks: counts of what real headlines about that bank were ABOUT in the last 90 days, plus up to 5
 notable headlines.
@@ -128,21 +105,15 @@ Reputation rules, no exceptions:
 - Reputation recommendations must NOT cite page features as evidence; leave "features" empty and put
   the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
 
-def _system_prompt(*, with_trends: bool, with_reputation: bool) -> str:
-    """Assemble the system prompt from whichever optional context blocks apply.
+def _system_prompt(*, with_reputation: bool) -> str:
+    """Assemble the system prompt from whichever optional context block applies.
 
-    sieg 21/09: reputation joins trends as a second, independent opt-in context.
-    Built from parts rather than one hardcoded constant per combination (trends
-    only / reputation only / both / neither), so a third context later is one
-    more addendum, not four more near-duplicate strings.
+    Built from parts rather than one hardcoded constant per combination, so a
+    second context later is one more addendum, not four near-duplicate strings.
     """
     parts = [_BASE_RULES]
     bases = ['"analysis"']
     extra_counts: list[str] = []
-    if with_trends:
-        parts.append(_TRENDS_ADDENDUM)
-        bases.append('"trends"')
-        extra_counts.append("2 to 4 more from search-interest context")
     if with_reputation:
         parts.append(_REPUTATION_ADDENDUM)
         bases.append('"reputation"')
@@ -164,8 +135,6 @@ has exactly:
   "features" (exact feature identifiers from the analysis{empty_features_note}),
   "page_targets" (array of page keys, from this list only: {_PAGE_KEYS}),
   "basis" (one of {", ".join(bases)}),
-  "market_context" (null unless basis is "trends"; then one or two sentences naming the attention
-   pattern and the window it comes from),
   "reputation_context" (null unless basis is "reputation"; then one or two sentences naming the
    theme(s) and headline count this recommendation is drawn from).
 
@@ -184,7 +153,6 @@ class Recommendation:
     features: list[str] = field(default_factory=list)
     page_targets: list[str] = field(default_factory=list)
     basis: Basis = "analysis"
-    market_context: str | None = None
     reputation_context: str | None = None
 
 
@@ -194,7 +162,6 @@ class RecommendationSet:
     model: str
     summary: str
     recommendations: list[Recommendation]
-    used_trends: bool = False
     used_reputation: bool = False
 
     def to_dict(self) -> dict:
@@ -202,12 +169,25 @@ class RecommendationSet:
 
     @classmethod
     def from_dict(cls, payload: dict) -> "RecommendationSet":
+        """Rebuild a saved set, tolerating one written by an older version.
+
+        steph 22/09: sets saved while the model still wrote search-interest
+        recommendations carry a `trends` basis and a `market_context` field
+        that no longer exist. Unknown keys are dropped and those entries are
+        skipped, so an old file loads as the analysis set it still is rather
+        than crashing the tab.
+        """
+        fields = set(Recommendation.__dataclass_fields__)
+        kept = []
+        for raw in payload.get("recommendations", []):
+            if raw.get("basis") not in (None, "analysis", "reputation"):
+                continue
+            kept.append(Recommendation(**{k: v for k, v in raw.items() if k in fields}))
         return cls(
             generated_at=payload.get("generated_at", ""),
             model=payload.get("model", ""),
             summary=payload.get("summary", ""),
-            recommendations=[Recommendation(**r) for r in payload.get("recommendations", [])],
-            used_trends=bool(payload.get("used_trends", False)),
+            recommendations=kept,
             used_reputation=bool(payload.get("used_reputation", False)),
         )
 
@@ -298,70 +278,16 @@ def _known_features(report: dict) -> set[str]:
     return ids
 
 
-# What travels into the prompt: standings, directions and the benchmark scope,
-# never the raw weekly points, so the model cannot read a level and turn it
-# into a target.
-def _trends_digest(trends: dict, report: dict) -> str | None:
-    """The slice of the Trends payload the model is allowed to see.
-
-    Context, not evidence: standings and directions, never a reason. Only the
-    banks this run captured, and only the ones with enough search volume to
-    read - a flagged brand carries no trajectory into the prompt at all.
-    Returns None when there is nothing relevant, which is what makes the
-    caller fall back cleanly.
-    """
-    captured = list(report.get("scope", {}).get("banks") or [])
-    share = trends.get("shareOfSearch") or {}
-    ranking = share.get("ranking") or []
-    if not captured or not ranking:
-        return None
-
-    insights = share.get("insights") or {}
-    trajectory = trends.get("trajectory") or {}
-    directions = {
-        row["bank"]: row
-        for row in trajectory.get("banks", [])
-        if row.get("periodShares")
-    }
-
-    standings = [
-        {
-            "bank": row["bank"],
-            "share_pct": row["sharePct"],
-            "rank": row["rank"],
-            "low_confidence": row["lowConfidence"],
-            "direction": (directions.get(row["bank"]) or {}).get("direction"),
-            "change_pts_over_period": (directions.get(row["bank"]) or {}).get("deltaPts"),
-        }
-        for row in ranking
-    ]
-
-    payload = {
-        "window": share.get("window"),
-        "captured_banks": captured,
-        "brand_search_standings": standings,
-        "segment_shares_pct": {
-            group["label"]: group["sharePct"]
-            for group in insights.get("segments", {}).get("groups", [])
-        },
-        "periods": [p["label"] for p in trajectory.get("periods", [])],
-        "benchmark_scope": trajectory.get("benchmark"),
-        "low_confidence_banks": share.get("lowConfidence", []),
-        "guardrail": trends.get("guardrail"),
-    }
-    return json.dumps(payload, ensure_ascii=False, indent=2)
-
-
 def _reputation_digest(report: dict) -> str | None:
     """The slice of the reputation dashboard the model is allowed to see.
 
-    sieg 21/09. Unlike trends, reputation needs no separate payload argument:
+    sieg 21/09. Reputation needs no separate payload argument:
     `report["reputation"]` already carries `build_dashboard()`'s output (see
     export_web_report.py). Only banks this run actually compared, and only
     ones with at least one classified theme, so the model never reasons about
     a bank reputation.py could not fetch anything for. Returns None when
-    reputation was never configured or nothing covers this run's banks - same
-    fall-back-cleanly pattern as `_trends_digest`.
+    reputation was never configured or nothing covers this run's banks, which
+    is what makes the caller fall back cleanly.
     """
     dashboard = report.get("reputation") or {}
     if not dashboard.get("available"):
@@ -397,8 +323,6 @@ def parse_response(raw: str) -> RecommendationSetModel:
 def build_recommendations(
     report: dict,
     *,
-    include_trends: bool = False,
-    trends: dict | None = None,
     include_reputation: bool = False,
     retries: int = 1,
 ) -> RecommendationSet:
@@ -408,22 +332,11 @@ def build_recommendations(
     recommendation still stands on its prose, and silently keeping a phantom
     feature id would let the UI link to evidence that does not exist.
 
-    When `include_trends` is set, `trends` (the Trends tab payload) is sliced to
-    a recent, captured-banks-only digest and added to the prompt as CONTEXT. The
-    model is told to add trends recommendations on top of the analysis ones; they
-    come back with `basis="trends"` and cannot cite page features.
-
     When `include_reputation` is set (sieg 21/09), `report["reputation"]` - already
     part of the report, no separate argument needed - is sliced the same way and
     added as a second, independent CONTEXT block. Those recommendations come back
     with `basis="reputation"` and cannot cite page features either.
     """
-    trends_digest = _trends_digest(trends, report) if (include_trends and trends) else None
-    if include_trends and not trends_digest:
-        raise LLMExtractionError(
-            "trends context was requested but no trends data covers this run's banks"
-        )
-
     reputation_digest = _reputation_digest(report) if include_reputation else None
     if include_reputation and not reputation_digest:
         raise LLMExtractionError(
@@ -434,18 +347,13 @@ def build_recommendations(
         "Analysis of Belgian bank campaign pages, measured on the same features "
         "for every bank:\n\n" + _digest(report)
     )
-    if trends_digest:
-        prompt += (
-            "\n\nGoogle Trends search-interest context (Belgium) - CONTEXT ONLY, "
-            "not performance data:\n\n" + trends_digest
-        )
     if reputation_digest:
         prompt += (
             "\n\nRecent news headline themes (Belgium) - CONTEXT ONLY, never "
             "sentiment or performance data:\n\n" + reputation_digest
         )
 
-    system_prompt = _system_prompt(with_trends=bool(trends_digest), with_reputation=bool(reputation_digest))
+    system_prompt = _system_prompt(with_reputation=bool(reputation_digest))
     last_error: Exception | None = None
     for _ in range(retries + 1):
         raw, model_id = _call_llm(prompt, system_prompt=system_prompt, timeout=180)
@@ -466,7 +374,6 @@ def build_recommendations(
                 features=[f for f in dict.fromkeys(r.features) if f in known] or list(dict.fromkeys(r.features)),
                 page_targets=list(dict.fromkeys(r.page_targets)),
                 basis=r.basis,
-                market_context=(r.market_context or "").strip() or None,
                 reputation_context=(r.reputation_context or "").strip() or None,
             )
             for i, r in enumerate(parsed.recommendations)
@@ -476,7 +383,6 @@ def build_recommendations(
             model=model_id,
             summary=parsed.summary.strip(),
             recommendations=recommendations,
-            used_trends=bool(trends_digest),
             used_reputation=bool(reputation_digest),
         )
 
@@ -491,6 +397,5 @@ def select(recommendation_set: RecommendationSet, selected_ids: list[str]) -> Re
         model=recommendation_set.model,
         summary=recommendation_set.summary,
         recommendations=[r for r in recommendation_set.recommendations if r.id in wanted],
-        used_trends=recommendation_set.used_trends,
         used_reputation=recommendation_set.used_reputation,
     )
