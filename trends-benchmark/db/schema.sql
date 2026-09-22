@@ -19,21 +19,6 @@ CREATE TABLE IF NOT EXISTS products (
     term_count INTEGER NOT NULL
 );
 
--- anomaly_type: 'isolated_spike' (a single flagged week) or
--- 'sustained_trend' (two or more consecutive flagged weeks). See
--- analysis/anomaly_detection.py for the exact detection logic.
-CREATE TABLE IF NOT EXISTS anomalies (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_id TEXT NOT NULL,
-    term TEXT NOT NULL,
-    bank TEXT NOT NULL,
-    date TEXT NOT NULL,
-    value INTEGER NOT NULL,
-    anomaly_type TEXT NOT NULL CHECK (anomaly_type IN ('isolated_spike', 'sustained_trend')),
-    deviation_score REAL NOT NULL,
-    UNIQUE (product_id, term, date)
-);
-
 -- Term resolution audit trail for the new-bank extension (six-bank rollout):
 -- one row per candidate term tested by collectors/term_resolver.py, for each
 -- pytrends call it appeared in. Read by data/term_validation_report.md and
@@ -70,7 +55,7 @@ CREATE TABLE IF NOT EXISTS term_validation (
 -- generic-brand sheets onto one common 0-100 scale via their shared ING/KBC
 -- anchor, then derives each bank's weekly share of the 9-bank panel. Fully
 -- derived from trends_data - wiped and recomputed on every run, same
--- refresh policy as `anomalies`.
+-- refresh policy: wiped and recomputed on every run.
 CREATE TABLE IF NOT EXISTS brand_share_of_search (
     bank TEXT NOT NULL,
     date TEXT NOT NULL,

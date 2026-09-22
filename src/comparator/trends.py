@@ -1,10 +1,9 @@
 """Bridge to Dan's Google Trends benchmark - search interest as CONTEXT.
 
 steph 16/09, new module. trends-benchmark/ measures weekly Google search
-interest per bank per product in Belgium and flags anomalous spikes. This module
-joins that to the campaign dataset so a bank profile can carry the market
-attention around its product, and degrades to nothing when the exports are
-absent.
+interest per bank per product in Belgium. This module joins that to the
+campaign dataset so a bank profile can carry the market attention around its
+product, and degrades to nothing when the exports are absent.
 
 WHAT THIS IS NOT, and the reason this docstring leads with it.
 
@@ -15,10 +14,10 @@ into the deck:
 
   * It measures what people searched for, not what any campaign achieved. Dan's
     own handoff doc is explicit that the pipeline "ne collecte aucune donnée
-    publicitaire" and that spikes are dates to verify by hand.
-  * The pages we captured are today's pages. A search spike in 2023 was caused
-    by a campaign we never saw. Joining a 2026 page to a 2023 spike and calling
-    it an effect would be the single most embarrassing error available to us.
+    publicitaire".
+  * The pages we captured are today's pages. A movement in 2023 was driven by a
+    campaign we never saw. Joining a 2026 page to a 2023 movement and calling it
+    an effect would be the single most embarrassing error available to us.
   * Coverage was ING, KBC and CBC only for most of this project's life. Dan's
     second wave (21/09) resolved a search term for every remaining bank, so all
     14 now share one scale - but six of them sit below the measurable floor (see
@@ -35,7 +34,7 @@ number neither brand has.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import numpy as np
@@ -79,19 +78,8 @@ TERM_DISPLAY = {
     "/g/121yyfq9": "VDK Bank",
 }
 
-# Anomaly-detection thresholds - Dan's, ported verbatim, not re-tuned here. A
-# week is flagged only when it clears BOTH its own 5-year baseline (z-score)
-# and its normal seasonal level for that calendar month.
-Z_SCORE_THRESHOLD = 1.5
-SEASONAL_RATIO_THRESHOLD = 1.3
-ANOMALY_TYPES = {
-    "isolated_spike": "Isolated spike",
-    "sustained_trend": "Sustained trend",
-}
-
-# Structural market events. DISPLAY ONLY: anomaly detection never reads these,
-# so a break is still detected on its own merits and merely annotated after.
-# Mirror of Dan's config.KNOWN_EVENTS.
+# Structural market events. DISPLAY ONLY: they annotate the weekly series and
+# take no part in any computation. Mirror of Dan's config.KNOWN_EVENTS.
 KNOWN_EVENTS = [
     {"bank": "BNPPF", "date": "2024-01-22",
      "label": "Integration of bpost banque (about 1 million clients migrated)"},
@@ -149,6 +137,57 @@ SHARE_ANCHOR_BANKS = ("ING", "KBC")
 # quantised into a handful of integers and its share is a rounding artefact as
 # much as a fact. Reported alongside the number, never used to drop a bank.
 MEASURABLE_PEAK_FLOOR = 10
+
+# The four banks Belgian market commentary calls the big four. A market
+# convention, NOT a result derived from this data - which is why the roll-up
+# below checks it against the computed ranking instead of assuming they match.
+BIG_FOUR_KEYS = ("kbc", "belfius", "ing", "bnp_paribas_fortis")
+
+# Presentation convention, not a significance test. Two adjacent ranks closer
+# than this are shown as level: chaining across requests and Google's integer
+# 0-100 scale cannot order a gap that small. A systematic one-unit difference
+# on a weekly series moves a share by more than this.
+TIE_THRESHOLD_PTS = 0.5
+
+SEGMENT_IDS = ("big_four", "other_incumbents", "challengers")
+SEGMENT_LABELS = {
+    "big_four": "big four",
+    "other_incumbents": "other incumbents",
+    "challengers": "challengers",
+}
+
+# The only facts on the Trends tab that are not computed from the payload.
+# Everything else in the UI copy is derived at build time, so this registry is
+# the single place a non-computed claim may enter - each one carrying its
+# source and dates, which the UI always renders next to the claim.
+EXTERNAL_REFERENCES = [
+    {
+        "id": "revolut_be_customers",
+        "claim": (
+            "Revolut reported more than 1 million private customers in Belgium, "
+            "adding around 25,000 per month."
+        ),
+        "value": "more than 1 million private customers",
+        "source": "Belga News Agency",
+        "url": "https://www.belganewsagency.eu/revolut-passes-1-million-customers-in-belgium",
+        "published": "2026-03-11",
+        "retrieved": "2026-09-21",
+        "appliesToBank": "Revolut",
+    },
+    {
+        "id": "big_four_deposits",
+        "claim": (
+            "KBC, BNP Paribas Fortis, Belfius and ING Belgium account for the vast "
+            "majority of retail deposits in Belgium."
+        ),
+        "value": None,
+        "source": "Banks.eu",
+        "url": "https://banks.eu/banks/belgium",
+        "published": "2026-04-30",
+        "retrieved": "2026-09-21",
+        "appliesToBank": None,
+    },
+]
 
 
 class TrendsUnavailable(RuntimeError):
@@ -283,14 +322,13 @@ def context_or_none(df: pd.DataFrame, export_dir: str | Path = DEFAULT_EXPORT_DI
 
 
 # -----------------------------------------------------------------------------
-# The full Trends tab - brand search series and anomalies.
+# The full Trends tab - brand search series.
 # -----------------------------------------------------------------------------
 # steph 18/09. The module above answers one narrow question ("is interest in
 # this bank/product unusually high lately?") and feeds search_interest_context.md.
-# Dan's export carries more: a five-year weekly series per term and the spikes he
-# detects. That is a tab of its own, and the guardrails in this file's docstring
-# apply to all of it: context, never an outcome, never regressed onto a page
-# feature.
+# Dan's export carries more: a five-year weekly series per term. That is a tab of
+# its own, and the guardrails in this file's docstring apply to all of it:
+# context, never an outcome, never regressed onto a page feature.
 #
 # dan 21/09: the campaign catalogue that used to live here is GONE. It matched
 # real ad campaigns to detected spikes and scored them, which reads as "this
@@ -355,69 +393,6 @@ def load_series(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
     )
 
 
-def detect_anomalies(series: pd.DataFrame) -> list[dict]:
-    """Dan's rule, ported: flag a week, then group consecutive flags.
-
-    A point must clear BOTH thresholds: z >= 1.5 against the term's own history
-    and value / seasonal-month-mean >= 1.3. A run of consecutive flagged weeks
-    is an `isolated_spike` (length 1) or a `sustained_trend` (length >= 2). A
-    flat or all-zero series has no anomaly, by construction.
-
-    Kept identical to `analysis/anomaly_detection.py` so this tab and Dan's
-    Streamlit app cannot report different spikes for the same series.
-    """
-    series = series.sort_values("date").reset_index(drop=True)
-    values = series["value"]
-    if values.empty:
-        return []
-
-    overall_mean = float(values.mean())
-    overall_std = float(values.std(ddof=0))
-    if overall_std == 0 or overall_mean == 0:
-        return []
-
-    months = series["date"].dt.month
-    seasonal_mean = values.groupby(months).transform("mean")
-    z_scores = (values - overall_mean) / overall_std
-    seasonal_ratio = values / seasonal_mean.replace(0, np.nan)
-    is_candidate = (
-        (z_scores >= Z_SCORE_THRESHOLD) & (seasonal_ratio >= SEASONAL_RATIO_THRESHOLD)
-    ).fillna(False)
-
-    results: list[dict] = []
-    run_start: int | None = None
-    for i in range(len(series) + 1):
-        flagged = bool(is_candidate.iloc[i]) if i < len(series) else False
-        if flagged and run_start is None:
-            run_start = i
-        elif not flagged and run_start is not None:
-            run_indices = list(range(run_start, i))
-            kind = "isolated_spike" if len(run_indices) == 1 else "sustained_trend"
-            for idx in run_indices:
-                results.append({
-                    "date": series.loc[idx, "date"].strftime("%Y-%m-%d"),
-                    "value": int(series.loc[idx, "value"]),
-                    "type": kind,
-                    "label": ANOMALY_TYPES.get(kind, kind),
-                    "score": round(float(z_scores.iloc[idx]), 3),
-                })
-            run_start = None
-    return results
-
-
-def anomalies_frame(series: pd.DataFrame) -> pd.DataFrame:
-    """One row per detected anomaly, keyed by (product_id, term, bank)."""
-    rows: list[dict] = []
-    for (product_id, term, bank), group in series.groupby(
-        ["product_id", "term", "bank"], observed=True
-    ):
-        for anomaly in detect_anomalies(group[["date", "value"]]):
-            rows.append({"product_id": product_id, "term": term, "bank": bank, **anomaly})
-    return pd.DataFrame(
-        rows, columns=["product_id", "term", "bank", "date", "value", "type", "label", "score"]
-    )
-
-
 # -----------------------------------------------------------------------------
 # Share of search - every bank on one scale (steph 21/09)
 # -----------------------------------------------------------------------------
@@ -450,6 +425,7 @@ class ShareOfSearch:
     anchors: list[str]
     scale_factors: dict[str, float]
     low_confidence: list[str]
+    insights: dict = field(default_factory=dict)
 
     @property
     def available(self) -> bool:
@@ -482,8 +458,24 @@ class ShareOfSearch:
         return "\n".join(lines)
 
 
+def restrict_to_common_window(frame: pd.DataFrame) -> pd.DataFrame:
+    """Keep only the weeks where every bank in the panel has a point.
+
+    Dan's sheets were collected in two waves a week apart, so the first and last
+    weeks of the union carry a partial panel. A share is a share OF something:
+    computed on a partial panel it is arithmetically fine and substantively
+    wrong - the final week alone put one bank above 78% because only five of
+    fourteen banks were in its denominator.
+    """
+    if frame.empty:
+        return frame
+    per_date = frame.groupby("date")["bank"].nunique()
+    complete = per_date[per_date == per_date.max()].index
+    return frame[frame["date"].isin(complete)]
+
+
 def load_share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    """Dan's pre-chained weekly table. Raises TrendsUnavailable when absent."""
+    """Dan's pre-chained weekly table, on the common window. Raises when absent."""
     path = Path(export_dir) / "brand_share_of_search.csv"
     if not path.is_file():
         raise TrendsUnavailable(
@@ -494,7 +486,8 @@ def load_share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.Data
     frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
     for column in ("raw_value", "scale_factor", "rescaled_value", "share_pct"):
         frame[column] = pd.to_numeric(frame[column], errors="coerce")
-    return frame.dropna(subset=["date", "rescaled_value"]).sort_values("date")
+    frame = frame.dropna(subset=["date", "rescaled_value"]).sort_values("date")
+    return restrict_to_common_window(frame)
 
 
 def share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> ShareOfSearch | None:
@@ -536,7 +529,7 @@ def share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> ShareOfSearc
     factors = (
         frame.groupby("source_fiche")["scale_factor"].first().round(4).to_dict()
     )
-    return ShareOfSearch(
+    share = ShareOfSearch(
         ranking=ranking,
         window_start=frame["date"].min().strftime("%Y-%m-%d"),
         window_end=frame["date"].max().strftime("%Y-%m-%d"),
@@ -546,6 +539,173 @@ def share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> ShareOfSearc
         scale_factors={str(k): float(v) for k, v in factors.items()},
         low_confidence=weak,
     )
+    share.insights = share_insights(share)
+    return share
+
+
+# -----------------------------------------------------------------------------
+# Reading the ranking - segments, concentration, ties, per-bank sentences
+# -----------------------------------------------------------------------------
+# The ranking answers "who is first". Everything below answers "what shape is
+# this", and all of it is derived from the ranking the pipeline already
+# produced - no second definition of any number, and nothing the UI has to
+# restate as a literal. Change the data and every sentence changes with it.
+
+
+def _segment_of(key: str) -> str:
+    """big four (market convention) first, then this repo's incumbent split."""
+    if key in BIG_FOUR_KEYS:
+        return "big_four"
+    return "challengers" if category_for(key) == "challenger" else "other_incumbents"
+
+
+def _tie_groups(ranking: list[dict]) -> list[list[dict]]:
+    """Runs of consecutive ranks whose every adjacent gap is under the threshold.
+
+    A chain can hold more than two banks: A-B and B-C both under the threshold
+    makes one group of three, even where A-C is wider. That is the honest
+    reading of "too close to order" applied transitively.
+    """
+    if not ranking:
+        return []
+    groups: list[list[dict]] = []
+    current = [ranking[0]]
+    for previous, row in zip(ranking, ranking[1:]):
+        if previous["sharePct"] - row["sharePct"] < TIE_THRESHOLD_PTS:
+            current.append(row)
+        else:
+            if len(current) > 1:
+                groups.append(current)
+            current = [row]
+    if len(current) > 1:
+        groups.append(current)
+    return groups
+
+
+def _segment_rollup(ranking: list[dict]) -> dict:
+    groups = []
+    for segment_id in SEGMENT_IDS:
+        members = [r for r in ranking if _segment_of(r["key"]) == segment_id]
+        groups.append({
+            "id": segment_id,
+            "label": SEGMENT_LABELS[segment_id],
+            "sharePct": round(sum(r["sharePct"] for r in members), 2),
+            "count": len(members),
+            "members": [
+                {"bank": r["bank"], "key": r["key"], "sharePct": r["sharePct"]}
+                for r in members
+            ],
+        })
+
+    top_four = ranking[:4]
+    big_four_are_top_four = (
+        len(ranking) >= 4 and {r["key"] for r in top_four} == set(BIG_FOUR_KEYS)
+    )
+    return {
+        "groups": groups,
+        "bigFourAreTopFour": big_four_are_top_four,
+        "topFour": [
+            {"bank": r["bank"], "key": r["key"], "rank": r["rank"], "sharePct": r["sharePct"]}
+            for r in top_four
+        ],
+    }
+
+
+def _concentration(ranking: list[dict]) -> dict:
+    """HHI on the 0-10,000 scale, and the equally sized brand count it implies."""
+    hhi = sum(r["sharePct"] ** 2 for r in ranking)
+    return {
+        "hhi": round(hhi, 1),
+        "equivalentBrands": round(10_000 / hhi, 1) if hhi else None,
+    }
+
+
+def _bank_readings(ranking: list[dict], segments: dict) -> list[dict]:
+    segment_share = {g["id"]: g["sharePct"] for g in segments["groups"]}
+    tie_of: dict[str, list[dict]] = {}
+    for group in _tie_groups(ranking):
+        for row in group:
+            tie_of[row["key"]] = group
+
+    readings = []
+    for index, row in enumerate(ranking):
+        above = ranking[index - 1] if index else None
+        group = tie_of.get(row["key"])
+        segment_id = _segment_of(row["key"])
+        own_segment = segment_share.get(segment_id) or 0.0
+        readings.append({
+            "rank": row["rank"],
+            "bank": row["bank"],
+            "key": row["key"],
+            "sharePct": row["sharePct"],
+            "gapToAbovePts": None if above is None else round(above["sharePct"] - row["sharePct"], 2),
+            "bankAbove": None if above is None else above["bank"],
+            # Spread across the whole tie group, so a three-bank chain reports
+            # how far apart its ends are rather than one adjacent step.
+            "tieWith": [] if not group else [m["bank"] for m in group if m["key"] != row["key"]],
+            "tieSpreadPts": None if not group else round(
+                group[0]["sharePct"] - group[-1]["sharePct"], 2
+            ),
+            "segment": segment_id,
+            "segmentLabel": SEGMENT_LABELS[segment_id],
+            "pctOfSegment": round(row["sharePct"] / own_segment * 100, 1) if own_segment else None,
+            "lowConfidence": row["lowConfidence"],
+        })
+    return readings
+
+
+def _challenger_focus(ranking: list[dict], segments: dict, low_confidence: list[str]) -> dict | None:
+    """The largest challenger, and how far the incumbents sit above it."""
+    challengers = [r for r in ranking if _segment_of(r["key"]) == "challengers"]
+    if not challengers:
+        return None
+    leader = challengers[0]
+    challenger_total = next(
+        g["sharePct"] for g in segments["groups"] if g["id"] == "challengers"
+    )
+    reference = next(
+        (ref for ref in EXTERNAL_REFERENCES if ref["appliesToBank"] == leader["bank"]), None
+    )
+    return {
+        "bank": leader["bank"],
+        "key": leader["key"],
+        "rank": leader["rank"],
+        "sharePct": leader["sharePct"],
+        "pctOfChallengerAttention": (
+            round(leader["sharePct"] / challenger_total * 100, 1) if challenger_total else None
+        ),
+        "incumbentsAbove": sum(
+            1 for r in ranking
+            if r["rank"] < leader["rank"] and _segment_of(r["key"]) != "challengers"
+        ),
+        "lowConfidenceBanks": list(low_confidence),
+        "reference": reference,
+    }
+
+
+def share_insights(share: ShareOfSearch) -> dict:
+    """Everything the Trends tab needs to read the ranking out loud."""
+    ranking = share.ranking
+    segments = _segment_rollup(ranking)
+    return {
+        "window": {
+            "firstDate": share.window_start,
+            "lastDate": share.window_end,
+            "weeks": share.weeks,
+            "banks": len(ranking),
+            "fiches": len(share.scale_factors),
+        },
+        "segments": segments,
+        "concentration": _concentration(ranking),
+        "ties": {
+            "thresholdPts": TIE_THRESHOLD_PTS,
+            "groups": [[r["bank"] for r in g] for g in _tie_groups(ranking)],
+        },
+        "banks": _bank_readings(ranking, segments),
+        "challengerFocus": _challenger_focus(ranking, segments, share.low_confidence),
+        "measurablePeakFloor": MEASURABLE_PEAK_FLOOR,
+        "references": EXTERNAL_REFERENCES,
+    }
 
 
 def _share_headline(share: ShareOfSearch) -> dict:
@@ -625,6 +785,338 @@ def _display_for_key(key: str) -> str:
     return key.replace("_", " ").title()
 
 
+# -----------------------------------------------------------------------------
+# How attention moved - trajectory, rank stability, benchmark scope
+# -----------------------------------------------------------------------------
+# The aggregated ranking above answers "who holds attention". This answers
+# "which way is it moving", on the same volume-weighted basis, so the two can
+# never disagree. Movement is described, never explained: this data shows that
+# attention moved, not why.
+
+# One period is one year of weekly points. Blocks are anchored on the LAST week
+# and counted backwards, so the most recent period is always complete and any
+# short remainder falls at the start, where it is dropped rather than compared
+# against full years.
+PERIOD_WEEKS = 52
+
+# Presentation convention, not a significance test: a relative slope inside
+# this band reads as "flat". Expressed as a percentage of the bank's own mean
+# share so a small brand and a large one are judged on the same scale.
+MOMENTUM_FLAT_BAND_PCT = 2.0
+
+# Google Trends changed how it collects data on this date. The first period
+# straddles it, so every trajectory is recomputed without that period and the
+# two directions are compared - a trend that only survives with it is flagged.
+METHOD_CHANGE_DATE = "2022-01-01"
+
+# The bank this tab benchmarks FOR. Never a benchmark candidate itself.
+BENCHMARK_SUBJECT = "ING"
+
+
+def _period_blocks(dates: list[pd.Timestamp]) -> tuple[list[dict], int]:
+    """52-week blocks anchored on the last week, counted backwards."""
+    ordered = sorted(set(dates))
+    full = len(ordered) // PERIOD_WEEKS
+    dropped = len(ordered) - full * PERIOD_WEEKS
+    blocks = []
+    for index in range(full):
+        start = dropped + index * PERIOD_WEEKS
+        chunk = ordered[start:start + PERIOD_WEEKS]
+        blocks.append({
+            "index": index,
+            "label": f"{chunk[0].strftime('%b %Y')}–{chunk[-1].strftime('%b %Y')}",
+            "start": chunk[0].strftime("%Y-%m-%d"),
+            "end": chunk[-1].strftime("%Y-%m-%d"),
+            "dates": chunk,
+        })
+    return blocks, dropped
+
+
+def _shares_per_period(frame: pd.DataFrame, blocks: list[dict], column: str) -> dict[str, list[float]]:
+    """Volume-weighted share per period: sum the values, then divide.
+
+    Never a mean of weekly shares - a near-zero-volume week would otherwise
+    weigh as much as a peak week, the same trap the aggregate avoids.
+    """
+    names = sorted(frame[column].dropna().unique())
+    series: dict[str, list[float]] = {name: [] for name in names}
+    for block in blocks:
+        window = frame[frame["date"].isin(block["dates"])]
+        total = float(window["rescaled_value"].sum())
+        sums = window.groupby(column)["rescaled_value"].sum()
+        for name in names:
+            value = float(sums.get(name, 0.0))
+            series[name].append(round(value / total * 100, 2) if total else 0.0)
+    return series
+
+
+def _ols_slope(values: list[float]) -> float | None:
+    """Points per period, i.e. per year. None below two periods."""
+    if len(values) < 2:
+        return None
+    return float(np.polyfit(range(len(values)), values, 1)[0])
+
+
+def _direction(relative_slope: float | None) -> str | None:
+    if relative_slope is None:
+        return None
+    if relative_slope > MOMENTUM_FLAT_BAND_PCT:
+        return "up"
+    if relative_slope < -MOMENTUM_FLAT_BAND_PCT:
+        return "down"
+    return "flat"
+
+
+def _relative_slope(values: list[float]) -> float | None:
+    slope = _ols_slope(values)
+    if slope is None:
+        return None
+    mean = sum(values) / len(values)
+    return round(slope / mean * 100, 1) if mean else None
+
+
+def _trajectory(shares: list[float]) -> dict:
+    """Level change, momentum, and whether the momentum survives the 2022 cut."""
+    relative = _relative_slope(shares)
+    without_first = _relative_slope(shares[1:]) if len(shares) > 2 else None
+    direction = _direction(relative)
+    slope = _ols_slope(shares)
+    return {
+        "periodShares": shares,
+        "meanSharePct": round(sum(shares) / len(shares), 2),
+        "deltaPts": round(shares[-1] - shares[0], 2),
+        "slopePtsPerYear": None if slope is None else round(slope, 3),
+        "relativeSlopePctPerYear": relative,
+        "relativeSlopeExFirstPeriod": without_first,
+        "direction": direction,
+        "robust": without_first is not None and direction == _direction(without_first),
+    }
+
+
+def _ranked_with_ties(shares: dict[str, float]) -> dict[str, int]:
+    """Tie-group rank: every member of a tie group carries the group's top rank,
+    so a reshuffle inside a group is invisible to rank comparisons.
+    """
+    ordered = sorted(shares.items(), key=lambda kv: kv[1], reverse=True)
+    ranks: dict[str, int] = {}
+    group_rank = 1
+    for index, (bank, share) in enumerate(ordered):
+        if index and ordered[index - 1][1] - share >= TIE_THRESHOLD_PTS:
+            group_rank = index + 1
+        ranks[bank] = group_rank
+    return ranks
+
+
+def _rank_stability(measurable: list[str], shares: dict[str, list[float]], blocks: list[dict]) -> dict:
+    per_period = [
+        _ranked_with_ties({bank: shares[bank][i] for bank in measurable})
+        for i in range(len(blocks))
+    ]
+
+    banks = []
+    for bank in measurable:
+        ranks = [p[bank] for p in per_period]
+        banks.append({
+            "bank": bank,
+            "ranks": ranks,
+            "bestRank": min(ranks),
+            "worstRank": max(ranks),
+            "changes": sum(1 for a, b in zip(ranks, ranks[1:]) if a != b),
+        })
+
+    first, last = per_period[0], per_period[-1]
+    overtakes, kept, total = [], 0, 0
+    for i, a in enumerate(measurable):
+        for b in measurable[i + 1:]:
+            total += 1
+            before, after = first[a] - first[b], last[a] - last[b]
+            if before * after > 0 or before == after == 0:
+                kept += 1
+            # A pair tied in either period was never ordered, so it cannot
+            # have been overtaken.
+            elif before != 0 and after != 0:
+                ahead, behind = (a, b) if after < 0 else (b, a)
+                overtakes.append({"bank": ahead, "passed": behind})
+
+    return {
+        "banks": sorted(banks, key=lambda r: r["ranks"][-1]),
+        "overtakes": overtakes,
+        "pairsKept": kept,
+        "pairsTotal": total,
+    }
+
+
+def _benchmark_entry(bank: str, roles: list[str], shares: dict, trajectories: dict, ing_last: float) -> dict:
+    trajectory = trajectories[bank]
+    last = shares[bank][-1]
+    return {
+        "bank": bank,
+        "roles": roles,
+        "lastSharePct": last,
+        "deltaPts": trajectory["deltaPts"],
+        "relativeSlopePctPerYear": trajectory["relativeSlopePctPerYear"],
+        "direction": trajectory["direction"],
+        "robust": trajectory["robust"],
+        "gapToSubjectPts": round(last - ing_last, 2),
+    }
+
+
+def _benchmark_scope(
+    measurable: list[str], shares: dict[str, list[float]], trajectories: dict, low_confidence: list[str]
+) -> dict:
+    subject_shares = shares.get(BENCHMARK_SUBJECT)
+    if subject_shares is None:
+        return {}
+    ing_last = subject_shares[-1]
+
+    def key_of(bank: str) -> str:
+        return next((k for code, k in BANK_MAP.items() if BANK_DISPLAY.get(code) == bank), "")
+
+    traditional = [
+        b for b in measurable
+        if b != BENCHMARK_SUBJECT and category_for(key_of(b)) == "traditional"
+    ]
+    challengers = [b for b in measurable if category_for(key_of(b)) == "challenger"]
+
+    benchmarks = []
+    if traditional:
+        attention = max(traditional, key=lambda b: shares[b][-1])
+        rising = [b for b in traditional if trajectories[b]["direction"] == "up"]
+        momentum = (
+            max(rising, key=lambda b: trajectories[b]["relativeSlopePctPerYear"])
+            if rising else None
+        )
+        if momentum == attention:
+            benchmarks.append(
+                _benchmark_entry(attention, ["attention", "momentum"], shares, trajectories, ing_last)
+            )
+        else:
+            benchmarks.append(
+                _benchmark_entry(attention, ["attention"], shares, trajectories, ing_last)
+            )
+            if momentum:
+                benchmarks.append(
+                    _benchmark_entry(momentum, ["momentum"], shares, trajectories, ing_last)
+                )
+
+    challenger_benchmark = None
+    if challengers:
+        rising = [b for b in challengers if trajectories[b]["direction"] == "up"]
+        pick = (
+            max(rising, key=lambda b: trajectories[b]["relativeSlopePctPerYear"])
+            if rising else max(challengers, key=lambda b: shares[b][-1])
+        )
+        challenger_benchmark = _benchmark_entry(pick, ["challenger"], shares, trajectories, ing_last)
+        challenger_benchmark["onlyMeasurable"] = len(challengers) == 1
+
+    excluded = [
+        b for b in low_confidence if category_for(key_of(b)) == "challenger"
+    ]
+    subject = trajectories[BENCHMARK_SUBJECT]
+    return {
+        "subject": BENCHMARK_SUBJECT,
+        "traditionalCandidates": len(traditional),
+        "challengerCandidates": len(challengers),
+        "benchmarks": benchmarks,
+        "challenger": challenger_benchmark,
+        "excludedChallengers": excluded,
+        "subjectContext": {
+            "bank": BENCHMARK_SUBJECT,
+            "lastSharePct": ing_last,
+            "deltaPts": subject["deltaPts"],
+            "relativeSlopePctPerYear": subject["relativeSlopePctPerYear"],
+            "direction": subject["direction"],
+            "robust": subject["robust"],
+        },
+    }
+
+
+def attention_trajectory(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> dict | None:
+    """How each bank's and each segment's share moved, period by period.
+
+    Low-volume brands are computed but never exposed for display: their weekly
+    values move in whole steps of a few units, so a trajectory drawn through
+    them would be a picture of rounding.
+    """
+    share = share_of_search(export_dir)
+    if share is None or not share.ranking:
+        return None
+    frame = load_share_of_search(export_dir)
+
+    blocks, dropped_weeks = _period_blocks(list(frame["date"].unique()))
+    if len(blocks) < 2:
+        return None
+
+    frame = frame.assign(
+        display=frame["bank"].map(lambda code: BANK_DISPLAY.get(code, code)),
+        segment=frame["bank"].map(
+            lambda code: _segment_of(BANK_MAP.get(code, str(code).lower()))
+        ),
+    )
+
+    bank_shares = _shares_per_period(frame, blocks, "display")
+    segment_shares = _shares_per_period(frame, blocks, "segment")
+    trajectories = {bank: _trajectory(values) for bank, values in bank_shares.items()}
+
+    low_confidence = list(share.low_confidence)
+    aggregate_of = {row["bank"]: row["sharePct"] for row in share.ranking}
+    measurable = [
+        row["bank"] for row in share.ranking if row["bank"] not in low_confidence
+    ]
+
+    banks_payload = []
+    for row in share.ranking:
+        bank = row["bank"]
+        flagged = bank in low_confidence
+        entry = {
+            "bank": bank,
+            "key": row["key"],
+            "aggregatedSharePct": aggregate_of[bank],
+            "lowConfidence": flagged,
+        }
+        # A flagged brand carries no per-period figure into the payload at all,
+        # so no view can render one by accident.
+        entry.update(
+            {"periodShares": None, "deltaPts": None, "relativeSlopePctPerYear": None,
+             "direction": None, "robust": None}
+            if flagged else
+            {k: trajectories[bank][k] for k in
+             ("periodShares", "deltaPts", "relativeSlopePctPerYear", "direction", "robust")}
+        )
+        banks_payload.append(entry)
+    banks_payload.sort(
+        key=lambda e: (e["periodShares"][-1] if e["periodShares"] else -1), reverse=True
+    )
+
+    movers = [
+        e for e in banks_payload
+        if e["deltaPts"] is not None and category_for(e["key"]) == "traditional"
+    ]
+    return {
+        "periods": [
+            {k: b[k] for k in ("index", "label", "start", "end")} for b in blocks
+        ],
+        "droppedWeeks": dropped_weeks,
+        "weeksPerPeriod": PERIOD_WEEKS,
+        "flatBandPct": MOMENTUM_FLAT_BAND_PCT,
+        "methodChangeDate": METHOD_CHANGE_DATE,
+        "segments": [
+            {
+                "id": segment_id,
+                "label": SEGMENT_LABELS[segment_id],
+                **_trajectory(segment_shares[segment_id]),
+            }
+            for segment_id in SEGMENT_IDS if segment_id in segment_shares
+        ],
+        "banks": banks_payload,
+        "biggestRise": max(movers, key=lambda e: e["deltaPts"]) if movers else None,
+        "biggestFall": min(movers, key=lambda e: e["deltaPts"]) if movers else None,
+        "rankStability": _rank_stability(measurable, bank_shares, blocks),
+        "benchmark": _benchmark_scope(measurable, bank_shares, trajectories, low_confidence),
+        "lowConfidenceBanks": low_confidence,
+    }
+
+
 def build_trends_dashboard(
     captured: pd.DataFrame | None = None,
     export_dir: str | Path | None = None,
@@ -642,17 +1134,6 @@ def build_trends_dashboard(
         return None
     if series.empty:
         return None
-
-    anomalies = anomalies_frame(series)
-    anomaly_index: dict[tuple[str, str], list[dict]] = {}
-    for row in anomalies.to_dict("records"):
-        anomaly_index.setdefault((row["product_id"], row["term"]), []).append({
-            "date": row["date"],
-            "value": int(row["value"]),
-            "type": row["type"],
-            "label": row["label"],
-            "score": float(row["score"]),
-        })
 
     banks: list[dict] = []
     present_codes = [c for c in BANK_DISPLAY if c in set(series["bank"])]
@@ -675,7 +1156,6 @@ def build_trends_dashboard(
                     "label": display_term(term),
                     "language": str(term_rows["language"].iloc[0]),
                     "points": points,
-                    "anomalies": anomaly_index.get((product_id, term), []),
                 })
             products.append({
                 "id": product_id,
@@ -699,9 +1179,11 @@ def build_trends_dashboard(
     uncovered = [k for k in captured_keys if k not in present_keys]
 
     share = share_of_search(export_dir)
+    trajectory = attention_trajectory(export_dir)
 
     return {
         "available": True,
+        "trajectory": trajectory,
         "shareOfSearch": None if share is None else {
             "ranking": share.ranking,
             "series": share_timeseries(export_dir),
@@ -726,6 +1208,7 @@ def build_trends_dashboard(
                 ),
             },
             "lowConfidence": share.low_confidence,
+            "insights": share.insights,
             "caveat": (
                 "A share is a share of ATTENTION, not of customers, revenue or market. It says "
                 "which brand people looked up, nothing about why or with what result."

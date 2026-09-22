@@ -73,50 +73,44 @@ _RAW = json.dumps({
 })
 
 
-# A trimmed Trends payload: one captured covered bank with a recent and an old
-# anomaly, one bank Dan covers but this run never captured, and one bank with no
-# trends data at all. The digest must keep only the first, recent one.
+# A trimmed Trends payload: the share-of-search standings, the segment split and
+# the trajectory the digest is built from. Argenta is covered by the benchmark
+# but never captured by this run; bunq is flagged and must stay out of the
+# prompt as a trajectory.
 _TRENDS = {
     "window": {"start": "2021-01-01", "end": "2026-08-01"},
     "coverage": {"covered": ["ING", "KBC"], "uncovered": ["Argenta"]},
-    "banks": [
-        {"key": "ing", "name": "ING", "segment": "traditional", "products": [
-            {"id": "savings_account", "label": "Savings account", "terms": [
-                {"term": "ing epargne", "label": "ING savings", "language": "fr", "points": [],
-                 "anomalies": [
-                     {"date": "2026-03-01", "value": 88, "type": "sustained_trend",
-                      "label": "Sustained trend", "score": 2.1},
-                     {"date": "2019-01-01", "value": 70, "type": "isolated_spike",
-                      "label": "Isolated spike", "score": 1.6},
-                 ]},
+    "banks": [],
+    "shareOfSearch": {
+        "window": {"start": "2021-01-01", "end": "2026-08-01"},
+        "lowConfidence": ["bunq"],
+        "ranking": [
+            {"bank": "KBC", "key": "kbc", "rank": 1, "sharePct": 55.0, "lowConfidence": False},
+            {"bank": "ING", "key": "ing", "rank": 2, "sharePct": 44.0, "lowConfidence": False},
+            {"bank": "bunq", "key": "bunq", "rank": 3, "sharePct": 1.0, "lowConfidence": True},
+        ],
+        "insights": {
+            "segments": {"groups": [
+                {"id": "big_four", "label": "big four", "sharePct": 99.0},
+                {"id": "challengers", "label": "challengers", "sharePct": 1.0},
             ]},
-        ]},
-        {"key": "belfius", "name": "Belfius", "segment": "traditional", "products": [
-            {"id": "savings_account", "label": "Savings account", "terms": [
-                {"term": "belfius epargne", "label": "Belfius savings", "language": "fr", "points": [],
-                 "anomalies": [
-                     {"date": "2026-02-01", "value": 60, "type": "isolated_spike",
-                      "label": "Isolated spike", "score": 1.5},
-                 ]},
-            ]},
-        ]},
-    ],
+        },
+    },
+    "trajectory": {
+        "periods": [{"label": "Sep 2024–Sep 2025"}, {"label": "Sep 2025–Sep 2026"}],
+        "banks": [
+            {"bank": "KBC", "periodShares": [56.0, 54.0], "deltaPts": -2.0, "direction": "down"},
+            {"bank": "ING", "periodShares": [43.0, 45.0], "deltaPts": 2.0, "direction": "up"},
+            {"bank": "bunq", "periodShares": None, "deltaPts": None, "direction": None},
+        ],
+        "benchmark": {"subject": "ING", "benchmarks": [{"bank": "KBC", "roles": ["attention"]}]},
+    },
     "events": [
         {"bank": "ING", "key": "ing", "date": "2026-02-01", "label": "ING savings push"},
-        {"bank": "Belfius", "key": "belfius", "date": "2026-02-01", "label": "Belfius event"},
     ],
-    "campaigns": {"matches": [
-        {"campaignId": 1, "campaignName": "ING Save", "campaignBank": "ING",
-         "productId": "savings_account", "term": "ING savings", "date": "2026-03-02",
-         "type": "sustained_trend", "label": "Sustained trend", "score": 2.1, "delayDays": 1,
-         "seasonalConfound": False, "contribution": 0.5},
-        {"campaignId": 2, "campaignName": "Belfius Save", "campaignBank": "Belfius",
-         "productId": "savings_account", "term": "Belfius savings", "date": "2026-03-02",
-         "type": "sustained_trend", "label": "Sustained trend", "score": 2.1, "delayDays": 1,
-         "seasonalConfound": False, "contribution": 0.5},
-    ]},
     "guardrail": "Search interest is context, not performance.",
 }
+
 
 _RAW_TRENDS = json.dumps({
     "summary": "ING is clear but under-equipped to convert.",
@@ -219,22 +213,35 @@ def test_build_recommendations_retries_on_invalid_json(monkeypatch):
     assert len(result.recommendations) == 2
 
 
-def test_trends_digest_keeps_captured_banks_and_the_recent_window_only():
+def test_trends_digest_carries_standings_segments_and_trajectory():
     digest = _trends_digest(_TRENDS, _REPORT)
     assert digest is not None
-    assert "2026-03-01" in digest
-    # Outside the 24-month window, and from a bank this run never captured.
-    assert "2019-01-01" not in digest
-    assert "Belfius event" not in digest
-    assert "Belfius Save" not in digest
-    assert "ING savings push" in digest
-    assert "ING Save" in digest
-    # The coverage gap still travels, so the model cannot imply a comparison.
-    assert "Argenta" in digest
+    payload = json.loads(digest)
+    standings = {row["bank"]: row for row in payload["brand_search_standings"]}
+    assert standings["ING"]["rank"] == 2 and standings["ING"]["direction"] == "up"
+    assert standings["KBC"]["change_pts_over_period"] == -2.0
+    assert payload["segment_shares_pct"]["challengers"] == 1.0
+    assert payload["benchmark_scope"]["subject"] == "ING"
+    assert payload["periods"] == ["Sep 2024–Sep 2025", "Sep 2025–Sep 2026"]
+
+
+def test_trends_digest_gives_a_flagged_bank_no_trajectory():
+    """A brand with too little volume may be listed, never given a direction."""
+    payload = json.loads(_trends_digest(_TRENDS, _REPORT))
+    bunq = next(r for r in payload["brand_search_standings"] if r["bank"] == "bunq")
+    assert bunq["low_confidence"] is True
+    assert bunq["direction"] is None and bunq["change_pts_over_period"] is None
+    assert "bunq" in payload["low_confidence_banks"]
+
+
+def test_trends_digest_carries_no_anomaly_or_campaign_material():
+    digest = _trends_digest(_TRENDS, _REPORT).lower()
+    for banned in ("anomal", "isolated_spike", "sustained_trend", "deviation", "campaign"):
+        assert banned not in digest
 
 
 def test_trends_digest_is_none_when_nothing_covers_the_run():
-    trends = {**_TRENDS, "banks": [], "events": [], "campaigns": {"matches": []}}
+    trends = {**_TRENDS, "shareOfSearch": {"ranking": []}}
     assert _trends_digest(trends, _REPORT) is None
 
 
@@ -250,7 +257,7 @@ def test_build_recommendations_with_trends_adds_context_and_marks_basis(monkeypa
     result = build_recommendations(_REPORT, include_trends=True, trends=_TRENDS)
 
     assert "Google Trends" in seen["prompt"]
-    assert "2026-03-01" in seen["prompt"]
+    assert "brand_search_standings" in seen["prompt"]
     assert "CONTEXT, never evidence" in seen["system"]
     assert result.used_trends is True
     assert [r.basis for r in result.recommendations] == ["analysis", "trends"]

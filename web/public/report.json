@@ -2397,7 +2397,6 @@
     ],
     "uncovered": [],
     "n_series": 5764,
-    "n_anomalies": 262,
     "data_url": "trends.json"
   },
   "reputation": {

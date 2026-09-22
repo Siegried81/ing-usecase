@@ -183,27 +183,17 @@ export interface TrendsSummary {
   covered: string[];
   uncovered: string[];
   n_series: number;
-  n_anomalies: number;
   data_url: string;
 }
 
 /** [YYYY-MM-DD, value] - one weekly Google Trends point. */
 export type TrendPoint = [string, number];
 
-export interface TrendAnomaly {
-  date: string;
-  value: number;
-  type: "isolated_spike" | "sustained_trend";
-  label: string;
-  score: number;
-}
-
 export interface TrendTerm {
   term: string;
   label: string;
   language: string;
   points: TrendPoint[];
-  anomalies: TrendAnomaly[];
 }
 
 export interface TrendProduct {
@@ -246,6 +236,79 @@ export interface ShareOfSearchRow {
   sourceSheet: string;
 }
 
+/** A claim the payload could not compute: the only non-derived facts the
+ * Trends tab may show. Source and dates are rendered next to every one. */
+export interface TrendExternalReference {
+  id: string;
+  claim: string;
+  value: string | null;
+  source: string;
+  url: string;
+  published: string;
+  retrieved: string;
+  appliesToBank: string | null;
+}
+
+export interface ShareSegmentGroup {
+  id: string;
+  label: string;
+  sharePct: number;
+  count: number;
+  members: { bank: string; key: string; sharePct: number }[];
+}
+
+/** One bank's sentence, pre-computed. `tieWith` non-empty means the ranking
+ * cannot order this bank against those - render them level, never in order. */
+export interface ShareBankReading {
+  rank: number;
+  bank: string;
+  key: string;
+  sharePct: number;
+  gapToAbovePts: number | null;
+  bankAbove: string | null;
+  tieWith: string[];
+  tieSpreadPts: number | null;
+  segment: string;
+  segmentLabel: string;
+  pctOfSegment: number | null;
+  lowConfidence: boolean;
+}
+
+export interface ShareChallengerFocus {
+  bank: string;
+  key: string;
+  rank: number;
+  sharePct: number;
+  pctOfChallengerAttention: number | null;
+  incumbentsAbove: number;
+  lowConfidenceBanks: string[];
+  reference: TrendExternalReference | null;
+}
+
+/** Reading of the ranking: market structure, concentration, per-bank lines.
+ * Every figure is computed in comparator/trends.py so no sentence in the
+ * component carries a literal that a later collection run would falsify. */
+export interface ShareInsights {
+  window: {
+    firstDate: string | null;
+    lastDate: string | null;
+    weeks: number;
+    banks: number;
+    fiches: number;
+  };
+  segments: {
+    groups: ShareSegmentGroup[];
+    bigFourAreTopFour: boolean;
+    topFour: { bank: string; key: string; rank: number; sharePct: number }[];
+  };
+  concentration: { hhi: number; equivalentBrands: number | null };
+  ties: { thresholdPts: number; groups: string[][] };
+  banks: ShareBankReading[];
+  challengerFocus: ShareChallengerFocus | null;
+  measurablePeakFloor: number;
+  references: TrendExternalReference[];
+}
+
 /** Share of search across more banks than one Trends request can hold.
  * Every figure here is computed in comparator/trends.py - the UI does no
  * arithmetic, so there is no second definition of any number on screen. */
@@ -272,11 +335,106 @@ export interface ShareOfSearch {
     aggregation: string;
   };
   lowConfidence: string[];
+  insights: ShareInsights;
   caveat: string;
+}
+
+/** One year of weekly points, anchored on the last week and counted back. */
+export interface TrendPeriod {
+  index: number;
+  label: string;
+  start: string;
+  end: string;
+}
+
+/** Level change plus momentum. `robust` is false when the direction only
+ *  holds with the first period, which straddles Google's 2022 method change. */
+export interface TrendTrajectory {
+  periodShares: number[];
+  meanSharePct: number;
+  deltaPts: number;
+  slopePtsPerYear: number | null;
+  relativeSlopePctPerYear: number | null;
+  relativeSlopeExFirstPeriod: number | null;
+  direction: "up" | "flat" | "down" | null;
+  robust: boolean;
+}
+
+export interface TrendSegmentTrajectory extends TrendTrajectory {
+  id: string;
+  label: string;
+}
+
+/** A flagged bank carries no per-period figure at all, so no view can render
+ *  one by accident - only its aggregated share and the flag. */
+export interface TrendBankTrajectory {
+  bank: string;
+  key: string;
+  aggregatedSharePct: number;
+  lowConfidence: boolean;
+  periodShares: number[] | null;
+  deltaPts: number | null;
+  relativeSlopePctPerYear: number | null;
+  direction: "up" | "flat" | "down" | null;
+  robust: boolean | null;
+}
+
+export interface TrendRankStability {
+  banks: { bank: string; ranks: number[]; bestRank: number; worstRank: number; changes: number }[];
+  overtakes: { bank: string; passed: string }[];
+  pairsKept: number;
+  pairsTotal: number;
+}
+
+export interface TrendBenchmark {
+  bank: string;
+  roles: string[];
+  lastSharePct: number;
+  deltaPts: number;
+  relativeSlopePctPerYear: number | null;
+  direction: "up" | "flat" | "down" | null;
+  robust: boolean;
+  gapToSubjectPts: number;
+  onlyMeasurable?: boolean;
+}
+
+export interface TrendBenchmarkScope {
+  subject: string;
+  traditionalCandidates: number;
+  challengerCandidates: number;
+  benchmarks: TrendBenchmark[];
+  challenger: TrendBenchmark | null;
+  excludedChallengers: string[];
+  subjectContext: {
+    bank: string;
+    lastSharePct: number;
+    deltaPts: number;
+    relativeSlopePctPerYear: number | null;
+    direction: "up" | "flat" | "down" | null;
+    robust: boolean;
+  };
+}
+
+/** How attention moved. Every figure is computed in comparator/trends.py. */
+export interface TrendsTrajectoryPayload {
+  periods: TrendPeriod[];
+  droppedWeeks: number;
+  weeksPerPeriod: number;
+  flatBandPct: number;
+  methodChangeDate: string;
+  segments: TrendSegmentTrajectory[];
+  banks: TrendBankTrajectory[];
+  /** Always a measurable incumbent, so deltaPts is set whenever present. */
+  biggestRise: (TrendBankTrajectory & { deltaPts: number }) | null;
+  biggestFall: (TrendBankTrajectory & { deltaPts: number }) | null;
+  rankStability: TrendRankStability;
+  benchmark: TrendBenchmarkScope;
+  lowConfidenceBanks: string[];
 }
 
 export interface TrendsPayload {
   available: boolean;
+  trajectory: TrendsTrajectoryPayload | null;
   source: string;
   window: { start: string | null; end: string | null };
   coverage: { covered: string[]; uncovered: string[] };

@@ -428,9 +428,6 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         series_points = sum(
             len(t["points"]) for b in context["banks"] for p in b["products"] for t in p["terms"]
         )
-        anomaly_count = sum(
-            len(t["anomalies"]) for b in context["banks"] for p in b["products"] for t in p["terms"]
-        )
         report["trends"] = {
             "available": True,
             "source": context["source"],
@@ -438,7 +435,6 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
             "covered": context["coverage"]["covered"],
             "uncovered": context["coverage"]["uncovered"],
             "n_series": series_points,
-            "n_anomalies": anomaly_count,
             "data_url": "trends.json",
         }
 
@@ -655,8 +651,7 @@ def main() -> int:
     print(f"  generated variants: {len(report['generated'])}")
     t = report.get("trends")
     if t:
-        print(f"  trends  : {t['n_series']} weekly points, {t['n_anomalies']} anomalies "
-              f"-> {trends_path.name}")
+        print(f"  trends  : {t['n_series']} weekly points -> {trends_path.name}")
     else:
         print("  trends  : Dan's export not present - Trends tab will show an empty state")
     print(f"  operators: {operations_path} — {len(operations['dictionary'])} features, "

@@ -3,7 +3,7 @@ Argenta, Crelan, Revolut, N26, bunq), consumed only by
 collectors/term_resolver.py.
 
 This is deliberately kept separate from config.PRODUCTS: nothing here is
-read by the collector, the anomaly detection step, the app or the exports.
+read by the collector, the analysis steps, the app or the exports.
 term_resolver.py tests these candidates against live Google Trends data and
 writes its findings to the term_validation table and to
 data/term_validation_report.md; the winning terms are then copied into

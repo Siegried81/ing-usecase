@@ -517,6 +517,8 @@ status paragraph was corrected with the operator work. The remaining rubric prob
 is coverage and wording — six features sit below the 60% bar, and the six banks
 added this week have no judged layer at all — not the absence of a second rater.
 
+---
+
 **sieg 21/09, scope restored from one product family back to all seven — this
 should have had an entry the day it happened, and didn't.** `data/processed/campaigns.csv`
 had silently narrowed to `current_account_pack` only (19 rows) sometime after the
@@ -532,3 +534,27 @@ savings_account 9, pension 7, mortgage 5, term_account 3, other 1). This matches
 already-recorded decision ("the team wants a complete analysis... not one family narrowed
 for like-for-like comparison") - the earlier narrowing was an accidental side effect of a
 config-file overwrite, not a scope decision anyone made.
+
+---
+
+**dan 21/09, the anomaly feature is removed from the Trends tab.** Z-score +
+seasonal-ratio spike detection (`isolated_spike` / `sustained_trend`) was a
+legacy of the earlier, product-level pipeline, where the question was "is
+interest in this product unusually high this week?". Since the pipeline was
+narrowed to brand notoriety that question no longer exists, and the detector
+was answering it on series it does not fit: 32% of the flagged weeks came from
+two brands whose raw series peak at 2/100, where a move from 0 to 2 clears both
+thresholds mechanically, and another 24% were the ING/KBC anchors counted once
+per sheet. Removed end to end — `analysis/anomaly_detection.py`, the
+`anomalies` table, the export section, the Streamlit views, the payload key,
+the React table and the recommendations digest.
+
+The tab now reports share of search, its trajectory over 52-week periods, and
+rank stability. `KNOWN_EVENTS` is kept: it annotates a series without claiming
+anything about it. `trends-benchmark/campaigns/` was built entirely on the
+removed table and is left orphaned on disk, not deleted — see section 12 of
+`trends-benchmark/docs/pipeline_google_trends.md`.
+
+<!-- sieg 22/09: merge conflict resolution for PR #56 - both entries kept, sieg's
+     scope-restoration note first (dated context for D01), dan's anomaly-removal
+     note second. No content dropped from either side. -->
