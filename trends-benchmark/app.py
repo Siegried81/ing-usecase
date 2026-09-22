@@ -1,12 +1,9 @@
 """Streamlit app: ING against eight competitor banks on Google Trends,
 one comparison per sidebar entry and one tab per product sheet.
 
-Reads trends_data, anomalies and term_validation from SQLite. All three
-tables are populated by separate pipeline steps
-(collectors/trends_collector.py, analysis/anomaly_detection.py,
+Reads trends_data and term_validation from SQLite. Both tables are populated
+by separate pipeline steps (collectors/trends_collector.py,
 collectors/term_resolver.py) and are only read here, so the UI stays fast.
-Ad/campaign verification against the flagged anomalies is handled by a
-separate downstream pipeline, out of scope here.
 """
 
 import sqlite3
@@ -16,12 +13,10 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from config import (
-    ANOMALY_TYPE_LABELS, BANK_DISPLAY_LABELS, DB_PATH, KNOWN_EVENTS, PRODUCTS,
-    TERM_DISPLAY_LABELS,
+    BANK_DISPLAY_LABELS, DB_PATH, KNOWN_EVENTS, PRODUCTS, TERM_DISPLAY_LABELS,
 )
 
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#c98500", "#e87ba4"]
-ANOMALY_SYMBOLS = {"isolated_spike": "diamond", "sustained_trend": "star"}
 
 # Line style per bank. Styles are reused on purpose: two banks sharing a
 # style never appear in the same product sheet, so they can never be
@@ -67,7 +62,7 @@ COMPARISON_VIEWS = {
 }
 
 FLAG_LABELS = {
-    "selected_low_coverage": "couverture faible (série peu dense, anomalies plus bruitées)",
+    "selected_low_coverage": "couverture faible (série peu dense)",
     "broad_fallback": "terme large (capte un périmètre plus étendu que le terme ING)",
     "asymmetric": "asymétrique (n'est pas la transposition exacte du terme ING)",
     "ambiguous_string": "chaîne brute ambiguë (aucun topic Knowledge Graph valide)",
@@ -89,10 +84,9 @@ def load_data():
     conn = sqlite3.connect(DB_PATH)
     try:
         trends = pd.read_sql_query("SELECT * FROM trends_data", conn, parse_dates=["date"])
-        anomalies = pd.read_sql_query("SELECT * FROM anomalies", conn, parse_dates=["date"])
     finally:
         conn.close()
-    return trends, anomalies
+    return trends
 
 
 @st.cache_data
@@ -154,7 +148,7 @@ def events_for_product(product):
     return [e for e in KNOWN_EVENTS if e["bank"] in banks]
 
 
-def build_chart(product, trends_df, anomalies_df):
+def build_chart(product, trends_df):
     fig = go.Figure()
     pid = product["product_id"]
 
@@ -173,31 +167,8 @@ def build_chart(product, trends_df, anomalies_df):
             hovertemplate=f"<b>{label}</b><br>{bank_label} · {lang.upper()}<br>%{{x|%b %Y}}: %{{y}}<extra></extra>",
         ))
 
-        term_anomalies = anomalies_df[(anomalies_df["product_id"] == pid) & (anomalies_df["term"] == term)]
-        for atype, symbol in ANOMALY_SYMBOLS.items():
-            sub = term_anomalies[term_anomalies["anomaly_type"] == atype]
-            if sub.empty:
-                continue
-            fig.add_trace(go.Scatter(
-                x=sub["date"], y=sub["value"], mode="markers",
-                marker=dict(symbol=symbol, size=12, color=color, line=dict(color="#1a1a1a", width=1.2)),
-                showlegend=False,
-                hovertemplate=(
-                    f"<b>{label}</b><br>{ANOMALY_TYPE_LABELS[atype]}"
-                    "<br>%{x|%b %Y}: %{y}<extra></extra>"
-                ),
-            ))
-
-    # Legend proxies explaining the anomaly marker symbols.
-    for atype, symbol in ANOMALY_SYMBOLS.items():
-        fig.add_trace(go.Scatter(
-            x=[None], y=[None], mode="markers",
-            marker=dict(symbol=symbol, size=12, color="#8c8d8a", line=dict(color="#1a1a1a", width=1.2)),
-            name=ANOMALY_TYPE_LABELS[atype],
-        ))
-
     # Known structural events of the banks present in this sheet. Display
-    # only: these dates never take part in anomaly detection.
+    # only: these dates take part in no computation.
     for event in events_for_product(product):
         fig.add_vline(
             x=event["date"], line_width=1, line_dash="dot", line_color="#8c8d8a",
@@ -245,28 +216,6 @@ def render_flag_notes(product, term_flags):
         )
 
 
-def render_anomalies_table(product, anomalies_df):
-    pid = product["product_id"]
-    subset = anomalies_df[anomalies_df["product_id"] == pid].sort_values("date").copy()
-    if subset.empty:
-        st.caption("Aucune anomalie détectée pour cette fiche.")
-        return
-
-    subset["date"] = subset["date"].dt.strftime("%Y-%m-%d")
-    subset["anomaly_type"] = subset["anomaly_type"].map(ANOMALY_TYPE_LABELS)
-    subset["term"] = subset["term"].map(display_term)
-    subset["bank"] = subset["bank"].map(display_bank)
-    subset = subset.rename(columns={
-        "term": "Terme", "bank": "Banque", "date": "Date",
-        "value": "Valeur", "anomaly_type": "Type d'anomalie",
-        "deviation_score": "Score de déviation",
-    })
-    st.dataframe(
-        subset[["Terme", "Banque", "Date", "Valeur", "Type d'anomalie", "Score de déviation"]],
-        width="stretch", hide_index=True,
-    )
-
-
 def render_raw_data(product, trends_df):
     pid = product["product_id"]
     subset = trends_df[trends_df["product_id"] == pid].sort_values("date")
@@ -302,11 +251,9 @@ def render_raw_data(product, trends_df):
     )
 
 
-def render_product_tab(product, trends_df, anomalies_df, term_flags):
-    st.plotly_chart(build_chart(product, trends_df, anomalies_df), width="stretch")
+def render_product_tab(product, trends_df, term_flags):
+    st.plotly_chart(build_chart(product, trends_df), width="stretch")
     render_flag_notes(product, term_flags)
-    st.subheader("Anomalies détectées")
-    render_anomalies_table(product, anomalies_df)
     st.subheader("Données brutes")
     render_raw_data(product, trends_df)
 
@@ -315,16 +262,15 @@ def main():
     st.title("Benchmark marketing ING vs concurrents")
     st.caption(
         "Intérêt de recherche Google Trends (Belgique, 5 dernières années) par fiche produit — "
-        "les anomalies marquées ici sont les périodes où l'intérêt de recherche d'un produit a été "
-        "anormalement élevé. La vérification de leur origine (publicité, campagne) se fait dans un "
-        "autre pipeline, alimenté par les exports de ce projet."
+        "cette vue montre l'évolution de l'intérêt de recherche par fiche. Elle décrit ce qui "
+        "a été cherché, jamais ce qu'une campagne a obtenu."
     )
 
-    trends_df, anomalies_df = load_data()
+    trends_df = load_data()
     if trends_df.empty:
         st.error(
             "Aucune donnée trouvée. Lancez d'abord `python collectors/trends_collector.py` "
-            "puis `python analysis/anomaly_detection.py`."
+            "pour collecter les données."
         )
         st.stop()
 
@@ -348,7 +294,7 @@ def main():
     tabs = st.tabs([p["product_label"] for p in products])
     for tab, product in zip(tabs, products):
         with tab:
-            render_product_tab(product, trends_df, anomalies_df, term_flags)
+            render_product_tab(product, trends_df, term_flags)
 
 
 if __name__ == "__main__":

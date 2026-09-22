@@ -1,10 +1,9 @@
 """Shared logic for the brand-notoriety export (see export_brand_notoriety.py).
 
-Produces a Markdown report (methodology, share of search, known events,
-anomalies) plus a CSV of the raw Trends time series and a CSV of the
-derived brand_share_of_search table. Meant as the data handoff for a
-downstream pipeline that matches these anomalies against real ad/campaign
-activity.
+Produces a Markdown report (methodology, share of search, known events)
+plus a CSV of the raw Trends time series and a CSV of the derived
+brand_share_of_search table. Meant as the data handoff for a downstream
+pipeline.
 """
 
 import csv
@@ -15,9 +14,8 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import (  # noqa: E402
-    ANOMALY_TYPE_LABELS, BANK_DISPLAY_LABELS, DB_PATH, GEO, KNOWN_EVENTS,
-    PRODUCTS, SEASONAL_RATIO_THRESHOLD, TERM_DISPLAY_LABELS, TIMEFRAME,
-    Z_SCORE_THRESHOLD,
+    BANK_DISPLAY_LABELS, DB_PATH, GEO, KNOWN_EVENTS, PRODUCTS,
+    TERM_DISPLAY_LABELS, TIMEFRAME,
 )
 
 EXPORT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -44,21 +42,6 @@ def md_table(columns, rows):
         cells = ["" if v is None else str(v).replace("|", "-").replace("\n", " ") for v in row]
         lines.append("| " + " | ".join(cells) + " |")
     return "\n".join(lines)
-
-
-def brand_flags_lookup(conn):
-    """term -> flags recorded for that brand's resolution (six-bank extension,
-    phase 1A). Empty for ING/KBC/CBC, which predate term_validation.
-    """
-    try:
-        _, rows = fetch_all(
-            conn,
-            "SELECT term, flags FROM term_validation WHERE scope = 'brand' "
-            "AND call_index = 0 AND slot_language != '__done__'",
-        )
-    except sqlite3.OperationalError:
-        return {}
-    return {r[0]: r[1] or "" for r in rows}
 
 
 def export_trends_csv(conn, csv_path):
@@ -122,27 +105,6 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
     )
     min_date, max_date = trends_range[0]
 
-    brand_flags = brand_flags_lookup(conn)
-
-    anomaly_cols = [
-        "Fiche", "Terme", "Banque", "Date", "Valeur",
-        "Type d'anomalie", "Score de déviation", "Flags du terme",
-    ]
-    placeholders = ",".join("?" * len(IN_SCOPE_FICHES))
-    _, anomaly_rows = fetch_all(
-        conn,
-        "SELECT product_id, term, bank, date, value, anomaly_type, deviation_score FROM anomalies "
-        f"WHERE product_id IN ({placeholders}) ORDER BY date",
-        IN_SCOPE_FICHES,
-    )
-    anomaly_rows_fmt = [
-        (
-            r[0], display_term(r[1]), display_bank(r[2]), r[3], r[4],
-            ANOMALY_TYPE_LABELS.get(r[5], r[5]), round(r[6], 3), brand_flags.get(r[1], ""),
-        )
-        for r in anomaly_rows
-    ]
-
     lines = []
     lines.append("# Export notoriété de marque — Benchmark ING vs concurrents")
     lines.append("")
@@ -180,25 +142,14 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
         "méthode, mais approximative."
     )
     lines.append(
-        f"- **Détection d'anomalies** (par terme) : moyenne d'intérêt calculée par mois "
-        f"calendaire sur toutes les années disponibles (profil de saisonnalité de référence). "
-        f"Un point est flagué s'il dépasse à la fois (a) la moyenne générale du terme de plus "
-        f"de {Z_SCORE_THRESHOLD} écart-type (z-score ≥ {Z_SCORE_THRESHOLD}) et (b) "
-        f"{SEASONAL_RATIO_THRESHOLD}× la moyenne saisonnière normale de son mois. Les points "
-        "flagués consécutifs sont groupés : un seul point isolé est un **pic isolé** "
-        "(`isolated_spike`), deux points consécutifs ou plus sont une **tendance soutenue** "
-        "(`sustained_trend`)."
-    )
-    lines.append(
         "- **Désambiguïsation des marques** (BNPPF, Argenta, N26 passent par un topic "
         "Knowledge Graph plutôt qu'une chaîne brute) : voir `data/term_validation_report.md` "
         "et `docs/pipeline_google_trends.md` section 7bis."
     )
     lines.append(
         "- **Hors périmètre** : ce projet ne collecte aucune donnée publicitaire "
-        "(Meta Ad Library, Google Ads Transparency Center). Le rapprochement entre ces "
-        "anomalies et des campagnes publicitaires réelles est fait dans un pipeline séparé, "
-        "en utilisant cet export comme donnée d'entrée."
+        "(Meta Ad Library, Google Ads Transparency Center). Cet export mesure la part de "
+        "voix de marque et son évolution, rien d'autre."
     )
     lines.append("")
 
@@ -206,8 +157,8 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
     lines.append("")
     lines.append(
         "Ruptures de marché documentées, fournies pour interprétation : elles produisent "
-        "des anomalies attendues qui ne sont pas des campagnes publicitaires. Cette liste "
-        "n'intervient jamais dans la détection."
+        "des mouvements attendus qui ne sont pas des campagnes publicitaires. Cette "
+        "liste n'intervient dans aucun calcul."
     )
     lines.append("")
     lines.append(md_table(["Date", "Banque", "Événement"], known_events_rows()))
@@ -245,11 +196,6 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
         f"**`{share_csv_filename}`** ({share_row_count} lignes) - non incluses ici pour garder "
         "ce document lisible."
     )
-    lines.append("")
-
-    lines.append(f"## Anomalies détectées ({len(anomaly_rows_fmt)})")
-    lines.append("")
-    lines.append(md_table(anomaly_cols, anomaly_rows_fmt))
     lines.append("")
 
     return "\n".join(lines)

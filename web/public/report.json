@@ -1,8 +1,6 @@
 {
-  "generated_at": "2026-09-21T10:39:44+00:00",
+  "generated_at": "2026-09-21T13:43:39+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
-  "generated_at": "2026-09-21T10:14:13+00:00",
-  "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
@@ -2188,12 +2186,9 @@
     ],
     "uncovered": [],
     "n_series": 5764,
-    "n_anomalies": 262,
     "data_url": "trends.json"
   },
   "reputation": {
-    "available": false,
-    "banks": {}
     "available": true,
     "banks": {
       "argenta": {

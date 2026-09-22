@@ -30,7 +30,7 @@ TERM_DISPLAY_LABELS = {
     "/g/121yyfq9": "VDK Bank",
 }
 
-# Bank codes used in the `bank` column of trends_data / anomalies. Stored as
+# Bank codes used in the `bank` column of trends_data. Stored as
 # free text in SQLite (no CHECK constraint), so this dict is the reference
 # list for the whole pipeline.
 BANK_DISPLAY_LABELS = {
@@ -152,15 +152,6 @@ PRODUCTS = [
 
 PRODUCT_BY_ID = {p["product_id"]: p for p in PRODUCTS}
 
-# Anomaly detection: a point must clear both thresholds to be flagged.
-Z_SCORE_THRESHOLD = 1.5
-SEASONAL_RATIO_THRESHOLD = 1.3
-
-ANOMALY_TYPE_LABELS = {
-    "isolated_spike": "Pic isolé",
-    "sustained_trend": "Tendance soutenue",
-}
-
 # Term resolution thresholds for the six-bank extension (BNPPF, Argenta,
 # Crelan, Revolut, N26, bunq). Used by collectors/term_resolver.py only,
 # kept for when a brand term ever needs re-resolving.
@@ -169,9 +160,8 @@ PRODUCT_SELECT_COVERAGE = 0.50
 PRODUCT_FLOOR_COVERAGE = 0.25
 MAX_CANDIDATE_CALLS_PER_FICHE = 3
 
-# Structural market events. Display and exports only: anomaly detection never
-# reads this list, so a break in a series is still detected on its own merits
-# and only annotated here afterwards.
+# Structural market events. Display and exports only: no computation reads
+# this list, it only annotates a series after the fact.
 KNOWN_EVENTS = [
     {
         "bank": "BNPPF",

@@ -2,7 +2,7 @@
 
 Document de passation technique, destiné à un agent qui doit comprendre et
 pouvoir opérer ce pipeline sans contexte préalable. Décrit uniquement le
-pipeline **Trends** (collecte, part de voix, anomalies, visualisation,
+pipeline **Trends** (collecte, part de voix, visualisation,
 export). Le pipeline `campaigns/` (rapprochement avec des campagnes
 publicitaires réelles) est construit **en aval** de celui-ci, en lecture
 seule sur ses tables — il est mentionné en fin de document mais pas
@@ -23,7 +23,7 @@ etc. — 32 fiches à un moment donné), avant d'être recentré sur la seule
 notoriété de marque. Les fiches produit ont été retirées de
 `config.PRODUCTS` ; seules les 3 fiches marque génériques subsistent. Les
 données historiques des fiches produit restent dans `trends_data` et
-`anomalies` (rien n'est supprimé en base), mais ne sont plus lues par
+`trends_data` (rien n'est supprimé en base), mais ne sont plus lues par
 aucune étape du pipeline — voir section 11.
 
 **Fait métier clé** : CBC Banque & Assurance est la marque commerciale de
@@ -44,8 +44,6 @@ collectors/trends_collector.py  ──►  pytrends (API Google Trends)
         ▼
 benchmark.db : table trends_data (+ data/csv/*.csv, un CSV par fiche)
         │
-        ├──► analysis/anomaly_detection.py ──► benchmark.db : table anomalies
-        │
         └──► analysis/share_of_search.py  ──► benchmark.db : table brand_share_of_search
                         │
                         ▼
@@ -57,9 +55,8 @@ benchmark.db : table trends_data (+ data/csv/*.csv, un CSV par fiche)
 Chaque étape lit dans SQLite et/ou écrit dans SQLite — il n'y a pas
 d'état caché ailleurs. La base est `benchmark.db` à la racine du projet
 (`kbc-ing-benchmark/benchmark.db`), absente du dépôt git (regénérée
-localement). `anomaly_detection.py` et `share_of_search.py` sont deux
-étapes indépendantes qui lisent toutes deux `trends_data` mais n'écrivent
-jamais l'une dans la table de l'autre.
+localement). `share_of_search.py` lit `trends_data` et n'écrit que dans sa
+propre table.
 
 ## 3. Le référentiel produits (`config.py`)
 
@@ -143,14 +140,6 @@ CREATE TABLE products (
     product_id TEXT PRIMARY KEY, product_label TEXT NOT NULL, term_count INTEGER NOT NULL
 );
 
-CREATE TABLE anomalies (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    product_id TEXT NOT NULL, term TEXT NOT NULL, bank TEXT NOT NULL,
-    date TEXT NOT NULL, value INTEGER NOT NULL,
-    anomaly_type TEXT NOT NULL CHECK (anomaly_type IN ('isolated_spike', 'sustained_trend')),
-    deviation_score REAL NOT NULL,
-    UNIQUE (product_id, term, date)
-);
 ```
 
 `term_validation` (trace d'audit de la résolution des termes de marque,
@@ -162,7 +151,7 @@ pour le détail complet des colonnes.
 **Nouvelle table `brand_share_of_search`** (voir section 7ter), entièrement
 dérivée de `trends_data`, vidée et recalculée à chaque run de
 `analysis/share_of_search.py` (même politique de rafraîchissement que
-`anomalies`) :
+`brand_share_of_search`) :
 
 ```sql
 CREATE TABLE brand_share_of_search (
@@ -185,7 +174,7 @@ Points d'attention :
   topics Knowledge Graph de marque, `ING`/`KBC` eux-mêmes dans les fiches
   marque). Les termes neutres antérieurs (topic CBC) restent étiquetés
   `'en'`, pour ne pas rompre la continuité historique.
-- **`trends_data` et `anomalies` contiennent encore les lignes des 29
+- **`trends_data` contient encore les lignes des 29
   anciennes fiches produit** (compte à vue, carte de crédit, etc.),
   jamais supprimées lors du recentrage de périmètre. Elles sont
   silencieusement ignorées par `app.py` et `export/` (qui ne lisent que ce
@@ -193,33 +182,6 @@ Points d'attention :
   `product_id` de fiches marque). Voir section 11 pour le piège associé.
 - `date` est stockée en `TEXT` format `YYYY-MM-DD` partout (jamais de type
   `DATE` natif SQLite, qui n'existe pas).
-
-## 6. Détection d'anomalies (`analysis/anomaly_detection.py`)
-
-Exécutée comme étape séparée (`python analysis/anomaly_detection.py`),
-**jamais** recalculée à l'affichage — l'app Streamlit lit uniquement la
-table déjà peuplée. Logique inchangée par le recentrage de périmètre :
-opère sur **toutes** les lignes de `trends_data`, y compris celles des
-anciennes fiches produit (elle ne consulte pas `config.PRODUCTS`) — c'est
-`app.py`/`export/` qui filtrent ensuite sur les 3 fiches en vigueur.
-
-Pour chaque série `(product_id, term)` :
-
-1. `overall_mean`, `overall_std` = moyenne et écart-type de la série
-   entière. Si `overall_std == 0`, la série est ignorée.
-2. `seasonal_mean` = moyenne des valeurs groupées par mois calendaire, sur
-   toutes les années disponibles.
-3. Un point est **candidat anomalie** s'il vérifie **simultanément** :
-   - `z_score = (valeur - overall_mean) / overall_std >= Z_SCORE_THRESHOLD` (1.5)
-   - `valeur / seasonal_mean[mois] >= SEASONAL_RATIO_THRESHOLD` (1.3)
-4. Les points candidats consécutifs sont regroupés en "runs" : longueur 1
-   → `isolated_spike`, longueur ≥ 2 → `sustained_trend`.
-5. `deviation_score` stocké = le `z_score` de ce point précis.
-
-Le script fait un `DELETE FROM anomalies` puis réinsère tout à chaque
-run — **les `id` ne sont pas stables d'un run à l'autre**. Toute table qui
-référence `anomalies.id` par clé étrangère (`campaign_anomaly_matches`
-dans le pipeline aval) doit être régénérée après un nouveau run.
 
 ## 7. Le cas CBC : désambiguïsation Google Trends
 
@@ -241,7 +203,7 @@ réelle (`interest_over_time()`, geo=BE, 5 ans) :
 `/g/1z3t2x3c8` est le topic Knowledge Graph "CBC Banque & Assurance",
 retourné en premier résultat par `pytrends.suggestions(keyword="CBC
 Banque")`. Conséquence pratique : la colonne `term` de
-`trends_data`/`anomalies` contient littéralement la chaîne
+`trends_data` contient littéralement la chaîne
 `"/g/1z3t2x3c8"` — pour l'affichage humain, `config.TERM_DISPLAY_LABELS`
 fait la correspondance, via `display_term()` (dupliquée à l'identique dans
 `app.py` et `export/export_common.py`).
@@ -336,7 +298,7 @@ pas une extrapolation hasardeuse.
 ## 8. Visualisation (`app.py`, Streamlit)
 
 `streamlit run app.py` (port par défaut 8501). Lecture seule sur
-`trends_data`, `anomalies`, `term_validation` et `brand_share_of_search`,
+`trends_data`, `term_validation` et `brand_share_of_search`,
 via `@st.cache_data`.
 
 **Navigation** : sélecteur « Comparaison » dans la barre latérale. Options,
@@ -357,11 +319,10 @@ Crelan, Revolut, N26, bunq, « Marques », « Part de voix ».
   `config.KNOWN_EVENTS`.
 
 Dans les onglets par fiche (hors « Part de voix »), chaque graphique
-affiche : une courbe par terme (style de trait par banque, marqueurs
-distincts `isolated_spike`/`sustained_trend`), les lignes verticales
+affiche : une courbe par terme (style de trait par banque), les lignes verticales
 `KNOWN_EVENTS` des banques présentes, et sous le graphique la mention des
 termes flaggés (`selected_low_coverage`, `broad_fallback`, `asymmetric`,
-`ambiguous_string`, lus dans `term_validation`), un tableau d'anomalies et
+`ambiguous_string`, lus dans `term_validation`) et
 un tableau de données brutes filtrable.
 
 Libellés : `display_term()` et `display_bank()`, dupliqués à l'identique
@@ -380,11 +341,11 @@ séparément) :
 | `export_brand_notoriety.py` | `brand_trends_data.csv`, `brand_share_of_search.csv`, `brand_notoriety_export.md` |
 
 Le `.md` contient : méthodologie (source, granularité, **chaînage/share of
-search et sa limite**, seuils de détection d'anomalies, renvoi à la
+search et sa limite**, renvoi à la
 désambiguïsation des marques), la section « Événements structurels
 connus », les 3 fiches marque avec leurs termes, la **part de voix agrégée
 par banque** et les facteurs d'échelle appliqués, et un tableau complet des
-anomalies (avec les flags du terme, joints depuis `term_validation`).
+part de voix agrégée par banque.
 
 Les deux CSV : `brand_trends_data.csv` est la table `trends_data` brute,
 filtrée aux 3 fiches marque (3406 lignes) ; `brand_share_of_search.csv` est
@@ -400,13 +361,12 @@ pip install -r requirements.txt
 
 python collectors/trends_collector.py      # déjà tout collecté ; ne fait rien
                                             # tant que config.PRODUCTS ne change pas
-python analysis/anomaly_detection.py       # quelques secondes
 python analysis/share_of_search.py         # quelques secondes
 
 python export/export_brand_notoriety.py
 
 python campaigns/scoring.py                # obligatoire : régénère les
-python campaigns/reports.py                # correspondances (ids d'anomalies)
+python campaigns/reports.py                # correspondances
 
 streamlit run app.py                       # UI sur http://localhost:8501
 ```
@@ -418,7 +378,7 @@ qu'une banque est ajoutée — voir sa docstring et
 
 Pour ajouter une fiche marque ou modifier un terme : éditer
 `config.PRODUCTS`, relancer `trends_collector.py` (skip automatique de ce
-qui existe déjà), puis `anomaly_detection.py`, `share_of_search.py`,
+qui existe déjà), puis `share_of_search.py`,
 l'export et la régénération `campaigns/`.
 
 ## 11. Pièges connus (déjà rencontrés, à ne pas re-découvrir)
@@ -442,7 +402,7 @@ l'export et la régénération `campaigns/`.
   systématiquement écrasé à 0. Le niveau marque, en comparaison, a un
   volume bien plus robuste pour les 9 banques (section 7ter).
 - **Données orphelines des anciennes fiches produit** : `trends_data` et
-  `anomalies` contiennent encore les lignes des 29 fiches produit
+  contient encore les lignes des 29 fiches produit
   retirées de `config.PRODUCTS` lors du recentrage — volontairement
   conservées (pas de `DELETE`), mais invisibles depuis `app.py` et
   `export/` (qui filtrent sur `config.PRODUCTS` ou sur les 3 `product_id`
@@ -453,7 +413,7 @@ l'export et la régénération `campaigns/`.
   en comparant directement des valeurs brutes entre deux fiches
   différentes sans passer par le facteur d'échelle de la section 7ter.
 - **`ON CONFLICT` vs suppression complète** : `trends_data` et `products`
-  utilisent un upsert. `anomalies` et `brand_share_of_search` sont
+  utilisent un upsert. `brand_share_of_search` est
   entièrement vidées et régénérées à chaque run de leur script respectif.
 - **Forcer la re-résolution d'un terme de marque** : le résolveur saute
   toute fiche ayant déjà sa ligne-marqueur `__done__` dans
@@ -463,12 +423,14 @@ l'export et la régénération `campaigns/`.
 
 ## 12. Audit `campaigns/` : disponibilité pour les six nouvelles banques
 
-Audit réalisé pendant l'extension multi-banques, non affecté par le
-recentrage de périmètre ultérieur (le pipeline `campaigns/` lit
-`anomalies` directement, indépendamment de `config.PRODUCTS`, et n'a
-jamais été modifié). Aucune ligne de `campaigns/` n'a été modifiée.
-`campaigns/` reste un pipeline construit pour 3 banques (KBC, CBC, ING) et
-n'est **pas prêt** pour BNPPF, Argenta, Crelan, Revolut, N26 ou bunq :
+**`campaigns/` est orphelin depuis le retrait de la détection d'anomalies.**
+Tout ce module était construit sur la table supprimée : il ne peut plus
+tourner en l'état. Aucune ligne n'en a été modifiée — le code reste sur
+disque en attendant une décision (le retirer, ou le reconstruire sur une
+autre base). L'audit ci-dessous date de l'extension multi-banques et reste
+la description de ce qu'il faudrait reprendre : `campaigns/` a été
+construit pour 3 banques (KBC, CBC, ING) et n'est **pas prêt** pour BNPPF,
+Argenta, Crelan, Revolut, N26 ou bunq :
 
 - **`db/schema.sql`, table `campaigns`** : `bank TEXT NOT NULL CHECK (bank
   IN ('KBC', 'CBC', 'ING'))`. Tout `INSERT` d'une campagne pour une des six
@@ -505,9 +467,8 @@ n'est **pas prêt** pour BNPPF, Argenta, Crelan, Revolut, N26 ou bunq :
   compare plus que la notoriété de marque. Les anciennes fiches produit
   restent en base à titre historique (section 11) mais ne sont plus
   alimentées ni affichées.
-- Le rapprochement anomalies ↔ campagnes réelles et le scoring d'impact
-  vivent dans `campaigns/` (tables `campaigns`, `campaign_anomaly_matches`,
-  `campaign_scores`, app Streamlit séparée sur le port 8502). Ce module
-  **lit** `anomalies` en lecture seule mais ne fait partie d'aucune étape
-  décrite ci-dessus — c'est un pipeline distinct, construit après coup,
-  avec son propre catalogue de campagnes saisi manuellement.
+- La détection d'anomalies a été retirée du pipeline : plus de seuils, plus
+  de table, plus de section d'export. Ce niveau de lecture appartenait à une
+  version antérieure ; le pipeline rapporte désormais la part de voix et son
+  évolution. `campaigns/`, qui reposait entièrement dessus, est orphelin
+  (section 12).

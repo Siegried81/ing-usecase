@@ -1,8 +1,6 @@
 {
-  "generated_at": "2026-09-21T10:39:45+00:00",
+  "generated_at": "2026-09-21T13:43:39+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
-  "generated_at": "2026-09-21T10:57:57+00:00",
-  "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
     "ok": true,
@@ -14156,12 +14154,6 @@
         "basis": "exact match"
       },
       {
-        "feature": "mobile_first_design_signal",
-        "pages": 11,
-        "agreement": 0.64,
-        "basis": "exact match"
-      },
-      {
         "feature": "layout_archetype",
         "pages": 11,
         "agreement": 0.64,
@@ -14172,6 +14164,12 @@
         "pages": 11,
         "agreement": 0.64,
         "basis": "within 1 point"
+      },
+      {
+        "feature": "mobile_first_design_signal",
+        "pages": 11,
+        "agreement": 0.64,
+        "basis": "exact match"
       },
       {
         "feature": "formality_score",
@@ -14186,13 +14184,13 @@
         "basis": "within 1 point"
       },
       {
-        "feature": "aida_action",
+        "feature": "aida_interest",
         "pages": 11,
         "agreement": 0.91,
         "basis": "exact match"
       },
       {
-        "feature": "aida_interest",
+        "feature": "aida_action",
         "pages": 11,
         "agreement": 0.91,
         "basis": "exact match"
@@ -14295,7 +14293,7 @@
         "pages": 9,
         "kappa": 0.182
       },
-      {bnnnnnbb
+      {
         "feature": "rate_prominence",
         "raters": "dan vs stephane",
         "pages": 8,
@@ -14333,7 +14331,6 @@
       },
       {
         "feature": "mobile_first_design_signal",
-        "feature": "aida_desire",
         "raters": "dan vs stephane",
         "pages": 8,
         "kappa": 0.333
@@ -14345,9 +14342,9 @@
         "kappa": 0.333
       },
       {
-        "feature": "persuasion_levers",
+        "feature": "aida_desire",
         "raters": "dan vs stephane",
-        "pages": 7,
+        "pages": 8,
         "kappa": 0.333
       },
       {

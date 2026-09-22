@@ -90,20 +90,24 @@ Hard rules, no exceptions:
 _PAGE_KEYS = ("index, comptes-epargne, compte-a-terme, compte-courant, jeunes, investir, "
               "credit-hypothecaire, ouvrir-compte, pourquoi-ing, contact")
 
-_TRENDS_ADDENDUM = """You are ALSO given Google Trends search-interest context for Belgium: weekly
-search interest per bank and product, with anomalies a separate detector flagged. Use it to add
-recommendations that the page measurements alone cannot support.
+_TRENDS_ADDENDUM = """You are ALSO given Google Trends brand-search context for Belgium: each
+bank's share of brand search attention, how that share moved year by year, and which competitor
+brands are worth studying. Use it to add recommendations that the page measurements alone cannot
+support.
 
 Trends rules, no exceptions:
-- Search interest is CONTEXT, never evidence that anything worked. A spike is not proof a page, a
-  campaign or a change caused anything, and it is never by itself a reason to change a feature.
-- Coverage is partial: only the banks marked covered have any data. Never claim behaviour for a
-  bank without trends data, and never compare a covered bank to an uncovered one.
-- Use ONLY the dates, kinds and values given in the context. Never invent, average or extrapolate
-  a search number.
+- Share of search is a share of ATTENTION, never of customers, revenue or market.
+  It is CONTEXT, never evidence that anything worked.
+- A trajectory is a description, NOT an effect. Never say a bank's share moved BECAUSE of a
+  campaign, a page, a product or any action: this data contains no cause, and nothing in it links
+  a brand to a reason. Say that attention moved; never say why.
+- Banks marked low confidence have too little search volume to read. Never quote their share, their
+  trajectory or their rank, and never compare them to a measurable bank.
+- Use ONLY the figures given in the context. Never invent, average or extrapolate a search number,
+  and never add a period the context does not list.
 - A trends-based recommendation is about TIMING, SEQUENCING or MARKET FOCUS: when to make a change,
-  which product page to prioritise, or which period a message must be ready for. It is still an
-  action on an ING page.
+  which competitor to study, or which period a message must be ready for. It is still an action on
+  an ING page.
 - Trends recommendations must NOT cite page features as evidence; leave "features" empty and put
   the reasoning in "finding". Say plainly that the link is a hypothesis to verify."""
 
@@ -294,123 +298,55 @@ def _known_features(report: dict) -> set[str]:
     return ids
 
 
-# How much of Dan's five-year series travels into the prompt. The model gets the
-# anomalies a detector already flagged inside this window, never the raw weekly
-# points, so it cannot read a level and turn it into a target.
-TRENDS_RECENT_DAYS = 730
+# What travels into the prompt: standings, directions and the benchmark scope,
+# never the raw weekly points, so the model cannot read a level and turn it
+# into a target.
+def _trends_digest(trends: dict, report: dict) -> str | None:
+    """The slice of the Trends payload the model is allowed to see.
 
-
-def _within_window(anomaly: dict, cutoff: date | None) -> bool:
-    raw = anomaly.get("date")
-    if not raw:
-        return False
-    try:
-        when = date.fromisoformat(str(raw))
-    except ValueError:
-        return False
-    return cutoff is None or when >= cutoff
-
-
-def _trends_digest(trends: dict, report: dict, *, per_product: int = 6) -> str | None:
-    """The slice of Dan's Trends payload the model is allowed to see.
-
-    Context, not evidence: flagged weeks and the dates around them, never a value
-    to regress a page feature onto. Only the banks this run actually captured,
-    only the recent window, and the coverage gap travels with it so the model
-    cannot imply a comparison the data does not support. Returns None when there
-    is nothing relevant, which is also what makes the caller fall back cleanly.
+    Context, not evidence: standings and directions, never a reason. Only the
+    banks this run captured, and only the ones with enough search volume to
+    read - a flagged brand carries no trajectory into the prompt at all.
+    Returns None when there is nothing relevant, which is what makes the
+    caller fall back cleanly.
     """
-    # The report's scope lists banks by display name; Dan's payload keeps both a
-    # key and the same display name, so match on the name the UI shows.
     captured = list(report.get("scope", {}).get("banks") or [])
-    if not captured:
+    share = trends.get("shareOfSearch") or {}
+    ranking = share.get("ranking") or []
+    if not captured or not ranking:
         return None
 
-    by_name = {b.get("name"): b for b in trends.get("banks", [])}
-    window = trends.get("window", {})
+    insights = share.get("insights") or {}
+    trajectory = trends.get("trajectory") or {}
+    directions = {
+        row["bank"]: row
+        for row in trajectory.get("banks", [])
+        if row.get("periodShares")
+    }
 
-    # Keep the digest to the product family this run measured, so the model does
-    # not reason about mortgage searches for a current-account comparison. If the
-    # mapping finds nothing, fall back to the full set rather than returning none.
-    family = report.get("scope", {}).get("product_family")
-    if family and not any(
-        PRODUCT_MAP.get(p.get("id")) == family
-        for name in captured
-        for p in (by_name.get(name) or {}).get("products", [])
-    ):
-        family = None
-    cutoff: date | None = None
-    if window.get("end"):
-        try:
-            cutoff = date.fromisoformat(str(window["end"])) - timedelta(days=TRENDS_RECENT_DAYS)
-        except ValueError:
-            cutoff = None
-
-    banks: list[dict] = []
-    covered_names: set[str] = set()
-    for name in captured:
-        bank = by_name.get(name)
-        if bank is None:
-            continue
-        covered_names.add(name)
-        products = []
-        for product in bank.get("products", []):
-            if family and PRODUCT_MAP.get(product.get("id")) != family:
-                continue
-            anomalies = [
-                {
-                    "date": a.get("date"),
-                    "term": term.get("label") or term.get("term"),
-                    "kind": a.get("label") or a.get("type"),
-                    "value": a.get("value"),
-                    "score": a.get("score"),
-                }
-                for term in product.get("terms", [])
-                for a in term.get("anomalies", [])
-                if _within_window(a, cutoff)
-            ]
-            if not anomalies:
-                continue
-            anomalies.sort(key=lambda a: a.get("date") or "", reverse=True)
-            products.append({
-                "product": product.get("label") or product.get("id"),
-                "recent_anomalies": anomalies[:per_product],
-                "recent_count": len(anomalies),
-            })
-        if products:
-            banks.append({"bank": bank.get("name"), "products": products})
-
-    if not banks:
-        return None
-
-    events = [
-        {"date": e.get("date"), "bank": e.get("bank"), "label": e.get("label")}
-        for e in trends.get("events", [])
-        if e.get("bank") in covered_names
-    ]
-    matches = [
+    standings = [
         {
-            "bank": m.get("campaignBank"),
-            "campaign": m.get("campaignName"),
-            "product": m.get("productId"),
-            "term": m.get("term"),
-            "date": m.get("date"),
-            "kind": m.get("label"),
-            "delay_days": m.get("delayDays"),
-            "seasonal_confound": m.get("seasonalConfound"),
+            "bank": row["bank"],
+            "share_pct": row["sharePct"],
+            "rank": row["rank"],
+            "low_confidence": row["lowConfidence"],
+            "direction": (directions.get(row["bank"]) or {}).get("direction"),
+            "change_pts_over_period": (directions.get(row["bank"]) or {}).get("deltaPts"),
         }
-        for m in trends.get("campaigns", {}).get("matches", [])
-        if m.get("campaignBank") in covered_names
-    ][:12]
+        for row in ranking
+    ]
 
-    coverage = trends.get("coverage", {})
     payload = {
-        "window": window,
-        "covered_banks": coverage.get("covered"),
-        "uncovered_banks": coverage.get("uncovered"),
-        "attention_anomalies": banks,
-        "known_structural_events": events,
-        "campaigns_matched_to_spikes": matches,
+        "window": share.get("window"),
+        "captured_banks": captured,
+        "brand_search_standings": standings,
+        "segment_shares_pct": {
+            group["label"]: group["sharePct"]
+            for group in insights.get("segments", {}).get("groups", [])
+        },
+        "periods": [p["label"] for p in trajectory.get("periods", [])],
+        "benchmark_scope": trajectory.get("benchmark"),
+        "low_confidence_banks": share.get("lowConfidence", []),
         "guardrail": trends.get("guardrail"),
     }
     return json.dumps(payload, ensure_ascii=False, indent=2)
