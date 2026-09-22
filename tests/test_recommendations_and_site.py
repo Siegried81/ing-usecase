@@ -23,7 +23,6 @@ from comparator.recommendations import (  # noqa: E402
     RecommendationSet,
     _digest,
     _reputation_digest,
-    _trends_digest,
     build_recommendations,
     parse_response,
     select,
@@ -73,59 +72,6 @@ _RAW = json.dumps({
 })
 
 
-# A trimmed Trends payload: the share-of-search standings, the segment split and
-# the trajectory the digest is built from. Argenta is covered by the benchmark
-# but never captured by this run; bunq is flagged and must stay out of the
-# prompt as a trajectory.
-_TRENDS = {
-    "window": {"start": "2021-01-01", "end": "2026-08-01"},
-    "coverage": {"covered": ["ING", "KBC"], "uncovered": ["Argenta"]},
-    "banks": [],
-    "shareOfSearch": {
-        "window": {"start": "2021-01-01", "end": "2026-08-01"},
-        "lowConfidence": ["bunq"],
-        "ranking": [
-            {"bank": "KBC", "key": "kbc", "rank": 1, "sharePct": 55.0, "lowConfidence": False},
-            {"bank": "ING", "key": "ing", "rank": 2, "sharePct": 44.0, "lowConfidence": False},
-            {"bank": "bunq", "key": "bunq", "rank": 3, "sharePct": 1.0, "lowConfidence": True},
-        ],
-        "insights": {
-            "segments": {"groups": [
-                {"id": "big_four", "label": "big four", "sharePct": 99.0},
-                {"id": "challengers", "label": "challengers", "sharePct": 1.0},
-            ]},
-        },
-    },
-    "trajectory": {
-        "periods": [{"label": "Sep 2024–Sep 2025"}, {"label": "Sep 2025–Sep 2026"}],
-        "banks": [
-            {"bank": "KBC", "periodShares": [56.0, 54.0], "deltaPts": -2.0, "direction": "down"},
-            {"bank": "ING", "periodShares": [43.0, 45.0], "deltaPts": 2.0, "direction": "up"},
-            {"bank": "bunq", "periodShares": None, "deltaPts": None, "direction": None},
-        ],
-        "benchmark": {"subject": "ING", "benchmarks": [{"bank": "KBC", "roles": ["attention"]}]},
-    },
-    "events": [
-        {"bank": "ING", "key": "ing", "date": "2026-02-01", "label": "ING savings push"},
-    ],
-    "guardrail": "Search interest is context, not performance.",
-}
-
-
-_RAW_TRENDS = json.dumps({
-    "summary": "ING is clear but under-equipped to convert.",
-    "recommendations": [
-        {"title": "Add a visible rate", "priority": "high", "finding": "rate_shown is 0.0",
-         "recommendation": "Show the rate above the fold", "features": ["rate_shown"],
-         "page_targets": ["index"], "basis": "analysis", "market_context": None},
-        {"title": "Time the savings message", "priority": "high",
-         "finding": "Savings searches were elevated in early 2026",
-         "recommendation": "Have the savings page ready before the next peak",
-         "features": [], "page_targets": ["comptes-epargne"], "basis": "trends",
-         "market_context": "Savings searches ran above baseline in March 2026."},
-    ],
-})
-
 # sieg 21/09: a trimmed reputation dashboard - one bank with a classified theme
 # and a notable headline, one bank this run compared but reputation.py found
 # nothing for, one theme-free bank (must be dropped, it adds nothing to argue
@@ -156,13 +102,11 @@ _RAW_REPUTATION = json.dumps({
     "recommendations": [
         {"title": "Add a visible rate", "priority": "high", "finding": "rate_shown is 0.0",
          "recommendation": "Show the rate above the fold", "features": ["rate_shown"],
-         "page_targets": ["index"], "basis": "analysis", "market_context": None,
-         "reputation_context": None},
+         "page_targets": ["index"], "basis": "analysis", "reputation_context": None},
         {"title": "Back up the digital claim", "priority": "medium",
          "finding": "The press covers ING under innovation_digital, so the claim has outside support",
          "recommendation": "Cite the app launch coverage near the digital-onboarding claim",
          "features": [], "page_targets": ["index"], "basis": "reputation",
-         "market_context": None,
          "reputation_context": "2 innovation_digital headlines, including the app launch."},
     ],
 })
@@ -213,60 +157,7 @@ def test_build_recommendations_retries_on_invalid_json(monkeypatch):
     assert len(result.recommendations) == 2
 
 
-def test_trends_digest_carries_standings_segments_and_trajectory():
-    digest = _trends_digest(_TRENDS, _REPORT)
-    assert digest is not None
-    payload = json.loads(digest)
-    standings = {row["bank"]: row for row in payload["brand_search_standings"]}
-    assert standings["ING"]["rank"] == 2 and standings["ING"]["direction"] == "up"
-    assert standings["KBC"]["change_pts_over_period"] == -2.0
-    assert payload["segment_shares_pct"]["challengers"] == 1.0
-    assert payload["benchmark_scope"]["subject"] == "ING"
-    assert payload["periods"] == ["Sep 2024–Sep 2025", "Sep 2025–Sep 2026"]
-
-
-def test_trends_digest_gives_a_flagged_bank_no_trajectory():
-    """A brand with too little volume may be listed, never given a direction."""
-    payload = json.loads(_trends_digest(_TRENDS, _REPORT))
-    bunq = next(r for r in payload["brand_search_standings"] if r["bank"] == "bunq")
-    assert bunq["low_confidence"] is True
-    assert bunq["direction"] is None and bunq["change_pts_over_period"] is None
-    assert "bunq" in payload["low_confidence_banks"]
-
-
-def test_trends_digest_carries_no_anomaly_or_campaign_material():
-    digest = _trends_digest(_TRENDS, _REPORT).lower()
-    for banned in ("anomal", "isolated_spike", "sustained_trend", "deviation", "campaign"):
-        assert banned not in digest
-
-
-def test_trends_digest_is_none_when_nothing_covers_the_run():
-    trends = {**_TRENDS, "shareOfSearch": {"ranking": []}}
-    assert _trends_digest(trends, _REPORT) is None
-
-
-def test_build_recommendations_with_trends_adds_context_and_marks_basis(monkeypatch):
-    seen: dict[str, str] = {}
-
-    def fake_llm(prompt, *, system_prompt, timeout):
-        seen["prompt"] = prompt
-        seen["system"] = system_prompt
-        return _RAW_TRENDS, "deepseek/deepseek-chat"
-
-    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
-    result = build_recommendations(_REPORT, include_trends=True, trends=_TRENDS)
-
-    assert "Google Trends" in seen["prompt"]
-    assert "brand_search_standings" in seen["prompt"]
-    assert "CONTEXT, never evidence" in seen["system"]
-    assert result.used_trends is True
-    assert [r.basis for r in result.recommendations] == ["analysis", "trends"]
-    assert result.recommendations[1].market_context.startswith("Savings searches")
-    # A trends recommendation may not carry page-feature evidence.
-    assert result.recommendations[1].features == []
-
-
-def test_build_recommendations_without_trends_uses_the_plain_prompt(monkeypatch):
+def test_the_prompt_never_mentions_search_interest(monkeypatch):
     seen: dict[str, str] = {}
 
     def fake_llm(prompt, *, system_prompt, timeout):
@@ -275,27 +166,19 @@ def test_build_recommendations_without_trends_uses_the_plain_prompt(monkeypatch)
         return _RAW, "m"
 
     monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
-    result = build_recommendations(_REPORT)
+    build_recommendations(_REPORT)
     assert "Google Trends" not in seen["prompt"]
-    assert "CONTEXT, never evidence" not in seen["system"]
-    assert result.used_trends is False
+    assert '"trends"' not in seen["system"]
 
 
-def test_build_recommendations_refuses_trends_when_none_is_available():
-    with pytest.raises(LLMExtractionError):
-        build_recommendations(_REPORT, include_trends=True, trends=None)
-
-
-def test_from_dict_defaults_basis_for_recommendations_saved_before_trends():
+def test_from_dict_defaults_the_basis_of_an_older_saved_set():
     saved = {"generated_at": "t", "model": "m", "summary": "s", "recommendations": [
         {"id": "R1", "title": "a", "priority": "high", "finding": "f", "recommendation": "r",
          "features": [], "page_targets": []},
     ]}
     restored = RecommendationSet.from_dict(saved)
     assert restored.recommendations[0].basis == "analysis"
-    assert restored.recommendations[0].market_context is None
     assert restored.recommendations[0].reputation_context is None
-    assert restored.used_trends is False
     assert restored.used_reputation is False
 
 
@@ -334,7 +217,6 @@ def test_build_recommendations_with_reputation_adds_context_and_marks_basis(monk
     assert "ING launches new banking app" in seen["prompt"]
     assert "CONTEXT, never evidence" in seen["system"]
     assert result.used_reputation is True
-    assert result.used_trends is False
     assert [r.basis for r in result.recommendations] == ["analysis", "reputation"]
     assert result.recommendations[1].reputation_context.startswith("2 innovation_digital")
     # A reputation recommendation may not carry page-feature evidence either.
@@ -345,23 +227,6 @@ def test_build_recommendations_refuses_reputation_when_none_is_available():
     report = {**_REPUTATION_REPORT, "reputation": {"available": False, "banks": {}}}
     with pytest.raises(LLMExtractionError):
         build_recommendations(report, include_reputation=True)
-
-
-def test_build_recommendations_can_combine_trends_and_reputation(monkeypatch):
-    seen: dict[str, str] = {}
-
-    def fake_llm(prompt, *, system_prompt, timeout):
-        seen["prompt"] = prompt
-        seen["system"] = system_prompt
-        return _RAW_TRENDS, "m"
-
-    monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
-    combined_report = {**_REPUTATION_REPORT, "banks": _REPUTATION_REPORT["banks"]}
-    build_recommendations(combined_report, include_trends=True, trends=_TRENDS, include_reputation=True)
-    assert "Google Trends" in seen["prompt"]
-    assert "news headline themes" in seen["prompt"]
-    assert '"trends"' in seen["system"]
-    assert '"reputation"' in seen["system"]
 
 
 def test_select_keeps_only_the_chosen_ids_in_the_original_order():
@@ -621,3 +486,19 @@ def test_generate_site_writes_ten_pages_and_marks_fallbacks(monkeypatch, tmp_pat
     assert (tmp_path / "manifest.json").is_file()
     assert [p["slug"] for p in manifest["pages"] if p["used_fallback"]] == ["contact"]
     assert manifest["language"] == "fr"
+
+
+def test_a_set_saved_with_the_old_trends_basis_still_loads():
+    """steph 22/09: the model used to write search-interest recommendations.
+    A file saved then must not crash the tab - the entries it can no longer
+    represent are dropped, the rest loads."""
+    saved = {"generated_at": "t", "model": "m", "summary": "s", "recommendations": [
+        {"id": "R1", "title": "a", "priority": "high", "finding": "f", "recommendation": "r",
+         "features": [], "page_targets": [], "basis": "analysis", "market_context": None},
+        {"id": "R2", "title": "b", "priority": "high", "finding": "f", "recommendation": "r",
+         "features": [], "page_targets": [], "basis": "trends",
+         "market_context": "Savings searches ran above baseline."},
+    ]}
+    restored = RecommendationSet.from_dict(saved)
+    assert [r.id for r in restored.recommendations] == ["R1"]
+    assert all(r.basis in ("analysis", "reputation") for r in restored.recommendations)

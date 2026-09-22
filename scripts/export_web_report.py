@@ -47,6 +47,7 @@ from comparator.analysis import (
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
+from comparator.benchmarks import build_benchmark_lessons
 from comparator.trends import build_trends_dashboard
 
 DEFAULT_DATASET = Path("data/processed/campaigns_scored.csv")
@@ -352,6 +353,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         },
         "generated": [],
         "trends": None,
+        "searchInterestLessons": None,  # steph 22/09
         "reputation": reputation_dashboard,  # sieg 19/09
         "geoTrends": geo_trends_payload,  # sieg 20/09
     }
@@ -424,6 +426,20 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         })
 
     context = build_trends_dashboard(compared, trends_dir)
+
+    # steph 22/09: search interest picks the brands, the measured features say
+    # what they do. Joined on the bank name only - see comparator/benchmarks.py.
+    lessons = build_benchmark_lessons(
+        compared, fd, (context or {}).get("trajectory"), focus=focus
+    )
+    if lessons:
+        for bank in lessons["banks"]:
+            for item in bank["lessons"]:
+                item["label"] = label(item["feature"])
+        for item in lessons["common"] + lessons["divergent"]:
+            item["label"] = label(item["feature"])
+        report["searchInterestLessons"] = lessons
+
     if context:
         series_points = sum(
             len(t["points"]) for b in context["banks"] for p in b["products"] for t in p["terms"]

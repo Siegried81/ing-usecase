@@ -126,10 +126,11 @@ the performance claim:
 - **Search interest** (`trends.py`, the Trends tab) is context, never an outcome.
   It measures what people searched for, not what a campaign achieved, and it is
   not regressed onto any page feature — the module refuses to emit a per-page
-  number for exactly that reason. The Recommendations tab can optionally use a
-  slice of it to suggest *timing and focus*, and those recommendations are marked
-  `basis="trends"`, kept in their own group, and forbidden from citing a page
-  feature as evidence.
+  number for exactly that reason. On the Recommendations tab it selects which
+  competitor brands are worth studying; `benchmarks.py` then reports what those
+  brands' pages measurably do, from the same features as the analysis. The two
+  halves are joined on the bank name and nothing else, and the section says so:
+  it shows what those pages do, never that this is why they are searched for.
 - **News themes** (`reputation.py`, the Reputation tab) count what each bank is in
   the news *about* — never sentiment. Sentiment scoring was explicitly out of
   scope; themes turn the brief's own "réputation, innovations, crises" framing

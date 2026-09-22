@@ -27,14 +27,13 @@ export async function fetchRecommendations(): Promise<RecommendationPayload> {
 }
 
 export async function generateRecommendations(
-  includeTrends = false,
   includeReputation = false, // sieg 21/09
 ): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(
     await fetch("/api/recommendations/generate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ include_trends: includeTrends, include_reputation: includeReputation }),
+      body: JSON.stringify({ include_reputation: includeReputation }),
     }),
   );
 }
