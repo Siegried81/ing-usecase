@@ -388,6 +388,13 @@ def comparison_matrix(
     makes its contribution to a squared distance comparable to one numeric
     column. Scaling before standardising does nothing at all; z-scoring erases
     it.
+
+    sieg 22/09: audit item #1 asked for this drop to be visible rather than
+    silent. It already was - feature_accounting()/render_accounting() report
+    every column dropped here under "missing for some bank" on every
+    run_analysis.py run, tier=None on both sides so the sets match exactly.
+    A second, differently-formatted print() was added straight into this
+    function on 21/09 and has been removed - one source of truth, not two.
     """
     fd = fd or load_dictionary()
     vectors = bank_vectors(df, fd, tier=tier, include_categorical=include_categorical)
@@ -596,17 +603,9 @@ def positioning_axis(
     # vector the moment even one bank is missing it. Invisible on the fixture
     # (nothing is ever missing), but with Dan's real captures a single gap on
     # one page can silently shrink the comparable feature set for everyone.
-    # not fixing this alone - a defensible design choice (no imputation =
-    # honest) - but flagging for Stephane: at minimum this should log/warn how
-    # many features got dropped and why, rather than doing it silently.
-    # same comment applies to similarity_matrix() and profiles._distinctive()
-    # below, which share this exact pattern.
-    #
-    # steph 15/09: answered. feature_accounting() / render_accounting() above
-    # now report every reduction with its reason, run_analysis.py prints the
-    # block, and outputs/charts.md carries it next to the figure - which is what
-    # prompted the question in the first place ("50 features... and with 97?").
-    # Still no imputation: a dropped feature is reported, never guessed.
+    # steph 15/09 / sieg 22/09: reported, not silent - see the note in
+    # comparison_matrix() above. feature_accounting()/render_accounting() print
+    # every dropped column on each run_analysis.py run.
     vectors = comparison_matrix(df, fd, tier=tier, include_categorical=include_categorical)
     categories = df.drop_duplicates("bank").set_index("bank")["bank_category"]
 

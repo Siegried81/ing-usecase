@@ -9,6 +9,16 @@
 > sheet is complete at 23/23; Stephane's 9 pages were machine-proposed and
 > adopted (the sheet says so); Dan is still at 0/23. Agreement is now measurable
 > for all 13 features, with three below the module's 60% bar.
+>
+> **sieg 22/09: this callout is itself now stale on two points.** BNP Paribas
+> Fortis no longer needs manual capture — `method: headful` fetches it live
+> (decisions.md, "steve 21/09, BNP Paribas Fortis captured", written the same
+> day as this note but not reflected here). And Stephane's scores are no
+> longer machine-proposed/adopted: checked directly today, 0 of his 13
+> current overlapping scores match the model's output. Scope is now 50
+> pages / 14 banks / 6 families (decisions.md, "sieg 21/09, scope restored";
+> `other` folded into `pension` later the same night - `belfius_other_fr_01`
+> was Belfius's pension page, mislabeled).
 
 sieg 15/09, prepared ahead of the Monday gate review. Per the plan (section
 6): the team asks one question — does the chain run end-to-end, from a URL to

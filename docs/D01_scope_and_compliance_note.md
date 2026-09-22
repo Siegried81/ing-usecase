@@ -144,9 +144,11 @@ JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
 ### steve 21/09 — the dataset now spans every family each bank promotes
 
 The comparison had been one family (`current_account_pack`) because that is what
-the targets file listed. It now holds **50 pages across 14 banks and 7 families**:
-`current_account_pack` 16, `investment` 9, `savings_account` 9, `pension` 7,
-`mortgage` 5, `term_account` 3, `other` 1. Product pages were discovered from each
+the targets file listed. It now holds **50 pages across 14 banks and 6 families**:
+`current_account_pack` 16, `investment` 9, `savings_account` 9, `pension` 8,
+`mortgage` 5, `term_account` 3. (sieg 22/09: `other` 1 folded into `pension` -
+`belfius_other_fr_01` was Belfius's pension page, mislabeled; see the note
+below.) Product pages were discovered from each
 bank's own navigation and every one was verified by rendering it before
 collection — the automated picks included investor-relations pages, calculators
 and a jargon glossary, all dropped (the list is in the 21/09 decisions entry).
@@ -155,6 +157,27 @@ and a jargon glossary, all dropped (the list is in the 21/09 decisions entry).
 together, and a comparison is only valid within one of them. Banks whose sites
 publish fewer comparable landing pages contribute fewer rows — Revolut and bunq
 have one each (app-first sites), Keytrade, N26 and Hellobank three.
+
+### sieg 22/09 — the three remaining gaps above are closed
+
+The table at line 125-126 and the "two real gaps" list above it are now
+stale, both superseded by later re-collection (dated between the "steve
+21/09" sections above and today):
+
+- **BNP Paribas Fortis and Revolut are both live-captured, not
+  manual-capture.** BNP via `method: headful` (decisions.md, "steve 21/09,
+  BNP Paribas Fortis captured"); Revolut via the current
+  `collection_targets.yaml` URL, a plain headless fetch. Every one of the 50
+  current rows has `collection_method` in `{headless_render, headful_render}`
+  — checked directly against `data/processed/campaigns.csv`, zero
+  `manual_capture` rows remain.
+- **Screenshots exist and are correctly linked for Belfius, KBC and N26.**
+  Checked directly: every `screenshot_path` in the current dataset resolves
+  to a real file on disk for all three banks.
+- **N26 has full model-assisted extraction.** All 27 model_assisted features
+  are populated for its 3 rows (`extraction_model=deepseek/deepseek-flash`);
+  the only null is one legitimately-absent `cross_sold_products` value, not a
+  missing extraction.
 
 ## 2. Product family and language
 
@@ -170,8 +193,10 @@ bank actually promotes on its campaign pages is in scope, not one family
 narrowed for like-for-like comparison. What is actually collected reflects
 this: `current_account_pack` (ING, KBC, Belfius, Argenta, Crelan, vdk,
 hellobank, beobank, N26 and bunq — the family the analysis compares),
-`savings_account` (ING), `mortgage` (BNP Paribas Fortis) and `other`/pension
-(Belfius, whose current-account page is now the one that counts).
+`savings_account` (ING), `mortgage` (BNP Paribas Fortis) and `pension`
+(Belfius's second page — its current-account page is the one that counts for
+`current_account_pack`; sieg 22/09: this was labelled `other` until tonight,
+corrected in place, same capture).
 `category_comparison`/`check_deck_claims` and any like-for-like read (DR-04)
 should compare within the same `product_family` value, not across the full
 dataset.

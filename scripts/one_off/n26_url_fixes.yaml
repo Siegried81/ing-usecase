@@ -1,0 +1,16 @@
+# sieg 22/09: one-off re-collection - 2 wrong N26 URLs found while scoring
+# (fr-fr region pages replaced with the correct fr-be ones). Run once, then
+# delete - not part of the standing collection_targets.yaml scope.
+pages:
+  - bank: n26
+    bank_category: challenger
+    product_family: investment
+    page_role: campaign_landing
+    url: "https://n26.com/fr-be/tarifs"
+    language: fr
+  - bank: n26
+    bank_category: challenger
+    product_family: savings_account
+    page_role: campaign_landing
+    url: "https://n26.com/fr-be/compte-epargne"
+    language: fr

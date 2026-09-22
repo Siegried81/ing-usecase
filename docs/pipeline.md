@@ -94,6 +94,32 @@ row is re-rolled:
 - `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold` (the distinct,
   chrome-excluding CTA count, steph 21/09).
 
+**sieg 21/09: MANDATORY re-merge after ANY change to campaigns.csv.**  
+`scripts/rubric_sheet.py merge` **must be re-run** after any modification to
+`data/processed/campaigns.csv` (rate fix, CTA fix, new captures, re-extraction,
+etc.) — even if rubric scores haven't changed. The merge matches on `page_id`
+(sieg 22/09: corrected — `merge_scores()` joins on `page_id`, not URL, see
+`rubric.py:154`) and produces `campaigns_scored.csv` which `export_web_report.py`
+and `run_analysis.py --dataset campaigns_scored.csv` read. Skipping this step
+leaves the web report and analysis on stale data (silent drift). See
+`decisions.md:277-300`. `tests/test_dataset_sync.py` now checks this
+automatically (audit item #6).
+
+**sieg 22/09: `page_id` itself can drift, not just the merge.** `page_id` is
+built from `{bank}_{product_family}_{language}_{page_index:02d}` at collection
+time (`run_collection.py:69`) — a re-collection that adds/removes a page in a
+bank/family/language group renumbers every page after it. A rater's scoring
+sheet built before that re-collection then carries scores under `page_id`s
+that no longer exist in `campaigns.csv`, and `merge_scores()` drops them
+silently (same failure mode, one step earlier in the pipeline). Found live
+22/09: 13 of Siegried's and 1 of Stephane's already-scored rows reference
+`page_id`s absent from the current 50-row `campaigns.csv`, and their URLs no
+longer appear in it either — those specific captures were superseded by a
+later re-collection, not just renumbered, so the scores cannot be
+auto-remapped. Needs a team decision, not a script: were those pages replaced
+by an equivalent page (re-score the new `page_id`) or dropped (nothing to
+recover). Not yet covered by an automated test.
+
 ## Two things a range check cannot catch
 
 **A capture can be honestly measured and still be the wrong page.** The first
@@ -107,6 +133,22 @@ in `capture_quality`. Analysis excludes `unusable` rows and says which.
 pass strict validation on its own. `scripts/rubric_sheet.py` emits one sheet per
 rater with the screenshot path, merges completed sheets back, and reports
 inter-rater agreement — which is what NFR-05 actually asks for.
+
+**sieg 22/09, scoring split for the day: 2 raters per bank, not 3 scoring all
+50.** NFR-05 only needs >=2 independent raters per page. Splitting the 14
+banks into three groups, one per rater pair, covers every page with exactly
+two raters at 2/3 the per-person workload of everyone scoring everything:
+
+| Pair | Banks | Pages |
+| --- | --- | --- |
+| Dan + Siegried | ING, Crelan, Hellobank, Belfius, Bunq | 17 |
+| Dan + Stephane | KBC, VDK, BNP Paribas Fortis, N26, Revolut | 17 |
+| Siegried + Stephane | Beobank, CBC, Argenta, Keytrade | 16 |
+
+Split by page count, not by who had already scored what — existing scores
+were too scattered (1-3 pages per bank per rater) to preserve cleanly. A
+score already entered outside your two assigned groups is harmless, just no
+longer required.
 
 ## Two escape hatches for hosts that will not serve us
 
@@ -123,10 +165,18 @@ asks for — one request, robots.txt checked first, no IP or identity rotation:
 
 ## When a site will not serve the pipeline
 
-Some pages cannot be fetched by us at all — BNP Paribas Fortis' edge declines
-automated traffic outright (HTTP 503, diagnosed in `scripts/run_collection.py`,
-and not worked around: getting past it would need IP rotation, which LC-04
-forbids), and Revolut returns HTTP 403.
+sieg 22/09: corrected — this section described BNP Paribas Fortis and Revolut
+as permanently unreachable. Both are resolved: BNP via `method: headful` (see
+"Two escape hatches" above and `decisions.md`'s "steve 21/09, BNP Paribas
+Fortis captured" entry), Revolut via the current `collection_targets.yaml`
+URL, which robots.txt allows (a straight headless fetch, no method override
+needed). **There is no manual-capture-only bank left** — every one of the 50
+current rows has `collection_method` in `{static_fetch, headless_render,
+headful_render}`, never `manual_capture`.
+
+The path below stays documented as a general escape hatch for a future site
+that genuinely cannot be reached any other way, not because any bank needs it
+today:
 
 `scripts/import_captures.py` imports pages a person saved from a normal browser:
 

@@ -1,0 +1,13 @@
+# sieg 22/09: one-off re-collection target - the existing
+# bnp_paribas_fortis_investment_fr_04 row was captured from the Private
+# Banking page, not the retail investment-products page. This replaces it.
+# Run once, then delete this file - it is not part of the standing
+# collection_targets.yaml scope.
+pages:
+  - bank: bnp_paribas_fortis
+    bank_category: traditional
+    product_family: investment
+    page_role: campaign_landing
+    method: headful
+    url: "https://www.bnpparibasfortis.be/fr/public/particuliers/epargner-et-placer/produits-investissement"
+    language: fr

@@ -168,3 +168,8 @@ whether the stored captures travel with it.
   automated client, including from a normal residential connection. We did not
   work around it — we used a page a person opened in a browser and saved. Worth
   them hearing from us rather than discovering it.
+  **sieg 22/09: superseded — no longer true, do not say this in the meeting.**
+  BNP is now live-captured via `method: headful` (a real, visible browser
+  instead of headless — same robots.txt gate, same single request, no IP
+  rotation). The manual-capture path was a stopgap, not the final state; see
+  `decisions.md`, "steve 21/09, BNP Paribas Fortis captured".
