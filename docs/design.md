@@ -1,6 +1,6 @@
 # Design: how the comparator is built, and what it refuses to claim
 
-Split out of `README.md` (steve 21/09). The runbook is
+Split out of `README.md`. The runbook is
 [`pipeline.md`](pipeline.md); the decision log is [`decisions.md`](decisions.md).
 The short version of this file is the project's central bet: **every number on
 screen comes from one definition, and anything judgement-based says so.**
@@ -52,10 +52,11 @@ Revolut with another. Every row records `extraction_model`, and `validate()` war
 when a dataset mixes models and names which banks got which. A difference between
 banks has to be a difference between banks, not between two judges (NFR-02).
 
-The same check applies to the rubric: `rubric_sheet.py model` writes to its **own**
-sheet and never pre-fills a human one. A pre-filled sheet gets rubber-stamped, and
-the NFR-05 agreement figure would then measure how persuasive the model's guess was
-rather than how well two people agree.
+The same check applies to the rubric: nothing pre-fills the judged sheet. A
+pre-filled sheet gets rubber-stamped, and the scores would then record how
+persuasive the suggestion was rather than what the rater saw. The
+model's own rubric sheet is gone with the inter-rater layer — one named person
+scores the pages, and no reliability figure is claimed.
 
 ## Compare like for like, not everything at once
 
@@ -163,11 +164,10 @@ disagree. Two boundaries are deliberate and enforced by the shape of the code:
   a form that edited an extracted feature would destroy the audit trail. The one
   writable thing in the whole system remains a rubric sheet, and only through
   `rubric_sheet.py` by the rater who owns it.
-- **No live scoring screen.** The Rubric tab shows finished sheets, already
-  merged and already compared. It does not show one rater another rater's
-  numbers while they score, because NFR-05's agreement figure is only meaningful
-  if the judgements were independent — a live screen that displayed a
-  neighbouring score would make the number measure visibility, not agreement.
+- **No live scoring screen.** The Rubric tab shows the finished sheet, already
+  merged. It is a read-only view after the fact: scoring happens against the
+  written scales with the capture open, not in a screen that could show one
+  person what anyone else wrote.
 
 The UI does no arithmetic. Every number on screen is computed in Python and
 handed over already qualified: the exporter ships the values and the labels that

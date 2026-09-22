@@ -117,7 +117,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** mentions loyalty or referral well above the market average (+2.4 SD); above fold element count well above the market average (+1.3 SD); animated asset count well below the market average (-1.3 SD).
+**Signature:** mentions loyalty or referral well above the market average (+2.4 SD); above fold element count well above the market average (+1.3 SD); has animation well below the market average (-1.3 SD).
 
 ### bnp_paribas_fortis  (traditional)
 
@@ -156,7 +156,7 @@
 | lever count | - |
 | personas | mass_market 100%, student 100% |
 
-**Signature:** fast digital onboarding claim well above the market average (+2.3 SD); hidden conditions behind free claim well above the market average (+1.8 SD); animated asset count well below the market average (-1.3 SD).
+**Signature:** fast digital onboarding claim well above the market average (+2.3 SD); hidden conditions behind free claim well above the market average (+1.8 SD); has animation well below the market average (-1.3 SD).
 
 ### bunq  (challenger)
 
@@ -507,7 +507,7 @@
 | lever count | 3 |
 | personas | mass_market 100%, family 100%, entrepreneur_self_employed 100%, expat 100% |
 
-**Signature:** institutional trust signal present well above the market average (+3.6 SD); expat cross border targeting well above the market average (+2.4 SD); rate shown well above the market average (+2.4 SD).
+**Signature:** institutional trust signal present well above the market average (+3.6 SD); rate shown well above the market average (+2.4 SD); subscription style framing well above the market average (+2.4 SD).
 
 ### vdk  (traditional)
 

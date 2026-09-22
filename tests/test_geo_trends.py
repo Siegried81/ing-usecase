@@ -1,4 +1,4 @@
-"""Tests for the standalone geographic-interest module (sieg 20/09).
+"""Tests for the standalone geographic-interest module.
 
 pytrends is deliberately not in requirements.txt (see the module docstring),
 so CI does not install it - tests that need to mock it skip cleanly instead

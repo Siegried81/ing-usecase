@@ -4,9 +4,11 @@
 > screenshot open. Leave a cell blank rather than guessing — a missing score is
 > reported honestly; an invented one is not.
 
-Two people score the same pages independently, then disagreement is measured
-(`python3 scripts/rubric_sheet.py agreement`). Do not confer while scoring —
-the disagreement number is only meaningful if the scores are independent.
+One named person scores every page against these scales. No second rater
+and no reliability measure: that is the chosen scope of this proof of
+concept, and single-judge bias is recorded as future work rather than
+answered here. Write the page id you scored from, and leave a cell blank
+whenever the page does not give you the evidence to fill it.
 
 ## `formality_score`
 

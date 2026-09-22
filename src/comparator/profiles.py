@@ -38,7 +38,7 @@ def _flatten_lists(series: pd.Series) -> list[str]:
     return [item for item, _ in counter.most_common()]
 
 
-# sieg 19/09: new helper for target_personas. Unlike _flatten_lists (which only
+# New helper for target_personas. Unlike _flatten_lists (which only
 # ranks by frequency), this keeps the SHARE of this bank's pages that named each
 # persona - the brief's exact "ING: 35% family, 20% entrepreneur" shape.
 def _persona_distribution(series: pd.Series, n_pages: int) -> list[dict]:
@@ -53,7 +53,7 @@ def _persona_distribution(series: pd.Series, n_pages: int) -> list[dict]:
 
 def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SIGNATURE_FEATURES, *, tier: str | None = None) -> list[tuple[str, float]]:
     """The features on which this bank departs most from the market average."""
-    # sieg 14/09: see the dropna(axis=1, how="any") note in analysis.positioning_axis().
+    # See the dropna(axis=1, how="any") note in analysis.positioning_axis().
     z = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
     if bank not in z.index:
         return []
@@ -68,7 +68,7 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
     if rows.empty:
         raise ValueError(f"no rows for bank {bank!r}")
 
-    # sieg 17/09, audit finding (HIGH, follow-up to analysis.py's comparability
+    # Audit finding (HIGH, follow-up to analysis.py's comparability
     # fix). This function computed within_language means (word_count,
     # second_person_ratio, in "tone" below) straight from this bank's own rows,
     # bypassing comparable_features()/language_excluded_features() entirely -
@@ -94,7 +94,7 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "pages_analysed": len(rows),
             "product_family": _mode(rows["product_family"]),
             "language": _mode(rows["language"]),
-            # sieg 17/09: explicit flag - see the mean() guard above. True means
+            # Explicit flag - see the mean() guard above. True means
             # this bank's own pages already mix languages, so its within_language
             # tone fields are None rather than a cross-language-confounded average.
             "mixed_language": mixed_language,
@@ -142,7 +142,7 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "persuasion_levers": _flatten_lists(rows.get("persuasion_levers", pd.Series(dtype="object"))),
             "lever_count": mean("persuasion_lever_count"),
         },
-        # sieg 19/09: new section - per-bank persona distribution.
+        # New section - per-bank persona distribution.
         "personas": _persona_distribution(rows.get("target_personas", pd.Series(dtype="object")), len(rows)),
         "signature": _distinctive(bank, df, fd, tier=tier),
     }
@@ -166,7 +166,7 @@ def _fmt_share(value: object) -> str:
 
 
 def _fmt(value: object, digits: int = 2) -> str:
-    # sieg 14/09 - NOTE FOR LATER, not fixed now (never triggered today, every
+    # - NOTE FOR LATER, not fixed now (never triggered today, every
     # call site uses the default digits=2): with digits=0 there is no decimal
     # point for rstrip("0") to stop at, so an integer like 200 would be
     # stripped down to "2". Safe today only because digits=0 is never passed.
@@ -200,7 +200,7 @@ def render_markdown(profile: dict, fd: FeatureDictionary | None = None) -> str:
             rendered = _fmt_share(value) if key in BOOLEAN_FIELDS else _fmt(value)
             lines.append(f"| {key.replace('_', ' ')} | {rendered} |")
 
-    # sieg 19/09: personas is a list of {persona, share} dicts, not a scalar -
+    # Personas is a list of {persona, share} dicts, not a scalar -
     # the loop above (via _fmt/_fmt_share) doesn't handle that shape.
     if profile["personas"]:
         rendered = ", ".join(f"{p['persona']} {p['share']:.0%}" for p in profile["personas"])

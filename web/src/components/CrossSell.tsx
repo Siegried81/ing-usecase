@@ -1,7 +1,7 @@
 import type { BankProfile, CrossSellMatrix } from "../types";
 
 /**
- * sieg 19/09: the brief's "Cross-Sell Score" (products offered / products
+ * The brief's "Cross-Sell Score" (products offered / products
  * possible, per bank) plus its co-occurrence matrix flattened to a table -
  * this repo has no graph-drawing library and one wasn't worth adding for 7
  * product families. The largest cells are "most associated products".

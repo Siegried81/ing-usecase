@@ -47,17 +47,17 @@ export interface Separation {
   higherAt: Category;
 }
 
-/** sieg 19/09: one target_personas value, aggregated to a share of this bank's pages. */
+/** One target_personas value, aggregated to a share of this bank's pages. */
 export interface Persona {
   persona: string;
   label: string;
   share: number;
 }
 
-/** sieg 19/09: comparator/ai_score.py axis key -> score (0-10), null when the bank has no data for it. */
+/** Comparator/ai_score.py axis key -> score (0-10), null when the bank has no data for it. */
 export type AiScore = Record<string, number | null>;
 
-/** sieg 19/09: radar legend entry, mirrors comparator/ai_score.py's AXES. */
+/** Radar legend entry, mirrors comparator/ai_score.py's AXES. */
 export interface AiScoreAxis {
   key: string;
   label: string;
@@ -77,11 +77,11 @@ export interface BankProfile {
   marketing: Record<string, unknown>;
   personas: Persona[];
   aiScore: AiScore;
-  /** sieg 19/09: comparator/cross_sell.py's score_bank() - share of possible other products cross-sold, 0-1. */
+  /** Comparator/cross_sell.py's score_bank() - share of possible other products cross-sold, 0-1. */
   crossSellScore: number | null;
 }
 
-/** sieg 19/09: comparator/cross_sell.py's cross_sell_matrix(), flattened for the UI. */
+/** Comparator/cross_sell.py's cross_sell_matrix(), flattened for the UI. */
 export interface CrossSellMatrix {
   products: string[];
   matrix: number[][];
@@ -117,7 +117,7 @@ export type Priority = "high" | "medium" | "low";
 
 /** Analysis recommendations come from the measured pages; reputation ones are
  *  added on top from news-theme context and never cite page features.
- *  steph 22/09: the trends basis is gone - search interest now feeds the
+ *  The trends basis is gone - search interest now feeds the
  *  computed benchmark section instead of the model. */
 export type RecommendationBasis = "analysis" | "reputation";
 
@@ -443,17 +443,17 @@ export interface TrendsPayload {
   guardrail: string;
 }
 
-/** sieg 21/09: a notable headline, with its source URL when one was found. */
+/** A notable headline, with its source URL when one was found. */
 export interface ReputationHeadline {
   title: string;
   url: string | null;
 }
 
-/** sieg 19/09: comparator/reputation.py - themes only, never sentiment. */
+/** Comparator/reputation.py - themes only, never sentiment. */
 export interface BankReputation {
   headline_count: number;
   themes: Record<string, number>;
-  /** sieg 21/09: every headline behind a theme's count, for the hover popup. */
+  /** Every headline behind a theme's count, for the hover popup. */
   theme_headlines: Record<string, ReputationHeadline[]>;
   notable_headlines: ReputationHeadline[];
 }
@@ -463,9 +463,9 @@ export interface ReputationPayload {
   banks: Record<string, BankReputation | null>;
 }
 
-/** sieg 20/09: comparator/geo_trends.py - Google Trends by Belgian region, a
+/** Comparator/geo_trends.py - Google Trends by Belgian region, a
  * standalone module (own pytrends calls), not part of the Trends tab's bridge
- * to Dan's exports. regions: e.g. {"Bruxelles": 100, "Région Flamande": 74}. */
+ * to the exports. regions: e.g. {"Bruxelles": 100, "Région Flamande": 74}. */
 export interface GeoTrendsBank {
   name: string;
   regions: Record<string, number>;
@@ -544,27 +544,12 @@ export interface RubricFeature {
   notes: string | null;
 }
 
-/** One row of comparator.rubric.agreement() - raw % match, chance not removed. */
-export interface AgreementRow {
-  feature: string;
-  pages: number;
-  agreement: number;
-  basis: string;
-}
-
-/** One row of comparator.rubric.kappa_agreement() - chance-corrected. */
-export interface KappaRow {
-  feature: string;
-  raters: string;
-  pages: number;
-  kappa: number;
-}
-
+/** One judged sheet, so there is no agreement or kappa to carry.
+ *  `reliability` says that in words rather than shipping an empty table. */
 export interface RubricPayload {
   raters: RubricRater[];
-  agreement: AgreementRow[];
-  kappa: KappaRow[];
   features: RubricFeature[];
+  reliability: string;
 }
 
 /** Mirrors scripts/export_web_report.py's build_operations() output. */

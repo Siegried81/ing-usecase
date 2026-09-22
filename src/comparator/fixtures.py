@@ -2,7 +2,7 @@
 
 Project Plan, Day 2: "Dan publishes five hand-collected rows in the agreed format
 so Stephane can start analysis code before the full scrape exists." This module is
-the placeholder that unblocks day 2 - it is replaced by Dan's real rows, not merged
+the placeholder that unblocks day 2 - it is replaced by the real rows, not merged
 with them.
 
 EVERY ROW IS INVENTED. Values are drawn from per-bank archetypes that encode the
@@ -32,9 +32,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=3, layout="hero_stacked", people=True,
         accents=["text", "icons", "buttons", "imagery"], levers=["scarcity", "authority"],
         second_person=0.58, urgency=(2, 1), text_img_ratio=(2.1, 0.3), archetype_note="broad palette, some motion",
-        personas=["family", "expat", "mass_market"],  # sieg 19/09
-        cross_sell=["current_account_pack", "investment"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["family", "expat", "mass_market"],
+        cross_sell=["current_account_pack", "investment"],
+        subscription=False,
     ),
     "kbc": dict(
         category="traditional", brand="#00aeef", words=(330, 50), images=(5, 1),
@@ -42,9 +42,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "icons"], levers=["authority"],
         second_person=0.44, urgency=(1, 1), text_img_ratio=(2.6, 0.3), archetype_note="straight to the point",
-        personas=["family", "mass_market"],  # sieg 19/09
-        cross_sell=["savings_account"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["family", "mass_market"],
+        cross_sell=["savings_account"],
+        subscription=False,
     ),
     "bnp_paribas_fortis": dict(
         category="traditional", brand="#00915a", words=(610, 70), images=(6, 2),
@@ -52,9 +52,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "icons"], levers=["authority", "social_proof"],
         second_person=0.40, urgency=(1, 1), text_img_ratio=(2.9, 0.4), archetype_note="green in text and icons only",
-        personas=["family", "entrepreneur_self_employed"],  # sieg 19/09
-        cross_sell=["current_account_pack", "savings_account"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["family", "entrepreneur_self_employed"],
+        cross_sell=["current_account_pack", "savings_account"],
+        subscription=False,
     ),
     "argenta": dict(
         category="traditional", brand="#00814d", words=(470, 60), images=(4, 1),
@@ -62,9 +62,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="long_form", people=True,
         accents=["text", "buttons"], levers=["liking"],
         second_person=0.46, urgency=(0, 1), text_img_ratio=(3.4, 0.4), archetype_note="text-led",
-        personas=["family", "retiree"],  # sieg 19/09
-        cross_sell=["savings_account"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["family", "retiree"],
+        cross_sell=["savings_account"],
+        subscription=False,
     ),
     "crelan": dict(
         category="traditional", brand="#009640", words=(540, 70), images=(4, 1),
@@ -72,9 +72,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="long_form", people=True,
         accents=["text", "icons"], levers=["liking", "authority"],
         second_person=0.43, urgency=(1, 1), text_img_ratio=(3.1, 0.4), archetype_note="text-led",
-        personas=["family", "retiree"],  # sieg 19/09
-        cross_sell=["savings_account", "pension"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["family", "retiree"],
+        cross_sell=["savings_account", "pension"],
+        subscription=False,
     ),
     "belfius": dict(
         category="traditional", brand="#c8102e", words=(720, 80), images=(5, 2),
@@ -82,9 +82,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="photo", formality=4, layout="split_columns", people=True,
         accents=["text", "imagery"], levers=["authority"],
         second_person=0.42, urgency=(1, 1), text_img_ratio=(3.6, 0.4), archetype_note="verbose, red in text and pictures",
-        personas=["retiree", "mass_market"],  # sieg 19/09
-        cross_sell=["pension", "investment"],  # sieg 19/09
-        subscription=False,  # sieg 19/09
+        personas=["retiree", "mass_market"],
+        cross_sell=["pension", "investment"],
+        subscription=False,
     ),
     "revolut": dict(
         category="challenger", brand="#0666eb", words=(140, 40), images=(11, 3),
@@ -92,9 +92,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="render_3d", formality=2, layout="card_grid", people=False,
         accents=["imagery", "background", "buttons"], levers=["social_proof", "scarcity", "liking"],
         second_person=0.71, urgency=(3, 1), text_img_ratio=(0.7, 0.2), archetype_note="dark, 3D, minimal copy",
-        personas=["digital_nomad", "expat", "student"],  # sieg 19/09
-        cross_sell=[],  # sieg 19/09: no bundle pushed, matches is_bundled_offer=False
-        subscription=True,  # sieg 19/09
+        personas=["digital_nomad", "expat", "student"],
+        cross_sell=[],  # No bundle pushed, matches is_bundled_offer=False
+        subscription=True,
     ),
     "n26": dict(
         category="challenger", brand="#36a18b", words=(210, 40), images=(9, 2),
@@ -102,9 +102,9 @@ ARCHETYPES: dict[str, dict] = {
         img_type="render_3d", formality=2, layout="card_grid", people=False,
         accents=["imagery", "buttons"], levers=["social_proof", "liking"],
         second_person=0.68, urgency=(2, 1), text_img_ratio=(1.0, 0.2), archetype_note="product renders, light ground",
-        personas=["digital_nomad", "student"],  # sieg 19/09
-        cross_sell=[],  # sieg 19/09: no bundle pushed, matches is_bundled_offer=False
-        subscription=True,  # sieg 19/09
+        personas=["digital_nomad", "student"],
+        cross_sell=[],  # No bundle pushed, matches is_bundled_offer=False
+        subscription=True,
     ),
     "bunq": dict(
         category="challenger", brand="#3394ff", words=(190, 40), images=(10, 3),
@@ -112,13 +112,13 @@ ARCHETYPES: dict[str, dict] = {
         img_type="illustration", formality=2, layout="card_grid", people=False,
         accents=["imagery", "background", "buttons"], levers=["liking", "social_proof"],
         second_person=0.74, urgency=(2, 1), text_img_ratio=(0.8, 0.2), archetype_note="dark, illustrated",
-        personas=["digital_nomad", "entrepreneur_self_employed"],  # sieg 19/09
-        cross_sell=["current_account_pack"],  # sieg 19/09: bunq's business add-on, still no full bundle
-        subscription=True,  # sieg 19/09
+        personas=["digital_nomad", "entrepreneur_self_employed"],
+        cross_sell=["current_account_pack"],  # Bunq's business add-on, still no full bundle
+        subscription=True,
     ),
 }
 
-# sieg 14/09: was hardcoded to "flesch_douma_nl" regardless of the `language`
+# Was hardcoded to "flesch_douma_nl" regardless of the `language`
 # argument below, so a fixture built with language="fr" or "en" silently
 # claimed Dutch-formula scoring. Table added so build_fixture() can look up
 # the right formula per language instead.
@@ -127,7 +127,7 @@ _READABILITY_FORMULA = {
     "fr": "kandel_moles_fr",
     "en": "flesch_reading_ease_en",
 }
-# sieg 17/09, audit finding (LOW): this was a THIRD independent copy of the
+# Audit finding (LOW): this was a THIRD independent copy of the
 # same readability threshold edges (collection/scraper.py and derive.py had
 # their own too) - all three now call bands.readability_band().
 
@@ -163,7 +163,7 @@ def build_fixture(
                 "aida_action": bool(rng.random() > 0.1),
             }
             levers = a["levers"]
-            # sieg 14/09: pulled out of the dict literal below so each value is
+            # Pulled out of the dict literal below so each value is
             # drawn exactly once and reused for both the raw field and its
             # _band equivalent - inlining the same rng.normal(...) call twice
             # would draw two different numbers and make the band disagree
@@ -171,7 +171,7 @@ def build_fixture(
             second_person_ratio_value = round(float(np.clip(rng.normal(a["second_person"], 0.05), 0, 1)), 3)
             first_person_plural_value = int(max(0, rng.normal(6, 3)))
             disclaimer_word_share_value = round(float(np.clip(rng.normal(0.18 if a["category"] == "traditional" else 0.07, 0.04), 0, 1)), 3)
-            # steph 15/09, FIXED: this was drawn independently from an archetype,
+            # FIXED: this was drawn independently from an archetype,
             # so the fixture's text_to_image_ratio disagreed with its OWN
             # word_count and image_count by ~40x (ING: stored 1.18, implied
             # 77.33). collection/scraper.py defines the feature as
@@ -198,18 +198,18 @@ def build_fixture(
                     "data_source": "synthetic_fixture",
                     # tone
                     "word_count": words,
-                    "word_count_band": bands.word_count_band(words),  # sieg 14/09
+                    "word_count_band": bands.word_count_band(words),
                     "sentence_count": sentences,
-                    "sentence_count_band": bands.sentence_count_band(sentences),  # sieg 14/09
+                    "sentence_count_band": bands.sentence_count_band(sentences),
                     "avg_sentence_length": round(words / sentences, 2),
-                    "avg_sentence_length_band": bands.avg_sentence_length_band(words / sentences),  # sieg 14/09
+                    "avg_sentence_length_band": bands.avg_sentence_length_band(words / sentences),
                     "readability_score": round(readability, 1),
-                    "readability_formula": _READABILITY_FORMULA[language],  # sieg 14/09: was hardcoded to nl
+                    "readability_formula": _READABILITY_FORMULA[language],  # Was hardcoded to nl
                     "readability_band": bands.readability_band(readability),
                     "second_person_ratio": second_person_ratio_value,
-                    "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio_value),  # sieg 14/09
+                    "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio_value),
                     "first_person_plural_count": first_person_plural_value,
-                    "first_person_plural_band": bands.first_person_plural_band(first_person_plural_value),  # sieg 14/09
+                    "first_person_plural_band": bands.first_person_plural_band(first_person_plural_value),
                     "question_count": int(max(0, rng.normal(2, 1.5))),
                     "urgency_marker_count": max(0, int(rng.normal(*a["urgency"]))),
                     "numeric_claim_count": int(max(0, rng.normal(9 if a["category"] == "traditional" else 4, 2))),
@@ -225,7 +225,7 @@ def build_fixture(
                     "value_prop_clarity": int(np.clip(rng.normal(3.5, 0.7), 1, 5)),
                     "disclaimer_present": True,
                     "disclaimer_word_share": disclaimer_word_share_value,
-                    "disclaimer_word_share_band": bands.disclaimer_word_share_band(disclaimer_word_share_value),  # sieg 14/09
+                    "disclaimer_word_share_band": bands.disclaimer_word_share_band(disclaimer_word_share_value),
                     # visuals
                     "image_count": images,
                     "hero_image_present": a["hero"],
@@ -249,7 +249,7 @@ def build_fixture(
                     "section_count": int(max(2, rng.normal(7, 2))),
                     "cta_count": int(max(1, rng.normal(4 if a["category"] == "traditional" else 7, 1.5))),
                     "cta_above_fold": bool(rng.random() > (0.4 if a["category"] == "traditional" else 0.05)),
-                    # sieg 15/09: text_image_adjacent (boolean) -> text_image_layout
+                    # text_image_adjacent (boolean) -> text_image_layout
                     # (categorical) - "stacked" for ing specifically (the deck claim
                     # H4 is "no longer next to picture", not "overlaid" like the
                     # challengers below), "overlaid" for the other non-beside banks,
@@ -257,7 +257,7 @@ def build_fixture(
                     # photo, headline written on top).
                     "text_image_layout": "beside" if a["adjacent"] else ("stacked" if bank == "ing" else "overlaid"),
                     "text_to_image_ratio": text_to_image_ratio_value,
-                    "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio_value),  # sieg 14/09
+                    "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio_value),
                     "above_fold_element_count": int(max(1, rng.normal(6, 2))),
                     "has_comparison_table": bool(rng.random() > 0.5),
                     "layout_archetype": a["layout"],
@@ -266,7 +266,7 @@ def build_fixture(
                     "aida_coverage_score": sum(aida.values()),
                     "persuasion_levers": format_list(levers),
                     "persuasion_lever_count": len(levers),
-                    # banking-domain (sieg 14/09) - grounded in the same discussion that
+                    # banking-domain - grounded in the same discussion that
                     # produced these dimensions, not random: traditional = bancassurance
                     # bundle / branch network / base-rate framing / retention posture;
                     # challenger = self-service / capped-teaser rate / acquisition posture.
@@ -275,7 +275,7 @@ def build_fixture(
                     # against it will always "confirm" the hypothesis it was built from.
                     "audience_segment": "retail",
                     "is_bundled_offer": a["category"] == "traditional",
-                    # sieg 15/09: a challenger can be is_bundled_offer=False (no bundle
+                    # A challenger can be is_bundled_offer=False (no bundle
                     # PUSHED in this funnel) and still be partner_addon_digital here (it
                     # HAS a travel/purchase-protection add-on via a third party elsewhere
                     # in the app) - that gap between the two fields is deliberate, it is
@@ -302,27 +302,27 @@ def build_fixture(
                     # cross-border workers in Belgium.
                     "expat_cross_border_targeting": bank == "ing",
                     "branch_network_cited_as_benefit": a["category"] == "traditional",
-                    # sieg 15/09: fast digital onboarding is a challenger-side claim in
+                    # Fast digital onboarding is a challenger-side claim in
                     # this archetype set - traditional banks route account opening
                     # through an advisor/branch step more often (see primary_cta_type above).
                     "fast_digital_onboarding_claim": a["category"] == "challenger",
-                    # sieg 15/09: challengers lead with low/no-minimum, self-service
+                    # Challengers lead with low/no-minimum, self-service
                     # investing (round-ups, robo style); traditional banks route a
                     # first-time investor to an advisor instead of a beginner page.
                     "first_time_investor_targeting": a["category"] == "challenger",
-                    # sieg 15/09: pension/succession framing is a traditional-bank
+                    # Pension/succession framing is a traditional-bank
                     # posture in this archetype set - challengers skew toward a
                     # younger customer base and don't lead with this angle.
                     "senior_preretirement_targeting": a["category"] == "traditional",
-                    # sieg 15/09: mirrors the "dark, 3D/illustrated, card_grid" visual
+                    # Mirrors the "dark, 3D/illustrated, card_grid" visual
                     # register already encoded per-archetype above (img_type/layout) -
                     # challengers use the same card-grid, tap-friendly register here.
                     "mobile_first_design_signal": a["layout"] == "card_grid",
-                    # sieg 19/09: target_personas - see feature_dictionary.yaml.
+                    # target_personas - see feature_dictionary.yaml.
                     "target_personas": format_list(a["personas"]),
-                    # sieg 19/09: cross_sold_products - see feature_dictionary.yaml.
+                    # cross_sold_products - see feature_dictionary.yaml.
                     "cross_sold_products": format_list(a["cross_sell"]),
-                    # sieg 19/09: subscription_style_framing - see feature_dictionary.yaml.
+                    # subscription_style_framing - see feature_dictionary.yaml.
                     "subscription_style_framing": a["subscription"],
                 }
             )

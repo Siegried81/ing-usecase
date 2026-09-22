@@ -1,4 +1,4 @@
-"""Tests for the bridge to Dan's Google Trends benchmark (steph 16/09).
+"""Tests for the bridge to the Google Trends benchmark.
 
 The thing most worth testing here is what the module REFUSES to do: it must
 stay context and never become an outcome variable, and it must vanish quietly
@@ -38,7 +38,7 @@ from comparator.trends import (  # noqa: E402
 
 
 def _export(tmp_path: Path) -> Path:
-    """A miniature version of Dan's export format."""
+    """A miniature version of the export format."""
     rows = []
     for bank, product in (("ING", "compte_epargne"), ("KBC", "compte_a_vue")):
         for week in range(120):
@@ -67,7 +67,7 @@ def campaigns() -> pd.DataFrame:
 
 # --- absence is normal, not an error -----------------------------------------
 def test_missing_exports_are_not_an_error(tmp_path, campaigns):
-    """The trends-benchmark branch may simply not be merged."""
+    """The search_interest branch may simply not be merged."""
     assert context_or_none(campaigns, tmp_path / "nope") is None
 
 
@@ -83,7 +83,7 @@ def test_empty_trends_yields_no_context(campaigns):
 
 
 def test_absent_product_context_names_the_scope_change_not_a_missing_file(campaigns):
-    """steph 21/09: the old message blamed a missing export, which sends a reader
+    """The old message blamed a missing export, which sends a reader
     hunting for a file that is in fact present. The pipeline narrowed to brand
     notoriety, so per-product interest is unanswerable rather than uncollected -
     and the message has to say which, or the next person re-opens a dead end."""
@@ -160,7 +160,7 @@ def test_dashboard_carries_the_series(tmp_path, campaigns):
 
 
 def test_dashboard_no_longer_carries_a_campaign_catalogue(tmp_path, campaigns):
-    """dan 21/09: the catalogue matched real ad campaigns to detected spikes and
+    """The catalogue matched real ad campaigns to detected spikes and
     scored them. However it was captioned, a reader takes "this campaign scored 6
     on these spikes" as cause and effect - and this project has no performance
     data that could support that (PRD 5.2, plan risk P-08). The tab answers one
@@ -172,8 +172,7 @@ def test_dashboard_no_longer_carries_a_campaign_catalogue(tmp_path, campaigns):
 
 
 # -----------------------------------------------------------------------------
-# Share of search - steph 21/09
-# -----------------------------------------------------------------------------
+# Share of search - # -----------------------------------------------------------------------------
 
 
 def _share_export(tmp_path: Path, rows: list[dict]) -> Path:
@@ -258,7 +257,7 @@ def test_share_payload_carries_the_chaining_method_with_it():
 
 
 def test_request_count_in_the_narrative_follows_the_data():
-    """steph 21/09: this sentence said "three requests" in prose while the data
+    """This sentence said "three requests" in prose while the data
     had grown to five sheets. Anything countable must be counted, or the next
     wave of banks silently makes the method description false."""
     rows = [

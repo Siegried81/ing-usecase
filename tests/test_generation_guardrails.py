@@ -1,4 +1,4 @@
-"""Tests for src/comparator/generation_guardrails.py - sieg 15/09, new module, new tests.
+"""Tests for src/comparator/generation_guardrails.py - New module, new tests.
 
 No network calls involved - the guardrail check is pure logic over a dict, there
 is nothing here to mock.

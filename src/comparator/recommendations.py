@@ -5,7 +5,7 @@ snapshot into a short, ordered list of things ING could change, written by the
 pinned model (D6) and every one of them tied back to a measured feature in the
 report.
 
-steph 18/09, new module. The web UI is deliberately read-only, so the only
+New module. The web UI is deliberately read-only, so the only
 place a model is allowed to opine is here: the report says what the pages look
 like, this says what to do about it, and the two never blend - a recommendation
 carries the feature and the gap it was argued from, so a reader can reject it.
@@ -17,13 +17,13 @@ Guardrails, because a recommendation is where this kind of project goes wrong:
     against the report before the list leaves this module.
   * `selected` is carried through so the UI can pass a subset to site
     generation without this module knowing anything about the site.
-  * Reputation (`include_reputation`, sieg 21/09) is an opt-in second context:
+  * Reputation (`include_reputation`, ) is an opt-in second context:
     news headline themes, `basis="reputation"`, context never evidence - the
     same line reputation.py draws - and never allowed to cite a page feature as
     proof. It needs no separate payload: the dashboard already travels inside
     `report["reputation"]`.
 
-  steph 22/09: the model no longer writes anything from search interest. The
+  The model no longer writes anything from search interest. The
   Trends tab selects which competitor brands are worth studying and
   comparator/benchmarks.py reports what their pages measurably do - computed
   end to end, so there is nothing left here for a model to add.
@@ -39,7 +39,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
-from comparator.reputation import RECENT_DAYS  # sieg 21/09
+from comparator.reputation import RECENT_DAYS
 
 Priority = Literal["high", "medium", "low"]
 Basis = Literal["analysis", "reputation"]
@@ -55,7 +55,7 @@ class RecommendationModel(BaseModel):
     features: list[str] = Field(default_factory=list)
     page_targets: list[str] = Field(default_factory=list)
     basis: Basis = "analysis"
-    # sieg 21/09: the reputation basis names the themes it was drawn from.
+    # The reputation basis names the themes it was drawn from.
     reputation_context: str | None = Field(
         default=None, description="news-theme context, reputation basis only"
     )
@@ -171,7 +171,7 @@ class RecommendationSet:
     def from_dict(cls, payload: dict) -> "RecommendationSet":
         """Rebuild a saved set, tolerating one written by an older version.
 
-        steph 22/09: sets saved while the model still wrote search-interest
+        Sets saved while the model still wrote search-interest
         recommendations carry a `trends` basis and a `market_context` field
         that no longer exist. Unknown keys are dropped and those entries are
         skipped, so an old file loads as the analysis set it still is rather
@@ -193,7 +193,7 @@ class RecommendationSet:
 
 
 def _round(value: object, digits: int = 2) -> object:
-    """Round a report number before it reaches the model. sieg 20/09.
+    """Round a report number before it reaches the model.
 
     The report stores full float precision (e.g. 0.5912291666666667) for
     charts and exact recomputation; the model has no use for that precision
@@ -281,7 +281,7 @@ def _known_features(report: dict) -> set[str]:
 def _reputation_digest(report: dict) -> str | None:
     """The slice of the reputation dashboard the model is allowed to see.
 
-    sieg 21/09. Reputation needs no separate payload argument:
+    Reputation needs no separate payload argument:
     `report["reputation"]` already carries `build_dashboard()`'s output (see
     export_web_report.py). Only banks this run actually compared, and only
     ones with at least one classified theme, so the model never reasons about
@@ -332,7 +332,7 @@ def build_recommendations(
     recommendation still stands on its prose, and silently keeping a phantom
     feature id would let the UI link to evidence that does not exist.
 
-    When `include_reputation` is set (sieg 21/09), `report["reputation"]` - already
+    When `include_reputation` is set, `report["reputation"]` - already
     part of the report, no separate argument needed - is sliced the same way and
     added as a second, independent CONTEXT block. Those recommendations come back
     with `basis="reputation"` and cannot cite page features either.

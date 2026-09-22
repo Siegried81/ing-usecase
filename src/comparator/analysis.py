@@ -22,13 +22,13 @@ from comparator.schema import parse_list
 PROVENANCE = {"provenance"}
 FOCUS_BANK = "ing"
 
-# steph 15/09, after Sieg asked why the chart said "50 features" when the
+# After Sieg asked why the chart said "50 features" when the
 # dictionary has 97. It is a fair question and the answer was nowhere in the
 # output, so the accounting below is now computed and printed rather than
 # reconstructed by hand.
 BAND_SUFFIX = "_band"
 
-# steph 16/09: a gap expressed in peer standard deviations is only meaningful if
+# A gap expressed in peer standard deviations is only meaningful if
 # the peers actually vary and there are enough of them. brand_colour_share came
 # back [0.0, 0.014, nan, 0.0] on the first real run: ING at 0.228 scored +33.8 SD
 # and topped the headline chart. That is not a finding about ING, it is a
@@ -50,11 +50,11 @@ FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "r
 def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
     """`X_band` features whose underlying `X` already enters the comparison.
 
-    Siegried's bands exist to make a within_language number cross-language. They
+    the bands exist to make a within_language number cross-language. They
     are a coarser view of a value already in the matrix, so including both would
     count the same signal twice and quietly double the weight of word length.
 
-    sieg 17/09, audit finding (MEDIUM). This used to check "is X a numeric
+    Audit finding (MEDIUM). This used to check "is X a numeric
     column present in df", not "does X actually enter the comparison" - so
     when mixed languages excluded X (see language_excluded_features() below),
     X_band was STILL classified as redundant and stayed hidden from
@@ -70,7 +70,7 @@ def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str
     )
 
 
-# sieg 17/09: audit finding (HIGH) - comparable_features() picked every numeric
+# Audit finding (HIGH) - comparable_features() picked every numeric
 # feature regardless of `comparability`, so word_count/readability_score/
 # avg_sentence_length/second_person_ratio/... (all `within_language` in the
 # dictionary) were compared raw across banks even when their pages were
@@ -132,7 +132,7 @@ def feature_accounting(
     free_text = sorted(n for n in FREE_TEXT_FEATURES if n in fd)
     bands = band_redundant_features(fd, df)
     categoricals = encodable_categoricals(fd, df)
-    # sieg 17/09: report the within_language exclusion the same way every other
+    # Report the within_language exclusion the same way every other
     # reduction here is reported - see language_excluded_features().
     language_excluded = language_excluded_features(fd, df)
 
@@ -168,7 +168,7 @@ def render_accounting(accounting: dict) -> str:
     row("provenance", accounting["provenance"], "identify a page, do not describe a campaign")
     row("free text / identifiers", accounting["free_text"], "no two pages share them")
     row("bands of a number already in", accounting["band_redundant"], "would double-count the same signal")
-    # sieg 17/09: within_language features dropped because >1 language is present.
+    # within_language features dropped because >1 language is present.
     row("within_language, mixed languages present", accounting["language_excluded"],
         "not comparable across languages (comparability in the dictionary)")
     if accounting["categorical_included"]:
@@ -195,7 +195,7 @@ def render_accounting(accounting: dict) -> str:
 class FamilyScope:
     """Which product family the comparison is restricted to, and what it costs.
 
-    steph 16/09. DR-04 says comparisons are only valid within one product family:
+    DR-04 says comparisons are only valid within one product family:
     a mortgage page and a current-account page differ because the PRODUCTS
     differ, not because the banks communicate differently. Every run so far
     pooled three families and carried that as a limitation. It does not have to
@@ -286,7 +286,7 @@ def comparable_features(
     Provenance columns are excluded - they identify a page, they do not describe
     a campaign. within_language features (word_count, readability_score, ...)
     are excluded too whenever the usable pages span more than one language -
-    sieg 17/09, see language_excluded_features() above.
+    See language_excluded_features() above.
     """
     feats = fd.select(tier=tier, exclude_dimensions=PROVENANCE)
     excluded = set(language_excluded_features(fd, df))
@@ -376,7 +376,7 @@ def comparison_matrix(
 ) -> pd.DataFrame:
     """Bank vectors, standardised and weighted - the one input every distance uses.
 
-    steph 15/09. positioning_axis() and similarity_matrix() each built this
+    Positioning_axis() and similarity_matrix() each built this
     inline, which is how the weighting bug below survived: fixing it in one
     place would have left the other wrong.
 
@@ -550,7 +550,7 @@ class Positioning:
 
     @property
     def has_focus(self) -> bool:
-        """steph 16/09: the focus bank can be missing for a real reason - ING's
+        """The focus bank can be missing for a real reason - ING's
         own page came back as an unrendered shell on the first live run and was
         excluded. The rest of the market analysis is still valid, so this is a
         state to handle, not a crash. It used to surface as KeyError: 'ing' from
@@ -592,9 +592,9 @@ def positioning_axis(
 ) -> Positioning:
     """Project every bank onto the traditional-challenger axis (BO-02)."""
     fd = fd or load_dictionary()
-    # sieg 14/09: dropna(axis=1, how="any") drops a feature from EVERY bank's
+    # Dropna(axis=1, how="any") drops a feature from EVERY bank's
     # vector the moment even one bank is missing it. Invisible on the fixture
-    # (nothing is ever missing), but with Dan's real captures a single gap on
+    # (nothing is ever missing), but with the real captures a single gap on
     # one page can silently shrink the comparable feature set for everyone.
     # not fixing this alone - a defensible design choice (no imputation =
     # honest) - but flagging for Stephane: at minimum this should log/warn how
@@ -602,7 +602,7 @@ def positioning_axis(
     # same comment applies to similarity_matrix() and profiles._distinctive()
     # below, which share this exact pattern.
     #
-    # steph 15/09: answered. feature_accounting() / render_accounting() above
+    # Answered. feature_accounting() / render_accounting() above
     # now report every reduction with its reason, run_analysis.py prints the
     # block, and outputs/charts.md carries it next to the figure - which is what
     # prompted the question in the first place ("50 features... and with 97?").
@@ -635,7 +635,7 @@ def similarity_matrix(
 ) -> pd.DataFrame:
     """Pairwise euclidean distance between banks in standardised feature space."""
     fd = fd or load_dictionary()
-    # sieg 14/09: see the dropna(axis=1, how="any") note in positioning_axis() above.
+    # See the dropna(axis=1, how="any") note in positioning_axis() above.
     vectors = comparison_matrix(df, fd, tier=tier, include_categorical=include_categorical)
     banks = vectors.index.tolist()
     data = vectors.to_numpy()
@@ -667,7 +667,7 @@ def nearest_neighbours(
 ) -> pd.Series:
     """The k banks whose communication most resembles the focus bank.
 
-    steph 16/09: same guard as Positioning.focus_score - the focus bank can be
+    Same guard as Positioning.focus_score - the focus bank can be
     legitimately absent (an unusable capture), and a KeyError from inside pandas
     is not a useful way to learn that.
     """
@@ -683,7 +683,7 @@ def nearest_neighbours(
 # -----------------------------------------------------------------------------
 # BO-04 - recurring patterns across the whole market
 # -----------------------------------------------------------------------------
-# sieg 15/09: new function. Unlike category_comparison (traditional vs
+# New function. Unlike category_comparison (traditional vs
 # challenger) or cluster_banks (which BANKS resemble each other), BO-04 asks
 # for patterns in how campaigns are built regardless of who built them -
 # "pages with X tend to also have Y", market-wide. Pairwise correlation is the
@@ -735,7 +735,7 @@ def recurring_patterns(
 # FR-14 - verify the kickoff-deck observations
 # -----------------------------------------------------------------------------
 #   claim id -> (bank, human-readable claim, feature, test)
-# sieg 19/09: ordinal scale for a categorical BAND feature, so a highest/
+# Ordinal scale for a categorical BAND feature, so a highest/
 # lowest deck claim survives once the raw feature it used to test (word_count,
 # within_language) gets dropped entirely from the comparison the moment >1
 # language is in scope (language_excluded_features()). The band uses fixed,
@@ -754,7 +754,7 @@ DECK_CLAIMS: list[dict] = [
          feature="word_count_band", test="lowest_traditional"),
     dict(id="H3", bank="ing", claim="ING is the only traditional bank using animation",
          feature="has_animation", test="only_traditional_true"),
-    # sieg 15/09: feature renamed text_image_adjacent -> text_image_layout
+    # Feature renamed text_image_adjacent -> text_image_layout
     # (boolean -> categorical: beside/stacked/overlaid) - "is_false" no longer
     # applies to a categorical column, replaced with "categorical_is_not".
     dict(id="H4", bank="ing", claim="ING no longer places text next to picture",
@@ -765,7 +765,7 @@ DECK_CLAIMS: list[dict] = [
 
 
 def _band_ordinal_series(df: pd.DataFrame, feature: str) -> tuple[pd.Series, dict[int, str]]:
-    """Per-bank mode of a categorical band, mapped to BAND_ORDINALS. sieg 19/09."""
+    """Per-bank mode of a categorical band, mapped to BAND_ORDINALS. """
     ordinals = BAND_ORDINALS[feature]
     modes = df.dropna(subset=[feature]).groupby("bank", observed=True)[feature].agg(lambda s: s.mode().iat[0])
     return modes.map(ordinals).dropna(), {v: k for k, v in ordinals.items()}
@@ -787,7 +787,7 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
         feature, bank, test = claim["feature"], claim["bank"], claim["test"]
         verdict, evidence = "not testable", "feature absent from the dataset"
 
-        # sieg 15/09: categorical claims can't go through bank_vectors (it
+        # Categorical claims can't go through bank_vectors (it
         # only carries numeric/boolean columns) - test the per-bank mode from
         # the raw rows directly instead.
         if test == "categorical_is_not":
@@ -801,7 +801,7 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
                     verdict = "supported" if mode_value != not_value else "not supported"
                     evidence = f"{bank}'s most common {feature}: {mode_value!r} (claim: not {not_value!r})"
         else:
-            # sieg 19/09: a BAND feature (e.g. word_count_band) never appears in
+            # A BAND feature (e.g. word_count_band) never appears in
             # vectors (numeric/boolean only) but still ranks fine as an ordinal.
             is_band = feature in BAND_ORDINALS
             if is_band and feature in df.columns:
@@ -850,13 +850,13 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
 # -----------------------------------------------------------------------------
 # FR-10 / BO-06 - insights and recommendations
 # -----------------------------------------------------------------------------
-# sieg 15/09: this was the one PRD deliverable (FR-10, priority M - mandatory,
+# This was the one PRD deliverable (FR-10, priority M - mandatory,
 # not S/C) with no function behind it. ing_vs_peers already ranks every gap;
 # this only filters it to the ones big enough to argue from and attaches the
 # focus bank's own page_ids that show the gap, so every candidate is
 # "traceable to specific features and source pages" per FR-10's own wording.
 # It does NOT write the insight - "well-argued" is a human judgement call
-# (Siegried's), this only makes sure nothing is argued without evidence behind it.
+# (the), this only makes sure nothing is argued without evidence behind it.
 def insight_candidates(
     df: pd.DataFrame,
     fd: FeatureDictionary | None = None,

@@ -188,7 +188,8 @@
         "brand_colour_share": 0.012,
         "accent_colour_count": 4.0,
         "accent_locations": [
-          "buttons, text"
+          "buttons",
+          "text"
         ],
         "background_luminance": 0.851
       },
@@ -242,7 +243,7 @@
           1.3302225919638269
         ],
         [
-          "animated_asset_count",
+          "has_animation",
           -1.2924860661584991
         ]
       ]
@@ -319,7 +320,7 @@
           1.820930936000652
         ],
         [
-          "animated_asset_count",
+          "has_animation",
           -1.2924860661584991
         ]
       ]
@@ -1032,11 +1033,11 @@
           3.6055512754639896
         ],
         [
-          "expat_cross_border_targeting",
+          "rate_shown",
           2.4494897427831783
         ],
         [
-          "rate_shown",
+          "subscription_style_framing",
           2.4494897427831783
         ]
       ]
@@ -1057,7 +1058,8 @@
         "brand_colour_share": 0.0,
         "accent_colour_count": 4.0,
         "accent_locations": [
-          "buttons, background"
+          "buttons",
+          "background"
         ],
         "background_luminance": 0.857
       },

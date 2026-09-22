@@ -1,6 +1,6 @@
 """Stock price context for the few in-scope banks that are actually listed.
 
-sieg 19/09, new module - deliberately thin. The brief's own assessment of
+New module - deliberately thin. The brief's own assessment of
 Finnhub for this project: "Principalement utile pour actualités financières,
 résultats, fondamentaux. Peut servir si l'on souhaite mesurer l'impact
 boursier de certaines campagnes." Most banks in this project's scope have NO

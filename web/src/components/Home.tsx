@@ -26,7 +26,7 @@ export function Home({ report, operations }: { report: Report; operations: Opera
       <div className="metrics">
         <Metric k="Banks with captures" v={metrics.banks} />
         <Metric k="Pages collected" v={metrics.pages} />
-        <Metric k="Features measured" v={operations.dictionary.length} />
+        <Metric k="Features in the dictionary" v={operations.dictionary.length} />
         <Metric k="Banks in scope" v={scope.banks.length} />
       </div>
 

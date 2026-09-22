@@ -22,7 +22,7 @@ from comparator.analysis import (  # noqa: E402
     comparable_features,
     ing_vs_peers,
     insight_candidates,
-    language_excluded_features,  # sieg 17/09: audit fix, comparability enforcement
+    language_excluded_features,  # Audit fix, comparability enforcement
     nearest_neighbours,
     positioning_axis,
     recurring_patterns,
@@ -55,7 +55,7 @@ def test_bank_vectors_are_one_row_per_bank(df, fd):
     assert len(vectors) == df["bank"].nunique()
 
 
-# sieg 17/09: audit finding (HIGH) - comparable_features() ignored `comparability`
+# Audit finding (HIGH) - comparable_features() ignored `comparability`
 # and compared within_language features (word_count, readability_score, ...) raw
 # across banks captured in different languages. These tests pin the fix.
 def test_within_language_features_stay_in_when_one_language(df, fd):
@@ -102,7 +102,7 @@ def test_accounting_reports_the_language_exclusion(fd):
     assert "mixed languages present" in text
 
 
-# sieg 17/09, audit finding (MEDIUM, follow-up) - band_redundant_features()
+# Audit finding (MEDIUM, follow-up) - band_redundant_features()
 # used to check "is the raw column present in df", not "does the raw feature
 # actually enter the comparison" - so word_count_band stayed hidden as
 # "redundant" even once word_count itself was excluded for mixing languages,
@@ -161,7 +161,7 @@ def test_nearest_neighbours_excludes_self(df, fd):
 
 
 def test_nearest_neighbours_accepts_tier(df, fd):
-    # sieg 14/09: nearest_neighbours used to be the only sibling function
+    # nearest_neighbours used to be the only sibling function
     # without a tier passthrough - this is a regression guard, not a claim
     # about which neighbours a restricted tier should return.
     neighbours = nearest_neighbours(df, fd, focus="ing", k=3, tier="core")
@@ -186,7 +186,7 @@ def test_deck_claims_all_return_a_verdict(df, fd):
     assert claims["verdict"].isin({"supported", "not supported", "not testable"}).all()
 
 
-# sieg 19/09: H1/H2/H5 used to test raw word_count, which language_excluded_features()
+# H1/H2/H5 used to test raw word_count, which language_excluded_features()
 # drops ENTIRELY the moment >1 language is in scope - a real regression hit
 # when English/Dutch pages were added to the real dataset. word_count_band
 # (fixed universal thresholds, cross_language) survives that drop.
@@ -205,7 +205,7 @@ def test_deck_claims_word_count_claims_survive_mixed_language_scope(fd):
 
 
 def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
-    # sieg 14/09: H2 (KBC) used to call .idxmin() on a subset that could be
+    # H2 (KBC) used to call .idxmin() on a subset that could be
     # empty (e.g. no bank tagged "traditional" left in the data), which raises
     # instead of reporting "not testable" like every other untestable claim.
     no_traditional = df.copy()
@@ -215,7 +215,7 @@ def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
     assert h2["verdict"] == "not testable"
 
 
-# sieg 15/09: new function, new tests - BO-04 (recurring market-wide patterns)
+# New function, new tests - BO-04 (recurring market-wide patterns)
 # had no function behind it before this.
 def test_recurring_patterns_are_sorted_and_above_the_threshold(df, fd):
     patterns = recurring_patterns(df, fd, min_abs_corr=0.5)
@@ -237,7 +237,7 @@ def test_recurring_patterns_does_not_list_a_pair_twice(df, fd):
     assert len(pairs) == len(patterns)
 
 
-# sieg 15/09: new function, new tests - FR-10 (M priority) had no function
+# New function, new tests - FR-10 (M priority) had no function
 # behind it before this.
 def test_insight_candidates_are_sorted_and_above_the_threshold(df, fd):
     candidates = insight_candidates(df, fd, min_gap_sd=0.5)
@@ -270,7 +270,7 @@ def test_profile_renders_to_markdown(df, fd):
     assert "Signature:" in text
 
 
-# sieg 19/09: persona distribution - build_fixture()'s "ing" archetype targets
+# Persona distribution - build_fixture()'s "ing" archetype targets
 # family/expat/mass_market (2 pages, both carry all three), so each should come
 # back at a 100% share and nothing else should appear.
 def test_profile_persona_distribution_matches_the_fixture(df, fd):
@@ -291,7 +291,7 @@ def test_profile_for_unknown_bank_fails_loudly(df, fd):
         build_profile(df, "not_a_bank", fd)
 
 
-# sieg 17/09, audit finding (HIGH, follow-up) - build_profile() computed
+# Audit finding (HIGH, follow-up) - build_profile() computed
 # within_language means (word_count, second_person_ratio) directly from a
 # bank's own rows, bypassing comparable_features() entirely. KBC's real
 # captures already mix fr/nl pages (scripts/collection_targets.yaml) - these
@@ -319,7 +319,7 @@ def test_mixed_language_bank_profile_nulls_the_within_language_tone_fields():
     assert profile["tone"]["formality_score"] is not None
 
 
-# --- feature accounting (steph 15/09, after Sieg's "50 features... and with 97?") ---
+# --- feature accounting (After the "50 features... and with 97?") ---
 def test_accounting_adds_up_to_the_whole_dictionary(df, fd):
     """Every feature must land in exactly one bucket, or the explanation is wrong."""
     from comparator.analysis import feature_accounting
@@ -352,7 +352,7 @@ def test_free_text_never_enters_a_distance(df, fd):
 
 
 def test_banking_domain_features_do_reach_the_comparison(df, fd):
-    """Sieg's contribution must not be quietly sitting the analysis out."""
+    """that contribution must not be quietly sitting the analysis out."""
     from comparator.analysis import feature_accounting
 
     used = set(feature_accounting(df, fd)["used"])
@@ -417,7 +417,7 @@ def test_render_accounting_names_a_reason_for_every_reduction(df, fd):
         assert reason in text
 
 
-# --- the focus bank can legitimately be absent (steph 16/09) ------------------
+# --- the focus bank can legitimately be absent ------------------
 # The first live collection returned ING as an unrendered shell, so the bank the
 # project exists to position was missing from its own dataset. That surfaced as
 # KeyError: 'ing' from inside pandas, in three different places.
@@ -453,7 +453,7 @@ def test_has_focus_is_true_in_the_normal_case(df, fd):
     assert positioning_axis(df, fd, focus="ing").has_focus is True
 
 
-# --- a gap in peer SDs is only meaningful if the peers vary (steph 16/09) -----
+# --- a gap in peer SDs is only meaningful if the peers vary -----
 # brand_colour_share came back [0.0, 0.014, nan, 0.0] on the first real run:
 # ING at 0.228 scored +33.8 SD and topped the headline chart. That was a peer
 # spread of 0.007, not a fact about ING - the real story was that colour

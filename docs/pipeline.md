@@ -1,6 +1,6 @@
 # The pipeline: collect → score → analyse → export
 
-Split out of `README.md` (steve 21/09) because the README had grown into a
+Split out of `README.md` because the README had grown into a
 runbook plus a design document plus a UI guide. This file is the runbook: what
 to type, in what order, and what lands where. The *why* lives in
 [`design.md`](design.md), the UI in [`../web/README.md`](../web/README.md), and
@@ -30,11 +30,8 @@ python3 scripts/run_collection.py --config scripts/collection_targets.yaml --met
 python3 scripts/reextract_model_fields.py --dataset data/processed/campaigns.csv
 
 # 3. rubric: sheets out, model as a third rater, merge
-python3 scripts/rubric_sheet.py emit                        # one sheet per human rater
-python3 scripts/rubric_sheet.py model                       # pinned model -> its OWN sheet
-python3 scripts/rubric_sheet.py merge --sheets data/rubric/*_scores.csv
-python3 scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv
-python3 scripts/rubric_sheet.py report --sheets data/rubric/*_scores.csv   # docs/day5_scoring_disagreement.md
+python3 scripts/rubric_sheet.py emit                        # the blank sheet + the guide
+python3 scripts/rubric_sheet.py merge --sheet data/rubric/siegried_scores.csv
 
 # 4. analyse, document, export for the web UI
 python3 scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv \
@@ -48,7 +45,7 @@ python3 -m pytest tests/ -q
 `export_web_report.py` writes two snapshots in one run, from the same library
 calls: `report.json` is the business surface the Analysis tab reads, and
 `operations.json` is the operator surface (feature dictionary, dataset table,
-collection status, rubric sheets with agreement and kappa). The React UI needs
+collection status, the judged sheet and the scales). The React UI needs
 `operations.json` for its Home, Bank profiles, Data, Rubric, Collection and
 Research tabs; without it those tabs say so and the Analysis tab is unaffected.
 
@@ -78,7 +75,7 @@ prose cannot drift away from the picture.
 | `outputs/` | yes (team decision, see Housekeeping) | charts, tables, profiles, limitations, reputation |
 | `web/public/report.json` | yes | the one JSON snapshot the business UI reads |
 | `web/public/operations.json` | yes | the operator snapshot: dictionary, dataset, collection, rubric — read by the Home, Bank profiles, Data, Rubric and Collection tabs |
-| `web/public/trends.json` | yes | the Trends tab's series (written when Dan's export is present) |
+| `web/public/trends.json` | yes | the Trends tab's series (written when the export is present) |
 
 `scripts/reextract_model_fields.py` is not a no-op: it refreshes **every**
 model-assisted field on every row it touches, and the model is not deterministic,
@@ -90,9 +87,9 @@ columns whose detector changed — no LLM call, no re-fetch, so nothing else on 
 row is re-rolled:
 
 - `scripts/fix_rate_fields.py` — `rate_shown`, `rate_value_pct` (the `_rate()`
-  keyword-proximity fix, sieg 20/09).
+  keyword-proximity fix, ).
 - `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold` (the distinct,
-  chrome-excluding CTA count, steph 21/09).
+  chrome-excluding CTA count, ).
 
 ## Two things a range check cannot catch
 
@@ -104,9 +101,12 @@ capture looks like a campaign page at all, and the verdict travels with the row
 in `capture_quality`. Analysis excludes `unusable` rows and says which.
 
 **13 core features are scored by a person**, so a collected dataset can never
-pass strict validation on its own. `scripts/rubric_sheet.py` emits one sheet per
-rater with the screenshot path, merges completed sheets back, and reports
-inter-rater agreement — which is what NFR-05 actually asks for.
+pass strict validation on its own. `scripts/rubric_sheet.py` emits a sheet with
+the screenshot path and merges the completed one back in. One judged sheet, one
+named rater: no second opinion and no reliability figure, which is the scope
+this proof of concept chose and which `outputs/limitations.md` states in those
+words. The merge prints what it joined — rows that matched no page, and pages
+left unscored — because a silent drop there is how a rater's work goes missing.
 
 ## Two escape hatches for hosts that will not serve us
 
@@ -163,7 +163,7 @@ paragraph.
 
 Both optional signals degrade instead of failing:
 
-- **Trends** (`web/public/trends.json`) needs Dan's `trends-benchmark/export/`.
+- **Trends** (`web/public/trends.json`) needs the `search_interest/export/`.
   Absent, the exporter writes no `trends.json` and the tab shows an empty state.
 - **Reputation** (`outputs/reputation.json`, and the `reputation` block in
   `report.json`) needs `NEWSAPI_KEY` and/or `NEWSAPI_AI_KEY`. With neither set,

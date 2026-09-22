@@ -1,12 +1,12 @@
 """Colour extraction from a page's hero image - the automatic part of
 colours_design that IS reachable without a headless browser.
 
-sieg 14/09, new module. background_luminance here is the hero image's own
+New module. background_luminance here is the hero image's own
 luminance as a stand-in for the page background - a real page-background
 reading needs a rendered viewport, same limitation as noted in
 collection/scraper.py. Documented in the returned dict, not hidden.
 
-sieg 15/09: audit finding - this module fetched the hero image with plain
+Audit finding - this module fetched the hero image with plain
 requests.get(), never running assert_can_fetch() first like scraper.py's
 _fetch_html() does. robots.txt can allow a page but disallow its /images/ or
 /assets/ path, so this was a real bypass of the CLAUDE.md compliance gate.
@@ -26,22 +26,22 @@ from comparator.collection.compliance import USER_AGENT, assert_can_fetch
 
 REQUEST_TIMEOUT_S = 15
 
-# sieg 15/09: must match fixtures.py's ARCHETYPES "brand" hex per bank -
+# Must match fixtures.py's ARCHETYPES "brand" hex per bank -
 # duplicated rather than imported because fixtures.py mixes in a lot of
 # synthetic-only fields this module has no business depending on.
 BRAND_COLOURS: dict[str, str] = {
     "ing": "#ff6200", "kbc": "#00aeef", "bnp_paribas_fortis": "#00915a",
-    # dan 18/09: was #e94e1b (pre-rebrand red-orange), which made
+    # Was #e94e1b (pre-rebrand red-orange), which made
     # brand_colour_share ~0 for every Argenta row. Sampled off the live
     # capture's own chrome - logo, nav CTAs, checkmarks, form submit.
     "argenta": "#00814d", "crelan": "#009640", "belfius": "#c8102e",
     "revolut": "#0666eb", "n26": "#36a18b", "bunq": "#3394ff",
-    # steve 21/09: sourced from each site rather than guessed. vdk from its own
+    # Sourced from each site rather than guessed. vdk from its own
     # logo.svg fills (#E30613 primary), beobank from its declared theme-color
     # (#5F3A99), hellobank from the dominant cyan on its rendered page, which
     # matches the #11BAD5/#4EC1D3 in its CSS.
     "vdk": "#e30613", "hellobank": "#00b4c8", "beobank": "#5f3a99",
-    # steve 21/09: sourced from each site. CBC from its own logos-cbc.svg fills
+    # Sourced from each site. CBC from its own logos-cbc.svg fills
     # (#0097db accent next to a #0d2a50 navy), keytrade from its declared
     # theme-color (#03B3D9), both confirmed against the rendered page.
     "cbc": "#0097db", "keytrade": "#03b3d9",
@@ -65,7 +65,7 @@ def _relative_luminance(r: int, g: int, b: int) -> float:
 def extract_colours_from_image(image: "Image.Image", *, bank: str | None = None, n_colours: int = 5) -> dict:
     """Same measurement, on an already-decoded image.
 
-    steph 16/09: split out so the full-page SCREENSHOT can be measured instead of
+    Split out so the full-page SCREENSHOT can be measured instead of
     the hero image. The dictionary defines these features on `source: screenshot`,
     and measuring the hero photo was giving brand_colour_share = 0.0 for KBC and
     Revolut and null for Belfius - a bank's brand colour lives in its buttons,
@@ -85,7 +85,7 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     Returns nulls (never raises) if the image can't be fetched or decoded -
     one bad image must not crash the whole page's row.
 
-    sieg 15/09: `bank` is now required to get a real brand_colour_share. FIXED
+    `bank` is now required to get a real brand_colour_share. FIXED
     a bug where this returned the share of whatever colour happened to be most
     frequent, mislabelled as "brand" - verified a solid BLUE test image scored
     brand_colour_share=1.0 for ING (orange). Without a known bank, the honest
@@ -98,7 +98,7 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     if not image_url:
         return empty
     try:
-        assert_can_fetch(image_url)  # sieg 15/09: compliance gate, must run before every fetch
+        assert_can_fetch(image_url)  # Compliance gate, must run before every fetch
         response = requests.get(image_url, headers={"User-Agent": USER_AGENT}, timeout=REQUEST_TIMEOUT_S)
         response.raise_for_status()
         img = Image.open(io.BytesIO(response.content)).convert("RGB")
@@ -137,7 +137,7 @@ def _measure(img: "Image.Image", *, bank: str | None, n_colours: int) -> dict:
     brand_share = None
     if brand_hex:
         br, bg, bb = (int(brand_hex[i: i + 2], 16) for i in (1, 3, 5))
-        # steph 16/09: count EVERY pixel, not just the quantised top-n palette.
+        # Count EVERY pixel, not just the quantised top-n palette.
         # On a hero crop the brand colour is often one of the five dominant
         # colours, so the palette shortcut worked. On a full-page screenshot it
         # never is - a brand accent is a few percent of a mostly-white page - and

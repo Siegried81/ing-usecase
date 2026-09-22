@@ -1,15 +1,15 @@
 """Fills the model_assisted fields with ONE structured call per page.
 
-sieg 14/09, new module - answers "will you use my .env.example?": yes, same
+New module - answers "will you use my .env.example?": yes, same
 env-var names, because it's already a working pattern and there's no reason to
 invent a second one for this project. Only the LLM section of your
 .env.example is relevant here - the market-data/news/academic keys belong to
 portfolio_forecasting, not this repo.
 
-sieg 15/09: provider ORDER is now DEEPSEEK_API_KEY -> GROQ_API_KEY[_2/_3] ->
+Provider ORDER is now DEEPSEEK_API_KEY -> GROQ_API_KEY[_2/_3] ->
 OPENROUTER_API_KEY -> CEREBRAS_API_KEY -> SAMBANOVA_API_KEY -> OLLAMA_HOST,
 not the Groq-first order this paragraph used to describe - DeepSeek is now
-first per steph's Decision 6 below (pinned labelling model, docs/decisions.md).
+first per the Decision 6 below (pinned labelling model, docs/decisions.md).
 Updated here so the docstring doesn't silently disagree with _PROVIDERS.
 
 WHY ONE CALL, NOT AN AGENT: same reasoning as the rest of this project (see
@@ -21,9 +21,9 @@ anything here.
 Providers are called via their OpenAI-compatible chat-completions endpoint
 directly (requests), so this needs no per-provider SDK.
 
-sieg 15/09: the default model names for OpenRouter/Cerebras/SambaNova were
+The default model names for OpenRouter/Cerebras/SambaNova were
 originally guessed and flagged as unverified - replaced with the values from
-Sieg's own portfolio_forecasting .env.example (qwen/qwen3-4b:free / gpt-oss-120b
+the reference portfolio_forecasting .env.example (qwen/qwen3-4b:free / gpt-oss-120b
 / gpt-oss-120b), which are known to work. Base URLs are still worth a quick
 check against each provider's current docs if a call starts failing.
 """
@@ -36,7 +36,7 @@ import requests
 from dotenv import load_dotenv
 from pydantic import BaseModel, ValidationError
 
-# sieg 16/09: load environment variables via python-dotenv.
+# Load environment variables via python-dotenv.
 load_dotenv()
 
 MODEL_FIELDS = (
@@ -45,7 +45,7 @@ MODEL_FIELDS = (
     "secondary_bank_positioning", "expat_cross_border_targeting",
     "branch_network_cited_as_benefit", "first_time_investor_targeting",
     "senior_preretirement_targeting",
-    # sieg 15/09: moved from rubric to model_assisted - these 12 are all
+    # Moved from rubric to model_assisted - these 12 are all
     # judged from page TEXT (source: html_text in the dictionary), same
     # reasoning as the fields above, not from the screenshot. persuasion_levers
     # and the 4 AIDA fields are deliberately NOT here - their dictionary
@@ -56,7 +56,7 @@ MODEL_FIELDS = (
     "switching_framing", "regulatory_disclosure_prominence",
     "hidden_conditions_behind_free_claim", "esg_claim_specificity",
     "green_product_specific_benefit", "fast_digital_onboarding_claim",
-    # sieg 19/09: new field, same structured call - see feature_dictionary.yaml.
+    # New field, same structured call - see feature_dictionary.yaml.
     "target_personas",
     "cross_sold_products",
     "subscription_style_framing",
@@ -163,9 +163,9 @@ class ModelAssistedFields(BaseModel):
     esg_claim_specificity: str
     green_product_specific_benefit: bool
     fast_digital_onboarding_claim: bool
-    target_personas: list[str] = []  # sieg 19/09: new field, see feature_dictionary.yaml
-    cross_sold_products: list[str] = []  # sieg 19/09: new field, see feature_dictionary.yaml
-    subscription_style_framing: bool = False  # sieg 19/09: new field, see feature_dictionary.yaml
+    target_personas: list[str] = []  # New field, see feature_dictionary.yaml
+    cross_sold_products: list[str] = []  # New field, see feature_dictionary.yaml
+    subscription_style_framing: bool = False  # New field, see feature_dictionary.yaml
 
 
 class LLMExtractionError(Exception):
@@ -173,28 +173,28 @@ class LLMExtractionError(Exception):
 
 
 # (provider name, env var prefix, chat-completions URL, model env var, default model)
-# sieg 14/09: same order as .env.example - Groq first (with key rotation),
+# Same order as .env.example - Groq first (with key rotation),
 # then hosted fallbacks, then local Ollama for dev.
 #
-# steph 15/09, Decision 6 (mine, due Day 2): DEEPSEEK IS THE PINNED MODEL for
+# Decision 6 (mine, due Day 2): DEEPSEEK IS THE PINNED MODEL for
 # this project - one model, named, so every bank is labelled by the same judge.
-# Stephane has the key, so it is the one we can actually run today. Sieg's chain
+# Stephane has the key, so it is the one we can actually run today. the chain
 # stays underneath as a fallback for when DeepSeek is down, because losing a
 # night of collection to one provider outage is worse than a mixed dataset - but
 # a fallback is now RECORDED in extraction_model rather than silent, and
 # schema.validate() warns when a dataset mixes models. See docs/decisions.md.
 _PROVIDERS = [
-    # sieg 18/09: DeepSeek retired "deepseek-chat" - the API now serves
+    # DeepSeek retired "deepseek-chat" - the API now serves
     # "deepseek-flash" (fast/economical) and "deepseek-v4-pro". Default
     # updated to match; .env's DEEPSEEK_MODEL overrides this regardless.
     ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-flash"),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    # sieg 15/09: kept steph's provider-tuple structure (name + deepseek pin,
+    # Kept the provider-tuple structure (name + deepseek pin,
     # decision 6) but fixed the default model ids for these three fallbacks -
     # they were unverified guesses (old docstring: "VERIFY... Cerebras/
     # SambaNova less so"). now verified against each provider's live model
     # listing: openrouter serves qwen/qwen3-4b:free, cerebras and sambanova
-    # both serve gpt-oss-120b - matches Sieg's own portfolio_forecasting
+    # both serve gpt-oss-120b - matches the reference portfolio_forecasting
     # .env.example, which is known to work.
     ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "qwen/qwen3-4b:free"),
     ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "gpt-oss-120b"),
@@ -257,7 +257,7 @@ def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeou
 def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> tuple[str, str]:
     """Try each provider in order; return (response_text, "provider/model").
 
-    steph 15/09: now returns WHICH model answered, so the caller can record it
+    Now returns WHICH model answered, so the caller can record it
     (Decision 6). Previously the fallback was invisible - a run that started on
     one provider and finished on another produced a dataset that looked
     uniformly labelled but was not.
@@ -291,7 +291,7 @@ def extract_model_assisted(
 ) -> ModelAssistedFields:
     """Run the extraction with validation + one retry on a bad response.
 
-    sieg 15/09: product_family is now required - regulatory_disclosure_prominence
+    Product_family is now required - regulatory_disclosure_prominence
     cannot be judged without knowing which disclosure is even expected (TAEG only
     applies to a mortgage, not a savings account); see its dictionary entry.
     """
@@ -313,7 +313,7 @@ def extract_model_assisted_with_provenance(
 ) -> tuple[ModelAssistedFields, str]:
     """Same as extract_model_assisted, but also returns "provider/model".
 
-    steph 15/09: added so run_collection.py can write extraction_model into the
+    Added so run_collection.py can write extraction_model into the
     row. extract_model_assisted() is kept as a thin wrapper so existing callers
     and tests are unaffected.
     """

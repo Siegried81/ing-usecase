@@ -36,9 +36,9 @@ export function Recommendations({ report }: { report: Report }) {
   const [error, setError] = useState<string | null>(null);
   const [language, setLanguage] = useState("fr");
   const [site, setSite] = useState<SiteStatus | null>(null);
-  const [includeReputation, setIncludeReputation] = useState(false); // sieg 21/09
+  const [includeReputation, setIncludeReputation] = useState(false);
   const [explainSite, setExplainSite] = useState(false);
-  const reputationAvailable = Boolean(report.reputation?.available); // sieg 21/09
+  const reputationAvailable = Boolean(report.reputation?.available);
 
   useEffect(() => {
     fetchRecommendations()
@@ -67,7 +67,7 @@ export function Recommendations({ report }: { report: Report }) {
     setError(null);
     try {
       const data = await generateRecommendations(
-        includeReputation && reputationAvailable, // sieg 21/09
+        includeReputation && reputationAvailable,
       );
       setPayload(data);
       setSelected(new Set(data.recommendations.map((r) => r.id)));
@@ -97,7 +97,7 @@ export function Recommendations({ report }: { report: Report }) {
     [payload],
   );
 
-  // sieg 20/09: a recommendation's `features` are raw snake_case ids (they're
+  // A recommendation's `features` are raw snake_case ids (they're
   // machine-checked against the report), but showing "background_luminance"
   // to a reader looks unprofessional - map each id back to the same
   // human-readable label the Analysis tab already uses for it.
@@ -108,12 +108,12 @@ export function Recommendations({ report }: { report: Report }) {
     return map;
   }, [report]);
 
-  // steph 22/09: "From search-interest context" is the computed benchmark
+  // "From search-interest context" is the computed benchmark
   // section now - the model writes nothing from search interest any more.
   // Two groups, one selection. Reputation recommendations are
   // shown apart because they are argued from context, not from a measured
   // page feature - but they are all picked in the same set and built into
-  // the same site. sieg 21/09: added the reputation group.
+  // the same site. Added the reputation group.
   const analysisRecs = useMemo(
     () => recommendations.filter((r) => r.basis !== "reputation"),
     [recommendations],
@@ -154,10 +154,14 @@ export function Recommendations({ report }: { report: Report }) {
                 {payload.used_reputation ? " · includes reputation context" : ""}
               </span>
             )}
-            {busy && <span className="muted-note">Asking {`deepseek-chat`} — this takes a few seconds…</span>}
+            {busy && (
+              <span className="muted-note">
+                Asking {payload?.model ?? "the pinned model"} — this takes a few seconds…
+              </span>
+            )}
           </div>
 
-          {/* sieg 21/09: opt-in context, for news headline themes. */}
+          {/* Opt-in context, for news headline themes. */}
           <label className={`rec-trends${reputationAvailable ? "" : " disabled"}`}>
             <input
               type="checkbox"
@@ -247,7 +251,7 @@ export function Recommendations({ report }: { report: Report }) {
               <SearchInterestSection lessons={report.searchInterestLessons} />
             )}
 
-            {/* sieg 21/09: the model's second context group. */}
+            {/* The model's second context group. */}
             {reputationRecs.length > 0 && (
               <div className="rec-group rec-group-reputation">
                 <div className="rec-group-head">

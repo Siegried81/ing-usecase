@@ -1,4 +1,4 @@
-"""Tests for the capture quality gate (steph 16/09).
+"""Tests for the capture quality gate.
 
 The two cases at the top are real: they are the rows the first live collection
 run produced, and they are why this module exists.

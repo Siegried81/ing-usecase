@@ -25,13 +25,13 @@ function average(banks: BankProfile[], axisKey: string): number | null {
  * AI Score radar - comparator/ai_score.py's six axes, ONE bank at a time
  * against the market average.
  *
- * sieg 19/09, first SVG/multi-axis chart in this codebase. Positioning.tsx
+ * First SVG/multi-axis chart in this codebase. Positioning.tsx
  * deliberately avoids a 2-axis chart because the traditional-vs-challenger
  * question is genuinely one-dimensional and a second axis would invite reading
  * a dimension nobody measured. The AI Score is the opposite case: it IS six
  * independently-measured dimensions, so a radar is the honest shape for it.
  *
- * sieg 19/09, picker added: overlaying all banks' polygons at once (the first
+ * Picker added: overlaying all banks' polygons at once (the first
  * version) was unreadable past 3-4 banks. Reuses the same .picker/.picker-btn
  * pattern as Trends.tsx's bank/product pickers rather than inventing a new
  * control. One bank's polygon (solid, coloured by category) against the
@@ -121,7 +121,7 @@ export function AiScoreRadar({
         <span style={{ color: "var(--ink-3)" }}>market average</span> (dashed)
       </div>
 
-      {/* sieg 19/09: reuses DeckClaims' .claims table styling - the accessibility
+      {/* Reuses DeckClaims' .claims table styling - the accessibility
           fallback for the radar above, same doctrine as charts.py's companion tables. */}
       <div className="table-scroll wide">
         <table className="claims" style={{ marginTop: 14 }}>

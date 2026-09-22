@@ -1,6 +1,6 @@
 """Generate the chart companion: what each chart measures, and what it does not.
 
-steph 15/09, new module. A chart in a deck gets read by someone who was not in
+New module. A chart in a deck gets read by someone who was not in
 the room when it was made, so every figure this project produces ships with the
 mechanic behind it, the reading instructions, and its limits.
 
@@ -49,7 +49,7 @@ def _table(df: pd.DataFrame, columns: list[str], headers: list[str], rows: int =
 def _positioning_section(positioning: Positioning, categories: pd.Series) -> list[str]:
     scores = positioning.scores
     focus = positioning.focus
-    # steph 16/09: the focus bank can be legitimately absent - ING's own capture
+    # The focus bank can be legitimately absent - ING's own capture
     # came back an unrendered shell on the first live run. The market section is
     # still worth writing; the ING answer is not available, and says so.
     focus_score = positioning.focus_score if positioning.has_focus else None

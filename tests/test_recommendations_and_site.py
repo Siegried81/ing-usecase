@@ -1,6 +1,6 @@
 """Tests for the recommendations tab and the 10-page site generator.
 
-steph 18/09, new modules, new tests. No network and no model call: the LLM
+New modules, new tests. No network and no model call: the LLM
 entry points are monkeypatched, because the value being tested is the local
 logic - that a feature id the model invented is dropped, that only the ticked
 recommendations reach the builder, and that ten pages are rendered in ING's
@@ -72,7 +72,7 @@ _RAW = json.dumps({
 })
 
 
-# sieg 21/09: a trimmed reputation dashboard - one bank with a classified theme
+# A trimmed reputation dashboard - one bank with a classified theme
 # and a notable headline, one bank this run compared but reputation.py found
 # nothing for, one theme-free bank (must be dropped, it adds nothing to argue
 # from).
@@ -113,7 +113,7 @@ _RAW_REPUTATION = json.dumps({
 
 
 def test_digest_rounds_long_floats_before_they_reach_the_model():
-    # sieg 20/09: regression test - a real report's raw float (e.g.
+    # Regression test - a real report's raw float (e.g.
     # 0.5912291666666667) must not reach the prompt at full precision, since
     # the model was copying it verbatim into recommendation prose.
     report = {
@@ -489,7 +489,7 @@ def test_generate_site_writes_ten_pages_and_marks_fallbacks(monkeypatch, tmp_pat
 
 
 def test_a_set_saved_with_the_old_trends_basis_still_loads():
-    """steph 22/09: the model used to write search-interest recommendations.
+    """The model used to write search-interest recommendations.
     A file saved then must not crash the tab - the entries it can no longer
     represent are dropped, the rest loads."""
     saved = {"generated_at": "t", "model": "m", "summary": "s", "recommendations": [

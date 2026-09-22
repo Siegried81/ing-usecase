@@ -1,6 +1,6 @@
 """Step 5 - LLM campaign generation and its evaluation (stretch goal).
 
-steph 15/09, new module. Project Plan section 4.5 and Appendix B; owner: me.
+New module. Project Plan section 4.5 and Appendix B; owner: me.
 
 THE POINT IS NOT THE COPY. It is to show the feature framework is specific
 enough to (a) drive a generation and (b) measure whether the generation landed
@@ -19,7 +19,7 @@ evaluation meaningless, so there is deliberately only one extractor in this
 repo and this module imports it rather than reimplementing anything.
 
 HONEST LIMITS, to repeat wherever this is shown (plan risk P-08, mine):
-REPRODUCIBILITY, measured rather than assumed (sieg 17/09 audit, point 4).
+REPRODUCIBILITY, measured rather than assumed (Audit, point 4).
 I had told the team the generation was "not reproducible" on the strength of
 five runs that disagreed. That was too strong, and the cause was not what I
 implied. Isolating it:
@@ -85,7 +85,7 @@ MEASURED_FEATURES = (
 # How close a numeric value has to be to count as "hit".
 NUMERIC_TOLERANCE = 0.30
 
-# steph 15/09: features our OWN guardrails make unreachable, so asking for them
+# Features our OWN guardrails make unreachable, so asking for them
 # would guarantee a misleading "miss". The generator is forbidden to invent a
 # rate or an amount (it writes [RATE] / [AMOUNT] placeholders), and the
 # extractor counts a numeric claim by looking for digits - so a compliant
@@ -179,7 +179,7 @@ def build_targets(
     focus_row = vectors.loc[focus] if focus in vectors.index else None
     challengers = banks[banks["bank_category"] == "challenger"]
 
-    # sieg 15/09: fixed - cta_above_fold and disclaimer_present are ALSO
+    # Fixed - cta_above_fold and disclaimer_present are ALSO
     # unconditionally appended below as rubric-driven fixes. On the current
     # fixture neither lands in the top_n movable features, so this was never
     # triggered, but cta_above_fold in particular is a real traditional/
@@ -269,7 +269,7 @@ class GeneratedCampaign(BaseModel):
     body_paragraphs: list[str] = Field(min_length=1)
     cta_label: str
     additional_cta_labels: list[str] = Field(default_factory=list)
-    # sieg 17/09: duplicates config/feature_dictionary.yaml's layout_archetype
+    # Duplicates config/feature_dictionary.yaml's layout_archetype
     # values - guarded against drift by test_generation.py's
     # test_layout_archetype_literal_matches_the_dictionary.
     layout_archetype: Literal["hero_stacked", "split_columns", "card_grid", "long_form"]
@@ -280,7 +280,7 @@ class GeneratedCampaign(BaseModel):
     persuasion_levers_used: list[str] = Field(default_factory=list)
 
 
-# sieg 17/09: the Cialdini lever list below duplicates
+# The Cialdini lever list below duplicates
 # config/feature_dictionary.yaml's persuasion_levers values - guarded against
 # drift by test_generation.py's test_prompt_lever_list_matches_the_dictionary.
 SYSTEM_PROMPT = """You write structured marketing campaign specifications for a bank, for a
@@ -322,7 +322,7 @@ class GenerationBrief:
     competitor_patterns: list[str]
 
     def _structural_instructions(self) -> list[str]:
-        """steph 15/09: image_count and cta_count are measured from what the model
+        """Image_count and cta_count are measured from what the model
         returns, but nothing told it how many to produce - so both variants missed
         them on the first live run for no reason other than an unstated brief.
         Counts the model can actually control are now stated as counts."""
@@ -371,7 +371,7 @@ class GenerationBrief:
 def _focus_summary(df: pd.DataFrame, fd: FeatureDictionary, focus: str) -> dict:
     """The focus bank's own profile, or nothing if it has no usable page.
 
-    steph 16/09: not hypothetical - ING's capture came back an unrendered shell
+    Not hypothetical - ING's capture came back an unrendered shell
     on the first live run, so the bank we are writing 'on-brand' copy for was
     absent from its own dataset.
     """
@@ -540,7 +540,7 @@ def hit_rate(scorecard: pd.DataFrame) -> float:
 
 
 def guardrails(row: dict) -> GuardrailReport:
-    """Reuse Siegried's checklist rather than writing a second one."""
+    """Reuse the checklist rather than writing a second one."""
     return check_generated_campaign(row)
 
 

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-22T08:53:08+00:00",
+  "generated_at": "2026-09-22T13:31:42+00:00",
   "dataset": "data\\processed\\campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -13,13 +13,13 @@
       "bunq",
       "CBC",
       "Crelan",
-      "Hellobank",
+      "Hello bank!",
       "ING",
       "KBC",
-      "Keytrade",
+      "Keytrade Bank",
       "N26",
       "Revolut",
-      "Vdk"
+      "VDK Bank"
     ],
     "traditional": [
       "Argenta",
@@ -28,14 +28,14 @@
       "BNP Paribas Fortis",
       "CBC",
       "Crelan",
-      "Hellobank",
+      "Hello bank!",
       "ING",
       "KBC",
-      "Vdk"
+      "VDK Bank"
     ],
     "challenger": [
       "bunq",
-      "Keytrade",
+      "Keytrade Bank",
       "N26",
       "Revolut"
     ],
@@ -93,7 +93,7 @@
       "isFocus": false
     },
     {
-      "bank": "Vdk",
+      "bank": "VDK Bank",
       "key": "vdk",
       "category": "traditional",
       "score": 0.02,
@@ -121,14 +121,14 @@
       "isFocus": true
     },
     {
-      "bank": "Hellobank",
+      "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
       "score": 0.232,
       "isFocus": false
     },
     {
-      "bank": "Keytrade",
+      "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
       "score": 0.563,
@@ -949,7 +949,7 @@
     },
     {
       "key": "hellobank",
-      "name": "Hellobank",
+      "name": "Hello bank!",
       "category": "traditional",
       "pages": 1,
       "signature": [
@@ -1193,7 +1193,7 @@
     },
     {
       "key": "keytrade",
-      "name": "Keytrade",
+      "name": "Keytrade Bank",
       "category": "challenger",
       "pages": 1,
       "signature": [
@@ -1453,7 +1453,7 @@
     },
     {
       "key": "vdk",
-      "name": "Vdk",
+      "name": "VDK Bank",
       "category": "traditional",
       "pages": 1,
       "signature": [
@@ -1563,7 +1563,7 @@
       "Savings accounts",
       "Mortgages",
       "Investment",
-      "pension",
+      "Pension",
       "Other"
     ],
     "matrix": [
@@ -1660,7 +1660,7 @@
         },
         {
           "from": "Current-account packs",
-          "to": "pension"
+          "to": "Pension"
         }
       ],
       "insufficient_data": [
@@ -1682,7 +1682,7 @@
         },
         {
           "from": "Term accounts",
-          "to": "pension"
+          "to": "Pension"
         },
         {
           "from": "Term accounts",
@@ -1706,7 +1706,7 @@
         },
         {
           "from": "Savings accounts",
-          "to": "pension"
+          "to": "Pension"
         },
         {
           "from": "Savings accounts",
@@ -1730,7 +1730,7 @@
         },
         {
           "from": "Mortgages",
-          "to": "pension"
+          "to": "Pension"
         },
         {
           "from": "Mortgages",
@@ -1754,34 +1754,34 @@
         },
         {
           "from": "Investment",
-          "to": "pension"
+          "to": "Pension"
         },
         {
           "from": "Investment",
           "to": "Other"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Term accounts"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Current-account packs"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Savings accounts"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Mortgages"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Investment"
         },
         {
-          "from": "pension",
+          "from": "Pension",
           "to": "Other"
         },
         {
@@ -1806,7 +1806,7 @@
         },
         {
           "from": "Other",
-          "to": "pension"
+          "to": "Pension"
         }
       ]
     }
@@ -1820,13 +1820,13 @@
       "bunq",
       "CBC",
       "Crelan",
-      "Hellobank",
+      "Hello bank!",
       "ING",
       "KBC",
-      "Keytrade",
+      "Keytrade Bank",
       "N26",
       "Revolut",
-      "Vdk"
+      "VDK Bank"
     ],
     "matrix": [
       [
@@ -2065,11 +2065,11 @@
         "BNP Paribas Fortis",
         "CBC",
         "Crelan",
-        "Hellobank",
+        "Hello bank!",
         "ING",
         "KBC",
-        "Keytrade",
-        "Vdk"
+        "Keytrade Bank",
+        "VDK Bank"
       ]
     },
     {
@@ -2091,7 +2091,7 @@
       "distance": 4.58
     },
     {
-      "bank": "Keytrade",
+      "bank": "Keytrade Bank",
       "distance": 5.27
     }
   ],
@@ -2136,13 +2136,14 @@
     "blocking": [],
     "material": [
       "The usable pages span **7 different product families** (['current_account_pack', 'investment', 'mortgage', 'other', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
-      "Pages are in **2 languages** (['fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default."
+      "Pages are in **2 languages** (['fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
+      "**10 judged feature(s) are scored on some banks but not all** (`clarity_score` (12 bank(s)), `rate_prominence` (12 bank(s)), `value_prop_clarity` (12 bank(s)), `text_image_layout` (12 bank(s)) ...). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it."
     ],
     "standing": [
-      "Rubric features carry the opinion of the people who scored them. Inter-rater agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the data presentation (NFR-05).",
+      "The judged features carry the opinion of a single person. No inter-rater reliability was measured — that is the chosen scope of this proof of concept, not an oversight. Single-judge bias is a question for the real product and is listed under next steps.",
       "Model-assisted features were all produced by `deepseek/deepseek-flash`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.",
       "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-21** and no later. Campaign pages change without notice (DR-05).",
-      "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers only the banks in Dan's export rather than every bank compared here, and the pages captured are today's pages rather than the pages live during any older spike.",
+      "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it says which brand was looked up and never why, and the pages captured here are today's pages rather than the pages live during any earlier movement in search interest.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
       "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is deterministic: the same dataset produces a byte-identical prompt, and each generated artefact records that prompt's fingerprint. The model is the variable part — identical requests usually return identical copy but not always, because temperature controls sampling and not how the model routes internally. Treat a committed campaign as one sample rather than as the output.",
@@ -2150,7 +2151,7 @@
     ]
   },
   "validation": {
-    "ok": false,
+    "ok": true,
     "warnings": [
       "argenta: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
@@ -2374,7 +2375,7 @@
   ],
   "trends": {
     "available": true,
-    "source": "Dan's trends-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
+    "source": "the search_interest pipeline Google Trends benchmark (Belgium, 5-year weekly)",
     "window": {
       "start": "2021-09-12",
       "end": "2026-09-20"
@@ -2670,7 +2671,7 @@
         "label": "Sells a bundle"
       }
     ],
-    "caveat": "These three brands were selected on search attention alone. What follows is what their pages measurably do differently - not a demonstration that those choices are why they are searched for. This data cannot show that."
+    "caveat": "These 3 brands were selected on search attention alone. What follows is what their pages measurably do differently - not a demonstration that those choices are why they are searched for. This data cannot show that."
   },
   "reputation": {
     "available": true,

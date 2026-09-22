@@ -1,7 +1,7 @@
 import type { Report } from "../types";
 
 /**
- * sieg 20/09: Google Trends search interest by Belgian region
+ * Google Trends search interest by Belgian region
  * (comparator/geo_trends.py, its own pytrends calls). Optional and
  * rate-limited, so this shows an honest "not generated yet" state rather
  * than nothing.

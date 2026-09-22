@@ -1,8 +1,8 @@
 feature,dimension,traditional_mean,challenger_mean,difference,effect_size_d,n_traditional,n_challenger
 background_luminance,colours_design,0.8575833333333334,0.449,-0.40858333333333335,-2.8092638059487416,12,4
 above_fold_element_count,layout_structure,36.583333333333336,21.5,-15.083333333333336,-2.100476429596429,12,4
-expat_cross_border_targeting,banking_domain,0.0,0.5,0.5,1.8708286933869707,12,4
 subscription_style_framing,banking_domain,0.0,0.5,0.5,1.8708286933869707,12,4
+expat_cross_border_targeting,banking_domain,0.0,0.5,0.5,1.8708286933869707,12,4
 rate_shown,topics_value_prop,0.0,0.5,0.5,1.8708286933869707,12,4
 total_image_area_ratio,visuals,0.10158333333333334,0.31425000000000003,0.21266666666666667,1.8478005713404506,12,4
 formality_score,tone_messaging,3.4166666666666665,2.25,-1.1666666666666665,-1.8337789119845433,12,4
@@ -12,8 +12,8 @@ aida_desire,marketing_principles,0.3333333333333333,1.0,0.6666666666666667,1.527
 question_count,tone_messaging,20.166666666666668,5.75,-14.416666666666668,-1.3870532926159151,12,4
 clarity_score,tone_messaging,4.0,4.666666666666667,0.666666666666667,1.154700538379252,7,3
 disclaimer_present,topics_value_prop,0.9166666666666666,0.5,-0.41666666666666663,-1.126106541153627,12,4
-first_time_investor_targeting,banking_domain,0.0,0.25,0.25,1.0801234497346435,12,4
 has_comparison_table,layout_structure,0.5,0.0,-0.5,-1.0801234497346435,12,4
+first_time_investor_targeting,banking_domain,0.0,0.25,0.25,1.0801234497346435,12,4
 institutional_trust_signal_present,banking_domain,0.0,0.25,0.25,1.0801234497346435,12,4
 people_present,visuals,1.0,0.75,-0.25,-1.0801234497346435,12,4
 numeric_claim_count,tone_messaging,16.25,7.25,-9.0,-1.0447172206977011,12,4
@@ -36,12 +36,12 @@ image_count,visuals,20.25,18.25,-2.0,-0.12033914664246488,12,4
 aida_attention,marketing_principles,0.2857142857142857,0.3333333333333333,0.047619047619047616,0.09304842103984708,7,3
 cta_count,layout_structure,11.583333333333334,10.75,-0.8333333333333339,-0.07378746257665555,12,4
 cta_contrast_ratio,colours_design,8.624545454545455,8.8675,0.24295454545454476,0.044315832376682796,11,4
-branch_network_cited_as_benefit,banking_domain,0.0,0.0,0.0,0.0,12,4
-secondary_bank_positioning,banking_domain,0.0,0.0,0.0,0.0,12,4
 hero_image_present,visuals,1.0,1.0,0.0,0.0,12,4
-images_have_alt_text,banking_domain,0.25,0.25,0.0,0.0,12,4
-green_product_specific_benefit,banking_domain,0.0,0.0,0.0,0.0,12,4
 aida_action,marketing_principles,1.0,1.0,0.0,0.0,7,3
 aida_interest,marketing_principles,1.0,1.0,0.0,0.0,7,3
 accent_colour_count,colours_design,4.0,4.0,0.0,0.0,12,4
+green_product_specific_benefit,banking_domain,0.0,0.0,0.0,0.0,12,4
+images_have_alt_text,banking_domain,0.25,0.25,0.0,0.0,12,4
+secondary_bank_positioning,banking_domain,0.0,0.0,0.0,0.0,12,4
+branch_network_cited_as_benefit,banking_domain,0.0,0.0,0.0,0.0,12,4
 senior_preretirement_targeting,banking_domain,0.0,0.0,0.0,0.0,12,4

@@ -1,6 +1,6 @@
 """Capture quality gate - is this row a campaign page, or an accident?
 
-steph 16/09, new module. Written immediately after the first real collection
+New module. Written immediately after the first real collection
 run, because the first real collection run produced two rows that were worse
 than useless and nothing anywhere noticed:
 
@@ -99,7 +99,7 @@ def assess_capture(row: dict, page_text: str = "") -> QualityReport:
     ctas = row.get("cta_count") or 0
     height = row.get("page_height_px") or 0
 
-    # steph 16/09: a 503 still renders a page. BNP's whole site was serving a
+    # A 503 still renders a page. BNP's whole site was serving a
     # maintenance notice under 503 and we stored it as a normal capture because
     # nothing looked at the status.
     status = row.get("http_status")

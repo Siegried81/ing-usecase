@@ -32,7 +32,7 @@ const CHART = { w: 760, h: 300, top: 14, right: 16, bottom: 28, left: 42 };
  * exists to give that context a home of its own - and to keep the sentence that
  * says so above every number, rather than in a footnote a reader can skip.
  *
- * Dan's benchmark is a separate project (trends-benchmark/); we read its
+ * the benchmark is a separate project (search_interest/); we read its
  * export and never recompute its numbers differently.
  */
 export function Trends({ summary }: { summary: TrendsSummary | null }) {
@@ -65,7 +65,7 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
       <div className="card">
         <h2 style={{ marginTop: 0 }}>No search-interest data</h2>
         <p style={{ color: "var(--ink-2)" }}>
-          Dan&rsquo;s Google Trends export (<code>trends-benchmark/export/</code>) is not present,
+          Dan&rsquo;s Google Trends export (<code>search_interest/export/</code>) is not present,
           so this tab is skipped. Nothing else is affected.
         </p>
         <p className="muted-note">

@@ -1,10 +1,10 @@
 """Bank reputation signal via NewsAPI headlines - THEME counts, never sentiment.
 
-sieg 19/09, new module. Optional (`NEWSAPI_KEY` for newsapi.org, and/or
+New module. Optional (`NEWSAPI_KEY` for newsapi.org, and/or
 `NEWSAPI_AI_KEY` for newsapi.ai / Event Registry): headlines from every
 configured key are merged and de-duplicated, and the whole signal degrades to
 unavailable when no key is set, same pattern `trends.py` already uses when
-Dan's export is absent - this never invents a number for a bank there was no
+the export is absent - this never invents a number for a bank there was no
 data for.
 
 WHY THEMES, NOT SENTIMENT: sentiment scoring was explicitly out of scope for
@@ -18,12 +18,12 @@ ONE structured LLM call per bank (a batch of headlines in, one classification
 out) - same "single call, fixed prompt + schema, no agent" rule as
 `collection/llm_extractor.py`.
 
-sieg 21/09: `notable_headlines` now carries each headline's source URL
+`notable_headlines` now carries each headline's source URL
 alongside its title, so the web UI can link out to the article. The URL is
 looked up locally against what we actually fetched, never produced by the
 model.
 
-sieg 21/09: every fetched headline is now also checked against
+Every fetched headline is now also checked against
 `_is_belgian_source()` - language alone let through a Dutch accountancy
 trade site (accountancyvanmorgen.nl) writing about "ING" that had nothing
 to do with ING Belgium, because Dutch is spoken well beyond Belgium too.
@@ -66,7 +66,7 @@ PROVIDER_LANGUAGES = {
 # Bound on what one bank sends to the classifier, after de-duplication.
 MAX_HEADLINES = 30
 
-# sieg 21/09: language alone cannot tell "about Belgium" from "published anywhere the
+# Language alone cannot tell "about Belgium" from "published anywhere the
 # language is spoken" - a Dutch accountancy trade site (accountancyvanmorgen.nl) matched
 # lang=nl and inflated a bank's theme count with a story that was never about the
 # Belgian entity. Neither provider's `getArticles`/`everything` response carries a
@@ -80,7 +80,7 @@ BELGIAN_NEWS_DOMAINS = (
     "bruzz.be,brusselstimes.com,hln.be,standaard.be,nieuwsblad.be,demorgen.be,"
     "vrt.be,tijd.be,knack.be,gva.be,hbvl.be,lavenir.net"
 )
-# sieg 21/09: caught by the regression test below - lavenir.net (L'Avenir, a real
+# Caught by the regression test below - lavenir.net (L'Avenir, a real
 # Belgian regional paper) was wrongly dropped because it isn't a .be domain. The
 # allowlist is for exactly this: known Belgian outlets on a non-.be TLD.
 _BELGIAN_DOMAIN_ALLOWLIST = frozenset(BELGIAN_NEWS_DOMAINS.split(","))
@@ -145,7 +145,7 @@ No preamble, no markdown fences, JSON only."""
 
 
 class ReputationModel(BaseModel):
-    # sieg 21/09: was theme_counts (int only) - now the full per-theme headline list, so the
+    # Was theme_counts (int only) - now the full per-theme headline list, so the
     # UI can show which articles a count is made of on hover, not just the number.
     theme_headlines: dict[str, list[str]] = Field(default_factory=dict)
     notable_headlines: list[str] = Field(default_factory=list)
@@ -155,7 +155,7 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
                         page_size: int, timeout: int) -> list[dict]:
     """Title + source URL pairs for one provider in one language. Empty list on any failure.
 
-    sieg 21/09: keep the URL alongside the title (both APIs already return it) so a
+    Keep the URL alongside the title (both APIs already return it) so a
     notable headline can link back to its source - was title-only before, which left
     the web UI with no way to open the article.
     """
@@ -193,7 +193,7 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             articles = response.json().get("articles", [])
     except (requests.RequestException, ValueError, AttributeError, TypeError):
         return []
-    # sieg 21/09: newsapi.ai has no domain filter to narrow the fetch with, so this
+    # Newsapi.ai has no domain filter to narrow the fetch with, so this
     # second check is the one both providers actually rely on - see _is_belgian_source().
     return [
         {"title": a["title"], "url": a.get("url")}
@@ -262,7 +262,7 @@ def classify_headlines(headlines: list[str], bank_name: str) -> ReputationModel 
 def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     """Keep only headlines where the bank's name appears as a whole word.
 
-    steve 21/09: newsapi.ai's keyword search stems and matches substrings ("ING"
+    Newsapi.ai's keyword search stems and matches substrings ("ING"
     matched "bruising"), which put unrelated politics stories in ING's batch and
     inflated its "other" count. A word-boundary check on the first name token is
     the cheapest honest fix; it runs on both providers so a month of counts is
@@ -277,7 +277,7 @@ def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     return [h for h in headlines if pattern.search(h["title"])]
 
 
-# sieg 21/09: newsapi.org's free tier is 100 requests/24h (50/12h) - re-running
+# Newsapi.org's free tier is 100 requests/24h (50/12h) - re-running
 # export_web_report.py a handful of times in one afternoon exhausted it, and every
 # bank's signal silently thinned out (bank_snapshot degrades to None on a failed
 # fetch, by design - see its docstring). A same-day cache means iterating on
@@ -323,13 +323,13 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
     classified = classify_headlines(titles, bank_name)
     if classified is None:
         return None
-    # sieg 21/09: the model returns notable headlines verbatim (SYSTEM_PROMPT
+    # The model returns notable headlines verbatim (SYSTEM_PROMPT
     # requires it) - look each one up in what we actually fetched to attach its
     # real URL. Never let the model produce the URL itself: that is exactly the
     # kind of figure this project never lets a model invent.
     url_by_title = {h["title"]: h.get("url") for h in headlines}
     notable = [{"title": t, "url": url_by_title.get(t)} for t in classified.notable_headlines]
-    # sieg 21/09: every headline under its theme, with its URL - lets the UI show, on
+    # Every headline under its theme, with its URL - lets the UI show, on
     # hover over a theme's count, the full list of articles that count is made of.
     theme_headlines = {
         t: [{"title": h, "url": url_by_title.get(h)} for h in classified.theme_headlines.get(t, [])]
