@@ -580,3 +580,17 @@ nothing here shows that their page choices are why. A set saved while the old
 basis existed still loads — those entries are dropped rather than rendered as
 analysis recommendations.
 
+---
+
+**sieg 22/09, `other` was never a real product family - it was Belfius's pension
+page, mislabeled.** `belfius_other_fr_01` (`https://www.belfius.be/retail/fr/
+moments-cles/pension/index.aspx`) is a pension page by URL and content; `other`
+was a one-row category that existed only because of that mislabel. Relabelled
+in place: same `page_id`, same capture (`data/raw/belfius/other_fr_01.{html,png}`
+kept as-is, not renamed - the page_id already appears in every rater's sheet and
+in `claude_scores.csv`, and this week has taught us what renaming one costs),
+`product_family` corrected to `pension` in `campaigns.csv` and in every rubric
+sheet's context columns. The dataset is now **50 pages / 14 banks / 6 product
+families** (`current_account_pack` 16, `investment` 9, `savings_account` 9,
+`pension` 8, `mortgage` 5, `term_account` 3) - down from 7 families, not because
+a page was dropped, but because it was never a seventh family to begin with.

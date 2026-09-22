@@ -54,6 +54,10 @@ def _persona_distribution(series: pd.Series, n_pages: int) -> list[dict]:
 def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SIGNATURE_FEATURES, *, tier: str | None = None) -> list[tuple[str, float]]:
     """The features on which this bank departs most from the market average."""
     # sieg 14/09: see the dropna(axis=1, how="any") note in analysis.positioning_axis().
+    # sieg 22/09: reported, not silent - feature_accounting()/render_accounting()
+    # (analysis.py) print every column this drops, same tier=None on both sides.
+    # A duplicate ad-hoc print() + leftover dead code from a 21/09 edit were
+    # removed here - one source of truth for this report, not two.
     z = standardise(bank_vectors(df, fd, tier=tier).dropna(axis=1, how="any"))
     if bank not in z.index:
         return []

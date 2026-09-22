@@ -14,26 +14,23 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- steve 21/09: refreshed again after the operator tabs shipped into the
-React UI. Two claims were already stale before that: the rubric row still
-said Dan 0/23, and the profile row still said 10 banks. -->
-**21/09, after the Day 6 gate.** The comparison now covers **14 banks across 16
-pages** in the `current_account_pack` family, with **nothing excluded** — up from
-9 banks, which had been held back by Belfius having no page in the compared
-family and by BNP Paribas Fortis serving us nothing at all. Belfius's own
-current-account page, vdk, hellobank, beobank, CBC and Keytrade were added, and
-Revolut came back through a static fetch. BNP is in too: its edge returns HTTP
-503 to every headless client but serves a real headful browser, so that target
-uses `method: headful`. There is no manual-capture-only bank left. **The rubric
-is no longer zero-handed**: Siegried has scored 25 pages, Dan 11, and the two
-overlap on 10 pages — so two independent human raters now exist, which is what
-NFR-05 asks for. Stephane's 9 pages were machine-proposed from the screenshots
-and adopted (the sheet's notes column says so), and they do not count as an
-independent human. Agreement is measurable for all 13 features over 9–15 pages
-and **six** now sit below the module's 60% bar (`aida_desire` 0.00,
-`persuasion_levers` 0.11, `accent_locations` 0.20, `rate_prominence` 0.27,
-`text_image_layout` 0.50, `aida_attention` 0.55), so the rubric work is
-tightening wording, not filling the first sheet.
+<!-- sieg 22/09: refreshed again - the 21/09 paragraph described the
+current_account_pack-only scope (14 banks/16 pages) and a 387-test suite,
+both superseded the same day by the scope restoration (decisions.md, "sieg
+21/09, scope restored..."), by tests added since, and by the belfius_other_fr_01
+relabel below. Rubric progress now moves fast enough within a day that this
+paragraph is not the place to chase exact counts - see data/rubric/*_scores.csv. -->
+**22/09.** The comparison covers **50 pages across 14 banks and 6 product
+families** (`current_account_pack`, `investment`, `savings_account`,
+`pension`, `mortgage`, `term_account`), with nothing excluded. `other` is
+gone as a category: `belfius_other_fr_01` was Belfius's pension page,
+mislabeled - relabelled in place (same page_id, same capture, `product_family`
+corrected), not re-collected. BNP Paribas Fortis is in via `method: headful`
+(its edge returns HTTP 503 to every headless client but serves a real headful
+browser); there is no manual-capture-only bank left. **Rubric scoring is
+split 2-raters-per-bank across Dan, Siegried and Stephane** rather than all
+three scoring all 50 pages - see `docs/pipeline.md` for the current split
+and the open question on rubric rows whose `page_id` predates a re-collection.
 
 | Deliverable | State |
 | --- | --- |
@@ -41,11 +38,14 @@ tightening wording, not filling the first sheet.
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated for every compared bank (real data) |
-| Real captures (D-02) | **50 pages / 14 banks / 7 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
-| Rubric scoring (Day 5) | **two independent human raters now overlap on 10 pages** (Siegried 25 scored, Dan 11); Stephane's 9 are machine-proposed and adopted, recorded as such in the sheet. Agreement is measurable for all 13 features over 9–15 pages, and `rubric_sheet.py` flags six below its 60% bar (listed above). The model's own sheet is never a pre-fill |
+| Real captures (D-02) | **50 pages / 14 banks / 6 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
+| Rubric scoring (Day 5) | **three independent human raters** (sieg 22/09: Stephane's scores are no longer machine-proposed/adopted - verified 0 of 13 overlapping pages identical to the model). Split 2-raters-per-bank across Dan/Siegried/Stephane (see `docs/pipeline.md`); exact per-rater counts move within the day, see `data/rubric/*_scores.csv`. The model's own sheet is never a pre-fill |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
-Test suite: **387 passing, 1 skipped**. Pinned model: `deepseek-flash`.
+Test suite: **401 passing, 1 skipped** (sieg 22/09). Pinned model per D6: `deepseek-chat` in decisions.md,
+but every `extraction_model` value actually on disk reads `deepseek/deepseek-flash` (and now, after
+tonight's re-fetches, occasionally `groq/openai/gpt-oss-120b` on fallback) — flagged for
+Stephane (D6 owner), not resolved here.
 
 ## Start here
 

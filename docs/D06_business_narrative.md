@@ -4,6 +4,18 @@ sieg 16/09, rewritten 20/09 the night before the Day 6 gate. Written for the
 business audience per the plan: what this means for ING, no method detail —
 the "how" lives in D-07 and the code, not here.
 
+> **sieg 22/09, for whoever builds the presentation from this draft.** Every
+> number below (0.362, 0.183, 0.131...) is superseded again. Current state:
+> full dataset is **50 pages / 14 banks / 6 product families**
+> (`decisions.md`, "sieg 21/09, scope restored"; `other` folded into `pension`
+> the night of 22/09, `belfius_other_fr_01` was mislabeled); `web/public/report.json`'s
+> BO-02 positioning defaults to the `current_account_pack` family (16 pages,
+> 14 banks) per DR-04, and reads **ING = 0.209** as of its last generation
+> (`generated_at: 2026-09-21T18:11:00+00:00`) — re-run
+> `export_web_report.py` before quoting it if the rubric merge changes after
+> that. Don't hand-copy a number from this file into the deck; pull it from
+> `report.json` or a fresh `run_analysis.py` run.
+
 > **steve 21/09 (second update).** The rubric consensus moved after the first
 > update below: Stephane's sheet was filled for nine pages (machine-proposed and
 > adopted), which shifted 15 columns — all five AIDA booleans on ten pages, the
