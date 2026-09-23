@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T11:31:43+00:00",
+  "generated_at": "2026-09-23T12:35:37+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 38
+    "n_features": 37
   },
   "headline": {
     "focus": "ING",
-    "score": 0.243,
+    "score": 0.257,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
@@ -62,102 +62,112 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.284,
+      "score": -0.319,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.194,
+      "score": -0.195,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.147,
+      "score": -0.144,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": -0.081,
+      "score": -0.102,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.036,
+      "score": -0.034,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.006,
+      "score": 0.002,
       "isFocus": false
     },
     {
       "bank": "VDK Bank",
       "key": "vdk",
       "category": "traditional",
-      "score": 0.007,
+      "score": 0.034,
       "isFocus": false
     },
     {
       "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.205,
+      "score": 0.214,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.243,
+      "score": 0.257,
       "isFocus": true
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.279,
+      "score": 0.288,
       "isFocus": false
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.564,
+      "score": 0.573,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.867,
+      "score": 0.884,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.2,
+      "score": 1.172,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.369,
+      "score": 1.371,
       "isFocus": false
     }
   ],
   "peerGaps": [
+    {
+      "feature": "urgency_marker_count",
+      "label": "Urgency and deadline language",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 4.0,
+      "peerMean": 0.641025641025641,
+      "gapSd": 3.69,
+      "direction": "above"
+    },
     {
       "feature": "persuasion_lever_count",
       "label": "Persuasion techniques used",
@@ -223,9 +233,9 @@
       "label": "Calls to action",
       "dimension": "layout_structure",
       "extraction": "automatic",
-      "focusValue": 0.6666666666666666,
-      "peerMean": 5.641025641025641,
-      "gapSd": -1.0,
+      "focusValue": 1.0,
+      "peerMean": 6.179487179487179,
+      "gapSd": -0.92,
       "direction": "below"
     },
     {
@@ -247,16 +257,6 @@
       "peerMean": 19.0,
       "gapSd": 0.85,
       "direction": "above"
-    },
-    {
-      "feature": "numeric_claim_count",
-      "label": "Figures and percentages quoted",
-      "dimension": "tone_messaging",
-      "extraction": "automatic",
-      "focusValue": 18.666666666666668,
-      "peerMean": 12.17948717948718,
-      "gapSd": 0.79,
-      "direction": "above"
     }
   ],
   "excludedGaps": [
@@ -266,6 +266,10 @@
     },
     {
       "label": "Distinct accent colours",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Call to action visible without scrolling",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -399,9 +403,9 @@
           "direction": "above"
         },
         {
-          "label": "Urgency and deadline language",
-          "sd": 1.6,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -423,7 +427,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3244.0,
-        "Calls to action": 1.0,
+        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -501,7 +505,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11110.0,
-        "Calls to action": 5.0,
+        "Calls to action": 6.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -581,7 +585,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 7078.0,
-        "Calls to action": 9.0,
+        "Calls to action": 10.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -719,12 +723,12 @@
         },
         {
           "label": "Calls to action",
-          "sd": 2.8,
+          "sd": 2.9,
           "direction": "above"
         },
         {
-          "label": "Urgency and deadline language",
-          "sd": 2.7,
+          "label": "Shows a rate",
+          "sd": 2.4,
           "direction": "above"
         }
       ],
@@ -747,7 +751,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 15135.0,
-        "Calls to action": 19.0,
+        "Calls to action": 22.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -992,7 +996,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3881.0,
-        "Calls to action": 2.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1036,17 +1040,17 @@
       "pages": 3,
       "signature": [
         {
+          "label": "Urgency and deadline language",
+          "sd": 2.5,
+          "direction": "above"
+        },
+        {
           "label": "Clarity of the offer",
           "sd": 1.3,
           "direction": "above"
         },
         {
           "label": "Promises fast digital sign-up",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Page length",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1056,7 +1060,7 @@
         "Readability band": "hard",
         "Formality of tone": 1.6666666666666667,
         "Speaks to “you” rather than “we”": null,
-        "Urgency markers": 0.3333333333333333
+        "Urgency markers": 4.0
       },
       "imagery": {
         "Images": 33.0,
@@ -1070,7 +1074,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11148.666666666666,
-        "Calls to action": 0.6666666666666666,
+        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1329,7 +1333,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 8005.0,
-        "Calls to action": 6.0,
+        "Calls to action": 7.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1473,17 +1477,17 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Call to action visible without scrolling",
-          "sd": 3.6,
-          "direction": "above"
-        },
-        {
           "label": "Makes the offer feel worth having",
           "sd": -1.3,
           "direction": "below"
         },
         {
           "label": "Includes a comparison table",
+          "sd": 1.3,
+          "direction": "above"
+        },
+        {
+          "label": "Targets students or young people",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1507,8 +1511,8 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
-        "Calls to action": 3.0,
-        "Call to action visible without scrolling": 1.0
+        "Calls to action": 2.0,
+        "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Compte à vue You Count",
@@ -1846,226 +1850,226 @@
     "matrix": [
       [
         0.0,
-        7.13,
-        6.87,
-        6.89,
-        11.49,
-        6.73,
-        9.95,
-        8.07,
-        6.53,
-        6.86,
-        8.94,
-        10.66,
-        11.97,
-        7.97
-      ],
-      [
-        7.13,
-        0.0,
-        7.82,
-        8.37,
-        9.27,
-        6.62,
-        9.14,
-        7.58,
-        4.93,
-        6.45,
-        5.91,
-        9.76,
+        6.94,
+        6.64,
+        6.7,
+        11.45,
+        6.51,
         9.82,
-        6.4
+        7.91,
+        6.46,
+        6.73,
+        8.79,
+        10.53,
+        11.94,
+        6.9
       ],
       [
-        6.87,
-        7.82,
+        6.94,
         0.0,
-        7.19,
-        11.73,
-        7.27,
-        8.58,
-        7.45,
-        6.76,
+        7.81,
+        8.27,
+        8.98,
+        6.62,
+        9.15,
+        7.57,
+        5.89,
+        6.46,
+        5.92,
+        9.76,
+        9.8,
+        5.07
+      ],
+      [
+        6.64,
+        7.81,
+        0.0,
+        7.12,
+        11.51,
+        7.28,
+        8.59,
+        7.43,
+        7.48,
         7.63,
         8.18,
         9.26,
-        11.94,
-        7.66
+        11.91,
+        6.6
       ],
       [
-        6.89,
-        8.37,
-        7.19,
+        6.7,
+        8.27,
+        7.12,
         0.0,
-        11.17,
-        7.09,
-        10.28,
-        9.36,
-        6.74,
-        8.16,
-        8.68,
-        10.41,
-        12.09,
-        8.73
+        11.11,
+        7.0,
+        10.2,
+        9.24,
+        7.02,
+        8.09,
+        8.6,
+        10.34,
+        12.05,
+        7.81
       ],
       [
-        11.49,
-        9.27,
-        11.73,
-        11.17,
+        11.45,
+        8.98,
+        11.51,
+        11.11,
         0.0,
-        11.43,
-        12.85,
-        11.64,
-        9.42,
-        10.58,
-        10.47,
-        12.46,
-        10.97,
-        11.21
+        11.25,
+        12.67,
+        11.39,
+        8.99,
+        10.43,
+        10.25,
+        12.25,
+        10.91,
+        10.51
       ],
       [
-        6.73,
+        6.51,
         6.62,
-        7.27,
-        7.09,
-        11.43,
+        7.28,
+        7.0,
+        11.25,
         0.0,
-        9.03,
-        7.97,
-        7.52,
-        5.1,
+        9.02,
+        7.95,
+        8.16,
+        5.09,
         8.04,
         10.6,
-        11.01,
+        10.98,
+        5.51
+      ],
+      [
+        9.82,
+        9.15,
+        8.59,
+        10.2,
+        12.67,
+        9.02,
+        0.0,
+        9.43,
+        9.28,
+        8.16,
+        8.26,
+        11.64,
+        11.72,
+        8.34
+      ],
+      [
+        7.91,
+        7.57,
+        7.43,
+        9.24,
+        11.39,
+        7.95,
+        9.43,
+        0.0,
+        7.79,
+        7.73,
+        6.97,
+        8.36,
+        11.22,
+        7.29
+      ],
+      [
+        6.46,
+        5.89,
+        7.48,
+        7.02,
+        8.99,
+        8.16,
+        9.28,
+        7.79,
+        0.0,
+        7.28,
+        7.32,
+        8.94,
+        10.59,
         6.78
       ],
       [
-        9.95,
-        9.14,
-        8.58,
-        10.28,
-        12.85,
-        9.03,
-        0.0,
-        9.43,
-        8.7,
-        8.17,
-        8.26,
-        11.63,
-        11.75,
-        9.23
-      ],
-      [
-        8.07,
-        7.58,
-        7.45,
-        9.36,
-        11.64,
-        7.97,
-        9.43,
-        0.0,
-        7.09,
-        7.74,
-        6.97,
-        8.37,
-        11.25,
-        8.29
-      ],
-      [
-        6.53,
-        4.93,
-        6.76,
-        6.74,
-        9.42,
-        7.52,
-        8.7,
-        7.09,
-        0.0,
-        6.65,
-        6.58,
-        8.34,
-        10.34,
-        7.47
-      ],
-      [
-        6.86,
-        6.45,
+        6.73,
+        6.46,
         7.63,
+        8.09,
+        10.43,
+        5.09,
         8.16,
-        10.58,
-        5.1,
-        8.17,
-        7.74,
-        6.65,
+        7.73,
+        7.28,
         0.0,
-        7.82,
+        7.81,
         9.82,
-        10.26,
-        6.81
+        10.25,
+        5.57
       ],
       [
-        8.94,
-        5.91,
+        8.79,
+        5.92,
         8.18,
-        8.68,
-        10.47,
+        8.6,
+        10.25,
         8.04,
         8.26,
         6.97,
-        6.58,
-        7.82,
+        7.32,
+        7.81,
         0.0,
-        9.34,
-        9.54,
-        7.0
+        9.35,
+        9.51,
+        5.77
       ],
       [
-        10.66,
+        10.53,
         9.76,
         9.26,
-        10.41,
-        12.46,
-        10.6,
-        11.63,
-        8.37,
-        8.34,
-        9.82,
-        9.34,
-        0.0,
-        11.55,
-        10.81
-      ],
-      [
-        11.97,
-        9.82,
-        11.94,
-        12.09,
-        10.97,
-        11.01,
-        11.75,
-        11.25,
         10.34,
-        10.26,
-        9.54,
-        11.55,
+        12.25,
+        10.6,
+        11.64,
+        8.36,
+        8.94,
+        9.82,
+        9.35,
         0.0,
-        10.82
+        11.53,
+        10.08
       ],
       [
-        7.97,
-        6.4,
-        7.66,
-        8.73,
-        11.21,
+        11.94,
+        9.8,
+        11.91,
+        12.05,
+        10.91,
+        10.98,
+        11.72,
+        11.22,
+        10.59,
+        10.25,
+        9.51,
+        11.53,
+        0.0,
+        10.1
+      ],
+      [
+        6.9,
+        5.07,
+        6.6,
+        7.81,
+        10.51,
+        5.51,
+        8.34,
+        7.29,
         6.78,
-        9.23,
-        8.29,
-        7.47,
-        6.81,
-        7.0,
-        10.81,
-        10.82,
+        5.57,
+        5.77,
+        10.08,
+        10.1,
         0.0
       ]
     ]
@@ -2099,15 +2103,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 4.93
+      "distance": 5.89
     },
     {
       "bank": "Argenta",
-      "distance": 6.53
+      "distance": 6.46
     },
     {
-      "bank": "Keytrade Bank",
-      "distance": 6.58
+      "bank": "VDK Bank",
+      "distance": 6.78
     }
   ],
   "deckClaims": [
@@ -2429,6 +2433,14 @@
         "pages": 3,
         "lessons": [
           {
+            "feature": "urgency_marker_count",
+            "z": -0.44,
+            "focusZ": 2.53,
+            "gapSd": -2.98,
+            "direction": "below",
+            "label": "Urgency and deadline language"
+          },
+          {
             "feature": "is_bundled_offer",
             "z": -1.58,
             "focusZ": 0.63,
@@ -2451,14 +2463,6 @@
             "gapSd": -1.54,
             "direction": "below",
             "label": "Images"
-          },
-          {
-            "feature": "background_luminance",
-            "z": -0.03,
-            "focusZ": 1.26,
-            "gapSd": -1.29,
-            "direction": "below",
-            "label": "Page brightness"
           }
         ]
       },
@@ -2481,6 +2485,14 @@
             "label": "Content sections"
           },
           {
+            "feature": "urgency_marker_count",
+            "z": -0.72,
+            "focusZ": 2.53,
+            "gapSd": -3.25,
+            "direction": "below",
+            "label": "Urgency and deadline language"
+          },
+          {
             "feature": "disclaimer_present",
             "z": -1.91,
             "focusZ": 0.52,
@@ -2495,14 +2507,6 @@
             "gapSd": 2.41,
             "direction": "above",
             "label": "Images"
-          },
-          {
-            "feature": "question_count",
-            "z": 2.46,
-            "focusZ": 0.49,
-            "gapSd": 1.96,
-            "direction": "above",
-            "label": "Questions asked"
           }
         ]
       },
@@ -2541,12 +2545,12 @@
             "label": "Page brightness"
           },
           {
-            "feature": "question_count",
-            "z": -1.34,
-            "focusZ": 0.49,
-            "gapSd": -1.83,
+            "feature": "urgency_marker_count",
+            "z": 0.1,
+            "focusZ": 2.53,
+            "gapSd": -2.44,
             "direction": "below",
-            "label": "Questions asked"
+            "label": "Urgency and deadline language"
           }
         ]
       }

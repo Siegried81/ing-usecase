@@ -662,3 +662,29 @@ as known future work instead, not quietly left to look intentional.
 
 *Belgium only, confirmed.* ING.nl is out of scope, which the collection already
 reflects - no change.
+
+**sieg 23/09, measurement change: `urgency_marker_count` now counts dated
+deadlines.** The dictionary defines the feature as "scarcity or deadline
+language", but the extractor matched a per-language term list only. A deadline
+that lives in a date carries none of those terms: ING's pack offer
+("Déposez 50 € ... avant le 11/10/2026") scored 0, while a page saying "offre
+temporaire" with no date scored several. `scraper._count_urgency_markers()` now
+also counts a deadline preposition with a date within 30 characters — the same
+keyword-near-match shape `_rate()` uses — and does not double-count a term that
+is both (so "valable jusqu'au 13/10/2026" stays one marker, not two).
+
+All 51 rows were re-measured from the stored snapshots with the same rule
+(`scripts/rederive_urgency_markers.py`, no refetch, so no compliance gate
+applies). Three rows moved, all ING pack pages: 0→3, 1→4, 0→5. No peer row
+moved, and that was checked rather than assumed: every date on a peer page is
+an effective-from date ("à partir du", "depuis le") or a cookie-policy
+timestamp, never an expiry.
+
+Consequences, within `current_account_pack`: ING's `urgency_marker_count` goes
+from 0.33 (−0.34 SD, *below* peers) to 4.00 (+3.69 SD), which makes it the
+largest gap in the set, ahead of `persuasion_lever_count`. The
+traditional↔challenger positioning score moves 0.24 → 0.26 (the feature is one
+of the 37 on the axis); ING's nearest neighbour is still Belfius. Nothing else
+in `ing_vs_peers.csv` changed, and all five deck claims keep their verdict.
+Slide 12 and D06 section 2 were updated; D06's old numbers there (3.5 vs 1.10)
+were wrong on both the old and the new basis.

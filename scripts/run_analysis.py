@@ -174,9 +174,9 @@ def main() -> int:
         print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
 
     # --- 3. where the dictionary's features go -------------------------------
-    # After Sieg asked why a chart said "50 features" with 97 in the
-    # dictionary. The reduction was legitimate but invisible; now it is printed
-    # on every run and carried next to the figure in charts.md.
+    # A chart saying "50 features" with 97 in the dictionary needs the
+    # reduction spelled out: it is legitimate but invisible otherwise, so it is
+    # printed on every run and carried next to the figure in charts.md.
     _header("3. Feature accounting")
     accounting = feature_accounting(banks_df, fd)
     print(render_accounting(accounting))

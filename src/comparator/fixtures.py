@@ -1,8 +1,8 @@
 """Synthetic fixture data, so analysis code can be built before the scraper exists.
 
-Project Plan, Day 2: "Dan publishes five hand-collected rows in the agreed format
-so Stephane can start analysis code before the full scrape exists." This module is
-the placeholder that unblocks day 2 - it is replaced by the real rows, not merged
+Project Plan, Day 2: five hand-collected rows in the agreed format, so the
+analysis code can be started before the full scrape exists. This module is the
+placeholder that unblocks day 2 - it is replaced by the real rows, not merged
 with them.
 
 EVERY ROW IS INVENTED. Values are drawn from per-bank archetypes that encode the
@@ -171,13 +171,12 @@ def build_fixture(
             second_person_ratio_value = round(float(np.clip(rng.normal(a["second_person"], 0.05), 0, 1)), 3)
             first_person_plural_value = int(max(0, rng.normal(6, 3)))
             disclaimer_word_share_value = round(float(np.clip(rng.normal(0.18 if a["category"] == "traditional" else 0.07, 0.04), 0, 1)), 3)
-            # FIXED: this was drawn independently from an archetype,
-            # so the fixture's text_to_image_ratio disagreed with its OWN
-            # word_count and image_count by ~40x (ING: stored 1.18, implied
-            # 77.33). collection/scraper.py defines the feature as
-            # word_count / image_count, and a fixture that does not obey the
-            # extractor's own definition silently invalidates anything tuned on
-            # it - which is exactly what happened to the bands.py thresholds.
+            # Derived from this row's own word_count and image_count, never
+            # drawn independently from an archetype. collection/scraper.py
+            # defines the feature as word_count / image_count, and a fixture
+            # that does not obey the extractor's own definition silently
+            # invalidates anything tuned on it - the bands.py thresholds were
+            # tuned on fixtures whose ratio was off by ~40x.
             # The archetype's intent (text-led vs image-led) is already carried
             # by word_count and image_count, so it is not lost here.
             text_to_image_ratio_value = round(words / max(images, 1), 2)

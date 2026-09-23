@@ -105,19 +105,16 @@ def assess(
     if "language" in usable.columns:
         languages = sorted(usable["language"].dropna().unique())
         if len(languages) > 1:
-            # FIXED. This used to claim "only the banded versions
-            # travel" - false: comparable_features() never substituted the band,
-            # it kept comparing the raw within_language value across languages
-            # (audit finding, HIGH). Now that comparable_features() actually
-            # excludes them (analysis.language_excluded_features()), this note
-            # describes what really happens instead of what was supposed to.
+            # The wording must state what comparable_features() really does -
+            # it EXCLUDES within_language features across languages
+            # (analysis.language_excluded_features()), it does not substitute
+            # their banded versions. A limitations note that describes an
+            # intention rather than the code is worse than none.
             #
-            # Second pass: dropped the "see charts.md" pointer - it
-            # only exists on the run_analysis.py path. This module is also
-            # consumed by export_web_report.py (business web UI), which never
-            # writes charts.md, so pointing every reader at it was the same
-            # "claims what the pipeline doesn't actually do" mistake this note
-            # had just been fixed for, one level up.
+            # For the same reason there is no "see charts.md" pointer here:
+            # charts.md only exists on the run_analysis.py path, and this
+            # module is also consumed by export_web_report.py (business web UI),
+            # which never writes it.
             excluded = language_excluded_features(fd, usable)
             material.append(
                 f"Pages are in **{len(languages)} languages** ({languages}). "

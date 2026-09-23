@@ -22,7 +22,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,244 |
-| cta count | 1 |
+| cta count | 2 |
 | cta above fold | no |
 | word count | 1,831 |
 | readability band | very_hard |
@@ -39,7 +39,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); urgency marker count well above the market average (+1.6 SD).
+**Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); aida desire well below the market average (-1.3 SD).
 
 ### belfius  (traditional)
 
@@ -61,7 +61,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,110 |
-| cta count | 5 |
+| cta count | 6 |
 | cta above fold | no |
 | word count | 1,812 |
 | readability band | hard |
@@ -100,7 +100,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 7,078 |
-| cta count | 9 |
+| cta count | 10 |
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
@@ -178,7 +178,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 15,135 |
-| cta count | 19 |
+| cta count | 22 |
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
@@ -195,7 +195,7 @@
 | lever count | 3 |
 | personas | mass_market 100%, expat 100% |
 
-**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.8 SD); urgency marker count well above the market average (+2.7 SD).
+**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.9 SD); rate shown well above the market average (+2.4 SD).
 
 ### cbc  (traditional)
 
@@ -295,7 +295,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,881 |
-| cta count | 2 |
+| cta count | 3 |
 | cta above fold | no |
 | word count | 1,661 |
 | readability band | hard |
@@ -334,13 +334,13 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,149 |
-| cta count | 0.67 |
+| cta count | 1 |
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
 | formality score | 1.67 |
 | second person ratio | - |
-| urgency markers | 0.33 |
+| urgency markers | 4 |
 | primary product | Belgian bank account for expats (ING pack) |
 | rate shown | no |
 | rate prominence | below_fold |
@@ -351,7 +351,7 @@
 | lever count | 3.67 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
-**Signature:** value prop clarity well above the market average (+1.3 SD); fast digital onboarding claim well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD).
+**Signature:** urgency marker count well above the market average (+2.5 SD); value prop clarity well above the market average (+1.3 SD); fast digital onboarding claim well above the market average (+1.3 SD).
 
 ### kbc  (traditional)
 
@@ -451,7 +451,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
-| cta count | 6 |
+| cta count | 7 |
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
@@ -529,8 +529,8 @@
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 4,290 |
-| cta count | 3 |
-| cta above fold | yes (all pages) |
+| cta count | 2 |
+| cta above fold | no |
 | word count | 3,992 |
 | readability band | hard |
 | formality score | 2 |
@@ -546,4 +546,4 @@
 | lever count | - |
 | personas | student 100% |
 
-**Signature:** cta above fold well above the market average (+3.6 SD); aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).

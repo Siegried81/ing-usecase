@@ -144,11 +144,10 @@ def test_limitations_report_the_rows_that_were_excluded(fd):
     assert "503" in text
 
 
-# FIXED. This note used to say "only the banded versions travel",
-# which was false - comparable_features() never substituted the band, it kept
-# comparing the raw within_language value across languages (audit finding,
-# HIGH). Pin the corrected wording so it can't silently drift back to the
-# false claim now that the underlying behaviour actually matches it.
+# Pins the note's wording to what comparable_features() really does: it
+# EXCLUDES within_language features across languages, it does not substitute
+# their banded versions. "Only the banded versions travel" is the false claim
+# this guards against drifting back to.
 def test_mixed_language_note_matches_what_the_pipeline_actually_does(fd):
     from comparator.fixtures import build_fixture
     from comparator.limitations import assess, render

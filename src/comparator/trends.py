@@ -52,14 +52,14 @@ BANK_MAP = {
     "ING": "ing", "KBC": "kbc", "CBC": "cbc",
     "BNPPF": "bnp_paribas_fortis", "ARGENTA": "argenta", "CRELAN": "crelan",
     "REVOLUT": "revolut", "N26": "n26", "BUNQ": "bunq",
-    # Second wave: the five banks the comparator captured but the
-    # benchmark had no search term for. Dan resolved them, so the Trends tab's
-    # "no coverage" list is now empty and all 14 banks share one scale.
+    # The five banks the comparator captured that the benchmark originally had
+    # no search term for. With them mapped, the Trends tab's "no coverage" list
+    # is empty and all 14 banks share one scale.
     "BELFIUS": "belfius", "BEOBANK": "beobank", "VDK": "vdk",
     "HELLOBANK": "hellobank", "KEYTRADE": "keytrade",
 }
 
-# Display names for the codes Dan stores, so the UI never shows "BNPPF".
+# Display names for the codes the benchmark stores, so the UI never shows "BNPPF".
 BANK_DISPLAY = {
     "ING": "ING", "KBC": "KBC", "CBC": "CBC", "BNPPF": "BNP Paribas Fortis",
     "ARGENTA": "Argenta", "CRELAN": "Crelan", "REVOLUT": "Revolut",

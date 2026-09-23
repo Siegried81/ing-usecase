@@ -1,11 +1,12 @@
 feature,dimension,extraction,ing_value,peer_mean,peer_std,peer_n,gap_sd,reportable,note,percentile,direction
+urgency_marker_count,tone_messaging,automatic,4.0,0.641025641025641,0.910166120476864,13,3.6905069123145227,True,,100.0,above peers
 persuasion_lever_count,marketing_principles,derived,3.6666666666666665,1.740740740740741,0.7821745215534398,9,2.4622713638139673,True,,100.0,above peers
 value_prop_clarity,topics_value_prop,rubric,5.0,3.7435897435897436,0.858878678176627,13,1.4628495133650037,True,,84.61538461538461,above peers
 fast_digital_onboarding_claim,banking_domain,model_assisted,0.6666666666666666,0.15384615384615385,0.36080121229410994,13,1.4213381090374029,True,,84.61538461538461,above peers
 page_height_px,layout_structure,automatic,11148.666666666666,6411.717948717949,3339.324541061043,13,1.418534994039121,True,,92.3076923076923,above peers
 background_luminance,colours_design,automatic,0.5463333333333333,0.33599999999999997,0.15013839769205767,13,1.4009296526844446,True,,92.3076923076923,above peers
 hidden_conditions_behind_free_claim,banking_domain,model_assisted,0.6666666666666666,0.23076923076923078,0.42132504423474315,13,1.0345870530653136,True,,76.92307692307693,above peers
-cta_count,layout_structure,automatic,0.6666666666666666,5.641025641025641,4.998224536844064,13,-0.9952251920038474,True,,0.0,below peers
+cta_count,layout_structure,automatic,1.0,6.179487179487179,5.622931353126445,13,-0.9211364774366837,True,,0.0,below peers
 aida_desire,marketing_principles,rubric,1.0,0.5897435897435898,0.4741856925360751,13,0.8651809126974002,True,,46.15384615384615,above peers
 image_count,visuals,automatic,33.0,19.0,16.38479595422349,13,0.8544506772689613,True,,92.3076923076923,above peers
 numeric_claim_count,tone_messaging,automatic,18.666666666666668,12.17948717948718,8.263414770458944,13,0.7850482720981938,True,,84.61538461538461,above peers
@@ -28,10 +29,8 @@ clarity_score,tone_messaging,rubric,4.333333333333333,4.128205128205128,0.498518
 mobile_first_design_signal,layout_structure,rubric,0.6666666666666666,0.48717948717948717,0.48243301851863535,13,0.37204580241691365,True,,53.84615384615385,above peers
 aida_coverage_score,marketing_principles,derived,3.3333333333333335,2.974358974358975,0.9648660370372708,13,0.37204580241691326,True,,61.53846153846154,above peers
 cta_contrast_ratio,colours_design,automatic,7.010000000000001,8.947692307692309,5.437717498880677,13,-0.3563429523676379,True,,38.46153846153847,below peers
-urgency_marker_count,tone_messaging,automatic,0.3333333333333333,0.641025641025641,0.910166120476864,13,-0.3380617018914066,True,,53.84615384615385,below peers
 formality_score,tone_messaging,rubric,1.6666666666666667,1.7948717948717947,0.38204267758336774,13,-0.3355780276070115,True,,23.076923076923077,below peers
 above_fold_element_count,layout_structure,automatic,29.333333333333332,32.56410256410256,9.830516428674429,13,-0.32864694893805035,True,,38.46153846153847,below peers
-cta_above_fold,layout_structure,automatic,0.0,0.07692307692307693,0.26646935501059654,13,-0.28867513459481287,True,,0.0,below peers
 institutional_trust_signal_present,banking_domain,model_assisted,0.0,0.07692307692307693,0.26646935501059654,13,-0.28867513459481287,True,,0.0,below peers
 first_time_investor_targeting,banking_domain,model_assisted,0.0,0.07692307692307693,0.26646935501059654,13,-0.28867513459481287,True,,0.0,below peers
 people_present,visuals,model_assisted,1.0,0.9230769230769231,0.26646935501059654,13,0.28867513459481264,True,,7.6923076923076925,above peers
@@ -40,6 +39,7 @@ has_comparison_table,layout_structure,automatic,0.3333333333333333,0.38461538461
 brand_colour_share,colours_design,automatic,0.007333333333333333,0.008384615384615386,0.015494606811296838,13,-0.06784825611164153,True,,76.92307692307693,below peers
 hero_image_present,visuals,automatic,1.0,1.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 accent_colour_count,colours_design,automatic,4.0,4.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
+cta_above_fold,layout_structure,automatic,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 aida_action,marketing_principles,rubric,1.0,1.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 green_product_specific_benefit,banking_domain,model_assisted,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 secondary_bank_positioning,banking_domain,model_assisted,0.0,0.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers

@@ -22,10 +22,9 @@ from comparator.schema import parse_list
 PROVENANCE = {"provenance"}
 FOCUS_BANK = "ing"
 
-# After Sieg asked why the chart said "50 features" when the
-# dictionary has 97. It is a fair question and the answer was nowhere in the
-# output, so the accounting below is now computed and printed rather than
-# reconstructed by hand.
+# A chart saying "50 features" when the dictionary declares 97 raises an
+# obvious question, and the answer has to be in the output rather than
+# reconstructed by hand, so the accounting below is computed and printed.
 BAND_SUFFIX = "_band"
 
 # A gap expressed in peer standard deviations is only meaningful if

@@ -176,12 +176,11 @@ class LLMExtractionError(Exception):
 # Same order as .env.example - Groq first (with key rotation),
 # then hosted fallbacks, then local Ollama for dev.
 #
-# Decision 6 (mine, due Day 2): DEEPSEEK IS THE PINNED MODEL for
-# this project - one model, named, so every bank is labelled by the same judge.
-# Stephane has the key, so it is the one we can actually run today. the chain
-# stays underneath as a fallback for when DeepSeek is down, because losing a
-# night of collection to one provider outage is worse than a mixed dataset - but
-# a fallback is now RECORDED in extraction_model rather than silent, and
+# Decision 6: DEEPSEEK IS THE PINNED MODEL for this project - one model,
+# named, so every bank is labelled by the same judge. The chain stays
+# underneath as a fallback for when DeepSeek is down, because losing a night
+# of collection to one provider outage is worse than a mixed dataset - but a
+# fallback is RECORDED in extraction_model rather than silent, and
 # schema.validate() warns when a dataset mixes models. See docs/decisions.md.
 _PROVIDERS = [
     # DeepSeek retired "deepseek-chat" - the API now serves

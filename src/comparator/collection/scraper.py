@@ -24,9 +24,9 @@ WHAT THIS DOES NOT DO, ON PURPOSE (read before trusting a row):
     Flesch-Douma (nl, 1960): 206.84 - 0.93*ASL - 77*ASW. All three match the
     coefficients below exactly.
 
-Next step for Dan: add a headless_render path (e.g. playwright) that fills
-the four fields above and replaces the text_to_image_ratio approximation
-with the real one; static_fetch stays as the fast path for everything else.
+collection/render.py is the rendered counterpart: it drives a real viewport
+(playwright) and fills those four fields for the rows that need them.
+static_fetch stays the fast path for everything else.
 """
 from __future__ import annotations
 
@@ -67,6 +67,33 @@ _URGENCY_MARKERS = {
     "fr": ["offre limitee", "offre limitée", "jusqu'au", "temporaire", "seulement"],
     "en": ["only until", "limited offer", "limited time", "today only"],
 }
+# A dated deadline is the other half of what the dictionary calls "deadline
+# language", and a plain term list cannot catch it: the deadline lives in the
+# DATE, not in the word. "Déposez 50 € avant le 11/10/2026" carries none of the
+# terms above, so pages built that way score 0 while a page saying "offre
+# temporaire" without any date scores several.
+#
+# The preposition alone is far too common to count on its own ("before you
+# open", "tot" in Dutch), so it only counts when a date follows within
+# _DEADLINE_WINDOW characters - the same keyword-near-match shape _rate() uses
+# to avoid reading "100% en ligne" as an interest rate.
+_DEADLINE_PREPOSITIONS = {
+    "nl": ["tot en met", "tot", "voor", "uiterlijk"],
+    "fr": ["avant le", "avant l'", "jusqu'au", "jusqu'à", "jusqu'a", "d'ici le"],
+    "en": ["before", "until", "valid until", "ends on", "by"],
+}
+_DEADLINE_WINDOW = 30
+# Numeric (11/10/2026, 11-10-2026) or spelled out in any of the three
+# languages, which is how several of these pages write the same deadline.
+_MONTHS = (
+    "januari|februari|maart|april|mei|juni|juli|augustus|september|oktober|november|december"
+    "|janvier|février|fevrier|mars|avril|mai|juin|juillet|août|aout|septembre|octobre|novembre|décembre|decembre"
+    "|january|february|march|may|june|july|august|october"
+)
+_DATE_RE = re.compile(
+    rf"\b\d{{1,2}}[/.\-]\d{{1,2}}[/.\-]\d{{2,4}}\b|\b\d{{1,2}}\s+(?:{_MONTHS})\b",
+    re.I,
+)
 # Added alongside _rate()'s fix - see that function's docstring.
 _RATE_KEYWORDS = {
     "nl": ["rente", "rentevoet", "interest", "tarief", "jaarlijkse"],
@@ -81,14 +108,29 @@ _LOYALTY_REFERRAL_TERMS = [
 _CTA_KEYWORDS = (
     "discover", "open", "apply", "get started", "sign up", "learn more",
     "decouvrir", "découvrir", "ouvrir", "demander", "en savoir plus",
-    # FIXED - verified live on kbc.be, this list only had the FR
-    # infinitives, so real buttons ("Ouvrez un compte à vue", "Ouvrez dès
-    # maintenant...") scored cta_count=0. Banking CTAs are near-universally
-    # the imperative in French, not the infinitive ("ouvrir" is not a
-    # substring of "ouvrez") - added the imperative forms actually seen,
-    # per this module's own "extend as real pages surface terms these miss".
+    # The FR imperative forms, verified live on kbc.be. Banking CTAs are
+    # near-universally the imperative in French, not the infinitive, and
+    # "ouvrir" is not a substring of "ouvrez" - with infinitives only, real
+    # buttons ("Ouvrez un compte à vue") score cta_count=0. Per this module's
+    # own rule: extend as real pages surface terms these miss.
     "ouvrez", "découvrez", "decouvrez", "demandez", "profitez", "simulez", "calculez",
     "ontdek", "openen", "aanvragen", "meer weten",
+    # Verified live on ING/Beobank/KBC/N26: "commencer/commencez"
+    # ("start"), "démarrer/démarrez" ("start"), "comparer/comparez"
+    # ("compare") and "choisir/choisissez" ("choose") are common French
+    # banking CTAs this list missed entirely - démarrer scored cta_count=0
+    # on a page whose only button read "Démarrer". "choisir" is also the
+    # single most common false positive, from cookie-consent banners
+    # ("choisir soi-même les cookies") - see the cookie-banner exclusion
+    # in _count_ctas() below, which exists because of exactly that phrase.
+    "commenc", "démarr", "demarr", "comparez", "comparer les", "choisir", "choisissez",
+    # Verified live on Argenta: "devenir client" ("become a customer") is
+    # arguably the single most important conversion CTA on a current-account
+    # page, and was entirely unmatched - the page's only counted "CTA" turned
+    # out to be a link to its cookie policy (see the cookie-banner exclusion
+    # above). "téléchargez" ("download") covers app-download CTAs, a distinct
+    # and common conversion action this list had no term for at all.
+    "devenir client", "téléchargez", "telechargez",
 )
 
 # Standard-form readability coefficients (words/sentence, syllables/word).
@@ -141,6 +183,39 @@ def _count_terms(text: str, terms) -> int:
     return sum(1 for t in tokens if t in term_set)
 
 
+def _count_urgency_markers(text: str, language: str) -> int:
+    """Scarcity or deadline language, per the dictionary's definition.
+
+    Two kinds, counted once each: a term from _URGENCY_MARKERS, and a
+    deadline preposition with a date inside _DEADLINE_WINDOW characters.
+
+    A dated deadline whose preposition sits inside a term already counted is
+    NOT counted again - "valable jusqu'au 13/10/2026" is one marker, not two,
+    because "jusqu'au" is both a listed term and a deadline preposition.
+    Without that check the pages the term list already handled would inflate
+    while the ones it missed only caught up, which is a different measure
+    rather than a more complete one.
+    """
+    lowered = text.lower()
+    counted_spans: list[tuple[int, int]] = []
+    for term in _URGENCY_MARKERS[language]:
+        start = lowered.find(term)
+        while start != -1:
+            counted_spans.append((start, start + len(term)))
+            start = lowered.find(term, start + len(term))
+
+    total = len(counted_spans)
+    for preposition in _DEADLINE_PREPOSITIONS[language]:
+        start = lowered.find(preposition)
+        while start != -1:
+            end = start + len(preposition)
+            already = any(lo <= start < hi for lo, hi in counted_spans)
+            if not already and _DATE_RE.search(lowered[end: end + _DEADLINE_WINDOW]):
+                total += 1
+            start = lowered.find(preposition, end)
+    return total
+
+
 # Navigation and footer chrome is excluded from cta_count.
 _CTA_CHROME_TAGS = {"nav", "footer"}
 _CTA_CHROME_ROLES = {"navigation", "contentinfo"}
@@ -191,6 +266,8 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
         label = " ".join(el.get_text(separator=" ", strip=True).lower().split())
         if not any(k in label for k in _CTA_KEYWORDS):
             continue
+        if "cookie" in label:  # "choisir ... les cookies" is consent chrome, not a CTA
+            continue
         key = (label, (el.get("href") or "").strip())
         if key in seen:
             continue
@@ -223,13 +300,13 @@ def _has_animation(soup: BeautifulSoup, html: str) -> bool:
 
 
 def _hero_image_url(soup: BeautifulSoup, page_url: str | None = None):
-    """FIXED - verified live on belfius.be, whose hero has no
-    og:image and falls back to the first <img src>, which is a RELATIVE path
-    ("/common/FR/.../BD-Pension.jpg"). That was handed straight to
-    requests.get() in visual_features.extract_colours(), which raised
-    MissingSchema - silently swallowed there (never crashes a row on
-    purpose), so the row just got null colours with no error to notice.
-    Resolved against page_url with urljoin now. page_url is optional so
+    """Resolved against page_url with urljoin, verified live on belfius.be,
+    whose hero has no og:image and falls back to the first <img src> - a
+    RELATIVE path ("/common/FR/.../BD-Pension.jpg"). Unresolved, that goes
+    straight to requests.get() in visual_features.extract_colours(), which
+    raises MissingSchema - silently swallowed there (never crashes a row on
+    purpose), so the row gets null colours with no error to notice.
+    page_url is optional so
     direct extract()/tests without a source URL keep working - only real
     scrape() calls, which always have one, get the fix."""
     og_image = soup.find("meta", property="og:image")
@@ -247,8 +324,8 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
     candidates = soup.find_all(attrs={"class": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
     candidates += soup.find_all(attrs={"id": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
 
-    # heuristic 2, FIXED - verified live on n26.com, which has
-    # neither (0 matches on heuristic 1) but uses real footnotes: <sup>1</sup>
+    # heuristic 2, verified live on n26.com, which has neither
+    # (0 matches on heuristic 1) but uses real footnotes: <sup>1</sup>
     # markers in the body referencing paragraphs elsewhere that start with
     # "1 ...". Restricted to <sup> whose own text is 1-2 digits only (a
     # footnote marker, not e.g. a "TM" superscript) so this can't fire on an
@@ -277,12 +354,11 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
 def _rate(text: str, language: str):
     """Find a percentage that genuinely describes an interest/savings rate.
 
-    FIXED - previously matched the FIRST "N%" anywhere on the
-    page, which caught marketing copy ("100% en ligne", "100% digital")
-    before any real rate. Verified in the wild: BNP Paribas Fortis, KBC (x3)
-    and ING all extracted rate_value_pct=100.00 identically, which is
-    "100% online", not a rate - flagged in docs/decisions.md. Now requires a
-    rate keyword within 40 characters of the match.
+    Requires a rate keyword within 40 characters of the match. Taking the
+    first "N%" on the page instead catches marketing copy ("100% en ligne",
+    "100% digital") before any real rate: BNP Paribas Fortis, KBC (x3) and ING
+    all extracted rate_value_pct=100.00 that way, which is "100% online", not
+    a rate - see docs/decisions.md.
     """
     keywords = _RATE_KEYWORDS.get(language, _RATE_KEYWORDS["en"])
     for match in re.finditer(r"(\d+[.,]\d+|\d+)\s?%", text):
@@ -345,14 +421,13 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
 
     # Named so the raw field and its _band field always agree
     avg_sentence_length = round(word_count / sentence_count, 2)
-    # FIXED - was dividing by word_count (hundreds of words), so
-    # every real page landed near 0 and got banded "rarely_direct" regardless
-    # of actual tone (verified: a page saturated with vous/votre still scored
-    # 0.024). The dictionary defines this as "share of personal pronouns that
-    # address the reader" - the denominator must be total personal pronouns
-    # counted (second + first-person-plural, the two families this module
-    # tracks), not total words. Matches the 0.2/0.5 band thresholds in
-    # bands.py and the 0.4-0.75 range fixtures.py already assumes.
+    # The dictionary defines this as "share of personal pronouns that address
+    # the reader", so the denominator is the total personal pronouns counted
+    # (second + first-person-plural, the two families this module tracks), NOT
+    # total words. Dividing by word_count puts every real page near 0 and bands
+    # it "rarely_direct" whatever its tone (a page saturated with vous/votre
+    # scores 0.024). The pronoun denominator matches the 0.2/0.5 band
+    # thresholds in bands.py and the 0.4-0.75 range fixtures.py assumes.
     second_person_count = _count_terms(text, _SECOND_PERSON[language])
     first_person_plural_count = _count_terms(text, _FIRST_PERSON_PLURAL[language])
     total_personal_pronouns = second_person_count + first_person_plural_count
@@ -375,7 +450,7 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
         "first_person_plural_count": first_person_plural_count,
         "first_person_plural_band": bands.first_person_plural_band(first_person_plural_count),
         "question_count": text.count("?"),
-        "urgency_marker_count": sum(text.lower().count(term) for term in _URGENCY_MARKERS[language]),
+        "urgency_marker_count": _count_urgency_markers(text, language),
         "numeric_claim_count": len(re.findall(r"\d+[.,]?\d*\s?%|\d+[.,]?\d*\s?(?:eur|€)", text, flags=re.I)),
         # topics & value proposition
         "rate_shown": rate_shown,

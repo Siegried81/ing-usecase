@@ -54,7 +54,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3244.0,
-        "cta_count": 1.0,
+        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -92,8 +92,8 @@
           1.6504878916159484
         ],
         [
-          "urgency_marker_count",
-          1.568140404264038
+          "aida_desire",
+          -1.319950014673705
         ]
       ]
     },
@@ -133,7 +133,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11110.0,
-        "cta_count": 5.0,
+        "cta_count": 6.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -212,7 +212,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 7078.0,
-        "cta_count": 9.0,
+        "cta_count": 10.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -374,7 +374,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 15135.0,
-        "cta_count": 19.0,
+        "cta_count": 22.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -417,11 +417,11 @@
         ],
         [
           "cta_count",
-          2.7517319060449963
+          2.9014294818518414
         ],
         [
-          "urgency_marker_count",
-          2.703690352179376
+          "rate_shown",
+          2.4494897427831783
         ]
       ]
     },
@@ -611,7 +611,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3881.0,
-        "cta_count": 2.0,
+        "cta_count": 3.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -688,7 +688,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11148.666666666666,
-        "cta_count": 0.6666666666666666,
+        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -696,7 +696,7 @@
         "readability_band": "hard",
         "formality_score": 1.6666666666666667,
         "second_person_ratio": null,
-        "urgency_markers": 0.3333333333333333
+        "urgency_markers": 4.0
       },
       "value_proposition": {
         "primary_product": "Belgian bank account for expats (ING pack)",
@@ -731,16 +731,16 @@
       ],
       "signature": [
         [
+          "urgency_marker_count",
+          2.531903272254352
+        ],
+        [
           "value_prop_clarity",
           1.3128663642778962
         ],
         [
           "fast_digital_onboarding_claim",
           1.2803687993289599
-        ],
-        [
-          "page_height_px",
-          1.2781612999692054
         ]
       ]
     },
@@ -943,7 +943,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 8005.0,
-        "cta_count": 6.0,
+        "cta_count": 7.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -1113,8 +1113,8 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 4290.0,
-        "cta_count": 3.0,
-        "cta_above_fold": 1.0
+        "cta_count": 2.0,
+        "cta_above_fold": 0.0
       },
       "tone": {
         "word_count": 3992.0,
@@ -1143,16 +1143,16 @@
       ],
       "signature": [
         [
-          "cta_above_fold",
-          3.605551275463989
-        ],
-        [
           "aida_desire",
           -1.319950014673705
         ],
         [
           "has_comparison_table",
           1.3199500146737049
+        ],
+        [
+          "youth_student_targeting",
+          1.2547140330712392
         ]
       ]
     }

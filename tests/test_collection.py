@@ -164,6 +164,33 @@ def test_extract_detects_urgency_marker():
     assert result["urgency_marker_count"] >= 1  # "only until"
 
 
+def test_urgency_counts_a_dated_deadline_with_no_listed_term():
+    # The ING pack offer's own phrasing: the deadline is in the date, and none
+    # of the _URGENCY_MARKERS terms appear, so a term list alone scores 0.
+    html = ("<html><body><p>Déposez 50 € et recevez 50 €. Si vous ouvrez votre premier "
+            "pack avant le 11/10/2026 inclus.</p></body></html>")
+    assert extract(html, language="fr")["urgency_marker_count"] == 1
+
+
+def test_urgency_ignores_a_deadline_preposition_with_no_date():
+    # "before" on its own is ordinary prose, not a deadline.
+    html = "<html><body><p>Read the terms before you open an account with us.</p></body></html>"
+    assert extract(html, language="en")["urgency_marker_count"] == 0
+
+
+def test_urgency_counts_a_listed_term_that_is_also_a_preposition_once():
+    # "jusqu'au" is both an _URGENCY_MARKERS term and a deadline preposition;
+    # counting it twice would inflate exactly the pages the term list already
+    # handled.
+    html = "<html><body><p>Offre valable jusqu'au 13/10/2026.</p></body></html>"
+    assert extract(html, language="fr")["urgency_marker_count"] == 1
+
+
+def test_urgency_counts_a_spelled_out_date():
+    html = "<html><body><p>Aanbod geldig tot 11 oktober 2026.</p></body></html>"
+    assert extract(html, language="nl")["urgency_marker_count"] == 1
+
+
 def test_extract_counts_ctas_by_keyword():
     result = extract(SAMPLE_HTML, language="en")
     assert result["cta_count"] == 2  # "Discover more", "Open an account"

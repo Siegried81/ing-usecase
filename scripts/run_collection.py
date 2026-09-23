@@ -194,11 +194,11 @@ def main() -> None:
     import pandas as pd
 
     df = pd.DataFrame(rows)
-    # Validate WITHOUT raising here - a static_fetch run is
-    # expected to be missing the headless-render-only fields (page_height_px,
-    # total_image_area_ratio, ...), so a strict core-tier validation WILL
-    # fail today. Report it plainly instead of crashing, so Dan can see
-    # exactly what's still missing rather than getting a stack trace.
+    # Validate WITHOUT raising here - a static_fetch run is expected to be
+    # missing the headless-render-only fields (page_height_px,
+    # total_image_area_ratio, ...), so a strict core-tier validation fails by
+    # design. Report it plainly instead of crashing, so the run shows exactly
+    # what is still missing rather than a stack trace.
     report = validate(df, fd, tier="core")
     print(report.render())
     path = write_dataset(df, args.out, fd)
