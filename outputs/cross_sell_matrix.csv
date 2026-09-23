@@ -1,6 +1,6 @@
 product_family,term_account,current_account_pack,savings_account,mortgage,investment,pension,other
 term_account,0,0,0,0,0,0,0
-current_account_pack,0,0,3,0,4,0,4
+current_account_pack,0,0,3,0,4,0,5
 savings_account,0,0,0,0,0,0,0
 mortgage,0,0,0,0,0,0,0
 investment,0,0,0,0,0,0,0

@@ -35,7 +35,7 @@ export function Home({ report, operations }: { report: Report; operations: Opera
           <span className={`status-dot ${report.validation.ok ? "in" : "warn"}`} />
           <strong>{report.validation.ok ? "Dataset validation passed" : "Dataset validation reported warnings"}</strong>
         </div>
-        <p style={{ color: "var(--ink-2)", margin: "8px 0 0", fontSize: 14.5, maxWidth: "78ch" }}>
+        <p style={{ color: "var(--ink-2)", margin: "8px 0 0", fontSize: 14.5 }}>
           Snapshot of {report.scope.product_family_label.toLowerCase()} across {scope.banks.length} banks, captured{" "}
           {scope.captured_from ? new Date(scope.captured_from).toLocaleDateString("en-GB") : "—"}. This is a
           proof of concept, not a production study: nothing here links a design choice to a click or a sale.

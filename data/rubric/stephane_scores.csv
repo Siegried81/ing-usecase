@@ -62,3 +62,5 @@ stephane,n26_savings_account_fr_04,n26,challenger,savings_account,fr,https://n26
 stephane,vdk_pension_fr_03,vdk,traditional,pension,fr,https://www.vdk.be/fr/particuliers/epargner-et-investir/epargne-pension,data/raw/vdk/pension_fr_02.png,ok,,,,,,,,,,,,,,
 stephane,vdk_savings_account_fr_04,vdk,traditional,savings_account,fr,https://www.vdk.be/fr/compte-depargne-rythme,data/raw/vdk/savings_account_fr_03.png,ok,,,,,,,,,,,,,,
 stephane,vdk_term_account_fr_05,vdk,traditional,term_account,fr,https://www.vdk.be/fr/particuliers/epargner-et-investir/compte-terme,data/raw/vdk/term_account_fr_04.png,ok,,,,,,,,,,,,,,
+stephane,ing_current_account_pack_en_01,ing,traditional,current_account_pack,en,https://www.ing.be/en/individuals/expat/pack-more-expats,data/raw/ing/current_account_pack_en_01.png,ok,,,,,,,,,,,,,,
+stephane,kbc_current_account_pack_en_01,kbc,traditional,current_account_pack,en,https://www.kbc.be/retail/en/products/payments/current-accounts/open-a-basic-account.html,data/raw/kbc/current_account_pack_en_01.png,ok,,,,,,,,,,,,,,
