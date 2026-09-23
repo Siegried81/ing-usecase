@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T08:06:59+00:00",
+  "generated_at": "2026-09-23T11:31:43+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 30
+    "n_features": 38
   },
   "headline": {
     "focus": "ING",
-    "score": 0.178,
+    "score": 0.243,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
@@ -62,35 +62,42 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.253,
+      "score": -0.284,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.143,
-      "isFocus": false
-    },
-    {
-      "bank": "Crelan",
-      "key": "crelan",
-      "category": "traditional",
-      "score": -0.112,
-      "isFocus": false
-    },
-    {
-      "bank": "KBC",
-      "key": "kbc",
-      "category": "traditional",
-      "score": -0.099,
+      "score": -0.194,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.001,
+      "score": -0.147,
+      "isFocus": false
+    },
+    {
+      "bank": "BNP Paribas Fortis",
+      "key": "bnp_paribas_fortis",
+      "category": "traditional",
+      "score": -0.081,
+      "isFocus": false
+    },
+    {
+      "bank": "Crelan",
+      "key": "crelan",
+      "category": "traditional",
+      "score": -0.036,
+      "isFocus": false
+    },
+    {
+      "bank": "KBC",
+      "key": "kbc",
+      "category": "traditional",
+      "score": 0.006,
       "isFocus": false
     },
     {
@@ -104,56 +111,49 @@
       "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.086,
-      "isFocus": false
-    },
-    {
-      "bank": "BNP Paribas Fortis",
-      "key": "bnp_paribas_fortis",
-      "category": "traditional",
-      "score": 0.116,
+      "score": 0.205,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.178,
+      "score": 0.243,
       "isFocus": true
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.222,
+      "score": 0.279,
       "isFocus": false
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.527,
+      "score": 0.564,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.937,
+      "score": 0.867,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.158,
+      "score": 1.2,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.379,
+      "score": 1.369,
       "isFocus": false
     }
   ],
@@ -164,8 +164,8 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 3.6666666666666665,
-      "peerMean": 1.8333333333333335,
-      "gapSd": 2.35,
+      "peerMean": 1.740740740740741,
+      "gapSd": 2.46,
       "direction": "above"
     },
     {
@@ -174,8 +174,8 @@
       "dimension": "topics_value_prop",
       "extraction": "rubric",
       "focusValue": 5.0,
-      "peerMean": 3.6388888888888893,
-      "gapSd": 1.68,
+      "peerMean": 3.7435897435897436,
+      "gapSd": 1.46,
       "direction": "above"
     },
     {
@@ -234,8 +234,8 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 1.0,
-      "peerMean": 0.5555555555555555,
-      "gapSd": 0.93,
+      "peerMean": 0.5897435897435898,
+      "gapSd": 0.87,
       "direction": "above"
     },
     {
@@ -354,12 +354,12 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "extraction": "rubric",
-      "traditional": 2.6923076923076925,
-      "challenger": 3.75,
-      "effect": 1.33,
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
+      "extraction": "model_assisted",
+      "traditional": 0.07142857142857142,
+      "challenger": 0.5,
+      "effect": 1.23,
       "higherAt": "challenger"
     },
     {
@@ -372,13 +372,13 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
-      "extraction": "model_assisted",
-      "traditional": 0.07142857142857142,
-      "challenger": 0.5,
-      "effect": 1.23,
-      "higherAt": "challenger"
+      "feature": "has_comparison_table",
+      "label": "Includes a comparison table",
+      "extraction": "automatic",
+      "traditional": 0.5714285714285714,
+      "challenger": 0.0,
+      "effect": -1.23,
+      "higherAt": "traditional"
     }
   ],
   "banks": [
@@ -472,12 +472,12 @@
           "direction": "above"
         },
         {
-          "label": "Page length",
+          "label": "Clarity of the offer",
           "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
+          "label": "Page length",
           "sd": 1.3,
           "direction": "above"
         }
@@ -485,7 +485,7 @@
       "tone": {
         "Words on the page": 1812.0,
         "Readability band": "hard",
-        "Formality of tone": null,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.688,
         "Urgency markers": 0.0
       },
@@ -497,9 +497,9 @@
         "Image area share": 0.149
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 11110.0,
         "Calls to action": 5.0,
         "Call to action visible without scrolling": 0.0
@@ -507,7 +507,7 @@
       "valueProposition": {
         "Primary product": "Comptes de paiement Beats",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -517,9 +517,11 @@
         "backgroundLuminance": 0.325
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "liking"
+        ],
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -529,7 +531,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 6.7,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -550,14 +552,14 @@
           "direction": "above"
         },
         {
+          "label": "Clarity",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Elements visible without scrolling",
           "sd": 1.3,
           "direction": "above"
-        },
-        {
-          "label": "Animated elements",
-          "sd": -1.3,
-          "direction": "below"
         }
       ],
       "tone": {
@@ -626,19 +628,19 @@
       "pages": 1,
       "signature": [
         {
+          "label": "Gives a reason to keep reading",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Promises fast digital sign-up",
           "sd": 2.2,
           "direction": "above"
         },
         {
-          "label": "“Free” with conditions attached",
-          "sd": 1.8,
-          "direction": "above"
-        },
-        {
-          "label": "Calls to action",
-          "sd": 1.5,
-          "direction": "above"
+          "label": "Campaign structure completeness (AIDA)",
+          "sd": -2.1,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -798,19 +800,19 @@
       "pages": 1,
       "signature": [
         {
+          "label": "Gives a reason to keep reading",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Sells a bundle",
           "sd": -1.6,
           "direction": "below"
         },
         {
-          "label": "Includes a comparison table",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Elements visible without scrolling",
-          "sd": 1.0,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -966,7 +968,7 @@
           "direction": "below"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -1034,17 +1036,17 @@
       "pages": 3,
       "signature": [
         {
+          "label": "Clarity of the offer",
+          "sd": 1.3,
+          "direction": "above"
+        },
+        {
           "label": "Promises fast digital sign-up",
           "sd": 1.3,
           "direction": "above"
         },
         {
           "label": "Page length",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Page brightness",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1476,12 +1478,12 @@
           "direction": "above"
         },
         {
-          "label": "Includes a comparison table",
-          "sd": 1.3,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         },
         {
-          "label": "Targets students or young people",
+          "label": "Includes a comparison table",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1844,226 +1846,226 @@
     "matrix": [
       [
         0.0,
-        5.98,
-        6.19,
-        6.18,
-        10.26,
-        5.59,
-        9.35,
-        6.74,
-        5.7,
-        5.95,
-        7.77,
+        7.13,
+        6.87,
+        6.89,
+        11.49,
+        6.73,
         9.95,
-        10.82,
-        7.29
+        8.07,
+        6.53,
+        6.86,
+        8.94,
+        10.66,
+        11.97,
+        7.97
       ],
       [
-        5.98,
+        7.13,
         0.0,
-        6.1,
-        6.42,
-        8.62,
-        4.64,
-        8.25,
-        6.91,
-        4.46,
-        5.36,
-        5.03,
-        8.91,
-        8.82,
-        5.43
-      ],
-      [
-        6.19,
-        6.1,
-        0.0,
-        5.79,
-        9.67,
-        5.48,
-        7.9,
-        6.02,
-        5.19,
-        6.16,
-        6.9,
-        7.94,
-        10.37,
-        6.97
-      ],
-      [
-        6.18,
-        6.42,
-        5.79,
-        0.0,
-        9.18,
-        6.57,
-        9.08,
-        7.36,
-        4.79,
-        7.04,
-        6.47,
-        9.07,
-        10.3,
-        7.37
-      ],
-      [
-        10.26,
-        8.62,
-        9.67,
-        9.18,
-        0.0,
-        9.84,
-        11.75,
-        10.69,
-        8.97,
-        10.15,
-        9.4,
-        11.67,
-        10.23,
-        10.12
-      ],
-      [
-        5.59,
-        4.64,
-        5.48,
-        6.57,
-        9.84,
-        0.0,
-        7.65,
+        7.82,
+        8.37,
+        9.27,
+        6.62,
+        9.14,
+        7.58,
+        4.93,
         6.45,
-        5.73,
-        2.67,
-        6.54,
-        9.15,
+        5.91,
         9.76,
-        5.55
+        9.82,
+        6.4
       ],
       [
-        9.35,
-        8.25,
-        7.9,
-        9.08,
-        11.75,
-        7.65,
+        6.87,
+        7.82,
         0.0,
-        9.12,
-        8.17,
+        7.19,
+        11.73,
+        7.27,
+        8.58,
         7.45,
-        7.91,
-        11.39,
-        10.91,
-        8.65
+        6.76,
+        7.63,
+        8.18,
+        9.26,
+        11.94,
+        7.66
       ],
       [
+        6.89,
+        8.37,
+        7.19,
+        0.0,
+        11.17,
+        7.09,
+        10.28,
+        9.36,
         6.74,
-        6.91,
-        6.02,
-        7.36,
-        10.69,
-        6.45,
-        9.12,
-        0.0,
-        6.27,
-        6.72,
-        6.97,
-        7.66,
-        10.65,
-        7.86
+        8.16,
+        8.68,
+        10.41,
+        12.09,
+        8.73
       ],
       [
-        5.7,
-        4.46,
-        5.19,
-        4.79,
-        8.97,
-        5.73,
-        8.17,
-        6.27,
+        11.49,
+        9.27,
+        11.73,
+        11.17,
         0.0,
-        6.35,
-        5.69,
-        7.93,
+        11.43,
+        12.85,
+        11.64,
         9.42,
-        6.67
+        10.58,
+        10.47,
+        12.46,
+        10.97,
+        11.21
       ],
       [
-        5.95,
-        5.36,
-        6.16,
-        7.04,
-        10.15,
-        2.67,
-        7.45,
-        6.72,
-        6.35,
+        6.73,
+        6.62,
+        7.27,
+        7.09,
+        11.43,
         0.0,
-        6.81,
-        9.46,
-        9.28,
-        5.92
-      ],
-      [
-        7.77,
-        5.03,
-        6.9,
-        6.47,
-        9.4,
-        6.54,
-        7.91,
-        6.97,
-        5.69,
-        6.81,
-        0.0,
-        8.71,
-        8.83,
-        6.48
+        9.03,
+        7.97,
+        7.52,
+        5.1,
+        8.04,
+        10.6,
+        11.01,
+        6.78
       ],
       [
         9.95,
-        8.91,
-        7.94,
-        9.07,
-        11.67,
-        9.15,
-        11.39,
-        7.66,
-        7.93,
-        9.46,
-        8.71,
+        9.14,
+        8.58,
+        10.28,
+        12.85,
+        9.03,
         0.0,
-        10.31,
-        10.17
+        9.43,
+        8.7,
+        8.17,
+        8.26,
+        11.63,
+        11.75,
+        9.23
       ],
       [
-        10.82,
-        8.82,
-        10.37,
-        10.3,
-        10.23,
-        9.76,
-        10.91,
-        10.65,
-        9.42,
-        9.28,
-        8.83,
-        10.31,
+        8.07,
+        7.58,
+        7.45,
+        9.36,
+        11.64,
+        7.97,
+        9.43,
         0.0,
-        9.71
-      ],
-      [
-        7.29,
-        5.43,
+        7.09,
+        7.74,
         6.97,
-        7.37,
-        10.12,
-        5.55,
-        8.65,
-        7.86,
-        6.67,
-        5.92,
-        6.48,
-        10.17,
-        9.71,
+        8.37,
+        11.25,
+        8.29
+      ],
+      [
+        6.53,
+        4.93,
+        6.76,
+        6.74,
+        9.42,
+        7.52,
+        8.7,
+        7.09,
+        0.0,
+        6.65,
+        6.58,
+        8.34,
+        10.34,
+        7.47
+      ],
+      [
+        6.86,
+        6.45,
+        7.63,
+        8.16,
+        10.58,
+        5.1,
+        8.17,
+        7.74,
+        6.65,
+        0.0,
+        7.82,
+        9.82,
+        10.26,
+        6.81
+      ],
+      [
+        8.94,
+        5.91,
+        8.18,
+        8.68,
+        10.47,
+        8.04,
+        8.26,
+        6.97,
+        6.58,
+        7.82,
+        0.0,
+        9.34,
+        9.54,
+        7.0
+      ],
+      [
+        10.66,
+        9.76,
+        9.26,
+        10.41,
+        12.46,
+        10.6,
+        11.63,
+        8.37,
+        8.34,
+        9.82,
+        9.34,
+        0.0,
+        11.55,
+        10.81
+      ],
+      [
+        11.97,
+        9.82,
+        11.94,
+        12.09,
+        10.97,
+        11.01,
+        11.75,
+        11.25,
+        10.34,
+        10.26,
+        9.54,
+        11.55,
+        0.0,
+        10.82
+      ],
+      [
+        7.97,
+        6.4,
+        7.66,
+        8.73,
+        11.21,
+        6.78,
+        9.23,
+        8.29,
+        7.47,
+        6.81,
+        7.0,
+        10.81,
+        10.82,
         0.0
       ]
     ]
@@ -2097,15 +2099,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 4.46
+      "distance": 4.93
     },
     {
-      "bank": "BNP Paribas Fortis",
-      "distance": 4.79
+      "bank": "Argenta",
+      "distance": 6.53
     },
     {
-      "bank": "Beobank",
-      "distance": 5.19
+      "bank": "Keytrade Bank",
+      "distance": 6.58
     }
   ],
   "deckClaims": [
@@ -2150,7 +2152,7 @@
     "material": [
       "The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
-      "**11 judged feature(s) are scored on some banks but not all** (`formality_score` (1 bank(s)), `clarity_score` (1 bank(s)), `rate_prominence` (1 bank(s)), `value_prop_clarity` (1 bank(s)) ...). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.",
+      "**1 judged feature(s) are scored on some banks but not all** (`text_image_layout` (1 bank(s))). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.",
       "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
@@ -2523,20 +2525,20 @@
             "label": "Invokes institutional trust"
           },
           {
+            "feature": "value_prop_clarity",
+            "z": -2.06,
+            "focusZ": 1.31,
+            "gapSd": -3.38,
+            "direction": "below",
+            "label": "Clarity of the offer"
+          },
+          {
             "feature": "background_luminance",
             "z": -1.7,
             "focusZ": 1.26,
             "gapSd": -2.97,
             "direction": "below",
             "label": "Page brightness"
-          },
-          {
-            "feature": "rate_shown",
-            "z": 2.45,
-            "focusZ": -0.41,
-            "gapSd": 2.86,
-            "direction": "above",
-            "label": "Shows a rate"
           },
           {
             "feature": "question_count",
@@ -2640,26 +2642,26 @@
         "label": "Questions asked"
       },
       {
-        "feature": "disclaimer_present",
-        "spreadSd": 2.44,
+        "feature": "value_prop_clarity",
+        "spreadSd": 3.0,
         "values": [
           {
             "bank": "KBC",
             "key": "kbc",
-            "z": 0.52
+            "z": 0.94
           },
           {
             "bank": "Crelan",
             "key": "crelan",
-            "z": -1.91
+            "z": -0.94
           },
           {
             "bank": "Revolut",
             "key": "revolut",
-            "z": -1.91
+            "z": -2.06
           }
         ],
-        "label": "Carries legal small print"
+        "label": "Clarity of the offer"
       },
       {
         "feature": "background_luminance",

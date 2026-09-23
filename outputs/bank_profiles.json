@@ -112,7 +112,13 @@
         "dominant_colour": "#ffffff",
         "brand_colour_share": 0.003,
         "accent_colour_count": 4.0,
-        "accent_locations": [],
+        "accent_locations": [
+          "text",
+          "buttons",
+          "imagery",
+          "icons",
+          "background"
+        ],
         "background_luminance": 0.325
       },
       "imagery": {
@@ -123,9 +129,9 @@
         "image_area_share": 0.149
       },
       "layout": {
-        "archetype": null,
+        "archetype": "split_columns",
         "hero_image": 1.0,
-        "text_image_layout": null,
+        "text_image_layout": "beside",
         "page_height_px": 11110.0,
         "cta_count": 5.0,
         "cta_above_fold": 0.0
@@ -133,21 +139,23 @@
       "tone": {
         "word_count": 1812.0,
         "readability_band": "hard",
-        "formality_score": null,
+        "formality_score": 2.0,
         "second_person_ratio": 0.688,
         "urgency_markers": 0.0
       },
       "value_proposition": {
         "primary_product": "Comptes de paiement Beats",
         "rate_shown": 0.0,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": null,
-        "persuasion_levers": [],
-        "lever_count": null
+        "aida_coverage": 4.0,
+        "persuasion_levers": [
+          "liking"
+        ],
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -161,12 +169,12 @@
           1.3199500146737049
         ],
         [
-          "page_height_px",
-          1.266925386170157
+          "value_prop_clarity",
+          1.3128663642778962
         ],
         [
-          "youth_student_targeting",
-          1.2547140330712392
+          "page_height_px",
+          1.266925386170157
         ]
       ]
     },
@@ -241,12 +249,12 @@
           2.3759548165574573
         ],
         [
-          "above_fold_element_count",
-          1.3320162004095202
+          "clarity_score",
+          -2.364790267594304
         ],
         [
-          "animated_asset_count",
-          -1.2547140330712387
+          "above_fold_element_count",
+          1.3320162004095202
         ]
       ]
     },
@@ -320,16 +328,16 @@
       ],
       "signature": [
         [
+          "aida_interest",
+          -2.3759548165574573
+        ],
+        [
           "fast_digital_onboarding_claim",
           2.176626958859232
         ],
         [
-          "hidden_conditions_behind_free_claim",
-          1.7522235987270867
-        ],
-        [
-          "cta_count",
-          1.5478491971503103
+          "aida_coverage_score",
+          -2.1405182040380275
         ]
       ]
     },
@@ -483,16 +491,16 @@
       ],
       "signature": [
         [
+          "aida_interest",
+          -2.3759548165574573
+        ],
+        [
           "is_bundled_offer",
           -1.5811388300841895
         ],
         [
-          "has_comparison_table",
-          1.3199500146737049
-        ],
-        [
-          "above_fold_element_count",
-          1.0165386792598972
+          "aida_desire",
+          -1.319950014673705
         ]
       ]
     },
@@ -641,7 +649,7 @@
           -1.5811388300841895
         ],
         [
-          "animated_asset_count",
+          "has_animation",
           -1.2547140330712387
         ]
       ]
@@ -723,16 +731,16 @@
       ],
       "signature": [
         [
+          "value_prop_clarity",
+          1.3128663642778962
+        ],
+        [
           "fast_digital_onboarding_claim",
           1.2803687993289599
         ],
         [
           "page_height_px",
           1.2781612999692054
-        ],
-        [
-          "background_luminance",
-          1.26425923755025
         ]
       ]
     },
@@ -1139,12 +1147,12 @@
           3.605551275463989
         ],
         [
-          "has_comparison_table",
-          1.3199500146737049
+          "aida_desire",
+          -1.319950014673705
         ],
         [
-          "youth_student_targeting",
-          1.2547140330712392
+          "has_comparison_table",
+          1.3199500146737049
         ]
       ]
     }
