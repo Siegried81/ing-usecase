@@ -22,7 +22,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,244 |
-| cta count | 1 |
+| cta count | 2 |
 | cta above fold | no |
 | word count | 1,831 |
 | readability band | very_hard |
@@ -39,7 +39,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); urgency marker count well above the market average (+1.6 SD).
+**Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); aida desire well below the market average (-1.3 SD).
 
 ### belfius  (traditional)
 
@@ -50,35 +50,35 @@
 | dominant colour | #ffffff |
 | brand colour share | 0 |
 | accent colour count | 4 |
-| accent locations | - |
+| accent locations | text, buttons, imagery, icons, background |
 | background luminance | 0.33 |
 | image count | 18 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
 | animated | yes (all pages) |
 | image area share | 0.15 |
-| archetype | - |
+| archetype | split_columns |
 | hero image | yes (all pages) |
-| text image layout | - |
+| text image layout | beside |
 | page height px | 11,110 |
-| cta count | 5 |
+| cta count | 6 |
 | cta above fold | no |
 | word count | 1,812 |
 | readability band | hard |
-| formality score | - |
+| formality score | 2 |
 | second person ratio | 0.69 |
 | urgency markers | 0 |
 | primary product | Comptes de paiement Beats |
 | rate shown | no |
-| rate prominence | - |
+| rate prominence | absent |
 | benefit framing | rational |
 | fab level | feature |
-| aida coverage | - |
-| persuasion levers | - |
-| lever count | - |
+| aida coverage | 4 |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** has comparison table well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).
+**Signature:** has comparison table well above the market average (+1.3 SD); value prop clarity well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD).
 
 ### beobank  (traditional)
 
@@ -100,7 +100,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 7,078 |
-| cta count | 9 |
+| cta count | 10 |
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
@@ -117,7 +117,7 @@
 | lever count | 2 |
 | personas | mass_market 100% |
 
-**Signature:** mentions loyalty or referral well above the market average (+2.4 SD); above fold element count well above the market average (+1.3 SD); animated asset count well below the market average (-1.3 SD).
+**Signature:** mentions loyalty or referral well above the market average (+2.4 SD); clarity score well below the market average (-2.4 SD); above fold element count well above the market average (+1.3 SD).
 
 ### bnp_paribas_fortis  (traditional)
 
@@ -156,7 +156,7 @@
 | lever count | 1 |
 | personas | mass_market 100%, student 100% |
 
-**Signature:** fast digital onboarding claim well above the market average (+2.2 SD); hidden conditions behind free claim well above the market average (+1.8 SD); cta count well above the market average (+1.5 SD).
+**Signature:** aida interest well below the market average (-2.4 SD); fast digital onboarding claim well above the market average (+2.2 SD); aida coverage score well below the market average (-2.1 SD).
 
 ### bunq  (challenger)
 
@@ -178,7 +178,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 15,135 |
-| cta count | 19 |
+| cta count | 22 |
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
@@ -195,7 +195,7 @@
 | lever count | 3 |
 | personas | mass_market 100%, expat 100% |
 
-**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.8 SD); urgency marker count well above the market average (+2.7 SD).
+**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.9 SD); rate shown well above the market average (+2.4 SD).
 
 ### cbc  (traditional)
 
@@ -234,7 +234,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** is bundled offer well below the market average (-1.6 SD); has comparison table well above the market average (+1.3 SD); above fold element count well above the market average (+1.0 SD).
+**Signature:** aida interest well below the market average (-2.4 SD); is bundled offer well below the market average (-1.6 SD); aida desire well below the market average (-1.3 SD).
 
 ### crelan  (traditional)
 
@@ -295,7 +295,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,881 |
-| cta count | 2 |
+| cta count | 3 |
 | cta above fold | no |
 | word count | 1,661 |
 | readability band | hard |
@@ -312,7 +312,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); animated asset count well below the market average (-1.3 SD).
+**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); has animation well below the market average (-1.3 SD).
 
 ### ing  (traditional)
 
@@ -334,13 +334,13 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,149 |
-| cta count | 0.67 |
+| cta count | 1 |
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
 | formality score | 1.67 |
 | second person ratio | - |
-| urgency markers | 0.33 |
+| urgency markers | 4 |
 | primary product | Belgian bank account for expats (ING pack) |
 | rate shown | no |
 | rate prominence | below_fold |
@@ -351,7 +351,7 @@
 | lever count | 3.67 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
-**Signature:** fast digital onboarding claim well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); background luminance well above the market average (+1.3 SD).
+**Signature:** urgency marker count well above the market average (+2.5 SD); value prop clarity well above the market average (+1.3 SD); fast digital onboarding claim well above the market average (+1.3 SD).
 
 ### kbc  (traditional)
 
@@ -451,7 +451,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
-| cta count | 6 |
+| cta count | 7 |
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
@@ -529,8 +529,8 @@
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 4,290 |
-| cta count | 3 |
-| cta above fold | yes (all pages) |
+| cta count | 2 |
+| cta above fold | no |
 | word count | 3,992 |
 | readability band | hard |
 | formality score | 2 |
@@ -546,4 +546,4 @@
 | lever count | - |
 | personas | student 100% |
 
-**Signature:** cta above fold well above the market average (+3.6 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).
+**Signature:** aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).

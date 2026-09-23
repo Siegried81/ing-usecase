@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T08:06:59+00:00",
+  "generated_at": "2026-09-23T12:35:37+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -2111,7 +2111,7 @@
         "second_person_ratio": 0.812,
         "first_person_plural_count": 15,
         "question_count": 16,
-        "urgency_marker_count": 0,
+        "urgency_marker_count": 3,
         "numeric_claim_count": 19,
         "formality_score": 2,
         "clarity_score": 5,
@@ -2152,7 +2152,7 @@
         "cta_contrast_ratio": 7.01,
         "page_height_px": 6842,
         "section_count": null,
-        "cta_count": 0,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 74.29,
@@ -2397,7 +2397,7 @@
         "cta_contrast_ratio": 12.47,
         "page_height_px": 8005,
         "section_count": 9,
-        "cta_count": 6,
+        "cta_count": 7,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 69.62,
@@ -2521,7 +2521,7 @@
         "cta_contrast_ratio": 6.16,
         "page_height_px": 2179,
         "section_count": 28,
-        "cta_count": 1,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 123.09,
@@ -2641,7 +2641,7 @@
         "cta_contrast_ratio": 7.01,
         "page_height_px": 5730,
         "section_count": 1,
-        "cta_count": 0,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 32.16,
@@ -3092,7 +3092,7 @@
         "second_person_ratio": 0.846,
         "first_person_plural_count": 24,
         "question_count": 18,
-        "urgency_marker_count": 1,
+        "urgency_marker_count": 4,
         "numeric_claim_count": 32,
         "formality_score": 2,
         "clarity_score": 4,
@@ -3257,7 +3257,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 3244,
         "section_count": 3,
-        "cta_count": 1,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 166.45,
@@ -3488,7 +3488,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 15135,
         "section_count": 33,
-        "cta_count": 19,
+        "cta_count": 22,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 135.62,
@@ -3575,15 +3575,15 @@
         "question_count": 14,
         "urgency_marker_count": 0,
         "numeric_claim_count": 18,
-        "formality_score": null,
-        "clarity_score": null,
+        "formality_score": 2,
+        "clarity_score": 4,
         "primary_product": "Comptes de paiement Beats",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": null,
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
-        "value_prop_clarity": null,
+        "value_prop_clarity": 5,
         "disclaimer_present": true,
         "disclaimer_word_share": 0.023,
         "image_count": 18,
@@ -3605,26 +3605,34 @@
         ],
         "brand_colour_share": 0.003,
         "accent_colour_count": 4,
-        "accent_locations": [],
+        "accent_locations": [
+          "text",
+          "buttons",
+          "imagery",
+          "icons",
+          "background"
+        ],
         "background_luminance": 0.325,
         "cta_contrast_ratio": 6.16,
         "page_height_px": 11110,
         "section_count": 20,
-        "cta_count": 5,
+        "cta_count": 6,
         "cta_above_fold": false,
-        "text_image_layout": null,
+        "text_image_layout": "beside",
         "text_to_image_ratio": 100.67,
         "above_fold_element_count": 21,
         "has_comparison_table": true,
-        "layout_archetype": null,
-        "mobile_first_design_signal": null,
-        "aida_attention": null,
-        "aida_interest": null,
-        "aida_desire": null,
-        "aida_action": null,
-        "aida_coverage_score": null,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "layout_archetype": "split_columns",
+        "mobile_first_design_signal": true,
+        "aida_attention": true,
+        "aida_interest": true,
+        "aida_desire": true,
+        "aida_action": true,
+        "aida_coverage_score": 4,
+        "persuasion_levers": [
+          "liking"
+        ],
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -3729,8 +3737,8 @@
         "cta_contrast_ratio": 10.25,
         "page_height_px": 4290,
         "section_count": 5,
-        "cta_count": 3,
-        "cta_above_fold": true,
+        "cta_count": 2,
+        "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 798.4,
         "above_fold_element_count": 37,
@@ -3847,7 +3855,7 @@
         "cta_contrast_ratio": 3.04,
         "page_height_px": 3881,
         "section_count": 6,
-        "cta_count": 2,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 110.73,
@@ -4211,7 +4219,7 @@
         "cta_contrast_ratio": 8.32,
         "page_height_px": 7078,
         "section_count": 18,
-        "cta_count": 9,
+        "cta_count": 10,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 206.88,
@@ -4332,7 +4340,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 4811,
         "section_count": null,
-        "cta_count": 3,
+        "cta_count": 4,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 155.5,
@@ -4452,7 +4460,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 5824,
         "section_count": null,
-        "cta_count": 3,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 189.25,
@@ -4572,7 +4580,7 @@
         "cta_contrast_ratio": 6.16,
         "page_height_px": 3649,
         "section_count": 17,
-        "cta_count": 2,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 68.0,
@@ -4815,7 +4823,7 @@
         "cta_contrast_ratio": 8.32,
         "page_height_px": 7755,
         "section_count": 24,
-        "cta_count": 3,
+        "cta_count": 4,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 296.2,
@@ -4936,7 +4944,7 @@
         "cta_contrast_ratio": 8.32,
         "page_height_px": 4097,
         "section_count": 12,
-        "cta_count": 2,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 226.27,
@@ -5537,7 +5545,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 4143,
         "section_count": 1,
-        "cta_count": 7,
+        "cta_count": 9,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 242.9,
@@ -5661,7 +5669,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 2723,
         "section_count": 2,
-        "cta_count": 2,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 91.62,
@@ -5785,7 +5793,7 @@
         "cta_contrast_ratio": 11.03,
         "page_height_px": 4156,
         "section_count": 166,
-        "cta_count": 3,
+        "cta_count": 9,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 46.45,
@@ -6022,7 +6030,7 @@
         "cta_contrast_ratio": 11.03,
         "page_height_px": 4924,
         "section_count": 159,
-        "cta_count": 2,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 37.85,
@@ -6375,7 +6383,7 @@
         "cta_contrast_ratio": 7.01,
         "page_height_px": 5551,
         "section_count": 1,
-        "cta_count": 0,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 39.96,
@@ -6619,7 +6627,7 @@
         "cta_contrast_ratio": 7.01,
         "page_height_px": 3762,
         "section_count": 1,
-        "cta_count": 2,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 91.77,
@@ -6989,7 +6997,7 @@
         "cta_contrast_ratio": null,
         "page_height_px": 5229,
         "section_count": null,
-        "cta_count": 1,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 114.2,
@@ -7110,7 +7118,7 @@
         "cta_contrast_ratio": 2.53,
         "page_height_px": 2582,
         "section_count": 2,
-        "cta_count": 3,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 96.3,
@@ -7240,7 +7248,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 4506,
         "section_count": 8,
-        "cta_count": 5,
+        "cta_count": 6,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 79.58,
@@ -7600,7 +7608,7 @@
         "cta_contrast_ratio": 17.22,
         "page_height_px": 8179,
         "section_count": 10,
-        "cta_count": 2,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 55.4,
@@ -7722,7 +7730,7 @@
         "page_height_px": 3576,
         "section_count": 3,
         "cta_count": 1,
-        "cta_above_fold": true,
+        "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 507.0,
         "above_fold_element_count": 34,
@@ -7841,8 +7849,8 @@
         "cta_contrast_ratio": 10.25,
         "page_height_px": 5770,
         "section_count": 5,
-        "cta_count": 3,
-        "cta_above_fold": true,
+        "cta_count": 2,
+        "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 638.29,
         "above_fold_element_count": 36,
@@ -7920,7 +7928,7 @@
         "second_person_ratio": 0.83,
         "first_person_plural_count": 32,
         "question_count": 34,
-        "urgency_marker_count": 0,
+        "urgency_marker_count": 5,
         "numeric_claim_count": 5,
         "formality_score": 1,
         "clarity_score": 4,
@@ -8747,7 +8755,7 @@
       {
         "name": "siegried",
         "label": "Siegried",
-        "pages": 62,
+        "pages": 56,
         "columns": [
           "rater",
           "page_id",
@@ -8770,8 +8778,7 @@
           "aida_interest",
           "aida_desire",
           "aida_action",
-          "persuasion_levers",
-          "Notes"
+          "persuasion_levers"
         ],
         "rows": [
           {
@@ -8796,8 +8803,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -8821,83 +8827,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
-          },
-          {
-            "rater": "siegried",
-            "page_id": "belfius_pension_fr_01",
-            "bank": "belfius",
-            "bank_category": "traditional",
-            "product_family": "pension",
-            "language": "fr",
-            "url": "https://www.belfius.be/retail/fr/moments-cles/pension/index.aspx",
-            "screenshot_path": "data/raw/belfius/pension_fr_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 2.0,
-            "rate_prominence": "absent",
-            "value_prop_clarity": 4.0,
-            "accent_locations": "buttons|imagery|text",
-            "text_image_layout": "overlaid",
-            "layout_archetype": "hero_stacked",
-            "mobile_first_design_signal": true,
-            "aida_attention": true,
-            "aida_interest": true,
-            "aida_desire": true,
-            "aida_action": true,
-            "persuasion_levers": "liking|social_proof",
-            "Notes": "authority? no authority cuz notice is mandatory by compliance"
-          },
-          {
-            "rater": "siegried",
-            "page_id": "belfius_savings_account_fr_01",
-            "bank": "belfius",
-            "bank_category": "traditional",
-            "product_family": "savings_account",
-            "language": "fr",
-            "url": "https://www.belfius.be/site/retail/fr/produits/epargner",
-            "screenshot_path": "data\\raw\\belfius\\savings_account_fr_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 3.0,
-            "rate_prominence": "below_fold",
-            "value_prop_clarity": 3.0,
-            "accent_locations": "buttons|text",
-            "text_image_layout": "stacked",
-            "layout_archetype": "split_columns",
-            "mobile_first_design_signal": false,
-            "aida_attention": false,
-            "aida_interest": false,
-            "aida_desire": false,
-            "aida_action": false,
-            "persuasion_levers": "then card_grid",
-            "Notes": null
-          },
-          {
-            "rater": "siegried",
-            "page_id": "bnp_paribas_fortis_current_account_pack_fr_01",
-            "bank": "bnp_paribas_fortis",
-            "bank_category": "traditional",
-            "product_family": "current_account_pack",
-            "language": "fr",
-            "url": "https://www.bnpparibasfortis.be/fr/public/particuliers/banque-au-quotidien/comptes-bancaires/compte-a-vue-comparer",
-            "screenshot_path": "data/raw/bnp_paribas_fortis/current_account_pack_fr_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 5.0,
-            "rate_prominence": "hero",
-            "value_prop_clarity": 5.0,
-            "accent_locations": "buttons|text",
-            "text_image_layout": null,
-            "layout_archetype": "split_columns",
-            "mobile_first_design_signal": false,
-            "aida_attention": false,
-            "aida_interest": true,
-            "aida_desire": false,
-            "aida_action": true,
-            "persuasion_levers": "liking|commitment",
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -8921,8 +8851,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment|liking|reciprocity",
-            "Notes": "financial details, \"technical sheet\", no authority cuz notice is mandatory by compliance"
+            "persuasion_levers": "commitment|liking|reciprocity"
           },
           {
             "rater": "siegried",
@@ -8946,8 +8875,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "liking|social_proof|reciprocity",
-            "Notes": null
+            "persuasion_levers": "liking|social_proof|reciprocity"
           },
           {
             "rater": "siegried",
@@ -8971,8 +8899,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": "no authority cuz notice is mandatory by compliance"
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -8996,8 +8923,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "authority|social_proof|reciprocity|scarcity",
-            "Notes": null
+            "persuasion_levers": "authority|social_proof|reciprocity|scarcity"
           },
           {
             "rater": "siegried",
@@ -9021,8 +8947,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity|scarcity|social_proof",
-            "Notes": "grid_card if we scroll, no images stacked or not?), first scarcity"
+            "persuasion_levers": "reciprocity|scarcity|social_proof"
           },
           {
             "rater": "siegried",
@@ -9046,8 +8971,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity|scarcity|social_proof|authority",
-            "Notes": "rate at the beginning of the text, no authority cuz notice is mandatory by compliance"
+            "persuasion_levers": "reciprocity|scarcity|social_proof|authority"
           },
           {
             "rater": "siegried",
@@ -9071,8 +8995,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "social_proof|reciprocity|scarcity",
-            "Notes": null
+            "persuasion_levers": "social_proof|reciprocity|scarcity"
           },
           {
             "rater": "siegried",
@@ -9096,8 +9019,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9121,8 +9043,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "scarcity|reciprocity",
-            "Notes": "hub page (>< produit), reciprocity for cashbacks (11%)"
+            "persuasion_levers": "scarcity|reciprocity"
           },
           {
             "rater": "siegried",
@@ -9146,8 +9067,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "authority|liking",
-            "Notes": "first authority"
+            "persuasion_levers": "authority|liking"
           },
           {
             "rater": "siegried",
@@ -9171,58 +9091,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "authority|liking",
-            "Notes": null
-          },
-          {
-            "rater": "siegried",
-            "page_id": "kbc_current_account_pack_nl_01",
-            "bank": "kbc",
-            "bank_category": "traditional",
-            "product_family": "current_account_pack",
-            "language": "nl",
-            "url": "https://www.kbc.be/particulieren/nl/product/betalen/zichtrekeningen/basisrekening-openen.html",
-            "screenshot_path": "data\\raw\\kbc\\current_account_pack_nl_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 5.0,
-            "rate_prominence": "above_fold",
-            "value_prop_clarity": 5.0,
-            "accent_locations": "buttons|imagery|icons",
-            "text_image_layout": "beside",
-            "layout_archetype": "split_columns",
-            "mobile_first_design_signal": false,
-            "aida_attention": false,
-            "aida_interest": true,
-            "aida_desire": true,
-            "aida_action": true,
-            "persuasion_levers": "authority|liking",
-            "Notes": null
-          },
-          {
-            "rater": "siegried",
-            "page_id": "kbc_mortgage_fr_01",
-            "bank": "kbc",
-            "bank_category": "traditional",
-            "product_family": "mortgage",
-            "language": "fr",
-            "url": "https://www.kbc.be/particuliers/fr/emprunter/logement/pret-hypothecaire.html?zone=topnav",
-            "screenshot_path": "data\\raw\\kbc\\mortgage_fr_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 4.0,
-            "rate_prominence": "above_fold",
-            "value_prop_clarity": 4.0,
-            "accent_locations": "buttons|icons|text",
-            "text_image_layout": "beside",
-            "layout_archetype": "split_columns",
-            "mobile_first_design_signal": false,
-            "aida_attention": true,
-            "aida_interest": true,
-            "aida_desire": true,
-            "aida_action": true,
-            "persuasion_levers": "social_proof|authority|liking",
-            "Notes": null
+            "persuasion_levers": "authority|liking"
           },
           {
             "rater": "siegried",
@@ -9246,8 +9115,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9271,8 +9139,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "authority|reciprocity",
-            "Notes": "balance appears"
+            "persuasion_levers": "authority|reciprocity"
           },
           {
             "rater": "siegried",
@@ -9296,33 +9163,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "reciprocity",
-            "Notes": "?? Not sure"
-          },
-          {
-            "rater": "siegried",
-            "page_id": "n26_savings_account_fr_01",
-            "bank": "n26",
-            "bank_category": "challenger",
-            "product_family": "savings_account",
-            "language": "fr",
-            "url": "https://n26.com/fr-be/compte-epargne",
-            "screenshot_path": "data\\raw\\n26\\savings_account_fr_01.png",
-            "capture_quality": "ok",
-            "formality_score": 2.0,
-            "clarity_score": 5.0,
-            "rate_prominence": "hero",
-            "value_prop_clarity": 5.0,
-            "accent_locations": "imagery|background",
-            "text_image_layout": "beside",
-            "layout_archetype": "split_columns",
-            "mobile_first_design_signal": false,
-            "aida_attention": true,
-            "aida_interest": true,
-            "aida_desire": true,
-            "aida_action": true,
-            "persuasion_levers": "liking",
-            "Notes": "balance"
+            "persuasion_levers": "reciprocity"
           },
           {
             "rater": "siegried",
@@ -9346,8 +9187,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "social_proof|authority|reciprocity",
-            "Notes": null
+            "persuasion_levers": "social_proof|authority|reciprocity"
           },
           {
             "rater": "siegried",
@@ -9371,8 +9211,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9396,8 +9235,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9421,8 +9259,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "social_proof|liking",
-            "Notes": null
+            "persuasion_levers": "social_proof|liking"
           },
           {
             "rater": "siegried",
@@ -9446,8 +9283,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9471,8 +9307,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity",
-            "Notes": null
+            "persuasion_levers": "reciprocity"
           },
           {
             "rater": "siegried",
@@ -9496,8 +9331,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9521,8 +9355,7 @@
             "aida_interest": false,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9546,8 +9379,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment|liking|reciprocity",
-            "Notes": null
+            "persuasion_levers": "commitment|liking|reciprocity"
           },
           {
             "rater": "siegried",
@@ -9571,8 +9403,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9596,8 +9427,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9621,8 +9451,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment|reciprocity",
-            "Notes": null
+            "persuasion_levers": "commitment|reciprocity"
           },
           {
             "rater": "siegried",
@@ -9646,8 +9475,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9671,8 +9499,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9696,8 +9523,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9721,8 +9547,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9746,8 +9571,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9771,8 +9595,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9796,8 +9619,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9821,8 +9643,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9846,8 +9667,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9871,8 +9691,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9896,8 +9715,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9921,8 +9739,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9946,8 +9763,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -9971,8 +9787,7 @@
             "aida_interest": false,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment",
-            "Notes": null
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -9996,8 +9811,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment|reciprocity|social_proof",
-            "Notes": null
+            "persuasion_levers": "commitment|reciprocity|social_proof"
           },
           {
             "rater": "siegried",
@@ -10021,8 +9835,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "social_proof",
-            "Notes": null
+            "persuasion_levers": "social_proof"
           },
           {
             "rater": "siegried",
@@ -10046,8 +9859,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "liking",
-            "Notes": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -10071,8 +9883,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -10096,8 +9907,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "commitment|reciprocity",
-            "Notes": null
+            "persuasion_levers": "commitment|reciprocity"
           },
           {
             "rater": "siegried",
@@ -10121,8 +9931,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity",
-            "Notes": null
+            "persuasion_levers": "reciprocity"
           },
           {
             "rater": "siegried",
@@ -10146,8 +9955,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -10171,8 +9979,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "reciprocity",
-            "Notes": null
+            "persuasion_levers": "reciprocity"
           },
           {
             "rater": "siegried",
@@ -10196,8 +10003,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -10221,8 +10027,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -10246,8 +10051,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null,
-            "Notes": null
+            "persuasion_levers": null
           },
           {
             "rater": "siegried",
@@ -10271,8 +10075,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": false,
-            "persuasion_levers": "liking",
-            "Notes": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -10296,8 +10099,7 @@
             "aida_interest": false,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "liking",
-            "Notes": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -10309,20 +10111,19 @@
             "url": "https://www.belfius.be/retail/fr/produits/paiement/compte-bancaire/",
             "screenshot_path": "data/raw/belfius/current_account_pack_fr_02.png",
             "capture_quality": "ok",
-            "formality_score": null,
-            "clarity_score": null,
-            "rate_prominence": null,
-            "value_prop_clarity": null,
-            "accent_locations": null,
-            "text_image_layout": null,
-            "layout_archetype": null,
-            "mobile_first_design_signal": null,
-            "aida_attention": null,
-            "aida_interest": null,
-            "aida_desire": null,
-            "aida_action": null,
-            "persuasion_levers": null,
-            "Notes": null
+            "formality_score": 2.0,
+            "clarity_score": 4.0,
+            "rate_prominence": "absent",
+            "value_prop_clarity": 5.0,
+            "accent_locations": "text|buttons|imagery|icons|background",
+            "text_image_layout": "beside",
+            "layout_archetype": "split_columns",
+            "mobile_first_design_signal": true,
+            "aida_attention": true,
+            "aida_interest": true,
+            "aida_desire": true,
+            "aida_action": true,
+            "persuasion_levers": "liking"
           }
         ]
       }

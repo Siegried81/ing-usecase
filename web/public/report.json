@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T08:06:59+00:00",
+  "generated_at": "2026-09-23T12:35:37+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 30
+    "n_features": 37
   },
   "headline": {
     "focus": "ING",
-    "score": 0.178,
+    "score": 0.257,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
@@ -62,110 +62,120 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.253,
+      "score": -0.319,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.143,
-      "isFocus": false
-    },
-    {
-      "bank": "Crelan",
-      "key": "crelan",
-      "category": "traditional",
-      "score": -0.112,
-      "isFocus": false
-    },
-    {
-      "bank": "KBC",
-      "key": "kbc",
-      "category": "traditional",
-      "score": -0.099,
+      "score": -0.195,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.001,
-      "isFocus": false
-    },
-    {
-      "bank": "VDK Bank",
-      "key": "vdk",
-      "category": "traditional",
-      "score": 0.007,
-      "isFocus": false
-    },
-    {
-      "bank": "Hello bank!",
-      "key": "hellobank",
-      "category": "traditional",
-      "score": 0.086,
+      "score": -0.144,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": 0.116,
+      "score": -0.102,
+      "isFocus": false
+    },
+    {
+      "bank": "Crelan",
+      "key": "crelan",
+      "category": "traditional",
+      "score": -0.034,
+      "isFocus": false
+    },
+    {
+      "bank": "KBC",
+      "key": "kbc",
+      "category": "traditional",
+      "score": 0.002,
+      "isFocus": false
+    },
+    {
+      "bank": "VDK Bank",
+      "key": "vdk",
+      "category": "traditional",
+      "score": 0.034,
+      "isFocus": false
+    },
+    {
+      "bank": "Hello bank!",
+      "key": "hellobank",
+      "category": "traditional",
+      "score": 0.214,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.178,
+      "score": 0.257,
       "isFocus": true
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.222,
+      "score": 0.288,
       "isFocus": false
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.527,
+      "score": 0.573,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.937,
+      "score": 0.884,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.158,
+      "score": 1.172,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.379,
+      "score": 1.371,
       "isFocus": false
     }
   ],
   "peerGaps": [
+    {
+      "feature": "urgency_marker_count",
+      "label": "Urgency and deadline language",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 4.0,
+      "peerMean": 0.641025641025641,
+      "gapSd": 3.69,
+      "direction": "above"
+    },
     {
       "feature": "persuasion_lever_count",
       "label": "Persuasion techniques used",
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 3.6666666666666665,
-      "peerMean": 1.8333333333333335,
-      "gapSd": 2.35,
+      "peerMean": 1.740740740740741,
+      "gapSd": 2.46,
       "direction": "above"
     },
     {
@@ -174,8 +184,8 @@
       "dimension": "topics_value_prop",
       "extraction": "rubric",
       "focusValue": 5.0,
-      "peerMean": 3.6388888888888893,
-      "gapSd": 1.68,
+      "peerMean": 3.7435897435897436,
+      "gapSd": 1.46,
       "direction": "above"
     },
     {
@@ -223,9 +233,9 @@
       "label": "Calls to action",
       "dimension": "layout_structure",
       "extraction": "automatic",
-      "focusValue": 0.6666666666666666,
-      "peerMean": 5.641025641025641,
-      "gapSd": -1.0,
+      "focusValue": 1.0,
+      "peerMean": 6.179487179487179,
+      "gapSd": -0.92,
       "direction": "below"
     },
     {
@@ -234,8 +244,8 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 1.0,
-      "peerMean": 0.5555555555555555,
-      "gapSd": 0.93,
+      "peerMean": 0.5897435897435898,
+      "gapSd": 0.87,
       "direction": "above"
     },
     {
@@ -247,16 +257,6 @@
       "peerMean": 19.0,
       "gapSd": 0.85,
       "direction": "above"
-    },
-    {
-      "feature": "numeric_claim_count",
-      "label": "Figures and percentages quoted",
-      "dimension": "tone_messaging",
-      "extraction": "automatic",
-      "focusValue": 18.666666666666668,
-      "peerMean": 12.17948717948718,
-      "gapSd": 0.79,
-      "direction": "above"
     }
   ],
   "excludedGaps": [
@@ -266,6 +266,10 @@
     },
     {
       "label": "Distinct accent colours",
+      "note": "every peer has the same value - no spread to measure against"
+    },
+    {
+      "label": "Call to action visible without scrolling",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -354,12 +358,12 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "extraction": "rubric",
-      "traditional": 2.6923076923076925,
-      "challenger": 3.75,
-      "effect": 1.33,
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
+      "extraction": "model_assisted",
+      "traditional": 0.07142857142857142,
+      "challenger": 0.5,
+      "effect": 1.23,
       "higherAt": "challenger"
     },
     {
@@ -372,13 +376,13 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
-      "extraction": "model_assisted",
-      "traditional": 0.07142857142857142,
-      "challenger": 0.5,
-      "effect": 1.23,
-      "higherAt": "challenger"
+      "feature": "has_comparison_table",
+      "label": "Includes a comparison table",
+      "extraction": "automatic",
+      "traditional": 0.5714285714285714,
+      "challenger": 0.0,
+      "effect": -1.23,
+      "higherAt": "traditional"
     }
   ],
   "banks": [
@@ -399,9 +403,9 @@
           "direction": "above"
         },
         {
-          "label": "Urgency and deadline language",
-          "sd": 1.6,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -423,7 +427,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3244.0,
-        "Calls to action": 1.0,
+        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -472,12 +476,12 @@
           "direction": "above"
         },
         {
-          "label": "Page length",
+          "label": "Clarity of the offer",
           "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
+          "label": "Page length",
           "sd": 1.3,
           "direction": "above"
         }
@@ -485,7 +489,7 @@
       "tone": {
         "Words on the page": 1812.0,
         "Readability band": "hard",
-        "Formality of tone": null,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.688,
         "Urgency markers": 0.0
       },
@@ -497,17 +501,17 @@
         "Image area share": 0.149
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 11110.0,
-        "Calls to action": 5.0,
+        "Calls to action": 6.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Comptes de paiement Beats",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -517,9 +521,11 @@
         "backgroundLuminance": 0.325
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "liking"
+        ],
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -529,7 +535,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 6.7,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
@@ -550,14 +556,14 @@
           "direction": "above"
         },
         {
+          "label": "Clarity",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Elements visible without scrolling",
           "sd": 1.3,
           "direction": "above"
-        },
-        {
-          "label": "Animated elements",
-          "sd": -1.3,
-          "direction": "below"
         }
       ],
       "tone": {
@@ -579,7 +585,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 7078.0,
-        "Calls to action": 9.0,
+        "Calls to action": 10.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -626,19 +632,19 @@
       "pages": 1,
       "signature": [
         {
+          "label": "Gives a reason to keep reading",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Promises fast digital sign-up",
           "sd": 2.2,
           "direction": "above"
         },
         {
-          "label": "“Free” with conditions attached",
-          "sd": 1.8,
-          "direction": "above"
-        },
-        {
-          "label": "Calls to action",
-          "sd": 1.5,
-          "direction": "above"
+          "label": "Campaign structure completeness (AIDA)",
+          "sd": -2.1,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -717,12 +723,12 @@
         },
         {
           "label": "Calls to action",
-          "sd": 2.8,
+          "sd": 2.9,
           "direction": "above"
         },
         {
-          "label": "Urgency and deadline language",
-          "sd": 2.7,
+          "label": "Shows a rate",
+          "sd": 2.4,
           "direction": "above"
         }
       ],
@@ -745,7 +751,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 15135.0,
-        "Calls to action": 19.0,
+        "Calls to action": 22.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -798,19 +804,19 @@
       "pages": 1,
       "signature": [
         {
+          "label": "Gives a reason to keep reading",
+          "sd": -2.4,
+          "direction": "below"
+        },
+        {
           "label": "Sells a bundle",
           "sd": -1.6,
           "direction": "below"
         },
         {
-          "label": "Includes a comparison table",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Elements visible without scrolling",
-          "sd": 1.0,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -966,7 +972,7 @@
           "direction": "below"
         },
         {
-          "label": "Animated elements",
+          "label": "Uses animation",
           "sd": -1.3,
           "direction": "below"
         }
@@ -990,7 +996,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3881.0,
-        "Calls to action": 2.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1034,17 +1040,17 @@
       "pages": 3,
       "signature": [
         {
+          "label": "Urgency and deadline language",
+          "sd": 2.5,
+          "direction": "above"
+        },
+        {
+          "label": "Clarity of the offer",
+          "sd": 1.3,
+          "direction": "above"
+        },
+        {
           "label": "Promises fast digital sign-up",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Page length",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
-          "label": "Page brightness",
           "sd": 1.3,
           "direction": "above"
         }
@@ -1054,7 +1060,7 @@
         "Readability band": "hard",
         "Formality of tone": 1.6666666666666667,
         "Speaks to “you” rather than “we”": null,
-        "Urgency markers": 0.3333333333333333
+        "Urgency markers": 4.0
       },
       "imagery": {
         "Images": 33.0,
@@ -1068,7 +1074,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11148.666666666666,
-        "Calls to action": 0.6666666666666666,
+        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1327,7 +1333,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 8005.0,
-        "Calls to action": 6.0,
+        "Calls to action": 7.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1471,9 +1477,9 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Call to action visible without scrolling",
-          "sd": 3.6,
-          "direction": "above"
+          "label": "Makes the offer feel worth having",
+          "sd": -1.3,
+          "direction": "below"
         },
         {
           "label": "Includes a comparison table",
@@ -1505,8 +1511,8 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
-        "Calls to action": 3.0,
-        "Call to action visible without scrolling": 1.0
+        "Calls to action": 2.0,
+        "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Compte à vue You Count",
@@ -1844,226 +1850,226 @@
     "matrix": [
       [
         0.0,
-        5.98,
-        6.19,
-        6.18,
-        10.26,
-        5.59,
-        9.35,
-        6.74,
-        5.7,
-        5.95,
-        7.77,
-        9.95,
-        10.82,
+        6.94,
+        6.64,
+        6.7,
+        11.45,
+        6.51,
+        9.82,
+        7.91,
+        6.46,
+        6.73,
+        8.79,
+        10.53,
+        11.94,
+        6.9
+      ],
+      [
+        6.94,
+        0.0,
+        7.81,
+        8.27,
+        8.98,
+        6.62,
+        9.15,
+        7.57,
+        5.89,
+        6.46,
+        5.92,
+        9.76,
+        9.8,
+        5.07
+      ],
+      [
+        6.64,
+        7.81,
+        0.0,
+        7.12,
+        11.51,
+        7.28,
+        8.59,
+        7.43,
+        7.48,
+        7.63,
+        8.18,
+        9.26,
+        11.91,
+        6.6
+      ],
+      [
+        6.7,
+        8.27,
+        7.12,
+        0.0,
+        11.11,
+        7.0,
+        10.2,
+        9.24,
+        7.02,
+        8.09,
+        8.6,
+        10.34,
+        12.05,
+        7.81
+      ],
+      [
+        11.45,
+        8.98,
+        11.51,
+        11.11,
+        0.0,
+        11.25,
+        12.67,
+        11.39,
+        8.99,
+        10.43,
+        10.25,
+        12.25,
+        10.91,
+        10.51
+      ],
+      [
+        6.51,
+        6.62,
+        7.28,
+        7.0,
+        11.25,
+        0.0,
+        9.02,
+        7.95,
+        8.16,
+        5.09,
+        8.04,
+        10.6,
+        10.98,
+        5.51
+      ],
+      [
+        9.82,
+        9.15,
+        8.59,
+        10.2,
+        12.67,
+        9.02,
+        0.0,
+        9.43,
+        9.28,
+        8.16,
+        8.26,
+        11.64,
+        11.72,
+        8.34
+      ],
+      [
+        7.91,
+        7.57,
+        7.43,
+        9.24,
+        11.39,
+        7.95,
+        9.43,
+        0.0,
+        7.79,
+        7.73,
+        6.97,
+        8.36,
+        11.22,
         7.29
       ],
       [
-        5.98,
-        0.0,
-        6.1,
-        6.42,
-        8.62,
-        4.64,
-        8.25,
-        6.91,
-        4.46,
-        5.36,
-        5.03,
-        8.91,
-        8.82,
-        5.43
-      ],
-      [
-        6.19,
-        6.1,
-        0.0,
-        5.79,
-        9.67,
-        5.48,
-        7.9,
-        6.02,
-        5.19,
-        6.16,
-        6.9,
-        7.94,
-        10.37,
-        6.97
-      ],
-      [
-        6.18,
-        6.42,
-        5.79,
-        0.0,
-        9.18,
-        6.57,
-        9.08,
-        7.36,
-        4.79,
-        7.04,
-        6.47,
-        9.07,
-        10.3,
-        7.37
-      ],
-      [
-        10.26,
-        8.62,
-        9.67,
-        9.18,
-        0.0,
-        9.84,
-        11.75,
-        10.69,
-        8.97,
-        10.15,
-        9.4,
-        11.67,
-        10.23,
-        10.12
-      ],
-      [
-        5.59,
-        4.64,
-        5.48,
-        6.57,
-        9.84,
-        0.0,
-        7.65,
-        6.45,
-        5.73,
-        2.67,
-        6.54,
-        9.15,
-        9.76,
-        5.55
-      ],
-      [
-        9.35,
-        8.25,
-        7.9,
-        9.08,
-        11.75,
-        7.65,
-        0.0,
-        9.12,
-        8.17,
-        7.45,
-        7.91,
-        11.39,
-        10.91,
-        8.65
-      ],
-      [
-        6.74,
-        6.91,
-        6.02,
-        7.36,
-        10.69,
-        6.45,
-        9.12,
-        0.0,
-        6.27,
-        6.72,
-        6.97,
-        7.66,
-        10.65,
-        7.86
-      ],
-      [
-        5.7,
-        4.46,
-        5.19,
-        4.79,
-        8.97,
-        5.73,
-        8.17,
-        6.27,
-        0.0,
-        6.35,
-        5.69,
-        7.93,
-        9.42,
-        6.67
-      ],
-      [
-        5.95,
-        5.36,
-        6.16,
-        7.04,
-        10.15,
-        2.67,
-        7.45,
-        6.72,
-        6.35,
-        0.0,
-        6.81,
-        9.46,
+        6.46,
+        5.89,
+        7.48,
+        7.02,
+        8.99,
+        8.16,
         9.28,
-        5.92
-      ],
-      [
-        7.77,
-        5.03,
-        6.9,
-        6.47,
-        9.4,
-        6.54,
-        7.91,
-        6.97,
-        5.69,
-        6.81,
+        7.79,
         0.0,
-        8.71,
-        8.83,
-        6.48
+        7.28,
+        7.32,
+        8.94,
+        10.59,
+        6.78
       ],
       [
-        9.95,
-        8.91,
-        7.94,
-        9.07,
-        11.67,
-        9.15,
-        11.39,
-        7.66,
-        7.93,
-        9.46,
-        8.71,
+        6.73,
+        6.46,
+        7.63,
+        8.09,
+        10.43,
+        5.09,
+        8.16,
+        7.73,
+        7.28,
         0.0,
-        10.31,
-        10.17
+        7.81,
+        9.82,
+        10.25,
+        5.57
       ],
       [
-        10.82,
-        8.82,
-        10.37,
-        10.3,
-        10.23,
-        9.76,
-        10.91,
-        10.65,
-        9.42,
-        9.28,
-        8.83,
-        10.31,
-        0.0,
-        9.71
-      ],
-      [
-        7.29,
-        5.43,
-        6.97,
-        7.37,
-        10.12,
-        5.55,
-        8.65,
-        7.86,
-        6.67,
+        8.79,
         5.92,
-        6.48,
-        10.17,
-        9.71,
+        8.18,
+        8.6,
+        10.25,
+        8.04,
+        8.26,
+        6.97,
+        7.32,
+        7.81,
+        0.0,
+        9.35,
+        9.51,
+        5.77
+      ],
+      [
+        10.53,
+        9.76,
+        9.26,
+        10.34,
+        12.25,
+        10.6,
+        11.64,
+        8.36,
+        8.94,
+        9.82,
+        9.35,
+        0.0,
+        11.53,
+        10.08
+      ],
+      [
+        11.94,
+        9.8,
+        11.91,
+        12.05,
+        10.91,
+        10.98,
+        11.72,
+        11.22,
+        10.59,
+        10.25,
+        9.51,
+        11.53,
+        0.0,
+        10.1
+      ],
+      [
+        6.9,
+        5.07,
+        6.6,
+        7.81,
+        10.51,
+        5.51,
+        8.34,
+        7.29,
+        6.78,
+        5.57,
+        5.77,
+        10.08,
+        10.1,
         0.0
       ]
     ]
@@ -2097,15 +2103,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 4.46
+      "distance": 5.89
     },
     {
-      "bank": "BNP Paribas Fortis",
-      "distance": 4.79
+      "bank": "Argenta",
+      "distance": 6.46
     },
     {
-      "bank": "Beobank",
-      "distance": 5.19
+      "bank": "VDK Bank",
+      "distance": 6.78
     }
   ],
   "deckClaims": [
@@ -2150,7 +2156,7 @@
     "material": [
       "The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
-      "**11 judged feature(s) are scored on some banks but not all** (`formality_score` (1 bank(s)), `clarity_score` (1 bank(s)), `rate_prominence` (1 bank(s)), `value_prop_clarity` (1 bank(s)) ...). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.",
+      "**1 judged feature(s) are scored on some banks but not all** (`text_image_layout` (1 bank(s))). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.",
       "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
@@ -2427,6 +2433,14 @@
         "pages": 3,
         "lessons": [
           {
+            "feature": "urgency_marker_count",
+            "z": -0.44,
+            "focusZ": 2.53,
+            "gapSd": -2.98,
+            "direction": "below",
+            "label": "Urgency and deadline language"
+          },
+          {
             "feature": "is_bundled_offer",
             "z": -1.58,
             "focusZ": 0.63,
@@ -2449,14 +2463,6 @@
             "gapSd": -1.54,
             "direction": "below",
             "label": "Images"
-          },
-          {
-            "feature": "background_luminance",
-            "z": -0.03,
-            "focusZ": 1.26,
-            "gapSd": -1.29,
-            "direction": "below",
-            "label": "Page brightness"
           }
         ]
       },
@@ -2479,6 +2485,14 @@
             "label": "Content sections"
           },
           {
+            "feature": "urgency_marker_count",
+            "z": -0.72,
+            "focusZ": 2.53,
+            "gapSd": -3.25,
+            "direction": "below",
+            "label": "Urgency and deadline language"
+          },
+          {
             "feature": "disclaimer_present",
             "z": -1.91,
             "focusZ": 0.52,
@@ -2493,14 +2507,6 @@
             "gapSd": 2.41,
             "direction": "above",
             "label": "Images"
-          },
-          {
-            "feature": "question_count",
-            "z": 2.46,
-            "focusZ": 0.49,
-            "gapSd": 1.96,
-            "direction": "above",
-            "label": "Questions asked"
           }
         ]
       },
@@ -2523,6 +2529,14 @@
             "label": "Invokes institutional trust"
           },
           {
+            "feature": "value_prop_clarity",
+            "z": -2.06,
+            "focusZ": 1.31,
+            "gapSd": -3.38,
+            "direction": "below",
+            "label": "Clarity of the offer"
+          },
+          {
             "feature": "background_luminance",
             "z": -1.7,
             "focusZ": 1.26,
@@ -2531,20 +2545,12 @@
             "label": "Page brightness"
           },
           {
-            "feature": "rate_shown",
-            "z": 2.45,
-            "focusZ": -0.41,
-            "gapSd": 2.86,
-            "direction": "above",
-            "label": "Shows a rate"
-          },
-          {
-            "feature": "question_count",
-            "z": -1.34,
-            "focusZ": 0.49,
-            "gapSd": -1.83,
+            "feature": "urgency_marker_count",
+            "z": 0.1,
+            "focusZ": 2.53,
+            "gapSd": -2.44,
             "direction": "below",
-            "label": "Questions asked"
+            "label": "Urgency and deadline language"
           }
         ]
       }
@@ -2640,26 +2646,26 @@
         "label": "Questions asked"
       },
       {
-        "feature": "disclaimer_present",
-        "spreadSd": 2.44,
+        "feature": "value_prop_clarity",
+        "spreadSd": 3.0,
         "values": [
           {
             "bank": "KBC",
             "key": "kbc",
-            "z": 0.52
+            "z": 0.94
           },
           {
             "bank": "Crelan",
             "key": "crelan",
-            "z": -1.91
+            "z": -0.94
           },
           {
             "bank": "Revolut",
             "key": "revolut",
-            "z": -1.91
+            "z": -2.06
           }
         ],
-        "label": "Carries legal small print"
+        "label": "Clarity of the offer"
       },
       {
         "feature": "background_luminance",

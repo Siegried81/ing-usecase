@@ -96,11 +96,11 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     Returns nulls (never raises) if the image can't be fetched or decoded -
     one bad image must not crash the whole page's row.
 
-    `bank` is now required to get a real brand_colour_share. FIXED
-    a bug where this returned the share of whatever colour happened to be most
-    frequent, mislabelled as "brand" - verified a solid BLUE test image scored
-    brand_colour_share=1.0 for ING (orange). Without a known bank, the honest
-    answer is None, not a number that means something else.
+    `bank` is required to get a real brand_colour_share: without a known brand
+    hex the only thing measurable is the share of whatever colour happens to be
+    most frequent, which is not the brand colour (a solid BLUE image would score
+    1.0 for ING, whose brand is orange). Without a known bank the honest answer
+    is None, not a number that means something else.
     """
     empty = {
         "dominant_colour_hex": None, "palette_hex": [], "brand_colour_share": None,

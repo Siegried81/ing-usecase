@@ -31,14 +31,11 @@ from comparator.schema import write_dataset  # noqa: E402
 
 @pytest.fixture(scope="module")
 def report(tmp_path_factory):
-    # FIXED: a function-scoped `monkeypatch.delenv` autouse fixture
-    # cannot reliably run before this module-scoped fixture's one-time setup -
-    # pytest sets up broader-scoped fixtures first regardless of autouse, so
-    # the deletion happened too late and this test made a REAL NewsAPI call
-    # once NEWSAPI_KEY was actually set in .env (caught by CI-style full-suite
-    # run taking 117s instead of ~12s). Popping the var directly here, at the
-    # start of the fixture that actually needs it gone, has no such ordering
-    # ambiguity.
+    # NEWSAPI_KEY is popped here, inside the fixture that needs it gone, not
+    # via an autouse `monkeypatch.delenv`: pytest sets up broader-scoped
+    # fixtures first regardless of autouse, so a function-scoped deletion lands
+    # after this module-scoped setup and the test makes a REAL NewsAPI call
+    # whenever the key is set in .env (a full suite run goes from ~12s to 117s).
     import os
     os.environ.pop("NEWSAPI_KEY", None)
     # Second key slot (newsapi.ai) - both must go, or this test

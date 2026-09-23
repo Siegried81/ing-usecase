@@ -43,16 +43,16 @@ def _robots_url(url: str) -> str:
 def _fetch_robots(robots_url: str) -> RobotFileParser:
     """Read robots.txt with the SAME HTTP stack that will fetch the page.
 
-    FIXED. RobotFileParser.read() uses urllib, which on a stock
-    macOS Python has no CA bundle - every HTTPS robots.txt raised
-    CERTIFICATE_VERIFY_FAILED, the gate failed closed as designed, and all six
-    real targets were skipped. The pages themselves were always fetchable:
-    scraper.py uses requests, which ships certifi.
+    RobotFileParser.read() uses urllib, which on a stock macOS Python has no CA
+    bundle: every HTTPS robots.txt raises CERTIFICATE_VERIFY_FAILED, the gate
+    fails closed as designed, and every target is skipped - while the pages
+    themselves stay perfectly fetchable, because scraper.py uses requests,
+    which ships certifi.
 
-    So the gate was refusing permission it could in fact obtain. Worse than a
-    false negative in principle - a team hitting this concludes the sites block
-    us, when nothing of the sort is true. Using one stack for both means "we can
-    read the rules" and "we can fetch the page" can no longer disagree.
+    That makes the gate refuse permission it could in fact obtain, which is
+    worse than a false negative: a team hitting it concludes the sites block
+    us, when nothing of the sort is true. Using one stack for both means "we
+    can read the rules" and "we can fetch the page" can no longer disagree.
 
     Status handling follows RobotFileParser.read()'s own semantics, so behaviour
     is unchanged from the standard library where it worked:

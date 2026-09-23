@@ -155,7 +155,7 @@ def test_dashboard_carries_the_series(tmp_path, campaigns):
     # The guardrail travels WITH the payload, not in a separate file.
     assert "not what any campaign achieved" in dashboard["guardrail"]
 
-    # Coverage names the banks Dan has no search sheet for.
+    # Coverage names the banks with no search sheet.
     assert "revolut" in [u.lower() for u in dashboard["coverage"]["uncovered"]]
 
 

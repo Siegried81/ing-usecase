@@ -98,22 +98,33 @@ over with a false "winner".
 
 ## 2. ING's page is the most urgent and the most persuasion-heavy in the set
 
-ING's `urgency_marker_count` is 3.5 against a peer mean of 1.10 (+2.46 SD) —
-the largest gap of any measured feature. Its `persuasion_lever_count` (3.5
-vs peer mean 2.08, +1.94 SD) is the second-largest — this one is rubric-
-sourced and reflects a merged view of the human sheets (Siegried 25 pages, Dan 11,
-overlapping on 10; Stephane's 9 are machine-proposed and adopted — see the Status
-table), so the peer mean is thinner than the measured features' and should be
-quoted with that caveat. ING also claims fast digital onboarding at 0.75
-against a peer mean of 0.23 (+1.52 SD) — the third-largest gap.
+ING's `urgency_marker_count` is 4.00 against a peer mean of 0.64 (+3.69 SD) —
+the largest gap of any measured feature. Its `persuasion_lever_count` (3.67
+vs peer mean 1.74, +2.46 SD) is the second-largest — this one is rubric-
+sourced and reflects a merged view of the human sheets, so its peer group is
+thinner (9 banks, against 13 for the measured features) and it should be
+quoted with that caveat. ING also claims fast digital onboarding at 0.67
+against a peer mean of 0.15 (+1.42 SD) — the fourth-largest gap, behind
+`value_prop_clarity` (5.00 vs 3.74, +1.46 SD).
+
+**Read the urgency number with its history.** Until it was re-derived, this
+figure said the opposite: 0.33 against 0.64, *below* peers. `urgency_marker_count`
+was matched against a per-language term list only, and a deadline that lives in
+a date carries none of those terms — "Déposez 50 € … avant le 11/10/2026" scored
+zero, while a page saying "offre temporaire" with no date at all scored several.
+All 14 banks were then re-measured from the stored snapshots with the same
+extended rule, and only ING's three pack pages moved. That is not an artefact
+of scoring ING more generously: every date on a peer page is an *effective-from*
+date ("à partir du", "depuis le") or a cookie-policy timestamp, not an expiry.
+On this dataset ING is the only bank whose captured pages carry a dated deadline
+at all.
 
 **What it means.** Three of ING's four biggest deviations from its peers
 point the same direction: more deadline language, more persuasion technique
-stacking, and a stronger fast-onboarding claim than any other bank in the
-comparison. Whether that reads as energetic or as pressure to a real visitor
-is exactly the kind of question this project cannot answer alone (no
-performance data) — but it is now a precise, testable pattern, not a vague
-impression.
+stacking, and a clearer value proposition than most of the comparison. Whether
+that reads as energetic or as pressure to a real visitor is exactly the kind of
+question this project cannot answer alone (no performance data) — but it is now
+a precise, testable pattern, not a vague impression.
 
 ## 3. ~~ING is measurably darker than its peers~~, on a page that also invokes the least trust
 
