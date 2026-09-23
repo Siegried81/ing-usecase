@@ -751,3 +751,26 @@ The durable fix for all of it is re-capturing the ING pack pages with a
 scroll/interaction step so the client-side cards are in the HTML, or excluding
 `cta_count` from the comparison in the analysis itself rather than from its
 outputs. Neither was done the evening before the presentation.
+
+**sieg 23/09, the generated site no longer cites R2, and the section ledes fit
+on one line.** Two follow-ups to the same withdrawal.
+
+The generated pages carried 11 `rec-note-tag` citations of R2 and three prose
+clauses crediting it ("and repeats the primary action in the same wording
+(R2)"). Regenerating the site was the clean fix and was rejected: it is one
+model call per page across ten pages, so it would have replaced the whole demo
+artefact the night before it is shown. The citations were removed instead. The
+pages still repeat their buttons, which is a design choice and not a claim -
+what was false was crediting a withdrawn measurement for it.
+
+`jeunes.html` needed more than that: all three of its explanation boxes were
+tagged R2 alone, so removing the citation left three empty "Why this section"
+shells. Those boxes were removed outright. Every remaining box on every page
+carries at least one live recommendation, checked rather than assumed.
+
+Separately: `.section-head p` was capped at `max-width: 68ch` while 19 of the
+23 ledes in the app are longer than that (median 122 characters), so nearly
+every one wrapped onto a second line. The cap is now 130ch - still a cap, so a
+lede cannot run edge to edge, but set to what the copy actually is. The
+container is 1080px, which leaves room for about 142 characters, so the two
+ledes over 200 characters still wrap and are genuinely too long.
