@@ -2,7 +2,7 @@
 
 *Deliverable D-09. Generated from the dataset by `scripts/run_analysis.py`, so it describes the data that actually exists rather than the data we meant to collect.*
 
-**52 usable page(s) across 14 bank(s)**, from 52 collected.
+**51 usable page(s) across 14 bank(s)**, from 51 collected.
 
 > **These counts are pre-filter.** The comparison itself was restricted to the `current_account_pack` product family, so `charts.md` and `bank_profiles.json` report a smaller set.
 
@@ -12,7 +12,7 @@
 
 - The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.
 - Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.
-- **11 judged feature(s) are scored on some banks but not all** (`formality_score` (2 bank(s)), `clarity_score` (2 bank(s)), `rate_prominence` (2 bank(s)), `value_prop_clarity` (2 bank(s)) ...). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.
+- **11 judged feature(s) are scored on some banks but not all** (`formality_score` (1 bank(s)), `clarity_score` (1 bank(s)), `rate_prominence` (1 bank(s)), `value_prop_clarity` (1 bank(s)) ...). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.
 - Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02).
 
 ### Standing — true regardless of how much we collect

@@ -631,3 +631,34 @@ removed from comments across 85 files — git carries authorship, and a reader
 outside this team cannot use them. Dropped: three `.bak` datasets, a local
 AI-tool config, 3 MB of one-off browser-audit screenshots, and the Day 6 gate
 notes.
+
+---
+
+**23/09, the client answered four of the 18/09 questions, and two answers
+change what the deliverable claims.**
+
+*Performance data is pending, not refused.* ING is chasing CTR figures for the
+current-account campaigns and waiting on the people who own them. The "no
+performance data exists here" guardrail therefore stands for this deliverable
+and every finding stays a hypothesis. Nothing is restructured in anticipation:
+if the numbers arrive, they arrive after this window.
+
+*Reputation is wanted, but was read as a performance proxy.* The answer was
+"it matter in the sense of it giving insights about how well the campaigns are
+doing". That is the one claim the module is built to refuse - theme counts say
+what a bank is written about, never whether a campaign worked. The code already
+enforces it; what was missing is saying so to the client, so it is now stated
+on the Reputation slide and in the tab's own wording rather than left implicit.
+
+*The goal is comparative, and "actionable" means communication, not website
+edits.* "We are not the one deciding on the change done to ING's website...
+actionable would be more in the sense 'how can we better communicate with
+them'." Two consequences: the generated site is presented as an illustration of
+what a recommendation means, not as a proposal for ING's site; and the
+recommendation prompt, which still asks the model for "the specific change to
+make on the page", is now out of step with what was asked. Reframing it would
+regenerate every recommendation the day before the presentation, so it is named
+as known future work instead, not quietly left to look intentional.
+
+*Belgium only, confirmed.* ING.nl is out of scope, which the collection already
+reflects - no change.
