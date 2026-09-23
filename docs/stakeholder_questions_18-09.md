@@ -173,3 +173,38 @@ whether the stored captures travel with it.
   instead of headless — same robots.txt gate, same single request, no IP
   rotation). The manual-capture path was a stopgap, not the final state; see
   `decisions.md`, "BNP Paribas Fortis captured".
+
+---
+
+## Answers received (23/09)
+
+Four of these questions came back answered. Recorded verbatim in substance,
+with what each one settles.
+
+**1. CTR / performance data — pending, not refused.** "We are trying to get you
+some data about the current account campaigns, we have contacted people in
+charge of those and are waiting for their reply." So the guardrail stands for
+this deliverable: no performance data exists here, every finding is a
+hypothesis. Nothing is redesigned in anticipation — if numbers arrive, they
+arrive after this two-week window.
+
+**2. Reputation — wanted, but for the wrong reason, and this needs correcting
+out loud.** "I think it matter in the sense of it giving insights about how
+well the campaigns are doing. If its useful to you, use it." Press themes say
+what a bank is being written about; they do not say whether a campaign worked.
+That distinction is enforced in the code (`recommendations.py`: theme counts
+are context, never evidence that a page or campaign performed) but it has to be
+said in the room, because the sentence above reads the feature as a performance
+proxy — which is exactly the claim this project refuses to make.
+
+**3. Comparative, and "actionable" means communication, not website changes.**
+"The goal is mostly comparative as we are not the one deciding on the change
+done to ING's website. Actionable would be more in the sense 'how can we better
+communicate with them' and not 'how can we change the website'." The generated
+site is therefore an illustration of what the recommendations mean, not a
+proposal for ING's site. The recommendation wording still reads as page edits;
+that mismatch is named rather than hidden, and reframing the prompt is future
+work.
+
+**4. Belgium only.** "I would say it's less useful to compare to ING NL. Let's
+stay within the Belgian market." Confirms the existing scope; no change.
