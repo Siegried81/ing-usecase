@@ -812,27 +812,40 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
 
             fmt = (lambda v: repr(band_labels[v])) if band_labels else (lambda v: f"{v:.1f}")
 
+            # sieg 23/09: idxmax()/idxmin() pick an arbitrary bank on a tie
+            # (whichever comes first in the Series), so a claim could read
+            # "supported" purely by index order while an equally-tied claim
+            # elsewhere read "not supported" - found live, H2 (KBC) and H5
+            # (Revolut) both tied at word_count_band='long' with every other
+            # bank, one called "supported", the other "not supported". A tie
+            # means the data cannot single out a winner - never "supported".
             if bank not in series.index:
                 pass
             elif test == "highest":
                 value = series[bank]
-                winner = series.idxmax()
-                verdict = "supported" if winner == bank else "not supported"
-                evidence = f"{bank}={fmt(value)}; highest is {winner}={fmt(series.max())}"
+                extreme = series.max()
+                tied = sorted(series[series == extreme].index)
+                verdict = "supported" if tied == [bank] else "not supported"
+                evidence = (f"{bank}={fmt(value)}; highest is {fmt(extreme)}"
+                            + (f", tied: {tied}" if len(tied) > 1 else f" ({tied[0]})"))
             elif test == "lowest":
                 value = series[bank]
-                winner = series.idxmin()
-                verdict = "supported" if winner == bank else "not supported"
-                evidence = f"{bank}={fmt(value)}; lowest is {winner}={fmt(series.min())}"
+                extreme = series.min()
+                tied = sorted(series[series == extreme].index)
+                verdict = "supported" if tied == [bank] else "not supported"
+                evidence = (f"{bank}={fmt(value)}; lowest is {fmt(extreme)}"
+                            + (f", tied: {tied}" if len(tied) > 1 else f" ({tied[0]})"))
             elif test == "lowest_traditional":
                 value = series[bank]
                 sub = series.loc[[b for b in traditional if b in series.index]]
                 if sub.empty:
                     verdict, evidence = "not testable", "no traditional banks with this feature in the dataset"
                 else:
-                    winner = sub.idxmin()
-                    verdict = "supported" if winner == bank else "not supported"
-                    evidence = f"{bank}={fmt(value)}; lowest traditional is {winner}={fmt(sub.min())}"
+                    extreme = sub.min()
+                    tied = sorted(sub[sub == extreme].index)
+                    verdict = "supported" if tied == [bank] else "not supported"
+                    evidence = (f"{bank}={fmt(value)}; lowest traditional is {fmt(extreme)}"
+                                + (f", tied: {tied}" if len(tied) > 1 else f" ({tied[0]})"))
             elif test == "only_traditional_true":
                 value = series[bank]
                 others = [b for b in traditional if b != bank and b in series.index]

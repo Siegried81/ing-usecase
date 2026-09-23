@@ -1,5 +1,5 @@
 feature,dimension,traditional_mean,challenger_mean,difference,effect_size_d,n_traditional,n_challenger
-background_luminance,colours_design,0.8612857142857143,0.449,-0.4122857142857143,-3.0138799982950726,14,4
+background_luminance,colours_design,0.43057142857142855,0.16825,-0.26232142857142854,-2.360036874756796,14,4
 above_fold_element_count,layout_structure,36.57142857142857,21.5,-15.07142857142857,-2.1229093890993567,14,4
 rate_shown,topics_value_prop,0.0,0.5,0.5,2.0,14,4
 subscription_style_framing,banking_domain,0.0,0.5,0.5,2.0,14,4

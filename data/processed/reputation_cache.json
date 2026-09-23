@@ -434,7 +434,7 @@
     }
   },
   "vdk": {
-    "cached_on": "2026-09-22",
+    "cached_on": "2026-09-23",
     "snapshot": {
       "headline_count": 1,
       "themes": {
@@ -959,31 +959,31 @@
     }
   },
   "Vdk": {
-    "cached_on": "2026-09-22",
+    "cached_on": "2026-09-23",
     "snapshot": {
       "headline_count": 1,
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
-        "financial_results": 1,
+        "financial_results": 0,
         "product_launch": 0,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 0
+        "other": 1
       },
       "theme_headlines": {
         "innovation_digital": [],
         "crisis_or_scandal": [],
-        "financial_results": [
+        "financial_results": [],
+        "product_launch": [],
+        "esg_sustainability": [],
+        "regulatory": [],
+        "other": [
           {
             "title": "Tout en lettres d’or chez VDK",
             "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
           }
-        ],
-        "product_launch": [],
-        "esg_sustainability": [],
-        "regulatory": [],
-        "other": []
+        ]
       },
       "notable_headlines": [
         {

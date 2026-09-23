@@ -40,7 +40,7 @@
           "buttons",
           "text"
         ],
-        "background_luminance": 0.886
+        "background_luminance": 0.606
       },
       "imagery": {
         "image_count": 11.0,
@@ -90,12 +90,12 @@
           2.502043729730142
         ],
         [
-          "urgency_marker_count",
-          1.568140404264038
+          "background_luminance",
+          1.6504878916159484
         ],
         [
-          "has_comparison_table",
-          1.3199500146737049
+          "urgency_marker_count",
+          1.568140404264038
         ]
       ]
     },
@@ -115,7 +115,7 @@
         "brand_colour_share": 0.003,
         "accent_colour_count": 4.0,
         "accent_locations": [],
-        "background_luminance": 0.87
+        "background_luminance": 0.325
       },
       "imagery": {
         "image_count": 18.0,
@@ -192,7 +192,7 @@
           "text",
           "background"
         ],
-        "background_luminance": 0.851
+        "background_luminance": 0.299
       },
       "imagery": {
         "image_count": 16.0,
@@ -272,7 +272,7 @@
           "imagery",
           "text"
         ],
-        "background_luminance": 0.843
+        "background_luminance": 0.47
       },
       "imagery": {
         "image_count": 17.0,
@@ -354,7 +354,7 @@
           "imagery",
           "background"
         ],
-        "background_luminance": 0.002
+        "background_luminance": 0.041
       },
       "imagery": {
         "image_count": 13.0,
@@ -408,12 +408,12 @@
           -3.6055512754639896
         ],
         [
-          "background_luminance",
-          -3.161218575796908
-        ],
-        [
           "cta_count",
           2.7517319060449963
+        ],
+        [
+          "urgency_marker_count",
+          2.703690352179376
         ]
       ]
     },
@@ -437,7 +437,7 @@
           "text",
           "buttons"
         ],
-        "background_luminance": 0.869
+        "background_luminance": 0.363
       },
       "imagery": {
         "image_count": 12.0,
@@ -515,7 +515,7 @@
           "icons",
           "buttons"
         ],
-        "background_luminance": 0.79
+        "background_luminance": 0.441
       },
       "imagery": {
         "image_count": 72.0,
@@ -594,7 +594,7 @@
           "imagery",
           "text"
         ],
-        "background_luminance": 0.774
+        "background_luminance": 0.515
       },
       "imagery": {
         "image_count": 15.0,
@@ -673,7 +673,7 @@
           "imagery",
           "icons"
         ],
-        "background_luminance": 0.9036666666666666
+        "background_luminance": 0.5463333333333332
       },
       "imagery": {
         "image_count": 33.0,
@@ -738,8 +738,8 @@
           1.2781612999692054
         ],
         [
-          "hidden_conditions_behind_free_claim",
-          0.9608968122051764
+          "background_luminance",
+          1.26425923755025
         ]
       ]
     },
@@ -764,7 +764,7 @@
           "icons",
           "text"
         ],
-        "background_luminance": 0.8690000000000001
+        "background_luminance": 0.347
       },
       "imagery": {
         "image_count": 8.0,
@@ -846,7 +846,7 @@
           "icons",
           "text"
         ],
-        "background_luminance": 0.683
+        "background_luminance": 0.27
       },
       "imagery": {
         "image_count": 21.0,
@@ -928,7 +928,7 @@
           "background",
           "imagery"
         ],
-        "background_luminance": 0.579
+        "background_luminance": 0.274
       },
       "imagery": {
         "image_count": 29.0,
@@ -1005,7 +1005,7 @@
         "accent_locations": [
           "background"
         ],
-        "background_luminance": 0.532
+        "background_luminance": 0.088
       },
       "imagery": {
         "image_count": 10.0,
@@ -1097,7 +1097,7 @@
           "buttons",
           "background"
         ],
-        "background_luminance": 0.857
+        "background_luminance": 0.329
       },
       "imagery": {
         "image_count": 5.0,
