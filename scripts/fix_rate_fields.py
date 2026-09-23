@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Refresh rate_shown/rate_value_pct from stored HTML, no LLM call, no re-fetch.
 
-New script. `scraper.py::_rate()` used to match the FIRST "N%"
+`scraper.py::_rate()` used to match the FIRST "N%"
 anywhere on a page, so marketing copy like "100% en ligne" was reported as a
 rate - verified in the wild: BNP Paribas Fortis, KBC (x3) and ING all showed
 rate_value_pct=100.00 identically. Fixed in `_rate()` (now requires a rate

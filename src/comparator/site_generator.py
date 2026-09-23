@@ -1,6 +1,6 @@
 """Generate a 10-page ING campaign website from the selected recommendations.
 
-New module, stretch on top of step 5. The campaign generator
+stretch on top of step 5. The campaign generator
 (`generation.py`) writes one page and scores it. This writes a small site and
 deliberately does NOT score it - the scorecard belongs to the single-page loop.
 What this module is for is showing a recommendation turned into something a

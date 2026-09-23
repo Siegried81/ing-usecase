@@ -1,6 +1,6 @@
 """Bank reputation signal via NewsAPI headlines - THEME counts, never sentiment.
 
-New module. Optional (`NEWSAPI_KEY` for newsapi.org, and/or
+Optional (`NEWSAPI_KEY` for newsapi.org, and/or
 `NEWSAPI_AI_KEY` for newsapi.ai / Event Registry): headlines from every
 configured key are merged and de-duplicated, and the whole signal degrades to
 unavailable when no key is set, same pattern `trends.py` already uses when
@@ -145,8 +145,8 @@ No preamble, no markdown fences, JSON only."""
 
 
 class ReputationModel(BaseModel):
-    # Was theme_counts (int only) - now the full per-theme headline list, so the
-    # UI can show which articles a count is made of on hover, not just the number.
+    # The full per-theme headline list, not just a count, so the UI can show
+    # which articles a number is made of on hover.
     theme_headlines: dict[str, list[str]] = Field(default_factory=dict)
     notable_headlines: list[str] = Field(default_factory=list)
 

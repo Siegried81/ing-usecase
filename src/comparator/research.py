@@ -1,6 +1,6 @@
 """Academic paper search - an on-demand lookup, not a pipeline step.
 
-New module. The brief itself calls Semantic Scholar "Optionnel"
+The brief itself calls Semantic Scholar "Optionnel"
 and names no concrete per-bank metric to compute from it (unlike personas,
 cross-sell, or news themes, which all have a defined output shape). Building
 a report.json section or an automatic per-bank/per-insight citation around

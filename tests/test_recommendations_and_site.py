@@ -1,6 +1,6 @@
 """Tests for the recommendations tab and the 10-page site generator.
 
-New modules, new tests. No network and no model call: the LLM
+No network and no model call: the LLM
 entry points are monkeypatched, because the value being tested is the local
 logic - that a feature id the model invented is dropped, that only the ticked
 recommendations reach the builder, and that ten pages are rendered in ING's

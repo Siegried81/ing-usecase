@@ -118,18 +118,16 @@ ARCHETYPES: dict[str, dict] = {
     ),
 }
 
-# Was hardcoded to "flesch_douma_nl" regardless of the `language`
-# argument below, so a fixture built with language="fr" or "en" silently
-# claimed Dutch-formula scoring. Table added so build_fixture() can look up
-# the right formula per language instead.
+# Looked up per language by build_fixture(), never hardcoded: a fixture built
+# with language="fr" or "en" that reported the Dutch formula would be
+# claiming a scoring method it did not use.
 _READABILITY_FORMULA = {
     "nl": "flesch_douma_nl",
     "fr": "kandel_moles_fr",
     "en": "flesch_reading_ease_en",
 }
-# Audit finding (LOW): this was a THIRD independent copy of the
-# same readability threshold edges (collection/scraper.py and derive.py had
-# their own too) - all three now call bands.readability_band().
+# Readability banding goes through bands.readability_band() - no local copy of
+# the threshold edges here, nor in collection/scraper.py or derive.py.
 
 
 def build_fixture(
@@ -203,7 +201,7 @@ def build_fixture(
                     "avg_sentence_length": round(words / sentences, 2),
                     "avg_sentence_length_band": bands.avg_sentence_length_band(words / sentences),
                     "readability_score": round(readability, 1),
-                    "readability_formula": _READABILITY_FORMULA[language],  # Was hardcoded to nl
+                    "readability_formula": _READABILITY_FORMULA[language],  # per language, never fixed to nl
                     "readability_band": bands.readability_band(readability),
                     "second_person_ratio": second_person_ratio_value,
                     "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio_value),

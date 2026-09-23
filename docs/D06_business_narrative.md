@@ -1,5 +1,28 @@
 # D-06 — Business narrative, draft insights
 
+> **CURRENT NUMBERS — 23/09, supersedes every figure and every update banner
+> below.** Scope: 51 pages / 14 banks / 6 product families collected and
+> scored; the comparison runs on the 18 `current_account_pack` pages, 14 banks,
+> 30 comparable features (DR-04).
+>
+> | | ING | peers | gap |
+> | --- | --- | --- | --- |
+> | traditional↔challenger positioning | **0.26** | — | nearest neighbour Belfius |
+> | `urgency_marker_count` | 4.00 | 0.64 | **+3.69 SD** — largest in the set |
+> | `persuasion_lever_count` (rubric, 9 peers) | 3.67 | 1.74 | +2.46 SD |
+> | `value_prop_clarity` (rubric) | 5.00 | 3.74 | +1.46 SD |
+> | `fast_digital_onboarding_claim` | 0.67 | 0.15 | +1.42 SD |
+> | `page_height_px` | 11,149 | 6,412 | +1.42 SD |
+> | `has_animation` | 0.33 | 0.62 | -0.58 SD — the one place ING is below |
+>
+> `cta_count` is WITHDRAWN and must not be quoted: ING's pack cards load
+> client-side and are absent from the captured HTML, so any count measures the
+> capture, not the page. See `decisions.md`, 23/09.
+>
+> Still true: don't hand-copy a number from this file into a deck. Pull it from
+> `report.json` or a fresh `run_analysis.py --product-family auto` run.
+
+
 rewritten 20/09 the night before the Day 6 gate. Written for the
 business audience per the plan: what this means for ING, no method detail —
 the "how" lives in D-07 and the code, not here.
@@ -78,7 +101,7 @@ one by one:
 | --- | --- |
 | Belfius is pretty verbose | **Not supported** |
 | KBC is straight to the point | **Not supported** |
-| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too | #false
+| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too |
 | ING no longer places text next to picture | **Not supported** — "beside" is still ING's most common layout |
 | Revolut uses very little text | **Not supported** |
 
@@ -101,9 +124,9 @@ over with a false "winner".
 ING's `urgency_marker_count` is 4.00 against a peer mean of 0.64 (+3.69 SD) —
 the largest gap of any measured feature. Its `persuasion_lever_count` (3.67
 vs peer mean 1.74, +2.46 SD) is the second-largest — this one is rubric-
-sourced and reflects a merged view of the human sheets, so its peer group is
-thinner (9 banks, against 13 for the measured features) and it should be
-quoted with that caveat. ING also claims fast digital onboarding at 0.67
+sourced, from the one judged sheet, so its peer group is thinner (9 banks,
+against 13 for the measured features) and it should be quoted with that
+caveat. ING also claims fast digital onboarding at 0.67
 against a peer mean of 0.15 (+1.42 SD) — the fourth-largest gap, behind
 `value_prop_clarity` (5.00 vs 3.74, +1.46 SD).
 
@@ -212,8 +235,8 @@ communication content — it says nothing about *what* a page argues, only
 matching their known regional roots is a sanity check on the pipeline, not a
 discovery on its own. ING breaking that pattern, in the same direction as
 every challenger in the set, is the one region-level result that lines up
-with the overall traditional↔challenger positioning score (0.362, "leaning
-towards the challengers") from a completely independent measurement. Worth
+with the overall traditional↔challenger positioning score (0.26, clearly
+with the traditional banks) from a completely independent measurement. Worth
 noting in the room as a second signal pointing the same way, not proof of
 anything by itself — the same "context, never an outcome" rule the existing
 Trends tab already applies.

@@ -1,10 +1,8 @@
 """Deterministic (automatic) feature extraction from a campaign page's HTML.
 
-New module - that workstream had no code at all before this; the
-analysis chain existed, the collection layer didn't. This covers every field
-tagged extraction: automatic in config/feature_dictionary.yaml that can be
-produced from a STATIC fetch (requests + BeautifulSoup), and says so plainly
-where it can't.
+Covers every field tagged extraction: automatic in
+config/feature_dictionary.yaml that can be produced from a STATIC fetch
+(requests + BeautifulSoup), and says so plainly where it can't.
 
 WHAT THIS DOES NOT DO, ON PURPOSE (read before trusting a row):
   - No headless rendering. page_height_px, hero_image_area_ratio,
@@ -94,7 +92,7 @@ _DATE_RE = re.compile(
     rf"\b\d{{1,2}}[/.\-]\d{{1,2}}[/.\-]\d{{2,4}}\b|\b\d{{1,2}}\s+(?:{_MONTHS})\b",
     re.I,
 )
-# Added alongside _rate()'s fix - see that function's docstring.
+# The keywords _rate() requires near a percentage - see its docstring.
 _RATE_KEYWORDS = {
     "nl": ["rente", "rentevoet", "interest", "tarief", "jaarlijkse"],
     "fr": ["taux", "interet", "intérêt", "rendement", "tae"],
@@ -145,8 +143,8 @@ _READABILITY_COEFFS = {
 _READABILITY_FORMULA_NAME = {
     "nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en",
 }
-# Was a local duplicate of derive.py's _READABILITY_EDGES -
-# consolidated into bands.readability_band(), see that module for why.
+# Readability banding lives in bands.readability_band(), not here - see that
+# module for why the edges must have a single home.
 
 
 def _fetch_html(url: str) -> str:
@@ -278,12 +276,12 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
 
 
 def _has_animation(soup: BeautifulSoup, html: str) -> bool:
-    # Was soup.find(["video", "source"]). A bare <source> is almost
-    # never video - it is <picture><source srcset> serving webp/avif, which is
-    # a STATIC responsive image. Measured across 16 real captures: 217 of 219
-    # <source> tags sat inside <picture>, so this branch reported "this page
-    # animates" for "this page serves modern image formats". It alone put ING
-    # at has_animation=0.4 and N26 at 1.0, and deck claim H3 ("ING is the only
+    # A bare <source> must NOT count as animation: it is almost always
+    # <picture><source srcset> serving webp/avif, a static responsive image.
+    # Measured across 16 real captures, 217 of 219 <source> tags sat inside
+    # <picture>, so matching on it reports "this page animates" for "this page
+    # serves modern image formats" - enough on its own to put ING at
+    # has_animation=0.4 and N26 at 1.0, and deck claim H3 ("ING is the only
     # traditional bank using animation") is tested against exactly this column.
     # A <video><source> is still caught, via its <video> parent.
     #
@@ -498,12 +496,12 @@ def scrape(
 ) -> dict:
     """Compliant fetch + full automatic extraction for one page.
 
-    Added the headless path alongside the static one. Five features
-    (page_height_px, hero_image_area_ratio, total_image_area_ratio,
-    cta_contrast_ratio, above_fold_element_count) are geometry - they need a
-    browser and were hardcoded None until now. page_height_px is core, required
-    and NOT nullable, so strict validation failed outright on every real static
-    row; the run aborted rather than degraded.
+    Five features (page_height_px, hero_image_area_ratio,
+    total_image_area_ratio, cta_contrast_ratio, above_fold_element_count) are
+    geometry: they need a real browser, which is why the headless path exists
+    alongside the static one. page_height_px is core, required and NOT
+    nullable, so without it strict validation fails outright on every static
+    row and the run aborts rather than degrades.
 
     method:
       "auto"     - render if this machine can, else fall back to static and say so.

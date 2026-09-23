@@ -1,7 +1,6 @@
 """Enforce the schema freeze rule semantically.
 
-New module. Risk P-04 in the project plan is mine, and its stated
-mitigation is the actual rule:
+Risk P-04 in the project plan states the rule this enforces:
 
     "Schema frozen Day 2; additions allowed, renames and removals only by
      unanimous agreement."                       - Project Plan, section 3.2

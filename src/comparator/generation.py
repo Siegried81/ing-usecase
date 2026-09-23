@@ -1,7 +1,5 @@
 """Step 5 - LLM campaign generation and its evaluation (stretch goal).
 
-New module. Project Plan section 4.5 and Appendix B; owner: me.
-
 THE POINT IS NOT THE COPY. It is to show the feature framework is specific
 enough to (a) drive a generation and (b) measure whether the generation landed
 where it was asked to. So the loop closes on itself:

@@ -25,7 +25,10 @@ export function ScopeBanner({ scope }: { scope: Scope }) {
         </div>
         <div className="scope-item">
           <div className="k">Pages analysed</div>
-          <div className="v">{scope.pages}<span style={{ fontWeight: 400, color: "var(--ink-3)" }}> of {scope.total_collected} collected</span></div>
+          {/* The ratio alone reads as "we only used 18 of the work". Every
+              collected page is scored; the rest belong to other product
+              families and are held out by DR-04, not left unused. */}
+          <div className="v">{scope.pages}<span style={{ fontWeight: 400, color: "var(--ink-3)" }}> of {scope.total_collected} scored · one product family at a time</span></div>
         </div>
         <div className="scope-item">
           <div className="k">Features measured</div>

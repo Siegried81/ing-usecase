@@ -144,9 +144,9 @@ JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
 ### The dataset now spans every family each bank promotes
 
 The comparison had been one family (`current_account_pack`) because that is what
-the targets file listed. It now holds **50 pages across 14 banks and 6 families**:
-`current_account_pack` 16, `investment` 9, `savings_account` 9, `pension` 8,
-`mortgage` 5, `term_account` 3. (`other` 1 folded into `pension` -
+the targets file listed. It now holds **51 pages across 14 banks and 6 families**:
+`current_account_pack` 18, `investment` 9, `savings_account` 9, `pension` 8,
+`mortgage` 5, `term_account` 2. (`other` 1 folded into `pension` -
 `belfius_other_fr_01` was Belfius's pension page, mislabeled; see the note
 below.) Product pages were discovered from each
 bank's own navigation and every one was verified by rendering it before

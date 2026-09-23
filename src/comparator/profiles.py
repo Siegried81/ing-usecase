@@ -70,15 +70,12 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
     if rows.empty:
         raise ValueError(f"no rows for bank {bank!r}")
 
-    # Audit finding (HIGH, follow-up to analysis.py's comparability
-    # fix). This function computed within_language means (word_count,
-    # second_person_ratio, in "tone" below) straight from this bank's own rows,
-    # bypassing comparable_features()/language_excluded_features() entirely -
-    # the first fix never touched this path. Profile cards are explicitly built
-    # for side-by-side reading (module docstring: "identical fields for every
-    # bank... comparable"), so even ONE bank whose own captured pages mix
-    # languages (KBC has both fr and nl in collection_targets.yaml) was
-    # silently averaging across them into a single misleading number.
+    # within_language means (word_count, second_person_ratio, in "tone" below)
+    # must not be averaged across a bank's own pages when those pages are in
+    # different languages - KBC has both fr and nl in collection_targets.yaml.
+    # Profile cards are explicitly built for side-by-side reading (module
+    # docstring: "identical fields for every bank... comparable"), so one bank
+    # averaging across languages is enough to make the whole card misleading.
     mixed_language = "language" in rows.columns and rows["language"].dropna().nunique() > 1
 
     def mean(col: str) -> float | None:

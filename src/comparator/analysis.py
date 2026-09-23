@@ -22,9 +22,6 @@ from comparator.schema import parse_list
 PROVENANCE = {"provenance"}
 FOCUS_BANK = "ing"
 
-# A chart saying "50 features" when the dictionary declares 97 raises an
-# obvious question, and the answer has to be in the output rather than
-# reconstructed by hand, so the accounting below is computed and printed.
 BAND_SUFFIX = "_band"
 
 # A gap expressed in peer standard deviations is only meaningful if
@@ -53,14 +50,13 @@ def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str
     are a coarser view of a value already in the matrix, so including both would
     count the same signal twice and quietly double the weight of word length.
 
-    Audit finding (MEDIUM). This used to check "is X a numeric
-    column present in df", not "does X actually enter the comparison" - so
-    when mixed languages excluded X (see language_excluded_features() below),
-    X_band was STILL classified as redundant and stayed hidden from
-    encodable_categoricals(), even though it is exactly the cross-language
-    substitute for the value that just got excluded. Uses comparable_features()
-    (the actual used set) instead of raw column presence, so a band becomes
-    available the moment its raw number is excluded, language or otherwise.
+    Redundancy is judged against comparable_features() - the features that
+    actually enter the comparison - not against raw column presence. The
+    difference matters when mixed languages exclude X (see
+    language_excluded_features() below): X_band is then the cross-language
+    substitute for the value that was just excluded, so it must become
+    available to encodable_categoricals() rather than stay hidden as a
+    duplicate of a number nobody is using.
     """
     used = set(comparable_features(fd, df))
     return sorted(
@@ -69,16 +65,14 @@ def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str
     )
 
 
-# Audit finding (HIGH) - comparable_features() picked every numeric
-# feature regardless of `comparability`, so word_count/readability_score/
-# avg_sentence_length/second_person_ratio/... (all `within_language` in the
-# dictionary) were compared raw across banks even when their pages were
-# captured in different languages. Confirmed live: collection_targets.yaml has
-# KBC with both a fr and a nl page, and bank_vectors() averaged them together
-# before any cross-bank comparison. CLAUDE.md: "Never compare a
-# within_language feature across two banks captured in different languages
-# without flagging it explicitly." This is the flag - excluded, not silently
-# kept, whenever the usable pages span more than one language.
+# The flag CLAUDE.md requires: "Never compare a within_language feature across
+# two banks captured in different languages without flagging it explicitly."
+# word_count, readability_score, avg_sentence_length, second_person_ratio and
+# friends are all `within_language` in the dictionary, and the dataset really
+# does span languages - collection_targets.yaml has KBC with both a fr and a
+# nl page, which bank_vectors() would otherwise average together before any
+# cross-bank comparison. They are excluded, not silently kept, whenever the
+# usable pages span more than one language.
 def language_excluded_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
     """within_language features dropped because the usable pages span >1 language.
 
@@ -558,8 +552,8 @@ class Positioning:
         """The focus bank can be missing for a real reason - ING's
         own page came back as an unrendered shell on the first live run and was
         excluded. The rest of the market analysis is still valid, so this is a
-        state to handle, not a crash. It used to surface as KeyError: 'ing' from
-        inside pandas, several frames from the cause."""
+        state to handle, not a crash - without this it surfaces as
+        KeyError: 'ing' from inside pandas, several frames from the cause."""
         return self.focus in self.scores.index
 
     def _require_focus(self) -> None:
@@ -734,10 +728,10 @@ def recurring_patterns(
 # FR-14 - verify the kickoff-deck observations
 # -----------------------------------------------------------------------------
 #   claim id -> (bank, human-readable claim, feature, test)
-# Ordinal scale for a categorical BAND feature, so a highest/
-# lowest deck claim survives once the raw feature it used to test (word_count,
-# within_language) gets dropped entirely from the comparison the moment >1
-# language is in scope (language_excluded_features()). The band uses fixed,
+# Ordinal scale for a categorical BAND feature, so a highest/lowest deck claim
+# survives when the raw feature behind it (word_count, within_language) is
+# dropped from the comparison the moment >1 language is in scope
+# (language_excluded_features()). The band uses fixed,
 # universal thresholds (comparability: cross_language, see bands.py) so it
 # keeps meaning something across languages - this ordinal reading is used ONLY
 # for ranking a deck claim, never as a reported SD gap (that stays on the raw

@@ -55,9 +55,9 @@ def test_bank_vectors_are_one_row_per_bank(df, fd):
     assert len(vectors) == df["bank"].nunique()
 
 
-# Audit finding (HIGH) - comparable_features() ignored `comparability`
-# and compared within_language features (word_count, readability_score, ...) raw
-# across banks captured in different languages. These tests pin the fix.
+# comparable_features() must honour `comparability`: within_language features
+# (word_count, readability_score, ...) cannot be compared raw across banks
+# captured in different languages. These tests pin that.
 def test_within_language_features_stay_in_when_one_language(df, fd):
     """Regression: single-language data (the fixture default) is unaffected."""
     assert df["language"].nunique() == 1
@@ -102,11 +102,10 @@ def test_accounting_reports_the_language_exclusion(fd):
     assert "mixed languages present" in text
 
 
-# Audit finding (MEDIUM, follow-up) - band_redundant_features()
-# used to check "is the raw column present in df", not "does the raw feature
-# actually enter the comparison" - so word_count_band stayed hidden as
-# "redundant" even once word_count itself was excluded for mixing languages,
-# even though the band is precisely the cross-language substitute for it.
+# band_redundant_features() judges on "does the raw feature actually enter the
+# comparison", not "is the raw column present in df". Otherwise word_count_band
+# stays hidden as redundant even once word_count itself is excluded for mixing
+# languages - and the band is precisely the cross-language substitute for it.
 def test_band_becomes_available_once_its_raw_feature_is_language_excluded(fd):
     from comparator.analysis import band_redundant_features, encodable_categoricals
     from comparator.fixtures import build_fixture
@@ -161,9 +160,8 @@ def test_nearest_neighbours_excludes_self(df, fd):
 
 
 def test_nearest_neighbours_accepts_tier(df, fd):
-    # nearest_neighbours used to be the only sibling function
-    # without a tier passthrough - this is a regression guard, not a claim
-    # about which neighbours a restricted tier should return.
+    # A guard that nearest_neighbours passes `tier` through like its sibling
+    # functions - not a claim about which neighbours a restricted tier returns.
     neighbours = nearest_neighbours(df, fd, focus="ing", k=3, tier="core")
     assert "ing" not in neighbours.index
     assert len(neighbours) == 3
@@ -186,10 +184,11 @@ def test_deck_claims_all_return_a_verdict(df, fd):
     assert claims["verdict"].isin({"supported", "not supported", "not testable"}).all()
 
 
-# H1/H2/H5 used to test raw word_count, which language_excluded_features()
-# drops ENTIRELY the moment >1 language is in scope - a real regression hit
-# when English/Dutch pages were added to the real dataset. word_count_band
-# (fixed universal thresholds, cross_language) survives that drop.
+# H1/H2/H5 must test word_count_band, not raw word_count:
+# language_excluded_features() drops the raw feature ENTIRELY the moment >1
+# language is in scope, which is the real dataset as soon as English or Dutch
+# pages are in it. The band (fixed universal thresholds, cross_language)
+# survives that drop.
 def test_deck_claims_word_count_claims_survive_mixed_language_scope(fd):
     mixed = pd.concat([
         build_fixture(fd, banks=["belfius", "kbc", "revolut"], language="fr"),
@@ -205,9 +204,9 @@ def test_deck_claims_word_count_claims_survive_mixed_language_scope(fd):
 
 
 def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
-    # H2 (KBC) used to call .idxmin() on a subset that could be
-    # empty (e.g. no bank tagged "traditional" left in the data), which raises
-    # instead of reporting "not testable" like every other untestable claim.
+    # H2 (KBC) calls .idxmin() on a subset that can be empty - no bank tagged
+    # "traditional" left in the data - which raises instead of reporting
+    # "not testable" like every other untestable claim.
     no_traditional = df.copy()
     no_traditional["bank_category"] = "challenger"
     claims = check_deck_claims(no_traditional, fd)
@@ -215,8 +214,7 @@ def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
     assert h2["verdict"] == "not testable"
 
 
-# New function, new tests - BO-04 (recurring market-wide patterns)
-# had no function behind it before this.
+# BO-04: recurring market-wide patterns.
 def test_recurring_patterns_are_sorted_and_above_the_threshold(df, fd):
     patterns = recurring_patterns(df, fd, min_abs_corr=0.5)
     if patterns.empty:
@@ -237,8 +235,7 @@ def test_recurring_patterns_does_not_list_a_pair_twice(df, fd):
     assert len(pairs) == len(patterns)
 
 
-# New function, new tests - FR-10 (M priority) had no function
-# behind it before this.
+# FR-10 (M priority).
 def test_insight_candidates_are_sorted_and_above_the_threshold(df, fd):
     candidates = insight_candidates(df, fd, min_gap_sd=0.5)
     assert (candidates["gap_sd"].abs() >= 0.5).all()
@@ -291,11 +288,10 @@ def test_profile_for_unknown_bank_fails_loudly(df, fd):
         build_profile(df, "not_a_bank", fd)
 
 
-# Audit finding (HIGH, follow-up) - build_profile() computed
-# within_language means (word_count, second_person_ratio) directly from a
-# bank's own rows, bypassing comparable_features() entirely. KBC's real
-# captures already mix fr/nl pages (scripts/collection_targets.yaml) - these
-# tests pin the fix on that exact scenario.
+# build_profile() must not compute within_language means (word_count,
+# second_person_ratio) straight from a bank's own rows, bypassing
+# comparable_features(). KBC's real captures mix fr/nl pages
+# (scripts/collection_targets.yaml), which is the scenario these pin.
 def test_single_language_bank_profile_is_unaffected(df, fd):
     """Regression: the fixture default (one language per bank) must not change."""
     profile = build_profile(df, "ing", fd)

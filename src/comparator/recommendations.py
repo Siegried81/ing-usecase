@@ -5,7 +5,7 @@ snapshot into a short, ordered list of things ING could change, written by the
 pinned model (D6) and every one of them tied back to a measured feature in the
 report.
 
-New module. The web UI is deliberately read-only, so the only
+The web UI is deliberately read-only, so the only
 place a model is allowed to opine is here: the report says what the pages look
 like, this says what to do about it, and the two never blend - a recommendation
 carries the feature and the gap it was argued from, so a reader can reject it.

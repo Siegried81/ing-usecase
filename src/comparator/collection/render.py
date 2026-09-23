@@ -1,9 +1,8 @@
 """Headless render path - the five features a static fetch can never produce.
 
-New module. that call, and he is right that it is the last
-real gap in collection. Confirmed before building it: `page_height_px` is core,
-required AND not nullable, so `run_collection.py` does not merely degrade on
-real rows today - strict validation FAILS and the run aborts.
+These five are the last real gap in collection. `page_height_px` is core,
+required AND not nullable, so without a render `run_collection.py` does not
+merely degrade on real rows - strict validation FAILS and the run aborts.
 
 The quieter problem is `total_image_area_ratio`. It is nullable, so it passes
 validation as a blank and says nothing - but it is currently the STRONGEST
@@ -259,12 +258,11 @@ def _features_from_measurement(raw: dict) -> dict:
     }
 
 
-# Audit finding (MEDIUM). assert_can_fetch(url) only gated the top-
-# level navigation - every sub-resource page.goto() pulls in (images, scripts,
-# fonts, XHR) loaded with no per-URL robots check at all, even though
-# visual_features.py was patched (15/09) to add exactly this check for a
-# single image fetch. A site whose robots.txt allows the page path but
-# disallows e.g. /api/ would still have it fetched during render.
+# assert_can_fetch(url) gates only the top-level navigation. Every
+# sub-resource page.goto() pulls in (images, scripts, fonts, XHR) would
+# otherwise load with no per-URL robots check at all, so a site whose
+# robots.txt allows the page path but disallows e.g. /api/ would still have
+# it fetched during render.
 #
 # Scoped to SAME-ORIGIN requests only, deliberately: third-party CDN/font/
 # analytics domains are not what LC-01/LC-04 is about (their robots.txt says
@@ -301,13 +299,12 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
     today's behaviour; a target overrides them explicitly in the targets file.
     """
     assert_can_fetch(url)
-    # Audit finding (HIGH). This used to be a fixed value computed
-    # once from the pre-navigation URL, which made _blocks_same_origin_asset a
-    # silent no-op across any redirect that changes host - e.g. n26.com (a
-    # real target in collection_targets.yaml) redirecting to www.n26.com would
-    # make every one of the ACTUAL page's sub-resources compare as
-    # "cross-origin" and skip the robots check entirely, reverting to the
-    # pre-fix behaviour. Tracked dynamically below instead, via
+    # Tracked dynamically, never fixed once from the pre-navigation URL: a
+    # host-changing redirect would otherwise make _blocks_same_origin_asset a
+    # silent no-op - n26.com (a real target in collection_targets.yaml)
+    # redirects to www.n26.com, which would make every one of the ACTUAL
+    # page's sub-resources compare as "cross-origin" and skip the robots
+    # check entirely. Tracked below via
     # page.on("framenavigated"), which fires once the main frame's URL is
     # actually committed - i.e. after redirects resolve and before the
     # resulting document's own sub-resources start loading.
@@ -336,9 +333,9 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
                 # _blocks_same_origin_asset() above. Registered once; it stays
                 # in effect across the retry re-navigation below.
                 def _track_origin(frame) -> None:
-                    # Audit finding (HIGH): keep page_origin in
-                    # sync with whatever host the browser actually committed
-                    # to, so a host-changing redirect doesn't blind the gate.
+                    # Keep page_origin in sync with whatever host the browser
+                    # actually committed to, so a host-changing redirect
+                    # cannot blind the gate.
                     nonlocal page_origin
                     if frame == page.main_frame:
                         page_origin = urlparse(frame.url).netloc

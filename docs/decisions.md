@@ -688,3 +688,38 @@ of the 37 on the axis); ING's nearest neighbour is still Belfius. Nothing else
 in `ing_vs_peers.csv` changed, and all five deck claims keep their verdict.
 Slide 12 and D06 section 2 were updated; D06's old numbers there (3.5 vs 1.10)
 were wrong on both the old and the new basis.
+
+**sieg 23/09, `cta_count` is WITHDRAWN as a finding about ING.** Slide 12 and
+the recommendation deck both reported ING at 1.0 calls to action against a peer
+mean of 6.18, the largest negative gap in the set. That number describes our
+capture, not the page.
+
+Checked against the stored HTML rather than argued: on
+`ing_current_account_pack_en_01` the page's own pack cards — "Open ING Go",
+"Open ING More", "Open ING Extra", "Discover here", "Open your pack today",
+"€19,90" — are absent from the captured file entirely. They are rendered
+client-side after load. The four CTA-shaped elements that ARE in the capture are
+two nav/footer items (correctly excluded as chrome) and the same "Get started"
+twice (correctly deduplicated), which is how three different ING pages all score
+exactly 1.
+
+This is not the keyword problem fixed on 22-23/09; the terms are fine. The
+elements are not in the file, so no counting rule can find them. The peers'
+captures look complete (bunq 22, BNP 13, Beobank 10) and ING's are the longest
+pages in the set (up to 4,961 words, 14,516px), so the capture is rich in text
+and missing exactly the interactive cards.
+
+Consequences: the CTA bullet on slide 12 now states the feature is withheld and
+why; the deck's "where ING is below" is `has_animation` (0.33 vs 0.62, -0.58 SD)
+instead. In the recommendation deck the CTA stat card and the "repeat the
+primary call to action" recommendation were replaced with `page_height_px`
+(11,149px vs 6,412px). `images_have_alt_text` was considered and rejected: the
+flag is all-or-nothing, and on actual coverage ING (38%) sits mid-pack against
+Argenta (45%), BNP (22%) and Hello bank (7%), so reporting it would have
+repeated the same class of error.
+
+STILL OPEN: `outputs/web_recommendations.json` and the web UI were generated
+before this and still carry the CTA recommendation and the -0.92 SD gap.
+Regenerating them is a model call, deliberately not run the evening before the
+presentation. Re-capturing the ING pack pages with a scroll/interaction step is
+the real fix.

@@ -1,6 +1,6 @@
 """Bridge to the Google Trends benchmark - search interest as CONTEXT.
 
-New module. search_interest/ measures weekly Google search
+search_interest/ measures weekly Google search
 interest per bank per product in Belgium. This module joins that to the
 campaign dataset so a bank profile can carry the market attention around its
 product, and degrades to nothing when the exports are absent.
@@ -99,11 +99,11 @@ KNOWN_EVENTS = [
 # Their product_id -> our product_family. Deliberately partial: a mapping that
 # guessed would join a savings page to credit-card searches.
 #
-# SCOPE CHANGE UPSTREAM. the upstream pipeline was narrowed to brand
-# notoriety only: the 29 product sheets were dropped because most smaller banks'
-# product terms flattened to near-zero once normalised in the same request as
-# ING (33 of 43 candidate sheets rejected for coverage). Only brand-level sheets
-# remain, so every key below now maps nothing.
+# The upstream benchmark covers brand notoriety only: its 29 product sheets
+# were dropped because most smaller banks' product terms flatten to near-zero
+# once normalised in the same request as ING (33 of 43 candidate sheets
+# rejected for coverage). Only brand-level sheets exist, so every key below
+# maps nothing.
 #
 # The mapping is KEPT, empty of matches, rather than deleted, because it is the
 # record of a question this project can no longer answer: "is search interest in
@@ -210,13 +210,11 @@ class TrendsContext:
 
     def render(self) -> str:
         if not self.available:
-            # This used to say "the exports are not present", which
-            # is now the wrong diagnosis in the common case. They ARE present -
-            # the upstream pipeline was narrowed to brand notoriety, so there is no
-            # longer a per-product sheet to join a savings or mortgage page to.
-            # Naming the real cause matters: "no data" invites someone to go
-            # looking for a file, "no product sheets exist any more" tells them
-            # the question itself changed.
+            # Name the real cause, not "the exports are not present": they ARE
+            # present, but the upstream benchmark covers brand notoriety only,
+            # so there is no per-product sheet to join a savings or mortgage
+            # page to. "No data" sends someone looking for a missing file;
+            # "no product sheets exist" tells them the question itself changed.
             return (
                 "No per-product search-interest context. the search-interest pipeline was narrowed to "
                 "brand notoriety (brand sheets only, no product sheets), because most smaller "
@@ -330,13 +328,12 @@ def context_or_none(df: pd.DataFrame, export_dir: str | Path = DEFAULT_EXPORT_DI
 # its own, and the guardrails in this file's docstring apply to all of it:
 # context, never an outcome, never regressed onto a page feature.
 #
-# The campaign catalogue that used to live here is GONE. It matched
-# real ad campaigns to detected spikes and scored them, which reads as "this
-# campaign caused this spike" no matter how many caveats surround it - and this
-# project has no performance data to support that reading (PRD 5.2, plan risk
-# P-08). The tab now answers one question only: how much do people search for
-# each bank. the upstream pipeline still holds the catalogue if it is ever wanted
-# back; nothing was deleted upstream.
+# There is deliberately NO campaign catalogue here. Matching real ad campaigns
+# to detected spikes and scoring them reads as "this campaign caused this
+# spike" no matter how many caveats surround it, and this project has no
+# performance data to support that reading (PRD 5.2, plan risk P-08). The tab
+# answers one question only: how much do people search for each bank. The
+# upstream benchmark still holds the catalogue if it is ever wanted back.
 
 
 def display_term(term: str) -> str:

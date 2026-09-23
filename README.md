@@ -14,7 +14,7 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-The comparison covers **52 pages across 14 banks and 6 product families**
+The comparison covers **51 pages across 14 banks and 6 product families**
 (`current_account_pack`, `investment`, `savings_account`, `pension`,
 `mortgage`, `term_account`), with nothing excluded; the positioning view
 compares one family at a time (DR-04), currently 18 current-account pages.
@@ -40,7 +40,7 @@ as the first thing to add for a production build.
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated for every compared bank (real data) |
-| Real captures (D-02) | **52 pages / 14 banks / 6 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
+| Real captures (D-02) | **51 pages / 14 banks / 6 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
 | Rubric scoring | **one judged sheet**, merged into the dataset by `rubric_sheet.py merge`. No second rater and no reliability measure — the chosen scope, stated in `outputs/limitations.md` and listed there as future work |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
@@ -94,9 +94,9 @@ python3 -m pytest tests/ -q                     # 368 passing, no network
   `within_capture_window`).
 - **One pinned model.** `deepseek-flash` labels every bank, so a difference
   between banks is a difference between banks, not between two judges (NFR-02).
-- **Judgement is labelled.** Human-scored, model-scored and measured values look
-  different on screen, and the rubric model writes to its own sheet so the
-  agreement figure keeps measuring agreement.
+- **Judgement is labelled.** Human-scored and measured values look different on
+  screen. The project runs on one judged sheet by one named person, so no
+  reliability figure is claimed - that is stated, not left to be inferred.
 - **No performance data exists here.** Nothing links a design choice to a click, a
   conversion or a sale. Every recommendation is a hypothesis ING could test.
 - **Three signals beside the page data, all fenced off from that claim:** search
@@ -147,7 +147,7 @@ scripts/
   serve_web.py                   backend for the UI: recommendations, generated site, research search, downloads, captures
   check_schema_freeze.py         CLI for the freeze rule (freeze.py)
   build_feature_docs.py          YAML -> markdown
-  rubric_sheet.py                emit / model / merge / agreement / report
+  rubric_sheet.py                emit / merge (one judged sheet, no inter-rater layer)
   reextract_model_fields.py      backfill model_assisted fields from saved HTML, no re-fetch
   fix_rate_fields.py             re-derive rate_shown/rate_value_pct from saved HTML, no LLM call
   fix_cta_count.py               re-derive cta_count/cta_above_fold from saved HTML, no LLM call
