@@ -1,6 +1,6 @@
 """Recompute the features the dictionary marks as `derived`.
 
-steph 16/09, new module. The dictionary says a derived feature is "computed
+New module. The dictionary says a derived feature is "computed
 from other features in this dictionary. Never entered by hand." Collection
 computed them at scrape time and nothing ever recomputed them afterwards - so
 the moment the rubric scores were merged in, `aida_coverage_score` and
@@ -23,7 +23,7 @@ from comparator.schema import parse_list
 AIDA_STAGES = ("aida_attention", "aida_interest", "aida_desire", "aida_action")
 
 # derived feature -> (source feature, function)
-# sieg 17/09, audit finding (LOW): readability_band used to be handled by a
+# Audit finding (LOW): readability_band used to be handled by a
 # local _readability_band() with its own copy of the threshold edges, which
 # also lived in collection/scraper.py - now both use bands.readability_band(),
 # and this rule folds into the same loop as every other band instead of a

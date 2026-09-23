@@ -3,7 +3,7 @@
 
     python3 scripts/import_captures.py --dir <folder> --merge-with data/processed/campaigns.csv
 
-steph 16/09, answering Siegried's mail. Three banks (BNP, Revolut, ING x3) fail
+Answering the handover mail. Three banks (BNP, Revolut, ING x3) fail
 live fetch even from a residential machine, so he saved the pages from a normal
 browser instead. run_collection.py only had a live path; this is the other one.
 

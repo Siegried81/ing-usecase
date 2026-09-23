@@ -4,7 +4,7 @@
     python3 scripts/export_web_report.py --dataset data/processed/campaigns_scored.csv \
         --product-family auto
 
-steph 17/09. The UI reads a single snapshot file and needs no server, which is
+The UI reads a single snapshot file and needs no server, which is
 deliberate: a browser talking to a laptop is the wrong thing to depend on five
 minutes before a stakeholder presentation, and a snapshot is the honest shape
 for a finding anyway - it is true for one dataset at one capture date.
@@ -29,10 +29,10 @@ import _bootstrap  # noqa: F401
 import pandas as pd
 
 from comparator import load_dictionary
-from comparator import ai_score  # sieg 19/09
-from comparator import cross_sell  # sieg 19/09
-from comparator import reputation  # sieg 19/09
-from comparator import rubric  # steve 21/09: the Rubric tab reads real sheets
+from comparator import ai_score
+from comparator import cross_sell
+from comparator import reputation
+from comparator import rubric  # the Rubric tab reads real sheets
 from comparator.analysis import (
     category_comparison,
     check_deck_claims,
@@ -119,7 +119,7 @@ LABELS = {
     "first_time_investor_targeting": "Targets first-time investors",
     "has_comparison_table": "Includes a comparison table",
     "hidden_conditions_behind_free_claim": "“Free” with conditions attached",
-    # sieg 19/09: AI Score axis labels (comparator/ai_score.py).
+    # AI Score axis labels (comparator/ai_score.py).
     "digital": "Digital",
     "trust": "Trust",
     "cross_sell": "Cross-sell",
@@ -128,7 +128,7 @@ LABELS = {
     "simplicity": "Simplicity",
 }
 
-# sieg 19/09: display labels for the target_personas taxonomy (feature_dictionary.yaml).
+# Display labels for the target_personas taxonomy (feature_dictionary.yaml).
 PERSONA_LABELS = {
     "student": "Student",
     "family": "Family",
@@ -140,10 +140,16 @@ PERSONA_LABELS = {
     "mass_market": "Mass market",
 }
 
+# Every bank in the dataset, spelled the way the bank spells itself. A key
+# missing here falls through to .title(), which produced "Hellobank" and "Vdk"
+# on one tab while the Trends tab said "Hello bank!" and "VDK Bank" - two names
+# for one institution inside one deliverable.
 BANK_NAMES = {
     "ing": "ING", "kbc": "KBC", "belfius": "Belfius", "argenta": "Argenta",
     "crelan": "Crelan", "bnp_paribas_fortis": "BNP Paribas Fortis",
     "revolut": "Revolut", "n26": "N26", "bunq": "bunq", "cbc": "CBC",
+    "beobank": "Beobank", "hellobank": "Hello bank!", "keytrade": "Keytrade Bank",
+    "vdk": "VDK Bank",
 }
 
 FAMILY_NAMES = {
@@ -152,11 +158,12 @@ FAMILY_NAMES = {
     "term_account": "Term accounts",
     "mortgage": "Mortgages",
     "investment": "Investment",
+    "pension": "Pension",
     "other": "Other",
 }
 
 
-# steph 17/09: a derived feature inherits the trust of what it is derived FROM.
+# A derived feature inherits the trust of what it is derived FROM.
 # aida_coverage_score is computed, so the dictionary calls it "derived" - but it
 # is computed from four rubric judgements, and it produced the most eye-catching
 # number on the page (ING 0.00 against a peer mean of 2.42) with no caveat
@@ -217,14 +224,14 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     distances = similarity_matrix(compared, fd)
     clusters = cluster_banks(compared, fd, n_clusters=2)
     profiles = build_all(compared, fd)
-    ai_scores = ai_score.score_all(compared)  # sieg 19/09
-    cross_sell_scores = cross_sell.score_all(compared, fd)  # sieg 19/09
-    cross_sell_matrix_df = cross_sell.cross_sell_matrix(compared, fd)  # sieg 19/09
-    # sieg 19/09: optional, degrades to {"available": False} without NEWSAPI_KEY.
+    ai_scores = ai_score.score_all(compared)
+    cross_sell_scores = cross_sell.score_all(compared, fd)
+    cross_sell_matrix_df = cross_sell.cross_sell_matrix(compared, fd)
+    # Optional, degrades to {"available": False} without NEWSAPI_KEY.
     reputation_dashboard = reputation.build_dashboard(
         [(b, bank_name(b)) for b in sorted(compared["bank"].unique())]
     )
-    # sieg 20/09: geo_trends.py is a separate, standalone module (own pytrends
+    # geo_trends.py is a separate, standalone module (own pytrends
     # calls, not a bridge to anyone else's exports) - read its output file if
     # someone has run `python3 scripts/geo_trends.py`, degrade to unavailable
     # if not (that script is optional and rate-limited, never run automatically
@@ -307,9 +314,9 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
             for _, r in separation.head(top_n).iterrows()
         ],
         "banks": [],
-        # sieg 19/09: legend for the AI Score radar - one entry per axis in comparator/ai_score.py.
+        # Legend for the AI Score radar - one entry per axis in comparator/ai_score.py.
         "aiScoreAxes": [{"key": a, "label": label(a)} for a in ai_score.AXES],
-        # sieg 19/09: the cross-sell "graph", flattened to a co-occurrence matrix - see cross_sell.py.
+        # The cross-sell "graph", flattened to a co-occurrence matrix - see cross_sell.py.
         "crossSellMatrix": {
             "products": [FAMILY_NAMES.get(p, p) for p in cross_sell_matrix_df.index],
             "matrix": cross_sell_matrix_df.to_numpy().tolist(),
@@ -317,7 +324,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
                 {"from": FAMILY_NAMES.get(a, a), "to": FAMILY_NAMES.get(b, b), "count": n}
                 for a, b, n in cross_sell.most_associated(cross_sell_matrix_df, n=5)
             ],
-            # sieg 19/09: "confirmed never" (row family has enough pages to trust
+            # "confirmed never" (row family has enough pages to trust
             # the zero) vs "insufficient_data" (too few pages, a 0 is a data gap,
             # not a finding) - see cross_sell.py::never_paired().
             "neverPaired": {
@@ -353,9 +360,9 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         },
         "generated": [],
         "trends": None,
-        "searchInterestLessons": None,  # steph 22/09
-        "reputation": reputation_dashboard,  # sieg 19/09
-        "geoTrends": geo_trends_payload,  # sieg 20/09
+        "searchInterestLessons": None,
+        "reputation": reputation_dashboard,
+        "geoTrends": geo_trends_payload,
     }
 
     for bank, profile in profiles.items():
@@ -379,7 +386,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
                 "backgroundLuminance": _clean(profile["palette"].get("background_luminance")),
             },
             "marketing": {label(k): _clean(v) for k, v in profile["marketing_principles"].items()},
-            # sieg 19/09: personas + AI Score, additive - see comparator/profiles.py and ai_score.py.
+            # Personas + AI Score, additive - see comparator/profiles.py and ai_score.py.
             "personas": [
                 {"persona": p["persona"], "label": PERSONA_LABELS.get(p["persona"], p["persona"]), "share": round(p["share"], 3)}
                 for p in profile["personas"]
@@ -427,7 +434,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
 
     context = build_trends_dashboard(compared, trends_dir)
 
-    # steph 22/09: search interest picks the brands, the measured features say
+    # Search interest picks the brands, the measured features say
     # what they do. Joined on the bank name only - see comparator/benchmarks.py.
     lessons = build_benchmark_lessons(
         compared, fd, (context or {}).get("trajectory"), focus=focus
@@ -501,13 +508,17 @@ def _dictionary_payload(fd) -> list[dict]:
 
 
 def _rubric_payload(fd) -> dict:
-    """The four rater sheets, agreement between them, and the scoring guide.
+    """The judged sheet and the scales it was scored against.
 
     Read from data/rubric/*_scores.csv with the same reader the CLI uses
     (comparator.rubric._read_sheet via read_sheets), so a sheet that flips
     between comma and semicolon parses here exactly as it does in
-    `rubric_sheet.py agreement`. Missing sheets are an honest empty list, never
-    an error - the pipeline runs before anyone has scored anything.
+    `rubric_sheet.py merge`. A missing sheet is an honest empty list, never an
+    error - the pipeline runs before anyone has scored anything.
+
+    Agreement and kappa are gone with the inter-rater layer. One
+    judged sheet, no reliability measure, said plainly rather than implied by
+    an empty table.
     """
     sheets = []
     raters = []
@@ -518,15 +529,13 @@ def _rubric_payload(fd) -> dict:
             name = path.stem.removesuffix("_scores")
             raters.append({
                 "name": name,
-                "label": "Model (its own sheet)" if name == "model" else name.capitalize(),
+                "label": name.capitalize(),
                 "pages": int(len(frame)),
                 "columns": columns,
                 "rows": rows,
             })
             sheets.append(frame)
 
-    agreement_table = rubric.agreement(sheets, fd).table
-    kappa_table = rubric.kappa_agreement(sheets, fd).table
 
     guide = []
     for f in rubric.rubric_features(fd):
@@ -545,9 +554,12 @@ def _rubric_payload(fd) -> dict:
 
     return {
         "raters": raters,
-        "agreement": _frame_rows(agreement_table)[1],
-        "kappa": _frame_rows(kappa_table)[1],
         "features": guide,
+        "reliability": (
+            "Scored by one person. No second rater and no reliability measure - the "
+            "chosen scope of this proof of concept, with single-judge bias recorded "
+            "as future work."
+        ),
     }
 
 
@@ -669,7 +681,7 @@ def main() -> int:
     if t:
         print(f"  trends  : {t['n_series']} weekly points -> {trends_path.name}")
     else:
-        print("  trends  : Dan's export not present - Trends tab will show an empty state")
+        print("  trends  : the export not present - Trends tab will show an empty state")
     print(f"  operators: {operations_path} — {len(operations['dictionary'])} features, "
           f"{len(operations['dataset_table']['rows'])} dataset rows, "
           f"{len(operations['rubric']['raters'])} rubric sheets")

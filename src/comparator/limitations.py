@@ -1,6 +1,6 @@
 """D-09 - Limitations & next steps, read off the dataset rather than remembered.
 
-steph 16/09, new module. The RACI puts D-09 on me, and it is the deliverable
+New module. The RACI puts D-09 on me, and it is the deliverable
 most likely to be written from memory at 11pm on Day 9 - which is exactly when
 the inconvenient limitations get forgotten.
 
@@ -17,7 +17,7 @@ from __future__ import annotations
 
 import pandas as pd
 
-from comparator.analysis import language_excluded_features  # sieg 17/09: accurate comparability note
+from comparator.analysis import language_excluded_features  # Accurate comparability note
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.rubric import rubric_features
 
@@ -105,14 +105,14 @@ def assess(
     if "language" in usable.columns:
         languages = sorted(usable["language"].dropna().unique())
         if len(languages) > 1:
-            # sieg 17/09, FIXED. This used to claim "only the banded versions
+            # FIXED. This used to claim "only the banded versions
             # travel" - false: comparable_features() never substituted the band,
             # it kept comparing the raw within_language value across languages
             # (audit finding, HIGH). Now that comparable_features() actually
             # excludes them (analysis.language_excluded_features()), this note
             # describes what really happens instead of what was supposed to.
             #
-            # sieg 17/09, second pass: dropped the "see charts.md" pointer - it
+            # Second pass: dropped the "see charts.md" pointer - it
             # only exists on the run_analysis.py path. This module is also
             # consumed by export_web_report.py (business web UI), which never
             # writes charts.md, so pointing every reader at it was the same
@@ -136,15 +136,40 @@ def assess(
             f"**{len(missing_rubric)} of {len(rubric_features(fd))} rubric features are unscored** "
             f"({missing_rubric[:4]}{' ...' if len(missing_rubric) > 4 else ''}). "
             "Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion "
-            "levers — is therefore absent from the comparison. Run the Day 5 scoring session "
-            "(`scripts/rubric_sheet.py emit`)."
+            "levers — is therefore absent from the comparison. Score the sheet and merge it "
+            "(`scripts/rubric_sheet.py merge`)."
         )
-    elif "capture_quality" in usable.columns:
-        standing.append(
-            "Rubric features carry the opinion of the people who scored them. Inter-rater "
-            "agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the "
-            "data presentation (NFR-05)."
+    # A feature present but incomplete is silently dropped from the
+    # comparison - bank_vectors() does dropna(axis=1, how="any"), so one bank
+    # missing one value removes that column for every bank. With a single rater
+    # this is the likeliest way the comparison quietly narrows, so it is named.
+    partly_scored = []
+    for feature in rubric_features(fd):
+        if feature.name not in usable.columns:
+            continue
+        filled = usable[feature.name].notna()
+        if filled.any() and not filled.all():
+            banks_missing = sorted(usable.loc[~filled, "bank"].dropna().unique())
+            if banks_missing:
+                partly_scored.append((feature.name, banks_missing))
+    if partly_scored:
+        named = ", ".join(f"`{n}` ({len(b)} bank(s))" for n, b in partly_scored[:4])
+        material.append(
+            f"**{len(partly_scored)} judged feature(s) are scored on some banks but not all** "
+            f"({named}{' ...' if len(partly_scored) > 4 else ''}). A feature missing on even one "
+            "bank is dropped from the cross-bank comparison entirely, so these carry no weight "
+            "in the positioning, the peer gaps or the similarity — they are absent from the "
+            "result rather than partially present in it."
         )
+
+    # Always said, never conditional: it is true of every run of this pipeline,
+    # and it is the sentence a reader needs before they weigh a judged number.
+    standing.append(
+        "The judged features carry the opinion of a single person. No inter-rater "
+        "reliability was measured — that is the chosen scope of this proof of concept, "
+        "not an oversight. Single-judge bias is a question for the real product and is "
+        "listed under next steps."
+    )
 
     # --- one judge per bank --------------------------------------------------
     if "extraction_model" in usable.columns:
@@ -175,15 +200,15 @@ def assess(
         "**No performance data exists in this project.** Nothing links a design choice to a click, "
         "a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause "
         "(PRD 5.2). Google Trends search interest is available as *context* and does not change "
-        "this: it measures what people searched for, not what a campaign achieved, it covers only "
-        "the banks in Dan's export rather than every bank compared here, and the pages captured "
-        "are today's pages rather than the pages live during any older spike.",
+        "this: it measures what people searched for, not what a campaign achieved, it says which "
+        "brand was looked up and never why, and the pages captured here are today's pages "
+        "rather than the pages live during any earlier movement in search interest.",
         "Only the open web is covered. Social media, in-app and email banners are out of scope and "
         "may well be where a bank's real communication happens.",
         "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice "
         "and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an "
         "element. Both are exact about geometry and approximate about meaning.",
-        # steph 17/09: this used to say flatly "not reproducible", on the strength of
+        # This used to say flatly "not reproducible", on the strength of
         # five runs that disagreed. Measured since: our half is deterministic, and
         # four of those five runs had re-collected in between, so the data - and
         # therefore the derived targets and the prompt - legitimately changed.
@@ -199,7 +224,7 @@ def assess(
         "whether the campaign would perform better (plan risk P-08).",
     ]
 
-    # sieg 17/09 audit, point 1: --product-family drops every bank with no page
+    # Audit, point 1: --product-family drops every bank with no page
     # in the chosen family, and the OUTPUT FILES never said so - Belfius (other)
     # and BNP (mortgage) simply were not in bank_profiles.json. The console said
     # it; the artefacts a reader actually opens did not.
@@ -222,6 +247,7 @@ def assess(
         "uncollectable_banks": uncollectable,
         "families_pooled": int(usable["product_family"].nunique()) if "product_family" in usable else 0,
         "unscored_rubric_features": missing_rubric,
+        "partly_scored_rubric_features": [n for n, _ in partly_scored],
         "family": getattr(scope, "family", None) if scope is not None else None,
         "dropped_banks": list(getattr(scope, "dropped_banks", [])) if scope is not None else [],
         "n_banks": n_banks,
@@ -234,15 +260,16 @@ def assess(
     }
 
 
-# sieg 17/09 audit, point 2: this was a frozen list. It still told the team to
+# Audit, point 2: this was a frozen list. It still told the team to
 # "collect a usable ING page" and described "two of six captures defeated by a
 # consent wall" long after ING was fixed and the dataset had grown - stale advice
 # sitting inside a file whose whole premise is that it describes the data in
 # hand. Built from the assessment now, like everything else here.
 STANDING_NEXT_STEPS = [
-    ("Run the Day 5 scoring session", "Two independent human raters, then report agreement "
-     "alongside the model's own sheet. Until then the judgement-based dimensions carry one "
-     "model's opinion and nothing to check it against."),
+    ("Measure single-judge bias", "Every judged feature in this run carries one person's "
+     "reading. A second independent rater on a sample, with agreement reported, is what would "
+     "turn these dimensions from a defensible opinion into a measured one. Out of scope here, "
+     "and the first thing to add for a production build."),
     ("Make generation attributable", "Store the generated artefact and its prompt hash and "
      "evaluate that, rather than regenerating on every run."),
     ("Extend beyond the open web", "Social media and in-app banners, using the same feature "
@@ -279,7 +306,8 @@ def next_steps(assessment: dict) -> list[tuple[str, str]]:
     if assessment.get("unscored_rubric_features"):
         steps.append((
             f"Score the {len(assessment['unscored_rubric_features'])} unscored rubric feature(s)",
-            "Vision-only features cannot be model-scored; they need a human with the screenshot.",
+            "These are judged from the rendered page, so they need a person with the "
+            "screenshot open; nothing can infer them from the text.",
         ))
 
     return steps + STANDING_NEXT_STEPS
@@ -297,7 +325,7 @@ def render(assessment: dict, *, synthetic: bool = False) -> str:
         f"{assessment['n_usable_banks']} bank(s)**, from {assessment['n_pages']} collected.",
         "",
     ]
-    # sieg 17/09 audit, point 3: this headline counts the WHOLE dataset, while
+    # Audit, point 3: this headline counts the WHOLE dataset, while
     # charts.md and bank_profiles.json count what survived the product-family
     # filter. Two honest views of one run, but nothing said so, and side by side
     # they read as contradictory.

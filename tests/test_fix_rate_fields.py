@@ -1,4 +1,4 @@
-"""Tests for the rate-field-only re-extraction script (sieg 20/09).
+"""Tests for the rate-field-only re-extraction script.
 
 Pure parsing, no network/LLM call at all - nothing to mock.
 """

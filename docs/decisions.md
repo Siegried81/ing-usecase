@@ -594,3 +594,40 @@ sheet's context columns. The dataset is now **50 pages / 14 banks / 6 product
 families** (`current_account_pack` 16, `investment` 9, `savings_account` 9,
 `pension` 8, `mortgage` 5, `term_account` 3) - down from 7 families, not because
 a page was dropped, but because it was never a seventh family to begin with.
+
+---
+
+**22/09, the project runs on one judged sheet, and the repository was cleaned
+for handover.** Two changes, taken together because the second is the
+consequence of the first.
+
+*Scope.* The rubric is scored by one named person. The inter-rater layer is
+removed end to end: `agreement()`, `kappa_agreement()`, `disagreement_table()`,
+the model-written rubric sheet, the `agreement`/`report`/`model` subcommands,
+the four surplus sheets, the Day 5 disagreement document and the agreement
+tables in the Rubric tab. `_consensus()` became `_single_value()` — averaging
+two scores was only ever safe because `agreement()` reported the spread it hid,
+and that reporting is gone.
+
+No reliability figure is produced, and the deliverable says so in those words
+rather than implying the question was asked: the judged features carry one
+person's opinion, no inter-rater reliability was measured, that is the chosen
+scope of a proof of concept, and single-judge bias is listed under next steps
+as the first thing a production build should add. The frozen dictionary's
+`rubric.requirement` was rewritten to match and re-frozen — the data contract
+now describes what the project does rather than what it does not.
+
+What is being demonstrated is unchanged and is the point: given concrete,
+sourced input about real banks, the pipeline produces a defensible structure
+and usable proposals. The merge now prints what it joined — rows matching no
+page, pages left unscored, per-feature fill — because a silent drop there is
+how a rater's work goes missing. `limitations.py` also names judged features
+scored on some banks but not all: `bank_vectors()` drops a column that is
+missing anywhere, so those carry no weight at all rather than partial weight.
+
+*Cleanup.* `trends-benchmark/` is now `search_interest/`, named for what it
+measures rather than whose tool it was. Personal initials and dates were
+removed from comments across 85 files — git carries authorship, and a reader
+outside this team cannot use them. Dropped: three `.bak` datasets, a local
+AI-tool config, 3 MB of one-off browser-audit screenshots, and the Day 6 gate
+notes.

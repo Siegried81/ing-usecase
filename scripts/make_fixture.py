@@ -4,7 +4,7 @@
     python3 scripts/make_fixture.py
 
 Unblocks analysis work before the scraper exists (Project Plan, Day 2). Replaced
-by Dan's real rows - never merged with them.
+by the real rows - never merged with them.
 """
 
 from __future__ import annotations

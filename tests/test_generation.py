@@ -1,4 +1,4 @@
-"""Tests for step 5 - campaign generation and its evaluation (steph 15/09).
+"""Tests for step 5 - campaign generation and its evaluation.
 
 No test here calls a model. The parts worth testing are the target derivation,
 the HTML rendering, and the scoring loop - everything that has to be right for
@@ -64,7 +64,7 @@ def campaign():
     )
 
 
-# sieg 17/09, audit finding (MEDIUM) - layout_archetype's Literal and the
+# Audit finding (MEDIUM) - layout_archetype's Literal and the
 # persuasion-lever list in SYSTEM_PROMPT duplicate config/feature_dictionary.yaml's
 # `values:` with nothing to catch drift, unlike rubric_model.py's TEXT_SCORABLE/
 # VISION_ONLY (guarded by test_rubric_model.py). These pin the same guarantee
@@ -80,7 +80,7 @@ def test_prompt_lever_list_matches_the_dictionary(fd):
         assert lever in SYSTEM_PROMPT
 
 
-# sieg 17/09, audit finding (LOW) - MEASURED_FEATURES is a hand-maintained
+# Audit finding (LOW) - MEASURED_FEATURES is a hand-maintained
 # tuple with nothing checking its names actually exist in the dictionary; a
 # typo or a rename would silently degrade to "not measured" (row.get(...)
 # returns None) rather than erroring.
@@ -96,7 +96,7 @@ def test_both_variants_are_built(df, fd):
     assert targets["on_brand"].specs and targets["challenger_style"].specs
 
 
-# sieg 15/09: new test - cta_above_fold/disclaimer_present are unconditionally
+# New test - cta_above_fold/disclaimer_present are unconditionally
 # appended as rubric-driven specs, but were not excluded from the data-derived
 # "movable" list. Didn't trigger on the fixture (neither landed in the top_n),
 # but real data could put cta_above_fold there (it's a real traditional/
@@ -229,7 +229,7 @@ def test_challenger_brief_carries_competitor_patterns_but_on_brand_does_not(df, 
     assert not build_brief(df, targets["on_brand"], fd).competitor_patterns
 
 
-# --- the focus bank can be absent (steph 16/09) -------------------------------
+# --- the focus bank can be absent -------------------------------
 def test_on_brand_is_impossible_without_the_bank_own_page(df, fd):
     """There is nothing to be 'on brand' with if the brand has no usable capture.
     Inventing one would be exactly the over-claiming risk P-08 warns about."""
@@ -254,7 +254,7 @@ def test_on_brand_is_possible_in_the_normal_case(df, fd):
     assert brief.can_be_on_brand is True
 
 
-# --- reproducibility, measured (sieg 17/09 audit, point 4) --------------------
+# --- reproducibility, measured (Audit, point 4) --------------------
 def test_the_prompt_is_byte_stable_on_unchanged_data(df, fd):
     """Our half of the pipeline is deterministic. Rebuilding the brief on the
     same dataset must give the same prompt, so any differing campaign is

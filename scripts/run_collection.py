@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Collect real campaign pages into a dataset row per the feature dictionary.
 
-sieg 14/09, new script. Fixed sequential chain per page - compliance check ->
+New script. Fixed sequential chain per page - compliance check ->
 scrape -> visual features -> LLM-assisted features -> assemble -> validate ->
 append. One bank failing (blocked by robots.txt, network error, bad LLM
 response) is logged and skipped, never stops the rest of the run - same
@@ -27,13 +27,13 @@ import _bootstrap  # noqa: F401
 import yaml
 from dotenv import load_dotenv
 
-# sieg 16/09: load environment variables via python-dotenv.
+# Load environment variables via python-dotenv.
 load_dotenv()
 
 from comparator.collection.compliance import ScrapingNotAllowed
 from comparator.collection.quality import assess_capture
 
-# steph 16/09, BNP Paribas Fortis - diagnosed, not worked around.
+# BNP Paribas Fortis - diagnosed, not worked around.
 #   robots.txt           200, and no Disallow covers the target path
 #   robots.txt itself    200 (static file, different edge config)
 #   every other path     503 from server: AkamaiNetStorage, including / and
@@ -68,7 +68,7 @@ def collect_one(
     bank, product_family, language = target["bank"], target["product_family"], target["language"]
     page_id = f"{bank}_{product_family}_{language}_{page_index:02d}"
 
-    # steph 15/09: the snapshot IS the reproducibility guarantee (DR-03, DR-06) -
+    # The snapshot IS the reproducibility guarantee (DR-03, DR-06) -
     # feature extraction has to be re-runnable without re-fetching anyone's site.
     # snapshot_html_path is core, required and not nullable, so a row without it
     # fails validation anyway.
@@ -91,7 +91,7 @@ def collect_one(
     bank_dir.mkdir(parents=True, exist_ok=True)
     html_path.write_text(scraped["_html"], encoding="utf-8")
 
-    # steph 16/09: measure colour on the RENDERED PAGE when we have one. The
+    # Measure colour on the RENDERED PAGE when we have one. The
     # dictionary defines these features on source: screenshot, and measuring the
     # hero photo instead gave brand_colour_share = 0.0 for KBC and Revolut and
     # null for Belfius - their brand colour is in buttons and headers, not in the
@@ -149,7 +149,7 @@ def collect_one(
     if model_fields:
         row.update(model_fields.model_dump())
 
-    # steph 16/09: judge the capture before it becomes a row. Two of the first
+    # Judge the capture before it becomes a row. Two of the first
     # six real pages were an empty shell and a maintenance notice; both passed
     # every other check because their numbers were in range.
     quality = assess_capture(row, scraped.get("_page_text", ""))
@@ -194,7 +194,7 @@ def main() -> None:
     import pandas as pd
 
     df = pd.DataFrame(rows)
-    # sieg 14/09: validate WITHOUT raising here - a static_fetch run is
+    # Validate WITHOUT raising here - a static_fetch run is
     # expected to be missing the headless-render-only fields (page_height_px,
     # total_image_area_ratio, ...), so a strict core-tier validation WILL
     # fail today. Report it plainly instead of crashing, so Dan can see

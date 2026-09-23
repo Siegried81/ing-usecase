@@ -1,4 +1,4 @@
-"""Tests for the model-assisted re-extraction script (sieg 19/09).
+"""Tests for the model-assisted re-extraction script.
 
 No real HTTP/LLM call - _call_llm is mocked, per this repo's rule against
 real network calls in tests.

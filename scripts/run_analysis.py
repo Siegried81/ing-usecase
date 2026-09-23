@@ -19,9 +19,9 @@ import _bootstrap  # noqa: F401
 import pandas as pd
 
 from comparator import load_dictionary
-from comparator import ai_score  # sieg 19/09
-from comparator import cross_sell  # sieg 19/09
-from comparator import reputation  # sieg 19/09
+from comparator import ai_score
+from comparator import cross_sell
+from comparator import reputation
 from comparator.analysis import (
     category_comparison,
     family_options,
@@ -53,7 +53,7 @@ DEFAULT_OUTDIR = Path("outputs")
 SYNTHETIC_BANNER = (
     "=" * 78 + "\n"
     "  SYNTHETIC DATA — every value below is invented. These are NOT findings.\n"
-    "  Replace with Dan's real captures before anything here reaches a deck.\n"
+    "  Replace with the real captures before anything here reaches a deck.\n"
     + "=" * 78
 )
 
@@ -77,7 +77,7 @@ def main() -> int:
     )
     parser.add_argument(
         "--trends-dir", type=Path, default=None,
-        help="Dan's trends-benchmark/export directory. Adds search-interest CONTEXT "
+        help="search_interest/export directory. Adds search-interest CONTEXT "
              "for ING/KBC/CBC. Skipped silently when absent.",
     )
     parser.add_argument(
@@ -106,11 +106,11 @@ def main() -> int:
     # LLM-generated rows are scored, never mixed into the bank comparison.
     banks_df = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
 
-    # steph 16/09: a maintenance page and an unrendered shell are honest
+    # A maintenance page and an unrendered shell are honest
     # measurements of the wrong page. Left in, they would characterise a bank
     # from content it never showed - see collection/quality.py.
     # --- restrict to one product family (DR-04) ------------------------------
-    # steph 16/09: this was carried as a limitation on every run. It does not
+    # This was carried as a limitation on every run. It does not
     # have to be one - it can be a filter.
     _header("Product families available")
     options = family_options(banks_df[banks_df.get("capture_quality", "ok") != "unusable"]
@@ -144,7 +144,7 @@ def main() -> int:
     _header("2. Bank profiles")
     profiles = build_all(banks_df, fd)
     markdown = render_all_markdown(profiles, fd)
-    # sieg 17/09 audit, point 1: this file listed 7 banks while the dataset had 9,
+    # Audit, point 1: this file listed 7 banks while the dataset had 9,
     # with nothing on the page to say why. The scope belongs on the artefact, not
     # only in the console output of the run that produced it.
     scope_note = ""
@@ -174,14 +174,14 @@ def main() -> int:
         print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
 
     # --- 3. where the dictionary's features go -------------------------------
-    # steph 15/09, after Sieg asked why a chart said "50 features" with 97 in the
+    # After Sieg asked why a chart said "50 features" with 97 in the
     # dictionary. The reduction was legitimate but invisible; now it is printed
     # on every run and carried next to the figure in charts.md.
     _header("3. Feature accounting")
     accounting = feature_accounting(banks_df, fd)
     print(render_accounting(accounting))
 
-    # --- 3b. AI Score (sieg 19/09) --------------------------------------------
+    # --- 3b. AI Score --------------------------------------------
     # Deterministic, from features already in the dataset - no new LLM call.
     # See comparator/ai_score.py's module docstring for the formulas and caveats.
     _header("3b. AI Score (Digital / Trust / Cross-sell / Personalisation / Innovation / Simplicity)")
@@ -191,7 +191,7 @@ def main() -> int:
         print(f"  {bank:<20} {rendered}")
     pd.DataFrame(scores).T.to_csv(args.outdir / "ai_score.csv", index_label="bank")
 
-    # --- 3c. Cross-sell (sieg 19/09) -------------------------------------------
+    # --- 3c. Cross-sell -------------------------------------------
     # cross_sold_products / possible other products, plus the product co-
     # occurrence matrix - see comparator/cross_sell.py for the exact formulas.
     _header("3c. Cross-sell score and product matrix")
@@ -278,7 +278,7 @@ def main() -> int:
     claims.to_csv(args.outdir / "deck_claims.csv", index=False)
 
     # --- 9. the chart companion ----------------------------------------------
-    # steph 15/09: every figure ships with the mechanic behind it and its limits,
+    # Every figure ships with the mechanic behind it and its limits,
     # generated from the same objects the charts are drawn from so the prose
     # cannot drift away from the picture.
     _header("9. Chart companion")
@@ -296,10 +296,10 @@ def main() -> int:
 
     # --- 12. persuasion levers ------------------------------------------------
     # --- 10. D-09 limitations ------------------------------------------------
-    # steph 16/09: I am R on D-09. Generated from the dataset so an inconvenient
+    # I am R on D-09. Generated from the dataset so an inconvenient
     # limitation cannot be quietly forgotten while writing the deck on Day 9.
     _header("10. Limitations (D-09)")
-    # steph 16/09: the UNFILTERED frame. Passing the filtered one made D-09 stop
+    # The UNFILTERED frame. Passing the filtered one made D-09 stop
     # mentioning the excluded banks entirely - the limitation disappeared because
     # we had acted on it, which is exactly backwards.
     assessment = assess(all_banks_df, fd, focus=args.focus, scope=scope)
@@ -311,10 +311,10 @@ def main() -> int:
             print(f"  [{label}] {flat[:150]}")
     print(f"  -> {args.outdir / 'limitations.md'}")
 
-    # --- 11. search-interest context (Dan's Google Trends benchmark) ---------
-    # steph 16/09: CONTEXT, never an outcome. See src/comparator/trends.py for
+    # --- 11. search-interest context (the Google Trends benchmark) ---------
+    # CONTEXT, never an outcome. See src/comparator/trends.py for
     # why joining this to page features would be the worst error available to us.
-    _header("11. Search interest context (Dan's trends benchmark)")
+    _header("11. Search interest context (the search-interest benchmark)")
     trends_ctx = (context_or_none(banks_df, args.trends_dir) if args.trends_dir
                   else context_or_none(banks_df))
     if trends_ctx is None:
@@ -323,13 +323,13 @@ def main() -> int:
         print(trends_ctx.render())
         (args.outdir / "search_interest_context.md").write_text(
             "# Search interest context\n\n"
-            "> Google Trends, via Dan's trends-benchmark. **Context, not performance.**\n"
+            "> Google Trends, via the search_interest pipeline. **Context, not performance.**\n"
             "> This is what people searched for, not what any campaign achieved, and the\n"
-            "> pages captured are today's pages - not the pages live during an older spike.\n\n"
+            "> pages captured are today's pages - not the pages live during any earlier movement in search interest.\n\n"
             "```\n" + trends_ctx.render() + "\n```\n", encoding="utf-8")
 
     # --- 11b. bank reputation (NewsAPI, optional) -----------------------------
-    # sieg 19/09: same optional/degrade-gracefully shape as the trends step
+    # Same optional/degrade-gracefully shape as the trends step
     # above. Themes only, never sentiment - see comparator/reputation.py.
     _header("11b. Bank reputation (NewsAPI, optional)")
     rep_banks = [(b, b) for b in sorted(banks_df["bank"].unique())]

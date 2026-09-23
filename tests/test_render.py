@@ -1,4 +1,4 @@
-"""Tests for the headless render path (steph 15/09).
+"""Tests for the headless render path.
 
 No test here launches a browser - the pure functions carry the logic worth
 testing, and the browser-dependent parts are exercised through mocks so the
@@ -106,7 +106,7 @@ def test_robots_gate_runs_before_the_browser_launches():
     browser.assert_not_called(), "the browser must never start for a disallowed URL"
 
 
-# sieg 17/09, audit finding (MEDIUM): only the top-level navigation was gated;
+# Audit finding (MEDIUM): only the top-level navigation was gated;
 # same-origin sub-resources loaded during page.goto() were not. These pin the
 # fix without launching a browser - _blocks_same_origin_asset is the pure
 # decision the route handler makes.

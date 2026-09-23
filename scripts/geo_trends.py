@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Google Trends regional breakdown (Brussels/Flanders/Wallonia) per bank.
 
-sieg 20/09, new script - regional Google Trends breakdown (see
+New script - regional Google Trends breakdown (see
 comparator/geo_trends.py docstring for the full picture). Requires pytrends:
 pip install -r requirements-geo.txt
 

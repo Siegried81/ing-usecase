@@ -1,6 +1,6 @@
 """Cross-sell score and product co-occurrence matrix.
 
-sieg 19/09, new module - the "cross-sell score/graph" from the AI Marketing
+New module - the "cross-sell score/graph" from the AI Marketing
 Intelligence brief, built on `cross_sold_products` (feature_dictionary.yaml,
 extracted by the same single structured call as `target_personas`). No new
 LLM call here either - the score and matrix below are pure arithmetic over
@@ -20,7 +20,7 @@ two questions directly: the largest cells are "products most associated", the
 zero cells (see `never_paired`) are "missed opportunities" / products never
 offered together.
 
-sieg 19/09, `never_paired` split into confirmed vs insufficient_data. With
+`never_paired` split into confirmed vs insufficient_data. With
 only 1-2 real pages in a product family (mortgage, pension, savings_account
 today), a "0" in that row is almost always "we never had the chance to see
 it", not "these two products are genuinely never combined" - the same small-N
@@ -37,7 +37,7 @@ from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.schema import parse_list
 
 
-MIN_PAGES_FOR_CONFIDENT_NEVER = 3  # sieg 19/09: same threshold as analysis.py's MIN_PEERS_FOR_SD
+MIN_PAGES_FOR_CONFIDENT_NEVER = 3  # Same threshold as analysis.py's MIN_PEERS_FOR_SD
 
 
 def _taxonomy(fd: FeatureDictionary) -> list[str]:

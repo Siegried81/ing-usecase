@@ -1,6 +1,6 @@
 """Deterministic (automatic) feature extraction from a campaign page's HTML.
 
-sieg 14/09, new module - Dan's workstream had no code at all before this; the
+New module - that workstream had no code at all before this; the
 analysis chain existed, the collection layer didn't. This covers every field
 tagged extraction: automatic in config/feature_dictionary.yaml that can be
 produced from a STATIC fetch (requests + BeautifulSoup), and says so plainly
@@ -18,7 +18,7 @@ WHAT THIS DOES NOT DO, ON PURPOSE (read before trusting a row):
     dictionary defines - close in spirit, not the same number. Flagged in
     the returned row so it isn't mistaken for the real thing.
   - readability_score implements the three formulas the dictionary names
-    (Flesch/Kandel-Moles/Flesch-Douma). sieg 15/09: VERIFIED against
+    (Flesch/Kandel-Moles/Flesch-Douma). VERIFIED against
     published sources - Flesch Reading Ease (en): 206.835 - 1.015*ASL -
     84.6*ASW; Kandel-Moles (fr, 1958): 207 - 1.015*ASL - 73.6*ASW;
     Flesch-Douma (nl, 1960): 206.84 - 0.93*ASL - 77*ASW. All three match the
@@ -49,7 +49,7 @@ logger = logging.getLogger(__name__)
 REQUEST_TIMEOUT_S = 15
 
 # --- per-language word lists -------------------------------------------------
-# sieg 14/09: starter lists, not exhaustive - extend as real pages surface
+# Starter lists, not exhaustive - extend as real pages surface
 # terms these miss. Matches the dictionary's own examples (second_person_ratio,
 # urgency_marker_count) almost word for word.
 _SECOND_PERSON = {
@@ -67,7 +67,7 @@ _URGENCY_MARKERS = {
     "fr": ["offre limitee", "offre limitée", "jusqu'au", "temporaire", "seulement"],
     "en": ["only until", "limited offer", "limited time", "today only"],
 }
-# sieg 20/09: added alongside _rate()'s fix - see that function's docstring.
+# Added alongside _rate()'s fix - see that function's docstring.
 _RATE_KEYWORDS = {
     "nl": ["rente", "rentevoet", "interest", "tarief", "jaarlijkse"],
     "fr": ["taux", "interet", "intérêt", "rendement", "tae"],
@@ -81,7 +81,7 @@ _LOYALTY_REFERRAL_TERMS = [
 _CTA_KEYWORDS = (
     "discover", "open", "apply", "get started", "sign up", "learn more",
     "decouvrir", "découvrir", "ouvrir", "demander", "en savoir plus",
-    # sieg 15/09: FIXED - verified live on kbc.be, this list only had the FR
+    # FIXED - verified live on kbc.be, this list only had the FR
     # infinitives, so real buttons ("Ouvrez un compte à vue", "Ouvrez dès
     # maintenant...") scored cta_count=0. Banking CTAs are near-universally
     # the imperative in French, not the infinitive ("ouvrir" is not a
@@ -92,7 +92,7 @@ _CTA_KEYWORDS = (
 )
 
 # Standard-form readability coefficients (words/sentence, syllables/word).
-# sieg 15/09: VERIFIED against published sources (see module docstring) -
+# VERIFIED against published sources (see module docstring) -
 # these are the exact Flesch / Kandel-Moles / Flesch-Douma coefficients, not
 # an approximation.
 _READABILITY_COEFFS = {
@@ -103,7 +103,7 @@ _READABILITY_COEFFS = {
 _READABILITY_FORMULA_NAME = {
     "nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en",
 }
-# sieg 17/09: was a local duplicate of derive.py's _READABILITY_EDGES -
+# Was a local duplicate of derive.py's _READABILITY_EDGES -
 # consolidated into bands.readability_band(), see that module for why.
 
 
@@ -141,7 +141,7 @@ def _count_terms(text: str, terms) -> int:
     return sum(1 for t in tokens if t in term_set)
 
 
-# steph 21/09: navigation and footer chrome is excluded from cta_count.
+# Navigation and footer chrome is excluded from cta_count.
 _CTA_CHROME_TAGS = {"nav", "footer"}
 _CTA_CHROME_ROLES = {"navigation", "contentinfo"}
 
@@ -149,7 +149,7 @@ _CTA_CHROME_ROLES = {"navigation", "contentinfo"}
 def _in_chrome(el) -> bool:
     """True when the element sits in navigation or footer chrome.
 
-    steph 21/09: cta_count counted every keyword-matching <a>/<button> in the
+    Cta_count counted every keyword-matching <a>/<button> in the
     document, so a page's score was largely a count of how often its menu and
     footer repeat "En savoir plus"-style links. Measured on the current dataset:
     Crelan scored 42 of which 20 were distinct labels repeated up to 4 times in
@@ -174,7 +174,7 @@ def _is_hidden(el) -> bool:
 def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
     """Distinct calls to action, ignoring chrome (see _in_chrome).
 
-    steph 21/09: now counts distinct (label, href) pairs, which is what the
+    Now counts distinct (label, href) pairs, which is what the
     dictionary says the feature is - "Number of distinct call-to-action buttons
     or links". Before, four links to four product pages all labelled "En savoir
     plus" counted as four, and a link repeated in a menu counted once per
@@ -201,7 +201,7 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
 
 
 def _has_animation(soup: BeautifulSoup, html: str) -> bool:
-    # dan 21/09: was soup.find(["video", "source"]). A bare <source> is almost
+    # Was soup.find(["video", "source"]). A bare <source> is almost
     # never video - it is <picture><source srcset> serving webp/avif, which is
     # a STATIC responsive image. Measured across 16 real captures: 217 of 219
     # <source> tags sat inside <picture>, so this branch reported "this page
@@ -223,7 +223,7 @@ def _has_animation(soup: BeautifulSoup, html: str) -> bool:
 
 
 def _hero_image_url(soup: BeautifulSoup, page_url: str | None = None):
-    """sieg 15/09: FIXED - verified live on belfius.be, whose hero has no
+    """FIXED - verified live on belfius.be, whose hero has no
     og:image and falls back to the first <img src>, which is a RELATIVE path
     ("/common/FR/.../BD-Pension.jpg"). That was handed straight to
     requests.get() in visual_features.extract_colours(), which raised
@@ -247,7 +247,7 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
     candidates = soup.find_all(attrs={"class": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
     candidates += soup.find_all(attrs={"id": re.compile(r"disclaimer|legal|small-?print|fine-?print", re.I)})
 
-    # heuristic 2, sieg 15/09: FIXED - verified live on n26.com, which has
+    # heuristic 2, FIXED - verified live on n26.com, which has
     # neither (0 matches on heuristic 1) but uses real footnotes: <sup>1</sup>
     # markers in the body referencing paragraphs elsewhere that start with
     # "1 ...". Restricted to <sup> whose own text is 1-2 digits only (a
@@ -277,7 +277,7 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
 def _rate(text: str, language: str):
     """Find a percentage that genuinely describes an interest/savings rate.
 
-    sieg 20/09: FIXED - previously matched the FIRST "N%" anywhere on the
+    FIXED - previously matched the FIRST "N%" anywhere on the
     page, which caught marketing copy ("100% en ligne", "100% digital")
     before any real rate. Verified in the wild: BNP Paribas Fortis, KBC (x3)
     and ING all extracted rate_value_pct=100.00 identically, which is
@@ -295,10 +295,10 @@ def _rate(text: str, language: str):
 def flatten_declarative_shadow_roots(html: str) -> tuple[str, int]:
     """Unwrap <template shadowrootmode=...> into its parent. Returns (html, count).
 
-    steph 16/09. The live path flattens shadow DOM with JavaScript in the page
+    The live path flattens shadow DOM with JavaScript in the page
     (collection/render.py). A browser "save page as complete" writes the same
     content out as DECLARATIVE shadow DOM instead - <template shadowrootmode>
-    blocks - and BeautifulSoup does not walk into them, so Siegried's manually
+    blocks - and BeautifulSoup does not walk into them, so the manually
     saved ING pages parsed as 14 words while carrying 4,858 inside templates.
 
     Exactly the bug we already fixed once, arriving through a different door.
@@ -343,9 +343,9 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
 
     title_tag = soup.find("title")
 
-    # sieg 14/09: named so the raw field and its _band field always agree
+    # Named so the raw field and its _band field always agree
     avg_sentence_length = round(word_count / sentence_count, 2)
-    # sieg 15/09: FIXED - was dividing by word_count (hundreds of words), so
+    # FIXED - was dividing by word_count (hundreds of words), so
     # every real page landed near 0 and got banded "rarely_direct" regardless
     # of actual tone (verified: a page saturated with vous/votre still scored
     # 0.024). The dictionary defines this as "share of personal pronouns that
@@ -362,18 +362,18 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
     return {
         # tone & messaging
         "word_count": word_count,
-        "word_count_band": bands.word_count_band(word_count),  # sieg 14/09
+        "word_count_band": bands.word_count_band(word_count),
         "sentence_count": sentence_count,
-        "sentence_count_band": bands.sentence_count_band(sentence_count),  # sieg 14/09
+        "sentence_count_band": bands.sentence_count_band(sentence_count),
         "avg_sentence_length": avg_sentence_length,
-        "avg_sentence_length_band": bands.avg_sentence_length_band(avg_sentence_length),  # sieg 14/09
+        "avg_sentence_length_band": bands.avg_sentence_length_band(avg_sentence_length),
         "readability_score": readability_score,
         "readability_formula": readability_formula,
         "readability_band": readability_band,
         "second_person_ratio": second_person_ratio,
-        "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio),  # sieg 14/09
+        "second_person_ratio_band": bands.second_person_ratio_band(second_person_ratio),
         "first_person_plural_count": first_person_plural_count,
-        "first_person_plural_band": bands.first_person_plural_band(first_person_plural_count),  # sieg 14/09
+        "first_person_plural_band": bands.first_person_plural_band(first_person_plural_count),
         "question_count": text.count("?"),
         "urgency_marker_count": sum(text.lower().count(term) for term in _URGENCY_MARKERS[language]),
         "numeric_claim_count": len(re.findall(r"\d+[.,]?\d*\s?%|\d+[.,]?\d*\s?(?:eur|€)", text, flags=re.I)),
@@ -382,7 +382,7 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
         "rate_value_pct": rate_value_pct,
         "disclaimer_present": disclaimer_present,
         "disclaimer_word_share": disclaimer_word_share,
-        "disclaimer_word_share_band": bands.disclaimer_word_share_band(disclaimer_word_share),  # sieg 14/09
+        "disclaimer_word_share_band": bands.disclaimer_word_share_band(disclaimer_word_share),
         # visuals
         "image_count": image_count,
         "hero_image_present": hero_url is not None,
@@ -393,9 +393,9 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
         "cta_count": cta_count,
         "cta_above_fold": cta_above_fold_guess,  # heuristic, see docstring - not a real viewport check
         "text_to_image_ratio": text_to_image_ratio,  # APPROXIMATION, see module docstring
-        "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio),  # sieg 14/09
+        "text_to_image_ratio_band": bands.text_to_image_ratio_band(text_to_image_ratio),
         "has_comparison_table": soup.find("table") is not None,
-        # banking-domain (sieg 14/09 addendum, automatic-tagged ones only)
+        # banking-domain (Addendum, automatic-tagged ones only)
         "mentions_loyalty_or_referral": any(term in text.lower() for term in _LOYALTY_REFERRAL_TERMS),
         "images_have_alt_text": images_have_alt_text,
         "meta_title": title_tag.get_text(strip=True) if title_tag else None,
@@ -423,7 +423,7 @@ def scrape(
 ) -> dict:
     """Compliant fetch + full automatic extraction for one page.
 
-    steph 15/09: added the headless path alongside the static one. Five features
+    Added the headless path alongside the static one. Five features
     (page_height_px, hero_image_area_ratio, total_image_area_ratio,
     cta_contrast_ratio, above_fold_element_count) are geometry - they need a
     browser and were hardcoded None until now. page_height_px is core, required
@@ -439,7 +439,7 @@ def scrape(
     The rendered DOM is also what gets parsed, so a JavaScript-built page is read
     as a reader sees it rather than as an empty shell (PRD risk R-02).
 
-    sieg 15/09: merge with steph's render path kept page_url=url on BOTH
+    Merge with the render path kept page_url=url on BOTH
     branches below - render.py doesn't resolve relative asset URLs itself,
     so a headless-rendered page can still hand back a relative hero <img src>
     just like a static one did on belfius.be (see _hero_image_url()).
@@ -450,7 +450,7 @@ def scrape(
     rendered = None
     if method in {"auto", "headless", "headful"}:
         try:
-            # steph 21/09: real, visible Chrome for hosts that refuse headless
+            # Real, visible Chrome for hosts that refuse headless
             # clients; same single request, same robots gate.
             extra: dict = {"wait_until": wait_until}
             if timeout_ms:

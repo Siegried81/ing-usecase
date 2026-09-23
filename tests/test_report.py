@@ -1,4 +1,4 @@
-"""Tests for the generated chart companion (steph 15/09).
+"""Tests for the generated chart companion.
 
 The point of generating this file rather than writing it is that the prose
 cannot drift away from the figures. These tests check that it doesn't.
@@ -117,7 +117,7 @@ def test_no_significance_language_anywhere(report):
 
 def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_path):
     """The PNG is what ends up in a deck. A chart titled 'Where does ING sit?'
-    with no ING on it reads as a finding (steph 16/09)."""
+    with no ING on it reads as a finding."""
     from comparator.charts import positioning_chart
 
     without = df[df["bank"] != "ing"]
@@ -129,7 +129,7 @@ def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_pat
 
 
 def test_limitations_report_the_rows_that_were_excluded(fd):
-    """steph 16/09: passing the already-filtered frame made D-09 stop mentioning
+    """Passing the already-filtered frame made D-09 stop mentioning
     the excluded banks - the limitation vanished because we had acted on it."""
     from comparator.fixtures import build_fixture
     from comparator.limitations import assess, render
@@ -144,7 +144,7 @@ def test_limitations_report_the_rows_that_were_excluded(fd):
     assert "503" in text
 
 
-# sieg 17/09, FIXED. This note used to say "only the banded versions travel",
+# FIXED. This note used to say "only the banded versions travel",
 # which was false - comparable_features() never substituted the band, it kept
 # comparing the raw within_language value across languages (audit finding,
 # HIGH). Pin the corrected wording so it can't silently drift back to the

@@ -9,8 +9,8 @@ Status: draft, based on what is actually in the repo as of 18/09 (19/09 weekend,
 
 **sieg 18/09:** table below and the Argenta/Crelan/bunq bullet in section 4
 were still describing 15/09 while collection moved past them - all 9 banks
-now have a real capture. See `docs/day6_gate_discussion_notes.md` for the
-per-bank pipeline detail this summarizes.
+now have a real capture. See `docs/decisions.md` for the dated record of
+what changed and when.
 
 **sieg 18/09, open questions status (PRD Appendix, Q-01 to Q-07).** Every one
 of these was closed with a **working assumption**, not an ING-confirmed
@@ -83,7 +83,7 @@ collection actually finishing. Every row's `collection_method` is
 `manual_capture` (the browser-save path in the README's "when a site will
 not serve the pipeline" section), not the live headless scrape — that
 includes BNP Paribas Fortis, whose CDN-blocking issue (see
-`day6_gate_discussion_notes.md`) is resolved this way, not by getting past
+`docs/decisions.md`) is resolved this way, not by getting past
 the block.
 
 Two real gaps, not "not yet configured":

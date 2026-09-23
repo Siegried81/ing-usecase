@@ -27,7 +27,7 @@ export async function fetchRecommendations(): Promise<RecommendationPayload> {
 }
 
 export async function generateRecommendations(
-  includeReputation = false, // sieg 21/09
+  includeReputation = false,
 ): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(
     await fetch("/api/recommendations/generate", {

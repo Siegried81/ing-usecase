@@ -1,4 +1,4 @@
-"""Tests for the search-interest benchmark lessons (steph 22/09).
+"""Tests for the search-interest benchmark lessons.
 
 The thing worth pinning here is the boundary: search interest chooses WHICH
 brands to look at, the measured features say WHAT they do, and the module must

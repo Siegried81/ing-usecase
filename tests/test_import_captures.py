@@ -1,4 +1,4 @@
-"""Tests for importing manually saved captures (steph 16/09)."""
+"""Tests for importing manually saved captures."""
 
 from __future__ import annotations
 

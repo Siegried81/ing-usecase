@@ -133,7 +133,7 @@ def positioning_chart(
     ax.legend(handles=handles, frameon=False, fontsize=9, loc="lower right",
               bbox_to_anchor=(1, 1.005), labelcolor=INK_SECONDARY, ncols=2)
 
-    # steph 16/09: the focus bank can be legitimately absent (unusable capture).
+    # The focus bank can be legitimately absent (unusable capture).
     # A chart titled "Where does ING sit?" with no ING on it reads as a finding
     # to anyone who sees the PNG without the companion text - and the PNG is the
     # thing that ends up in a deck.
@@ -166,7 +166,7 @@ def deviation_chart(
     neutral zero. Poles keep the category hues used everywhere else, so a reader
     who has seen one chart can read this one.
     """
-    # steph 16/09: only rank gaps that mean something. A feature whose peers all
+    # Only rank gaps that mean something. A feature whose peers all
     # sit at zero because extraction failed produces an enormous SD gap and would
     # otherwise top this chart.
     usable = deviations[deviations["reportable"]] if "reportable" in deviations.columns else deviations

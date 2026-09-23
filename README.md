@@ -14,23 +14,25 @@ from it. A two-week proof of concept for ING DACI / Customer AI.
 
 ## Status
 
-<!-- sieg 22/09: refreshed again - the 21/09 paragraph described the
-current_account_pack-only scope (14 banks/16 pages) and a 387-test suite,
-both superseded the same day by the scope restoration (decisions.md, "sieg
-21/09, scope restored..."), by tests added since, and by the belfius_other_fr_01
-relabel below. Rubric progress now moves fast enough within a day that this
-paragraph is not the place to chase exact counts - see data/rubric/*_scores.csv. -->
-**22/09.** The comparison covers **50 pages across 14 banks and 6 product
-families** (`current_account_pack`, `investment`, `savings_account`,
-`pension`, `mortgage`, `term_account`), with nothing excluded. `other` is
-gone as a category: `belfius_other_fr_01` was Belfius's pension page,
-mislabeled - relabelled in place (same page_id, same capture, `product_family`
-corrected), not re-collected. BNP Paribas Fortis is in via `method: headful`
+The comparison covers **52 pages across 14 banks and 6 product families**
+(`current_account_pack`, `investment`, `savings_account`, `pension`,
+`mortgage`, `term_account`), with nothing excluded; the positioning view
+compares one family at a time (DR-04), currently 18 current-account pages.
+Mostly Belgian French, plus two English pages and one Dutch — so the eight
+`within_language` features are excluded from the comparison rather than
+compared across languages. BNP Paribas Fortis is in via `method: headful`
 (its edge returns HTTP 503 to every headless client but serves a real headful
-browser); there is no manual-capture-only bank left. **Rubric scoring is
-split 2-raters-per-bank across Dan, Siegried and Stephane** rather than all
-three scoring all 50 pages - see `docs/pipeline.md` for the current split
-and the open question on rubric rows whose `page_id` predates a re-collection.
+browser); there is no manual-capture-only bank left.
+
+**The rubric runs on one judged sheet**: Siegried scores the 13
+judgement-based features against the written scales in
+`data/rubric/SCORING_GUIDE.md`, and that sheet is the only human input the
+comparator reads. There is no second rater and no inter-rater reliability
+figure. That is the chosen scope of this proof of concept, not an oversight —
+the point being demonstrated is that the pipeline turns concrete inputs about
+real banks into a defensible structure and usable proposals. Single-judge
+bias is real, it is named in `outputs/limitations.md`, and it is listed there
+as the first thing to add for a production build.
 
 | Deliverable | State |
 | --- | --- |
@@ -38,8 +40,8 @@ and the open question on rubric rows whose `page_id` predates a re-collection.
 | Dataset schema + validator (D-04) | built and tested; `campaigns_scored.csv` passes |
 | Analysis skeleton (D-05) | runs end to end on real captures |
 | Bank profile cards | generated for every compared bank (real data) |
-| Real captures (D-02) | **50 pages / 14 banks / 6 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
-| Rubric scoring (Day 5) | **three independent human raters** (sieg 22/09: Stephane's scores are no longer machine-proposed/adopted - verified 0 of 13 overlapping pages identical to the model). Split 2-raters-per-bank across Dan/Siegried/Stephane (see `docs/pipeline.md`); exact per-rater counts move within the day, see `data/rubric/*_scores.csv`. The model's own sheet is never a pre-fill |
+| Real captures (D-02) | **52 pages / 14 banks / 6 product families** collected; every bank in the PRD list that publishes a comparable page has one, including BNP Paribas Fortis (`headful`) and Keytrade (`headful` + a lighter navigation wait) |
+| Rubric scoring | **one judged sheet**, merged into the dataset by `rubric_sheet.py merge`. No second rater and no reliability measure — the chosen scope, stated in `outputs/limitations.md` and listed there as future work |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
 Test suite: **401 passing, 1 skipped** (sieg 22/09). Pinned model per D6: `deepseek-chat` in decisions.md,
@@ -68,9 +70,6 @@ Stephane (D6 owner), not resolved here.
 | [`docs/D06_business_narrative.md`](docs/D06_business_narrative.md) | **business narrative (D-06)** — draft insights for the ING audience; figures pending re-verification after the 21/09 scope change |
 | [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | **generated** from `config/feature_dictionary.yaml` by `scripts/build_feature_docs.py` — never edit by hand |
 | [`data/rubric/SCORING_GUIDE.md`](data/rubric/SCORING_GUIDE.md) | how a human rater fills the 13 judgement-based features |
-| [`docs/day5_scoring_disagreement.md`](docs/day5_scoring_disagreement.md) | **generated** from the scoring sheets by `scripts/rubric_sheet.py report` |
-| [`docs/day5_scoring_disagreement_template.md`](docs/day5_scoring_disagreement_template.md) | the template that generated file renders |
-| [`docs/day6_gate_discussion_notes.md`](docs/day6_gate_discussion_notes.md) | Day 6 gate notes and the per-bank pipeline status |
 | [`docs/stakeholder_questions_18-09.md`](docs/stakeholder_questions_18-09.md) | the ten questions put to Diego and Victor |
 | [`docs/web_ui_proposal.md`](docs/web_ui_proposal.md) | the accepted UI proposal — superseded by `web/README.md` |
 | [`web/README.md`](web/README.md) | the business web UI: four tabs, recommendations, generated site + explanation mode |
@@ -128,10 +127,9 @@ src/comparator/
   site_generator.py              10-page ING-styled site from selected recommendations
   report.py                      the generated chart companion
   collection/                    compliance, scraper, headless render, LLM, quality gate
-  rubric.py                      scoring sheets, merge, inter-rater agreement
+  rubric.py                      the judged sheet: emit, and merge into the dataset
   limitations.py                 D-09, generated from the dataset
-  trends.py                      bridge to Dan's Google Trends benchmark (Trends tab)
-  rubric_model.py                model as a third rater (text-inferable only)
+  trends.py                      bridge to the Google Trends benchmark (Trends tab)
   derive.py                      recompute derived features after any change
   banks.py                       canonical bank -> category facts
   ai_score.py                    6-axis composite score per bank, deterministic, no LLM call
@@ -165,16 +163,19 @@ outputs/                         charts and tables — tracked, regenerated ever
 
 ## Next
 
-1. **Finish the rubric properly.** Two independent humans now overlap on 10 pages
-   (Siegried, Dan), so the first real agreement number exists; the work left is
-   coverage — Dan's remaining pages, the 14 rows whose screenshots are not on this
-   machine, and tightening the wording for the six features below the 60% bar.
-2. **Extend collection coverage** — the manual-capture path is no longer needed for
-   BNP Paribas Fortis or Revolut (both captured), but the rubric still has to reach
-   the six banks added this week, whose judged features are blank rather than guessed.
-3. **Re-run the analysis after scoring**, then the web export, so the profile
+1. **Complete the judged sheet.** Siegried is scoring every page against the
+   written scales. The gap to close is coverage, not reliability: a page with no
+   score leaves its judged features blank, and a judged feature missing on even
+   one bank is dropped from the comparison entirely.
+2. **Import the captures the sheet already points at** — several scored page ids
+   match captures that sit in `data/raw/` but were never added to the dataset, so
+   those rows join nothing and are silently ignored by the merge.
+3. **Measure single-judge bias** — out of scope here, and the first thing a
+   production build should add: a second independent rater on a sample, with
+   agreement reported.
+4. **Re-run the analysis after scoring**, then the web export, so the profile
    cards carry judged features rather than model-judged ones.
-4. **Keep the tracked-data decision under review** — `data/raw/`, `data/processed/`
+5. **Keep the tracked-data decision under review** — `data/raw/`, `data/processed/`
    and `outputs/` are committed by team decision (21/09), so a collection or
    analysis run now produces a large diff, including binary charts and screenshots.
    Revisit if the diffs stop being reviewable; the `.gitignore` rules are one

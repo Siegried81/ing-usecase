@@ -1,10 +1,10 @@
-"""Tests for the NewsAPI reputation signal (sieg 19/09).
+"""Tests for the NewsAPI reputation signal.
 
 All network calls are mocked - requests.get for NewsAPI, _call_llm for the
 single theme-classification call - per this repo's rule against real HTTP in
 tests.
 
-sieg 21/09: fetch_headlines/_mentions now carry {"title", "url"} pairs instead
+Fetch_headlines/_mentions now carry {"title", "url"} pairs instead
 of bare title strings, so a notable headline can link back to its source -
 tests updated for the new shape, plus new coverage for the title->url lookup.
 """
@@ -36,7 +36,7 @@ class _FakeResponse:
 
 @pytest.fixture(autouse=True)
 def _isolated_cache(monkeypatch, tmp_path):
-    """sieg 21/09: bank_snapshot() now reads/writes a same-day cache file - point every
+    """Bank_snapshot() now reads/writes a same-day cache file - point every
     test at a throwaway path so none of them touch the real data/processed/ cache."""
     monkeypatch.setattr(reputation, "CACHE_PATH", tmp_path / "reputation_cache.json")
 
@@ -56,7 +56,7 @@ def test_fetch_headlines_extracts_titles_and_urls():
 
 
 def test_fetch_headlines_keeps_the_first_url_seen_when_deduplicating():
-    # sieg 21/09: the same story arrives translated/syndicated - dedup by
+    # The same story arrives translated/syndicated - dedup by
     # title (case/whitespace-insensitive) must not drop the URL that came
     # with the first occurrence.
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
@@ -70,7 +70,7 @@ def test_fetch_headlines_keeps_the_first_url_seen_when_deduplicating():
 
 
 def test_fetch_headlines_drops_non_belgian_sources_even_when_the_language_matches():
-    # sieg 21/09: regression test - a Dutch accountancy trade site
+    # Regression test - a Dutch accountancy trade site
     # (accountancyvanmorgen.nl) matched language=nl and inflated a bank's theme
     # count with a story that was never about the Belgian entity.
     with patch("comparator.reputation.requests.get", return_value=_FakeResponse(
@@ -86,7 +86,7 @@ def test_fetch_headlines_drops_non_belgian_sources_even_when_the_language_matche
 def test_is_belgian_source():
     assert reputation._is_belgian_source("https://www.lesoir.be/some-article") is True
     assert reputation._is_belgian_source("https://www.brusselstimes.com/some-article") is True
-    # sieg 21/09: regression - lavenir.net (L'Avenir, a real Belgian regional paper) was
+    # Regression - lavenir.net (L'Avenir, a real Belgian regional paper) was
     # wrongly dropped for not being a .be domain before it was added to the allowlist.
     assert reputation._is_belgian_source("https://www.lavenir.net/regions/huy-waremme/1") is True
     assert reputation._is_belgian_source("https://www.accountancyvanmorgen.nl/1") is False
@@ -137,7 +137,7 @@ def test_bank_snapshot_fills_every_theme_even_when_the_model_only_named_some():
 
 
 def test_bank_snapshot_theme_headlines_carry_their_url_and_cover_every_theme():
-    # sieg 21/09: the hover popup needs the full per-theme article list, not just a count.
+    # The hover popup needs the full per-theme article list, not just a count.
     with patch("comparator.reputation.fetch_headlines",
                return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
         with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
@@ -153,7 +153,7 @@ def test_bank_snapshot_theme_headlines_carry_their_url_and_cover_every_theme():
 
 
 def test_bank_snapshot_attaches_the_source_url_to_each_notable_headline():
-    # sieg 21/09: the URL is looked up locally against what was fetched, never
+    # The URL is looked up locally against what was fetched, never
     # produced by the model.
     with patch("comparator.reputation.fetch_headlines",
                return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
@@ -179,7 +179,7 @@ def test_bank_snapshot_gives_a_null_url_when_the_model_did_not_copy_verbatim():
 
 
 def test_bank_snapshot_reuses_a_same_day_cached_result_without_refetching():
-    # sieg 21/09: newsapi.org's free tier is 100 req/24h - iterating on unrelated
+    # Newsapi.org's free tier is 100 req/24h - iterating on unrelated
     # code within the same day must not re-spend it on banks already fetched.
     fetch = patch("comparator.reputation.fetch_headlines",
                   return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}])

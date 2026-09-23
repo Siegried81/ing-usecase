@@ -39,7 +39,7 @@ extraction_methods:
     description: Scored by a human against a written scale with defined levels.
     trust: medium
     owner: Siegried
-    requirement: Scored independently by >=2 people on a sample; disagreement reported (NFR-05).
+    requirement: Scored by one named human against the written scale. No inter-rater reliability is measured - single-judge bias is out of scope for this proof of concept and is listed as future work.
   model_assisted:
     description: Produced by an LLM or vision model with the prompt and model version recorded.
     trust: medium

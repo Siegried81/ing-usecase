@@ -1,6 +1,6 @@
 """Google Trends geographic breakdown, by Belgian region.
 
-sieg 20/09, new module. The kickoff brief's "intérêt géographique" (geographic
+New module. The kickoff brief's "intérêt géographique" (geographic
 interest) axis was never built: the existing Google Trends work pulls search
 interest for geo=BE as a whole and never breaks it down by region, so there is
 no view of whether a bank's search interest concentrates in Brussels, Flanders
@@ -10,7 +10,7 @@ existing Trends work, to cover that gap.
 WHY A SEPARATE REQUIREMENTS FILE, NOT requirements.txt: pytrends is an
 unofficial, rate-limited Google Trends client this project has deliberately
 kept out of the main pipeline's pinned dependencies (see requirements.txt,
-sieg 18/09 note, for the same reasoning applied to the existing Trends work).
+Note, for the same reasoning applied to the existing Trends work).
 See requirements-geo.txt; CI does not install it, so every test here either
 mocks pytrends or skips when it is not installed.
 

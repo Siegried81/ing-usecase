@@ -1,4 +1,4 @@
-"""Tests for the thin, standalone Finnhub lookup (sieg 19/09).
+"""Tests for the thin, standalone Finnhub lookup.
 
 See comparator/market_context.py's module docstring for why this stays a
 single function rather than a pipeline step - most banks in scope aren't

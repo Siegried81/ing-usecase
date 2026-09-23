@@ -22,13 +22,13 @@ from dotenv import load_dotenv
 
 REPO = Path(__file__).resolve().parent
 
-# sieg 20/09: this file lives at the repo root (for share.streamlit.io, which
+# This file lives at the repo root (for share.streamlit.io, which
 # needs a top-level entry point), so `comparator` isn't importable without
 # putting src/ on the path first - same technique as scripts/_bootstrap.py.
 sys.path.insert(0, str(REPO / "src"))
 from comparator import research  # noqa: E402
 
-# sieg 20/09: the Research page reads SEMANTIC_SCHOLAR_API_KEY via os.getenv()
+# The Research page reads SEMANTIC_SCHOLAR_API_KEY via os.getenv()
 # inside research.search_papers() - without this, a real local .env key was
 # silently never read when running `streamlit run streamlit_app.py` directly
 # (every other entry point loads .env via scripts/_bootstrap.py; this file has
@@ -39,7 +39,7 @@ DATA = REPO / "data" / "processed"
 OUTPUTS = REPO / "outputs"
 RUBRIC = REPO / "data" / "rubric"
 CONFIG = REPO / "config"
-KBCH = REPO / "trends-benchmark"
+KBCH = REPO / "search_interest"
 
 st.set_page_config(page_title="Banking Campaigns Comparator", layout="wide")
 
@@ -73,7 +73,7 @@ def load_dictionary() -> dict:
 
 @st.cache_data
 def load_rubric_sheet(name: str) -> pd.DataFrame | None:
-    # sieg 20/09: these sheets get hand-edited in Excel between sessions, and
+    # These sheets get hand-edited in Excel between sessions, and
     # Excel's CSV export defaults to ";" under a French/Belgian locale - this
     # file has already flipped between "," and ";" more than once. Sniffing
     # the header line rather than assuming either survives the next re-save.
@@ -119,7 +119,7 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
     scope = profiles.get("_scope", {})
     profs = profiles.get("profiles", {})
 
-    # sieg 20/09, FIXED: this used to replace a missing df with an empty
+    # FIXED: this used to replace a missing df with an empty
     # DataFrame() and then call df["bank"] on it below - an empty frame has no
     # "bank" column, so that raised KeyError and took the whole page down.
     # Every metric/loop below now degrades to "N/A" instead of crashing.
@@ -175,7 +175,7 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
 def _csv_or_missing(name: str, note: str, **kwargs) -> pd.DataFrame | None:
     """Load a real outputs/*.csv, or say plainly it hasn't been generated yet.
 
-    sieg 20/09: every tab in this page used to show hand-typed numbers that
+    Every tab in this page used to show hand-typed numbers that
     looked like a real run but were not read from anywhere - the exact
     "results from this dataset are NOT findings" problem the rest of this repo
     goes out of its way to avoid. Missing is now an honest empty state, never
@@ -201,7 +201,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         st.caption("0 = traditional centroid, 1 = challenger centroid. Computed from real captures.")
         png = OUTPUTS / "01_positioning.png"
         if png.is_file():
-            st.image(str(png), width="stretch")  # sieg 20/09: use_column_width deprecated as of streamlit 1.54.0 (dependabot bump) - width="stretch" is its replacement
+            st.image(str(png), width="stretch")  # use_column_width deprecated as of streamlit 1.54.0 (dependabot bump) - width="stretch" is its replacement
         else:
             st.info("`outputs/01_positioning.png` not found. Run `python3 scripts/run_analysis.py`.")
 
@@ -288,7 +288,7 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
             )
         _dict_table(palette)
 
-    # sieg 20/09: tabs instead of five stacked st.json() blobs - same content,
+    # Tabs instead of five stacked st.json() blobs - same content,
     # far less scrolling, and a table reads faster than a raw JSON dump.
     tabs = st.tabs(["Imagery", "Layout", "Tone", "Value proposition", "Marketing principles"])
     for tab, key in zip(tabs, ("imagery", "layout", "tone", "value_proposition", "marketing_principles")):
@@ -307,7 +307,7 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
         pngs = list(bank_dir.glob("*.png"))
         if pngs:
             st.subheader("Capture")
-            st.image(str(pngs[0]), caption=f"{pngs[0].name}", width="stretch")  # sieg 20/09: see note above
+            st.image(str(pngs[0]), caption=f"{pngs[0].name}", width="stretch")  # See note above
 
 
 # ── page 4: Rubric ───────────────────────────────────────────────────────
@@ -371,7 +371,7 @@ def page_data(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 
             families = sorted(df["product_family"].dropna().unique())
             picked_families = st.multiselect("Filter by family", families, default=families)
 
-        # sieg 20/09, FIXED: these two filters were built and shown but never
+        # FIXED: these two filters were built and shown but never
         # applied - picking a bank/family did nothing to the table below it.
         filtered = df[df["bank"].isin(picked_banks) & df["product_family"].isin(picked_families)]
         st.caption(f"Showing {len(filtered)} of {len(df)} pages.")
@@ -454,13 +454,13 @@ def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
     st.title("📈 Trends (Google)")
     st.caption(
         "Google Trends Belgium — ING vs competitors. "
-        "Separate pipeline in `trends-benchmark/` (Streamlit + pytrends)."
+        "Separate pipeline in `search_interest/` (Streamlit + pytrends)."
     )
 
     st.subheader("Dedicated dashboard")
     st.markdown("""
     The Trends pipeline has its own Streamlit app:
-    `cd trends-benchmark && streamlit run app.py`
+    `cd search_interest && streamlit run app.py`
     """)
 
     st.subheader("What's in the repo")
@@ -473,13 +473,13 @@ def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
                 key=f"trends_dl_{f.name}",
             )
     else:
-        st.info("No trends-benchmark/export found in this repo checkout.")
+        st.info("No search_interest/export found in this repo checkout.")
 
 
 # ── page 9: Research ─────────────────────────────────────────────────────
 
 def page_research(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
-    # sieg 20/09: wires comparator/research.py into the dashboard. Deliberately
+    # Wires comparator/research.py into the dashboard. Deliberately
     # not a per-bank metric or an automatic per-insight citation - the module's
     # own docstring explains why (no defined metric, would be inventing scope).
     # This stays what the module was built for: an on-demand search box for
@@ -519,7 +519,7 @@ def page_research(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG
 # ── main ─────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    # sieg 20/09, simplified: every page function now takes the same (df,
+    # Simplified: every page function now takes the same (df,
     # profiles) signature, whether it uses both, one or neither - the old
     # needs_df/needs_profiles branching was one fragile hand-maintained rule
     # away from calling a page with the wrong number of arguments the next

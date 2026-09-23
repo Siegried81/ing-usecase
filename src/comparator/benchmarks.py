@@ -1,6 +1,6 @@
 """What the search-interest benchmarks actually do on their pages.
 
-steph 22/09, new module. The Trends tab picks three brands worth studying -
+New module. The Trends tab picks three brands worth studying -
 the traditional bank with the largest share of brand search, the one whose
 share rose fastest, and the measurable challenger. It picks them on attention
 alone and says so: Google Trends knows who was looked up, never why.
@@ -52,11 +52,13 @@ ROLE_LABELS = {
     "challenger": "the challenger with enough search volume to measure",
 }
 
-CAVEAT = (
-    "These three brands were selected on search attention alone. What follows is "
-    "what their pages measurably do differently - not a demonstration that those "
-    "choices are why they are searched for. This data cannot show that."
-)
+def _caveat(count: int) -> str:
+    """Counted, not written: the selection is valid from two brands up."""
+    return (
+        f"These {count} brands were selected on search attention alone. What follows is "
+        "what their pages measurably do differently - not a demonstration that those "
+        "choices are why they are searched for. This data cannot show that."
+    )
 
 
 def _direction(value: float) -> str:
@@ -212,5 +214,5 @@ def build_benchmark_lessons(
         "banks": banks,
         "common": common,
         "divergent": divergent,
-        "caveat": CAVEAT,
+        "caveat": _caveat(len(banks)),
     }

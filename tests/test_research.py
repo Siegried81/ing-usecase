@@ -1,4 +1,4 @@
-"""Tests for the standalone Semantic Scholar lookup (sieg 19/09).
+"""Tests for the standalone Semantic Scholar lookup.
 
 Not wired into the pipeline - see comparator/research.py's module docstring.
 """

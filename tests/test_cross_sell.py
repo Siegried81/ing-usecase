@@ -1,4 +1,4 @@
-"""Tests for the cross-sell score and product co-occurrence matrix (sieg 19/09)."""
+"""Tests for the cross-sell score and product co-occurrence matrix."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ def test_score_bank_is_none_when_the_column_is_missing():
 
 def test_score_bank_is_none_when_every_page_cross_sells_nothing(fd):
     rows = pd.DataFrame({"cross_sold_products": [format_list([]), format_list([])]})
-    # sieg 19/09: an explicit empty list still counts as "measured, ratio 0",
+    # An explicit empty list still counts as "measured, ratio 0",
     # not "unmeasured" - dropna() keeps it, so the mean is 0.0, not None.
     assert cross_sell.score_bank(rows, fd) == 0.0
 
@@ -92,7 +92,7 @@ def test_never_paired_excludes_the_diagonal_and_any_seen_pair(fd):
     assert ("mortgage", "pension") in result["confirmed"]  # 3 pages, enough to trust the zero
 
 
-# sieg 19/09: the exact scenario that prompted the split - 1 page in a family
+# The exact scenario that prompted the split - 1 page in a family
 # is not enough to call its zero cells a real "never".
 def test_never_paired_flags_a_thin_family_as_insufficient_data(fd):
     df = pd.DataFrame({

@@ -1,4 +1,4 @@
-"""Tests for the collection module - sieg 14/09, new module, new tests.
+"""Tests for the collection module - New module, new tests.
 
 Network-touching functions (compliance.check_robots, scraper.scrape,
 visual_features.extract_colours' requests.get, llm_extractor's provider
@@ -65,7 +65,7 @@ def _robots_response(status: int = 200, text: str = ""):
 
 
 def test_check_robots_fails_closed_on_read_error():
-    # steph 16/09: was mocking RobotFileParser.read(). compliance.py now fetches
+    # Was mocking RobotFileParser.read(). compliance.py now fetches
     # robots.txt with requests instead - same stack as the page fetch, because
     # urllib had no CA bundle and every HTTPS robots.txt raised
     # CERTIFICATE_VERIFY_FAILED, silently skipping all six real targets. The
@@ -151,7 +151,7 @@ def test_extract_finds_the_rate():
 
 
 def test_extract_ignores_percentages_that_are_not_a_rate():
-    # sieg 20/09: regression test for the "100% online" false-positive bug -
+    # Regression test for the "100% online" false-positive bug -
     # a bare percentage with no rate keyword nearby must not be reported as a rate.
     html = "<html><body><p>100% online, open your account in minutes.</p></body></html>"
     result = extract(html, language="en")
@@ -170,7 +170,7 @@ def test_extract_counts_ctas_by_keyword():
 
 
 def test_responsive_picture_sources_are_not_animation():
-    # dan 21/09: regression - _has_animation() used to match a bare <source>,
+    # Regression - _has_animation() used to match a bare <source>,
     # so <picture><source srcset> (a STATIC responsive image, standard on every
     # modern site) counted as motion. Measured on 16 real captures: 217 of 219
     # <source> tags were inside <picture>. This is what deck claim H3 ("ING is
@@ -198,7 +198,7 @@ def test_video_still_counts_as_animation():
 
 
 def test_css_keyframes_still_count_as_animation():
-    # dan 21/09, team decision: CSS motion stays in scope. The dictionary
+    # Team decision: CSS motion stays in scope. The dictionary
     # defines animated_asset_count as "GIF, video, Lottie, CSS keyframe
     # animation", so the detector must keep matching it or the code and the
     # contract disagree. Pinned as a test so the <picture> fix above cannot be
@@ -211,7 +211,7 @@ def test_css_keyframes_still_count_as_animation():
 
 
 def test_extract_counts_french_imperative_ctas():
-    # sieg 15/09: regression - verified live on kbc.be, real buttons say
+    # Regression - verified live on kbc.be, real buttons say
     # "Ouvrez un compte à vue" (imperative), not "ouvrir" (infinitive, the
     # only form that used to be in _CTA_KEYWORDS) - scored cta_count=0.
     html = """<html><body><p>Texte.</p>
@@ -223,7 +223,7 @@ def test_extract_counts_french_imperative_ctas():
 
 
 def test_cta_count_deduplicates_repeated_links():
-    # steph 21/09: the same label+href repeated is one call to action, not four.
+    # The same label+href repeated is one call to action, not four.
     # This is the shape Crelan's product lists had ("En savoir plus sur X" x4).
     html = """<html><body>
     <a href="/habitation">En savoir plus sur habitation</a>
@@ -267,7 +267,7 @@ def test_extract_detects_comparison_table():
 
 
 def test_second_person_ratio_is_share_of_pronouns_not_of_all_words():
-    # sieg 15/09: was dividing by word_count, so a page saturated with
+    # Was dividing by word_count, so a page saturated with
     # direct-address pronouns still scored ~0.02 and banded "rarely_direct"
     # regardless of actual tone - the denominator must be total personal
     # pronouns (second + first-person-plural), matching the dictionary's own
@@ -294,7 +294,7 @@ def test_extract_meta_title():
     assert result["meta_title"] == "ING - Savings - EN"
 
 
-# sieg 15/09: regression - verified live on belfius.be, whose hero image has
+# Regression - verified live on belfius.be, whose hero image has
 # no og:image and falls back to a RELATIVE <img src>. That used to be handed
 # straight to requests.get() in extract_colours(), which raised MissingSchema
 # (silently swallowed there) - the row just got null colours, no error.
@@ -312,7 +312,7 @@ def test_hero_image_url_without_a_page_url_stays_relative():
     assert result["_hero_image_url"] == "/images/hero.jpg"
 
 
-# sieg 15/09: regression - verified live on n26.com, which has no
+# Regression - verified live on n26.com, which has no
 # disclaimer/legal-classed element but uses real footnotes (<sup>N</sup> in
 # the body, a matching "N ..." paragraph elsewhere) - the class/id heuristic
 # alone scored disclaimer_present=False despite real disclosure text present.
@@ -341,7 +341,7 @@ def test_footnote_heuristic_does_not_fire_on_an_ordinary_numbered_list():
 
 
 def test_extract_leaves_render_dependent_fields_none():
-    # sieg 14/09: these need a headless viewport - must stay None, not guessed
+    # These need a headless viewport - must stay None, not guessed
     result = extract(SAMPLE_HTML, language="en")
     for field in ("page_height_px", "hero_image_area_ratio", "total_image_area_ratio", "cta_contrast_ratio"):
         assert result[field] is None
@@ -363,7 +363,7 @@ def _fake_image_response(image: Image.Image) -> Mock:
     return response
 
 
-# sieg 15/09: extract_colours() now runs assert_can_fetch() before the image
+# extract_colours() now runs assert_can_fetch() before the image
 # GET (audit finding - it used to skip the compliance gate). Every test below
 # that expects the fetch to actually happen has to patch it too, or it would
 # make a real network call to example.com/robots.txt.
@@ -394,7 +394,7 @@ def test_brand_colour_share_matches_the_banks_own_colour():
 
 
 def test_brand_colour_share_is_low_when_the_image_is_not_the_brand_colour():
-    # sieg 15/09: regression - used to report 1.0 here (the share of the most
+    # Regression - used to report 1.0 here (the share of the most
     # frequent colour, mislabelled "brand"), for ANY bank, even ING (orange)
     # against a solid blue image.
     unrelated_blue = Image.new("RGB", (100, 100), color=(0, 0, 255))
@@ -418,7 +418,7 @@ def test_extract_colours_handles_fetch_failure_gracefully():
 
 
 def test_extract_colours_respects_the_compliance_gate():
-    # sieg 15/09: new test for the audit fix - a robots.txt disallow on the
+    # New test for the audit fix - a robots.txt disallow on the
     # image itself must stop the fetch (never bypassed) and still degrade to
     # "no colours" rather than raising, per this function's existing contract.
     with patch(
@@ -456,8 +456,8 @@ _VALID_RESPONSE = {
     "esg_claim_specificity": "no_claim",
     "green_product_specific_benefit": False,
     "fast_digital_onboarding_claim": False,
-    "target_personas": ["family", "student"],  # sieg 19/09
-    "cross_sold_products": ["mortgage", "pension"],  # sieg 19/09
+    "target_personas": ["family", "student"],
+    "cross_sold_products": ["mortgage", "pension"],
 }
 
 
@@ -468,7 +468,7 @@ def test_extract_model_assisted_validates_a_good_response():
     assert result.primary_product == "Term account"
 
 
-# sieg 19/09: target_personas is the first list-valued model_assisted field.
+# target_personas is the first list-valued model_assisted field.
 def test_extract_model_assisted_reads_target_personas():
     with patch("comparator.collection.llm_extractor._call_llm", return_value=(__import__("json").dumps(_VALID_RESPONSE), "test/model")):
         result = extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account")
@@ -502,7 +502,7 @@ def test_extract_model_assisted_retries_once_then_raises():
 
 
 def _clear_provider_keys(monkeypatch):
-    """steph 15/09: provider tests read the real environment, so a developer who
+    """Provider tests read the real environment, so a developer who
     has DEEPSEEK_API_KEY exported would get different ordering than CI. Clear
     them all, then set only the ones the test is about."""
     for var in ("DEEPSEEK_API_KEY", "GROQ_API_KEY", "GROQ_API_KEY_2", "GROQ_API_KEY_3",
@@ -511,9 +511,9 @@ def _clear_provider_keys(monkeypatch):
 
 
 def test_groq_tried_before_other_fallbacks(monkeypatch):
-    # sieg 14/09: confirms the provider ORDER matches .env.example, not just
+    # Confirms the provider ORDER matches .env.example, not just
     # that "a" provider gets called.
-    # steph 15/09: unchanged in intent. DeepSeek now sits ahead of Groq
+    # Unchanged in intent. DeepSeek now sits ahead of Groq
     # (Decision 6), so this test pins the order BELOW DeepSeek by leaving its
     # key unset - see test_deepseek_is_tried_first for the new head of the chain.
     _clear_provider_keys(monkeypatch)
@@ -535,7 +535,7 @@ def test_groq_tried_before_other_fallbacks(monkeypatch):
 
 
 def test_deepseek_is_tried_first(monkeypatch):
-    """steph 15/09, Decision 6: DeepSeek is the pinned model, so it leads the chain."""
+    """Decision 6: DeepSeek is the pinned model, so it leads the chain."""
     _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
@@ -585,7 +585,7 @@ def test_fallback_is_recorded_not_silent(monkeypatch):
     assert model_id.startswith("groq/"), "the row must record the model that actually answered"
 
 
-# --- colour measured on the page, not the hero crop (steph 16/09) -------------
+# --- colour measured on the page, not the hero crop -------------
 def test_brand_share_counts_every_pixel_not_just_the_top_palette():
     """A brand accent is a few percent of a full page and never makes the top-5
     quantised palette - the palette shortcut scored every bank exactly 0.000,
@@ -624,7 +624,7 @@ def test_background_luminance_separates_a_dark_page_from_a_light_one():
 
 
 def test_unknown_bank_gets_no_brand_share_rather_than_a_wrong_one():
-    """sieg 15/09's finding, kept: without a known bank the honest answer is None."""
+    """'s finding, kept: without a known bank the honest answer is None."""
     from PIL import Image
 
     from comparator.collection.visual_features import extract_colours_from_image
@@ -632,10 +632,10 @@ def test_unknown_bank_gets_no_brand_share_rather_than_a_wrong_one():
     assert extract_colours_from_image(Image.new("RGB", (40, 40), (10, 10, 200)))["brand_colour_share"] is None
 
 
-# --- declarative shadow DOM in manually saved pages (steph 16/09) -------------
+# --- declarative shadow DOM in manually saved pages -------------
 # A browser "save page as complete" writes shadow content out as
 # <template shadowrootmode>. BeautifulSoup does not walk into those, so
-# Siegried's saved ING pages parsed as 14 words while carrying 4,858 inside
+# the saved ING pages parsed as 14 words while carrying 4,858 inside
 # templates - the shadow-DOM bug again, arriving through a different door.
 DECLARATIVE_SHADOW_HTML = """
 <html><body>
