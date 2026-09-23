@@ -1,6 +1,6 @@
 """Headless render path - the five features a static fetch can never produce.
 
-steph 15/09, new module. Siegried's call, and he is right that it is the last
+New module. that call, and he is right that it is the last
 real gap in collection. Confirmed before building it: `page_height_px` is core,
 required AND not nullable, so `run_collection.py` does not merely degrade on
 real rows today - strict validation FAILS and the run aborts.
@@ -31,7 +31,7 @@ page_height_px and both area ratios are not comparable across banks - the
 feature dictionary says so in page_height_px's own notes. It is a module
 constant, not an argument, so it cannot drift per call site.
 
-SHADOW DOM. steph 16/09: ING's site is built from web components, and its page
+SHADOW DOM. ING's site is built from web components, and its page
 content lives inside shadow roots. `page.content()` serialises the LIGHT DOM
 only, so the first real collection saw 16 words (the <title>, twice) on a page
 that actually carries 1,745 words and 51 images. It looked like a failed render;
@@ -44,7 +44,7 @@ maintenance notice with status 503 and we recorded it as a normal capture. The
 status is now returned and carried on the row.
 
 Compliance: the robots.txt gate runs BEFORE navigation, exactly as in the static
-path. A headless browser is still a fetch (LC-01, LC-04). sieg 17/09: also
+path. A headless browser is still a fetch (LC-01, LC-04). Also
 gates every SAME-ORIGIN sub-resource the page then loads (see
 _blocks_same_origin_asset) - third-party assets are left alone on purpose,
 see that function's docstring.
@@ -72,7 +72,7 @@ SETTLE_MS = 1_500
 MIN_IMAGE_EDGE_PX = 32
 
 
-# steph 16/09: a 503 is sometimes genuinely transient. Retrying costs one extra
+# A 503 is sometimes genuinely transient. Retrying costs one extra
 # request and recovers a real outage without anyone re-running the pipeline by
 # hand. It does NOT get past BNP - see the note in run_collection.py - but it is
 # the right behaviour regardless of who is down.
@@ -139,7 +139,7 @@ _MEASURE_JS = """
     return s.display !== 'none' && s.visibility !== 'hidden' && parseFloat(s.opacity || '1') > 0.01;
   };
 
-  // steph 16/09: walk shadow roots too - on a web-component site every image
+  // Walk shadow roots too - on a web-component site every image
   // lives inside one, and querySelectorAll on the document finds none of them.
   const deep = (selector) => {
     const found = [];
@@ -259,7 +259,7 @@ def _features_from_measurement(raw: dict) -> dict:
     }
 
 
-# sieg 17/09, audit finding (MEDIUM). assert_can_fetch(url) only gated the top-
+# Audit finding (MEDIUM). assert_can_fetch(url) only gated the top-
 # level navigation - every sub-resource page.goto() pulls in (images, scripts,
 # fonts, XHR) loaded with no per-URL robots check at all, even though
 # visual_features.py was patched (15/09) to add exactly this check for a
@@ -288,7 +288,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
     Raises ScrapingNotAllowed if robots.txt disallows it - the gate runs before
     navigation, not after.
 
-    steph 21/09: `headless=False` launches a real, visible browser and is used
+    `headless=False` launches a real, visible browser and is used
     only for hosts that refuse headless clients outright (measured on BNP
     Paribas Fortis: every headless variant returned HTTP 503 while the same URL
     in a headful browser returned the page). This is not evasion - robots.txt is
@@ -301,7 +301,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
     today's behaviour; a target overrides them explicitly in the targets file.
     """
     assert_can_fetch(url)
-    # sieg 17/09, audit finding (HIGH). This used to be a fixed value computed
+    # Audit finding (HIGH). This used to be a fixed value computed
     # once from the pre-navigation URL, which made _blocks_same_origin_asset a
     # silent no-op across any redirect that changes host - e.g. n26.com (a
     # real target in collection_targets.yaml) redirecting to www.n26.com would
@@ -332,11 +332,11 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
                     viewport={"width": VIEWPORT_WIDTH, "height": VIEWPORT_HEIGHT},
                     user_agent=USER_AGENT,
                 )
-                # sieg 17/09: gate same-origin sub-resources too - see
+                # Gate same-origin sub-resources too - see
                 # _blocks_same_origin_asset() above. Registered once; it stays
                 # in effect across the retry re-navigation below.
                 def _track_origin(frame) -> None:
-                    # sieg 17/09, audit finding (HIGH): keep page_origin in
+                    # Audit finding (HIGH): keep page_origin in
                     # sync with whatever host the browser actually committed
                     # to, so a host-changing redirect doesn't blind the gate.
                     nonlocal page_origin

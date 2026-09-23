@@ -3,7 +3,7 @@
 
     python3 scripts/run_generation.py --no-strict
 
-steph 15/09. Plan section 4.5 / Appendix B, owner: me. Gated behind the Day 6
+Plan section 4.5 / Appendix B, owner: me. Gated behind the Day 6
 freeze in the plan - this is the machinery, run early so it is not improvised
 under deadline pressure, NOT a claim that the gate has passed.
 
@@ -78,11 +78,11 @@ def main() -> int:
     fd = load_dictionary()
     args.outdir.mkdir(parents=True, exist_ok=True)
 
-    # sieg 15/09: fixed - strict=True made read_dataset() raise BEFORE this
+    # Fixed - strict=True made read_dataset() raise BEFORE this
     # function got (df, report) back, so the print(report.render()) below was
     # dead code on any validation failure - the user got a raw traceback
     # instead, the exact thing run_collection.py already avoids on purpose.
-    # Not hypothetical: Dan's real captures are still missing the
+    # Not hypothetical: the real captures are still missing the
     # headless-render-only fields, so this WILL fail once someone points
     # --dataset at them instead of the fixture.
     df, report = read_dataset(args.dataset, fd, tier="core", strict=False)
@@ -119,7 +119,7 @@ def main() -> int:
         brief = build_brief(df, target, fd, focus=args.focus,
                             product=args.product, language=args.language)
 
-        # steph 16/09: an "on-brand" campaign needs the brand, and the brand
+        # An "on-brand" campaign needs the brand, and the brand
         # comes from the bank's own page. Without a usable capture there is
         # nothing to be on-brand with, and inventing one would be the exact
         # over-claiming risk P-08 is about.
@@ -153,7 +153,7 @@ def main() -> int:
         print(f"\n  scorecard (hit rate on measured criteria: {hit_rate(scorecard):.0%})")
         print(scorecard.to_string(index=False, columns=["feature", "target", "actual", "result"]))
 
-        # sieg 17/09 audit, point 4: record what produced this. Same data gives a
+        # Audit, point 4: record what produced this. Same data gives a
         # byte-identical prompt, so a differing campaign is attributable to the
         # model rather than argued about.
         fingerprint = prompt_fingerprint(brief)

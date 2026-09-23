@@ -34,7 +34,7 @@ from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from comparator import research  # steve 21/09: the Research tab's live search
+from comparator import research  # The Research tab's live search
 from comparator.collection.llm_extractor import LLMExtractionError
 from comparator.recommendations import RecommendationSet, build_recommendations, select
 from comparator.site_generator import PAGES, generate_site
@@ -99,7 +99,7 @@ def health() -> dict:
 def get_recommendations() -> dict:
     """The saved set, normalised through RecommendationSet.
 
-    steph 22/09: going through from_dict rather than returning the file
+    Going through from_dict rather than returning the file
     verbatim is what drops entries a saved set carries but this version can no
     longer represent - a search-interest recommendation written before the
     model stopped writing them would otherwise render as an analysis one.
@@ -111,14 +111,14 @@ def get_recommendations() -> dict:
 
 
 class RecommendationRequest(BaseModel):
-    include_reputation: bool = False  # sieg 21/09
+    include_reputation: bool = False
 
 
 @app.post("/api/recommendations/generate")
 def post_recommendations(request: RecommendationRequest | None = None) -> dict:
     """One model call over the analysis snapshot. Synchronous; the UI shows a wait state.
 
-    sieg 21/09: `include_reputation` adds news headline themes. No separate
+    `include_reputation` adds news headline themes. No separate
     file to load - report.json already carries the reputation dashboard - so a
     missing signal surfaces through the LLMExtractionError -> 502 path rather
     than a pre-flight check.
@@ -212,7 +212,7 @@ app.mount("/site", StaticFiles(directory=str(SITE_DIR), html=True), name="site")
 
 
 # ---------------------------------------------------------------------------
-# Read-only views carried over from the Streamlit dashboard (steve 21/09).
+# Read-only views carried over from the Streamlit dashboard.
 # These serve files the static bundle cannot: a live search, the generated
 # deliverables, and the raw page captures. Nothing here writes.
 # ---------------------------------------------------------------------------

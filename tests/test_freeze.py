@@ -1,4 +1,4 @@
-"""Tests for the semantic schema-freeze check (steph 15/09, plan risk P-04)."""
+"""Tests for the semantic schema-freeze check (Plan risk P-04)."""
 
 from __future__ import annotations
 
@@ -99,7 +99,7 @@ def test_narrowing_a_range_is_breaking():
     assert not compare(frozen, current).ok
 
 
-# sieg 15/09: new test - freeze.py used to only check narrowing of an
+# New test - freeze.py used to only check narrowing of an
 # EXISTING range, so adding a range to a feature that had none before slipped
 # through unchecked even though it is itself a narrowing (values already
 # recorded outside the new range become invalid).

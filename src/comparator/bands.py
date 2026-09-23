@@ -1,7 +1,7 @@
 """Fixed-threshold bands that turn a within_language raw value into a
 cross_language categorical, same idea as the existing readability_band.
 
-sieg 14/09, new module - Sieg's call (14/09): "convert to band equivalents
+New module - that call (14/09): "convert to band equivalents
 like readability_band". Centralised here so fixtures.py (synthetic) and
 collection/scraper.py (real) use the exact same cutoffs - duplicating
 thresholds in two files is how they silently drift apart.
@@ -46,7 +46,7 @@ FIRST_PERSON_PLURAL_DEFAULT = "frequent"
 DISCLAIMER_WORD_SHARE_EDGES = [(0.05, "minimal"), (0.15, "moderate")]
 DISCLAIMER_WORD_SHARE_DEFAULT = "heavy"
 
-# steph 15/09, RECALIBRATED. These edges (1.0 / 3.0) were set against the old
+# RECALIBRATED. These edges (1.0 / 3.0) were set against the old
 # fixture, whose text_to_image_ratio was drawn from an archetype and disagreed
 # with its own word_count/image_count by ~40x. collection/scraper.py actually
 # computes WORDS PER IMAGE, which lands in the tens-to-hundreds - so on real
@@ -55,7 +55,7 @@ DISCLAIMER_WORD_SHARE_DEFAULT = "heavy"
 # extractor) gives challengers 13-39 and traditionals 62-258 words per image,
 # quartiles 37/78/136.
 # PROVISIONAL: still derived from synthetic data. Re-check against the first
-# real captures before any finding leans on this band - Dan's Day 3-4 output.
+# real captures before any finding leans on this band - Day 3-4 output.
 TEXT_TO_IMAGE_RATIO_EDGES = [(40.0, "image_heavy"), (100.0, "balanced")]
 TEXT_TO_IMAGE_RATIO_DEFAULT = "text_heavy"
 
@@ -88,7 +88,7 @@ def text_to_image_ratio_band(value) -> str | None:
     return _band(value, TEXT_TO_IMAGE_RATIO_EDGES, TEXT_TO_IMAGE_RATIO_DEFAULT)
 
 
-# sieg 17/09, audit finding (LOW): these edges were duplicated identically in
+# Audit finding (LOW): these edges were duplicated identically in
 # THREE places - collection/scraper.py (_BAND_EDGES), derive.py
 # (_READABILITY_EDGES) and fixtures.py (also _BAND_EDGES) - exactly the
 # failure mode this module's own docstring warns about ("duplicating

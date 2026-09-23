@@ -2,7 +2,7 @@ import type { Report, ReputationHeadline } from "../types";
 
 const themeLabel = (theme: string) => theme.replace(/_/g, " ");
 
-/** sieg 21/09: hover popup on a theme's count - the full list of articles it is made of. */
+/** Hover popup on a theme's count - the full list of articles it is made of. */
 function ThemeCount({ count, headlines }: { count: number; headlines: ReputationHeadline[] }) {
   if (headlines.length === 0) return <span className="sd above">{count}</span>;
   return (
@@ -23,7 +23,7 @@ function ThemeCount({ count, headlines }: { count: number; headlines: Reputation
   );
 }
 
-/** sieg 21/09: every headline for a bank, in one collapsible dropdown - not just the
+/** Every headline for a bank, in one collapsible dropdown - not just the
  * up-to-5 "notable" ones. Native <details>, so it works without JS state and on touch
  * (the per-theme hover above does not). */
 function AllSources({ themeHeadlines }: { themeHeadlines: Record<string, ReputationHeadline[]> }) {
@@ -48,10 +48,10 @@ function AllSources({ themeHeadlines }: { themeHeadlines: Record<string, Reputat
 }
 
 /**
- * sieg 19/09: NewsAPI headline themes per bank - counts only, never sentiment
+ * NewsAPI headline themes per bank - counts only, never sentiment
  * (see comparator/reputation.py's docstring for why). Mirrors Trends.tsx's
  * "not configured, nothing else affected" empty state when NEWSAPI_KEY isn't set.
- * sieg 21/09: hovering a theme's count opens every article behind it (ThemeCount),
+ * Hovering a theme's count opens every article behind it (ThemeCount),
  * and "N sources" below opens every article for the bank, of any theme (AllSources).
  */
 export function Reputation({ reputation }: { reputation: Report["reputation"] }) {

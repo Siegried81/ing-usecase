@@ -1,4 +1,4 @@
-"""Tests for derived-feature recomputation (steph 16/09)."""
+"""Tests for derived-feature recomputation."""
 
 from __future__ import annotations
 
@@ -62,7 +62,7 @@ def test_bands_follow_their_source(fd):
     assert out == ["very_short", "long"]
 
 
-# sieg 17/09, audit finding (LOW): readability_band used to be filled by its
+# Audit finding (LOW): readability_band used to be filled by its
 # own special-cased block with a locally-duplicated edge list - now it is just
 # another BAND_RULES entry, same loop as word_count_band and friends.
 def test_readability_band_follows_its_source(fd):

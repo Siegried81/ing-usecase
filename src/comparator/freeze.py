@@ -1,12 +1,12 @@
 """Enforce the schema freeze rule semantically.
 
-steph 15/09, new module. Risk P-04 in the project plan is mine, and its stated
+New module. Risk P-04 in the project plan is mine, and its stated
 mitigation is the actual rule:
 
     "Schema frozen Day 2; additions allowed, renames and removals only by
      unanimous agreement."                       - Project Plan, section 3.2
 
-`tests/test_schema.py::test_dictionary_matches_frozen_snapshot` (sieg 15/09)
+`tests/test_schema.py::test_dictionary_matches_frozen_snapshot`
 compares the two YAML files byte for byte. That is a useful DRIFT DETECTOR - it
 stops an accidental edit landing unnoticed - and it stays. But it is not the
 rule: it fails on an addition, which the rule explicitly permits, and it passes
@@ -98,7 +98,7 @@ def _compare_feature(frozen: Feature, current: Feature, report: FreezeReport) ->
             report.benign.append(f"{name}: allowed value(s) added: {gained}")
 
     # Narrowing a range invalidates values already recorded outside the new one.
-    # sieg 15/09: fixed - the "frozen.range and current.range" guard skipped a
+    # Fixed - the "frozen.range and current.range" guard skipped a
     # newly added range entirely, so a field with NO range before could gain
     # one with no check at all, even though that is itself a narrowing (any
     # value already recorded outside the new range becomes invalid). checked

@@ -65,14 +65,14 @@ narrative. It is the one live external call in the operator surface, and it is
 deliberately a search box and nothing more — no per-bank metric is invented to
 justify it.
 
-**Trends** is Dan's Google Trends benchmark given a home of its own. The exporter
+**Trends** is the Google Trends benchmark given a home of its own. The exporter
 writes the series separately to `trends.json` (it is ~800 KB of weekly points, too
 large to inline in `report.json`, which carries only a small summary and the
 `data_url` the tab fetches). The tab shows the five-year weekly search interest per
-bank and product sheet, the spikes Dan's detector flags, the known structural
+bank and product sheet, the spikes the detector flags, the known structural
 events, and the campaign catalogue matched to those spikes. Anomaly detection is a
 port of `kbc-ing-benchmark/analysis/anomaly_detection.py`, tested against the same
-inputs, so the tab and Dan's Streamlit app cannot report different spikes.
+inputs, so the tab and the search_interest Streamlit app cannot report different spikes.
 
 The guardrail is not a footnote here: **search interest is context, never an
 outcome.** The tab leads with it, and the payload carries the sentence so no view
@@ -80,7 +80,7 @@ can drop it. Nothing in `trends.py` regresses a search value onto a page feature
 and the tab deliberately offers no per-page number to regress.
 
 If `kbc-ing-benchmark/export/` is absent, `trends.json` is not written and the tab
-renders an empty state; nothing else is affected. The pipeline only reads Dan's CSV
+renders an empty state; nothing else is affected. The pipeline only reads the CSV
 export — it does not need `pytrends`, `streamlit` or `plotly`.
 
 **Reputation** shows recent news headline *themes* per bank (innovation,
@@ -96,7 +96,7 @@ restricted to title/description, because its body search answered a query for
 "bank" with football and politics.
 
 With neither key set it renders an honest "not configured" state, same pattern as
-Trends when Dan's export is missing. Note that `available: true` means *a key is
+Trends when the export is missing. Note that `available: true` means *a key is
 configured*, not that articles were returned: a working key with a thin 90-day
 window yields an empty bank snapshot rather than claiming the tab is unconfigured.
 

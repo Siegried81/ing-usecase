@@ -1,13 +1,13 @@
 """Academic paper search - an on-demand lookup, not a pipeline step.
 
-sieg 19/09, new module. The brief itself calls Semantic Scholar "Optionnel"
+New module. The brief itself calls Semantic Scholar "Optionnel"
 and names no concrete per-bank metric to compute from it (unlike personas,
 cross-sell, or news themes, which all have a defined output shape). Building
 a report.json section or an automatic per-bank/per-insight citation around
 "articles that exist" with no metric would still be inventing scope nobody
 asked for - so this function itself stays exactly what it always was.
 
-sieg 20/09: wired into streamlit_app.py's new Research page (a search box,
+Wired into streamlit_app.py's new Research page (a search box,
 run on demand by whoever is writing the business narrative) - not into
 report.json or the FastAPI/React UI, and still no per-bank metric. The
 distinction that matters is manual/on-demand vs. automatic-and-cited-as-

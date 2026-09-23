@@ -1,4 +1,4 @@
-"""Tests for the AI Score axes (sieg 19/09, new module).
+"""Tests for the AI Score axes (New module).
 
 Every formula is a plain mean of already-collected features, so these tests
 check the arithmetic directly against small, hand-built rows - and, just as
@@ -68,7 +68,7 @@ def test_score_is_none_when_the_column_exists_but_is_entirely_null():
     assert ai_score.score_cross_sell(rows) is None
 
 
-# sieg 19/09: pins the fix for a real bug caught while writing this test - a
+# Pins the fix for a real bug caught while writing this test - a
 # categorical column with a null value used to compare as "condition false"
 # (pandas: NaN == "x" is False, not NaN) instead of being excluded.
 def test_a_missing_categorical_value_is_excluded_not_counted_as_false():

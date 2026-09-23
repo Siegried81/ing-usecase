@@ -1,6 +1,6 @@
 # Proposal — a web UI over the comparator
 
-> **Status, steve 21/09: superseded by what was actually built.** This is kept as
+> **Status, superseded by what was actually built.** This is kept as
 > the proposal that was accepted and amended, not as a description of the current
 > UI. A React UI now exists with ten tabs: the four business tabs (Analysis,
 > Trends, Reputation, Recommendations), the recommendations flow and the
@@ -13,7 +13,7 @@
 > joint session — the Rubric tab only reads finished sheets) and the
 > dataset-editing endpoints, which are deliberately absent.
 
-steph 17/09. For the team to accept, amend or reject before anything is built.
+For the team to accept, amend or reject before anything is built.
 
 ## The short version
 

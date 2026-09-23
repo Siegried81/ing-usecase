@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 """Re-derive background_luminance from the first screen of stored screenshots.
 
-sieg 23/09, new script. background_luminance was the count-weighted mean
-luminance of the WHOLE page strip. On a long page that measures how much white
+background_luminance used to be the count-weighted mean luminance of the
+WHOLE page strip. On a long page that measures how much white
 body copy the page has, not how dark it is: ING's expat page has a black hero
 over a long white body and scored 0.916 (near white) on a 14,516px capture,
-where its first screen reads 0.521. The feature fed a D06 claim - "ING is
-measurably darker than its peers" - that the current data had already
-inverted, which is how the wrong measurement surfaced.
+where its first screen reads 0.521. The feature had already put a false
+claim in the business narrative, which is how the wrong measurement surfaced.
 
 The fix is in visual_features.extract_colours_from_image(first_screen_px=...)
 so new captures are measured correctly; this re-derives the column for rows
@@ -15,8 +14,8 @@ collected before it, from the screenshot already on disk.
 
 Only background_luminance is rewritten. brand_colour_share, palette_hex,
 dominant_colour_hex and accent_colour_count deliberately keep their full-page
-basis (steph 16/09: a brand accent is a few percent of a page, and cropping
-would re-break the fix that stopped every bank scoring 0.000).
+basis: a brand accent is a few percent of a page, and cropping would hide it
+again.
 
 WHY THIS NEEDS NO COMPLIANCE CHECK: same reasoning as fix_cta_count.py and
 fix_rate_fields.py - it re-reads a screenshot_path already on disk, makes no

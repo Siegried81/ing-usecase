@@ -1,6 +1,6 @@
 """AI Score - a transparent, rule-based composite index per bank.
 
-sieg 19/09, new module. Six axes (Digital, Trust, Cross-sell, Personalisation,
+New module. Six axes (Digital, Trust, Cross-sell, Personalisation,
 Innovation, Simplicity), each 0-10, computed for the radar chart in the web UI.
 
 WHY DETERMINISTIC, NOT A MODEL CALL: every other "proprietary index" idea in the
@@ -39,7 +39,7 @@ import pandas as pd
 
 AXES = ("digital", "trust", "cross_sell", "personalisation", "innovation", "simplicity")
 
-PERSONA_TAXONOMY_SIZE = 8  # sieg 19/09: len(target_personas.values) in the dictionary
+PERSONA_TAXONOMY_SIZE = 8  # Len(target_personas.values) in the dictionary
 
 _READABILITY_TO_SIMPLICITY = {
     "very_easy": 10.0, "easy": 7.5, "medium": 5.0, "hard": 2.5, "very_hard": 0.0,
@@ -62,7 +62,7 @@ def _mean_of_bools(rows: pd.DataFrame, specs: list[tuple[str, object]]) -> float
         if isinstance(expected, bool):
             columns.append(rows[col].astype("boolean"))
         else:
-            # sieg 19/09: NaN == expected is False in pandas, not NaN - without
+            # NaN == expected is False in pandas, not NaN - without
             # masking, a page where this categorical was never extracted would
             # silently count as "condition false" instead of being excluded.
             eq = (rows[col] == expected).mask(rows[col].isna())
@@ -70,7 +70,7 @@ def _mean_of_bools(rows: pd.DataFrame, specs: list[tuple[str, object]]) -> float
     if not columns:
         return None
     stacked = pd.concat(columns, axis=1)
-    # sieg 19/09: mean over both axes (rows and conditions) so one page with two
+    # Mean over both axes (rows and conditions) so one page with two
     # matching conditions doesn't count twice as much as a page with one.
     values = stacked.to_numpy(dtype="float64", na_value=float("nan"))
     flat = values[~pd.isna(values)]
@@ -103,7 +103,7 @@ def score_personalisation(rows: pd.DataFrame, taxonomy_size: int = PERSONA_TAXON
     """Breadth of distinct personas this bank's pages address, out of the taxonomy."""
     if "target_personas" not in rows.columns:
         return None
-    from comparator.schema import parse_list  # sieg 19/09: local import, avoids a module-load cycle
+    from comparator.schema import parse_list  # Local import, avoids a module-load cycle
 
     distinct: set[str] = set()
     for cell in rows["target_personas"].dropna():

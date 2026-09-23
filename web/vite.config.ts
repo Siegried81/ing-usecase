@@ -12,7 +12,7 @@ export default defineConfig({
   plugins: [react()],
   base: "./",
   server: {
-    // sieg 20/09, FIXED: pointed at :8010, but scripts/serve_web.py listens
+    // This proxy used to point at :8010, but scripts/serve_web.py listens
     // on :8000 by default (see its own --port default and usage docstring).
     // Every proxied request failed with a connection-refused that Vite's dev
     // proxy surfaces to the browser as a 500 - this was the "Generate

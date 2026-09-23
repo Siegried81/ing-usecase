@@ -1,4 +1,4 @@
-"""Tests for the report.json export (sieg 19/09).
+"""Tests for the report.json export.
 
 No test covered scripts/export_web_report.py before this - this only adds
 targeted coverage for the two new additions (personas, AI Score), following
@@ -31,7 +31,7 @@ from comparator.schema import write_dataset  # noqa: E402
 
 @pytest.fixture(scope="module")
 def report(tmp_path_factory):
-    # sieg 19/09, FIXED: a function-scoped `monkeypatch.delenv` autouse fixture
+    # FIXED: a function-scoped `monkeypatch.delenv` autouse fixture
     # cannot reliably run before this module-scoped fixture's one-time setup -
     # pytest sets up broader-scoped fixtures first regardless of autouse, so
     # the deletion happened too late and this test made a REAL NewsAPI call
@@ -41,7 +41,7 @@ def report(tmp_path_factory):
     # ambiguity.
     import os
     os.environ.pop("NEWSAPI_KEY", None)
-    # steve 21/09: second key slot (newsapi.ai) - both must go, or this test
+    # Second key slot (newsapi.ai) - both must go, or this test
     # makes real network calls and asserts the wrong availability state.
     os.environ.pop("NEWSAPI_AI_KEY", None)
     fd = load_dictionary()
@@ -73,7 +73,7 @@ def test_reputation_is_an_honest_not_configured_state_without_a_key(report):
     assert report["reputation"] == {"available": False, "banks": {}}
 
 
-# sieg 20/09: geo_trends.py's output file is optional and rate-limited to
+# geo_trends.py's output file is optional and rate-limited to
 # generate, so this checks the SHAPE is well-formed rather than a specific
 # availability value - whether outputs/geo_trends.json happens to exist on
 # the machine running the test is not something this test should depend on.
@@ -97,7 +97,7 @@ def test_ing_personas_match_the_fixture_archetype(report):
     assert {p["persona"] for p in ing["personas"]} == {"family", "expat", "mass_market"}
 
 
-# steve 21/09: the operator surface (dictionary, dataset, collection, rubric)
+# The operator surface (dictionary, dataset, collection, rubric)
 # moved out of Streamlit and into operations.json. These check its shape, not
 # the repo's own rubric sheets - a machine with no data/rubric must still build
 # an honest empty payload.
@@ -141,10 +141,19 @@ def test_operations_collection_status_covers_every_bank(operations):
         assert "language" in operations["collection"]["pages"][0]
 
 
-def test_operations_rubric_payload_always_has_its_four_parts(operations):
+def test_operations_rubric_payload_carries_the_sheet_and_the_scales(operations):
     rubric = operations["rubric"]
-    for key in ("raters", "agreement", "kappa", "features"):
+    for key in ("raters", "features"):
         assert isinstance(rubric[key], list)
     # 13 rubric-scored features in the frozen dictionary.
     assert len(rubric["features"]) == len(rubric_features())
     assert all("definition" in f for f in rubric["features"])
+
+
+def test_operations_rubric_payload_states_that_nothing_measures_reliability(operations):
+    """One judged sheet. An empty agreement table would read as
+    "measured, came back blank"; the payload has to say it was never measured."""
+    rubric = operations["rubric"]
+    assert "agreement" not in rubric and "kappa" not in rubric
+    assert "no reliability measure" in rubric["reliability"].lower()
+    assert "single-judge bias" in rubric["reliability"].lower()

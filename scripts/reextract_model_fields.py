@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Re-run model-assisted extraction on already-captured pages, no re-fetch.
 
-sieg 19/09, new script. `target_personas` and `cross_sold_products` were added
+New script. `target_personas` and `cross_sold_products` were added
 to `llm_extractor.py`'s structured call AFTER every real page in
 `campaigns.csv` was already collected - so every real row has these two
 fields blank, not because no bank targets anyone or cross-sells anything, but

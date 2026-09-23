@@ -1,4 +1,4 @@
-# sieg 23/09: restore English coverage lost in an earlier re-collection -
+# Restore English coverage lost in an earlier re-collection -
 # ing_current_account_pack_en_01 and kbc_current_account_pack_en_01 were
 # orphaned page_ids (URL no longer valid). Siegried found current EN URLs
 # for both. Run once, then delete.

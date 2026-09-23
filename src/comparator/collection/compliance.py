@@ -1,4 +1,4 @@
-"""Legal/compliance gate for collection - sieg 14/09, new module.
+"""Legal/compliance gate for collection - New module.
 
 PRD: LC-01, LC-02, LC-04. The schema's own validator (schema.validate) already
 hard-fails any row with robots_allowed=False, so this module's job is to make
@@ -43,7 +43,7 @@ def _robots_url(url: str) -> str:
 def _fetch_robots(robots_url: str) -> RobotFileParser:
     """Read robots.txt with the SAME HTTP stack that will fetch the page.
 
-    steph 16/09, FIXED. RobotFileParser.read() uses urllib, which on a stock
+    FIXED. RobotFileParser.read() uses urllib, which on a stock
     macOS Python has no CA bundle - every HTTPS robots.txt raised
     CERTIFICATE_VERIFY_FAILED, the gate failed closed as designed, and all six
     real targets were skipped. The pages themselves were always fetchable:

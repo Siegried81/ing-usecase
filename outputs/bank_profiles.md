@@ -26,7 +26,7 @@
 | cta above fold | no |
 | word count | 1,831 |
 | readability band | very_hard |
-| formality score | 3 |
+| formality score | 2 |
 | second person ratio | 0.75 |
 | urgency markers | 2 |
 | primary product | La Formule Silver / Gold / Green |
@@ -35,8 +35,8 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 2 |
-| persuasion levers | authority |
-| lever count | 1 |
+| persuasion levers | - |
+| lever count | - |
 | personas | mass_market 100% |
 
 **Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); urgency marker count well above the market average (+1.6 SD).
@@ -182,7 +182,7 @@
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
-| formality score | 2 |
+| formality score | 1 |
 | second person ratio | 0.89 |
 | urgency markers | 3 |
 | primary product | bunq Free - Ton compte bancaire gratuit |
@@ -191,8 +191,8 @@
 | benefit framing | mixed |
 | fab level | advantage |
 | aida coverage | 4 |
-| persuasion levers | liking |
-| lever count | 1 |
+| persuasion levers | liking, social_proof, reciprocity |
+| lever count | 3 |
 | personas | mass_market 100%, expat 100% |
 
 **Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.8 SD); urgency marker count well above the market average (+2.7 SD).
@@ -245,7 +245,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | icons, buttons |
+| accent locations | - |
 | background luminance | 0.44 |
 | image count | 72 |
 | dominant image type | photo |
@@ -260,7 +260,7 @@
 | cta above fold | no |
 | word count | 2,315 |
 | readability band | hard |
-| formality score | 3 |
+| formality score | 2 |
 | second person ratio | 0.83 |
 | urgency markers | 0 |
 | primary product | Performance Pack |
@@ -269,8 +269,8 @@
 | benefit framing | rational |
 | fab level | advantage |
 | aida coverage | 3 |
-| persuasion levers | liking |
-| lever count | 1 |
+| persuasion levers | - |
+| lever count | - |
 | personas | mass_market 100% |
 
 **Signature:** section count well above the market average (+3.5 SD); image count well above the market average (+3.2 SD); question count well above the market average (+2.5 SD).
@@ -323,7 +323,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | buttons, background, text, imagery, icons |
+| accent locations | buttons, icons, imagery |
 | background luminance | 0.55 |
 | image count | 33 |
 | dominant image type | photo |
@@ -338,7 +338,7 @@
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
-| formality score | 2.33 |
+| formality score | 1.67 |
 | second person ratio | - |
 | urgency markers | 0.33 |
 | primary product | Belgian bank account for expats (ING pack) |
@@ -346,9 +346,9 @@
 | rate prominence | below_fold |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | 3.67 |
-| persuasion levers | reciprocity, scarcity, authority, social_proof |
-| lever count | 2.33 |
+| aida coverage | 3.33 |
+| persuasion levers | reciprocity, scarcity, social_proof, authority |
+| lever count | 3.67 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
 **Signature:** fast digital onboarding claim well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); background luminance well above the market average (+1.3 SD).
@@ -377,7 +377,7 @@
 | cta above fold | no |
 | word count | - |
 | readability band | very_hard |
-| formality score | 2 |
+| formality score | 1.33 |
 | second person ratio | - |
 | urgency markers | 0.33 |
 | primary product | Compte Base KBC |
@@ -386,8 +386,8 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 2.67 |
-| persuasion levers | authority, liking |
-| lever count | 1 |
+| persuasion levers | liking, authority |
+| lever count | 1.67 |
 | personas | mass_market 100% |
 
 **Signature:** images have alt text well above the market average (+1.9 SD); is bundled offer well below the market average (-1.6 SD); has comparison table well above the market average (+1.3 SD).
@@ -447,7 +447,7 @@
 | people present | yes (all pages) |
 | animated | no |
 | image area share | 0.59 |
-| archetype | hero_stacked |
+| archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
@@ -464,8 +464,8 @@
 | benefit framing | mixed |
 | fab level | benefit |
 | aida coverage | 3 |
-| persuasion levers | liking |
-| lever count | 1 |
+| persuasion levers | authority, reciprocity |
+| lever count | 2 |
 | personas | mass_market 100% |
 
 **Signature:** first time investor targeting well above the market average (+3.6 SD); total image area ratio well above the market average (+2.9 SD); subscription style framing well above the market average (+2.4 SD).
@@ -494,7 +494,7 @@
 | cta above fold | no |
 | word count | 1,352 |
 | readability band | hard |
-| formality score | 2 |
+| formality score | 1 |
 | second person ratio | 0.76 |
 | urgency markers | 1 |
 | primary product | Compte courant |
@@ -502,8 +502,8 @@
 | rate prominence | above_fold |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | 3 |
-| persuasion levers | social_proof, authority, liking |
+| aida coverage | 4 |
+| persuasion levers | social_proof, authority, reciprocity |
 | lever count | 3 |
 | personas | mass_market 100%, family 100%, entrepreneur_self_employed 100%, expat 100% |
 

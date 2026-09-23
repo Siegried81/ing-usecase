@@ -310,7 +310,7 @@ export default function App() {
 
         <div className="foot">
           Generated {new Date(report.generated_at).toLocaleString("en-GB")} from{" "}
-          <code>{report.dataset}</code>. Every figure traces to a stored page capture.
+          <code>{report.dataset}</code>. Every measured page figure traces to a stored page capture; search-interest figures come from Google Trends and are context only.
           This is a proof of concept on a deliberately limited scope.
         </div>
       </div>

@@ -100,7 +100,7 @@ def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
         elif feature.is_boolean:
             out[name] = _coerce_boolean(out[name]).astype("boolean")
         elif feature.type == "datetime":
-            # steph 16/09: format="ISO8601" rather than letting pandas infer.
+            # Format="ISO8601" rather than letting pandas infer.
             # The live path writes microseconds and the manual-capture importer
             # did not, and a column mixing the two silently coerced the odd ones
             # to NaT - captured_at then failed validation as "missing" on rows
@@ -201,7 +201,7 @@ def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> 
             )
 
     # --- is each row even the page we meant to collect? ----------------------
-    # steph 16/09: see collection/quality.py. These rows are not invalid, they
+    # See collection/quality.py. These rows are not invalid, they
     # are honest measurements of the wrong page - which is worse, because every
     # range check passes.
     if "capture_quality" in df.columns:
@@ -216,7 +216,7 @@ def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> 
                 )
 
     # --- one judge for every bank (NFR-02) -----------------------------------
-    # steph 15/09, Decision 6. The model_assisted features are ~a quarter of the
+    # Decision 6. The model_assisted features are ~a quarter of the
     # dictionary. If Groq rate-limits halfway through a run and the chain falls
     # back, half the banks get labelled by a different model - and the resulting
     # "difference between ING and Revolut" is partly a difference between two

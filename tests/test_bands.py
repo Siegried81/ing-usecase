@@ -1,4 +1,4 @@
-"""Tests for src/comparator/bands.py - sieg 14/09, new module, new tests."""
+"""Tests for src/comparator/bands.py - New module, new tests."""
 from __future__ import annotations
 
 import sys
@@ -25,7 +25,7 @@ def test_word_count_band_none_stays_none():
 
 
 def test_text_to_image_ratio_band_edges():
-    # steph 15/09: rescaled with the edges. The feature is WORDS PER IMAGE
+    # Rescaled with the edges. The feature is WORDS PER IMAGE
     # (scraper.py), not an area ratio - 0.5 would be a page with one word per
     # two images, which cannot occur. See bands.py for the recalibration note.
     assert bands.text_to_image_ratio_band(20.0) == "image_heavy"
@@ -55,7 +55,7 @@ def test_every_band_function_handles_none():
         assert fn(None) is None
 
 
-# sieg 17/09, audit finding (LOW): readability_band was duplicated identically
+# Audit finding (LOW): readability_band was duplicated identically
 # in collection/scraper.py and derive.py - now both call this one function.
 def test_readability_band_edges():
     assert bands.readability_band(95) == "very_easy"

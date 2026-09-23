@@ -1,7 +1,7 @@
 import type { BankProfile } from "../types";
 
 /**
- * sieg 19/09: which customer personas each bank's pages target, and how often.
+ * Which customer personas each bank's pages target, and how often.
  * Reuses the existing .bank card shell (Banks.tsx) and .bar-track/.bar-fill
  * bars (Gaps.tsx) rather than inventing new styling - a share is a fraction of
  * this bank's own pages, not a diverging comparison, so bars start at 0% here

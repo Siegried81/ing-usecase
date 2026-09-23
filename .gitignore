@@ -20,8 +20,8 @@ CLAUDE.md
 web/node_modules/
 web/dist/
 
-# sieg 18/09: kbc-ing-benchmark/ (Dan's Google Trends tool) patterns, merged
-# in from origin/ing-vs-kbc - *.pyc and __pycache__/ already covered above.
+# search_interest/ (the Google Trends pipeline) patterns - *.pyc and
+# __pycache__/ are already covered above.
 benchmark.db
 benchmark_backup_*.db
 data/*.log

@@ -1,13 +1,13 @@
 # D-06 — Business narrative, draft insights
 
-sieg 16/09, rewritten 20/09 the night before the Day 6 gate. Written for the
+rewritten 20/09 the night before the Day 6 gate. Written for the
 business audience per the plan: what this means for ING, no method detail —
 the "how" lives in D-07 and the code, not here.
 
-> **sieg 22/09, for whoever builds the presentation from this draft.** Every
+> **for whoever builds the presentation from this draft.** Every
 > number below (0.362, 0.183, 0.131...) is superseded again. Current state:
 > full dataset is **50 pages / 14 banks / 6 product families**
-> (`decisions.md`, "sieg 21/09, scope restored"; `other` folded into `pension`
+> (`decisions.md`, "scope restored"; `other` folded into `pension`
 > the night of 22/09, `belfius_other_fr_01` was mislabeled); `web/public/report.json`'s
 > BO-02 positioning defaults to the `current_account_pack` family (16 pages,
 > 14 banks) per DR-04, and reads **ING = 0.209** as of its last generation
@@ -16,7 +16,7 @@ the "how" lives in D-07 and the code, not here.
 > that. Don't hand-copy a number from this file into the deck; pull it from
 > `report.json` or a fresh `run_analysis.py` run.
 
-> **steve 21/09 (second update).** The rubric consensus moved after the first
+> **(second update).** The rubric consensus moved after the first
 > update below: Stephane's sheet was filled for nine pages (machine-proposed and
 > adopted), which shifted 15 columns — all five AIDA booleans on ten pages, the
 > persuasion levers on six — and re-ordered ING's peer gaps. ING is now **0.131**;
@@ -25,7 +25,7 @@ the "how" lives in D-07 and the code, not here.
 > consensus)**. Treat the per-feature figures below as superseded by
 > `report.json`.
 
-> **steve 21/09 — read this first.** The comparison has moved again since this
+> **— read this first.** The comparison has moved again since this
 > draft: it is now **11 banks / 13 pages / 25 features with nothing excluded**
 > (Belfius's own current-account page replaced the pension page that kept it out,
 > and vdk/hellobank/beobank were added), and ING's traditional↔challenger score in
@@ -78,7 +78,7 @@ one by one:
 | --- | --- |
 | Belfius is pretty verbose | **Not supported** |
 | KBC is straight to the point | **Not supported** |
-| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too | #Sieg 20/09: false
+| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too | #false
 | ING no longer places text next to picture | **Not supported** — "beside" is still ING's most common layout |
 | Revolut uses very little text | **Not supported** |
 
@@ -117,7 +117,7 @@ impression.
 
 ## 3. ~~ING is measurably darker than its peers~~, on a page that also invokes the least trust
 
-> **sieg 23/09: the darkness half of this heading is WITHDRAWN - do not
+> **the darkness half of this heading is WITHDRAWN - do not
 > present it.** It was measured on a broken feature. `background_luminance`
 > averaged the whole page strip, so on a long page it reported "how much
 > white body copy is there", not how dark the page looks: ING's expat page
@@ -167,7 +167,7 @@ naming on the page at all.
 
 ## 5. ING addresses more customer personas than any other bank — but shallowly
 
-<!-- sieg 20/09: "5 distinct personas" -> "5 of the 8 possible personas" (8 = values allowed for target_personas in the dictionary), so the reader sees the scale. -->
+<!-- "5 distinct personas" -> "5 of the 8 possible personas" (8 = values allowed for target_personas in the dictionary), so the reader sees the scale. -->
 
 `target_personas` (a new model-assisted field, one structured call per page,
 same pattern as every other model-assisted feature) shows ING's current-

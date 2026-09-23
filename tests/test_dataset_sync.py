@@ -1,12 +1,11 @@
 """Guards against campaigns_scored.csv silently drifting behind campaigns.csv.
 
-sieg 22/09, audit item #6 (decisions.md:277-300). merge_scores() joins on
-page_id (rubric.py:154), not URL - re-running `rubric_sheet.py merge` is the
-only thing that copies a campaigns.csv change into campaigns_scored.csv, and
-nothing enforced that this happens before today. A silent skip has already
-cost real scope once (see decisions.md's "sieg 21/09, scope restored..."
-entry). This test checks the one thing decisions.md asked for: every page_id
-in campaigns.csv must have a row in campaigns_scored.csv.
+The rubric merge joins on page_id, not URL, and re-running it is the only
+thing that copies a campaigns.csv change into campaigns_scored.csv. Skipping
+it leaves the analysis and the web report on a stale, usually smaller dataset
+- which has silently cost scope before. This test checks the one thing that
+catches it: every page_id in campaigns.csv must have a row in
+campaigns_scored.csv.
 """
 
 from __future__ import annotations

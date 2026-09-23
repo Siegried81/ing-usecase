@@ -1,4 +1,4 @@
-# sieg 22/09: one-off re-collection - 2 wrong N26 URLs found while scoring
+# One-off re-collection - 2 wrong N26 URLs found while scoring
 # (fr-fr region pages replaced with the correct fr-be ones). Run once, then
 # delete - not part of the standing collection_targets.yaml scope.
 pages:

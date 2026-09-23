@@ -51,7 +51,7 @@ def test_required_features_are_core(fd):
     assert all(f.tier == "core" for f in fd.features if f.required)
 
 
-# sieg 15/09: config/feature_dictionary.yaml is the single source of truth
+# Config/feature_dictionary.yaml is the single source of truth
 # (CLAUDE.md) - this guards it against silent drift. Any change must also
 # update the frozen copy on purpose, in the same PR, so nobody's edit to a
 # type/tier/comparability slips in unreviewed.
@@ -65,8 +65,8 @@ def test_dictionary_matches_frozen_snapshot():
 
 
 def test_judgement_based_features_are_identifiable(fd):
-    """NFR-05: rubric and model-assisted values carry a trust caveat, so the code
-    must be able to tell them apart from deterministic ones."""
+    """Rubric and model-assisted values carry a trust caveat, so the code must be
+    able to tell them apart from deterministic ones."""
     judged = fd.select(extraction="rubric") + fd.select(extraction="model_assisted")
     assert judged
     assert all(f.is_judgement_based for f in judged)
@@ -105,7 +105,7 @@ def test_fixture_is_deterministic(fd):
 
 
 def test_fixture_readability_formula_matches_language(fd):
-    # sieg 14/09: was hardcoded to the Dutch formula regardless of `language`;
+    # Was hardcoded to the Dutch formula regardless of `language`;
     # a fixture built with language="fr" or "en" silently claimed Dutch scoring.
     expected = {"nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en"}
     for lang, formula in expected.items():
@@ -170,7 +170,7 @@ def test_coercion_survives_a_csv_round_trip(df, fd, tmp_path):
 
 
 def test_timestamps_of_different_iso_precision_parse(fd):
-    """steph 16/09: the live path writes microseconds, the manual-capture
+    """The live path writes microseconds, the manual-capture
     importer did not, and a column mixing the two coerced the odd ones to NaT -
     captured_at then failed validation as missing on rows that had one."""
     df = pd.DataFrame({

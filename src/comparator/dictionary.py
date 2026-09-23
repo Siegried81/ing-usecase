@@ -64,7 +64,7 @@ class Feature:
 
     @property
     def is_judgement_based(self) -> bool:
-        """Rubric and model-assisted features carry a trust caveat (NFR-05)."""
+        """Rubric and model-assisted features carry a trust caveat."""
         return self.extraction in {"rubric", "model_assisted"}
 
     @property

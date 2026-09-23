@@ -1,6 +1,6 @@
-"""Bridge to Dan's Google Trends benchmark - search interest as CONTEXT.
+"""Bridge to the Google Trends benchmark - search interest as CONTEXT.
 
-steph 16/09, new module. trends-benchmark/ measures weekly Google search
+New module. search_interest/ measures weekly Google search
 interest per bank per product in Belgium. This module joins that to the
 campaign dataset so a bank profile can carry the market attention around its
 product, and degrades to nothing when the exports are absent.
@@ -12,13 +12,13 @@ plan risk P-08, D-09). Search interest is NOT performance data and joining it
 here does not change that sentence. Three reasons, all of which have to survive
 into the deck:
 
-  * It measures what people searched for, not what any campaign achieved. Dan's
+  * It measures what people searched for, not what any campaign achieved. the
     own handoff doc is explicit that the pipeline "ne collecte aucune donnée
     publicitaire".
   * The pages we captured are today's pages. A movement in 2023 was driven by a
     campaign we never saw. Joining a 2026 page to a 2023 movement and calling it
     an effect would be the single most embarrassing error available to us.
-  * Coverage was ING, KBC and CBC only for most of this project's life. Dan's
+  * Coverage was ING, KBC and CBC only for most of this project's life. the
     second wave (21/09) resolved a search term for every remaining bank, so all
     14 now share one scale - but six of them sit below the measurable floor (see
     MEASURABLE_PEAK_FLOOR), which is a different kind of thin than "missing".
@@ -27,7 +27,7 @@ So: context for the narrative, never a dependent variable, and never a claim
 that a page caused a number. `interest_context()` returns descriptive levels,
 and nothing in this module correlates a page feature with a search value.
 
-CBC is KBC Group's French-speaking brand (Dan's doc, section 1). Distinct
+CBC is KBC Group's French-speaking brand (the upstream doc, section 1). Distinct
 searches, same group - kept separate here, because merging them would invent a
 number neither brand has.
 """
@@ -43,16 +43,16 @@ import pandas as pd
 from comparator.banks import category_for
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_EXPORT_DIR = REPO_ROOT / "trends-benchmark" / "export"
+DEFAULT_EXPORT_DIR = REPO_ROOT / "search_interest" / "export"
 
 # Their bank labels -> ours. All 14 banks have a Trends sheet now (the original
-# KBC/ING/CBC baseline, Dan's six-bank extension, then the 21/09 second wave);
+# KBC/ING/CBC baseline, the six-bank extension, then the 21/09 second wave);
 # CBC is KBC Group's francophone brand and stays a separate search entity.
 BANK_MAP = {
     "ING": "ing", "KBC": "kbc", "CBC": "cbc",
     "BNPPF": "bnp_paribas_fortis", "ARGENTA": "argenta", "CRELAN": "crelan",
     "REVOLUT": "revolut", "N26": "n26", "BUNQ": "bunq",
-    # steph 21/09, second wave: the five banks the comparator captured but the
+    # Second wave: the five banks the comparator captured but the
     # benchmark had no search term for. Dan resolved them, so the Trends tab's
     # "no coverage" list is now empty and all 14 banks share one scale.
     "BELFIUS": "belfius", "BEOBANK": "beobank", "VDK": "vdk",
@@ -69,7 +69,7 @@ BANK_DISPLAY = {
 }
 
 # pytrends returns the Knowledge Graph topic mid as the column name; a reader
-# needs the brand. Mirror of Dan's config.TERM_DISPLAY_LABELS.
+# needs the brand. Mirror of the upstream config.TERM_DISPLAY_LABELS.
 TERM_DISPLAY = {
     "/g/1z3t2x3c8": "CBC Banque & Assurance",
     "/m/07sc3dj": "BNP Paribas Fortis",
@@ -79,7 +79,7 @@ TERM_DISPLAY = {
 }
 
 # Structural market events. DISPLAY ONLY: they annotate the weekly series and
-# take no part in any computation. Mirror of Dan's config.KNOWN_EVENTS.
+# take no part in any computation. Mirror of the upstream config.KNOWN_EVENTS.
 KNOWN_EVENTS = [
     {"bank": "BNPPF", "date": "2024-01-22",
      "label": "Integration of bpost banque (about 1 million clients migrated)"},
@@ -99,7 +99,7 @@ KNOWN_EVENTS = [
 # Their product_id -> our product_family. Deliberately partial: a mapping that
 # guessed would join a savings page to credit-card searches.
 #
-# steph 21/09, SCOPE CHANGE UPSTREAM. Dan's pipeline was narrowed to brand
+# SCOPE CHANGE UPSTREAM. the upstream pipeline was narrowed to brand
 # notoriety only: the 29 product sheets were dropped because most smaller banks'
 # product terms flattened to near-zero once normalised in the same request as
 # ING (33 of 43 candidate sheets rejected for coverage). Only brand-level sheets
@@ -117,10 +117,10 @@ PRODUCT_MAP = {
     "investissement_courtage": "investment",
 }
 
-# The brand sheets that replaced them, and the chaining anchors. Mirror of Dan's
+# The brand sheets that replaced them, and the chaining anchors. Mirror of the
 # config.SHARE_OF_SEARCH_* - ING and KBC appear unchanged in EVERY sheet, which
 # is what lets 14 banks share one scale despite pytrends' 5-term-per-request
-# limit. Adding a sheet here means adding it to Dan's config first: the anchors
+# limit. Adding a sheet here means adding it to the upstream config first: the anchors
 # have to be in it, literally, or the scale factor has nothing to key on.
 BRAND_SHEETS = (
     "marque_generique",
@@ -210,15 +210,15 @@ class TrendsContext:
 
     def render(self) -> str:
         if not self.available:
-            # steph 21/09: this used to say "the exports are not present", which
+            # This used to say "the exports are not present", which
             # is now the wrong diagnosis in the common case. They ARE present -
-            # Dan's pipeline was narrowed to brand notoriety, so there is no
+            # the upstream pipeline was narrowed to brand notoriety, so there is no
             # longer a per-product sheet to join a savings or mortgage page to.
             # Naming the real cause matters: "no data" invites someone to go
             # looking for a file, "no product sheets exist any more" tells them
             # the question itself changed.
             return (
-                "No per-product search-interest context. Dan's Trends pipeline was narrowed to "
+                "No per-product search-interest context. the search-interest pipeline was narrowed to "
                 "brand notoriety (brand sheets only, no product sheets), because most smaller "
                 "banks' product terms flattened to near-zero once normalised against ING in the "
                 "same request. Per-product interest is therefore unanswerable, not merely "
@@ -237,12 +237,12 @@ class TrendsContext:
 
 
 def load_trends(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    """Read every *_trends_data.csv Dan's pipeline exports."""
+    """Read every *_trends_data.csv the upstream pipeline exports."""
     export_dir = Path(export_dir)
     files = sorted(export_dir.glob("*_trends_data.csv")) if export_dir.is_dir() else []
     if not files:
         raise TrendsUnavailable(
-            f"no *_trends_data.csv under {export_dir}. The trends-benchmark branch may not be "
+            f"no *_trends_data.csv under {export_dir}. The search_interest branch may not be "
             "merged yet - search-interest context is skipped, nothing else is affected."
         )
     frames = [pd.read_csv(f) for f in files]
@@ -324,18 +324,18 @@ def context_or_none(df: pd.DataFrame, export_dir: str | Path = DEFAULT_EXPORT_DI
 # -----------------------------------------------------------------------------
 # The full Trends tab - brand search series.
 # -----------------------------------------------------------------------------
-# steph 18/09. The module above answers one narrow question ("is interest in
+# The module above answers one narrow question ("is interest in
 # this bank/product unusually high lately?") and feeds search_interest_context.md.
-# Dan's export carries more: a five-year weekly series per term. That is a tab of
+# the export carries more: a five-year weekly series per term. That is a tab of
 # its own, and the guardrails in this file's docstring apply to all of it:
 # context, never an outcome, never regressed onto a page feature.
 #
-# dan 21/09: the campaign catalogue that used to live here is GONE. It matched
+# The campaign catalogue that used to live here is GONE. It matched
 # real ad campaigns to detected spikes and scored them, which reads as "this
 # campaign caused this spike" no matter how many caveats surround it - and this
 # project has no performance data to support that reading (PRD 5.2, plan risk
 # P-08). The tab now answers one question only: how much do people search for
-# each bank. Dan's own pipeline still holds the catalogue if it is ever wanted
+# each bank. the upstream pipeline still holds the catalogue if it is ever wanted
 # back; nothing was deleted upstream.
 
 
@@ -361,7 +361,7 @@ def _number(value: object) -> float | None:
 
 
 def load_series(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    """Every weekly point in Dan's export, in long format.
+    """Every weekly point in the export, in long format.
 
     Prefers the combined `all_trends_data.csv`; falls back to concatenating the
     per-bank `*_trends_data.csv` files when the combined export is absent, so
@@ -370,7 +370,7 @@ def load_series(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
     export_dir = Path(export_dir)
     if not export_dir.is_dir():
         raise TrendsUnavailable(
-            f"{export_dir} is not present. Dan's trends-benchmark export may not be "
+            f"{export_dir} is not present. the search_interest export may not be "
             "merged or checked out - the Trends tab is skipped, nothing else is affected."
         )
     combined = export_dir / "all_trends_data.csv"
@@ -394,7 +394,7 @@ def load_series(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
 
 
 # -----------------------------------------------------------------------------
-# Share of search - every bank on one scale (steph 21/09)
+# Share of search - every bank on one scale
 # -----------------------------------------------------------------------------
 # Google Trends returns at most 5 terms per request and its 0-100 values are
 # only comparable WITHIN one request, because each request is rescaled to its
@@ -402,7 +402,7 @@ def load_series(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
 # through anchors (ING and KBC, byte-identical in every sheet) whose ratio
 # between requests gives the factor that puts everything on one scale.
 #
-# That chaining is Dan's pipeline step (analysis/share_of_search.py), stored in
+# That chaining is the upstream pipeline step (analysis/share_of_search.py), stored in
 # his brand_share_of_search table and exported as a CSV. We READ it. Re-deriving
 # it here would create a second definition of every number on screen, which is
 # the one thing this repo's report layer refuses to do.
@@ -434,8 +434,8 @@ class ShareOfSearch:
     def render(self) -> str:
         if not self.available:
             return "No share-of-search data: brand_share_of_search.csv is absent."
-        # steph 21/09: the request count is read from the data, not written in.
-        # It said "three" until Dan's second wave made it five, which is exactly
+        # The request count is read from the data, not written in.
+        # It said "three" until the second wave made it five, which is exactly
         # the drift this report layer is built to prevent.
         lines = [
             f"Share of search, {self.window_start} to {self.window_end} "
@@ -461,7 +461,7 @@ class ShareOfSearch:
 def restrict_to_common_window(frame: pd.DataFrame) -> pd.DataFrame:
     """Keep only the weeks where every bank in the panel has a point.
 
-    Dan's sheets were collected in two waves a week apart, so the first and last
+    the sheets were collected in two waves a week apart, so the first and last
     weeks of the union carry a partial panel. A share is a share OF something:
     computed on a partial panel it is arithmetically fine and substantively
     wrong - the final week alone put one bank above 78% because only five of
@@ -475,11 +475,11 @@ def restrict_to_common_window(frame: pd.DataFrame) -> pd.DataFrame:
 
 
 def load_share_of_search(export_dir: str | Path = DEFAULT_EXPORT_DIR) -> pd.DataFrame:
-    """Dan's pre-chained weekly table, on the common window. Raises when absent."""
+    """the pre-chained weekly table, on the common window. Raises when absent."""
     path = Path(export_dir) / "brand_share_of_search.csv"
     if not path.is_file():
         raise TrendsUnavailable(
-            f"no brand_share_of_search.csv under {export_dir}. Run Dan's "
+            f"no brand_share_of_search.csv under {export_dir}. Run the "
             "analysis/share_of_search.py and re-export - share of search is skipped."
         )
     frame = pd.read_csv(path)
@@ -1126,7 +1126,7 @@ def build_trends_dashboard(
     captured: pd.DataFrame | None = None,
     export_dir: str | Path | None = None,
 ) -> dict | None:
-    """Everything the Trends tab renders, or None when Dan's export is absent.
+    """Everything the Trends tab renders, or None when the export is absent.
 
     All heavy lifting (joins, thresholds, roll-ups) happens here in the library;
     the UI renders the numbers it is handed. The guardrail sentence travels with
@@ -1142,7 +1142,7 @@ def build_trends_dashboard(
 
     banks: list[dict] = []
     present_codes = [c for c in BANK_DISPLAY if c in set(series["bank"])]
-    # Preserve Dan's sheet order (the row order of the export) rather than sorting.
+    # Preserve the sheet order (the row order of the export) rather than sorting.
     for code in present_codes:
         subset = series[series["bank"] == code]
         key = BANK_MAP.get(code, code.lower())
@@ -1219,7 +1219,7 @@ def build_trends_dashboard(
                 "which brand people looked up, nothing about why or with what result."
             ),
         },
-        "source": "Dan's trends-benchmark Google Trends benchmark (Belgium, 5-year weekly)",
+        "source": "the search_interest pipeline Google Trends benchmark (Belgium, 5-year weekly)",
         "window": {
             "start": series["date"].min().strftime("%Y-%m-%d"),
             "end": series["date"].max().strftime("%Y-%m-%d"),
