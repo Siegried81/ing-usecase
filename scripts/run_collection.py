@@ -104,8 +104,8 @@ def collect_one(
 
             from PIL import Image
 
-            # sieg 23/09: measure background_luminance on the first screen
-            # (the capture viewport), not the whole page strip - see
+            # Measure background_luminance on the first screen (the capture
+            # viewport), not the whole page strip - see
             # visual_features.extract_colours_from_image().
             from comparator.collection.render import VIEWPORT_HEIGHT
 

@@ -60,7 +60,7 @@
       "tone": {
         "word_count": 1831.0,
         "readability_band": "very_hard",
-        "formality_score": 3.0,
+        "formality_score": 2.0,
         "second_person_ratio": 0.746,
         "urgency_markers": 2.0
       },
@@ -73,10 +73,8 @@
       },
       "marketing_principles": {
         "aida_coverage": 2.0,
-        "persuasion_levers": [
-          "authority"
-        ],
-        "lever_count": 1.0
+        "persuasion_levers": [],
+        "lever_count": null
       },
       "personas": [
         {
@@ -374,7 +372,7 @@
       "tone": {
         "word_count": 1763.0,
         "readability_band": "medium",
-        "formality_score": 2.0,
+        "formality_score": 1.0,
         "second_person_ratio": 0.889,
         "urgency_markers": 3.0
       },
@@ -388,9 +386,11 @@
       "marketing_principles": {
         "aida_coverage": 4.0,
         "persuasion_levers": [
-          "liking"
+          "liking",
+          "social_proof",
+          "reciprocity"
         ],
-        "lever_count": 1.0
+        "lever_count": 3.0
       },
       "personas": [
         {
@@ -511,10 +511,7 @@
         "dominant_colour": "#ffffff",
         "brand_colour_share": 0.006,
         "accent_colour_count": 4.0,
-        "accent_locations": [
-          "icons",
-          "buttons"
-        ],
+        "accent_locations": [],
         "background_luminance": 0.441
       },
       "imagery": {
@@ -535,7 +532,7 @@
       "tone": {
         "word_count": 2315.0,
         "readability_band": "hard",
-        "formality_score": 3.0,
+        "formality_score": 2.0,
         "second_person_ratio": 0.828,
         "urgency_markers": 0.0
       },
@@ -548,10 +545,8 @@
       },
       "marketing_principles": {
         "aida_coverage": 3.0,
-        "persuasion_levers": [
-          "liking"
-        ],
-        "lever_count": 1.0
+        "persuasion_levers": [],
+        "lever_count": null
       },
       "personas": [
         {
@@ -668,10 +663,8 @@
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
-          "background",
-          "text",
-          "imagery",
-          "icons"
+          "icons",
+          "imagery"
         ],
         "background_luminance": 0.5463333333333332
       },
@@ -693,7 +686,7 @@
       "tone": {
         "word_count": null,
         "readability_band": "hard",
-        "formality_score": 2.3333333333333335,
+        "formality_score": 1.6666666666666667,
         "second_person_ratio": null,
         "urgency_markers": 0.3333333333333333
       },
@@ -705,14 +698,14 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 3.6666666666666665,
+        "aida_coverage": 3.3333333333333335,
         "persuasion_levers": [
           "reciprocity",
           "scarcity",
-          "authority",
-          "social_proof"
+          "social_proof",
+          "authority"
         ],
-        "lever_count": 2.3333333333333335
+        "lever_count": 3.6666666666666665
       },
       "personas": [
         {
@@ -784,7 +777,7 @@
       "tone": {
         "word_count": null,
         "readability_band": "very_hard",
-        "formality_score": 2.0,
+        "formality_score": 1.3333333333333333,
         "second_person_ratio": null,
         "urgency_markers": 0.3333333333333333
       },
@@ -798,10 +791,10 @@
       "marketing_principles": {
         "aida_coverage": 2.6666666666666665,
         "persuasion_levers": [
-          "authority",
-          "liking"
+          "liking",
+          "authority"
         ],
-        "lever_count": 1.0
+        "lever_count": 1.6666666666666667
       },
       "personas": [
         {
@@ -938,7 +931,7 @@
         "image_area_share": 0.587
       },
       "layout": {
-        "archetype": "hero_stacked",
+        "archetype": "split_columns",
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 8005.0,
@@ -962,9 +955,10 @@
       "marketing_principles": {
         "aida_coverage": 3.0,
         "persuasion_levers": [
-          "liking"
+          "authority",
+          "reciprocity"
         ],
-        "lever_count": 1.0
+        "lever_count": 2.0
       },
       "personas": [
         {
@@ -1025,7 +1019,7 @@
       "tone": {
         "word_count": 1352.0,
         "readability_band": "hard",
-        "formality_score": 2.0,
+        "formality_score": 1.0,
         "second_person_ratio": 0.759,
         "urgency_markers": 1.0
       },
@@ -1037,11 +1031,11 @@
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 3.0,
+        "aida_coverage": 4.0,
         "persuasion_levers": [
           "social_proof",
           "authority",
-          "liking"
+          "reciprocity"
         ],
         "lever_count": 3.0
       },

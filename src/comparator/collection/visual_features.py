@@ -145,9 +145,9 @@ def _measure(
     except Exception:  # noqa: BLE001
         return empty
 
-    # sieg 23/09: luminance comes off the first screen when asked for it, and
-    # must be taken BEFORE the 150x150 squash - on a 14,516px capture the
-    # squash is what buried the black hero in the first place.
+    # Luminance comes off the first screen when asked for it, and must be
+    # taken BEFORE the 150x150 squash - on a 14,516px capture the squash is
+    # what buries a dark hero under the white body below it.
     width, height = img.size
     luminance_source = img
     if first_screen_px and height > first_screen_px:

@@ -90,7 +90,7 @@ Allowed values:
 | **imagery** | Accent colour appears within the photos, illustrations or renders themselves. |
 | **text** | Accent colour used on headlines or body text. |
 
-*Directly tests the deck's distinction - Fortis uses green "in text and icons, not in pictures", Belfius uses red "in text and pictures". sieg 15/09: this is a perceptual judgement call, independent from the automatic brand_colour_share (strict pixel-distance match on the hero image only). The two are expected to disagree sometimes - e.g. a human says "yes, accent in imagery" for a subtle tint that brand_colour_share's Euclidean tolerance doesn't count. Do not try to reconcile them; report both, a mismatch between "looks branded" and "measures as branded" is itself a finding.*
+*Directly tests the deck's distinction - Fortis uses green "in text and icons, not in pictures", Belfius uses red "in text and pictures". this is a perceptual judgement call, independent from the automatic brand_colour_share (strict pixel-distance match on the hero image only). The two are expected to disagree sometimes - e.g. a human says "yes, accent in imagery" for a subtle tint that brand_colour_share's Euclidean tolerance doesn't count. Do not try to reconcile them; report both, a mismatch between "looks branded" and "measures as branded" is itself a finding.*
 
 ## `text_image_layout`
 
@@ -108,7 +108,7 @@ Allowed values:
 | **overlaid** | Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it). |
 | **stacked** | Image and text follow each other vertically, not overlapping. |
 
-*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other". sieg 15/09: no "no_image" value on purpose - a page with no image at all leaves this field null (nullable: true), it is not forced into one of the three categories above.*
+*The single observation the deck repeats for every bank. ING is called out as the one where "text and picture not anymore next to each other". no "no_image" value on purpose - a page with no image at all leaves this field null (nullable: true), it is not forced into one of the three categories above.*
 
 ## `layout_archetype`
 
@@ -128,7 +128,7 @@ Allowed values:
 | **long_form** | Continuous scrolling sections with no strong grid or card structure. |
 | **split_columns** | The page is organised into two or more side-by-side columns throughout. |
 
-*sieg 15/09: real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.*
+*Real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.*
 
 ## `mobile_first_design_signal`
 

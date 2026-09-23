@@ -91,18 +91,18 @@ row is re-rolled:
 - `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold` (the distinct,
   chrome-excluding CTA count, ).
 
-**sieg 21/09: MANDATORY re-merge after ANY change to campaigns.csv.**  
+**MANDATORY re-merge after ANY change to campaigns.csv.**  
 `scripts/rubric_sheet.py merge` **must be re-run** after any modification to
 `data/processed/campaigns.csv` (rate fix, CTA fix, new captures, re-extraction,
 etc.) — even if rubric scores haven't changed. The merge matches on `page_id`
-(sieg 22/09: corrected — `merge_scores()` joins on `page_id`, not URL, see
+(corrected — `merge_scores()` joins on `page_id`, not URL, see
 `rubric.py:154`) and produces `campaigns_scored.csv` which `export_web_report.py`
 and `run_analysis.py --dataset campaigns_scored.csv` read. Skipping this step
 leaves the web report and analysis on stale data (silent drift). See
 `decisions.md:277-300`. `tests/test_dataset_sync.py` now checks this
 automatically (audit item #6).
 
-**sieg 22/09: `page_id` itself can drift, not just the merge.** `page_id` is
+**`page_id` itself can drift, not just the merge.** `page_id` is
 built from `{bank}_{product_family}_{language}_{page_index:02d}` at collection
 time (`run_collection.py:69`) — a re-collection that adds/removes a page in a
 bank/family/language group renumbers every page after it. A rater's scoring
@@ -134,7 +134,7 @@ this proof of concept chose and which `outputs/limitations.md` states in those
 words. The merge prints what it joined — rows that matched no page, and pages
 left unscored — because a silent drop there is how a rater's work goes missing.
 
-**sieg 22/09, scoring split for the day: 2 raters per bank, not 3 scoring all
+**scoring split for the day: 2 raters per bank, not 3 scoring all
 50.** NFR-05 only needs >=2 independent raters per page. Splitting the 14
 banks into three groups, one per rater pair, covers every page with exactly
 two raters at 2/3 the per-person workload of everyone scoring everything:
@@ -165,9 +165,9 @@ asks for — one request, robots.txt checked first, no IP or identity rotation:
 
 ## When a site will not serve the pipeline
 
-sieg 22/09: corrected — this section described BNP Paribas Fortis and Revolut
+corrected — this section described BNP Paribas Fortis and Revolut
 as permanently unreachable. Both are resolved: BNP via `method: headful` (see
-"Two escape hatches" above and `decisions.md`'s "steve 21/09, BNP Paribas
+"Two escape hatches" above and `decisions.md`'s "BNP Paribas
 Fortis captured" entry), Revolut via the current `collection_targets.yaml`
 URL, which robots.txt allows (a straight headless fetch, no method override
 needed). **There is no manual-capture-only bank left** — every one of the 50

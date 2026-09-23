@@ -74,18 +74,18 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.22 a
 
 **A gap is not a fault.** Being 2 SD from the peer mean might be a deliberate brand choice or a weakness. The chart finds where to look; deciding which is a judgement call that belongs in the business narrative.
 
-**What this run shows.** The largest gap is **value prop clarity** at +1.7 SD (ing 4.33 against a peer mean of 3.50).
+**What this run shows.** The largest gap is **persuasion lever count** at +2.3 SD (ing 3.67 against a peer mean of 1.83).
 
 | Feature | Dimension | ing | Peer mean | Gap (SD) |
 | --- | --- | --- | --- | --- |
-| value_prop_clarity | topics_value_prop | 4.33 | 3.50 | 1.67 |
-| persuasion_lever_count | marketing_principles | 2.33 | 1.30 | 1.61 |
+| persuasion_lever_count | marketing_principles | 3.67 | 1.83 | 2.35 |
+| value_prop_clarity | topics_value_prop | 5.00 | 3.64 | 1.68 |
 | fast_digital_onboarding_claim | banking_domain | 0.67 | 0.15 | 1.42 |
 | page_height_px | layout_structure | 11,149 | 6,412 | 1.42 |
 | background_luminance | colours_design | 0.55 | 0.34 | 1.40 |
 | hidden_conditions_behind_free_claim | banking_domain | 0.67 | 0.23 | 1.03 |
 | cta_count | layout_structure | 0.67 | 5.64 | -1.00 |
-| aida_coverage_score | marketing_principles | 3.67 | 2.81 | 0.96 |
+| aida_desire | marketing_principles | 1.00 | 0.56 | 0.93 |
 
 **What it cannot tell you.** With 13 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 
@@ -112,7 +112,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.22 a
 | total_image_area_ratio | 0.10 | 0.31 | 1.99 |
 | hero_image_area_ratio | 0.25 | 0.62 | 1.49 |
 | question_count | 20.71 | 5.75 | -1.44 |
-| expat_cross_border_targeting | 0.07 | 0.50 | 1.23 |
+| aida_coverage_score | 2.69 | 3.75 | 1.33 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 

@@ -1,25 +1,25 @@
 # D-01 — Scope and compliance note
 
-sieg 15/09, first draft. Deliverable D-01 per PRD section 13 ("Scope and
+first draft. Deliverable D-01 per PRD section 13 ("Scope and
 compliance note" — banks/product/pages/language selected with justification,
 what was excluded and why, robots.txt/sitemap findings, and the "what we
 considered acceptable, and why" statement). Audience: both decks.
 
 Status: draft, based on what is actually in the repo as of 18/09 (19/09 weekend, before Day 6 gate).
 
-**sieg 18/09:** table below and the Argenta/Crelan/bunq bullet in section 4
+**** table below and the Argenta/Crelan/bunq bullet in section 4
 were still describing 15/09 while collection moved past them - all 9 banks
 now have a real capture. See `docs/decisions.md` for the dated record of
 what changed and when.
 
-**sieg 18/09, open questions status (PRD Appendix, Q-01 to Q-07).** Every one
+**open questions status (PRD Appendix, Q-01 to Q-07).** Every one
 of these was closed with a **working assumption**, not an ING-confirmed
 answer - the PRD's own wording. Ahead of any ING meeting, here is which ones
 still need a real answer vs. which are fine as internal calls:
 
 TO VALIDATE TOGETHER
 
-**sieg 18/09, 14h meeting plan (10 min + 5 min Q&A).** Q-01, Q-02 and Q-04
+**14h meeting plan (10 min + 5 min Q&A).** Q-01, Q-02 and Q-04
 closed by the team today, dropped from the table below - no need to raise
 them with ING. **The one question for the 5 minutes of Q&A is Q-05** (repo
 public or not).
@@ -39,7 +39,7 @@ confirm so today's content matches what ING expects from this slot.
 | Q-06 | ING-preferred/approved tooling or compliance process for web collection? | not covered here | never asked - we applied our own reading of §9 (LC-04, "no bot-detection evasion") instead |
 | Q-07 | Which language is the reference? | §2, line ~69 | resolved, French chosen and documented - nothing to ask |
 
-**sieg 18/09, correction on Q-06/LC-04.** "IP rotation" does not appear
+**correction on Q-06/LC-04.** "IP rotation" does not appear
 anywhere in the PRD - checked the source text directly. LC-04's actual
 wording is "no bot-detection evasion" (among no login, no CAPTCHA solving,
 no rate-limit evasion). "Getting past BNP's CDN block would need IP
@@ -62,7 +62,7 @@ assumption "include only if capacity allows."
 (e.g. the 100%-state-owned trust-signal example). Capacity allowed it, per
 the PRD's own condition.
 
-**sieg 18/09, refreshed from `data/processed/campaigns.csv` (the real
+**refreshed from `data/processed/campaigns.csv` (the real
 dataset that's actually in use today):**
 
 | Bank | Category | Real capture | Robots allowed | Screenshot | Model-assisted fields |
@@ -100,7 +100,7 @@ Two real gaps, not "not yet configured":
   (`page_height_px` and three others) stay empty on every real row,
   unchanged since 16/09.
 
-### steve 21/09 update — the scope is now 10 banks / 12 pages, nothing excluded
+### Scope update — 10 banks / 12 pages, nothing excluded
 
 Two things changed since the table above. **Headless rendering works in this
 environment now** — every live capture carries `page_height_px` and the other
@@ -141,12 +141,12 @@ TLS handshake fails; and **AXA Bank no longer exists as a brand** — it merged 
 Crelan, and axa.be now redirects to insurance. Keytrade Bank remains unresolved:
 JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
 
-### steve 21/09 — the dataset now spans every family each bank promotes
+### The dataset now spans every family each bank promotes
 
 The comparison had been one family (`current_account_pack`) because that is what
 the targets file listed. It now holds **50 pages across 14 banks and 6 families**:
 `current_account_pack` 16, `investment` 9, `savings_account` 9, `pension` 8,
-`mortgage` 5, `term_account` 3. (sieg 22/09: `other` 1 folded into `pension` -
+`mortgage` 5, `term_account` 3. (`other` 1 folded into `pension` -
 `belfius_other_fr_01` was Belfius's pension page, mislabeled; see the note
 below.) Product pages were discovered from each
 bank's own navigation and every one was verified by rendering it before
@@ -158,15 +158,14 @@ together, and a comparison is only valid within one of them. Banks whose sites
 publish fewer comparable landing pages contribute fewer rows — Revolut and bunq
 have one each (app-first sites), Keytrade, N26 and Hellobank three.
 
-### sieg 22/09 — the three remaining gaps above are closed
+### The three remaining gaps above are closed
 
 The table at line 125-126 and the "two real gaps" list above it are now
 stale, both superseded by later re-collection (dated between the "steve
 21/09" sections above and today):
 
 - **BNP Paribas Fortis and Revolut are both live-captured, not
-  manual-capture.** BNP via `method: headful` (decisions.md, "steve 21/09,
-  BNP Paribas Fortis captured"); Revolut via the current
+  manual-capture.** BNP via `method: headful` (decisions.md, "BNP Paribas Fortis captured"); Revolut via the current
   `collection_targets.yaml` URL, a plain headless fetch. Every one of the 50
   current rows has `collection_method` in `{headless_render, headful_render}`
   — checked directly against `data/processed/campaigns.csv`, zero
@@ -195,7 +194,7 @@ this: `current_account_pack` (ING, KBC, Belfius, Argenta, Crelan, vdk,
 hellobank, beobank, N26 and bunq — the family the analysis compares),
 `savings_account` (ING), `mortgage` (BNP Paribas Fortis) and `pension`
 (Belfius's second page — its current-account page is the one that counts for
-`current_account_pack`; sieg 22/09: this was labelled `other` until tonight,
+`current_account_pack`; this was labelled `other` until tonight,
 corrected in place, same capture).
 `category_comparison`/`check_deck_claims` and any like-for-like read (DR-04)
 should compare within the same `product_family` value, not across the full
@@ -209,7 +208,7 @@ see the compliance-gate fix on `feat/sync_main`) and fails closed: if
 `robots.txt` can't be read at all, the URL is treated as not allowed. Every
 row in `real_captures.csv` has `robots_allowed=True`.
 
-Per-domain reasoning (sieg 15/09, read each domain's live `robots.txt`
+Per-domain reasoning (read each domain's live `robots.txt`
 directly and checked it with the same parser `compliance.py` uses):
 
 - **Revolut** (`fr-BE/bank-account/`) — no `Disallow` rule covers that path
@@ -237,7 +236,7 @@ No domain has been excluded on compliance grounds so far.
 
 ## 4. What was excluded, and why
 
-- **sieg 18/09: superseded.** Argenta, Crelan and bunq are now captured and
+- **superseded.** Argenta, Crelan and bunq are now captured and
   in scope like every other bank — nothing was excluded here after all, they
   were just collected later than the rest.
 - **Social media sentiment** (candidate analysis dimension, PRD 11 bis) —
@@ -253,7 +252,7 @@ No domain has been excluded on compliance grounds so far.
 - **Public repository / public competitor assets** — treated as internal
   only per Q-05; no public redistribution of competitor screenshots, HTML or
   brand assets outside the team.
-- **English, alongside French and Dutch** — sieg 16/09, revisited and added
+- **English, alongside French and Dutch** — revisited and added
   (Stephane agreed). Checked first: ING's English site is a genuine full
   mirror of the French one (same packs, same pricing, same promos), not an
   expat-only subset, so this is the same audience in a third language, not a

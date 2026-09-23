@@ -1,4 +1,4 @@
-# sieg 15/09: live pipeline test, not the final team scope (Dan owns that
+# Live pipeline test, not the final team scope (Dan owns that
 # decision, FR-01) - just 5 URLs already checked against robots.txt this
 # session, used to prove the real chain (compliance -> scrape -> colours ->
 # validate) works end to end before Dan hits it tomorrow.
@@ -10,7 +10,7 @@ pages:
     url: "https://www.kbc.be/particuliers/fr/produits/paiements/comptes-a-vue/ouvrir-un-compte-de-base.html"
     language: fr
 
-  # sieg 16/09: NL equivalent of the same page (found via the FR page's own
+  # NL equivalent of the same page (found via the FR page's own
   # language switcher, not a fresh search - same product, "basisrekening" =
   # "compte de base").
   - bank: kbc
@@ -41,7 +41,7 @@ pages:
     url: "https://www.ing.be/fr/particuliers/epargner"
     language: fr
 
-  # steph 21/09: BNP refuses headless clients outright - every headless variant
+  # BNP refuses headless clients outright - every headless variant
   # (bundled Chromium, real Chrome, browser or bot User-Agent) returned HTTP 503
   # on every path including the homepage, while the same URL in a headful
   # browser returned 200. `method: headful` launches a real visible Chrome for
@@ -63,7 +63,7 @@ pages:
     url: "https://www.bnpparibasfortis.be/fr/public/particuliers/banque-au-quotidien/comptes-bancaires/compte-a-vue-comparer"
     language: fr
 
-  # sieg 15/09: added for the deck-claims work (C3/C4/C9 need Revolut).
+  # Added for the deck-claims work (C3/C4/C9 need Revolut).
   # robots.txt checked - no Disallow rule covers /fr-BE/bank-account/ (no
   # query string, not under /api/, not one of the blocked send-money/
   # currency-converter paths). assert_can_fetch() re-checks live at fetch time
@@ -75,7 +75,7 @@ pages:
     url: "https://www.revolut.com/fr-BE/bank-account/"
     language: fr
 
-  # sieg 16/09: ING's current-account pack page, alongside the existing
+  # ING's current-account pack page, alongside the existing
   # savings_account capture - gives a second ING product_family that is
   # directly like-for-like (DR-04) with KBC/N26/Revolut's current_account_pack
   # pages, rather than only the cross-family savings comparison. ing.be
@@ -87,7 +87,7 @@ pages:
     url: "https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-more"
     language: fr
 
-  # sieg 16/09: entry-level pack, the direct DR-04 like-for-like match to
+  # Entry-level pack, the direct DR-04 like-for-like match to
   # KBC's "compte de base" / N26's free Standard / Revolut's free plan.
   - bank: ing
     bank_category: traditional
@@ -96,14 +96,14 @@ pages:
     url: "https://www.ing.be/fr/particuliers/comptes-bancaire-packs/pack-go"
     language: fr
 
-  # sieg 16/09: the 3 banks never configured for collection - found via
+  # The 3 banks never configured for collection - found via
   # each site's own navigation (homepage -> language switcher, not guessed),
   # same current_account_pack family for DR-04 comparability.
   - bank: argenta
     bank_category: traditional
     product_family: current_account_pack
     page_role: campaign_landing
-    # sieg 16/09: corrected to the real live URL (redirects here) - shows
+    # Corrected to the real live URL (redirects here) - shows
     # 3 tiers (Green/Silver/Gold) on one page, Green is the one that's
     # comparable (free, "formule de base"), same convention as ING Go.
     url: "https://www.argenta.be/fr/formules.html"
@@ -123,7 +123,7 @@ pages:
     url: "https://www.bunq.com/fr-be/personal/plans/bunq-free"
     language: fr
 
-  # steve 21/09: Belfius was in scope but sat out every comparison because its
+  # Belfius was in scope but sat out every comparison because its
   # only capture was a pension page (family "other"). This is its own current-
   # account page, found through the site's products navigation, so Belfius can
   # be compared like for like. Collected live, no manual save needed.
@@ -134,7 +134,7 @@ pages:
     url: "https://www.belfius.be/retail/fr/produits/paiement/compte-bancaire/"
     language: fr
 
-  # steve 21/09: three more banks verified collectable live (robots allowed,
+  # Three more banks verified collectable live (robots allowed,
   # HTTP 200, quality=ok). Found through each site's own navigation, French
   # for comparability with the rest of the dataset. Added to the frozen bank
   # enum in the same change.
@@ -152,7 +152,7 @@ pages:
     url: "https://www.hellobank.be/fr/notre-offre/comptes-et-cartes/compte-all-in-gratuit"
     language: fr
 
-  # steve 21/09: CBC (KBC Group's francophone brand) serves headless normally.
+  # CBC (KBC Group's francophone brand) serves headless normally.
   - bank: cbc
     bank_category: traditional
     product_family: current_account_pack
@@ -160,7 +160,7 @@ pages:
     url: "https://www.cbc.be/particuliers/fr/produits/paiements/comptes-a-vue/compte-bancaire-gratuit.html"
     language: fr
 
-  # steve 21/09: Keytrade's KeyPack is its current-account package. Its site
+  # Keytrade's KeyPack is its current-account package. Its site
   # never reaches networkidle (consent + analytics keep loading) and the
   # headless client stalls, so this target uses the headful browser and a
   # lighter navigation wait - the page is readable long before it goes idle.

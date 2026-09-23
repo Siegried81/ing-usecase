@@ -389,12 +389,11 @@ def comparison_matrix(
     column. Scaling before standardising does nothing at all; z-scoring erases
     it.
 
-    sieg 22/09: audit item #1 asked for this drop to be visible rather than
-    silent. It already was - feature_accounting()/render_accounting() report
-    every column dropped here under "missing for some bank" on every
-    run_analysis.py run, tier=None on both sides so the sets match exactly.
-    A second, differently-formatted print() was added straight into this
-    function on 21/09 and has been removed - one source of truth, not two.
+    The dropna() below is reported, not silent: feature_accounting() /
+    render_accounting() list every column dropped here under "missing for
+    some bank", on the same tier, and run_analysis.py prints that block.
+    Report it there and nowhere else - two differently-worded reports of the
+    same reduction is how they drift apart.
     """
     fd = fd or load_dictionary()
     vectors = bank_vectors(df, fd, tier=tier, include_categorical=include_categorical)
@@ -814,13 +813,12 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
 
             fmt = (lambda v: repr(band_labels[v])) if band_labels else (lambda v: f"{v:.1f}")
 
-            # sieg 23/09: idxmax()/idxmin() pick an arbitrary bank on a tie
-            # (whichever comes first in the Series), so a claim could read
-            # "supported" purely by index order while an equally-tied claim
-            # elsewhere read "not supported" - found live, H2 (KBC) and H5
-            # (Revolut) both tied at word_count_band='long' with every other
-            # bank, one called "supported", the other "not supported". A tie
-            # means the data cannot single out a winner - never "supported".
+            # idxmax()/idxmin() pick an arbitrary bank on a tie (whichever
+            # comes first in the Series), which let one claim read "supported"
+            # and an equally-tied claim read "not supported" by index order
+            # alone - both banks sat at word_count_band='long' along with
+            # every other bank. A tie means the data cannot single out a
+            # winner, so a tie is never "supported".
             if bank not in series.index:
                 pass
             elif test == "highest":
