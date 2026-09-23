@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-09-22T08:53:08+00:00",
-  "dataset": "data\\processed\\campaigns_scored.csv",
+  "generated_at": "2026-09-23T06:25:09+00:00",
+  "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
     "product_family_label": "Current-account packs",
-    "pages": 16,
+    "pages": 18,
     "banks": [
       "Argenta",
       "Belfius",
@@ -42,149 +42,190 @@
     "excluded": [],
     "uncollectable": [],
     "languages": [
+      "en",
       "fr",
       "nl"
     ],
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
-    "captured_to": "2026-09-21T09:24:24.629230+00:00",
-    "total_collected": 50,
+    "captured_to": "2026-09-23T06:18:33.296978+00:00",
+    "total_collected": 52,
     "n_features": 30
   },
   "headline": {
     "focus": "ING",
-    "score": 0.209,
+    "score": 0.212,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
   "positioning": [
     {
-      "bank": "CBC",
-      "key": "cbc",
-      "category": "traditional",
-      "score": -0.199,
-      "isFocus": false
-    },
-    {
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.188,
+      "score": -0.186,
       "isFocus": false
     },
     {
-      "bank": "Beobank",
-      "key": "beobank",
+      "bank": "CBC",
+      "key": "cbc",
       "category": "traditional",
-      "score": -0.106,
+      "score": -0.172,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": -0.09,
+      "score": -0.135,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.05,
+      "score": -0.087,
+      "isFocus": false
+    },
+    {
+      "bank": "Beobank",
+      "key": "beobank",
+      "category": "traditional",
+      "score": -0.053,
       "isFocus": false
     },
     {
       "bank": "Vdk",
       "key": "vdk",
       "category": "traditional",
-      "score": 0.02,
+      "score": -0.034,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": 0.041,
+      "score": 0.136,
+      "isFocus": false
+    },
+    {
+      "bank": "Hellobank",
+      "key": "hellobank",
+      "category": "traditional",
+      "score": 0.145,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.129,
+      "score": 0.174,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.209,
+      "score": 0.212,
       "isFocus": true
-    },
-    {
-      "bank": "Hellobank",
-      "key": "hellobank",
-      "category": "traditional",
-      "score": 0.232,
-      "isFocus": false
     },
     {
       "bank": "Keytrade",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.563,
+      "score": 0.506,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.906,
+      "score": 0.944,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.215,
+      "score": 1.232,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.316,
+      "score": 1.319,
       "isFocus": false
     }
   ],
   "peerGaps": [
     {
-      "feature": "numeric_claim_count",
-      "label": "Figures and percentages quoted",
-      "dimension": "tone_messaging",
-      "extraction": "automatic",
-      "focusValue": 25.5,
-      "peerMean": 12.153846153846153,
-      "gapSd": 1.62,
-      "direction": "above"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "dimension": "layout_structure",
+      "feature": "value_prop_clarity",
+      "label": "Clarity of the offer",
+      "dimension": "topics_value_prop",
       "extraction": "rubric",
-      "focusValue": 1.0,
-      "peerMean": 0.375,
-      "gapSd": 1.29,
+      "focusValue": 4.333333333333333,
+      "peerMean": 3.5,
+      "gapSd": 1.67,
       "direction": "above"
     },
     {
-      "feature": "youth_student_targeting",
-      "label": "Targets students or young people",
+      "feature": "persuasion_lever_count",
+      "label": "Persuasion techniques used",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 2.3333333333333335,
+      "peerMean": 1.3,
+      "gapSd": 1.61,
+      "direction": "above"
+    },
+    {
+      "feature": "fast_digital_onboarding_claim",
+      "label": "Promises fast digital sign-up",
       "dimension": "banking_domain",
       "extraction": "model_assisted",
-      "focusValue": 1.0,
-      "peerMean": 0.38461538461538464,
-      "gapSd": 1.26,
+      "focusValue": 0.6666666666666666,
+      "peerMean": 0.15384615384615385,
+      "gapSd": 1.42,
+      "direction": "above"
+    },
+    {
+      "feature": "page_height_px",
+      "label": "Page length",
+      "dimension": "layout_structure",
+      "extraction": "automatic",
+      "focusValue": 11148.666666666666,
+      "peerMean": 6411.717948717949,
+      "gapSd": 1.42,
+      "direction": "above"
+    },
+    {
+      "feature": "hidden_conditions_behind_free_claim",
+      "label": "“Free” with conditions attached",
+      "dimension": "banking_domain",
+      "extraction": "model_assisted",
+      "focusValue": 0.6666666666666666,
+      "peerMean": 0.23076923076923078,
+      "gapSd": 1.03,
+      "direction": "above"
+    },
+    {
+      "feature": "cta_count",
+      "label": "Calls to action",
+      "dimension": "layout_structure",
+      "extraction": "automatic",
+      "focusValue": 0.6666666666666666,
+      "peerMean": 5.641025641025641,
+      "gapSd": -1.0,
+      "direction": "below"
+    },
+    {
+      "feature": "aida_coverage_score",
+      "label": "Campaign structure completeness (AIDA)",
+      "dimension": "marketing_principles",
+      "extraction": "rubric",
+      "focusValue": 3.6666666666666665,
+      "peerMean": 2.8055555555555554,
+      "gapSd": 0.96,
       "direction": "above"
     },
     {
@@ -193,68 +234,28 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 1.0,
-      "peerMean": 0.42857142857142855,
-      "gapSd": 1.15,
+      "peerMean": 0.5555555555555555,
+      "gapSd": 0.93,
       "direction": "above"
     },
     {
-      "feature": "aida_coverage_score",
-      "label": "Campaign structure completeness (AIDA)",
-      "dimension": "marketing_principles",
-      "extraction": "rubric",
-      "focusValue": 3.5,
-      "peerMean": 2.7142857142857144,
-      "gapSd": 1.12,
+      "feature": "image_count",
+      "label": "Images",
+      "dimension": "visuals",
+      "extraction": "automatic",
+      "focusValue": 33.0,
+      "peerMean": 19.0,
+      "gapSd": 0.85,
       "direction": "above"
     },
     {
-      "feature": "cta_count",
-      "label": "Calls to action",
-      "dimension": "layout_structure",
+      "feature": "numeric_claim_count",
+      "label": "Figures and percentages quoted",
+      "dimension": "tone_messaging",
       "extraction": "automatic",
-      "focusValue": 2.0,
-      "peerMean": 13.384615384615385,
-      "gapSd": -1.06,
-      "direction": "below"
-    },
-    {
-      "feature": "fast_digital_onboarding_claim",
-      "label": "Promises fast digital sign-up",
-      "dimension": "banking_domain",
-      "extraction": "model_assisted",
-      "focusValue": 0.5,
-      "peerMean": 0.15384615384615385,
-      "gapSd": 0.96,
-      "direction": "above"
-    },
-    {
-      "feature": "page_height_px",
-      "label": "Page length",
-      "dimension": "layout_structure",
-      "extraction": "automatic",
-      "focusValue": 9465.0,
-      "peerMean": 6414.115384615385,
-      "gapSd": 0.91,
-      "direction": "above"
-    },
-    {
-      "feature": "has_comparison_table",
-      "label": "Includes a comparison table",
-      "dimension": "layout_structure",
-      "extraction": "automatic",
-      "focusValue": 0.0,
-      "peerMean": 0.38461538461538464,
-      "gapSd": -0.79,
-      "direction": "below"
-    },
-    {
-      "feature": "background_luminance",
-      "label": "Page brightness",
-      "dimension": "colours_design",
-      "extraction": "automatic",
-      "focusValue": 0.8975,
-      "peerMean": 0.7241538461538461,
-      "gapSd": 0.73,
+      "focusValue": 18.666666666666668,
+      "peerMean": 12.17948717948718,
+      "gapSd": 0.79,
       "direction": "above"
     }
   ],
@@ -265,10 +266,6 @@
     },
     {
       "label": "Distinct accent colours",
-      "note": "every peer has the same value - no spread to measure against"
-    },
-    {
-      "label": "Gives a reason to keep reading",
       "note": "every peer has the same value - no spread to measure against"
     },
     {
@@ -297,37 +294,19 @@
       "feature": "background_luminance",
       "label": "Page brightness",
       "extraction": "automatic",
-      "traditional": 0.8575833333333334,
+      "traditional": 0.8612857142857143,
       "challenger": 0.449,
-      "effect": -2.81,
+      "effect": -3.01,
       "higherAt": "traditional"
     },
     {
       "feature": "above_fold_element_count",
       "label": "Elements visible without scrolling",
       "extraction": "automatic",
-      "traditional": 36.583333333333336,
+      "traditional": 36.57142857142857,
       "challenger": 21.5,
-      "effect": -2.1,
+      "effect": -2.12,
       "higherAt": "traditional"
-    },
-    {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
-      "extraction": "model_assisted",
-      "traditional": 0.0,
-      "challenger": 0.5,
-      "effect": 1.87,
-      "higherAt": "challenger"
-    },
-    {
-      "feature": "expat_cross_border_targeting",
-      "label": "Targets expats",
-      "extraction": "model_assisted",
-      "traditional": 0.0,
-      "challenger": 0.5,
-      "effect": 1.87,
-      "higherAt": "challenger"
     },
     {
       "feature": "rate_shown",
@@ -335,53 +314,71 @@
       "extraction": "automatic",
       "traditional": 0.0,
       "challenger": 0.5,
-      "effect": 1.87,
+      "effect": 2.0,
+      "higherAt": "challenger"
+    },
+    {
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
+      "extraction": "model_assisted",
+      "traditional": 0.0,
+      "challenger": 0.5,
+      "effect": 2.0,
       "higherAt": "challenger"
     },
     {
       "feature": "total_image_area_ratio",
       "label": "Share of the page that is imagery",
       "extraction": "automatic",
-      "traditional": 0.10158333333333334,
+      "traditional": 0.09764285714285714,
       "challenger": 0.31425000000000003,
-      "effect": 1.85,
-      "higherAt": "challenger"
-    },
-    {
-      "feature": "formality_score",
-      "label": "Formality of tone",
-      "extraction": "rubric",
-      "traditional": 3.4166666666666665,
-      "challenger": 2.25,
-      "effect": -1.83,
-      "higherAt": "traditional"
-    },
-    {
-      "feature": "mobile_first_design_signal",
-      "label": "Designed mobile-first",
-      "extraction": "rubric",
-      "traditional": 0.2857142857142857,
-      "challenger": 1.0,
-      "effect": 1.69,
+      "effect": 1.99,
       "higherAt": "challenger"
     },
     {
       "feature": "hero_image_area_ratio",
       "label": "Size of the opening image",
       "extraction": "automatic",
-      "traditional": 0.2363333333333333,
+      "traditional": 0.25307142857142856,
       "challenger": 0.6212500000000001,
-      "effect": 1.53,
+      "effect": 1.49,
       "higherAt": "challenger"
     },
     {
-      "feature": "aida_desire",
-      "label": "Makes the offer feel worth having",
-      "extraction": "rubric",
-      "traditional": 0.3333333333333333,
-      "challenger": 1.0,
-      "effect": 1.53,
+      "feature": "question_count",
+      "label": "Questions asked",
+      "extraction": "automatic",
+      "traditional": 20.714285714285715,
+      "challenger": 5.75,
+      "effect": -1.44,
+      "higherAt": "traditional"
+    },
+    {
+      "feature": "expat_cross_border_targeting",
+      "label": "Targets expats",
+      "extraction": "model_assisted",
+      "traditional": 0.07142857142857142,
+      "challenger": 0.5,
+      "effect": 1.23,
       "higherAt": "challenger"
+    },
+    {
+      "feature": "disclaimer_present",
+      "label": "Carries legal small print",
+      "extraction": "automatic",
+      "traditional": 0.9285714285714286,
+      "challenger": 0.5,
+      "effect": -1.23,
+      "higherAt": "traditional"
+    },
+    {
+      "feature": "has_comparison_table",
+      "label": "Includes a comparison table",
+      "extraction": "automatic",
+      "traditional": 0.5714285714285714,
+      "challenger": 0.0,
+      "effect": -1.23,
+      "higherAt": "traditional"
     }
   ],
   "banks": [
@@ -393,7 +390,7 @@
       "signature": [
         {
           "label": "Figures and percentages quoted",
-          "sd": 2.3,
+          "sd": 2.5,
           "direction": "above"
         },
         {
@@ -410,7 +407,7 @@
       "tone": {
         "Words on the page": 1831.0,
         "Readability band": "very_hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 3.0,
         "Speaks to “you” rather than “we”": 0.746,
         "Urgency markers": 2.0
       },
@@ -426,7 +423,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3244.0,
-        "Calls to action": 7.0,
+        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -472,25 +469,25 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Page length",
-          "sd": 1.4,
-          "direction": "above"
-        },
-        {
           "label": "Includes a comparison table",
           "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Elements visible without scrolling",
-          "sd": -1.2,
-          "direction": "below"
+          "label": "Page length",
+          "sd": 1.3,
+          "direction": "above"
+        },
+        {
+          "label": "Targets students or young people",
+          "sd": 1.3,
+          "direction": "above"
         }
       ],
       "tone": {
         "Words on the page": 1812.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": null,
         "Speaks to “you” rather than “we”": 0.688,
         "Urgency markers": 0.0
       },
@@ -560,7 +557,7 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -568,7 +565,7 @@
       "tone": {
         "Words on the page": 3310.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.603,
         "Urgency markers": 0.0
       },
@@ -584,7 +581,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 7078.0,
-        "Calls to action": 20.0,
+        "Calls to action": 9.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -600,9 +597,12 @@
         "backgroundLuminance": 0.851
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 2.0,
+        "Persuasion levers": [
+          "social_proof",
+          "liking"
+        ],
+        "Lever count": 2.0
       },
       "personas": [
         {
@@ -629,7 +629,7 @@
       "signature": [
         {
           "label": "Promises fast digital sign-up",
-          "sd": 2.3,
+          "sd": 2.2,
           "direction": "above"
         },
         {
@@ -638,15 +638,15 @@
           "direction": "above"
         },
         {
-          "label": "Uses animation",
-          "sd": -1.3,
-          "direction": "below"
+          "label": "Calls to action",
+          "sd": 1.5,
+          "direction": "above"
         }
       ],
       "tone": {
         "Words on the page": 2199.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.576,
         "Urgency markers": 1.0
       },
@@ -658,17 +658,17 @@
         "Image area share": 0.104
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "stacked",
         "Page length": 6387.0,
-        "Calls to action": 23.0,
+        "Calls to action": 13.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Packs de comptes de paiement (Easy Guide, Easy Go, Hello Pack)",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -678,9 +678,11 @@
         "backgroundLuminance": 0.843
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 1.0,
+        "Persuasion levers": [
+          "commitment"
+        ],
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -721,8 +723,8 @@
           "direction": "below"
         },
         {
-          "label": "Urgency and deadline language",
-          "sd": 2.7,
+          "label": "Calls to action",
+          "sd": 2.8,
           "direction": "above"
         }
       ],
@@ -745,8 +747,8 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 15135.0,
-        "Calls to action": 21.0,
-        "Call to action visible without scrolling": 1.0
+        "Calls to action": 19.0,
+        "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "bunq Free - Ton compte bancaire gratuit",
@@ -806,7 +808,7 @@
           "direction": "above"
         },
         {
-          "label": "Formality of tone",
+          "label": "Elements visible without scrolling",
           "sd": 1.0,
           "direction": "above"
         }
@@ -814,7 +816,7 @@
       "tone": {
         "Words on the page": 2613.0,
         "Readability band": "very_hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.836,
         "Urgency markers": 0.0
       },
@@ -826,17 +828,17 @@
         "Image area share": 0.046
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "hero_stacked",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 4447.0,
-        "Calls to action": 11.0,
+        "Calls to action": 5.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Compte à vue 100% online - 100% gratuit",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -846,9 +848,11 @@
         "backgroundLuminance": 0.869
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 2.0,
+        "Persuasion levers": [
+          "commitment"
+        ],
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -858,7 +862,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 6.7,
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
@@ -874,13 +878,13 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Images",
-          "sd": 3.2,
+          "label": "Content sections",
+          "sd": 3.5,
           "direction": "above"
         },
         {
-          "label": "Calls to action",
-          "sd": 2.7,
+          "label": "Images",
+          "sd": 3.2,
           "direction": "above"
         },
         {
@@ -908,7 +912,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 2945.0,
-        "Calls to action": 42.0,
+        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -924,7 +928,7 @@
         "backgroundLuminance": 0.79
       },
       "marketing": {
-        "Aida coverage": 2.0,
+        "Aida coverage": 3.0,
         "Persuasion levers": [
           "liking"
         ],
@@ -955,7 +959,7 @@
       "signature": [
         {
           "label": "Brand colour on the page",
-          "sd": 3.2,
+          "sd": 3.3,
           "direction": "above"
         },
         {
@@ -964,8 +968,8 @@
           "direction": "below"
         },
         {
-          "label": "Formality of tone",
-          "sd": -1.4,
+          "label": "Animated elements",
+          "sd": -1.3,
           "direction": "below"
         }
       ],
@@ -984,9 +988,9 @@
         "Image area share": 0.322
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 3881.0,
         "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
@@ -994,7 +998,7 @@
       "valueProposition": {
         "Primary product": "Le compte de paiement all-in gratuit",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
@@ -1004,7 +1008,7 @@
         "backgroundLuminance": 0.774
       },
       "marketing": {
-        "Aida coverage": null,
+        "Aida coverage": 4.0,
         "Persuasion levers": [],
         "Lever count": null
       },
@@ -1016,7 +1020,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 3.3,
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
@@ -1029,84 +1033,91 @@
       "key": "ing",
       "name": "ING",
       "category": "traditional",
-      "pages": 2,
+      "pages": 3,
       "signature": [
         {
-          "label": "Figures and percentages quoted",
-          "sd": 1.4,
+          "label": "Promises fast digital sign-up",
+          "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
-          "sd": 1.2,
+          "label": "Page length",
+          "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Calls to action",
-          "sd": -1.0,
-          "direction": "below"
+          "label": "“Free” with conditions attached",
+          "sd": 1.0,
+          "direction": "above"
         }
       ],
       "tone": {
-        "Words on the page": 3148.5,
+        "Words on the page": null,
         "Readability band": "hard",
-        "Formality of tone": 3.0,
-        "Speaks to “you” rather than “we”": 0.829,
-        "Urgency markers": 0.5
+        "Formality of tone": 2.3333333333333335,
+        "Speaks to “you” rather than “we”": null,
+        "Urgency markers": 0.3333333333333333
       },
       "imagery": {
-        "Images": 30.5,
+        "Images": 33.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.5,
-        "Image area share": 0.133
+        "Animated": 0.3333333333333333,
+        "Image area share": 0.12366666666666666
       },
       "layout": {
         "Archetype": "hero_stacked",
         "Hero image": 1.0,
-        "Text and image arrangement": "overlaid",
-        "Page length": 9465.0,
-        "Calls to action": 2.0,
+        "Text and image arrangement": "beside",
+        "Page length": 11148.666666666666,
+        "Calls to action": 0.6666666666666666,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
-        "Primary product": "ING Go (pack compte à vue)",
+        "Primary product": "Belgian bank account for expats (ING pack)",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": "above_fold",
+        "How prominently the rate is shown": "below_fold",
         "Benefit framing": "mixed",
-        "Fab level": "benefit"
+        "Fab level": "feature"
       },
       "palette": {
         "dominant": "#ffffff",
-        "brandShare": 0.011,
-        "backgroundLuminance": 0.8975
+        "brandShare": 0.007333333333333333,
+        "backgroundLuminance": 0.9036666666666666
       },
       "marketing": {
-        "Aida coverage": 3.5,
+        "Aida coverage": 3.6666666666666665,
         "Persuasion levers": [
           "reciprocity",
-          "scarcity"
+          "scarcity",
+          "authority",
+          "social_proof"
         ],
-        "Lever count": 1.5
+        "Lever count": 2.3333333333333335
       },
       "personas": [
         {
           "persona": "mass_market",
           "label": "Mass market",
-          "share": 1.0
+          "share": 0.667
         },
         {
           "persona": "student",
           "label": "Student",
-          "share": 0.5
+          "share": 0.333
+        },
+        {
+          "persona": "expat",
+          "label": "Expat",
+          "share": 0.333
         }
       ],
       "aiScore": {
-        "digital": 8.3,
+        "digital": 7.8,
         "trust": 0.0,
         "cross_sell": 10.0,
-        "personalisation": 2.5,
-        "innovation": 2.5,
+        "personalisation": 3.8,
+        "innovation": 1.7,
         "simplicity": 2.5
       },
       "crossSellScore": 0.167
@@ -1115,7 +1126,7 @@
       "key": "kbc",
       "name": "KBC",
       "category": "traditional",
-      "pages": 2,
+      "pages": 3,
       "signature": [
         {
           "label": "Images carry alt text",
@@ -1136,41 +1147,42 @@
       "tone": {
         "Words on the page": null,
         "Readability band": "very_hard",
-        "Formality of tone": 3.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": null,
-        "Urgency markers": 0.5
+        "Urgency markers": 0.3333333333333333
       },
       "imagery": {
         "Images": 8.0,
         "Dominant image type": "photo",
         "People present": 1.0,
         "Animated": 1.0,
-        "Image area share": 0.042
+        "Image area share": 0.042333333333333334
       },
       "layout": {
         "Archetype": "split_columns",
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
-        "Page length": 3806.5,
-        "Calls to action": 4.0,
+        "Page length": 3775.3333333333335,
+        "Calls to action": 2.3333333333333335,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "Compte Base KBC",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": "below_fold",
+        "How prominently the rate is shown": "above_fold",
         "Benefit framing": "rational",
         "Fab level": "feature"
       },
       "palette": {
         "dominant": "#ffffff",
         "brandShare": 0.002,
-        "backgroundLuminance": 0.878
+        "backgroundLuminance": 0.8690000000000001
       },
       "marketing": {
-        "Aida coverage": 2.0,
+        "Aida coverage": 2.6666666666666665,
         "Persuasion levers": [
-          "authority"
+          "authority",
+          "liking"
         ],
         "Lever count": 1.0
       },
@@ -1182,7 +1194,7 @@
         }
       ],
       "aiScore": {
-        "digital": 4.0,
+        "digital": 4.4,
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
@@ -1228,17 +1240,17 @@
         "Image area share": 0.26
       },
       "layout": {
-        "Archetype": null,
+        "Archetype": "split_columns",
         "Hero image": 1.0,
-        "Text and image arrangement": null,
+        "Text and image arrangement": "beside",
         "Page length": 6440.0,
-        "Calls to action": 4.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
         "Primary product": "KEYPACK - Le compte à vue en ligne",
         "Shows a rate": 0.0,
-        "How prominently the rate is shown": null,
+        "How prominently the rate is shown": "absent",
         "Benefit framing": "rational",
         "Fab level": "benefit"
       },
@@ -1248,9 +1260,11 @@
         "backgroundLuminance": 0.683
       },
       "marketing": {
-        "Aida coverage": null,
-        "Persuasion levers": [],
-        "Lever count": null
+        "Aida coverage": 4.0,
+        "Persuasion levers": [
+          "reciprocity"
+        ],
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -1265,7 +1279,7 @@
         }
       ],
       "aiScore": {
-        "digital": 5.0,
+        "digital": 3.3,
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
@@ -1299,7 +1313,7 @@
       "tone": {
         "Words on the page": 2019.0,
         "Readability band": "hard",
-        "Formality of tone": 3.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.78,
         "Urgency markers": 0.0
       },
@@ -1315,7 +1329,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 8005.0,
-        "Calls to action": 11.0,
+        "Calls to action": 6.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1395,7 +1409,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 6615.0,
-        "Calls to action": 7.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1459,7 +1473,7 @@
       "signature": [
         {
           "label": "Call to action visible without scrolling",
-          "sd": 2.4,
+          "sd": 3.6,
           "direction": "above"
         },
         {
@@ -1468,15 +1482,15 @@
           "direction": "above"
         },
         {
-          "label": "Figures and percentages quoted",
-          "sd": -1.2,
-          "direction": "below"
+          "label": "Targets students or young people",
+          "sd": 1.3,
+          "direction": "above"
         }
       ],
       "tone": {
         "Words on the page": 3992.0,
         "Readability band": "hard",
-        "Formality of tone": 4.0,
+        "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.797,
         "Urgency markers": 1.0
       },
@@ -1492,7 +1506,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
-        "Calls to action": 17.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 1.0
       },
       "valueProposition": {
@@ -1583,7 +1597,7 @@
         0,
         4,
         0,
-        4
+        5
       ],
       [
         0,
@@ -1634,12 +1648,12 @@
     "mostAssociated": [
       {
         "from": "Current-account packs",
-        "to": "Investment",
-        "count": 4
+        "to": "Other",
+        "count": 5
       },
       {
         "from": "Current-account packs",
-        "to": "Other",
+        "to": "Investment",
         "count": 4
       },
       {
@@ -1831,226 +1845,226 @@
     "matrix": [
       [
         0.0,
-        5.62,
+        5.7,
+        5.87,
+        6.12,
+        10.31,
+        5.36,
+        9.3,
+        6.74,
+        5.69,
         5.71,
-        5.8,
-        10.44,
-        5.31,
-        9.04,
-        7.06,
-        5.45,
-        5.8,
-        7.76,
+        7.51,
         9.8,
-        10.61,
-        6.48
+        10.4,
+        7.06
       ],
       [
-        5.62,
+        5.7,
         0.0,
-        6.19,
-        6.44,
-        9.66,
+        6.1,
+        6.35,
+        9.21,
         4.63,
-        8.25,
-        7.17,
-        3.88,
-        5.48,
-        5.57,
-        9.07,
-        9.11,
-        4.84
+        8.23,
+        6.81,
+        4.23,
+        5.36,
+        5.08,
+        8.99,
+        8.81,
+        5.43
       ],
       [
-        5.71,
-        6.19,
+        5.87,
+        6.1,
         0.0,
         5.68,
-        10.73,
-        5.45,
-        7.28,
-        6.39,
-        5.58,
-        6.29,
-        7.37,
-        8.14,
-        10.64,
-        6.3
-      ],
-      [
-        5.8,
-        6.44,
-        5.68,
-        0.0,
-        10.13,
-        6.45,
-        8.38,
-        7.68,
-        4.58,
-        7.02,
-        6.77,
-        9.1,
-        10.32,
-        6.57
-      ],
-      [
-        10.44,
-        9.66,
-        10.73,
-        10.13,
-        0.0,
-        10.67,
-        11.68,
-        10.8,
-        9.4,
-        10.68,
-        9.78,
-        12.04,
-        10.47,
-        9.66
-      ],
-      [
-        5.31,
-        4.63,
-        5.45,
-        6.45,
-        10.67,
-        0.0,
-        7.16,
-        6.82,
-        5.59,
-        2.95,
-        6.95,
-        9.31,
-        9.97,
-        4.82
-      ],
-      [
-        9.04,
-        8.25,
-        7.28,
-        8.38,
-        11.68,
-        7.16,
-        0.0,
-        9.14,
-        8.02,
-        7.13,
-        7.83,
-        11.11,
-        10.63,
-        7.66
-      ],
-      [
-        7.06,
-        7.17,
-        6.39,
-        7.68,
-        10.8,
-        6.82,
-        9.14,
-        0.0,
-        6.19,
-        6.76,
-        6.81,
-        7.67,
-        10.34,
-        7.81
-      ],
-      [
-        5.45,
-        3.88,
-        5.58,
-        4.58,
-        9.4,
-        5.59,
-        8.02,
-        6.19,
-        0.0,
-        6.07,
-        5.27,
-        8.2,
-        9.04,
-        6.05
-      ],
-      [
-        5.8,
-        5.48,
-        6.29,
-        7.02,
-        10.68,
-        2.95,
-        7.13,
-        6.76,
-        6.07,
-        0.0,
-        6.93,
-        9.57,
-        9.31,
-        5.46
-      ],
-      [
-        7.76,
-        5.57,
-        7.37,
-        6.77,
-        9.78,
-        6.95,
-        7.83,
-        6.81,
-        5.27,
-        6.93,
-        0.0,
-        8.8,
-        8.79,
-        6.55
-      ],
-      [
-        9.8,
-        9.07,
-        8.14,
-        9.1,
-        12.04,
-        9.31,
-        11.11,
-        7.67,
-        8.2,
-        9.57,
-        8.8,
-        0.0,
-        10.31,
-        9.96
-      ],
-      [
-        10.61,
-        9.11,
-        10.64,
-        10.32,
-        10.47,
-        9.97,
-        10.63,
-        10.34,
-        9.04,
-        9.31,
-        8.79,
-        10.31,
-        0.0,
-        9.67
-      ],
-      [
-        6.48,
-        4.84,
-        6.3,
-        6.57,
-        9.66,
-        4.82,
-        7.66,
-        7.81,
-        6.05,
+        10.2,
         5.46,
-        6.55,
-        9.96,
-        9.67,
+        7.85,
+        5.87,
+        4.94,
+        6.16,
+        6.93,
+        8.02,
+        10.37,
+        6.97
+      ],
+      [
+        6.12,
+        6.35,
+        5.68,
+        0.0,
+        9.47,
+        6.53,
+        9.08,
+        7.36,
+        4.77,
+        7.0,
+        6.38,
+        9.05,
+        10.09,
+        7.31
+      ],
+      [
+        10.31,
+        9.21,
+        10.2,
+        9.47,
+        0.0,
+        10.32,
+        11.95,
+        10.76,
+        9.21,
+        10.63,
+        9.73,
+        11.84,
+        10.48,
+        10.61
+      ],
+      [
+        5.36,
+        4.63,
+        5.46,
+        6.53,
+        10.32,
+        0.0,
+        7.64,
+        6.39,
+        5.61,
+        2.67,
+        6.56,
+        9.22,
+        9.71,
+        5.55
+      ],
+      [
+        9.3,
+        8.23,
+        7.85,
+        9.08,
+        11.95,
+        7.64,
+        0.0,
+        9.11,
+        8.16,
+        7.43,
+        7.84,
+        11.38,
+        10.73,
+        8.62
+      ],
+      [
+        6.74,
+        6.81,
+        5.87,
+        7.36,
+        10.76,
+        6.39,
+        9.11,
+        0.0,
+        6.29,
+        6.64,
+        6.8,
+        7.55,
+        10.34,
+        7.78
+      ],
+      [
+        5.69,
+        4.23,
+        4.94,
+        4.77,
+        9.21,
+        5.61,
+        8.16,
+        6.29,
+        0.0,
+        6.22,
+        5.48,
+        7.86,
+        9.08,
+        6.53
+      ],
+      [
+        5.71,
+        5.36,
+        6.16,
+        7.0,
+        10.63,
+        2.67,
+        7.43,
+        6.64,
+        6.22,
+        0.0,
+        6.84,
+        9.53,
+        9.24,
+        5.92
+      ],
+      [
+        7.51,
+        5.08,
+        6.93,
+        6.38,
+        9.73,
+        6.56,
+        7.84,
+        6.8,
+        5.48,
+        6.84,
+        0.0,
+        8.73,
+        8.77,
+        6.51
+      ],
+      [
+        9.8,
+        8.99,
+        8.02,
+        9.05,
+        11.84,
+        9.22,
+        11.38,
+        7.55,
+        7.86,
+        9.53,
+        8.73,
+        0.0,
+        10.24,
+        10.23
+      ],
+      [
+        10.4,
+        8.81,
+        10.37,
+        10.09,
+        10.48,
+        9.71,
+        10.73,
+        10.34,
+        9.08,
+        9.24,
+        8.77,
+        10.24,
+        0.0,
+        9.69
+      ],
+      [
+        7.06,
+        5.43,
+        6.97,
+        7.31,
+        10.61,
+        5.55,
+        8.62,
+        7.78,
+        6.53,
+        5.92,
+        6.51,
+        10.23,
+        9.69,
         0.0
       ]
     ]
@@ -2084,15 +2098,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 3.88
+      "distance": 4.23
     },
     {
       "bank": "BNP Paribas Fortis",
-      "distance": 4.58
+      "distance": 4.77
     },
     {
-      "bank": "Keytrade",
-      "distance": 5.27
+      "bank": "Beobank",
+      "distance": 4.94
     }
   ],
   "deckClaims": [
@@ -2115,14 +2129,14 @@
       "bank": "ing",
       "claim": "ING is the only traditional bank using animation",
       "verdict": "not supported",
-      "evidence": "ing=0.50; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk', 'cbc']"
+      "evidence": "ing=0.33; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk', 'cbc']"
     },
     {
       "id": "H4",
       "bank": "ing",
       "claim": "ING no longer places text next to picture",
-      "verdict": "supported",
-      "evidence": "ing's most common text_image_layout: 'overlaid' (claim: not 'beside')"
+      "verdict": "not supported",
+      "evidence": "ing's most common text_image_layout: 'beside' (claim: not 'beside')"
     },
     {
       "id": "H5",
@@ -2135,13 +2149,13 @@
   "limitations": {
     "blocking": [],
     "material": [
-      "The usable pages span **7 different product families** (['current_account_pack', 'investment', 'mortgage', 'other', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
-      "Pages are in **2 languages** (['fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default."
+      "The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
+      "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
+      "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
       "Rubric features carry the opinion of the people who scored them. Inter-rater agreement is reported by `scripts/rubric_sheet.py agreement` and belongs in the data presentation (NFR-05).",
-      "Model-assisted features were all produced by `deepseek/deepseek-flash`, at temperature 0. They carry that model's judgement, validated against human labels only on a sample.",
-      "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-21** and no later. Campaign pages change without notice (DR-05).",
+      "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-23** and no later. Campaign pages change without notice (DR-05).",
       "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it covers only the banks in Dan's export rather than every bank compared here, and the pages captured are today's pages rather than the pages live during any older spike.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
@@ -2150,14 +2164,14 @@
     ]
   },
   "validation": {
-    "ok": false,
+    "ok": true,
     "warnings": [
+      "model_assisted features were produced by MORE THAN ONE model (deepseek/deepseek-flash: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk']; groq/openai/gpt-oss-120b: ['bnp_paribas_fortis', 'n26']). Cross-bank comparisons on those features are partly a comparison between models - either re-run the odd banks on the pinned model, or report it as a limitation (D-09, NFR-02).",
       "argenta: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "beobank: core feature(s) entirely missing: ['aida_desire', 'aida_coverage_score', 'persuasion_lever_count'] - record a reason (DR-07)",
       "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "cbc: core feature(s) entirely missing: ['rate_value_pct', 'rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention'] ... - record a reason (DR-07)",
-      "hellobank: core feature(s) entirely missing: ['rate_prominence', 'text_image_layout', 'layout_archetype', 'aida_attention', 'aida_interest'] ... - record a reason (DR-07)"
+      "cbc: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
+      "keytrade: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)"
     ]
   },
   "generated": [
@@ -2410,7 +2424,7 @@
         "lastSharePct": 20.13,
         "relativeSlopePctPerYear": -2.8,
         "trendDirection": "down",
-        "pages": 2,
+        "pages": 3,
         "lessons": [
           {
             "feature": "is_bundled_offer",
@@ -2421,28 +2435,20 @@
             "label": "Sells a bundle"
           },
           {
-            "feature": "has_comparison_table",
-            "z": 1.34,
-            "focusZ": -0.75,
-            "gapSd": 2.09,
-            "direction": "above",
-            "label": "Includes a comparison table"
+            "feature": "page_height_px",
+            "z": -0.86,
+            "focusZ": 1.28,
+            "gapSd": -2.14,
+            "direction": "below",
+            "label": "Page length"
           },
           {
             "feature": "image_count",
             "z": -0.74,
-            "focusZ": 0.66,
-            "gapSd": -1.4,
+            "focusZ": 0.8,
+            "gapSd": -1.54,
             "direction": "below",
             "label": "Images"
-          },
-          {
-            "feature": "numeric_claim_count",
-            "z": 0.22,
-            "focusZ": 1.43,
-            "gapSd": -1.21,
-            "direction": "below",
-            "label": "Figures and percentages quoted"
           }
         ]
       },
@@ -2457,28 +2463,12 @@
         "pages": 1,
         "lessons": [
           {
-            "feature": "cta_count",
-            "z": 2.74,
-            "focusZ": -0.98,
-            "gapSd": 3.72,
+            "feature": "section_count",
+            "z": 3.51,
+            "focusZ": -0.52,
+            "gapSd": 4.02,
             "direction": "above",
-            "label": "Calls to action"
-          },
-          {
-            "feature": "image_count",
-            "z": 3.25,
-            "focusZ": 0.66,
-            "gapSd": 2.58,
-            "direction": "above",
-            "label": "Images"
-          },
-          {
-            "feature": "question_count",
-            "z": 2.5,
-            "focusZ": 0.06,
-            "gapSd": 2.44,
-            "direction": "above",
-            "label": "Questions asked"
+            "label": "Content sections"
           },
           {
             "feature": "disclaimer_present",
@@ -2487,6 +2477,22 @@
             "gapSd": -2.44,
             "direction": "below",
             "label": "Carries legal small print"
+          },
+          {
+            "feature": "image_count",
+            "z": 3.21,
+            "focusZ": 0.8,
+            "gapSd": 2.41,
+            "direction": "above",
+            "label": "Images"
+          },
+          {
+            "feature": "question_count",
+            "z": 2.46,
+            "focusZ": 0.49,
+            "gapSd": 1.96,
+            "direction": "above",
+            "label": "Questions asked"
           }
         ]
       },
@@ -2517,18 +2523,18 @@
             "label": "Shows a rate"
           },
           {
-            "feature": "numeric_claim_count",
-            "z": -0.47,
-            "focusZ": 1.43,
-            "gapSd": -1.9,
+            "feature": "question_count",
+            "z": -1.34,
+            "focusZ": 0.49,
+            "gapSd": -1.83,
             "direction": "below",
-            "label": "Figures and percentages quoted"
+            "label": "Questions asked"
           },
           {
             "feature": "background_luminance",
             "z": -0.88,
-            "focusZ": 0.69,
-            "gapSd": -1.57,
+            "focusZ": 0.72,
+            "gapSd": -1.6,
             "direction": "below",
             "label": "Page brightness"
           }
@@ -2552,16 +2558,38 @@
       },
       {
         "feature": "animated_asset_count",
-        "meanZ": 0.84,
-        "focusZ": -0.23,
+        "meanZ": 0.85,
+        "focusZ": -0.55,
         "direction": "above",
         "label": "Animated elements"
       }
     ],
     "divergent": [
       {
+        "feature": "section_count",
+        "spreadSd": 4.02,
+        "values": [
+          {
+            "bank": "KBC",
+            "key": "kbc",
+            "z": -0.52
+          },
+          {
+            "bank": "Crelan",
+            "key": "crelan",
+            "z": 3.51
+          },
+          {
+            "bank": "Revolut",
+            "key": "revolut",
+            "z": -0.28
+          }
+        ],
+        "label": "Content sections"
+      },
+      {
         "feature": "image_count",
-        "spreadSd": 3.98,
+        "spreadSd": 3.95,
         "values": [
           {
             "bank": "KBC",
@@ -2571,59 +2599,37 @@
           {
             "bank": "Crelan",
             "key": "crelan",
-            "z": 3.25
+            "z": 3.21
           },
           {
             "bank": "Revolut",
             "key": "revolut",
-            "z": -0.61
+            "z": -0.62
           }
         ],
         "label": "Images"
       },
       {
         "feature": "question_count",
-        "spreadSd": 3.82,
+        "spreadSd": 3.8,
         "values": [
           {
             "bank": "KBC",
             "key": "kbc",
-            "z": 0.3
+            "z": 0.12
           },
           {
             "bank": "Crelan",
             "key": "crelan",
-            "z": 2.5
+            "z": 2.46
           },
           {
             "bank": "Revolut",
             "key": "revolut",
-            "z": -1.32
+            "z": -1.34
           }
         ],
         "label": "Questions asked"
-      },
-      {
-        "feature": "cta_count",
-        "spreadSd": 3.54,
-        "values": [
-          {
-            "bank": "KBC",
-            "key": "kbc",
-            "z": -0.8
-          },
-          {
-            "bank": "Crelan",
-            "key": "crelan",
-            "z": 2.74
-          },
-          {
-            "bank": "Revolut",
-            "key": "revolut",
-            "z": -0.52
-          }
-        ],
-        "label": "Calls to action"
       },
       {
         "feature": "disclaimer_present",
@@ -2708,39 +2714,19 @@
         ]
       },
       "belfius": {
-        "headline_count": 30,
+        "headline_count": 28,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 8,
-          "financial_results": 3,
+          "crisis_or_scandal": 9,
+          "financial_results": 4,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 13,
-          "other": 6
+          "regulatory": 12,
+          "other": 3
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [
-            {
-              "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent",
-              "url": null
-            },
-            {
-              "title": "Belfius, la mauvaise affaire",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/belfius-la-mauvaise-affaire-26YV7QNA7NERPCCYEMYOCHQO6Y/"
-            },
-            {
-              "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
-              "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
-            },
-            {
-              "title": "Belfius, première banque condamnée au pénal? Une cliente victime de phishing la poursuit",
-              "url": "https://www.dhnet.be/actu/belgique/2026/09/05/belfius-premiere-banque-condamnee-au-penal-une-cliente-victime-de-phishing-la-poursuit-2UEWGXE7TBG3TCJCH5FDPNV6DU/"
-            },
-            {
-              "title": "Une grande première qui en annonce d'autres? Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/05/une-grande-premiere-qui-en-annonce-dautres-belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing-V6VQATNRMBETTGOOBG32RWGYEI/"
-            },
             {
               "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent - RTBF Actus",
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
@@ -2752,6 +2738,30 @@
             {
               "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
               "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+            },
+            {
+              "title": "Arco-coöperanten geven strijd om compensatie niet op en eisen deel opbrengst verkoop Belfius",
+              "url": "https://www.standaard.be/economie/arco-cooperanten-geven-strijd-om-compensatie-niet-op-en-eisen-deel-opbrengst-verkoop-belfius/161139600.html"
+            },
+            {
+              "title": "Is de vervolging van Belfius goed nieuws voor phishingslachtoffers?",
+              "url": "https://www.demorgen.be/nieuws/is-de-vervolging-van-belfius-goed-nieuws-voor-phishingslachtoffers~b80ea5ff/"
+            },
+            {
+              "title": "Belfius voor strafrechter voor niet terugbetalen phishingslachtoffer",
+              "url": "https://www.demorgen.be/snelnieuws/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachtoffer~b154d9a8/"
+            },
+            {
+              "title": "Belfius voor strafrechter omdat het phishingslachtoffer niet terugbetaalde | VRT NWS Nieuws",
+              "url": "https://www.vrt.be/vrtnws/nl/2026/09/05/belfius-voor-strafrechter-voor-niet-terugbetalen-phishingslachto/"
+            },
+            {
+              "title": "Belfius voor de strafrechter wegens niet terugbetalen aan slachtoffer van phishing",
+              "url": "https://www.standaard.be/economie/belfius-voor-de-strafrechter-wegens-niet-terugbetalen-aan-slachtoffer-van-phishing/35145140.html"
+            },
+            {
+              "title": "Arco-coöperanten dagvaarden kandidaat-investeerders in Belfius",
+              "url": "https://www.tijd.be/ondernemen/banken/arco-cooperanten-dagvaarden-kandidaat-investeerders-in-belfius/10684481.html"
             }
           ],
           "financial_results": [
@@ -2766,43 +2776,15 @@
             {
               "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
               "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
+            },
+            {
+              "title": "Belfius past dividend- en kapitaalstrategie aan met oog op gedeeltelijke privatisering",
+              "url": "https://businessam.be/belfius-past-dividend-en-kapitaalstrategie-aan-met-oog-op-gedeeltelijke-privatisering/"
             }
           ],
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [
-            {
-              "title": "Nouveauté chez Belfius : l’entreprise veut ouvrir son capital",
-              "url": null
-            },
-            {
-              "title": "Le gouvernement ne lie plus la privatisation partielle de Belfius au dossier Ethias",
-              "url": "https://www.rtbf.be/article/le-gouvernement-ne-lie-plus-la-privatisation-partielle-de-belfius-au-dossier-ethias-11783846"
-            },
-            {
-              "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
-              "url": null
-            },
-            {
-              "title": "Toujours entouré d’un épais brouillard, le dossier Belfius revient sur la table du gouvernement ce vendredi",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/10/toujours-entoure-dun-epais-brouillard-le-dossier-belfius-revient-sur-la-table-du-gouvernement-ce-vendredi-2IIR62WOFJCFFCMBIG4IPP5JCU/"
-            },
-            {
-              "title": "Belfius: la Wallonie ne s'opposera pas à une opération sur les participations fédérales dans Ethias",
-              "url": "https://www.lavenir.net/actu/belgique/politique/2026/09/10/belfius-la-wallonie-ne-sopposera-pas-a-une-operation-sur-les-participations-federales-dans-ethias-H2XBKCIE7ZBPVF5ZZB22M522KU/"
-            },
-            {
-              "title": "Elio Di Rupo : la privatisation partielle de Belfius est “une aventure réactionnaire”",
-              "url": null
-            },
-            {
-              "title": "Privatisation partielle de Belfius, étudiants coincés à Gaza, survol de Bruxelles... : voici le programme de la rentrée du gouvernement fédéral",
-              "url": "https://www.lalibre.be/belgique/politique-belge/2026/09/07/privatisation-partielle-de-belfius-etudiants-coinces-a-gaza-survol-de-bruxelles-voici-le-programme-de-la-rentree-du-gouvernement-federal-ADAB42HGTRFKJEV2OD6RADOZTA/"
-            },
-            {
-              "title": "La vente partielle de Belfius se prépare… difficilement",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/08/28/la-vente-partielle-de-belfius-se-prepare-difficilement-UKQVSCQ7HVCSPHDKKJS633EHGE/"
-            },
             {
               "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
               "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
@@ -2822,21 +2804,37 @@
             {
               "title": "Privatisation de Belfius, étudiants gazaouis... plusieurs dossiers sur la table du kern ce vendredi",
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
+            },
+            {
+              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            },
+            {
+              "title": "L'impact insoupçonné et favorable à l'État d'un rapprochement entre Belfius et Ethias",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/22/limpact-insoupconne-et-favorable-a-letat-dun-rapprochement-entre-belfius-et-ethias-RSKWYVUA3RCKLPFLIF3TFFWPGE/"
+            },
+            {
+              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
+              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
+            },
+            {
+              "title": "Verkoop Belfius verloopt ondermaats, partijen bieden met handrem op",
+              "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
+            },
+            {
+              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
+              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
+            },
+            {
+              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
+              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
+            },
+            {
+              "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
+              "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
             }
           ],
           "other": [
-            {
-              "title": "Voici la stratégie de Belfius pour attirer de nouveaux investisseurs",
-              "url": "https://www.dhnet.be/conso/argent/2026/09/21/voici-la-strategie-de-belfius-pour-attirer-de-nouveaux-investisseurs-7LOXJTDHFZECZGD3NSWFTBYHSU/"
-            },
-            {
-              "title": "La Commune d’Ouffet veut créer deux lieux d’accueil de la petite enfance : l’un, déjà connu, dans l’ancienne banque Belfius ; l’autre à Ellemelle",
-              "url": "https://www.lavenir.net/regions/huy-waremme/ouffet/2026/09/15/la-commune-douffet-veut-creer-deux-lieux-daccueil-de-la-petite-enfance-lun-deja-connu-dans-lancienne-banque-belfius-lautre-a-ellemelle-C26XOBP3YNFRFNOBEQIVJHWBKI/"
-            },
-            {
-              "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu “une expérience unique” dans les tribunes",
-              "url": null
-            },
             {
               "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
               "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
@@ -2853,24 +2851,24 @@
         },
         "notable_headlines": [
           {
-            "title": "La privatisation partielle de Belfius avance : la phase 2 du processus est enclenchée. “Il y a un très grand nombre de marques d’intérêt”",
-            "url": null
+            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
             "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
             "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
           },
           {
-            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
-            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
-          },
-          {
-            "title": "Refus d'indemniser une victime de phishing: Belfius pourrait être la première banque condamnée au pénal",
-            "url": "https://www.lavenir.net/actu/belgique/2026/09/05/refus-dindemniser-une-victime-de-phishing-belfius-pourrait-etre-la-premiere-banque-condamnee-au-penal-ZMOPYVJAFRBMDCIEWBRLRNNB7I/"
+            "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+            "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
           },
           {
             "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
             "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
+          },
+          {
+            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
           }
         ]
       },
@@ -2880,19 +2878,16 @@
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
           "financial_results": 0,
-          "product_launch": 0,
+          "product_launch": 3,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 4
+          "other": 1
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [],
           "financial_results": [],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
+          "product_launch": [
             {
               "title": "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
               "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
@@ -2902,12 +2897,16 @@
               "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
             },
             {
-              "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
-              "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
-            },
-            {
               "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
               "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+            }
+          ],
+          "esg_sustainability": [],
+          "regulatory": [],
+          "other": [
+            {
+              "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
+              "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
             }
           ]
         },
@@ -2927,15 +2926,15 @@
         ]
       },
       "bnp_paribas_fortis": {
-        "headline_count": 8,
+        "headline_count": 3,
         "themes": {
           "innovation_digital": 1,
-          "crisis_or_scandal": 1,
-          "financial_results": 1,
+          "crisis_or_scandal": 0,
+          "financial_results": 0,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 1,
-          "other": 4
+          "other": 1
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -2944,18 +2943,8 @@
               "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
             }
           ],
-          "crisis_or_scandal": [
-            {
-              "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
-            }
-          ],
-          "financial_results": [
-            {
-              "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
-            }
-          ],
+          "crisis_or_scandal": [],
+          "financial_results": [],
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [
@@ -2966,18 +2955,6 @@
           ],
           "other": [
             {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
-              "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-              "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-            },
-            {
               "title": "BNP Paribas Fortis verhoogt spaarrente",
               "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
             }
@@ -2985,20 +2962,16 @@
         },
         "notable_headlines": [
           {
-            "title": "Panne partielle chez BNP Paribas Fortis et Fintro: vos comptes temporairement inaccessibles",
-            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/panne-partielle-chez-bnp-paribas-fortis-et-fintro-vos-comptes-temporairement-inaccessibles-36HWGMJN25E2HFUMEAZ6UDXI7Q/"
-          },
-          {
-            "title": "Comment la guerre au Moyen-Orient et le leasing automobile ont plombé les résultats de BNP Paribas",
-            "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/comment-la-guerre-au-moyen-orient-et-le-leasing-automobile-ont-plombe-les-resultats-de-bnp-paribas-62L7GYRYNJDFZKPMRMMZAFHK3E/"
+            "title": "BNP Paribas Fortis verhoogt spaarrente",
+            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
           },
           {
             "title": "BNP Paribas waarschuwt dat enorme AI-investeringen kredietmarkt onder druk kunnen zetten",
             "url": "https://businessam.be/bnp-paribas-waarschuwt-dat-enorme-ai-investeringen-kredietmarkt-onder-druk-kunnen-zetten/"
           },
           {
-            "title": "BNP Paribas Fortis verhoogt spaarrente",
-            "url": "https://businessam.be/bnp-paribas-fortis-verhoogt-spaarrente/"
+            "title": "Umicore - Transparantieverklaring van BNP Paribas Asset Management Holding en BNP Paribas Cardif | Analist.be",
+            "url": "https://www.analist.be/corporatenieuws/1487998-umicore-transparantieverklaring-van-bnp-paribas-asset-management-holding-en-bnp-paribas-cardif"
           }
         ]
       },
@@ -3077,12 +3050,12 @@
         },
         "notable_headlines": [
           {
-            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
-            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
-          },
-          {
             "title": "ING op de favorietenlijst van JPMorgan",
             "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
+          },
+          {
+            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
           }
         ]
       },
@@ -3122,12 +3095,12 @@
         },
         "notable_headlines": [
           {
-            "title": "Jefferies start opvolging KBC met koopadvies",
-            "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
-          },
-          {
             "title": "Beursblik: Jefferies start opvolging KBC met koopadvies",
             "url": "https://www.deaandeelhouder.be/nieuws/2026/09/16/beursblik-jefferies-start-opvolging-kbc-met-koopadvies/"
+          },
+          {
+            "title": "Jefferies start opvolging KBC met koopadvies",
+            "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
           },
           {
             "title": "Meer winst voor KBC Ancora",
@@ -3138,35 +3111,24 @@
       "keytrade": null,
       "n26": null,
       "revolut": {
-        "headline_count": 8,
+        "headline_count": 3,
         "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 5,
+          "innovation_digital": 1,
+          "crisis_or_scandal": 1,
           "financial_results": 0,
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 3
+          "other": 1
         },
         "theme_headlines": {
-          "innovation_digital": [],
+          "innovation_digital": [
+            {
+              "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
+              "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
+            }
+          ],
           "crisis_or_scandal": [
-            {
-              "title": "Les données de 680 clients de la banque en ligne Revolut divulguées, dont 10 en Belgique",
-              "url": "https://www.rtbf.be/article/les-donnees-de-680-clients-de-la-banque-en-ligne-revolut-divulguees-dont-10-en-belgique-11784476"
-            },
-            {
-              "title": "Revolut victime d'une fuite de données : certains clients belges sont concernés",
-              "url": "https://www.dhnet.be/actu/belgique/2026/09/13/revolut-victime-dune-fuite-de-donnees-certains-clients-belges-sont-concernes-342DOBZSQ5GYZE47ARNWSWZ3AE/"
-            },
-            {
-              "title": "Attention si vous avez un compte chez Revolut : les données de clients belges de la banque ont fuité",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/13/attention-si-vous-avez-un-compte-chez-revolut-les-donnees-de-clients-belges-de-la-banque-ont-fuite-7TDA5767IRABHGJSOLIGRVFV3Y/"
-            },
-            {
-              "title": "Les données de clients belges de la banque Revolut ont fuité : voici comment le fraudeur a procédé pour duper la banque",
-              "url": null
-            },
             {
               "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
               "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
@@ -3178,74 +3140,19 @@
           "regulatory": [],
           "other": [
             {
-              "title": "Le CEO de BNPP Fortis reste confiant malgré un contexte difficile, et répond à la concurrence: \"Nous avons des atouts que Revolut n’a pas\"",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/04/le-ceo-de-bnpp-fortis-reste-confiant-malgre-un-contexte-difficile-et-repond-a-la-concurrence-nous-avons-des-atouts-que-revolut-na-pas-C7FVDVKWANFPPO4IHA62DJT6YM/"
-            },
-            {
               "title": "Ouvrir un compte chez Revolut est il interéssant pour vous?",
               "url": "https://www.test-achats.be/argent/comptes-a-vue/news/revolut-est-il-interessant-pour-vous"
-            },
-            {
-              "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
-              "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
             }
           ]
         },
         "notable_headlines": [
           {
-            "title": "Les données de 680 clients de la banque en ligne Revolut divulguées, dont 10 en Belgique",
-            "url": "https://www.rtbf.be/article/les-donnees-de-680-clients-de-la-banque-en-ligne-revolut-divulguees-dont-10-en-belgique-11784476"
-          },
-          {
-            "title": "Les données de clients belges de la banque Revolut ont fuité : voici comment le fraudeur a procédé pour duper la banque",
-            "url": null
-          },
-          {
             "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
             "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
-          },
-          {
-            "title": "Revolut victime d'une fuite de données : certains clients belges sont concernés",
-            "url": "https://www.dhnet.be/actu/belgique/2026/09/13/revolut-victime-dune-fuite-de-donnees-certains-clients-belges-sont-concernes-342DOBZSQ5GYZE47ARNWSWZ3AE/"
-          },
-          {
-            "title": "Attention si vous avez un compte chez Revolut : les données de clients belges de la banque ont fuité",
-            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/13/attention-si-vous-avez-un-compte-chez-revolut-les-donnees-de-clients-belges-de-la-banque-ont-fuite-7TDA5767IRABHGJSOLIGRVFV3Y/"
           }
         ]
       },
-      "vdk": {
-        "headline_count": 1,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
-          "financial_results": 1,
-          "product_launch": 0,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 0
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [],
-          "financial_results": [
-            {
-              "title": "Tout en lettres d’or chez VDK",
-              "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-            }
-          ],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": []
-        },
-        "notable_headlines": [
-          {
-            "title": "Tout en lettres d’or chez VDK",
-            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-          }
-        ]
-      }
+      "vdk": null
     }
   },
   "geoTrends": {
