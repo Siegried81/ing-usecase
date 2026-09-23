@@ -1,7 +1,7 @@
 {
   "generated_at": "2026-09-23T12:51:32+00:00",
   "model": "deepseek/deepseek-flash",
-  "summary": "ING sits clearly with the traditional banks (position score 0.257), and its measured signature is the densest urgency and deadline language in the set - 4.0 markers per page against a peer mean of 0.64, about 2.5 standard deviations from the market - combined with above-peer offer clarity and fast digital sign-up claims. The one place ING falls below peers is calls to action, at 1.0 per page against a peer mean of 6.18. These are design observations only: the pages span several product families and languages, the judged features come from a single rater, and no click or conversion data exists, so every item below is a hypothesis ING could test.",
+  "summary": "ING sits clearly with the traditional banks (position score 0.257), and its measured signature is the densest urgency and deadline language in the set - 4.0 markers per page against a peer mean of 0.64, about 3.7 standard deviations from the market, the largest gap in the set - combined with above-peer offer clarity and fast digital sign-up claims. Calls to action are withheld rather than reported: ING's pack cards render client-side and are absent from the captured HTML, so any count would measure the capture and not the page. These are design observations only: the pages span several product families and languages, the judged features come from a single rater, and no click or conversion data exists, so every item below is a hypothesis ING could test.",
   "recommendations": [
     {
       "id": "R1",
@@ -16,25 +16,6 @@
         "index",
         "compte-courant",
         "ouvrir-compte"
-      ],
-      "basis": "analysis",
-      "market_context": null,
-      "reputation_context": null
-    },
-    {
-      "id": "R2",
-      "title": "Repeat the primary call to action down the page",
-      "priority": "high",
-      "finding": "Calls to action is the only measured gap where ING sits below peers: 1.0 per page against a peer mean of 6.18, roughly 0.9 standard deviations under. Every other gap in the comparison has ING above the peer mean.",
-      "recommendation": "Repeat the same primary call to action at the natural section breaks so a reader convinced mid-page does not have to scroll back to act, keeping the wording identical each time so the action is not split.",
-      "features": [
-        "cta_count"
-      ],
-      "page_targets": [
-        "index",
-        "compte-courant",
-        "ouvrir-compte",
-        "jeunes"
       ],
       "basis": "analysis",
       "market_context": null,
@@ -202,5 +183,6 @@
     }
   ],
   "used_trends": false,
-  "used_reputation": true
+  "used_reputation": true,
+  "note": "R2 (cta_count) was removed by hand on 23/09 after cta_count was withdrawn - see docs/decisions.md. Regenerating this file will not bring it back, because the feature no longer appears in report.json's gaps."
 }

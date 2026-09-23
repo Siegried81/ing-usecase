@@ -55,7 +55,11 @@ body {
 section { margin: 40px 0; }
 .section-head { margin-bottom: 14px; }
 .section-head h2 { margin: 0 0 4px; font-size: 21px; letter-spacing: -.015em; }
-.section-head p { margin: 0; color: var(--ink-2); font-size: 14.5px; max-width: 68ch; }
+/* 130ch, not 68: 19 of the 23 ledes in the app are longer than 68 characters
+   (median 122), so the old cap wrapped almost every one of them onto a second
+   line. The cap still exists so a lede cannot run edge to edge on a wide
+   screen; it is just set to what the copy actually is. */
+.section-head p { margin: 0; color: var(--ink-2); font-size: 14.5px; max-width: 130ch; }
 
 .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 22px; }
 

@@ -723,3 +723,54 @@ before this and still carry the CTA recommendation and the -0.92 SD gap.
 Regenerating them is a model call, deliberately not run the evening before the
 presentation. Re-capturing the ING pack pages with a scroll/interaction step is
 the real fix.
+
+**sieg 23/09, the CTA claim removed from the web surfaces by hand.** Following
+the `cta_count` withdrawal above, three surfaces still carried it. Two are now
+corrected without re-running the model:
+
+- `web/public/report.json`: the `cta_count` gap entry (1.0 vs 6.18, -0.92 SD)
+  was deleted, so the Analysis tab no longer lists it among ING's gaps.
+- `outputs/web_recommendations.json`: recommendation R2 ("Repeat the primary
+  call to action down the page") was deleted, 11 -> 10, and the summary's CTA
+  sentence replaced with the withheld statement. Two further errors in that
+  summary were corrected at the same time: a dangling "0 per page against a peer
+  mean of 6.18" fragment, and "about 2.5 standard deviations" for the urgency
+  gap, which is 3.69.
+
+`operations.json` was left alone on purpose: `cta_count` appears there only as a
+dictionary entry and as per-page raw values, which are data, not a claim.
+
+STILL CARRYING IT: `outputs/generated_site/*.html`. The generated pages have
+explanation blocks tagged R2 citing the same recommendation, on at least
+index.html, ouvrir-compte.html and comptes-epargne.html. They were not edited by
+hand - hand-patching generated HTML is how a generator and its output drift
+apart, and this is the demo artefact. Regenerating the site from the corrected
+recommendations drops them.
+
+The durable fix for all of it is re-capturing the ING pack pages with a
+scroll/interaction step so the client-side cards are in the HTML, or excluding
+`cta_count` from the comparison in the analysis itself rather than from its
+outputs. Neither was done the evening before the presentation.
+
+**sieg 23/09, the generated site no longer cites R2, and the section ledes fit
+on one line.** Two follow-ups to the same withdrawal.
+
+The generated pages carried 11 `rec-note-tag` citations of R2 and three prose
+clauses crediting it ("and repeats the primary action in the same wording
+(R2)"). Regenerating the site was the clean fix and was rejected: it is one
+model call per page across ten pages, so it would have replaced the whole demo
+artefact the night before it is shown. The citations were removed instead. The
+pages still repeat their buttons, which is a design choice and not a claim -
+what was false was crediting a withdrawn measurement for it.
+
+`jeunes.html` needed more than that: all three of its explanation boxes were
+tagged R2 alone, so removing the citation left three empty "Why this section"
+shells. Those boxes were removed outright. Every remaining box on every page
+carries at least one live recommendation, checked rather than assumed.
+
+Separately: `.section-head p` was capped at `max-width: 68ch` while 19 of the
+23 ledes in the app are longer than that (median 122 characters), so nearly
+every one wrapped onto a second line. The cap is now 130ch - still a cap, so a
+lede cannot run edge to edge, but set to what the copy actually is. The
+container is 1080px, which leaves room for about 142 characters, so the two
+ledes over 200 characters still wrap and are genuinely too long.

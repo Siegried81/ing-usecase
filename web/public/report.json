@@ -229,16 +229,6 @@
       "direction": "above"
     },
     {
-      "feature": "cta_count",
-      "label": "Calls to action",
-      "dimension": "layout_structure",
-      "extraction": "automatic",
-      "focusValue": 1.0,
-      "peerMean": 6.179487179487179,
-      "gapSd": -0.92,
-      "direction": "below"
-    },
-    {
       "feature": "aida_desire",
       "label": "Makes the offer feel worth having",
       "dimension": "marketing_principles",
