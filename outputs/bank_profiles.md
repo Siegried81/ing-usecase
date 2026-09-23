@@ -12,7 +12,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | icons, buttons, text |
-| background luminance | 0.89 |
+| background luminance | 0.61 |
 | image count | 11 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -39,7 +39,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** numeric claim count well above the market average (+2.5 SD); urgency marker count well above the market average (+1.6 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); urgency marker count well above the market average (+1.6 SD).
 
 ### belfius  (traditional)
 
@@ -51,7 +51,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | - |
-| background luminance | 0.87 |
+| background luminance | 0.33 |
 | image count | 18 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
@@ -90,7 +90,7 @@
 | brand colour share | 0.01 |
 | accent colour count | 4 |
 | accent locations | buttons, text, background |
-| background luminance | 0.85 |
+| background luminance | 0.3 |
 | image count | 16 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -129,7 +129,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | buttons, imagery, text |
-| background luminance | 0.84 |
+| background luminance | 0.47 |
 | image count | 17 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -168,7 +168,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | imagery, background |
-| background luminance | 0 |
+| background luminance | 0.04 |
 | image count | 13 |
 | dominant image type | illustration |
 | people present | no |
@@ -195,7 +195,7 @@
 | lever count | 1 |
 | personas | mass_market 100%, expat 100% |
 
-**Signature:** people present well below the market average (-3.6 SD); background luminance well below the market average (-3.2 SD); cta count well above the market average (+2.8 SD).
+**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.8 SD); urgency marker count well above the market average (+2.7 SD).
 
 ### cbc  (traditional)
 
@@ -207,7 +207,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | background, text, buttons |
-| background luminance | 0.87 |
+| background luminance | 0.36 |
 | image count | 12 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -246,7 +246,7 @@
 | brand colour share | 0.01 |
 | accent colour count | 4 |
 | accent locations | icons, buttons |
-| background luminance | 0.79 |
+| background luminance | 0.44 |
 | image count | 72 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -285,7 +285,7 @@
 | brand colour share | 0.06 |
 | accent colour count | 4 |
 | accent locations | buttons, imagery, text |
-| background luminance | 0.77 |
+| background luminance | 0.52 |
 | image count | 15 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
@@ -324,7 +324,7 @@
 | brand colour share | 0.01 |
 | accent colour count | 4 |
 | accent locations | buttons, background, text, imagery, icons |
-| background luminance | 0.9 |
+| background luminance | 0.55 |
 | image count | 33 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -351,7 +351,7 @@
 | lever count | 2.33 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
-**Signature:** fast digital onboarding claim well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); hidden conditions behind free claim well above the market average (+1.0 SD).
+**Signature:** fast digital onboarding claim well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); background luminance well above the market average (+1.3 SD).
 
 ### kbc  (traditional)
 
@@ -363,7 +363,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | imagery, buttons, icons, text |
-| background luminance | 0.87 |
+| background luminance | 0.35 |
 | image count | 8 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -402,7 +402,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | buttons, imagery, background, icons, text |
-| background luminance | 0.68 |
+| background luminance | 0.27 |
 | image count | 21 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -441,7 +441,7 @@
 | brand colour share | 0.02 |
 | accent colour count | 4 |
 | accent locations | background, imagery |
-| background luminance | 0.58 |
+| background luminance | 0.27 |
 | image count | 29 |
 | dominant image type | photo |
 | people present | yes (all pages) |
@@ -480,7 +480,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | background |
-| background luminance | 0.53 |
+| background luminance | 0.09 |
 | image count | 10 |
 | dominant image type | render_3d |
 | people present | yes (all pages) |
@@ -519,7 +519,7 @@
 | brand colour share | 0 |
 | accent colour count | 4 |
 | accent locations | buttons, background |
-| background luminance | 0.86 |
+| background luminance | 0.33 |
 | image count | 5 |
 | dominant image type | photo |
 | people present | yes (all pages) |

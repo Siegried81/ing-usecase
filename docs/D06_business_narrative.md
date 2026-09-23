@@ -115,11 +115,23 @@ is exactly the kind of question this project cannot answer alone (no
 performance data) — but it is now a precise, testable pattern, not a vague
 impression.
 
-## 3. ING is measurably darker than its peers, on a page that also invokes the least trust
+## 3. ~~ING is measurably darker than its peers~~, on a page that also invokes the least trust
 
-ING's `background_luminance` is 0.198 against a peer mean of 0.591 (-1.17
-SD) — a visibly dark page for a traditional bank, whose peers run close to
-white. On the AI Score axes (six signals, 0-10, each a mean of already-
+> **sieg 23/09: the darkness half of this heading is WITHDRAWN - do not
+> present it.** It was measured on a broken feature. `background_luminance`
+> averaged the whole page strip, so on a long page it reported "how much
+> white body copy is there", not how dark the page looks: ING's expat page
+> scored 0.916 (near white) on a 14,516px capture whose first screen is
+> black (0.521). Re-derived on the first screen instead
+> (`scripts/fix_background_luminance.py`, 23/09), the ranking **inverts**:
+> ING is the BRIGHTEST bank in the set at **0.666**, against a peer mean of
+> **0.354**, with the challengers darkest by far (bunq 0.041, Revolut
+> 0.088). The 0.198 below came from the older hero-image-only method. The
+> trust-axis half of this section is unaffected and still stands.
+
+ING's `background_luminance` was reported as 0.198 against a peer mean of 0.591
+(-1.17 SD) — see the withdrawal note above; that figure and the reading built
+on it are both superseded. On the AI Score axes (six signals, 0-10, each a mean of already-
 measured features — see the Analysis tab for the exact formulas), ING scores
 **digital 8.8** and **cross-sell 10.0** (every page pushes a bundled offer)
 but **trust 0.8** — the lowest of the six axes by a wide margin, next to

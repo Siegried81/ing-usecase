@@ -104,7 +104,14 @@ def collect_one(
 
             from PIL import Image
 
-            colours = extract_colours_from_image(Image.open(BytesIO(shot)), bank=bank)
+            # sieg 23/09: measure background_luminance on the first screen
+            # (the capture viewport), not the whole page strip - see
+            # visual_features.extract_colours_from_image().
+            from comparator.collection.render import VIEWPORT_HEIGHT
+
+            colours = extract_colours_from_image(
+                Image.open(BytesIO(shot)), bank=bank, first_screen_px=VIEWPORT_HEIGHT
+            )
         except Exception as exc:  # noqa: BLE001 - best-effort, never fatal
             logger.warning("screenshot colour extraction failed for %s: %s", page_id, exc)
     if not colours or colours.get("brand_colour_share") is None:

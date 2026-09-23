@@ -62,8 +62,23 @@ def _relative_luminance(r: int, g: int, b: int) -> float:
     return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b)
 
 
-def extract_colours_from_image(image: "Image.Image", *, bank: str | None = None, n_colours: int = 5) -> dict:
+def extract_colours_from_image(
+    image: "Image.Image", *, bank: str | None = None, n_colours: int = 5,
+    first_screen_px: int | None = None,
+) -> dict:
     """Same measurement, on an already-decoded image.
+
+    sieg 23/09: `first_screen_px` measures background_luminance on the top
+    crop instead of the whole page strip. Found live on ING's expat page: a
+    black hero over a long white body scored 0.916 (near white) because the
+    hero is ~6% of a 14,516px capture and the mean is pixel-weighted. The
+    first screen of that same page reads 0.521. As it stood the feature
+    measured "how much white body copy does this page have", not how dark
+    the page is - and it had already put a false claim in D06 ("ING is
+    measurably darker than its peers", now inverted). Only luminance uses
+    the crop: brand_colour_share deliberately scans the FULL page (steph
+    16/09 - a brand accent is a few percent of a page, cropping would
+    re-break what that fix repaired).
 
     steph 16/09: split out so the full-page SCREENSHOT can be measured instead of
     the hero image. The dictionary defines these features on `source: screenshot`,
@@ -77,7 +92,7 @@ def extract_colours_from_image(image: "Image.Image", *, bank: str | None = None,
     Reachable only with a rendered page, which is why it could not be done when
     this module was written.
     """
-    return _measure(image, bank=bank, n_colours=n_colours)
+    return _measure(image, bank=bank, n_colours=n_colours, first_screen_px=first_screen_px)
 
 
 def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours: int = 5) -> dict:
@@ -108,7 +123,22 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     return _measure(img, bank=bank, n_colours=n_colours)
 
 
-def _measure(img: "Image.Image", *, bank: str | None, n_colours: int) -> dict:
+def _mean_luminance(img: "Image.Image", n_colours: int) -> float:
+    """Count-weighted mean luminance of an image's quantised palette."""
+    thumb = img.resize((150, 150))
+    quantized = thumb.quantize(colors=n_colours, method=Image.MEDIANCUT)
+    palette = quantized.getpalette()[: n_colours * 3]
+    weighted, total = 0.0, 0
+    for count, idx in quantized.getcolors():
+        r, g, b = palette[idx * 3: idx * 3 + 3]
+        weighted += _relative_luminance(r, g, b) * count
+        total += count
+    return weighted / (total or 1)
+
+
+def _measure(
+    img: "Image.Image", *, bank: str | None, n_colours: int, first_screen_px: int | None = None
+) -> dict:
     """The measurement itself, on a decoded RGB image."""
     empty = {
         "dominant_colour_hex": None, "palette_hex": [], "brand_colour_share": None,
@@ -119,19 +149,25 @@ def _measure(img: "Image.Image", *, bank: str | None, n_colours: int) -> dict:
     except Exception:  # noqa: BLE001
         return empty
 
+    # sieg 23/09: luminance comes off the first screen when asked for it, and
+    # must be taken BEFORE the 150x150 squash - on a 14,516px capture the
+    # squash is what buried the black hero in the first place.
+    width, height = img.size
+    luminance_source = img
+    if first_screen_px and height > first_screen_px:
+        luminance_source = img.crop((0, 0, width, first_screen_px))
+
     img = img.resize((150, 150))
     quantized = img.quantize(colors=n_colours, method=Image.MEDIANCUT)
     palette = quantized.getpalette()[: n_colours * 3]
     by_count = sorted(quantized.getcolors(), reverse=True)
 
-    hex_colours, rgb_colours = [], []
-    for count, idx in by_count[:n_colours]:
+    hex_colours = []
+    for _count, idx in by_count[:n_colours]:
         r, g, b = palette[idx * 3: idx * 3 + 3]
         hex_colours.append(f"#{r:02x}{g:02x}{b:02x}")
-        rgb_colours.append((count, r, g, b))
 
-    total_pixels = sum(c for c, *_ in rgb_colours) or 1
-    mean_luminance = sum(_relative_luminance(r, g, b) * c for c, r, g, b in rgb_colours) / total_pixels
+    mean_luminance = _mean_luminance(luminance_source, n_colours)
 
     brand_hex = BRAND_COLOURS.get(bank) if bank else None
     brand_share = None

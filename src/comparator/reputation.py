@@ -191,6 +191,18 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
             )
             response.raise_for_status()
             articles = response.json().get("articles", [])
+    except requests.HTTPError as exc:
+        # sieg 23/09: a 429 (quota) and a genuine zero-result response both
+        # used to return [] here, indistinguishable to bank_snapshot()'s
+        # caller - two full pipeline runs in one morning can exhaust
+        # newsapi.org's 100/24h free tier partway through the bank list,
+        # and every bank after that silently looked like "no headlines"
+        # rather than "quota ran out". Not cached either way (see CACHE_PATH
+        # note below), but at least visible now instead of read as fact.
+        status = exc.response.status_code if exc.response is not None else "?"
+        print(f"  [WARNING] reputation fetch failed ({provider}, {language}, HTTP {status}) "
+              f"for query {query!r} - treating as no data, NOT as zero headlines")
+        return []
     except (requests.RequestException, ValueError, AttributeError, TypeError):
         return []
     # sieg 21/09: newsapi.ai has no domain filter to narrow the fetch with, so this
