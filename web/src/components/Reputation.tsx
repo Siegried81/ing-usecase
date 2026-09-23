@@ -70,14 +70,22 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
   const entries = Object.entries(reputation.banks);
 
   return (
-    <div className="banks">
+    <>
+      <p style={{ color: "var(--ink-2)", margin: "0 0 16px", fontSize: 14.5 }}>
+        Headline themes say what a bank is being written about. They are context
+        about the bank, never evidence that a page or a campaign performed — no
+        performance data exists in this project, so nothing here shows how well a
+        campaign is doing. A bank with no themes listed either had no matching
+        headlines or could not be fetched; the two look the same from here.
+      </p>
+      <div className="banks">
       {entries.map(([key, snapshot]) => (
         <div key={key} className="bank">
           <div className="bank-top">
             <span className="bank-name">{key}</span>
           </div>
           {!snapshot ? (
-            <div style={{ fontSize: 12.5, color: "var(--ink-3)" }}>no recent headlines found</div>
+            <div style={{ fontSize: 12.5, color: "var(--ink-3)" }}>no headlines recorded</div>
           ) : (
             <>
               <div style={{ fontSize: 12.5, color: "var(--ink-3)", marginBottom: 8 }}>
@@ -97,6 +105,7 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
           )}
         </div>
       ))}
-    </div>
+      </div>
+    </>
   );
 }
