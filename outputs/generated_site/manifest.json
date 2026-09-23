@@ -1,52 +1,54 @@
 {
-  "language": "fr",
-  "locale": "fr-BE",
-  "generated_at": "2026-09-21T13:39:18+00:00",
+  "language": "en",
+  "locale": "en-BE",
+  "generated_at": "2026-09-23T12:35:37+00:00",
   "model": "deepseek/deepseek-flash",
   "explained": true,
   "pages": [
     {
       "slug": "index",
-      "nav": "Accueil",
-      "title": "Épargne : taux, conditions et ouverture en ligne | ING Belgique",
+      "nav": "Home",
+      "title": "Savings with ING Belgium | Rate, term and online opening",
       "file": "index.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
         "R2",
+        "R3",
         "R4",
+        "R5",
+        "R6",
+        "R7",
         "R8",
-        "R11"
+        "R9",
+        "R10"
       ]
     },
     {
       "slug": "comptes-epargne",
-      "nav": "Comptes d'épargne",
-      "title": "Comptes d'épargne : taux, conditions et ouverture | ING Belgique",
+      "nav": "Savings accounts",
+      "title": "Savings accounts | ING Belgium",
       "file": "comptes-epargne.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7",
-        "R13"
+        "R6"
       ]
     },
     {
       "slug": "compte-a-terme",
-      "nav": "Compte à terme",
-      "title": "Compte à terme : taux fixe et durée au choix | ING Belgique",
+      "nav": "Term account",
+      "title": "Term account: a fixed rate for a fixed term | ING Belgium",
       "file": "compte-a-terme.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7",
-        "R13"
+        "R1",
+        "R6"
       ]
     },
     {
       "slug": "compte-courant",
-      "nav": "Compte courant",
-      "title": "Compte courant ING : prix, conditions et ouverture en ligne | ING Belgique",
+      "nav": "Current account",
+      "title": "Current account: card, app, limits and conditions | ING Belgium",
       "file": "compte-courant.html",
       "used_fallback": false,
       "recommendations_implemented": [
@@ -56,153 +58,138 @@
         "R4",
         "R5",
         "R6",
+        "R7",
         "R8",
-        "R9",
         "R10",
-        "R11",
-        "R12",
-        "R14"
+        "R11"
       ]
     },
     {
       "slug": "jeunes",
-      "nav": "Jeunes",
-      "title": "Jeunes : un compte pour votre enfant ou votre étudiant | ING Belgique",
+      "nav": "Youth",
+      "title": "Youth account | A first account for your child | ING Belgium",
       "file": "jeunes.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R6"
+        "R2"
       ]
     },
     {
       "slug": "investir",
-      "nav": "Investir",
-      "title": "Investir pour la première fois | ING Belgique",
+      "nav": "Invest",
+      "title": "Investing for the first time | ING Belgium",
       "file": "investir.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R7",
-        "R3"
+        "R6",
+        "R5"
       ]
     },
     {
       "slug": "credit-hypothecaire",
-      "nav": "Crédit hypothécaire",
-      "title": "Crédit hypothécaire : taux, mensualité et rendez-vous | ING Belgique",
+      "nav": "Mortgage",
+      "title": "Mortgage | ING Belgium",
       "file": "credit-hypothecaire.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R4",
-        "R7"
+        "R2",
+        "R6"
       ]
     },
     {
       "slug": "ouvrir-compte",
-      "nav": "Ouvrir un compte",
-      "title": "Ouvrir un compte en ligne | ING Belgique",
+      "nav": "Open an account",
+      "title": "Open an account online | ING Belgium",
       "file": "ouvrir-compte.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
         "R2",
-        "R5",
+        "R3",
+        "R4",
+        "R7",
+        "R8",
         "R9",
         "R10",
-        "R14"
+        "R11"
       ]
     },
     {
       "slug": "pourquoi-ing",
-      "nav": "Pourquoi ING",
-      "title": "Pourquoi ING | ING Belgique",
+      "nav": "Why ING",
+      "title": "Why ING: digital banking with people behind it | ING Belgium",
       "file": "pourquoi-ing.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R8",
-        "R12"
+        "R5",
+        "R9"
       ]
     },
     {
       "slug": "contact",
       "nav": "Contact",
-      "title": "Contact : joindre ING et questions fréquentes | ING Belgique",
+      "title": "Contact ING Belgium | ING",
       "file": "contact.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R1",
-        "R3"
+        "R11"
       ]
     }
   ],
   "recommendations": [
     {
       "id": "R1",
-      "title": "Add repeated calls to action across the current-account pages",
+      "title": "Strip back urgency and deadline language",
       "priority": "high"
     },
     {
       "id": "R2",
-      "title": "Add a comparison table to the current-account pack pages",
+      "title": "Repeat the primary call to action down the page",
       "priority": "high"
     },
     {
       "id": "R3",
-      "title": "Reduce the density of figures and attach disclosure to each one",
+      "title": "Disclose the conditions of any free claim next to the claim",
       "priority": "high"
     },
     {
       "id": "R4",
-      "title": "Shorten the longest pages and fold detail into expandable blocks",
+      "title": "Shorten the pages and cut non-informative imagery",
       "priority": "medium"
     },
     {
       "id": "R5",
-      "title": "Make the fast sign-up promise specific",
+      "title": "Reduce the number of persuasion techniques stacked per page",
       "priority": "medium"
     },
     {
       "id": "R6",
-      "title": "Give the student and young-audience message its own path",
+      "title": "Anchor the repeated calls to action on the existing clear offer statement",
       "priority": "medium"
     },
     {
       "id": "R7",
-      "title": "Reuse the strongest offer framing on the pages that lack it",
+      "title": "Substantiate the fast digital sign-up claim or drop it",
       "priority": "medium"
     },
     {
       "id": "R8",
-      "title": "Test lower-brightness backgrounds with stronger contrast",
+      "title": "Use contrast rather than more brightness to single out the action",
       "priority": "low"
     },
     {
       "id": "R9",
-      "title": "Have the opening-account pages comparison-ready before the late-summer window",
+      "title": "Keep digital claims concrete while ING's own news themes are silent on digital",
       "priority": "medium"
     },
     {
       "id": "R10",
-      "title": "Sequence switching and account-transfer content around peer migration periods",
+      "title": "Avoid time pressure on pages that describe account access and limits",
       "priority": "medium"
     },
     {
       "id": "R11",
-      "title": "Keep a standing short neobank comparison block ready for recurring spikes",
-      "priority": "low"
-    },
-    {
-      "id": "R12",
-      "title": "Keep ING's leadership claims specific rather than broad",
-      "priority": "medium"
-    },
-    {
-      "id": "R13",
-      "title": "Keep urgency framing away from sustainability and rate-disclosure blocks",
-      "priority": "medium"
-    },
-    {
-      "id": "R14",
-      "title": "State price and conditions in the same block as the headline offer",
+      "title": "Place data and payment protection beside the account-opening action",
       "priority": "low"
     }
   ],
