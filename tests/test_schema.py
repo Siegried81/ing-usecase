@@ -105,8 +105,8 @@ def test_fixture_is_deterministic(fd):
 
 
 def test_fixture_readability_formula_matches_language(fd):
-    # Was hardcoded to the Dutch formula regardless of `language`;
-    # a fixture built with language="fr" or "en" silently claimed Dutch scoring.
+    # A fixture must report the formula for its own language - claiming Dutch
+    # scoring on a fr or en fixture would misstate how it was scored.
     expected = {"nl": "flesch_douma_nl", "fr": "kandel_moles_fr", "en": "flesch_reading_ease_en"}
     for lang, formula in expected.items():
         df = build_fixture(fd, language=lang, pages_per_bank=1)

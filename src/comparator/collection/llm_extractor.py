@@ -1,16 +1,13 @@
 """Fills the model_assisted fields with ONE structured call per page.
 
-New module - answers "will you use my .env.example?": yes, same
-env-var names, because it's already a working pattern and there's no reason to
-invent a second one for this project. Only the LLM section of your
-.env.example is relevant here - the market-data/news/academic keys belong to
-portfolio_forecasting, not this repo.
+Env-var names follow .env.example rather than inventing a second set. Only its
+LLM section is relevant here - the market-data/news/academic keys belong to
+another repo.
 
-Provider ORDER is now DEEPSEEK_API_KEY -> GROQ_API_KEY[_2/_3] ->
-OPENROUTER_API_KEY -> CEREBRAS_API_KEY -> SAMBANOVA_API_KEY -> OLLAMA_HOST,
-not the Groq-first order this paragraph used to describe - DeepSeek is now
-first per the Decision 6 below (pinned labelling model, docs/decisions.md).
-Updated here so the docstring doesn't silently disagree with _PROVIDERS.
+Provider ORDER is DEEPSEEK_API_KEY -> GROQ_API_KEY[_2/_3] -> OPENROUTER_API_KEY
+-> CEREBRAS_API_KEY -> SAMBANOVA_API_KEY -> OLLAMA_HOST, DeepSeek first per
+Decision 6 below (pinned labelling model, docs/decisions.md). Kept in step with
+_PROVIDERS, so the docstring cannot silently disagree with the code.
 
 WHY ONE CALL, NOT AN AGENT: same reasoning as the rest of this project (see
 README "why a chain, not an agent"). Every page gets the same fixed prompt and
@@ -312,9 +309,9 @@ def extract_model_assisted_with_provenance(
 ) -> tuple[ModelAssistedFields, str]:
     """Same as extract_model_assisted, but also returns "provider/model".
 
-    Added so run_collection.py can write extraction_model into the
-    row. extract_model_assisted() is kept as a thin wrapper so existing callers
-    and tests are unaffected.
+    run_collection.py needs the provider/model string to write
+    extraction_model into the row. extract_model_assisted() stays as a thin
+    wrapper for callers that only want the fields.
     """
     user_prompt = (
         f"Page text (truncated): {page_text[:3000]}\n\n"

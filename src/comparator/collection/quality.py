@@ -1,6 +1,6 @@
 """Capture quality gate - is this row a campaign page, or an accident?
 
-New module. Written immediately after the first real collection
+Written immediately after the first real collection
 run, because the first real collection run produced two rows that were worse
 than useless and nothing anywhere noticed:
 

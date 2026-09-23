@@ -1,19 +1,18 @@
 """Colour extraction from a page's hero image - the automatic part of
 colours_design that IS reachable without a headless browser.
 
-New module. background_luminance here is the hero image's own
-luminance as a stand-in for the page background - a real page-background
-reading needs a rendered viewport, same limitation as noted in
-collection/scraper.py. Documented in the returned dict, not hidden.
+background_luminance here is the hero image's own luminance as a stand-in for
+the page background - a real page-background reading needs a rendered
+viewport, same limitation as noted in collection/scraper.py. Documented in
+the returned dict, not hidden.
 
-Audit finding - this module fetched the hero image with plain
-requests.get(), never running assert_can_fetch() first like scraper.py's
-_fetch_html() does. robots.txt can allow a page but disallow its /images/ or
-/assets/ path, so this was a real bypass of the CLAUDE.md compliance gate.
-Fixed by checking the image URL too, inside the existing try/except so a
-disallowed image still degrades to "no colours" (ScrapingNotAllowed is an
-Exception, caught below) instead of turning a best-effort feature into a hard
-crash for the whole row.
+The image URL goes through assert_can_fetch() like every other fetch:
+robots.txt can allow a page but disallow its /images/ or /assets/ path, so
+fetching the hero with a bare requests.get() would bypass the CLAUDE.md
+compliance gate. The check sits inside the existing try/except, so a
+disallowed image degrades to "no colours" (ScrapingNotAllowed is an
+Exception, caught below) rather than turning a best-effort feature into a
+hard crash for the whole row.
 """
 from __future__ import annotations
 
@@ -31,9 +30,9 @@ REQUEST_TIMEOUT_S = 15
 # synthetic-only fields this module has no business depending on.
 BRAND_COLOURS: dict[str, str] = {
     "ing": "#ff6200", "kbc": "#00aeef", "bnp_paribas_fortis": "#00915a",
-    # Was #e94e1b (pre-rebrand red-orange), which made
-    # brand_colour_share ~0 for every Argenta row. Sampled off the live
-    # capture's own chrome - logo, nav CTAs, checkmarks, form submit.
+    # Argenta's post-rebrand green, sampled off the live capture's own chrome
+    # (logo, nav CTAs, checkmarks, form submit). The old red-orange #e94e1b
+    # scores brand_colour_share ~0 on every Argenta row.
     "argenta": "#00814d", "crelan": "#009640", "belfius": "#c8102e",
     "revolut": "#0666eb", "n26": "#36a18b", "bunq": "#3394ff",
     # Sourced from each site rather than guessed. vdk from its own

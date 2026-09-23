@@ -1,4 +1,4 @@
-"""Tests for the AI Score axes (New module).
+"""Tests for the AI Score axes .
 
 Every formula is a plain mean of already-collected features, so these tests
 check the arithmetic directly against small, hand-built rows - and, just as
@@ -68,9 +68,8 @@ def test_score_is_none_when_the_column_exists_but_is_entirely_null():
     assert ai_score.score_cross_sell(rows) is None
 
 
-# Pins the fix for a real bug caught while writing this test - a
-# categorical column with a null value used to compare as "condition false"
-# (pandas: NaN == "x" is False, not NaN) instead of being excluded.
+# A categorical column with a null value must be EXCLUDED, not compared as
+# "condition false" - in pandas NaN == "x" is False, not NaN.
 def test_a_missing_categorical_value_is_excluded_not_counted_as_false():
     rows = pd.DataFrame({"primary_cta_type": ["self_service_online", None]})
     # Only the non-null row counts; the null row must not drag this to 5.0.

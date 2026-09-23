@@ -1,6 +1,6 @@
 """The bridge between a collected dataset and the human rubric scores.
 
-New module. The first real collection run stops at exactly this
+The first real collection run stops at exactly this
 gap: 12 core, required features are rubric-scored by a person, so a collected
 dataset can never pass strict validation on its own. There was no mechanism to
 get those scores in.

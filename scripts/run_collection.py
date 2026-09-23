@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Collect real campaign pages into a dataset row per the feature dictionary.
 
-New script. Fixed sequential chain per page - compliance check ->
+Fixed sequential chain per page - compliance check ->
 scrape -> visual features -> LLM-assisted features -> assemble -> validate ->
 append. One bank failing (blocked by robots.txt, network error, bad LLM
 response) is logged and skipped, never stops the rest of the run - same

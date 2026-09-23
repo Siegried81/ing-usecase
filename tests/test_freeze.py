@@ -99,10 +99,9 @@ def test_narrowing_a_range_is_breaking():
     assert not compare(frozen, current).ok
 
 
-# New test - freeze.py used to only check narrowing of an
-# EXISTING range, so adding a range to a feature that had none before slipped
-# through unchecked even though it is itself a narrowing (values already
-# recorded outside the new range become invalid).
+# Adding a range to a feature that had none is itself a narrowing - values
+# already recorded outside the new range become invalid - so checking only the
+# narrowing of an EXISTING range would let it through unchecked.
 def test_adding_a_range_where_none_existed_is_breaking():
     frozen = _dictionary([_feature("count", type="integer")])
     current = _dictionary([_feature("count", type="integer", range=[0, 100])])

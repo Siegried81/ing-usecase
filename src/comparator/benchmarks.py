@@ -1,6 +1,6 @@
 """What the search-interest benchmarks actually do on their pages.
 
-New module. The Trends tab picks three brands worth studying -
+The Trends tab picks three brands worth studying -
 the traditional bank with the largest share of brand search, the one whose
 share rose fastest, and the measurable challenger. It picks them on attention
 alone and says so: Google Trends knows who was looked up, never why.

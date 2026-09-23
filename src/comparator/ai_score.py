@@ -1,6 +1,6 @@
 """AI Score - a transparent, rule-based composite index per bank.
 
-New module. Six axes (Digital, Trust, Cross-sell, Personalisation,
+Six axes (Digital, Trust, Cross-sell, Personalisation,
 Innovation, Simplicity), each 0-10, computed for the radar chart in the web UI.
 
 WHY DETERMINISTIC, NOT A MODEL CALL: every other "proprietary index" idea in the

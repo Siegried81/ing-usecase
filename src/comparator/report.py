@@ -1,6 +1,6 @@
 """Generate the chart companion: what each chart measures, and what it does not.
 
-New module. A chart in a deck gets read by someone who was not in
+A chart in a deck gets read by someone who was not in
 the room when it was made, so every figure this project produces ships with the
 mechanic behind it, the reading instructions, and its limits.
 

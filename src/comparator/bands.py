@@ -1,10 +1,9 @@
 """Fixed-threshold bands that turn a within_language raw value into a
 cross_language categorical, same idea as the existing readability_band.
 
-New module - that call (14/09): "convert to band equivalents
-like readability_band". Centralised here so fixtures.py (synthetic) and
-collection/scraper.py (real) use the exact same cutoffs - duplicating
-thresholds in two files is how they silently drift apart.
+Centralised here so fixtures.py (synthetic) and collection/scraper.py (real)
+use the exact same cutoffs - duplicating thresholds in two files is how they
+silently drift apart.
 
 HONEST LIMITATION, worth restating every time one of these is used: unlike
 readability_band (where the underlying FORMULA already normalises for
@@ -88,12 +87,10 @@ def text_to_image_ratio_band(value) -> str | None:
     return _band(value, TEXT_TO_IMAGE_RATIO_EDGES, TEXT_TO_IMAGE_RATIO_DEFAULT)
 
 
-# Audit finding (LOW): these edges were duplicated identically in
-# THREE places - collection/scraper.py (_BAND_EDGES), derive.py
-# (_READABILITY_EDGES) and fixtures.py (also _BAND_EDGES) - exactly the
-# failure mode this module's own docstring warns about ("duplicating
-# thresholds in two files is how they silently drift apart"). Consolidated
-# here; all three call sites now use readability_band().
+# The single home for these edges. collection/scraper.py, derive.py and
+# fixtures.py all call readability_band() rather than keeping a copy, which
+# is the failure mode this module's own docstring warns about ("duplicating
+# thresholds in two files is how they silently drift apart").
 #
 # Descending thresholds, checked with >=, unlike the ascending/< convention of
 # _band() above: a HIGHER readability_score means EASIER text, so the highest

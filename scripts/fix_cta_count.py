@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Refresh cta_count/cta_above_fold from stored HTML, no LLM call, no re-fetch.
 
-New script. `scraper.py::_count_ctas()` counted every <a>/<button>
+`scraper.py::_count_ctas()` counted every <a>/<button>
 whose label matched a keyword list, chrome included, duplicates included. That
 made the feature a count of how often a page repeats "En savoir plus"-style
 links rather than a count of calls to action:

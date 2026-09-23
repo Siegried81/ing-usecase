@@ -1,6 +1,6 @@
 """Google Trends geographic breakdown, by Belgian region.
 
-New module. The kickoff brief's "intérêt géographique" (geographic
+The kickoff brief's "intérêt géographique" (geographic
 interest) axis was never built: the existing Google Trends work pulls search
 interest for geo=BE as a whole and never breaks it down by region, so there is
 no view of whether a bank's search interest concentrates in Brussels, Flanders

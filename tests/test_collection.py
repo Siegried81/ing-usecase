@@ -1,10 +1,10 @@
-"""Tests for the collection module - New module, new tests.
+"""Tests for the collection module.
 
 Network-touching functions (compliance.check_robots, scraper.scrape,
 visual_features.extract_colours' requests.get, llm_extractor's provider
 calls) are all tested with mocks - no real network access needed to run
 these, same approach as the existing test_visual_features.py-style tests
-in the code-skeleton review earlier this week.
+elsewhere in this suite.
 """
 from __future__ import annotations
 
@@ -65,11 +65,9 @@ def _robots_response(status: int = 200, text: str = ""):
 
 
 def test_check_robots_fails_closed_on_read_error():
-    # Was mocking RobotFileParser.read(). compliance.py now fetches
-    # robots.txt with requests instead - same stack as the page fetch, because
-    # urllib had no CA bundle and every HTTPS robots.txt raised
-    # CERTIFICATE_VERIFY_FAILED, silently skipping all six real targets. The
-    # test's intent is unchanged: an unreadable robots.txt must fail closed.
+    # compliance.py fetches robots.txt with requests - the same stack as the
+    # page fetch - so that is what this patches, not RobotFileParser.read().
+    # The assertion is the point: an unreadable robots.txt must fail closed.
     clear_cache()
     with patch("comparator.collection.compliance.requests.get",
                side_effect=ConnectionError("unreachable")):
@@ -197,11 +195,11 @@ def test_extract_counts_ctas_by_keyword():
 
 
 def test_responsive_picture_sources_are_not_animation():
-    # Regression - _has_animation() used to match a bare <source>,
-    # so <picture><source srcset> (a STATIC responsive image, standard on every
-    # modern site) counted as motion. Measured on 16 real captures: 217 of 219
-    # <source> tags were inside <picture>. This is what deck claim H3 ("ING is
-    # the only traditional bank using animation") was being tested against.
+    # A bare <source> must not count as motion: <picture><source srcset> is a
+    # STATIC responsive image, standard on every modern site. Measured on 16
+    # real captures, 217 of 219 <source> tags were inside <picture>. Deck claim
+    # H3 ("ING is the only traditional bank using animation") is tested against
+    # exactly this column.
     html = """<html><body>
     <picture>
       <source srcset="hero.avif" type="image/avif">
@@ -238,9 +236,9 @@ def test_css_keyframes_still_count_as_animation():
 
 
 def test_extract_counts_french_imperative_ctas():
-    # Regression - verified live on kbc.be, real buttons say
-    # "Ouvrez un compte à vue" (imperative), not "ouvrir" (infinitive, the
-    # only form that used to be in _CTA_KEYWORDS) - scored cta_count=0.
+    # Verified live on kbc.be: real buttons say "Ouvrez un compte à vue"
+    # (imperative), not "ouvrir" (infinitive). With infinitives alone in
+    # _CTA_KEYWORDS the page scores cta_count=0.
     html = """<html><body><p>Texte.</p>
     <a href="#">Ouvrez un compte à vue</a>
     <a href="#">Découvrez nos offres</a>
@@ -294,11 +292,10 @@ def test_extract_detects_comparison_table():
 
 
 def test_second_person_ratio_is_share_of_pronouns_not_of_all_words():
-    # Was dividing by word_count, so a page saturated with
-    # direct-address pronouns still scored ~0.02 and banded "rarely_direct"
-    # regardless of actual tone - the denominator must be total personal
-    # pronouns (second + first-person-plural), matching the dictionary's own
-    # definition ("share of personal pronouns that address the reader").
+    # The denominator is total personal pronouns (second + first-person-plural),
+    # matching the dictionary's definition ("share of personal pronouns that
+    # address the reader"). Dividing by word_count instead leaves a page
+    # saturated with direct address at ~0.02, banded "rarely_direct".
     direct_html = (
         "<html><body><p>"
         + "Your money grows while you sleep, your way, for you and your family. "
@@ -321,10 +318,10 @@ def test_extract_meta_title():
     assert result["meta_title"] == "ING - Savings - EN"
 
 
-# Regression - verified live on belfius.be, whose hero image has
-# no og:image and falls back to a RELATIVE <img src>. That used to be handed
-# straight to requests.get() in extract_colours(), which raised MissingSchema
-# (silently swallowed there) - the row just got null colours, no error.
+# Verified live on belfius.be, whose hero image has no og:image and falls back
+# to a RELATIVE <img src>. Unresolved, that goes straight to requests.get() in
+# extract_colours(), which raises MissingSchema - silently swallowed there, so
+# the row just gets null colours with no error.
 def test_hero_image_url_is_resolved_to_absolute():
     html = '<html><body><img src="/images/hero.jpg"></body></html>'
     result = extract(html, language="en", page_url="https://example.com/page")
@@ -390,10 +387,9 @@ def _fake_image_response(image: Image.Image) -> Mock:
     return response
 
 
-# extract_colours() now runs assert_can_fetch() before the image
-# GET (audit finding - it used to skip the compliance gate). Every test below
-# that expects the fetch to actually happen has to patch it too, or it would
-# make a real network call to example.com/robots.txt.
+# extract_colours() runs assert_can_fetch() before the image GET, so every
+# test below that expects the fetch to happen has to patch it too - otherwise
+# it makes a real network call to example.com/robots.txt.
 def test_extract_colours_on_a_solid_image():
     solid_orange = Image.new("RGB", (100, 100), color=(255, 98, 0))
     with patch("comparator.collection.visual_features.assert_can_fetch"), \
@@ -421,8 +417,8 @@ def test_brand_colour_share_matches_the_banks_own_colour():
 
 
 def test_brand_colour_share_is_low_when_the_image_is_not_the_brand_colour():
-    # Regression - used to report 1.0 here (the share of the most
-    # frequent colour, mislabelled "brand"), for ANY bank, even ING (orange)
+    # Without a known brand hex this reports the share of the most frequent
+    # colour, mislabelled "brand" - 1.0 for ANY bank, even ING (orange)
     # against a solid blue image.
     unrelated_blue = Image.new("RGB", (100, 100), color=(0, 0, 255))
     with patch("comparator.collection.visual_features.assert_can_fetch"), \

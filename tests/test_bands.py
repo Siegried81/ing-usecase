@@ -1,4 +1,4 @@
-"""Tests for src/comparator/bands.py - New module, new tests."""
+"""Tests for src/comparator/bands.py."""
 from __future__ import annotations
 
 import sys
@@ -55,8 +55,8 @@ def test_every_band_function_handles_none():
         assert fn(None) is None
 
 
-# Audit finding (LOW): readability_band was duplicated identically
-# in collection/scraper.py and derive.py - now both call this one function.
+# collection/scraper.py and derive.py both call this one function rather than
+# keeping their own copy of the edges, so these are the only edges to pin.
 def test_readability_band_edges():
     assert bands.readability_band(95) == "very_easy"
     assert bands.readability_band(90) == "very_easy"

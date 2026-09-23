@@ -3,9 +3,9 @@
 
     python3 scripts/run_generation.py --no-strict
 
-Plan section 4.5 / Appendix B, owner: me. Gated behind the Day 6
-freeze in the plan - this is the machinery, run early so it is not improvised
-under deadline pressure, NOT a claim that the gate has passed.
+Plan section 4.5 / Appendix B. Gated behind the Day 6 freeze in the plan -
+this is the machinery, run early so it is not improvised under deadline
+pressure, NOT a claim that the gate has passed.
 
 Needs DEEPSEEK_API_KEY in the environment (see .env.example). Without it the
 script explains what is missing and exits rather than half-running.

@@ -1,6 +1,6 @@
 """Safety guardrails for an LLM-generated campaign row.
 
-New module. Project Plan Appendix B.2 ("Is it safe?") already commits
+Project Plan Appendix B.2 ("Is it safe?") already commits
 the team to a checklist before any generated campaign is shown: no invented
 rates/prices, no borrowed competitor assets, disclaimers never omitted, always
 labelled synthetic. Step 5 (the generator itself) is a stretch goal gated behind

@@ -1,0 +1,21 @@
+# One-off collection - the two extra challenger pages added to the rubric sheet
+# on 23/09. Run once, then delete - not part of the standing
+# collection_targets.yaml scope.
+#
+# NOTE ON SCOPE: neither page is a current account, so neither enters the
+# current_account_pack comparison the deck reports on. They widen Revolut's and
+# bunq's coverage in savings_account and investment, which is a different
+# (and previously thin) question.
+pages:
+  - bank: bunq
+    bank_category: challenger
+    product_family: savings_account
+    page_role: campaign_landing
+    url: "https://www.bunq.com/fr-be/personal/features/savings-accounts"
+    language: fr
+  - bank: revolut
+    bank_category: challenger
+    product_family: investment
+    page_role: campaign_landing
+    url: "https://www.revolut.com/fr-BE/etfs/"
+    language: fr

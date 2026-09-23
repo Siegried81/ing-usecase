@@ -29,7 +29,7 @@ python3 scripts/run_collection.py --config scripts/collection_targets.yaml --met
 #    from the HTML already on disk (no re-fetch, but it is a fresh LLM call)
 python3 scripts/reextract_model_fields.py --dataset data/processed/campaigns.csv
 
-# 3. rubric: sheets out, model as a third rater, merge
+# 3. rubric: one judged sheet out, scored by hand, merged back
 python3 scripts/rubric_sheet.py emit                        # the blank sheet + the guide
 python3 scripts/rubric_sheet.py merge --sheet data/rubric/siegried_scores.csv
 
@@ -134,21 +134,16 @@ this proof of concept chose and which `outputs/limitations.md` states in those
 words. The merge prints what it joined — rows that matched no page, and pages
 left unscored — because a silent drop there is how a rater's work goes missing.
 
-**scoring split for the day: 2 raters per bank, not 3 scoring all
-50.** NFR-05 only needs >=2 independent raters per page. Splitting the 14
-banks into three groups, one per rater pair, covers every page with exactly
-two raters at 2/3 the per-person workload of everyone scoring everything:
+**One judged sheet, by one named person.** An earlier plan split the 14 banks
+across rater pairs so every page carried two independent judgements, which is
+what NFR-05 asks for. That is not what this project ships: the analysis runs on
+a single sheet, so there is no second rater, no agreement figure and no
+chance-corrected kappa, and `rubric_sheet.py` no longer has the subcommands that
+produced them.
 
-| Pair | Banks | Pages |
-| --- | --- | --- |
-| Dan + Siegried | ING, Crelan, Hellobank, Belfius, Bunq | 17 |
-| Dan + Stephane | KBC, VDK, BNP Paribas Fortis, N26, Revolut | 17 |
-| Siegried + Stephane | Beobank, CBC, Argenta, Keytrade | 16 |
-
-Split by page count, not by who had already scored what — existing scores
-were too scattered (1-3 pages per bank per rater) to preserve cleanly. A
-score already entered outside your two assigned groups is harmless, just no
-longer required.
+Single-judge bias is therefore un-measured here. It is named as such in
+`outputs/limitations.md` and listed as the first thing a production build should
+add, rather than left for a reader to notice.
 
 ## Two escape hatches for hosts that will not serve us
 

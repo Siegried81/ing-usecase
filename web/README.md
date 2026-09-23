@@ -49,12 +49,13 @@ forever: it is the frozen contract (P-04), and editing it from a form would undo
 the freeze rule.
 
 **Rubric** is the read-only view of `data/rubric/*_scores.csv` after the fact:
-every sheet, raw per-feature agreement, chance-corrected Cohen's kappa, and the
-scoring guide generated from the dictionary. It deliberately never merges the
-sheets into a single score and never marks agreement as settled — the
-disagreement is the finding until the wording is tightened. A live scoring
-screen must not exist in this shape: it must not show another rater's numbers,
-or the agreement becomes an artefact of who looked at what.
+the judged sheet and the scoring guide generated from the dictionary. The
+project runs on ONE judged sheet by one named person, so there is no second
+rater to compare against and no agreement or kappa to show — and the tab says
+that rather than rendering an empty comparison table. A live scoring screen
+must not exist in this shape either: it must not show one rater another's
+numbers, or any future reliability figure becomes an artefact of who looked at
+what.
 
 **Collection** is the collection status and the pipeline commands. Read-only on
 purpose: collection is slow and needs a job model, and the robots.txt gate must

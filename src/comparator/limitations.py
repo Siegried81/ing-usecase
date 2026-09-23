@@ -1,6 +1,6 @@
 """D-09 - Limitations & next steps, read off the dataset rather than remembered.
 
-New module. The RACI puts D-09 on me, and it is the deliverable
+The RACI puts D-09 on me, and it is the deliverable
 most likely to be written from memory at 11pm on Day 9 - which is exactly when
 the inconvenient limitations get forgotten.
 
@@ -205,12 +205,11 @@ def assess(
         "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice "
         "and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an "
         "element. Both are exact about geometry and approximate about meaning.",
-        # This used to say flatly "not reproducible", on the strength of
-        # five runs that disagreed. Measured since: our half is deterministic, and
-        # four of those five runs had re-collected in between, so the data - and
-        # therefore the derived targets and the prompt - legitimately changed.
-        # The narrower statement is the true one, and the business UI renders this
-        # text verbatim, so an over-claim here reaches a stakeholder.
+        # "Mostly, not perfectly" is the measured statement, not a hedge: our
+        # half is deterministic, and runs that appear to disagree had
+        # re-collected in between, so the data - and therefore the derived
+        # targets and the prompt - legitimately changed. The business UI renders
+        # this text verbatim, so an over-claim here reaches a stakeholder.
         "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is "
         "deterministic: the same dataset produces a byte-identical prompt, and each generated "
         "artefact records that prompt's fingerprint. The model is the variable part — identical "

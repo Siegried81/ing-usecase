@@ -1,6 +1,6 @@
 """Cross-sell score and product co-occurrence matrix.
 
-New module - the "cross-sell score/graph" from the AI Marketing
+the "cross-sell score/graph" from the AI Marketing
 Intelligence brief, built on `cross_sold_products` (feature_dictionary.yaml,
 extracted by the same single structured call as `target_personas`). No new
 LLM call here either - the score and matrix below are pure arithmetic over

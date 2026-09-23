@@ -1,4 +1,4 @@
-"""Legal/compliance gate for collection - New module.
+"""Legal/compliance gate for collection.
 
 PRD: LC-01, LC-02, LC-04. The schema's own validator (schema.validate) already
 hard-fails any row with robots_allowed=False, so this module's job is to make

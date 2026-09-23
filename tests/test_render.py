@@ -106,10 +106,9 @@ def test_robots_gate_runs_before_the_browser_launches():
     browser.assert_not_called(), "the browser must never start for a disallowed URL"
 
 
-# Audit finding (MEDIUM): only the top-level navigation was gated;
-# same-origin sub-resources loaded during page.goto() were not. These pin the
-# fix without launching a browser - _blocks_same_origin_asset is the pure
-# decision the route handler makes.
+# Same-origin sub-resources loaded during page.goto() are gated too, not just
+# the top-level navigation. These pin that without launching a browser -
+# _blocks_same_origin_asset is the pure decision the route handler makes.
 def test_same_origin_asset_disallowed_by_robots_is_blocked():
     with patch(
         "comparator.collection.render.check_robots",
