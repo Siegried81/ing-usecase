@@ -3,7 +3,7 @@
 > **CURRENT NUMBERS — 24/09 (evening), supersedes every figure and every update banner
 > below.** Scope: 51 pages / 14 banks / 6 product families collected and
 > scored; the comparison runs on the 18 `current_account_pack` pages, 14 banks,
-> 34 comparable features (DR-04).
+> 33 comparable features (DR-04).
 >
 > | | ING | peers | gap |
 > | --- | --- | --- | --- |
@@ -14,8 +14,9 @@
 > | `fast_digital_onboarding_claim` | 0.67 | 0.15 | +1.42 SD |
 > | `page_height_px` | 11,149 | 6,412 | +1.42 SD |
 >
-> `cta_count`, `cta_contrast_ratio`, `has_animation` and `animated_asset_count`
-> are WITHDRAWN and must not be quoted, in either direction.
+> `cta_count`, `cta_contrast_ratio`, `has_animation`, `animated_asset_count`
+> and `has_comparison_table` are WITHDRAWN and must not be quoted, in either
+> direction.
 >
 > `cta_count`: the stored HTML is the post-JavaScript DOM (`render.py` returns
 > `page.content()`), so the cards ARE in the file — ING's pack page holds 144
@@ -29,6 +30,14 @@
 > carries real motion — Revolut's, via a `<video>` element. Every other bank
 > flagged animated has no video and no GIF, only CSS rules that may drive a
 > spinner or a cookie-banner fade.
+>
+> `has_comparison_table`: the rule is `soup.find("table") is not None`, so it
+> reports whether the page uses an HTML `<table>`, not whether it compares
+> anything. Traditional banks mark their tariff grids up as tables; N26 and
+> Revolut build the same plan comparison in CSS and score False, though their
+> captured text carries the plan names and monthly prices all the same. The
+> 0.57-against-0.00 split it produced, at d = -1.23, is a difference in HTML
+> authoring style reported as a difference in strategy.
 >
 > Still true: don't hand-copy a number from this file into a deck. Pull it from
 > `report.json` or a fresh `run_analysis.py --product-family auto` run.

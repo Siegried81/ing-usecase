@@ -181,7 +181,7 @@ def assess(
     # named here because a reader of this file alone would otherwise see a
     # complete-looking dataset and assume every column in it was compared.
     standing.append(
-        "**Four features are measured but never compared.** `cta_count` and "
+        "**Five features are measured but never compared.** `cta_count` and "
         "`cta_contrast_ratio` are withdrawn because no counting rule reproduced a "
         "human count of calls to action across fourteen banks: navigation, several "
         "links pointing at one target, and clickable product cards are marked up "
@@ -189,6 +189,10 @@ def assess(
         "`has_animation` and `animated_asset_count` are withdrawn because the rule "
         "asks whether the stylesheet declares an animation, not whether the page "
         "moves — across the compared pages exactly one carries real motion. The "
+        "`has_comparison_table` is withdrawn because it tests for an HTML `<table>` "
+        "element: traditional banks mark their tariff grids up as tables, while N26 "
+        "and Revolut build the same plan comparison in CSS, so the 0.57-against-0.00 "
+        "split it produced is a difference in authoring style, not in strategy. The "
         "columns stay in the dataset; they are excluded from every comparison and "
         "no finding rests on them."
     )
