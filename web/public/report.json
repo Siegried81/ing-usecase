@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-23T12:35:37+00:00",
+  "generated_at": "2026-09-24T05:30:36+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 37
+    "n_features": 36
   },
   "headline": {
     "focus": "ING",
-    "score": 0.257,
+    "score": 0.277,
     "verdict": "clearly with the traditional banks",
     "has_focus": true
   },
@@ -62,98 +62,98 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.319,
+      "score": -0.313,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.195,
+      "score": -0.2,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.144,
+      "score": -0.17,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": -0.102,
+      "score": -0.14,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.034,
+      "score": -0.024,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.002,
+      "score": 0.012,
       "isFocus": false
     },
     {
       "bank": "VDK Bank",
       "key": "vdk",
       "category": "traditional",
-      "score": 0.034,
+      "score": 0.046,
       "isFocus": false
     },
     {
       "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.214,
+      "score": 0.225,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.257,
+      "score": 0.277,
       "isFocus": true
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.288,
+      "score": 0.287,
       "isFocus": false
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.573,
+      "score": 0.59,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.884,
+      "score": 0.89,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.172,
+      "score": 1.118,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.371,
+      "score": 1.402,
       "isFocus": false
     }
   ],
@@ -247,6 +247,16 @@
       "peerMean": 19.0,
       "gapSd": 0.85,
       "direction": "above"
+    },
+    {
+      "feature": "numeric_claim_count",
+      "label": "Figures and percentages quoted",
+      "dimension": "tone_messaging",
+      "extraction": "automatic",
+      "focusValue": 18.666666666666668,
+      "peerMean": 12.17948717948718,
+      "gapSd": 0.79,
+      "direction": "above"
     }
   ],
   "excludedGaps": [
@@ -303,18 +313,18 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "rate_shown",
-      "label": "Shows a rate",
-      "extraction": "automatic",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
+      "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
       "effect": 2.0,
       "higherAt": "challenger"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
-      "extraction": "model_assisted",
+      "feature": "rate_shown",
+      "label": "Shows a rate",
+      "extraction": "automatic",
       "traditional": 0.0,
       "challenger": 0.5,
       "effect": 2.0,
@@ -712,12 +722,12 @@
           "direction": "below"
         },
         {
-          "label": "Calls to action",
-          "sd": 2.9,
+          "label": "Shows a rate",
+          "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Page length",
           "sd": 2.4,
           "direction": "above"
         }
@@ -962,7 +972,7 @@
           "direction": "below"
         },
         {
-          "label": "Uses animation",
+          "label": "Animated elements",
           "sd": -1.3,
           "direction": "below"
         }
@@ -1840,225 +1850,225 @@
     "matrix": [
       [
         0.0,
-        6.94,
-        6.64,
-        6.7,
-        11.45,
-        6.51,
+        6.9,
+        6.49,
+        6.41,
+        10.87,
+        6.49,
         9.82,
         7.91,
         6.46,
         6.73,
         8.79,
-        10.53,
+        10.49,
         11.94,
         6.9
       ],
       [
-        6.94,
+        6.9,
         0.0,
-        7.81,
-        8.27,
-        8.98,
-        6.62,
-        9.15,
-        7.57,
-        5.89,
-        6.46,
-        5.92,
-        9.76,
-        9.8,
-        5.07
-      ],
-      [
-        6.64,
-        7.81,
-        0.0,
-        7.12,
-        11.51,
-        7.28,
-        8.59,
-        7.43,
-        7.48,
-        7.63,
+        7.78,
         8.18,
-        9.26,
-        11.91,
-        6.6
-      ],
-      [
-        6.7,
-        8.27,
-        7.12,
-        0.0,
-        11.11,
-        7.0,
-        10.2,
-        9.24,
-        7.02,
-        8.09,
-        8.6,
-        10.34,
-        12.05,
-        7.81
-      ],
-      [
-        11.45,
-        8.98,
-        11.51,
-        11.11,
-        0.0,
-        11.25,
-        12.67,
-        11.39,
-        8.99,
-        10.43,
-        10.25,
-        12.25,
-        10.91,
-        10.51
-      ],
-      [
-        6.51,
+        8.51,
         6.62,
-        7.28,
-        7.0,
-        11.25,
+        9.12,
+        7.55,
+        5.82,
+        6.42,
+        5.9,
+        9.76,
+        9.78,
+        5.01
+      ],
+      [
+        6.49,
+        7.78,
         0.0,
-        9.02,
-        7.95,
+        7.1,
+        11.31,
+        7.23,
+        8.47,
+        7.32,
+        7.3,
+        7.5,
+        8.09,
+        9.24,
+        11.85,
+        6.45
+      ],
+      [
+        6.41,
+        8.18,
+        7.1,
+        0.0,
+        10.99,
+        6.86,
+        10.0,
+        9.07,
+        6.68,
+        7.86,
+        8.41,
+        10.29,
+        11.92,
+        7.56
+      ],
+      [
+        10.87,
+        8.51,
+        11.31,
+        10.99,
+        0.0,
+        10.83,
+        12.15,
+        10.87,
         8.16,
-        5.09,
-        8.04,
+        9.82,
+        9.67,
+        11.95,
+        10.37,
+        9.88
+      ],
+      [
+        6.49,
+        6.62,
+        7.23,
+        6.86,
+        10.83,
+        0.0,
+        9.01,
+        7.94,
+        8.13,
+        5.07,
+        8.03,
         10.6,
-        10.98,
-        5.51
+        10.97,
+        5.49
       ],
       [
         9.82,
-        9.15,
-        8.59,
-        10.2,
-        12.67,
-        9.02,
+        9.12,
+        8.47,
+        10.0,
+        12.15,
+        9.01,
         0.0,
         9.43,
         9.28,
         8.16,
         8.26,
-        11.64,
+        11.61,
         11.72,
         8.34
       ],
       [
         7.91,
-        7.57,
-        7.43,
-        9.24,
-        11.39,
-        7.95,
+        7.55,
+        7.32,
+        9.07,
+        10.87,
+        7.94,
         9.43,
         0.0,
         7.79,
         7.73,
         6.97,
-        8.36,
+        8.33,
         11.22,
-        7.29
+        7.28
       ],
       [
         6.46,
-        5.89,
-        7.48,
-        7.02,
-        8.99,
+        5.82,
+        7.3,
+        6.68,
         8.16,
+        8.13,
         9.28,
         7.79,
         0.0,
         7.28,
-        7.32,
-        8.94,
-        10.59,
+        7.31,
+        8.88,
+        10.58,
         6.78
       ],
       [
         6.73,
-        6.46,
-        7.63,
-        8.09,
-        10.43,
-        5.09,
+        6.42,
+        7.5,
+        7.86,
+        9.82,
+        5.07,
         8.16,
         7.73,
         7.28,
         0.0,
         7.81,
-        9.82,
+        9.78,
         10.25,
         5.57
       ],
       [
         8.79,
-        5.92,
-        8.18,
-        8.6,
-        10.25,
-        8.04,
+        5.9,
+        8.09,
+        8.41,
+        9.67,
+        8.03,
         8.26,
         6.97,
-        7.32,
+        7.31,
         7.81,
         0.0,
-        9.35,
+        9.32,
         9.51,
-        5.77
+        5.76
       ],
       [
-        10.53,
+        10.49,
         9.76,
-        9.26,
-        10.34,
-        12.25,
+        9.24,
+        10.29,
+        11.95,
         10.6,
-        11.64,
-        8.36,
-        8.94,
-        9.82,
-        9.35,
+        11.61,
+        8.33,
+        8.88,
+        9.78,
+        9.32,
         0.0,
-        11.53,
-        10.08
+        11.5,
+        10.04
       ],
       [
         11.94,
-        9.8,
-        11.91,
-        12.05,
-        10.91,
-        10.98,
+        9.78,
+        11.85,
+        11.92,
+        10.37,
+        10.97,
         11.72,
         11.22,
-        10.59,
+        10.58,
         10.25,
         9.51,
-        11.53,
+        11.5,
         0.0,
         10.1
       ],
       [
         6.9,
-        5.07,
-        6.6,
-        7.81,
-        10.51,
-        5.51,
+        5.01,
+        6.45,
+        7.56,
+        9.88,
+        5.49,
         8.34,
-        7.29,
+        7.28,
         6.78,
         5.57,
-        5.77,
-        10.08,
+        5.76,
+        10.04,
         10.1,
         0.0
       ]
@@ -2093,15 +2103,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 5.89
+      "distance": 5.82
     },
     {
       "bank": "Argenta",
       "distance": 6.46
     },
     {
-      "bank": "VDK Bank",
-      "distance": 6.78
+      "bank": "BNP Paribas Fortis",
+      "distance": 6.68
     }
   ],
   "deckClaims": [
@@ -2721,12 +2731,12 @@
         "headline_count": 28,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 9,
+          "crisis_or_scandal": 10,
           "financial_results": 4,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 12,
-          "other": 3
+          "regulatory": 7,
+          "other": 7
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2734,6 +2744,10 @@
             {
               "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent - RTBF Actus",
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
+            },
+            {
+              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
+              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
             },
             {
               "title": "Elle perd près de 100.000 euros après un faux appel de Card Stop : elle attaque Belfius au pénal",
@@ -2790,10 +2804,6 @@
           "esg_sustainability": [],
           "regulatory": [
             {
-              "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
-              "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
-            },
-            {
               "title": "Du changement pour Belfius en vue de sa privatisation partielle",
               "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
             },
@@ -2810,14 +2820,6 @@
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
             },
             {
-              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
-            },
-            {
-              "title": "L'impact insoupçonné et favorable à l'État d'un rapprochement entre Belfius et Ethias",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/22/limpact-insoupconne-et-favorable-a-letat-dun-rapprochement-entre-belfius-et-ethias-RSKWYVUA3RCKLPFLIF3TFFWPGE/"
-            },
-            {
               "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
               "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
             },
@@ -2826,19 +2828,15 @@
               "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
             },
             {
-              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
-              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
-            },
-            {
-              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
-              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
-            },
-            {
               "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
               "url": "https://businessam.be/belgische-regering-krijgt-meteen-enkele-moeilijke-dossiers-voorgeschoteld-op-de-kern-met-gaza-en-belfius/"
             }
           ],
           "other": [
+            {
+              "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
+              "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
+            },
             {
               "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
               "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
@@ -2848,27 +2846,39 @@
               "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
             },
             {
-              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
-              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
+              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+            },
+            {
+              "title": "L'impact insoupçonné et favorable à l'État d'un rapprochement entre Belfius et Ethias",
+              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/22/limpact-insoupconne-et-favorable-a-letat-dun-rapprochement-entre-belfius-et-ethias-RSKWYVUA3RCKLPFLIF3TFFWPGE/"
+            },
+            {
+              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
+              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
+            },
+            {
+              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
+              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
             }
           ]
         },
         "notable_headlines": [
           {
-            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
-            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
-          },
-          {
             "title": "Le gouvernement confirme la vente d'une partie de Belfius, mais abandonne une piste importante",
             "url": "https://www.sudinfo.be/id1192425/article/2026-09-11/le-gouvernement-confirme-la-vente-dune-partie-de-belfius-mais-abandonne-une"
           },
           {
-            "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
-            "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
+            "title": "Belfius changes dividend policy ahead of potential 20% privatisation",
+            "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
             "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
             "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
+          },
+          {
+            "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
+            "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
           },
           {
             "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
@@ -2882,16 +2892,19 @@
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
           "financial_results": 0,
-          "product_launch": 3,
+          "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 1
+          "other": 4
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [],
           "financial_results": [],
-          "product_launch": [
+          "product_launch": [],
+          "esg_sustainability": [],
+          "regulatory": [],
+          "other": [
             {
               "title": "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
               "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
@@ -2901,16 +2914,12 @@
               "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
             },
             {
-              "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
-              "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
-            }
-          ],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
-            {
               "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
               "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
+            },
+            {
+              "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+              "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
             }
           ]
         },
@@ -3022,50 +3031,7 @@
           }
         ]
       },
-      "hellobank": {
-        "headline_count": 3,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
-          "financial_results": 0,
-          "product_launch": 0,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 3
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [],
-          "financial_results": [],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
-              "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-              "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-            }
-          ]
-        },
-        "notable_headlines": [
-          {
-            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-            "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-          },
-          {
-            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-          }
-        ]
-      },
+      "hellobank": null,
       "ing": {
         "headline_count": 2,
         "themes": {
@@ -3097,12 +3063,12 @@
         },
         "notable_headlines": [
           {
-            "title": "ING op de favorietenlijst van JPMorgan",
-            "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
-          },
-          {
             "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
             "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
+          },
+          {
+            "title": "ING op de favorietenlijst van JPMorgan",
+            "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
           }
         ]
       },
@@ -3142,12 +3108,12 @@
         },
         "notable_headlines": [
           {
-            "title": "Beursblik: Jefferies start opvolging KBC met koopadvies",
-            "url": "https://www.deaandeelhouder.be/nieuws/2026/09/16/beursblik-jefferies-start-opvolging-kbc-met-koopadvies/"
-          },
-          {
             "title": "Jefferies start opvolging KBC met koopadvies",
             "url": "https://www.beursduivel.be/Nieuws/878007/Jefferies-start-opvolging-KBC-met-koopadvies.aspx"
+          },
+          {
+            "title": "Beursblik: Jefferies start opvolging KBC met koopadvies",
+            "url": "https://www.deaandeelhouder.be/nieuws/2026/09/16/beursblik-jefferies-start-opvolging-kbc-met-koopadvies/"
           },
           {
             "title": "Meer winst voor KBC Ancora",
@@ -3158,7 +3124,7 @@
       "keytrade": null,
       "n26": null,
       "revolut": {
-        "headline_count": 3,
+        "headline_count": 2,
         "themes": {
           "innovation_digital": 1,
           "crisis_or_scandal": 1,
@@ -3166,7 +3132,7 @@
           "product_launch": 0,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 1
+          "other": 0
         },
         "theme_headlines": {
           "innovation_digital": [
@@ -3185,52 +3151,20 @@
           "product_launch": [],
           "esg_sustainability": [],
           "regulatory": [],
-          "other": [
-            {
-              "title": "Ouvrir un compte chez Revolut est il interéssant pour vous?",
-              "url": "https://www.test-achats.be/argent/comptes-a-vue/news/revolut-est-il-interessant-pour-vous"
-            }
-          ]
+          "other": []
         },
         "notable_headlines": [
           {
             "title": "Internetbank Revolut geeft zomaar privédata door na vals verzoek van hackers: vooral grote cryptoklanten in het vizier",
             "url": "https://www.demorgen.be/tech-ai/internetbank-revolut-geeft-zomaar-privedata-door-na-vals-verzoek-van-hackers-vooral-grote-cryptoklanten-in-het-vizier~b30d69db/"
+          },
+          {
+            "title": "Revolut in België: Is een digitale bankrekening iets voor jou?",
+            "url": "https://www.test-aankoop.be/geld/zichtrekeningen/nieuws/is-revolut-interessant-voor-jou"
           }
         ]
       },
-      "vdk": {
-        "headline_count": 1,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
-          "financial_results": 1,
-          "product_launch": 0,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 0
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [],
-          "financial_results": [
-            {
-              "title": "Tout en lettres d’or chez VDK",
-              "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-            }
-          ],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": []
-        },
-        "notable_headlines": [
-          {
-            "title": "Tout en lettres d’or chez VDK",
-            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-          }
-        ]
-      }
+      "vdk": null
     }
   },
   "geoTrends": {

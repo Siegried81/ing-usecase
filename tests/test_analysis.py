@@ -321,7 +321,11 @@ def test_accounting_adds_up_to_the_whole_dictionary(df, fd):
     from comparator.analysis import feature_accounting
 
     a = feature_accounting(df, fd)
+    # Every bucket feature_accounting() reports, including the two that are
+    # empty on single-language, nothing-withdrawn data - leaving one out here
+    # would let a real exclusion go uncounted the moment it is not empty.
     buckets = (a["provenance"] + a["free_text"] + a["band_redundant"]
+               + a["language_excluded"] + a["capture_invalid"]
                + a["categorical"] + a["incomplete"] + a["constant"] + a["used"])
     assert len(buckets) == len(set(buckets)), "a feature is counted in two buckets"
     assert len(buckets) == a["dictionary_total"] == len(fd)
@@ -496,3 +500,29 @@ def test_a_feature_only_one_peer_has_is_not_reportable(df, fd):
 def test_a_normal_gap_stays_reportable(df, fd):
     out = ing_vs_peers(df, fd)
     assert out["reportable"].any(), "the ordinary case must still produce findings"
+
+
+# A feature whose stored capture is missing what it counts describes the capture,
+# not the bank, so it must leave the comparison AND be reported leaving it - a
+# silent drop is how a withdrawn number creeps back into a chart.
+def test_capture_invalid_features_are_excluded_from_the_comparison(df, fd):
+    from comparator.analysis import CAPTURE_INVALID_FEATURES, comparable_features
+
+    used = comparable_features(fd, df)
+    for name in CAPTURE_INVALID_FEATURES:
+        if name in df.columns:
+            assert name not in used, f"{name} is withdrawn and must not be compared"
+
+
+def test_capture_invalid_features_are_reported_not_silently_dropped(df, fd):
+    from comparator.analysis import (
+        CAPTURE_INVALID_FEATURES,
+        feature_accounting,
+        render_accounting,
+    )
+
+    accounting = feature_accounting(df, fd)
+    present = sorted(n for n in CAPTURE_INVALID_FEATURES if n in fd and n in df.columns)
+    assert accounting["capture_invalid"] == present
+    if present:
+        assert "withdrawn, capture not the page" in render_accounting(accounting)

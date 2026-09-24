@@ -195,7 +195,7 @@
 | lever count | 3 |
 | personas | mass_market 100%, expat 100% |
 
-**Signature:** people present well below the market average (-3.6 SD); cta count well above the market average (+2.9 SD); rate shown well above the market average (+2.4 SD).
+**Signature:** people present well below the market average (-3.6 SD); rate shown well above the market average (+2.4 SD); page height px well above the market average (+2.4 SD).
 
 ### cbc  (traditional)
 
@@ -312,7 +312,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); has animation well below the market average (-1.3 SD).
+**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); animated asset count well below the market average (-1.3 SD).
 
 ### ing  (traditional)
 
