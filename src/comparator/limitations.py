@@ -161,23 +161,49 @@ def assess(
 
     # Always said, never conditional: it is true of every run of this pipeline,
     # and it is the sentence a reader needs before they weigh a judged number.
-    # cross_sold_products can only name a product_family, and the taxonomy has
-    # six of them plus "other". Insurance, credit cards, subscription perks and
-    # cashback are not families, so every one of them collapses into the single
-    # "other" token and is counted once. That inverts the measure on exactly the
-    # pages that cross-sell hardest: ING's pack pages name 8, 13 and 14 distinct
-    # add-on products and score 1/6, while pages naming 3 or 4 score 2/6.
-    # Fixing it means adding values to a frozen dictionary, which is a team
-    # decision, so it is reported rather than quietly patched.
+    # The taxonomy once held six banking families plus "other", which collapsed
+    # insurance, credit cards and partner perks into a single token and inverted
+    # the measure on the pages that cross-sell hardest. Those three values were
+    # since added, so what remains is the shape of the measure rather than a gap
+    # in it: the score counts how many distinct types a page names, so it cannot
+    # tell a page that mentions one product once from one that pushes it hard.
     standing.append(
-        "**The cross-sell score counts product families, not products.** "
-        "`cross_sold_products` can only name one of six banking families plus "
-        "`other`, so insurance, credit cards, subscription perks and cashback all "
-        "collapse into a single `other` and are counted once. Measured on the "
-        "captured pages, ING's packs name 8 to 14 distinct add-ons and score 1/6, "
-        "while pages naming 3 or 4 score 2/6 — the ranking is inverted for any bank "
-        "whose cross-sell is mostly non-banking. Read the score as family coverage, "
-        "never as how hard a page cross-sells."
+        "**The cross-sell score counts distinct product types, not selling effort.** "
+        "`cross_sold_products` names nine product types plus `other`, and a page's "
+        "score is how many of the nine it mentions, averaged over the bank's pages. "
+        "A page that pushes one product ten times and a page that mentions it once "
+        "score identically, and anything outside the nine still collapses into a "
+        "single `other` counted once. Read the score as breadth of coverage, never "
+        "as how hard a page cross-sells."
+    )
+
+    # Four features are withdrawn in analysis.CAPTURE_INVALID_FEATURES. They are
+    # named here because a reader of this file alone would otherwise see a
+    # complete-looking dataset and assume every column in it was compared.
+    standing.append(
+        "**Four features are measured but never compared.** `cta_count` and "
+        "`cta_contrast_ratio` are withdrawn because no counting rule reproduced a "
+        "human count of calls to action across fourteen banks: navigation, several "
+        "links pointing at one target, and clickable product cards are marked up "
+        "differently by every bank, so the number reports the markup convention. "
+        "`has_animation` and `animated_asset_count` are withdrawn because the rule "
+        "asks whether the stylesheet declares an animation, not whether the page "
+        "moves — across the compared pages exactly one carries real motion. The "
+        "columns stay in the dataset; they are excluded from every comparison and "
+        "no finding rests on them."
+    )
+
+    # No dataset field records this: capture_quality is "ok" for all three, and
+    # every affected value is in range, so schema.validate cannot catch it. It is
+    # written down here rather than left as something the next reader discovers.
+    standing.append(
+        "**Three captures were taken with a cookie-consent modal over the page.** "
+        "Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features "
+        "— `background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, "
+        "`brand_colour_share` and `above_fold_element_count` — describe the modal "
+        "rather than the page beneath it, which is why those three report a "
+        "near-zero hero area. Text-derived and judged features are unaffected, so "
+        "the word, urgency, persuasion and rubric findings stand."
     )
 
     # background_luminance, and every colour feature with it, is read off ONE

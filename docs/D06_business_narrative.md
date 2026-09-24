@@ -3,23 +3,32 @@
 > **CURRENT NUMBERS — 24/09 (evening), supersedes every figure and every update banner
 > below.** Scope: 51 pages / 14 banks / 6 product families collected and
 > scored; the comparison runs on the 18 `current_account_pack` pages, 14 banks,
-> 35 comparable features (DR-04).
+> 34 comparable features (DR-04).
 >
 > | | ING | peers | gap |
 > | --- | --- | --- | --- |
-> | traditional↔challenger positioning | **0.39** | — | nearest neighbour Belfius |
+> | traditional↔challenger positioning | **0.41** | — | nearest neighbour Belfius |
 > | `urgency_marker_count` | 4.00 | 0.64 | **+3.69 SD** — largest in the set |
-> | `persuasion_lever_count` (rubric) | 5.00 | 1.44 | +3.32 SD |
+> | `persuasion_lever_count` (rubric) | 5.00 | 1.67 | +3.68 SD |
 > | `value_prop_clarity` (rubric) | 5.00 | 3.97 | +1.36 SD |
 > | `fast_digital_onboarding_claim` | 0.67 | 0.15 | +1.42 SD |
 > | `page_height_px` | 11,149 | 6,412 | +1.42 SD |
-> | `has_animation` | 0.33 | 0.62 | -0.58 SD — the one place ING is below |
 >
-> `cta_count` is WITHDRAWN and must not be quoted, in either direction. The
-> captured HTML holds every ING pack card - nothing is missing from the capture
-> - but the counter recognises one label in eight on that page, and no rule
-> tried so far reproduces a human count on the other banks. See `decisions.md`,
-> 23-24/09.
+> `cta_count`, `cta_contrast_ratio`, `has_animation` and `animated_asset_count`
+> are WITHDRAWN and must not be quoted, in either direction.
+>
+> `cta_count`: the stored HTML is the post-JavaScript DOM (`render.py` returns
+> `page.content()`), so the cards ARE in the file — ING's pack page holds 144
+> clickable elements. No counting rule proved defensible across the 14 banks:
+> navigation, several links pointing at one target, and clickable product
+> cards are marked up differently by each bank. See `decisions.md`, 23-24/09.
+>
+> `has_animation`/`animated_asset_count`: the rule is `"@keyframes" in html or
+> "animation:" in html`, so it reports "this stylesheet declares an
+> animation", not "this page moves". Across the 18 compared pages exactly one
+> carries real motion — Revolut's, via a `<video>` element. Every other bank
+> flagged animated has no video and no GIF, only CSS rules that may drive a
+> spinner or a cookie-banner fade.
 >
 > Still true: don't hand-copy a number from this file into a deck. Pull it from
 > `report.json` or a fresh `run_analysis.py --product-family auto` run.
@@ -103,7 +112,7 @@ one by one:
 | --- | --- |
 | Belfius is pretty verbose | **Not supported** |
 | KBC is straight to the point | **Not supported** |
-| ING is the only traditional bank using animation | **Not supported** — Crelan, KBC and Belfius are animated too |
+| ING is the only traditional bank using animation | **Not testable** — feature absent from the dataset |
 | ING no longer places text next to picture | **Not supported** — "beside" is still ING's most common layout |
 | Revolut uses very little text | **Not supported** |
 
@@ -113,22 +122,21 @@ banks now land in the same word-count band ("long")**. The comparison had to
 switch from a raw word count to a coarser, language-safe band once a second
 and third language entered the dataset (a raw count silently drops out of a
 mixed-language comparison entirely — see D-07) — and at this sample size,
-that band no longer separates anyone. The two claims that don't depend on
-word count (animation, image/text layout) are cleanly not supported instead.
+that band no longer separates anyone. Of the two claims that don't depend on
+word count, image/text layout is cleanly not supported; animation is not
+testable — the feature that measured it is withdrawn (see above).
 Net honest takeaway for the room: **zero of the five launch-deck impressions
-survive measurement on the current dataset** — two on real evidence, three
-because the current method can't yet tell these particular banks apart on
-length. That gap is itself worth a line in the room, not something to paper
+survive measurement on the current dataset** — one on real evidence, one not
+testable, three because the current method can't yet tell these particular
+banks apart on length. That gap is itself worth a line in the room, not something to paper
 over with a false "winner".
 
 ## 2. ING's page is the most urgent and the most persuasion-heavy in the set
 
 ING's `urgency_marker_count` is 4.00 against a peer mean of 0.64 (+3.69 SD) —
 the largest gap of any measured feature. Its `persuasion_lever_count` (5.00
-vs peer mean 1.44, +3.32 SD) is the second-largest — this one is rubric-
-sourced, from the one judged sheet, so its peer group is thinner (9 banks,
-against 13 for the measured features) and it should be quoted with that
-caveat. ING also claims fast digital onboarding at 0.67
+vs peer mean 1.67, +3.68 SD) is the second-largest — this one is rubric-
+sourced, from the one judged sheet. ING also claims fast digital onboarding at 0.67
 against a peer mean of 0.15 (+1.42 SD) — the fourth-largest gap, behind
 `value_prop_clarity` (5.00 vs 3.97, +1.36 SD).
 
@@ -169,9 +177,10 @@ ING's `background_luminance` was reported as 0.198 against a peer mean of 0.591
 (-1.17 SD) — see the withdrawal note above; that figure and the reading built
 on it are both superseded. On the AI Score axes (six signals, 0-10, each a mean of already-
 measured features — see the Analysis tab for the exact formulas), ING scores
-**digital 8.8** and **cross-sell 10.0** (every page pushes a bundled offer)
-but **trust 0.8** — the lowest of the six axes by a wide margin, next to
-**simplicity 2.5** and **innovation 3.8**.
+**digital 8.9** and **cross-sell 10.0** (every page pushes a bundled offer)
+but **trust 0.0** — the lowest of the six axes by a wide margin, next to
+**simplicity 2.5** and **personalisation 3.8**. The `innovation` axis is
+withdrawn — both its inputs fail — and returns `None` for every bank.
 
 **What it means.** The trust axis only measures three specific signals
 (institutional tenure/ownership cited, a prominent regulatory disclosure,
@@ -201,25 +210,28 @@ already draw: challengers are reframing what a bank account *is* — a
 subscribed service, not a "pack" — for a segment traditional banks aren't
 naming on the page at all.
 
-## 5. ING addresses more customer personas than any other bank — but shallowly
-
-<!-- "5 distinct personas" -> "5 of the 8 possible personas" (8 = values allowed for target_personas in the dictionary), so the reader sees the scale. -->
+## 5. ING segments across pages, not within them
 
 `target_personas` (a new model-assisted field, one structured call per page,
 same pattern as every other model-assisted feature) shows ING's current-
-account pages naming **5 of the 8 possible personas** across its 4 pages — mass
-market (75%), expat (50%), student (50%), family (25%), entrepreneur/self-
-employed (25%). No other bank in the comparison names more than 4, and most
-name 1-3. Argenta and KBC name exactly one: mass market.
+account pages naming **3 of the 8 possible personas** across its 3 pages —
+mass market, student and expat. Revolut names four on its single page, the
+widest in this family; most other banks name one, and Argenta, Belfius, CBC,
+Crelan and KBC name exactly one: mass market.
+
+Across ING's whole page set rather than the current-account family alone, the
+count rises to **6 of the 8** — mass market, student, expat, family, investor
+and retiree — tied with KBC for the widest coverage in the dataset. The
+personas do not stack up on one page: each lands on a different product page.
 
 **What it means.** Read together with insight 3 (low trust-signal presence)
-and the AI Score's `personalisation` axis (6.2/10, mid-pack), ING is not
-failing to speak to enough audiences — if anything it is the broadest bank
-in the set. The open question is depth: 4 pages naming 5 of the 8 personas means most
-personas get one page's worth of attention, while Revolut and N26 (also
-broad, 3-4 personas each) build that breadth around a single, more focused
-product story. Worth testing whether a page that speaks to five audiences at
-once is heard clearly by any of them.
+and the AI Score's `personalisation` axis (3.8/10, 2nd of 14 banks), ING is not
+failing to speak to enough audiences. It reaches them by dedicating a page to
+each rather than by widening any single page — the opposite of Revolut, which
+names four personas on one page and builds that breadth around a single
+product story. Neither approach is better on this evidence. What the split
+does raise is a routing question rather than a copy one: breadth spread across
+pages only works if the right customer reaches the right page.
 
 ## 6. ING's search-interest footprint looks like a challenger's, not like its own peer group's
 
@@ -237,7 +249,7 @@ communication content — it says nothing about *what* a page argues, only
 matching their known regional roots is a sanity check on the pipeline, not a
 discovery on its own. ING breaking that pattern, in the same direction as
 every challenger in the set, is the one region-level result that lines up
-with the overall traditional↔challenger positioning score (0.39, clearly
+with the overall traditional↔challenger positioning score (0.41, clearly
 with the traditional banks) from a completely independent measurement. Worth
 noting in the room as a second signal pointing the same way, not proof of
 anything by itself — the same "context, never an outcome" rule the existing
@@ -250,7 +262,7 @@ Trends tab already applies.
 Read side by side, the pattern is not "ING is doing something wrong" — it's
 that ING's page combines signals that don't usually travel together: the
 most urgency and persuasion-technique density in the set, high digital and
-cross-sell scores, the broadest persona coverage of any bank, and yet the
+cross-sell scores, persona coverage tied for the widest in the set, and yet the
 lowest presence of the institutional-trust signals a traditional bank is
 uniquely positioned to use, on a visibly darker page than its own peer
 group. Every one of these is a hypothesis the data can surface, not a cause

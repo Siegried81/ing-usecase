@@ -137,8 +137,9 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
 
     st.subheader("Project status")
     st.info(
-        "Day 6/10: The analysis pipeline works end-to-end on real captures. "
-        "The 13 rubric features are being scored."
+        "The pipeline runs end to end on real captures: 51 pages across 14 banks "
+        "and 6 product families, 104 features, one judged rubric sheet complete. "
+        "Comparisons run within one product family at a time."
     )
 
     if df is not None:

@@ -42,28 +42,39 @@ MAX_PLAUSIBLE_SD = 8.0
 # over them measures nothing about how a bank communicates.
 FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "readability_formula"}
 
-# Features whose captured values describe the CAPTURE rather than the page, so
-# the number is not a property of the bank and must not enter a comparison.
-# This is a different failure from a missing value: the column is full, the
-# figures look plausible, and they are measuring the wrong thing.
+# Features whose stored values do not describe the page, so the number is not a
+# property of the bank and must not enter a comparison. This is a different
+# failure from a missing value: the column is full, the figures look plausible,
+# and they are measuring the wrong thing. The constant is named for the first
+# case found; the set has since grown to cover rules that misdescribe the page
+# for reasons other than the capture.
 #
-# cta_count: ING's pack cards (Open ING Go / More / Extra, Discover here) are
-# rendered client-side and are absent from the stored HTML, so its three pages
-# each count exactly 1 - two nav items correctly excluded as chrome, and the
-# same button twice, correctly deduplicated. No counting rule can find an
-# element that is not in the file. Peer captures look complete (bunq 22, BNP
-# 13, Beobank 10), which is what makes the gap look real. Withdrawn until the
-# pack pages are re-captured with a scroll/interaction step. See
-# docs/decisions.md, 23/09.
-# cta_contrast_ratio: same root cause. collection/render.py finds the element
-# to measure by walking `a, button` and taking the FIRST label containing one of
-# its own keywords, then breaking - so it reports the first keyword match in DOM
-# order, typically the navigation, not the primary CTA. Its keyword list is also
-# a separate, older copy than collection/scraper.py's: the imperative forms added
-# on 22-23/09 (ouvrez, demarrer, devenir client, telechargez) never reached it.
-# All three ING pack pages report exactly 7.01, which is the tell. Fixing it means
-# re-rendering every page, so the feature is withdrawn until then.
-CAPTURE_INVALID_FEATURES = {"cta_count", "cta_contrast_ratio"}
+# cta_count: no counting rule proved defensible across the 14 banks. The stored
+# HTML is the post-JavaScript DOM (render.py returns page.content()), so the
+# cards ARE in the file - ING's pack page holds 144 clickable elements. What
+# differs is what counts as one CTA: the keyword list missed real buttons
+# ("Demarrer", "devenir client"), and the structural rule that caught them
+# counted navigation menus instead (hellobank 79 against roughly 10 real). The
+# number would report the markup convention, not the page's intent.
+# cta_contrast_ratio: same root cause, one step worse. collection/render.py
+# finds the element to measure by walking `a, button` and taking the FIRST label
+# containing one of its own keywords, then breaking - so it reports the first
+# keyword match in DOM order, typically the navigation, not the primary CTA. Its
+# keyword list is also a separate, older copy than collection/scraper.py's. All
+# three ING pack pages report exactly 7.01, which is the tell.
+# has_animation / animated_asset_count: the rule is `"@keyframes" in html or
+# "animation:" in html`, so it reports "this stylesheet declares an animation",
+# not "this page moves". Across the compared family exactly one page carries
+# real motion - Revolut's, via a <video> element. Every other bank flagged as
+# animated has no video and no GIF, only CSS rules that may drive a spinner or a
+# cookie-banner fade. Deck claim H3 was tested against this column, so the claim
+# rested on a measurement that does not mean what its name says.
+CAPTURE_INVALID_FEATURES = {
+    "cta_count",
+    "cta_contrast_ratio",
+    "has_animation",
+    "animated_asset_count",
+}
 
 
 def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
@@ -189,8 +200,8 @@ def render_accounting(accounting: dict) -> str:
     # within_language features dropped because >1 language is present.
     row("within_language, mixed languages present", accounting["language_excluded"],
         "not comparable across languages (comparability in the dictionary)")
-    row("withdrawn, capture not the page", accounting.get("capture_invalid", []),
-        "the stored capture is missing what the feature counts")
+    row("withdrawn, measurement not the page", accounting.get("capture_invalid", []),
+        "the rule does not reproduce what the feature claims to measure")
     if accounting["categorical_included"]:
         lines.append(
             f"  +{len(accounting['categorical']):>3}  categorical / list         "

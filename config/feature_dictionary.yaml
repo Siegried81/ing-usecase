@@ -123,7 +123,7 @@ features:
     dimension: provenance
     definition: Bank whose page this is.
     type: categorical
-    # steve 21/09: vdk, hellobank and beobank added to the bank enum when they
+    # vdk, hellobank and beobank added to the bank enum when they
     # became collectable in the current_account_pack family (freeze rule allows
     # pure additions; see scripts/check_schema_freeze.py).
     values: [ing, kbc, bnp_paribas_fortis, argenta, crelan, belfius, revolut, n26, bunq,
@@ -151,7 +151,7 @@ features:
     dimension: provenance
     definition: Product family the page promotes. Comparisons are only valid within one family (DR-04).
     type: categorical
-    # sieg 18/09: "pension" added - Belfius's pension page was carrying the
+    # "pension" added - Belfius's pension page was carrying the
     # catch-all "other", which hid it from any family-scoped comparison.
     # Addition only (freeze rule): no existing value renamed or removed.
     values: [term_account, current_account_pack, savings_account, mortgage, investment, pension, other]
@@ -218,7 +218,7 @@ features:
       is identical, but there is no HTTP status of our own and the capture time
       is the person's, not the pipeline's.
     type: categorical
-    # steve 21/09: headful_render added - real visible Chrome for hosts that
+    # headful_render added - real visible Chrome for hosts that
     # refuse headless clients (BNP Paribas Fortis). Freeze rule: addition.
     values: [static_fetch, headless_render, headful_render, manual_capture]
     extraction: automatic
@@ -279,7 +279,7 @@ features:
     nullable: false
     notes: llm_generated marks a campaign produced in the stretch step, scored by the same extractor.
 
-  # steph 15/09: Decision 6 in the plan (owner: me, due Day 2) says "one model,
+  # Decision 6 in the plan (owner: me, due Day 2) says "one model,
   # version recorded, prompts stored in the repository". The recording half was
   # missing: collection/llm_extractor.py falls back across providers when one is
   # rate-limited, so a single run can label ING with one model and Revolut with
@@ -304,7 +304,7 @@ features:
       A dataset mixing models is not invalid, but the mix has to be reported as
       a limitation (D-09) rather than discovered afterwards.
 
-  # steph 16/09: added after the first real collection run. Two of six rows were
+  # added after the first real collection run. Two of six rows were
   # unusable - ING rendered as an empty JavaScript shell (16 words, body text was
   # just the <title>), BNP returned a maintenance page - and NOTHING caught it.
   # Every numeric feature on those rows was in range and honestly measured; they
@@ -328,7 +328,7 @@ features:
       Deliberately conservative - a genuinely short challenger page is 'suspect',
       not 'unusable'. Only unambiguous cases are excluded automatically.
 
-  # steph 16/09: BNP's entire site was serving a maintenance notice with HTTP
+  # BNP's entire site was serving a maintenance notice with HTTP
   # 503 and we recorded it as a normal capture - a 503 still renders a page.
   # The status was never looked at. Now it is, and the quality gate fails any
   # non-2xx outright.
@@ -460,7 +460,7 @@ features:
     required: true
     nullable: true
     notes: >
-      sieg 14/09 - same idea as readability_band, but fixed universal cutoffs rather than a
+      same idea as readability_band, but fixed universal cutoffs rather than a
       language-normalising formula (word_count has no such formula). REDUCES the cross-language
       comparability problem, does not eliminate it - French runs ~15-20% longer than English for
       the same content. See src/comparator/bands.py for the thresholds.
@@ -476,7 +476,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - same caveat as word_count_band.
+    notes: same caveat as word_count_band.
 
   - name: avg_sentence_length_band
     dimension: tone_messaging
@@ -489,7 +489,7 @@ features:
     tier: core
     required: true
     nullable: true
-    notes: sieg 14/09 - same caveat as word_count_band.
+    notes: same caveat as word_count_band.
 
   - name: second_person_ratio_band
     dimension: tone_messaging
@@ -502,7 +502,7 @@ features:
     tier: core
     required: true
     nullable: true
-    notes: sieg 14/09 - a ratio travels a little better across languages than a raw count, banded anyway for consistency with the rest of this set.
+    notes: a ratio travels a little better across languages than a raw count, banded anyway for consistency with the rest of this set.
 
   - name: first_person_plural_band
     dimension: tone_messaging
@@ -515,7 +515,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - same caveat as word_count_band.
+    notes: same caveat as word_count_band.
 
   - name: disclaimer_word_share_band
     dimension: topics_value_prop
@@ -528,7 +528,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - same caveat as word_count_band.
+    notes: same caveat as word_count_band.
 
   - name: text_to_image_ratio_band
     dimension: layout_structure
@@ -541,7 +541,7 @@ features:
     tier: core
     required: true
     nullable: true
-    notes: sieg 14/09 - same caveat as word_count_band; also inherits the text_to_image_ratio approximation noted in collection/scraper.py for static_fetch rows.
+    notes: same caveat as word_count_band; also inherits the text_to_image_ratio approximation noted in collection/scraper.py for static_fetch rows.
 
   - name: second_person_ratio
     dimension: tone_messaging
@@ -593,7 +593,7 @@ features:
     tier: core
     required: true
     nullable: true
-    notes: sieg 15/09 - year corrected. The ING term-account promo carries "This offer is only available until 13/10/2026".
+    notes: year corrected. The ING term-account promo carries "This offer is only available until 13/10/2026".
 
   - name: numeric_claim_count
     dimension: tone_messaging
@@ -636,7 +636,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -694,7 +694,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -708,7 +708,7 @@ features:
     definition: Whether the offer is argued with figures, with feelings, or both.
     type: categorical
     values: [rational, emotional, mixed]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: core
@@ -722,7 +722,7 @@ features:
       is a feature; "your money works while you sleep" is a benefit.
     type: categorical
     values: [feature, advantage, benefit]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: core
@@ -740,7 +740,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -937,17 +937,14 @@ features:
     dimension: colours_design
     definition: Where the brand accent actually appears.
     type: list[string]
-    # `none` is a SCORED zero, same as in persuasion_levers: the judge looked
-    # and the brand accent appears nowhere. A blank cell would mean the page was
-    # not judged, which is a different statement. Pure addition.
-    values: [text, icons, imagery, background, buttons, none]
+    values: [text, icons, imagery, background, buttons]
     extraction: rubric
     source: screenshot
     comparability: cross_language
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -959,7 +956,7 @@ features:
     notes: >
       Directly tests the deck's distinction - Fortis uses green "in text and icons,
       not in pictures", Belfius uses red "in text and pictures".
-      sieg 15/09: this is a perceptual judgement call, independent from the
+      this is a perceptual judgement call, independent from the
       automatic brand_colour_share (strict pixel-distance match on the hero
       image only). The two are expected to disagree sometimes - e.g. a human
       says "yes, accent in imagery" for a subtle tint that brand_colour_share's
@@ -1007,7 +1004,7 @@ features:
     nullable: true
     notes: >
       Viewport must be identical for every capture or this feature is meaningless.
-      steph 16/09: widened to nullable. A manually saved capture (collection_method
+      widened to nullable. A manually saved capture (collection_method
       = manual_capture) carries a VIEWPORT screenshot, not a full-page one, so the
       page height genuinely cannot be measured from it - Siegried's saves are
       ~1,000px tall for pages we measure live at 12,000px. Deriving a height from
@@ -1049,7 +1046,7 @@ features:
     required: true
     nullable: false
 
-  # sieg 15/09: FIXED - was boolean (beside vs not), which forced a real 3rd
+  # was boolean (beside vs not), which forced a real 3rd
   # pattern into a false it doesn't belong in: text written directly ON TOP of
   # a full-bleed image (N26's hero, confirmed from a real screenshot) is
   # neither "beside" nor "stacked", and conflating it with "stacked" would
@@ -1069,7 +1066,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1079,7 +1076,7 @@ features:
     notes: >
       The single observation the deck repeats for every bank. ING is called out as
       the one where "text and picture not anymore next to each other".
-      sieg 15/09: no "no_image" value on purpose - a page with no image at all
+      no "no_image" value on purpose - a page with no image at all
       leaves this field null (nullable: true), it is not forced into one of the
       three categories above.
 
@@ -1129,7 +1126,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1138,11 +1135,11 @@ features:
       card_grid: Content is organised as a grid of self-contained cards or tiles.
       long_form: Continuous scrolling sections with no strong grid or card structure.
     notes: >
-      sieg 15/09: real pages often mix patterns (e.g. a hero_stacked header over
+      real pages often mix patterns (e.g. a hero_stacked header over
       a card_grid body) - score the pattern of the FIRST SCREEN (above the
       fold), not the page as a whole, so raters have one consistent rule.
 
-  # sieg 15/09: gap flagged in the same discussion as first_time_investor_targeting.
+  # gap flagged in the same discussion as first_time_investor_targeting.
   # HONEST LIMITATION: every capture uses one fixed 1440x900 viewport (see
   # page_height_px above) - this project never renders a page at a mobile
   # viewport, so this cannot be an automatic responsive-layout measurement. It
@@ -1159,7 +1156,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1177,7 +1174,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1194,7 +1191,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1211,7 +1208,7 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1228,10 +1225,10 @@ features:
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
-    # sieg 15/09: clarified after the Belfius pension case (2 CTAs: "not yet
+    # clarified after the Belfius pension case (2 CTAs: "not yet
     # retired" vs "already retired") - multiple CTAs are still true when they
     # are clearly segmented by audience, so each visitor sees exactly one
     # obvious path. false is reserved for CTAs that genuinely compete for the
@@ -1260,17 +1257,14 @@ features:
     dimension: marketing_principles
     definition: Which of Cialdini's six persuasion principles are used on the page.
     type: list[string]
-    # `none` is a SCORED zero, not a blank. A blank cell means the page was not
-    # judged and drops the whole bank from persuasion_lever_count; `none` means
-    # the judge looked and found no lever, which must count as 0. Pure addition.
-    values: [reciprocity, commitment, social_proof, authority, liking, scarcity, none]
+    values: [reciprocity, commitment, social_proof, authority, liking, scarcity]
     extraction: rubric
     source: screenshot
     comparability: cross_language
     tier: core
     required: true
     nullable: true
-    # sieg 15/09: reviewed live against real KBC/Belfius/N26/Revolut/ING pages
+    # reviewed live against real KBC/Belfius/N26/Revolut/ING pages
     # (account, savings, pension, investment, mortgage, insurance, card) - refined
     # where real examples exposed a gap (see git history for the reasoning).
     rubric:
@@ -1294,7 +1288,7 @@ features:
     required: true
     nullable: true
 
-  # --- Banking-domain signals (Siegried's addendum, sieg 14/09) --------------
+  # --- Banking-domain signals --------------
   # Not part of the original PRD section 11 dimensions - these come from retail-banking experience, added on top, nothing above removed.
   # Full rationale for each is in docs/ing_requirements.docx section 11 bis
   # and docs/ing_approach_and_project_plan.docx section 4.3 bis.
@@ -1304,27 +1298,27 @@ features:
     definition: Whether the page addresses an individual, a professional/self-employed activity, or both.
     type: categorical
     values: [retail, professional, mixed]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: core
     required: true
     nullable: true
-    notes: sieg 14/09 - retail vs pro is a different axis than traditional vs challenger; most banks run both but frame differently.
+    notes: retail vs pro is a different axis than traditional vs challenger; most banks run both but frame differently.
 
   - name: is_bundled_offer
     dimension: banking_domain
     definition: Whether the page pushes a bundle (account + card + insurance + investment) in the same funnel, rather than one isolated product.
     type: boolean
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - the bancassurance model (bundled) vs single-product neobank is a business-model signal, not a tone or design choice.
+    notes: the bancassurance model (bundled) vs single-product neobank is a business-model signal, not a tone or design choice.
 
-  # sieg 15/09: is_bundled_offer above is 0/1 on "is a bundle pushed" - it cannot
+  # is_bundled_offer above is 0/1 on "is a bundle pushed" - it cannot
   # tell KBC/BNP Paribas Fortis's in-house bancassurance (own product, dedicated
   # advisor, full regulatory disclosure load) apart from Revolut/N26's travel or
   # purchase-protection insurance (third-party partner, digital add-on, no
@@ -1339,14 +1333,14 @@ features:
     definition: How a cross-sold product (insurance, investment) is delivered when one is offered - an in-house product with a dedicated advisor (bancassurance), a digital add-on distributed through a third-party partner with no advisor, or not applicable (nothing cross-sold on this page).
     type: categorical
     values: [internal_advisor_led, partner_addon_digital, not_applicable]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
 
-  # sieg 19/09: new feature, additive only (freeze rule) - fills a real gap
+  # new feature, additive only (freeze rule) - fills a real gap
   # flagged in the "AI Marketing Intelligence Platform" brief discussion.
   # Reuses llm_extractor.py's existing single structured call (no new LLM
   # call, no new provider). Fixed 8-value taxonomy so the field stays
@@ -1364,7 +1358,7 @@ features:
     required: false
     nullable: true
 
-  # sieg 19/09: second additive feature from the same brief discussion as
+  # second additive feature from the same brief discussion as
   # target_personas above - fills the "cross-sell score/graph" gap. Reuses the
   # SAME 7-value product_family taxonomy already frozen in this dictionary
   # (never inventing a parallel one) so "possible products" has one definition
@@ -1386,7 +1380,7 @@ features:
     required: false
     nullable: true
 
-  # sieg 19/09: third additive feature, same session - Siegried noticed
+  # third additive feature, same session - Siegried noticed
   # Revolut/bunq frame their tiers as a phone/streaming-style subscription
   # ("abonnement") rather than a traditional bancassurance "pack" - verified
   # in the raw page text (Revolut 16 mentions, bunq 9, every traditional bank
@@ -1407,14 +1401,14 @@ features:
     definition: Whether the headline rate is the regulated base rate, a promotional bonus, a capped/tiered rate presented as the full rate, or no rate is shown.
     type: categorical
     values: [base_rate, promo_bonus, capped_tiered, not_shown]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: within_capture_window
     tier: core
     required: true
     nullable: true
     notes: >
-      sieg 14/09 - complements rate_shown/rate_value_pct/rate_prominence (which measure IF and WHERE a
+      complements rate_shown/rate_value_pct/rate_prominence (which measure IF and WHERE a
       rate appears) with WHAT KIND of rate it is. Belgian savings accounts are legally a base rate
       (>=0.50%) plus a fidelity/growth premium; a "capped_tiered" rate ("up to X%") applying only to a
       low ceiling or a short window is a known framing tactic.
@@ -1424,28 +1418,28 @@ features:
     definition: Whether the primary call to action is self-service online, booking an advisor/branch visit, or something else.
     type: categorical
     values: [self_service_online, book_advisor_or_branch, other]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: core
     required: true
     nullable: true
-    notes: sieg 14/09 - a distribution-model signal; a neobank structurally cannot offer book_advisor_or_branch.
+    notes: a distribution-model signal; a neobank structurally cannot offer book_advisor_or_branch.
 
   - name: switching_framing
     dimension: banking_domain
     definition: Whether the message reassures against switching away (retention) or actively encourages switching in (acquisition), if applicable at all.
     type: categorical
     values: [retention_reassurance, acquisition_encouragement, not_applicable]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - Belgium's bank-switching service makes this a concrete, mesurable framing choice, not a vague "tone".
+    notes: Belgium's bank-switching service makes this a concrete, mesurable framing choice, not a vague "tone".
 
-  # sieg 15/09: FIXED - "absent" used to be the only option for a page where no
+  # "absent" used to be the only option for a page where no
   # mandated disclosure applies at all, which reads as a compliance red flag
   # ("should be there, isn't") for what is actually a category error. TAEG/APR
   # is a CREDIT disclosure (mortgage only, in this project's product_family
@@ -1468,14 +1462,14 @@ features:
       expected but isn't shown.
     type: categorical
     values: [prominent, present_not_prominent, absent, not_applicable]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: core
     required: true
     nullable: true
     notes: >
-      sieg 14/09 - distinct from disclaimer_present/disclaimer_word_share (which measure raw presence and
+      distinct from disclaimer_present/disclaimer_word_share (which measure raw presence and
       word share automatically): this judges whether disclosures are placed where a reader will actually
       see them, which is what a compliance reviewer cares about.
 
@@ -1483,14 +1477,14 @@ features:
     dimension: banking_domain
     definition: Whether "free" is the headline claim while conditions (minimum balance, usage requirement) sit in small print.
     type: boolean
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
     notes: >
-      sieg 15/09 - not the deck's NPS-irritator finding (p.11's irritator is
+      not the deck's NPS-irritator finding (p.11's irritator is
       ad volume/frequency across channels, not hidden conditions behind a
       "free" claim, and isn't measurable from one page anyway). Stands on
       its own as a common banking dark pattern.
@@ -1500,14 +1494,14 @@ features:
     definition: Whether a sustainability claim carries a verifiable reference or figure, is an adjective only, or is absent.
     type: categorical
     values: [no_claim, vague_adjective_only, backed_by_reference_or_figure]
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
     notes: >
-      sieg 14/09 - recalibrated from an earlier idea of reading the SFDR Article 6/8/9 classification
+      recalibrated from an earlier idea of reading the SFDR Article 6/8/9 classification
       directly off the page; that classification lives in the KID/prospectus, rarely on a marketing page,
       so this coarser version is the realistic one.
 
@@ -1515,13 +1509,13 @@ features:
     dimension: banking_domain
     definition: Whether a concrete financial benefit (e.g. a rate discount) is explicitly tied to a green/energy-performance criterion, vs a generic sustainability claim.
     type: boolean
-    extraction: model_assisted  # sieg 15/09: was rubric - text-based judgement, moved into llm_extractor.py's structured call
+    extraction: model_assisted  # was rubric - text-based judgement, moved into llm_extractor.py's structured call
     source: html_text
     comparability: cross_language
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - a green mortgage with an actual rate discount is a stronger signal than "we are sustainable".
+    notes: a green mortgage with an actual rate discount is a stronger signal than "we are sustainable".
 
   - name: mentions_loyalty_or_referral
     dimension: banking_domain
@@ -1534,7 +1528,7 @@ features:
     required: false
     nullable: true
     notes: >
-      sieg 14/09 - a public-page proxy for CRM/retention strategy. True CRM/personalisation data sits
+      a public-page proxy for CRM/retention strategy. True CRM/personalisation data sits
       behind authentication and is out of reach entirely (DR-01/DR-09) - this is not a substitute for it,
       just the closest observable signal on a public page.
 
@@ -1570,7 +1564,7 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - e.g. Belfius is 100%% Belgian-State-owned, a safety argument unique to that bank, tracing to the 2011 Dexia/Belfius restructuring.
+    notes: e.g. Belfius is 100%% Belgian-State-owned, a safety argument unique to that bank, tracing to the 2011 Dexia/Belfius restructuring.
 
   - name: youth_student_targeting
     dimension: banking_domain
@@ -1616,7 +1610,7 @@ features:
     required: false
     nullable: true
 
-  # sieg 15/09: agreed candidate from the "what am I missing" discussion - a
+  # agreed candidate from the "what am I missing" discussion - a
   # classic challenger acquisition lever the deck itself doesn't name but the
   # market clearly plays on. The other two candidates from that discussion
   # (PSD2 account aggregation, remote-advisor video/chat) were rejected: the
@@ -1633,9 +1627,9 @@ features:
     tier: extended
     required: false
     nullable: true
-    notes: sieg 14/09 - structurally unavailable to a neobank; a hard marker of business model.
+    notes: structurally unavailable to a neobank; a hard marker of business model.
 
-  # sieg 15/09: gap flagged while preparing tonight's Day 2 freeze - none of
+  # gap flagged while preparing tonight's Day 2 freeze - none of
   # the existing banking-domain features distinguish a page aimed at someone new to
   # investing (beginner framing, low minimum, educational tone) from one aimed
   # at an experienced investor, even though product_family already has
@@ -1652,7 +1646,7 @@ features:
     required: false
     nullable: true
 
-  # sieg 15/09: symmetric gap at the other end of the life cycle from
+  # symmetric gap at the other end of the life cycle from
   # youth_student_targeting above - same lifetime-value acquisition logic,
   # pension/succession/wealth-transfer end instead of the entry end.
   - name: senior_preretirement_targeting

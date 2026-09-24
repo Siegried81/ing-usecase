@@ -101,11 +101,16 @@ does not care which rubric it runs.
 
 ---
 
-## 7. Four of the five observations in your kickoff deck did not survive measurement. How do you want that handled?
+## 7. Four of the five observations in your kickoff deck did not survive measurement, and the fifth cannot be tested at all. How do you want that handled?
 
 **Why we are asking.** The deck stated that Belfius is verbose, KBC is concise,
-ING is the only traditional bank using animation. Measured, most of these do not
-hold — KBC is the longest, and KBC and Belfius both animate.
+ING is the only traditional bank using animation. Measured, the first two do
+not hold — KBC is the longest page in the set. The animation claim is not in
+that "not supported" bucket: the only rule we had for it detects a CSS
+`animation` declaration, not real page motion, and across the 18 compared
+pages exactly one has genuine motion (Revolut, via a `<video>`). We withdrew
+the feature rather than report a number under a name it does not match, so
+that observation is untestable with this dataset, not disproved.
 
 We think this is the most valuable thing the project produced: it is exactly what
 a measurement framework is for. But it corrects your own briefing, and we would

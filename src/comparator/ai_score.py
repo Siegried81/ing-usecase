@@ -19,7 +19,11 @@ Formulas (all means are of already-collected page-level features for one bank):
   * cross_sell      - is_bundled_offer
   * personalisation - how many of the 8 target_personas values this bank's pages use at all,
                        out of the taxonomy size
-  * innovation      - has_animation, dominant_image_type == render_3d
+  * innovation      - NOT MEASURABLE, returns None. Both inputs failed: has_animation
+                       was withdrawn (analysis.CAPTURE_INVALID_FEATURES - the rule reports
+                       "this stylesheet declares an animation", not "this page moves"), and
+                       dominant_image_type == render_3d occurs on 1 page out of 51, so an
+                       axis built on it alone would read 0 for thirteen banks of fourteen.
   * simplicity      - readability_band mapped to a 0-10 scale (very_easy=10 ... very_hard=0)
 
 None (not 0) is returned whenever a bank has no data at all for an axis - a
@@ -114,10 +118,13 @@ def score_personalisation(rows: pd.DataFrame, taxonomy_size: int = PERSONA_TAXON
 
 
 def score_innovation(rows: pd.DataFrame) -> float | None:
-    return _mean_of_bools(rows, [
-        ("has_animation", True),
-        ("dominant_image_type", "render_3d"),
-    ])
+    """Withdrawn: neither input survives scrutiny, so no number is returned.
+
+    Kept as an axis rather than deleted so the radar shows the gap instead of
+    quietly dropping to five axes - an absent measurement is a finding, and the
+    module already returns None rather than a fabricated 0 elsewhere.
+    """
+    return None
 
 
 def score_simplicity(rows: pd.DataFrame) -> float | None:

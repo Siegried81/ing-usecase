@@ -12,7 +12,7 @@ columns in the dataset come from one human sheet, by one named person.
 | --- | --- | --- | --- |
 | `deepseek_flash.csv` | the project's pinned model, text only | **1 of 13** (`formality_score`) | 6% (n=51) |
 | `claude.csv` | a vision-capable model | 13 of 13 | 41% (n=608) |
-| `vision_proposed.csv` | a vision model, as proposals | 13 of 13 | — |
+| `vision_proposed.csv` | a vision model, as proposals | 13 of 13 | 49% (n=591) |
 
 Why deepseek filled only one: 12 of the 13 judged features are declared in
 `config/feature_dictionary.yaml` with `source: screenshot`. A text-only model

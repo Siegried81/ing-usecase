@@ -46,7 +46,6 @@
         "image_count": 11.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.0,
         "image_area_share": 0.023
       },
       "layout": {
@@ -54,7 +53,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3244.0,
-        "cta_count": 0.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -127,7 +125,6 @@
         "image_count": 18.0,
         "dominant_image_type": "illustration",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.149
       },
       "layout": {
@@ -135,7 +132,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11110.0,
-        "cta_count": 5.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -206,7 +202,6 @@
         "image_count": 16.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.0,
         "image_area_share": 0.109
       },
       "layout": {
@@ -214,7 +209,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 7078.0,
-        "cta_count": 10.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -286,7 +280,6 @@
         "image_count": 17.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.0,
         "image_area_share": 0.104
       },
       "layout": {
@@ -294,7 +287,6 @@
         "hero_image": 1.0,
         "text_image_layout": "stacked",
         "page_height_px": 6387.0,
-        "cta_count": 12.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -314,9 +306,10 @@
       "marketing_principles": {
         "aida_coverage": 1.0,
         "persuasion_levers": [
-          "commitment"
+          "commitment",
+          "liking"
         ],
-        "lever_count": 1.0
+        "lever_count": 2.0
       },
       "personas": [
         {
@@ -368,7 +361,6 @@
         "image_count": 13.0,
         "dominant_image_type": "illustration",
         "people_present": 0.0,
-        "animated": 1.0,
         "image_area_share": 0.167
       },
       "layout": {
@@ -376,7 +368,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 15135.0,
-        "cta_count": 20.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -453,7 +444,6 @@
         "image_count": 12.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.046
       },
       "layout": {
@@ -461,7 +451,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 4447.0,
-        "cta_count": 3.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -522,7 +511,7 @@
         "brand_colour_share": 0.006,
         "accent_colour_count": 4.0,
         "accent_locations": [
-          "none"
+          "icons"
         ],
         "background_luminance": 0.441
       },
@@ -530,7 +519,6 @@
         "image_count": 72.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.002
       },
       "layout": {
@@ -538,7 +526,6 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 2945.0,
-        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -609,7 +596,6 @@
         "image_count": 15.0,
         "dominant_image_type": "illustration",
         "people_present": 1.0,
-        "animated": 0.0,
         "image_area_share": 0.322
       },
       "layout": {
@@ -617,7 +603,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3881.0,
-        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -637,9 +622,9 @@
       "marketing_principles": {
         "aida_coverage": 4.0,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "lever_count": 0.0
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -689,7 +674,6 @@
         "image_count": 33.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.3333333333333333,
         "image_area_share": 0.12366666666666666
       },
       "layout": {
@@ -697,7 +681,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11148.666666666666,
-        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -746,7 +729,7 @@
         ],
         [
           "persuasion_lever_count",
-          2.393352291499191
+          2.528206985149345
         ],
         [
           "fast_digital_onboarding_claim",
@@ -781,7 +764,6 @@
         "image_count": 8.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.042333333333333334
       },
       "layout": {
@@ -789,7 +771,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3775.3333333333335,
-        "cta_count": 2.3333333333333335,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -863,7 +844,6 @@
         "image_count": 21.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.26
       },
       "layout": {
@@ -871,7 +851,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 6440.0,
-        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -945,7 +924,6 @@
         "image_count": 29.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 0.0,
         "image_area_share": 0.587
       },
       "layout": {
@@ -953,7 +931,6 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 8005.0,
-        "cta_count": 5.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -1025,7 +1002,6 @@
         "image_count": 10.0,
         "dominant_image_type": "render_3d",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.243
       },
       "layout": {
@@ -1033,7 +1009,6 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 6615.0,
-        "cta_count": 3.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -1118,7 +1093,6 @@
         "image_count": 5.0,
         "dominant_image_type": "photo",
         "people_present": 1.0,
-        "animated": 1.0,
         "image_area_share": 0.114
       },
       "layout": {
@@ -1126,7 +1100,6 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 4290.0,
-        "cta_count": 0.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -1146,9 +1119,9 @@
       "marketing_principles": {
         "aida_coverage": 3.0,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "lever_count": 0.0
+        "lever_count": 1.0
       },
       "personas": [
         {

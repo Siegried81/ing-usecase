@@ -128,7 +128,7 @@ Allowed values:
 | **long_form** | Continuous scrolling sections with no strong grid or card structure. |
 | **split_columns** | The page is organised into two or more side-by-side columns throughout. |
 
-*Real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.*
+*real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.*
 
 ## `mobile_first_design_signal`
 

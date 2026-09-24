@@ -502,9 +502,9 @@ def test_a_normal_gap_stays_reportable(df, fd):
     assert out["reportable"].any(), "the ordinary case must still produce findings"
 
 
-# A feature whose stored capture is missing what it counts describes the capture,
-# not the bank, so it must leave the comparison AND be reported leaving it - a
-# silent drop is how a withdrawn number creeps back into a chart.
+# A feature whose rule does not reproduce what it claims to measure describes
+# the rule, not the bank, so it must leave the comparison AND be reported
+# leaving it - a silent drop is how a withdrawn number creeps back into a chart.
 def test_capture_invalid_features_are_excluded_from_the_comparison(df, fd):
     from comparator.analysis import CAPTURE_INVALID_FEATURES, comparable_features
 
@@ -525,4 +525,4 @@ def test_capture_invalid_features_are_reported_not_silently_dropped(df, fd):
     present = sorted(n for n in CAPTURE_INVALID_FEATURES if n in fd and n in df.columns)
     assert accounting["capture_invalid"] == present
     if present:
-        assert "withdrawn, capture not the page" in render_accounting(accounting)
+        assert "withdrawn, measurement not the page" in render_accounting(accounting)
