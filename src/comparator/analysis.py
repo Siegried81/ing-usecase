@@ -55,7 +55,15 @@ FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "r
 # 13, Beobank 10), which is what makes the gap look real. Withdrawn until the
 # pack pages are re-captured with a scroll/interaction step. See
 # docs/decisions.md, 23/09.
-CAPTURE_INVALID_FEATURES = {"cta_count"}
+# cta_contrast_ratio: same root cause. collection/render.py finds the element
+# to measure by walking `a, button` and taking the FIRST label containing one of
+# its own keywords, then breaking - so it reports the first keyword match in DOM
+# order, typically the navigation, not the primary CTA. Its keyword list is also
+# a separate, older copy than collection/scraper.py's: the imperative forms added
+# on 22-23/09 (ouvrez, demarrer, devenir client, telechargez) never reached it.
+# All three ING pack pages report exactly 7.01, which is the tell. Fixing it means
+# re-rendering every page, so the feature is withdrawn until then.
+CAPTURE_INVALID_FEATURES = {"cta_count", "cta_contrast_ratio"}
 
 
 def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:

@@ -1365,9 +1365,14 @@ features:
   # everywhere. See comparator/cross_sell.py for the score/matrix built from it.
   - name: cross_sold_products
     dimension: banking_domain
-    definition: Other product families this page cross-sells or cross-references alongside its own product_family.
+    definition: >
+      Other products this page cross-sells or cross-references alongside its own
+      product_family. Not limited to banking families: a page that pitches insurance,
+      a credit card or a partner perk is cross-selling, and collapsing those into
+      `other` counts a page naming ten add-ons the same as one naming a single unknown.
     type: list[string]
-    values: [term_account, current_account_pack, savings_account, mortgage, investment, pension, other]
+    values: [term_account, current_account_pack, savings_account, mortgage, investment,
+             pension, insurance, credit_card, partner_perk, other]
     extraction: model_assisted
     source: html_text
     comparability: cross_language

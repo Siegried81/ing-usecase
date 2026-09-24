@@ -124,9 +124,13 @@ Return ONLY a JSON object with exactly these keys:
   "expat", "investor", "retiree", "digital_nomad", "mass_market" - which customer personas this
   page's copy/imagery explicitly addresses. Empty array if none clearly targeted.
 - "cross_sold_products": array of zero or more of "term_account", "current_account_pack",
-  "savings_account", "mortgage", "investment", "pension", "other" - OTHER product families
-  (besides this page's own) that are cross-sold or cross-referenced on this page (e.g. a mortgage
-  page that also pitches home insurance and a current account). Never include this page's own
+  "savings_account", "mortgage", "investment", "pension", "insurance", "credit_card",
+  "partner_perk", "other" - OTHER products (besides this page's own) that are cross-sold or
+  cross-referenced on this page. Use "insurance" for any insurance product (travel, cyber,
+  purchase, delivery, home, car, life...), "credit_card" for a Visa/Mastercard offer, and
+  "partner_perk" for a non-banking benefit bundled in (a streaming or delivery subscription,
+  a cashback or partner-discount programme). Use "other" only for something none of these
+  cover. List each distinct product once. Never include this page's own
   product family. Empty array if nothing else is cross-sold.
 - "subscription_style_framing": boolean, are the account tiers framed as a subscription/plan
   (like a phone or streaming service, e.g. "abonnement", "plan") rather than a traditional

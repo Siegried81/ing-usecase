@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T05:30:36+00:00",
+  "generated_at": "2026-09-24T07:25:14+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -1526,7 +1526,7 @@
       "tier": "extended",
       "required": false,
       "nullable": true,
-      "definition": "Other product families this page cross-sells or cross-references alongside its own product_family.",
+      "definition": "Other products this page cross-sells or cross-references alongside its own product_family. Not limited to banking families: a page that pitches insurance, a credit card or a partner perk is cross-selling, and collapsing those into `other` counts a page naming ten add-ons the same as one naming a single unknown.",
       "values": [
         "term_account",
         "current_account_pack",
@@ -1534,6 +1534,9 @@
         "mortgage",
         "investment",
         "pension",
+        "insurance",
+        "credit_card",
+        "partner_perk",
         "other"
       ],
       "range": null,
@@ -2032,7 +2035,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 3841,
         "section_count": 1,
-        "cta_count": 3,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 266.0,
@@ -2055,7 +2058,13 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "insurance",
+          "investment",
+          "mortgage",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2152,7 +2161,7 @@
         "cta_contrast_ratio": 7.01,
         "page_height_px": 6842,
         "section_count": null,
-        "cta_count": 1,
+        "cta_count": 0,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 74.29,
@@ -2179,7 +2188,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "credit_card",
+          "insurance",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -2277,7 +2288,7 @@
         "cta_contrast_ratio": null,
         "page_height_px": 3772,
         "section_count": 1,
-        "cta_count": 2,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 330.5,
@@ -2301,7 +2312,11 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "insurance",
+          "partner_perk"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2422,8 +2437,10 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "insurance",
+          "investment",
+          "other",
+          "savings_account"
         ],
         "subscription_style_framing": true,
         "rate_framing": "not_shown",
@@ -2521,7 +2538,7 @@
         "cta_contrast_ratio": 6.16,
         "page_height_px": 2179,
         "section_count": 28,
-        "cta_count": 2,
+        "cta_count": 0,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 123.09,
@@ -2666,9 +2683,7 @@
           "family",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "term_account"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2764,7 +2779,7 @@
         "cta_contrast_ratio": 12.63,
         "page_height_px": 11413,
         "section_count": 21,
-        "cta_count": 6,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 158.6,
@@ -2886,7 +2901,7 @@
         "cta_contrast_ratio": 12.63,
         "page_height_px": 6387,
         "section_count": 18,
-        "cta_count": 13,
+        "cta_count": 12,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 129.35,
@@ -2910,7 +2925,9 @@
           "mass_market",
           "student"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -3034,8 +3051,7 @@
           "expat"
         ],
         "cross_sold_products": [
-          "investment",
-          "other"
+          "investment"
         ],
         "subscription_style_framing": true,
         "rate_framing": "not_shown",
@@ -3159,7 +3175,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "credit_card",
+          "insurance",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -3257,7 +3275,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 3244,
         "section_count": 3,
-        "cta_count": 2,
+        "cta_count": 0,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 166.45,
@@ -3371,7 +3389,7 @@
         "cta_contrast_ratio": 11.03,
         "page_height_px": 2945,
         "section_count": 154,
-        "cta_count": 2,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 32.15,
@@ -3392,7 +3410,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "book_advisor_or_branch",
@@ -3488,7 +3508,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 15135,
         "section_count": 33,
-        "cta_count": 22,
+        "cta_count": 21,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 135.62,
@@ -3515,8 +3535,9 @@
           "expat"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "base_rate",
@@ -3616,7 +3637,7 @@
         "cta_contrast_ratio": 6.16,
         "page_height_px": 11110,
         "section_count": 20,
-        "cta_count": 6,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 100.67,
@@ -3640,7 +3661,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -3855,7 +3876,7 @@
         "cta_contrast_ratio": 3.04,
         "page_height_px": 3881,
         "section_count": 6,
-        "cta_count": 3,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 110.73,
@@ -3876,7 +3897,12 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "investment",
+          "partner_perk",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -3973,7 +3999,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 4447,
         "section_count": 1,
-        "cta_count": 5,
+        "cta_count": 4,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 217.75,
@@ -4095,7 +4121,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 6440,
         "section_count": 10,
-        "cta_count": 3,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 56.81,
@@ -4120,8 +4146,10 @@
           "investor"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "insurance",
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -4219,7 +4247,7 @@
         "cta_contrast_ratio": 8.32,
         "page_height_px": 7078,
         "section_count": 18,
-        "cta_count": 10,
+        "cta_count": 9,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 206.88,
@@ -4340,7 +4368,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 4811,
         "section_count": null,
-        "cta_count": 4,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 155.5,
@@ -4363,7 +4391,9 @@
         "target_personas": [
           "investor"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -4460,7 +4490,7 @@
         "cta_contrast_ratio": 4.94,
         "page_height_px": 5824,
         "section_count": null,
-        "cta_count": 5,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 189.25,
@@ -4580,7 +4610,7 @@
         "cta_contrast_ratio": 6.16,
         "page_height_px": 3649,
         "section_count": 17,
-        "cta_count": 5,
+        "cta_count": 4,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 68.0,
@@ -4605,8 +4635,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "investment",
-          "pension"
+          "investment"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -4726,7 +4755,9 @@
         "target_personas": [
           "investor"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -4823,7 +4854,7 @@
         "cta_contrast_ratio": 8.32,
         "page_height_px": 7755,
         "section_count": 24,
-        "cta_count": 4,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 296.2,
@@ -5207,7 +5238,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "investment"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5304,7 +5335,7 @@
         "cta_contrast_ratio": 12.63,
         "page_height_px": 3936,
         "section_count": 11,
-        "cta_count": 4,
+        "cta_count": 3,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 174.89,
@@ -5326,7 +5357,10 @@
           "investor",
           "retiree"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance",
+          "pension"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5446,8 +5480,9 @@
           "entrepreneur_self_employed"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "pension"
+          "insurance",
+          "pension",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5545,7 +5580,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 4143,
         "section_count": 1,
-        "cta_count": 9,
+        "cta_count": 8,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 242.9,
@@ -5570,8 +5605,11 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "current_account_pack",
+          "investment",
+          "mortgage",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5695,9 +5733,12 @@
           "mass_market"
         ],
         "cross_sold_products": [
+          "credit_card",
+          "current_account_pack",
+          "insurance",
           "investment",
-          "pension",
-          "other"
+          "mortgage",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5793,7 +5834,7 @@
         "cta_contrast_ratio": 11.03,
         "page_height_px": 4156,
         "section_count": 166,
-        "cta_count": 9,
+        "cta_count": 8,
         "cta_above_fold": false,
         "text_image_layout": "overlaid",
         "text_to_image_ratio": 46.45,
@@ -5814,7 +5855,10 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5932,10 +5976,7 @@
           "retiree",
           "family"
         ],
-        "cross_sold_products": [
-          "investment",
-          "other"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "book_advisor_or_branch",
@@ -6051,7 +6092,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6146,7 +6189,7 @@
         "cta_contrast_ratio": 3.04,
         "page_height_px": 1688,
         "section_count": 2,
-        "cta_count": 2,
+        "cta_count": 0,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 660.5,
@@ -6170,7 +6213,13 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "current_account_pack",
+          "mortgage",
+          "other",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6266,7 +6315,7 @@
         "cta_contrast_ratio": 3.04,
         "page_height_px": 5361,
         "section_count": 3,
-        "cta_count": 2,
+        "cta_count": 0,
         "cta_above_fold": false,
         "text_image_layout": "stacked",
         "text_to_image_ratio": 1257.5,
@@ -6407,9 +6456,7 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "pension"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6652,8 +6699,8 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -6775,8 +6822,9 @@
           "family"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "pension"
+          "insurance",
+          "pension",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -6874,7 +6922,7 @@
         "cta_contrast_ratio": null,
         "page_height_px": 3711,
         "section_count": 1,
-        "cta_count": 6,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 341.8,
@@ -6899,7 +6947,9 @@
           "family",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6997,7 +7047,7 @@
         "cta_contrast_ratio": null,
         "page_height_px": 5229,
         "section_count": null,
-        "cta_count": 3,
+        "cta_count": 2,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 114.2,
@@ -7021,7 +7071,11 @@
           "retiree",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance",
+          "investment",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "other",
@@ -7144,11 +7198,11 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "current_account_pack",
-          "mortgage",
+          "credit_card",
+          "insurance",
           "investment",
-          "pension",
-          "other"
+          "mortgage",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -7248,7 +7302,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 4506,
         "section_count": 8,
-        "cta_count": 6,
+        "cta_count": 5,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 79.58,
@@ -7272,7 +7326,9 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -7370,7 +7426,7 @@
         "cta_contrast_ratio": 1.0,
         "page_height_px": 6100,
         "section_count": 8,
-        "cta_count": 5,
+        "cta_count": 4,
         "cta_above_fold": false,
         "text_image_layout": null,
         "text_to_image_ratio": 912.0,
@@ -7510,8 +7566,9 @@
         ],
         "cross_sold_products": [
           "current_account_pack",
-          "savings_account",
-          "other"
+          "insurance",
+          "partner_perk",
+          "savings_account"
         ],
         "subscription_style_framing": true,
         "rate_framing": "base_rate",
@@ -7631,8 +7688,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "current_account_pack",
-          "investment"
+          "credit_card",
+          "investment",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "promo_bonus",
@@ -7995,7 +8053,7 @@
           "expat"
         ],
         "cross_sold_products": [
-          "other"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -8093,7 +8151,7 @@
         "cta_contrast_ratio": 12.24,
         "page_height_px": 3713,
         "section_count": 1,
-        "cta_count": 2,
+        "cta_count": 1,
         "cta_above_fold": false,
         "text_image_layout": "beside",
         "text_to_image_ratio": 306.75,
@@ -8117,7 +8175,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",

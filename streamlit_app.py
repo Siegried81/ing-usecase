@@ -316,26 +316,28 @@ def page_rubric(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
     st.title("📝 Rubric scoring")
 
     st.info(
-        "13 features scored by 2 independent human raters. "
-        "Run `scripts/rubric_sheet.py emit` to create sheets, "
-        "`merge` to fold them into the dataset, `agreement` for inter-rater agreement."
+        "13 features are judgements rather than measurements. They come from ONE "
+        "judged sheet by one named person - `scripts/rubric_sheet.py emit` creates "
+        "it, `merge` folds it into the dataset."
     )
 
-    raters = ["dan", "siegried", "stephane", "model"]
-    for rater in raters:
-        df = load_rubric_sheet(f"{rater}_scores.csv")
-        label = f"{rater}" + (" (model)" if rater == "model" else "")
-        with st.expander(f"{label} — {df.shape[0] if df is not None else 0} pages", expanded=False):
-            if df is None:
-                st.warning(f"No sheet for {rater}")
-                continue
-            st.dataframe(df, use_container_width=True, height=300)
+    df_sheet = load_rubric_sheet("siegried_scores.csv")
+    with st.expander(f"siegried — {df_sheet.shape[0] if df_sheet is not None else 0} pages", expanded=False):
+        if df_sheet is None:
+            st.warning("No judged sheet found")
+        else:
+            st.dataframe(df_sheet, use_container_width=True, height=300)
 
     st.divider()
-    st.subheader("Inter-rater agreement")
+    st.subheader("Why there is no agreement figure")
     st.caption(
-        "Run `scripts/rubric_sheet.py agreement --sheets data/rubric/*_scores.csv` "
-        "for computed Cohen's kappa and percentage agreement."
+        "One judged sheet means no second rater, so there is no percentage "
+        "agreement and no chance-corrected kappa to report - and single-judge bias "
+        "is therefore present and un-measured. It is named as a limitation rather "
+        "than left for a reader to notice. Model-written sheets are kept in "
+        "`data/rubric/model_reference/` as reference only: the pinned text-only "
+        "model can legitimately judge 1 of the 13 features, because the other 12 "
+        "are declared in the dictionary as judged from the screenshot."
     )
 
     st.subheader("Scoring guide — features to score")

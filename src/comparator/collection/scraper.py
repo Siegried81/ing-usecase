@@ -217,6 +217,17 @@ def _count_urgency_markers(text: str, language: str) -> int:
 # Navigation and footer chrome is excluded from cta_count.
 _CTA_CHROME_TAGS = {"nav", "footer"}
 _CTA_CHROME_ROLES = {"navigation", "contentinfo"}
+# Tag and role alone miss any site that builds its menu out of plain divs.
+# Measured on the captured set: hellobank has no <nav>, no role="navigation"
+# and no <footer> at all - its menu is <div class="navbar-container"> around
+# <ul class="desktop-menu"> - and keytrade is the same. That is 2 of 14 banks
+# whose entire menu and footer were eligible to be counted as calls to action.
+# Matching on the class/id name as well is crude, but it is what the markup
+# offers, and the alternative is comparing a page body against a page body
+# plus a mega-menu.
+_CTA_CHROME_NAMES = re.compile(
+    r"\b(nav|navbar|navigation|menu|header|footer|breadcrumb|megamenu)\b", re.I
+)
 
 
 def _in_chrome(el) -> bool:
@@ -235,7 +246,12 @@ def _in_chrome(el) -> bool:
         if name in _CTA_CHROME_TAGS:
             return True
         get = getattr(parent, "get", None)
-        if get is not None and get("role") in _CTA_CHROME_ROLES:
+        if get is None:
+            continue
+        if get("role") in _CTA_CHROME_ROLES:
+            return True
+        tokens = " ".join(get("class") or []) + " " + (get("id") or "")
+        if tokens.strip() and _CTA_CHROME_NAMES.search(tokens):
             return True
     return False
 

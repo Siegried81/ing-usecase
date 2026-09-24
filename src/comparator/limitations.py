@@ -161,6 +161,40 @@ def assess(
 
     # Always said, never conditional: it is true of every run of this pipeline,
     # and it is the sentence a reader needs before they weigh a judged number.
+    # cross_sold_products can only name a product_family, and the taxonomy has
+    # six of them plus "other". Insurance, credit cards, subscription perks and
+    # cashback are not families, so every one of them collapses into the single
+    # "other" token and is counted once. That inverts the measure on exactly the
+    # pages that cross-sell hardest: ING's pack pages name 8, 13 and 14 distinct
+    # add-on products and score 1/6, while pages naming 3 or 4 score 2/6.
+    # Fixing it means adding values to a frozen dictionary, which is a team
+    # decision, so it is reported rather than quietly patched.
+    standing.append(
+        "**The cross-sell score counts product families, not products.** "
+        "`cross_sold_products` can only name one of six banking families plus "
+        "`other`, so insurance, credit cards, subscription perks and cashback all "
+        "collapse into a single `other` and are counted once. Measured on the "
+        "captured pages, ING's packs name 8 to 14 distinct add-ons and score 1/6, "
+        "while pages naming 3 or 4 score 2/6 — the ranking is inverted for any bank "
+        "whose cross-sell is mostly non-banking. Read the score as family coverage, "
+        "never as how hard a page cross-sells."
+    )
+
+    # background_luminance, and every colour feature with it, is read off ONE
+    # rendering of the page: headless Chrome, default light colour scheme, at a
+    # fixed viewport. A visitor whose browser or operating system forces dark
+    # mode can see a materially different page, and nothing here measures that.
+    # Worth saying plainly because "page brightness" sounds like a property of
+    # the bank and is partly a property of how we looked at it.
+    standing.append(
+        "**Page colour is measured on one rendering.** `background_luminance`, "
+        "`brand_colour_share` and the palette features come from a single capture in "
+        "headless Chrome with the default light colour scheme. A visitor using dark "
+        "mode, or a browser extension that forces it, may see a substantially darker "
+        "page than the one measured here — that difference is unmeasured, and any "
+        "brightness comparison should be read as a comparison of our captures."
+    )
+
     standing.append(
         "The judged features carry the opinion of a single person. No inter-rater "
         "reliability was measured — that is the chosen scope of this proof of concept, "

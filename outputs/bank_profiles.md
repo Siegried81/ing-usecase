@@ -22,7 +22,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,244 |
-| cta count | 2 |
+| cta count | 0 |
 | cta above fold | no |
 | word count | 1,831 |
 | readability band | very_hard |
@@ -61,7 +61,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,110 |
-| cta count | 6 |
+| cta count | 5 |
 | cta above fold | no |
 | word count | 1,812 |
 | readability band | hard |
@@ -100,7 +100,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 7,078 |
-| cta count | 10 |
+| cta count | 9 |
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
@@ -139,7 +139,7 @@
 | hero image | yes (all pages) |
 | text image layout | stacked |
 | page height px | 6,387 |
-| cta count | 13 |
+| cta count | 12 |
 | cta above fold | no |
 | word count | 2,199 |
 | readability band | hard |
@@ -178,7 +178,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 15,135 |
-| cta count | 22 |
+| cta count | 21 |
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
@@ -217,7 +217,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 4,447 |
-| cta count | 5 |
+| cta count | 4 |
 | cta above fold | no |
 | word count | 2,613 |
 | readability band | very_hard |
@@ -256,7 +256,7 @@
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 2,945 |
-| cta count | 2 |
+| cta count | 1 |
 | cta above fold | no |
 | word count | 2,315 |
 | readability band | hard |
@@ -295,7 +295,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,881 |
-| cta count | 3 |
+| cta count | 1 |
 | cta above fold | no |
 | word count | 1,661 |
 | readability band | hard |
@@ -312,7 +312,7 @@
 | lever count | - |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); animated asset count well below the market average (-1.3 SD).
+**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); has animation well below the market average (-1.3 SD).
 
 ### ing  (traditional)
 
@@ -334,7 +334,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,149 |
-| cta count | 1 |
+| cta count | 0.67 |
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
@@ -373,7 +373,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,775 |
-| cta count | 2.33 |
+| cta count | 1.33 |
 | cta above fold | no |
 | word count | - |
 | readability band | very_hard |
@@ -412,7 +412,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 6,440 |
-| cta count | 3 |
+| cta count | 2 |
 | cta above fold | no |
 | word count | 1,193 |
 | readability band | hard |
@@ -429,7 +429,7 @@
 | lever count | 1 |
 | personas | mass_market 100%, investor 100% |
 
-**Signature:** disclaimer present well below the market average (-1.9 SD); hidden conditions behind free claim well above the market average (+1.8 SD); cta contrast ratio well below the market average (-1.5 SD).
+**Signature:** disclaimer present well below the market average (-1.9 SD); hidden conditions behind free claim well above the market average (+1.8 SD); numeric claim count well below the market average (-1.4 SD).
 
 ### n26  (challenger)
 
