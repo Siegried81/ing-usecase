@@ -86,10 +86,12 @@ The deterministic alternatives re-read `snapshot_html_path` and touch only the
 columns whose detector changed — no LLM call, no re-fetch, so nothing else on the
 row is re-rolled:
 
-- `scripts/fix_rate_fields.py` — `rate_shown`, `rate_value_pct` (the `_rate()`
-  keyword-proximity fix, ).
-- `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold` (the distinct,
-  chrome-excluding CTA count, ).
+- `scripts/fix_rate_fields.py` — `rate_shown`, `rate_value_pct`, re-derived with
+  the keyword-proximity rule in `_rate()`.
+- `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold`: distinct
+  (label, href) pairs, chrome excluded. `cta_count` is currently withdrawn from
+  the comparison (`analysis.CAPTURE_INVALID_FEATURES`); the script stays because
+  the stored column should still be the best value the rule can produce.
 
 **MANDATORY re-merge after ANY change to campaigns.csv.**  
 `scripts/rubric_sheet.py merge` **must be re-run** after any modification to

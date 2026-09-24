@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T07:25:14+00:00",
+  "generated_at": "2026-09-24T07:48:12+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -585,7 +585,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 7078.0,
-        "Calls to action": 9.0,
+        "Calls to action": 10.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -751,7 +751,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 15135.0,
-        "Calls to action": 21.0,
+        "Calls to action": 20.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -838,7 +838,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 4447.0,
-        "Calls to action": 4.0,
+        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -918,7 +918,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 2945.0,
-        "Calls to action": 1.0,
+        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1074,7 +1074,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11148.666666666666,
-        "Calls to action": 0.6666666666666666,
+        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1167,7 +1167,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3775.3333333333335,
-        "Calls to action": 1.3333333333333333,
+        "Calls to action": 2.3333333333333335,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1333,7 +1333,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 8005.0,
-        "Calls to action": 7.0,
+        "Calls to action": 5.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1511,7 +1511,7 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
-        "Calls to action": 2.0,
+        "Calls to action": 0.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {

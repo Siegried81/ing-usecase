@@ -212,7 +212,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 7078.0,
-        "cta_count": 9.0,
+        "cta_count": 10.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -374,7 +374,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 15135.0,
-        "cta_count": 21.0,
+        "cta_count": 20.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -459,7 +459,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 4447.0,
-        "cta_count": 4.0,
+        "cta_count": 3.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -534,7 +534,7 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 2945.0,
-        "cta_count": 1.0,
+        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -688,7 +688,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11148.666666666666,
-        "cta_count": 0.6666666666666666,
+        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -779,7 +779,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3775.3333333333335,
-        "cta_count": 1.3333333333333333,
+        "cta_count": 2.3333333333333335,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -943,7 +943,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 8005.0,
-        "cta_count": 7.0,
+        "cta_count": 5.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -1113,7 +1113,7 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 4290.0,
-        "cta_count": 2.0,
+        "cta_count": 0.0,
         "cta_above_fold": 0.0
       },
       "tone": {

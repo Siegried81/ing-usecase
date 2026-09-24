@@ -225,9 +225,31 @@ _CTA_CHROME_ROLES = {"navigation", "contentinfo"}
 # Matching on the class/id name as well is crude, but it is what the markup
 # offers, and the alternative is comparing a page body against a page body
 # plus a mega-menu.
-_CTA_CHROME_NAMES = re.compile(
-    r"\b(nav|navbar|navigation|menu|header|footer|breadcrumb|megamenu)\b", re.I
-)
+# Chrome is recognised from the class/id NAME, because two of the fourteen
+# captured banks build their menu out of plain divs: hellobank uses
+# <div class="navbar-container"> around <ul class="desktop-menu"> with no
+# <nav>, no role and no <footer> at all, and keytrade is the same.
+#
+# The navigation words are matched on any hyphen- or underscore-separated
+# PART, so navbar-container and desktop-menu are caught. "header" is
+# deliberately NOT one of them: as a part it hits product-header,
+# card-header and section-header, which are page content - it excluded ING's
+# hero CTA ("Se lancer", linking straight to ouvrir-pack-more) the moment it
+# was tried. Whole-word chrome names only, for the same reason.
+_CTA_CHROME_PARTS = frozenset({
+    "nav", "navbar", "navigation", "menu", "mainmenu", "megamenu",
+    "breadcrumb", "breadcrumbs", "topbar",
+})
+_CTA_CHROME_WHOLE = frozenset({"footer", "site-footer", "page-footer", "global-footer"})
+
+
+def _is_chrome_token(token: str) -> bool:
+    t = token.strip().lower()
+    if not t:
+        return False
+    if t in _CTA_CHROME_WHOLE:
+        return True
+    return any(part in _CTA_CHROME_PARTS for part in re.split(r"[-_]", t))
 
 
 def _in_chrome(el) -> bool:
@@ -250,14 +272,39 @@ def _in_chrome(el) -> bool:
             continue
         if get("role") in _CTA_CHROME_ROLES:
             return True
-        tokens = " ".join(get("class") or []) + " " + (get("id") or "")
-        if tokens.strip() and _CTA_CHROME_NAMES.search(tokens):
+        tokens = list(get("class") or []) + [get("id") or ""]
+        if any(_is_chrome_token(tok) for tok in tokens):
             return True
     return False
 
 
 def _is_hidden(el) -> bool:
     return el.get("aria-hidden") == "true" or el.has_attr("hidden")
+
+
+# A clickable product card is a call to action even when its label carries no
+# verb: "Pack ING Go", "ING Green Account" and "Faites grandir votre argent"
+# each invite the reader to the next step exactly as "Ouvrez un compte" does.
+# Recognised from the container the markup already names - card, tile,
+# product-card, pack, teaser - rather than from the wording, because the
+# wording is precisely what a keyword list cannot catch. A bare internal link
+# is NOT enough: that counts related-news and article links too.
+_CTA_CARD_PARTS = frozenset({"card", "tile", "teaser", "pack", "product", "offer"})
+
+
+def _in_card(el) -> bool:
+    """True when the element sits inside a product card or tile."""
+    for parent in (el, *el.parents):
+        name = (getattr(parent, "name", "") or "").lower()
+        if any(part in _CTA_CARD_PARTS for part in re.split(r"[-_]", name)):
+            return True
+        get = getattr(parent, "get", None)
+        if get is None:
+            continue
+        for token in list(get("class") or []) + [get("id") or ""]:
+            if any(part in _CTA_CARD_PARTS for part in re.split(r"[-_]", token.lower())):
+                return True
+    return False
 
 
 def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
@@ -278,11 +325,22 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
         if _is_hidden(el) or _in_chrome(el):
             continue
         label = " ".join(el.get_text(separator=" ", strip=True).lower().split())
+        if not label or len(label.split()) > 7:
+            continue
+        href = (el.get("href") or "").strip()
+        # Action CTAs only, which is what the dictionary defines: "Number of
+        # distinct call-to-action buttons or links". A clickable product card
+        # ("Pack ING Go") invites a click but sends the reader to another page;
+        # it is navigation with a picture, not a conversion action. Counting
+        # cards here took ING from 1.0 to 9.0 and put it mid-pack, which hides
+        # the actual finding: ING's pack pages carry plenty to click and almost
+        # nothing that opens an account. _in_card() is kept so that observation
+        # can be measured deliberately rather than folded into this number.
         if not any(k in label for k in _CTA_KEYWORDS):
             continue
         if "cookie" in label:  # "choisir ... les cookies" is consent chrome, not a CTA
             continue
-        key = (label, (el.get("href") or "").strip())
+        key = (label, href)
         if key in seen:
             continue
         seen.add(key)
