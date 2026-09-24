@@ -155,7 +155,7 @@ export default function App() {
 
       {tab === "trends" && (
         <div className="wrap">
-          <Trends summary={report.trends} />
+          <Trends summary={report.trends} lessons={report.searchInterestLessons} />
         </div>
       )}
 

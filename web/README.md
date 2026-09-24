@@ -70,17 +70,29 @@ justify it.
 writes the series separately to `trends.json` (it is ~800 KB of weekly points, too
 large to inline in `report.json`, which carries only a small summary and the
 `data_url` the tab fetches). The tab shows the five-year weekly search interest per
-bank and product sheet, the spikes the detector flags, the known structural
-events, and the campaign catalogue matched to those spikes. Anomaly detection is a
-port of `kbc-ing-benchmark/analysis/anomaly_detection.py`, tested against the same
-inputs, so the tab and the search_interest Streamlit app cannot report different spikes.
+bank and product sheet, annotated with the known structural events. Above that it
+reports share of brand search, how that share moved across the five years, and the
+competitor brands worth studying.
 
 The guardrail is not a footnote here: **search interest is context, never an
 outcome.** The tab leads with it, and the payload carries the sentence so no view
 can drop it. Nothing in `trends.py` regresses a search value onto a page feature,
 and the tab deliberately offers no per-page number to regress.
 
-If `kbc-ing-benchmark/export/` is absent, `trends.json` is not written and the tab
+**From search-interest context** is the section that closes this tab, and the one
+part of it no model writes. The scope block above picks the competitor brands worth
+studying — the traditional bank with the largest share of brand search, the one
+whose share rose fastest, and the measurable challenger — and
+`comparator/benchmarks.py` reports what each of their pages measurably does
+differently from ING's, then what all of them share and where they part company.
+Every figure is a z-score from the same feature set as the Analysis tab.
+
+The two halves are joined on the bank name and nothing else. Search interest
+chooses WHO to look at; the dataset says WHAT they do. Saying they are searched
+for BECAUSE their pages do this is the claim the project has no data for, so the
+caveat travels in the payload rather than sitting in a footnote.
+
+If `search_interest/export/` is absent, `trends.json` is not written and the tab
 renders an empty state; nothing else is affected. The pipeline only reads the CSV
 export — it does not need `pytrends`, `streamlit` or `plotly`.
 
@@ -107,19 +119,6 @@ recommendation next to the features it was argued from, and lets a reader **tick
 the ones worth implementing**. Only the ticked subset is passed to the site
 builder. A feature id the model invented is dropped before the list is shown, so
 nothing links to evidence that does not exist.
-
-**From search-interest context** is the one section on this tab the model does
-not write. The Trends tab picks the competitor brands worth studying - the
-traditional bank with the largest share of brand search, the one whose share
-rose fastest, and the measurable challenger - and `comparator/benchmarks.py`
-reports what each of their pages measurably does differently from ING's, then
-what all of them share and where they part company. Every figure is a z-score
-from the same feature set as the analysis above.
-
-The two halves are joined on the bank name and nothing else. Search interest
-chooses WHO to look at; the dataset says WHAT they do. Saying they are searched
-for BECAUSE their pages do this is the claim the project has no data for, so the
-caveat travels in the payload rather than sitting in a footnote.
 
 The **Generate ING website** button turns the selected recommendations into ten
 HTML pages in ING's house style - orange `#FF6200`, ING blue `#000066`, black and

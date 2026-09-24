@@ -1,12 +1,5 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type {
-  BenchmarkBank,
-  Priority,
-  Recommendation,
-  Report,
-  SearchInterestLessons,
-  SiteStatus,
-} from "../types";
+import type { Priority, Recommendation, Report, SiteStatus } from "../types";
 import {
   fetchRecommendations,
   fetchSiteStatus,
@@ -108,12 +101,12 @@ export function Recommendations({ report }: { report: Report }) {
     return map;
   }, [report]);
 
-  // "From search-interest context" is the computed benchmark
-  // section now - the model writes nothing from search interest any more.
+  // Search-interest context lives in the Trends tab: it is a reading of the
+  // search data, recommends nothing, and nobody selects it for the site.
   // Two groups, one selection. Reputation recommendations are
   // shown apart because they are argued from context, not from a measured
   // page feature - but they are all picked in the same set and built into
-  // the same site. Added the reputation group.
+  // the same site.
   const analysisRecs = useMemo(
     () => recommendations.filter((r) => r.basis !== "reputation"),
     [recommendations],
@@ -245,10 +238,6 @@ export function Recommendations({ report }: { report: Report }) {
                   ))}
                 </div>
               </div>
-            )}
-
-            {report.searchInterestLessons && (
-              <SearchInterestSection lessons={report.searchInterestLessons} />
             )}
 
             {/* The model's second context group. */}
@@ -443,160 +432,5 @@ function Section({ title, lede, children }: { title: string; lede?: string; chil
       </div>
       {children}
     </section>
-  );
-}
-
-/** A z-score gap read out loud. The number stays next to the words. */
-function GapNote({ gap }: { gap: number }) {
-  return (
-    <span className="muted-note" style={{ whiteSpace: "nowrap" }}>
-      {gap > 0 ? "+" : ""}
-      {gap} sd
-    </span>
-  );
-}
-
-function BenchmarkCard({ bank, focus }: { bank: BenchmarkBank; focus: string }) {
-  return (
-    <div
-      style={{
-        border: "1px solid var(--line)",
-        borderRadius: "var(--radius)",
-        padding: 16,
-        background: "var(--surface)",
-      }}
-    >
-      <div style={{ fontWeight: 700 }}>{bank.bank}</div>
-      <div className="muted-note" style={{ marginBottom: 10 }}>
-        {bank.roleLabel}
-        {bank.lastSharePct !== null && <> · {bank.lastSharePct}% of brand search</>}
-        {bank.relativeSlopePctPerYear !== null && (
-          <>
-            {" "}
-            · {bank.relativeSlopePctPerYear > 0 ? "+" : ""}
-            {bank.relativeSlopePctPerYear}% per year
-          </>
-        )}
-      </div>
-
-      {bank.lessons.length === 0 ? (
-        <p className="muted-note" style={{ margin: 0 }}>
-          Nothing on its pages separates it from {focus} in the measured set.
-        </p>
-      ) : (
-        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
-          {bank.lessons.map((l) => (
-            <li
-              key={l.feature}
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                gap: 10,
-                padding: "5px 0",
-                borderBottom: "1px solid var(--line-2)",
-                fontSize: "14px",
-              }}
-            >
-              <span>
-                {l.label} — <strong>{l.direction === "above" ? "more" : "less"}</strong> than{" "}
-                {focus}
-              </span>
-              <GapNote gap={l.gapSd} />
-            </li>
-          ))}
-        </ul>
-      )}
-      <div className="muted-note" style={{ marginTop: 8 }}>
-        {bank.pages} page{bank.pages === 1 ? "" : "s"} measured
-      </div>
-    </div>
-  );
-}
-
-/**
- * Search interest picks the brands; the measured features say what they do.
- *
- * The two halves come from different sources and are joined on the bank name
- * and nothing else. Saying "they get searched for BECAUSE their pages do this"
- * is the one claim this project has no data for, so the caveat travels with
- * the payload rather than sitting in a footnote.
- */
-function SearchInterestSection({ lessons }: { lessons: SearchInterestLessons }) {
-  const focus = lessons.focus.toUpperCase();
-  return (
-    <div className="rec-group rec-group-trends">
-      <div className="rec-group-head">
-        <h3>From search-interest context</h3>
-        <span className="muted-note">
-          Google Trends picked these {lessons.banks.length} brands, on brand-search attention
-          alone. What follows is what their pages measurably do differently from {focus}, on the
-          same standardised features as the analysis above — never proof that those choices are
-          why they are searched for.
-        </span>
-      </div>
-
-      <div
-        style={{
-          display: "grid",
-          gap: 12,
-          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
-          marginBottom: 14,
-        }}
-      >
-        {lessons.banks.map((b) => (
-          <BenchmarkCard key={b.key} bank={b} focus={focus} />
-        ))}
-      </div>
-
-      {lessons.common.length > 0 && (
-        <div className="card" style={{ marginBottom: 12 }}>
-          <h4 className="sub-h">What all {lessons.banks.length} have in common</h4>
-          <p className="muted-note" style={{ marginTop: 0 }}>
-            Choices every one of them makes and {focus} does not — the closest this data comes to
-            a shared pattern.
-          </p>
-          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
-            {lessons.common.map((c) => (
-              <li key={c.feature} style={{ padding: "3px 0" }}>
-                {c.label} — all {lessons.banks.length} sit {c.direction} the market average (
-                {c.meanZ > 0 ? "+" : ""}
-                {c.meanZ} sd on average), {focus} sits {c.direction === "above" ? "below" : "above"}{" "}
-                it ({c.focusZ > 0 ? "+" : ""}
-                {c.focusZ} sd).
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {lessons.divergent.length > 0 && (
-        <div className="card" style={{ marginBottom: 12 }}>
-          <h4 className="sub-h">Where they part company</h4>
-          <p className="muted-note" style={{ marginTop: 0 }}>
-            On these there is no single lesson to take: the brands sit on opposite sides of the
-            market average.
-          </p>
-          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
-            {lessons.divergent.map((d) => (
-              <li key={d.feature} style={{ padding: "3px 0" }}>
-                {d.label} —{" "}
-                {d.values.map((v, i) => (
-                  <span key={v.key}>
-                    {i > 0 && ", "}
-                    {v.bank} {v.z > 0 ? "+" : ""}
-                    {v.z}
-                  </span>
-                ))}{" "}
-                sd.
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      <div className="scope-note">
-        <strong>Attention, not explanation.</strong> {lessons.caveat}
-      </div>
-    </div>
   );
 }

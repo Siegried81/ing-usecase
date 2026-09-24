@@ -247,13 +247,9 @@ section { margin: 40px 0; }
 .rec-group-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
 .rec-group-head h3 { margin: 0; font-size: 15px; letter-spacing: -.01em; }
 .rec-group-head .muted-note { max-width: 80ch; }
-.rec-group-trends {
-  border: 1px solid var(--line); border-left: 3px solid #1c5cab; border-radius: var(--radius);
-  background: #f7faff; padding: 16px;
-}
-.rec-group-trends .rec-card { background: var(--surface); }
-/* sieg 21/09: reputation mirrors the trends group, using the existing warn
-   tokens instead of a third invented colour pair. */
+/* sieg 21/09: the reputation group is set apart with the existing warn
+   tokens rather than an invented colour pair. (It used to mirror a
+   .rec-group-trends block; that section now lives in the Trends tab.) */
 .rec-basis-reputation {
   font-size: 11px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700;
   border-radius: 999px; padding: 2px 9px; background: var(--warn-bg); color: var(--warn);

@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import type {
+  BenchmarkBank,
+  SearchInterestLessons,
   ShareBankReading,
   TrendBenchmark,
   TrendsTrajectoryPayload,
@@ -35,7 +37,13 @@ const CHART = { w: 760, h: 300, top: 14, right: 16, bottom: 28, left: 42 };
  * the benchmark is a separate project (search_interest/); we read its
  * export and never recompute its numbers differently.
  */
-export function Trends({ summary }: { summary: TrendsSummary | null }) {
+export function Trends({
+  summary,
+  lessons,
+}: {
+  summary: TrendsSummary | null;
+  lessons: SearchInterestLessons | null;
+}) {
   const [data, setData] = useState<TrendsPayload | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [bankKey, setBankKey] = useState<string>("");
@@ -87,8 +95,6 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
 
   const events = data.events.filter((e) => e.bank === bank?.name);
   const flagged = new Set(data.shareOfSearch?.lowConfidence ?? []);
-  const challengerReference =
-    data.shareOfSearch?.insights?.challengerFocus?.reference ?? null;
 
   return (
     <>
@@ -112,13 +118,9 @@ export function Trends({ summary }: { summary: TrendsSummary | null }) {
 
       {data.shareOfSearch && <ShareOfSearchView share={data.shareOfSearch} flagged={flagged} />}
 
-      {data.trajectory && (
-        <AttentionMoved
-          traj={data.trajectory}
-          flagged={flagged}
-          challengerReference={challengerReference}
-        />
-      )}
+      {data.trajectory && <AttentionMoved traj={data.trajectory} flagged={flagged} />}
+
+      {lessons && <SearchInterestContext lessons={lessons} />}
 
       <section>
         <div className="section-head">
@@ -667,150 +669,11 @@ function DirectionBadge({ direction }: { direction: string | null }) {
   );
 }
 
-const PCHART = { w: 760, h: 260, top: 16, right: 130, bottom: 30, left: 44 };
-
-/** One line per series over the period axis. `invert` draws rank 1 at the top. */
-function PeriodChart({
-  periods,
-  lines,
-  invert = false,
-  yLabelFor,
-}: {
-  periods: { label: string }[];
-  lines: { name: string; values: number[]; colour: string }[];
-  invert?: boolean;
-  yLabelFor: (value: number) => string;
-}) {
-  const all = lines.flatMap((l) => l.values);
-  if (all.length === 0) return <p className="muted-note">Nothing to chart.</p>;
-  const lo = Math.min(...all);
-  const hi = Math.max(...all);
-  const span = hi - lo || 1;
-
-  const px = (i: number) =>
-    PCHART.left + (periods.length === 1 ? 0 : (i / (periods.length - 1)) * (PCHART.w - PCHART.left - PCHART.right));
-  const py = (v: number) => {
-    const frac = (v - lo) / span;
-    const inner = PCHART.h - PCHART.top - PCHART.bottom;
-    return invert ? PCHART.top + frac * inner : PCHART.h - PCHART.bottom - frac * inner;
-  };
-
-  return (
-    <svg viewBox={`0 0 ${PCHART.w} ${PCHART.h}`} className="trend-chart" role="img">
-      {[lo, (lo + hi) / 2, hi].map((v) => (
-        <g key={v}>
-          <line
-            x1={PCHART.left}
-            x2={PCHART.w - PCHART.right}
-            y1={py(v)}
-            y2={py(v)}
-            stroke="var(--line-2)"
-            strokeWidth={1}
-          />
-          <text x={PCHART.left - 6} y={py(v) + 3} textAnchor="end" className="chart-tick">
-            {yLabelFor(v)}
-          </text>
-        </g>
-      ))}
-
-      {periods.map((p, i) => (
-        <text key={p.label} x={px(i)} y={PCHART.h - 8} textAnchor="middle" className="chart-tick">
-          {p.label}
-        </text>
-      ))}
-
-      {lines.map((line) => {
-        const d = line.values
-          .map((v, i) => `${i === 0 ? "M" : "L"}${px(i)},${py(v)}`)
-          .join(" ");
-        const lastY = py(line.values[line.values.length - 1]);
-        return (
-          <g key={line.name}>
-            <path d={d} fill="none" stroke={line.colour} strokeWidth={2} />
-            {line.values.map((v, i) => (
-              <circle key={i} cx={px(i)} cy={py(v)} r={2.6} fill={line.colour} />
-            ))}
-            <text
-              x={PCHART.w - PCHART.right + 8}
-              y={lastY + 3}
-              className="chart-tick"
-              style={{ fill: line.colour }}
-            >
-              {line.name}
-            </text>
-          </g>
-        );
-      })}
-    </svg>
-  );
-}
-
-/** Block 1. The sentence forks on the challenger segment's own direction, so
- *  it cannot claim a rise the data does not show. */
-function SegmentTrajectory({
-  traj,
-  challengerReference,
-}: {
-  traj: TrendsTrajectoryPayload;
-  challengerReference: TrendExternalReference | null;
-}) {
-  const periods = traj.periods;
-  const first = periods[0];
-  const last = periods[periods.length - 1];
-  const challengers = traj.segments.find((s) => s.id === "challengers");
-
-  return (
-    <div className="card">
-      <h3 className="sub-h">Segment trajectory</h3>
-      <PeriodChart
-        periods={periods}
-        lines={traj.segments.map((s) => ({
-          name: s.label,
-          values: s.periodShares,
-          colour: SEGMENT_COLOURS[s.id],
-        }))}
-        yLabelFor={(v) => `${Math.round(v)}%`}
-      />
-      {challengers && (
-        <p style={{ color: "var(--ink-2)", marginBottom: 0 }}>
-          {challengers.direction === "up" && (
-            <>
-              The {challengers.label} share of brand search rose from {challengers.periodShares[0]}%
-              to {challengers.periodShares[challengers.periodShares.length - 1]}% between{" "}
-              {first.label} and {last.label} ({challengers.deltaPts > 0 ? "+" : ""}
-              {challengers.deltaPts} pts).
-            </>
-          )}
-          {challengers.direction === "flat" && (
-            <>
-              The {challengers.label} share of brand search stayed around{" "}
-              {challengers.meanSharePct}% across {periods.length} periods.
-            </>
-          )}
-          {challengers.direction === "down" && (
-            <>
-              The {challengers.label} share of brand search fell from {challengers.periodShares[0]}%
-              to {challengers.periodShares[challengers.periodShares.length - 1]}%.
-            </>
-          )}
-          {challengerReference && challengers.direction !== "up" && (
-            <>
-              {" "}
-              This is consistent with the note above: challenger customer growth does not show up
-              as brand search.
-            </>
-          )}
-        </p>
-      )}
-    </div>
-  );
-}
-
-/** Block 2. A flagged bank keeps its row and its aggregated share; every
+/** Block 1. A flagged bank keeps its row and its aggregated share; every
  *  per-period cell is a dash, because no period figure exists for it. */
 function BankTrajectory({ traj, flagged }: { traj: TrendsTrajectoryPayload; flagged: Set<string> }) {
   return (
-    <div className="card" style={{ marginTop: 14 }}>
+    <div className="card">
       <h3 className="sub-h">Bank trajectory</h3>
       <div className="table-scroll wide">
         <table className="claims">
@@ -862,62 +725,6 @@ function BankTrajectory({ traj, flagged }: { traj: TrendsTrajectoryPayload; flag
   );
 }
 
-/** Block 3. Ties are drawn at the same rank, so a reshuffle inside a tie
- *  group is invisible here - exactly as it is in the counts. */
-function RankStability({ traj, flagged }: { traj: TrendsTrajectoryPayload; flagged: Set<string> }) {
-  const stability = traj.rankStability;
-  const periods = traj.periods;
-  const first = periods[0];
-  const last = periods[periods.length - 1];
-  const subject = traj.benchmark.subject;
-  const subjectRanks = stability.banks.find((b) => b.bank === subject);
-  const palette = ["#2a78d6", "#eb6834", "#1a7f4b", "#8a5cf6", "#9a6a00", "#b44a1d", "#1c5cab", "#767b8a"];
-
-  return (
-    <div className="card" style={{ marginTop: 14 }}>
-      <h3 className="sub-h">Rank stability</h3>
-      <PeriodChart
-        periods={periods}
-        invert
-        lines={stability.banks.map((b, i) => ({
-          name: b.bank,
-          values: b.ranks,
-          colour: palette[i % palette.length],
-        }))}
-        yLabelFor={(v) => `#${Math.round(v)}`}
-      />
-      {traj.lowConfidenceBanks.length > 0 && (
-        <p className="muted-note">
-          Not charted: <BankList names={traj.lowConfidenceBanks} flagged={flagged} />.
-        </p>
-      )}
-      <p style={{ color: "var(--ink-2)", marginBottom: 6 }}>
-        {stability.pairsKept} of {stability.pairsTotal} bank pairs kept the same order between{" "}
-        {first.label} and {last.label}.
-      </p>
-      {stability.overtakes.length > 0 ? (
-        <ul style={{ color: "var(--ink-2)", marginTop: 0 }}>
-          {stability.overtakes.map((o) => (
-            <li key={`${o.bank}-${o.passed}`}>
-              {o.bank} moved ahead of {o.passed}.
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p style={{ color: "var(--ink-2)", marginTop: 0 }}>
-          No bank overtook another outside statistical ties.
-        </p>
-      )}
-      {subjectRanks && (
-        <p style={{ color: "var(--ink-2)", marginBottom: 0 }}>
-          {subject} ranked between {subjectRanks.bestRank} and {subjectRanks.worstRank} over the
-          period.
-        </p>
-      )}
-    </div>
-  );
-}
-
 const ROLE_SENTENCE: Record<string, string> = {
   attention: "the largest share of attention among traditional banks",
   momentum: "the strongest upward trajectory among traditional banks",
@@ -928,7 +735,7 @@ function signed(value: number | null): string {
   return `${value > 0 ? "+" : ""}${value}`;
 }
 
-/** Block 4. The subject is never a candidate for its own benchmark. */
+/** Block 2. The subject is never a candidate for its own benchmark. */
 function BenchmarkScope({ traj, flagged }: { traj: TrendsTrajectoryPayload; flagged: Set<string> }) {
   const scope = traj.benchmark;
   const periods = traj.periods;
@@ -1084,11 +891,9 @@ function LowVolumeFootnote() {
 function AttentionMoved({
   traj,
   flagged,
-  challengerReference,
 }: {
   traj: TrendsTrajectoryPayload;
   flagged: Set<string>;
-  challengerReference: TrendExternalReference | null;
 }) {
   const periods = traj.periods;
   return (
@@ -1103,11 +908,168 @@ function AttentionMoved({
           {traj.weeksPerPeriod} weeks. This shows that attention moved, never why.
         </p>
       </div>
-      <SegmentTrajectory traj={traj} challengerReference={challengerReference} />
       <BankTrajectory traj={traj} flagged={flagged} />
-      <RankStability traj={traj} flagged={flagged} />
       <BenchmarkScope traj={traj} flagged={flagged} />
       <TrajectoryMethod traj={traj} />
+    </section>
+  );
+}
+
+/** A z-score gap read out loud. The number stays next to the words. */
+function GapNote({ gap }: { gap: number }) {
+  return (
+    <span className="muted-note" style={{ whiteSpace: "nowrap" }}>
+      {gap > 0 ? "+" : ""}
+      {gap} sd
+    </span>
+  );
+}
+
+function BenchmarkCard({ bank, focus }: { bank: BenchmarkBank; focus: string }) {
+  return (
+    <div
+      style={{
+        border: "1px solid var(--line)",
+        borderRadius: "var(--radius)",
+        padding: 16,
+        background: "var(--surface)",
+      }}
+    >
+      <div style={{ fontWeight: 700 }}>{bank.bank}</div>
+      <div className="muted-note" style={{ marginBottom: 10 }}>
+        {bank.roleLabel}
+        {bank.lastSharePct !== null && <> · {bank.lastSharePct}% of brand search</>}
+        {bank.relativeSlopePctPerYear !== null && (
+          <>
+            {" "}
+            · {bank.relativeSlopePctPerYear > 0 ? "+" : ""}
+            {bank.relativeSlopePctPerYear}% per year
+          </>
+        )}
+      </div>
+
+      {bank.lessons.length === 0 ? (
+        <p className="muted-note" style={{ margin: 0 }}>
+          Nothing on its pages separates it from {focus} in the measured set.
+        </p>
+      ) : (
+        <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
+          {bank.lessons.map((l) => (
+            <li
+              key={l.feature}
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                gap: 10,
+                padding: "5px 0",
+                borderBottom: "1px solid var(--line-2)",
+                fontSize: "14px",
+              }}
+            >
+              <span>
+                {l.label} — <strong>{l.direction === "above" ? "more" : "less"}</strong> than{" "}
+                {focus}
+              </span>
+              <GapNote gap={l.gapSd} />
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="muted-note" style={{ marginTop: 8 }}>
+        {bank.pages} page{bank.pages === 1 ? "" : "s"} measured
+      </div>
+    </div>
+  );
+}
+
+/**
+ * Search interest picks the brands; the measured features say what they do.
+ *
+ * This sits in Trends rather than Recommendations because it is a reading of
+ * the search data, not advice: it recommends nothing and nobody selects it for
+ * the generated site. The scope block above names the brands; this says what
+ * their pages measurably do.
+ *
+ * The two halves come from different sources and are joined on the bank name
+ * and nothing else. Saying "they get searched for BECAUSE their pages do this"
+ * is the one claim this project has no data for, so the caveat travels with
+ * the payload rather than sitting in a footnote.
+ */
+function SearchInterestContext({ lessons }: { lessons: SearchInterestLessons }) {
+  const focus = lessons.focus.toUpperCase();
+  return (
+    <section>
+      <div className="section-head">
+        <h2>From search-interest context</h2>
+        <p>
+          Google Trends picked these {lessons.banks.length} brands, on brand-search attention
+          alone. What follows is what their pages measurably do differently from {focus}, on the
+          same standardised features as the page analysis — never proof that those choices are
+          why they are searched for.
+        </p>
+      </div>
+
+      <div
+        style={{
+          display: "grid",
+          gap: 12,
+          gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
+        }}
+      >
+        {lessons.banks.map((b) => (
+          <BenchmarkCard key={b.key} bank={b} focus={focus} />
+        ))}
+      </div>
+
+      {lessons.common.length > 0 && (
+        <div className="card" style={{ marginTop: 14 }}>
+          <h3 className="sub-h">What all {lessons.banks.length} have in common</h3>
+          <p className="muted-note" style={{ marginTop: 0 }}>
+            Choices every one of them makes and {focus} does not — the closest this data comes to
+            a shared pattern.
+          </p>
+          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
+            {lessons.common.map((c) => (
+              <li key={c.feature} style={{ padding: "3px 0" }}>
+                {c.label} — all {lessons.banks.length} sit {c.direction} the market average (
+                {c.meanZ > 0 ? "+" : ""}
+                {c.meanZ} sd on average), {focus} sits {c.direction === "above" ? "below" : "above"}{" "}
+                it ({c.focusZ > 0 ? "+" : ""}
+                {c.focusZ} sd).
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {lessons.divergent.length > 0 && (
+        <div className="card" style={{ marginTop: 14 }}>
+          <h3 className="sub-h">Where they part company</h3>
+          <p className="muted-note" style={{ marginTop: 0 }}>
+            On these there is no single lesson to take: the brands sit on opposite sides of the
+            market average.
+          </p>
+          <ul style={{ margin: 0, paddingLeft: 18, color: "var(--ink-2)" }}>
+            {lessons.divergent.map((d) => (
+              <li key={d.feature} style={{ padding: "3px 0" }}>
+                {d.label} —{" "}
+                {d.values.map((v, i) => (
+                  <span key={v.key}>
+                    {i > 0 && ", "}
+                    {v.bank} {v.z > 0 ? "+" : ""}
+                    {v.z}
+                  </span>
+                ))}{" "}
+                sd.
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <div className="scope-note">
+        <strong>Attention, not explanation.</strong> {lessons.caveat}
+      </div>
     </section>
   );
 }
