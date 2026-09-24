@@ -1,13 +1,13 @@
 # D-06 — Business narrative, draft insights
 
-> **CURRENT NUMBERS — 23/09, supersedes every figure and every update banner
+> **CURRENT NUMBERS — 24/09, supersedes every figure and every update banner
 > below.** Scope: 51 pages / 14 banks / 6 product families collected and
 > scored; the comparison runs on the 18 `current_account_pack` pages, 14 banks,
-> 30 comparable features (DR-04).
+> 36 comparable features (DR-04).
 >
 > | | ING | peers | gap |
 > | --- | --- | --- | --- |
-> | traditional↔challenger positioning | **0.26** | — | nearest neighbour Belfius |
+> | traditional↔challenger positioning | **0.28** | — | nearest neighbour Belfius |
 > | `urgency_marker_count` | 4.00 | 0.64 | **+3.69 SD** — largest in the set |
 > | `persuasion_lever_count` (rubric, 9 peers) | 3.67 | 1.74 | +2.46 SD |
 > | `value_prop_clarity` (rubric) | 5.00 | 3.74 | +1.46 SD |
@@ -235,7 +235,7 @@ communication content — it says nothing about *what* a page argues, only
 matching their known regional roots is a sanity check on the pipeline, not a
 discovery on its own. ING breaking that pattern, in the same direction as
 every challenger in the set, is the one region-level result that lines up
-with the overall traditional↔challenger positioning score (0.26, clearly
+with the overall traditional↔challenger positioning score (0.28, clearly
 with the traditional banks) from a completely independent measurement. Worth
 noting in the room as a second signal pointing the same way, not proof of
 anything by itself — the same "context, never an outcome" rule the existing

@@ -42,6 +42,21 @@ MAX_PLAUSIBLE_SD = 8.0
 # over them measures nothing about how a bank communicates.
 FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "readability_formula"}
 
+# Features whose captured values describe the CAPTURE rather than the page, so
+# the number is not a property of the bank and must not enter a comparison.
+# This is a different failure from a missing value: the column is full, the
+# figures look plausible, and they are measuring the wrong thing.
+#
+# cta_count: ING's pack cards (Open ING Go / More / Extra, Discover here) are
+# rendered client-side and are absent from the stored HTML, so its three pages
+# each count exactly 1 - two nav items correctly excluded as chrome, and the
+# same button twice, correctly deduplicated. No counting rule can find an
+# element that is not in the file. Peer captures look complete (bunq 22, BNP
+# 13, Beobank 10), which is what makes the gap look real. Withdrawn until the
+# pack pages are re-captured with a scroll/interaction step. See
+# docs/decisions.md, 23/09.
+CAPTURE_INVALID_FEATURES = {"cta_count"}
+
 
 def band_redundant_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
     """`X_band` features whose underlying `X` already enters the comparison.
@@ -128,6 +143,7 @@ def feature_accounting(
     # Report the within_language exclusion the same way every other
     # reduction here is reported - see language_excluded_features().
     language_excluded = language_excluded_features(fd, df)
+    capture_invalid = sorted(n for n in CAPTURE_INVALID_FEATURES if n in fd and n in df.columns)
 
     matrix = bank_vectors(df, fd, include_categorical=include_categorical)
     incomplete = sorted(c for c in matrix.columns if matrix[c].isna().any())
@@ -141,6 +157,7 @@ def feature_accounting(
         "free_text": free_text,
         "band_redundant": bands,
         "language_excluded": language_excluded,
+        "capture_invalid": capture_invalid,
         "categorical": categoricals,
         "categorical_included": bool(include_categorical),
         "incomplete": incomplete,
@@ -164,6 +181,8 @@ def render_accounting(accounting: dict) -> str:
     # within_language features dropped because >1 language is present.
     row("within_language, mixed languages present", accounting["language_excluded"],
         "not comparable across languages (comparability in the dictionary)")
+    row("withdrawn, capture not the page", accounting.get("capture_invalid", []),
+        "the stored capture is missing what the feature counts")
     if accounting["categorical_included"]:
         lines.append(
             f"  +{len(accounting['categorical']):>3}  categorical / list         "
@@ -279,10 +298,11 @@ def comparable_features(
     Provenance columns are excluded - they identify a page, they do not describe
     a campaign. within_language features (word_count, readability_score, ...)
     are excluded too whenever the usable pages span more than one language -
-    See language_excluded_features() above.
+    See language_excluded_features() above. So are the features in
+    CAPTURE_INVALID_FEATURES, whose values describe the capture and not the page.
     """
     feats = fd.select(tier=tier, exclude_dimensions=PROVENANCE)
-    excluded = set(language_excluded_features(fd, df))
+    excluded = set(language_excluded_features(fd, df)) | CAPTURE_INVALID_FEATURES
     return [
         f.name for f in feats
         if (f.is_numeric or f.is_boolean) and f.name in df.columns and f.name not in excluded

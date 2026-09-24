@@ -8,17 +8,18 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 ## Why the charts use fewer features than the dictionary has
 
-The dictionary defines 104 features. The comparisons here use **37**. Nothing is thrown away quietly — this is the whole reduction:
+The dictionary defines 104 features. The comparisons here use **36**. Nothing is thrown away quietly — this is the whole reduction:
 
 ```
 104 features in the dictionary
   - 18  provenance                 identify a page, do not describe a campaign
   -  4  free text / identifiers    no two pages share them
   -  8  within_language, mixed languages present not comparable across languages (comparability in the dictionary)
+  -  1  withdrawn, capture not the page the stored capture is missing what the feature counts
   - 27  categorical / list         not encoded - see note below
   -  2  missing for some bank      cannot compare what one bank lacks
   -  8  no variation across banks  identical everywhere, carries no signal
-  = 37  features used in this comparison
+  = 36  features used in this comparison
 ```
 
 **The line worth arguing about is the 27 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
@@ -39,26 +40,26 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **How to read it.** Left is traditional, right is challenger. Colour carries the bank's declared category, so a dot far from its own colour's cluster is the interesting case. ING is ringed and bold.
 
-**What this run shows.** ING scores **0.26** — clearly with the traditional banks. Computed over 37 features.
+**What this run shows.** ING scores **0.28** — clearly with the traditional banks. Computed over 36 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.29 and the most traditional challenger at 0.57, a gap of 0.29. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.29 and the most traditional challenger at 0.59, a gap of 0.30. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| argenta | traditional | -0.32 |
+| argenta | traditional | -0.31 |
 | cbc | traditional | -0.20 |
-| beobank | traditional | -0.14 |
-| bnp_paribas_fortis | traditional | -0.10 |
-| crelan | traditional | -0.03 |
-| kbc | traditional | 0.00 |
-| vdk | traditional | 0.03 |
-| hellobank | traditional | 0.21 |
-| ing **(focus)** | traditional | 0.26 |
+| beobank | traditional | -0.17 |
+| bnp_paribas_fortis | traditional | -0.14 |
+| crelan | traditional | -0.02 |
+| kbc | traditional | 0.01 |
+| vdk | traditional | 0.05 |
+| hellobank | traditional | 0.22 |
+| ing **(focus)** | traditional | 0.28 |
 | belfius | traditional | 0.29 |
-| keytrade | challenger | 0.57 |
-| n26 | challenger | 0.88 |
-| bunq | challenger | 1.17 |
-| revolut | challenger | 1.37 |
+| keytrade | challenger | 0.59 |
+| n26 | challenger | 0.89 |
+| bunq | challenger | 1.12 |
+| revolut | challenger | 1.40 |
 
 **What it cannot tell you.** The axis is defined by the banks in this dataset. Add or remove a bank and the centroids move, so a score is a position *within this sample*, not an absolute coordinate. It also says nothing about which end is better.
 
@@ -85,7 +86,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 | page_height_px | layout_structure | 11,149 | 6,412 | 1.42 |
 | background_luminance | colours_design | 0.55 | 0.34 | 1.40 |
 | hidden_conditions_behind_free_claim | banking_domain | 0.67 | 0.23 | 1.03 |
-| cta_count | layout_structure | 1.00 | 6.18 | -0.92 |
+| aida_desire | marketing_principles | 1.00 | 0.59 | 0.87 |
 
 **What it cannot tell you.** With 13 peers the standard deviation is estimated from a handful of values, so a large gap on a feature where peers happen to agree closely is easy to overstate. Read the raw values in the table, not only the SD.
 
@@ -107,8 +108,8 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 | --- | --- | --- | --- |
 | background_luminance | 0.43 | 0.17 | -2.36 |
 | above_fold_element_count | 36.57 | 21.50 | -2.12 |
-| rate_shown | 0.00 | 0.50 | 2.00 |
 | subscription_style_framing | 0.00 | 0.50 | 2.00 |
+| rate_shown | 0.00 | 0.50 | 2.00 |
 | total_image_area_ratio | 0.10 | 0.31 | 1.99 |
 | hero_image_area_ratio | 0.25 | 0.62 | 1.49 |
 | question_count | 20.71 | 5.75 | -1.44 |
@@ -128,7 +129,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **belfius** (5.9), **argenta** (6.5), **vdk** (6.8).
+**What this run shows.** The banks closest to ING are **belfius** (5.8), **argenta** (6.5), **bnp_paribas_fortis** (6.7).
 
 | Cluster | Banks |
 | --- | --- |

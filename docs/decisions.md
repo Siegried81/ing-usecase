@@ -774,3 +774,38 @@ every one wrapped onto a second line. The cap is now 130ch - still a cap, so a
 lede cannot run edge to edge, but set to what the copy actually is. The
 container is 1080px, which leaves room for about 142 characters, so the two
 ledes over 200 characters still wrap and are genuinely too long.
+
+**sieg 24/09, the CTA withdrawal moved into the analysis, where a re-run cannot
+undo it.** Yesterday's fix edited `report.json` by hand. The audit this morning
+showed why that was not enough: `export_web_report.py` rebuilds that file from
+the analysis, so the first re-run put the `cta_count` gap straight back.
+
+`analysis.CAPTURE_INVALID_FEATURES` now holds the feature, `comparable_features()`
+honours it, and `feature_accounting()` / `render_accounting()` REPORT it - the
+run prints "- 1  withdrawn, capture not the page" next to the other reductions,
+so the exclusion is visible rather than silent. Two tests pin both halves, and
+`test_accounting_adds_up_to_the_whole_dictionary` was extended to count the new
+bucket (and `language_excluded`, which it had also been missing - empty on the
+fixture, so nothing had caught it).
+
+Consequence: the traditional-challenger axis runs on 36 features instead of 37,
+and ING's positioning score moves 0.26 -> 0.28. Nothing else moved - the peer
+gaps, the similarity matrix, the category comparison and all five deck claims
+are byte-identical across the re-run. Slide 8, slide 5's feature count, the D06
+banner and the recommendation summary were updated to 0.28 / 36.
+
+Two further deck corrections found by the same audit, both contradicting slides
+elsewhere in the same deck:
+
+- Slide 8 said the rubric figures "moved when the second human sheet was folded
+  in". There is no second sheet; slide 6 says so three slides earlier.
+- Slide 18 said "six of the thirteen features sit below the agreement bar".
+  There is no agreement bar with one judge. It now names single-judge bias as
+  present and un-measured, which is the true limitation.
+
+Checked and found clean: the full pipeline is deterministic (eight analysis
+outputs byte-identical on re-run), the schema freeze passes, the dataset
+validates, the five Cohen's d values on slide 8 match category_comparison.csv
+exactly, and the two rows labelled by a second model (groq, on BNP investment
+and N26 savings) are both outside the compared family, so no deck figure is a
+model-versus-model comparison.
