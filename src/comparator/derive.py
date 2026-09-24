@@ -78,7 +78,12 @@ def recompute_derived(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
         def count(cell) -> object:
             if cell is None or (isinstance(cell, float) and pd.isna(cell)) or cell is pd.NA:
                 return pd.NA
-            return len(set(parse_list(cell)))
+            # `none` is the judge saying "I looked and there is no lever here", which
+            # is a score of 0. A blank cell is a different statement - not judged - and
+            # stays NA above, because averaging an unscored page as zero would invent
+            # a finding. Five banks sat out the persuasion comparison on blanks that
+            # meant zero.
+            return len({v for v in parse_list(cell) if v != "none"})
 
         out["persuasion_lever_count"] = out["persuasion_levers"].map(count)
 

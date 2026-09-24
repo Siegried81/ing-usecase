@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T09:03:41+00:00",
+  "generated_at": "2026-09-24T16:20:09+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -10,7 +10,7 @@
       "belfius: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "bnp_paribas_fortis: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
       "cbc: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)",
-      "crelan: core feature(s) entirely missing: ['persuasion_lever_count'] - record a reason (DR-07)"
+      "keytrade: core feature(s) entirely missing: ['rate_value_pct'] - record a reason (DR-07)"
     ]
   },
   "dictionary": [
@@ -1106,7 +1106,8 @@
         "icons",
         "imagery",
         "background",
-        "buttons"
+        "buttons",
+        "none"
       ],
       "range": null,
       "unit": null
@@ -1416,7 +1417,8 @@
         "social_proof",
         "authority",
         "liking",
-        "scarcity"
+        "scarcity",
+        "none"
       ],
       "range": null,
       "unit": null
@@ -2063,6 +2065,7 @@
           "insurance",
           "investment",
           "mortgage",
+          "pension",
           "savings_account"
         ],
         "subscription_style_framing": false,
@@ -2123,11 +2126,11 @@
         "urgency_marker_count": 3,
         "numeric_claim_count": 19,
         "formality_score": 2,
-        "clarity_score": 5,
+        "clarity_score": 4,
         "primary_product": "ING Go (pack compte à vue)",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature",
         "value_prop_clarity": 5,
@@ -2155,7 +2158,8 @@
         "accent_locations": [
           "buttons",
           "imagery",
-          "icons"
+          "icons",
+          "text"
         ],
         "background_luminance": 0.624,
         "cta_contrast_ratio": 7.01,
@@ -2175,12 +2179,13 @@
         "aida_action": true,
         "aida_coverage_score": 3,
         "persuasion_levers": [
+          "authority",
+          "social_proof",
           "reciprocity",
           "scarcity",
-          "social_proof",
-          "authority"
+          "liking"
         ],
-        "persuasion_lever_count": 4,
+        "persuasion_lever_count": 5,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -2254,7 +2259,7 @@
         "primary_product": "Compte Base KBC",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 5,
@@ -2315,7 +2320,10 @@
         "cross_sold_products": [
           "credit_card",
           "insurance",
-          "partner_perk"
+          "investment",
+          "mortgage",
+          "pension",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -2440,6 +2448,7 @@
           "insurance",
           "investment",
           "other",
+          "partner_perk",
           "savings_account"
         ],
         "subscription_style_framing": true,
@@ -2622,7 +2631,7 @@
         "urgency_marker_count": 3,
         "numeric_claim_count": 2,
         "formality_score": 2,
-        "clarity_score": 3,
+        "clarity_score": 5,
         "primary_product": "Comptes d'épargne",
         "rate_shown": false,
         "rate_value_pct": null,
@@ -2652,6 +2661,9 @@
         "brand_colour_share": 0.0,
         "accent_colour_count": 4,
         "accent_locations": [
+          "buttons",
+          "imagery",
+          "icons",
           "text"
         ],
         "background_luminance": 0.777,
@@ -2665,17 +2677,19 @@
         "above_fold_element_count": 37,
         "has_comparison_table": false,
         "layout_archetype": "card_grid",
-        "mobile_first_design_signal": false,
-        "aida_attention": false,
+        "mobile_first_design_signal": true,
+        "aida_attention": true,
         "aida_interest": true,
         "aida_desire": true,
         "aida_action": true,
-        "aida_coverage_score": 3,
+        "aida_coverage_score": 4,
         "persuasion_levers": [
           "scarcity",
-          "reciprocity"
+          "reciprocity",
+          "commitment",
+          "liking"
         ],
-        "persuasion_lever_count": 2,
+        "persuasion_lever_count": 4,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -2985,15 +2999,15 @@
         "question_count": 0,
         "urgency_marker_count": 1,
         "numeric_claim_count": 9,
-        "formality_score": 1,
+        "formality_score": 2,
         "clarity_score": 4,
         "primary_product": "Compte courant",
         "rate_shown": true,
         "rate_value_pct": 0.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature",
-        "value_prop_clarity": 2,
+        "value_prop_clarity": 5,
         "disclaimer_present": false,
         "disclaimer_word_share": 0.0,
         "image_count": 10,
@@ -3016,7 +3030,9 @@
         "brand_colour_share": 0.0,
         "accent_colour_count": 4,
         "accent_locations": [
-          "background"
+          "background",
+          "imagery",
+          "buttons"
         ],
         "background_luminance": 0.088,
         "cta_contrast_ratio": 21.0,
@@ -3038,9 +3054,10 @@
         "persuasion_levers": [
           "social_proof",
           "authority",
-          "reciprocity"
+          "reciprocity",
+          "commitment"
         ],
-        "persuasion_lever_count": 3,
+        "persuasion_lever_count": 4,
         "audience_segment": "mixed",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -3051,7 +3068,8 @@
           "expat"
         ],
         "cross_sold_products": [
-          "investment"
+          "investment",
+          "other"
         ],
         "subscription_style_framing": true,
         "rate_framing": "not_shown",
@@ -3115,7 +3133,7 @@
         "primary_product": "Pack ING More",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "benefit",
         "value_prop_clarity": 5,
@@ -3142,7 +3160,9 @@
         "accent_colour_count": 4,
         "accent_locations": [
           "buttons",
-          "icons"
+          "icons",
+          "imagery",
+          "text"
         ],
         "background_luminance": 0.494,
         "cta_contrast_ratio": 7.01,
@@ -3156,17 +3176,19 @@
         "has_comparison_table": false,
         "layout_archetype": "hero_stacked",
         "mobile_first_design_signal": true,
-        "aida_attention": false,
+        "aida_attention": true,
         "aida_interest": true,
         "aida_desire": true,
         "aida_action": true,
-        "aida_coverage_score": 3,
+        "aida_coverage_score": 4,
         "persuasion_levers": [
+          "authority",
+          "social_proof",
           "reciprocity",
           "scarcity",
-          "social_proof"
+          "liking"
         ],
-        "persuasion_lever_count": 3,
+        "persuasion_lever_count": 5,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -3241,7 +3263,7 @@
         "primary_product": "La Formule Silver / Gold / Green",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 4,
@@ -3288,8 +3310,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 2,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "liking"
+        ],
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "not_applicable",
@@ -3359,7 +3383,7 @@
         "primary_product": "Performance Pack",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "advantage",
         "value_prop_clarity": 3,
@@ -3384,7 +3408,9 @@
         ],
         "brand_colour_share": 0.006,
         "accent_colour_count": 4,
-        "accent_locations": [],
+        "accent_locations": [
+          "none"
+        ],
         "background_luminance": 0.441,
         "cta_contrast_ratio": 11.03,
         "page_height_px": 2945,
@@ -3402,8 +3428,10 @@
         "aida_desire": true,
         "aida_action": true,
         "aida_coverage_score": 3,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "liking"
+        ],
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -3475,7 +3503,7 @@
         "primary_product": "bunq Free - Ton compte bancaire gratuit",
         "rate_shown": true,
         "rate_value_pct": 3.01,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "advantage",
         "value_prop_clarity": 5,
@@ -3765,14 +3793,16 @@
         "above_fold_element_count": 37,
         "has_comparison_table": true,
         "layout_archetype": "hero_stacked",
-        "mobile_first_design_signal": false,
+        "mobile_first_design_signal": true,
         "aida_attention": true,
         "aida_interest": true,
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 3,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "not_applicable",
@@ -3889,8 +3919,10 @@
         "aida_desire": true,
         "aida_action": true,
         "aida_coverage_score": 4,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -3900,6 +3932,8 @@
         "cross_sold_products": [
           "credit_card",
           "investment",
+          "mortgage",
+          "other",
           "partner_perk",
           "savings_account"
         ],
@@ -4391,9 +4425,7 @@
         "target_personas": [
           "investor"
         ],
-        "cross_sold_products": [
-          "current_account_pack"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -4623,8 +4655,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -4635,7 +4669,8 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "investment"
+          "investment",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -4747,8 +4782,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -4820,7 +4857,7 @@
         "primary_product": "Prêt hypothécaire",
         "rate_shown": true,
         "rate_value_pct": 4.58,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 3,
@@ -5108,8 +5145,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5237,9 +5276,7 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "insurance"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5348,8 +5385,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5470,8 +5509,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -5481,8 +5522,7 @@
         ],
         "cross_sold_products": [
           "insurance",
-          "pension",
-          "savings_account"
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5605,11 +5645,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "credit_card",
-          "current_account_pack",
+          "insurance",
           "investment",
-          "mortgage",
-          "savings_account"
+          "mortgage"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5720,8 +5758,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -5847,8 +5887,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5857,7 +5899,9 @@
         ],
         "cross_sold_products": [
           "credit_card",
-          "current_account_pack"
+          "current_account_pack",
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5924,7 +5968,7 @@
         "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "benefit",
-        "value_prop_clarity": 3,
+        "value_prop_clarity": 4,
         "disclaimer_present": false,
         "disclaimer_word_share": 0.0,
         "image_count": 75,
@@ -5967,8 +6011,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -6039,7 +6085,7 @@
         "primary_product": "Comptes à terme",
         "rate_shown": true,
         "rate_value_pct": 3.0,
-        "rate_prominence": "absent",
+        "rate_prominence": "below_fold",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 3,
@@ -6084,17 +6130,17 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [
-          "current_account_pack"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6213,13 +6259,7 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "credit_card",
-          "current_account_pack",
-          "mortgage",
-          "other",
-          "savings_account"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6328,8 +6368,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6395,14 +6437,14 @@
         "urgency_marker_count": 0,
         "numeric_claim_count": 11,
         "formality_score": 2,
-        "clarity_score": 4,
+        "clarity_score": 5,
         "primary_product": "Investir selon votre profil de risque",
         "rate_shown": false,
         "rate_value_pct": null,
         "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "benefit",
-        "value_prop_clarity": 2,
+        "value_prop_clarity": 4,
         "disclaimer_present": true,
         "disclaimer_word_share": 0.036,
         "image_count": 45,
@@ -6426,7 +6468,8 @@
         "accent_colour_count": 4,
         "accent_locations": [
           "text",
-          "icons"
+          "icons",
+          "imagery"
         ],
         "background_luminance": 0.763,
         "cta_contrast_ratio": 7.01,
@@ -6441,14 +6484,17 @@
         "layout_archetype": "card_grid",
         "mobile_first_design_signal": true,
         "aida_attention": true,
-        "aida_interest": false,
-        "aida_desire": true,
+        "aida_interest": true,
+        "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 3,
         "persuasion_levers": [
-          "commitment"
+          "reciprocity",
+          "scarcity",
+          "commitment",
+          "liking"
         ],
-        "persuasion_lever_count": 1,
+        "persuasion_lever_count": 4,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6515,7 +6561,7 @@
         "urgency_marker_count": 0,
         "numeric_claim_count": 24,
         "formality_score": 2,
-        "clarity_score": 4,
+        "clarity_score": 5,
         "primary_product": "Prêt hypothécaire",
         "rate_shown": true,
         "rate_value_pct": 0.0,
@@ -6546,7 +6592,8 @@
         "accent_colour_count": 4,
         "accent_locations": [
           "text",
-          "icons"
+          "icons",
+          "imagery"
         ],
         "background_luminance": 0.55,
         "cta_contrast_ratio": 7.01,
@@ -6554,7 +6601,7 @@
         "section_count": null,
         "cta_count": 0,
         "cta_above_fold": false,
-        "text_image_layout": "stacked",
+        "text_image_layout": "overlaid",
         "text_to_image_ratio": 185.36,
         "above_fold_element_count": 26,
         "has_comparison_table": false,
@@ -6568,9 +6615,10 @@
         "persuasion_levers": [
           "commitment",
           "reciprocity",
-          "social_proof"
+          "social_proof",
+          "liking"
         ],
-        "persuasion_lever_count": 3,
+        "persuasion_lever_count": 4,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6636,7 +6684,7 @@
         "urgency_marker_count": 0,
         "numeric_claim_count": 23,
         "formality_score": 2,
-        "clarity_score": 4,
+        "clarity_score": 5,
         "primary_product": "Épargne-pension (plan d'épargne-pension)",
         "rate_shown": true,
         "rate_value_pct": 33.0,
@@ -6668,7 +6716,8 @@
         "accent_locations": [
           "text",
           "imagery",
-          "buttons"
+          "buttons",
+          "icons"
         ],
         "background_luminance": 0.933,
         "cta_contrast_ratio": 7.01,
@@ -6682,15 +6731,17 @@
         "has_comparison_table": false,
         "layout_archetype": "hero_stacked",
         "mobile_first_design_signal": true,
-        "aida_attention": true,
+        "aida_attention": false,
         "aida_interest": true,
-        "aida_desire": true,
+        "aida_desire": false,
         "aida_action": true,
-        "aida_coverage_score": 4,
+        "aida_coverage_score": 2,
         "persuasion_levers": [
-          "social_proof"
+          "social_proof",
+          "commitment",
+          "reciprocity"
         ],
-        "persuasion_lever_count": 1,
+        "persuasion_lever_count": 3,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -6699,6 +6750,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
+          "insurance",
           "investment",
           "savings_account"
         ],
@@ -6811,8 +6863,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6822,9 +6876,10 @@
           "family"
         ],
         "cross_sold_products": [
+          "credit_card",
           "insurance",
-          "pension",
-          "savings_account"
+          "mortgage",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -6947,9 +7002,7 @@
           "family",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "insurance"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -7185,8 +7238,10 @@
         "aida_desire": false,
         "aida_action": true,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -7199,6 +7254,7 @@
         ],
         "cross_sold_products": [
           "credit_card",
+          "current_account_pack",
           "insurance",
           "investment",
           "mortgage",
@@ -7327,7 +7383,8 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "current_account_pack"
+          "current_account_pack",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -7439,8 +7496,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -7555,8 +7614,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 0,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "mixed",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -7565,7 +7626,6 @@
           "investor"
         ],
         "cross_sold_products": [
-          "current_account_pack",
           "insurance",
           "partner_perk",
           "savings_account"
@@ -7678,8 +7738,10 @@
         "aida_desire": false,
         "aida_action": false,
         "aida_coverage_score": 1,
-        "persuasion_levers": [],
-        "persuasion_lever_count": null,
+        "persuasion_levers": [
+          "none"
+        ],
+        "persuasion_lever_count": 0,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -7688,7 +7750,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "credit_card",
+          "current_account_pack",
           "investment",
           "partner_perk"
         ],
@@ -7989,11 +8051,11 @@
         "urgency_marker_count": 5,
         "numeric_claim_count": 5,
         "formality_score": 1,
-        "clarity_score": 4,
+        "clarity_score": 5,
         "primary_product": "Belgian bank account for expats (ING pack)",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 5,
@@ -8020,7 +8082,9 @@
         "accent_colour_count": 4,
         "accent_locations": [
           "buttons",
-          "icons"
+          "icons",
+          "imagery",
+          "text"
         ],
         "background_luminance": 0.521,
         "cta_contrast_ratio": 7.01,
@@ -8032,8 +8096,8 @@
         "text_to_image_ratio": 130.55,
         "above_fold_element_count": 30,
         "has_comparison_table": true,
-        "layout_archetype": "split_columns",
-        "mobile_first_design_signal": false,
+        "layout_archetype": "hero_stacked",
+        "mobile_first_design_signal": true,
         "aida_attention": true,
         "aida_interest": true,
         "aida_desire": true,
@@ -8043,9 +8107,10 @@
           "authority",
           "social_proof",
           "reciprocity",
-          "scarcity"
+          "scarcity",
+          "liking"
         ],
-        "persuasion_lever_count": 4,
+        "persuasion_lever_count": 5,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -8117,7 +8182,7 @@
         "primary_product": "KBC Basic Account",
         "rate_shown": false,
         "rate_value_pct": null,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 5,
@@ -8176,7 +8241,8 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "credit_card"
+          "credit_card",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -8863,7 +8929,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -8887,7 +8953,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -8938,19 +9004,19 @@
             "persuasion_levers": "liking|social_proof|reciprocity"
           },
           {
-            "rater": null,
-            "page_id": null,
-            "bank": null,
-            "bank_category": null,
-            "product_family": null,
-            "language": null,
-            "url": "ttps://www.bunq.com/fr-be/personal/features/savings-accounts",
+            "rater": "siegried",
+            "page_id": "bunq_savings_account_fr_02",
+            "bank": "bunq",
+            "bank_category": "challenger",
+            "product_family": "savings_account",
+            "language": "fr",
+            "url": "https://www.bunq.com/fr-be/personal/features/savings-accounts",
             "screenshot_path": null,
-            "capture_quality": null,
+            "capture_quality": "ok",
             "formality_score": 1.0,
             "clarity_score": 5.0,
             "rate_prominence": "hero",
-            "value_prop_clarity": 4.0,
+            "value_prop_clarity": 5.0,
             "accent_locations": "backgroung|imagery",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
@@ -8975,7 +9041,7 @@
             "clarity_score": 4.0,
             "rate_prominence": "absent",
             "value_prop_clarity": 3.0,
-            "accent_locations": null,
+            "accent_locations": "none",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
             "mobile_first_design_signal": false,
@@ -8983,7 +9049,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9025,13 +9091,13 @@
             "value_prop_clarity": 5.0,
             "accent_locations": "buttons|icons|imagery|text",
             "text_image_layout": "stacked",
-            "layout_archetype": "card_grid",
+            "layout_archetype": "hero_stacked",
             "mobile_first_design_signal": true,
-            "aida_attention": false,
+            "aida_attention": true,
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity|scarcity"
+            "persuasion_levers": "authority|social_proof|reciprocity|scarcity | liking"
           },
           {
             "rater": "siegried",
@@ -9055,7 +9121,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "reciprocity|scarcity|social_proof|authority"
+            "persuasion_levers": "authority|social_proof|reciprocity|scarcity | liking"
           },
           {
             "rater": "siegried",
@@ -9117,7 +9183,7 @@
             "capture_quality": "ok",
             "formality_score": 1.0,
             "clarity_score": 5.0,
-            "rate_prominence": "absnt",
+            "rate_prominence": "absent",
             "value_prop_clarity": 5.0,
             "accent_locations": "buttons|imagery|icons",
             "text_image_layout": "beside",
@@ -9161,7 +9227,7 @@
             "product_family": "savings_account",
             "language": "fr",
             "url": "https://www.kbc.be/particuliers/fr/epargner/comptes-epargne.html?zone=topnav",
-            "screenshot_path": "\\data\\raw\\kbc\\saving_account_fr_01.png",
+            "screenshot_path": "data\\raw\\kbc\\saving_account_fr_01.png",
             "capture_quality": "ok",
             "formality_score": 2.0,
             "clarity_score": 3.0,
@@ -9175,7 +9241,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9227,14 +9293,14 @@
           },
           {
             "rater": "siegried",
-            "page_id": null,
+            "page_id": "revolut_investment_fr_02",
             "bank": "revolut",
             "bank_category": "challenger",
-            "product_family": null,
-            "language": null,
+            "product_family": "investment",
+            "language": "fr",
             "url": "https://www.revolut.com/fr-BE/etfs/",
             "screenshot_path": null,
-            "capture_quality": null,
+            "capture_quality": "ok",
             "formality_score": 2.0,
             "clarity_score": 4.0,
             "rate_prominence": "absent",
@@ -9290,12 +9356,12 @@
             "accent_locations": "buttons|background",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
-            "mobile_first_design_signal": false,
+            "mobile_first_design_signal": true,
             "aida_attention": true,
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9319,7 +9385,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9487,7 +9553,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9511,7 +9577,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9583,7 +9649,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9655,7 +9721,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9679,7 +9745,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9727,7 +9793,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9751,7 +9817,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9766,7 +9832,7 @@
             "formality_score": 2.0,
             "clarity_score": 4.0,
             "rate_prominence": "absent",
-            "value_prop_clarity": 3.0,
+            "value_prop_clarity": 4.0,
             "accent_locations": "buttons|imagery",
             "text_image_layout": "stacked",
             "layout_archetype": "split_columns",
@@ -9775,7 +9841,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9789,7 +9855,7 @@
             "capture_quality": "ok",
             "formality_score": 2.0,
             "clarity_score": 4.0,
-            "rate_prominence": "absent",
+            "rate_prominence": "below_fold",
             "value_prop_clarity": 3.0,
             "accent_locations": "imagery",
             "text_image_layout": "overlaid",
@@ -9799,7 +9865,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9847,7 +9913,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -9967,7 +10033,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -10039,7 +10105,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -10087,7 +10153,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -10111,7 +10177,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -10135,7 +10201,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": null
+            "persuasion_levers": "none"
           },
           {
             "rater": "siegried",
@@ -10295,7 +10361,8 @@
           "icons",
           "imagery",
           "background",
-          "buttons"
+          "buttons",
+          "none"
         ],
         "range": null,
         "rubric": {
@@ -10413,7 +10480,8 @@
           "social_proof",
           "authority",
           "liking",
-          "scarcity"
+          "scarcity",
+          "none"
         ],
         "range": null,
         "rubric": {

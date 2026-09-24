@@ -995,3 +995,44 @@ which was in `outputs/geo_trends.json` and on no slide at all:
 figures had moved since the 21/09 file: ING's Flanders index 74 -> 73, Argenta's
 Wallonia 24 -> 27, bunq's Wallonia 32 -> 29. The slide carries the new ones, and
 every figure on it was checked back against the regenerated file.
+
+**sieg 24/09 (evening), the judged sheet re-merged, and a scored zero made
+explicit.**
+
+The dataset was carrying rubric values that were not Siegried's. 47 of 642
+judged cells differed from her sheet, because her corrections this morning were
+deliberately not re-merged at the time ("on refera analyse plus tard"). Slide 6
+claims every judged feature comes from one sheet, which was false for those 47.
+Re-merged from `campaigns.csv` so every judged column now comes from her sheet
+and nothing survives from an older pass; the six remaining differences are
+separator formatting (`a, b` vs `a|b`), not values.
+
+Her sheet was audited before the merge, column by column: no value outside the
+dictionary, no score outside 1-5, `aida_coverage_score` consistent with its four
+booleans on all 51 pages, and `rate_prominence` correct against the pages
+themselves. It is clean.
+
+*A blank was doing the work of a zero.* `persuasion_levers` was empty on 21
+pages, and the derive step reads a blank as "not judged" and returns NA, which
+drops the whole bank from `persuasion_lever_count`. Siegried confirmed the
+pages genuinely had no lever. `none` is now an allowed value in
+`persuasion_levers` and `accent_locations` (pure additions, which the freeze
+rule permits), `derive.py` counts it as zero while a blank still returns NA, and
+a test pins the difference. The generator prompt deliberately does NOT carry
+`none` - it is a judge's observation, not an instruction a generator can act on,
+and test_generation.py now asserts that.
+
+Effect: the persuasion comparison runs on 13 peer banks instead of 9. Argenta,
+Crelan, VDK and hellobank were sitting out on blanks that meant zero.
+
+Figures after all of it: positioning 0.28 -> 0.39; `persuasion_lever_count`
+3.67 vs 1.74 (+2.46, 9 peers) -> 5.00 vs 1.44 (+3.32, 13 peers);
+`value_prop_clarity` 5.00 vs 3.74 (+1.46) -> 5.00 vs 3.97 (+1.36). Urgency,
+onboarding, page height and animation are unchanged, and ING's nearest
+neighbour is still Belfius. Slide 8, slide 5's feature count, the D06 banner and
+the speaker notes follow; slide 11's z-values did not move.
+
+Two rows of the sheet that described uncaptured pages were completed - a bunq
+savings page whose URL was missing its leading h, and a Revolut ETF page with no
+product family or language. Both now carry a conforming page_id, and both remain
+unmatched at merge time because the pages have never been collected.

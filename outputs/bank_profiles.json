@@ -67,14 +67,16 @@
       "value_proposition": {
         "primary_product": "La Formule Silver / Gold / Green",
         "rate_shown": 0.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
       "marketing_principles": {
         "aida_coverage": 2.0,
-        "persuasion_levers": [],
-        "lever_count": null
+        "persuasion_levers": [
+          "liking"
+        ],
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -169,12 +171,12 @@
           1.3199500146737049
         ],
         [
-          "value_prop_clarity",
-          1.3128663642778962
-        ],
-        [
           "page_height_px",
           1.266925386170157
+        ],
+        [
+          "youth_student_targeting",
+          1.2547140330712392
         ]
       ]
     },
@@ -337,7 +339,7 @@
         ],
         [
           "aida_coverage_score",
-          -2.1405182040380275
+          -2.1377306830183915
         ]
       ]
     },
@@ -387,7 +389,7 @@
       "value_proposition": {
         "primary_product": "bunq Free - Ton compte bancaire gratuit",
         "rate_shown": 1.0,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "advantage"
       },
@@ -416,12 +418,12 @@
           -3.6055512754639896
         ],
         [
-          "rate_shown",
-          2.4494897427831783
+          "formality_score",
+          -2.8460498941515415
         ],
         [
-          "page_height_px",
-          2.4365258958555773
+          "rate_shown",
+          2.4494897427831783
         ]
       ]
     },
@@ -499,8 +501,8 @@
           -1.5811388300841895
         ],
         [
-          "aida_desire",
-          -1.319950014673705
+          "value_prop_clarity",
+          -1.3514492570346923
         ]
       ]
     },
@@ -519,7 +521,9 @@
         "dominant_colour": "#ffffff",
         "brand_colour_share": 0.006,
         "accent_colour_count": 4.0,
-        "accent_locations": [],
+        "accent_locations": [
+          "none"
+        ],
         "background_luminance": 0.441
       },
       "imagery": {
@@ -547,14 +551,16 @@
       "value_proposition": {
         "primary_product": "Performance Pack",
         "rate_shown": 0.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "advantage"
       },
       "marketing_principles": {
         "aida_coverage": 3.0,
-        "persuasion_levers": [],
-        "lever_count": null
+        "persuasion_levers": [
+          "liking"
+        ],
+        "lever_count": 1.0
       },
       "personas": [
         {
@@ -630,8 +636,10 @@
       },
       "marketing_principles": {
         "aida_coverage": 4.0,
-        "persuasion_levers": [],
-        "lever_count": null
+        "persuasion_levers": [
+          "none"
+        ],
+        "lever_count": 0.0
       },
       "personas": [
         {
@@ -649,8 +657,8 @@
           -1.5811388300841895
         ],
         [
-          "has_animation",
-          -1.2547140330712387
+          "value_prop_clarity",
+          -1.3514492570346923
         ]
       ]
     },
@@ -671,8 +679,9 @@
         "accent_colour_count": 4.0,
         "accent_locations": [
           "buttons",
+          "imagery",
           "icons",
-          "imagery"
+          "text"
         ],
         "background_luminance": 0.5463333333333332
       },
@@ -701,19 +710,20 @@
       "value_proposition": {
         "primary_product": "Belgian bank account for expats (ING pack)",
         "rate_shown": 0.0,
-        "rate_prominence": "below_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature"
       },
       "marketing_principles": {
-        "aida_coverage": 3.3333333333333335,
+        "aida_coverage": 3.6666666666666665,
         "persuasion_levers": [
+          "authority",
+          "social_proof",
           "reciprocity",
           "scarcity",
-          "social_proof",
-          "authority"
+          "liking"
         ],
-        "lever_count": 3.6666666666666665
+        "lever_count": 5.0
       },
       "personas": [
         {
@@ -735,8 +745,8 @@
           2.531903272254352
         ],
         [
-          "value_prop_clarity",
-          1.3128663642778962
+          "persuasion_lever_count",
+          2.393352291499191
         ],
         [
           "fast_digital_onboarding_claim",
@@ -792,7 +802,7 @@
       "value_proposition": {
         "primary_product": "Compte Base KBC",
         "rate_shown": 0.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "rational",
         "fab_level": "feature"
       },
@@ -816,12 +826,12 @@
           1.9148542155126764
         ],
         [
-          "is_bundled_offer",
-          -1.5811388300841895
+          "formality_score",
+          -1.739252713092609
         ],
         [
-          "has_comparison_table",
-          1.3199500146737049
+          "is_bundled_offer",
+          -1.5811388300841895
         ]
       ]
     },
@@ -1005,7 +1015,9 @@
         "brand_colour_share": 0.0,
         "accent_colour_count": 4.0,
         "accent_locations": [
-          "background"
+          "background",
+          "imagery",
+          "buttons"
         ],
         "background_luminance": 0.088
       },
@@ -1027,14 +1039,14 @@
       "tone": {
         "word_count": 1352.0,
         "readability_band": "hard",
-        "formality_score": 1.0,
+        "formality_score": 2.0,
         "second_person_ratio": 0.759,
         "urgency_markers": 1.0
       },
       "value_proposition": {
         "primary_product": "Compte courant",
         "rate_shown": 1.0,
-        "rate_prominence": "above_fold",
+        "rate_prominence": "absent",
         "benefit_framing": "mixed",
         "fab_level": "feature"
       },
@@ -1043,9 +1055,10 @@
         "persuasion_levers": [
           "social_proof",
           "authority",
-          "reciprocity"
+          "reciprocity",
+          "commitment"
         ],
-        "lever_count": 3.0
+        "lever_count": 4.0
       },
       "personas": [
         {
@@ -1132,8 +1145,10 @@
       },
       "marketing_principles": {
         "aida_coverage": 3.0,
-        "persuasion_levers": [],
-        "lever_count": null
+        "persuasion_levers": [
+          "none"
+        ],
+        "lever_count": 0.0
       },
       "personas": [
         {

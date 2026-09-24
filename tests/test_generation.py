@@ -74,7 +74,13 @@ def test_layout_archetype_literal_matches_the_dictionary(fd):
 
 
 def test_prompt_lever_list_matches_the_dictionary(fd):
+    # `none` is a scoring sentinel - the judge saying "I looked and found no
+    # lever" - not a lever a generator could ever be asked to use, so it is the
+    # one dictionary value the prompt must NOT carry.
     for lever in fd["persuasion_levers"].values:
+        if lever == "none":
+            assert lever not in SYSTEM_PROMPT.split("persuasion_levers_used")[-1][:400]
+            continue
         assert lever in SYSTEM_PROMPT
 
 

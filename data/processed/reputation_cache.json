@@ -447,7 +447,7 @@
     }
   },
   "vdk": {
-    "cached_on": "2026-09-23",
+    "cached_on": "2026-09-24",
     "snapshot": {
       "headline_count": 1,
       "themes": {
@@ -1005,26 +1005,23 @@
     }
   },
   "Hello bank!": {
-    "cached_on": "2026-09-23",
+    "cached_on": "2026-09-24",
     "snapshot": {
       "headline_count": 3,
       "themes": {
         "innovation_digital": 0,
         "crisis_or_scandal": 0,
         "financial_results": 0,
-        "product_launch": 0,
+        "product_launch": 3,
         "esg_sustainability": 0,
         "regulatory": 0,
-        "other": 3
+        "other": 0
       },
       "theme_headlines": {
         "innovation_digital": [],
         "crisis_or_scandal": [],
         "financial_results": [],
-        "product_launch": [],
-        "esg_sustainability": [],
-        "regulatory": [],
-        "other": [
+        "product_launch": [
           {
             "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
             "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
@@ -1037,7 +1034,10 @@
             "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
             "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
           }
-        ]
+        ],
+        "esg_sustainability": [],
+        "regulatory": [],
+        "other": []
       },
       "notable_headlines": [
         {
@@ -1052,7 +1052,7 @@
     }
   },
   "VDK Bank": {
-    "cached_on": "2026-09-23",
+    "cached_on": "2026-09-24",
     "snapshot": {
       "headline_count": 1,
       "themes": {

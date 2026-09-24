@@ -1,16 +1,16 @@
 # D-06 — Business narrative, draft insights
 
-> **CURRENT NUMBERS — 24/09, supersedes every figure and every update banner
+> **CURRENT NUMBERS — 24/09 (evening), supersedes every figure and every update banner
 > below.** Scope: 51 pages / 14 banks / 6 product families collected and
 > scored; the comparison runs on the 18 `current_account_pack` pages, 14 banks,
-> 36 comparable features (DR-04).
+> 35 comparable features (DR-04).
 >
 > | | ING | peers | gap |
 > | --- | --- | --- | --- |
-> | traditional↔challenger positioning | **0.28** | — | nearest neighbour Belfius |
+> | traditional↔challenger positioning | **0.39** | — | nearest neighbour Belfius |
 > | `urgency_marker_count` | 4.00 | 0.64 | **+3.69 SD** — largest in the set |
-> | `persuasion_lever_count` (rubric, 9 peers) | 3.67 | 1.74 | +2.46 SD |
-> | `value_prop_clarity` (rubric) | 5.00 | 3.74 | +1.46 SD |
+> | `persuasion_lever_count` (rubric) | 5.00 | 1.44 | +3.32 SD |
+> | `value_prop_clarity` (rubric) | 5.00 | 3.97 | +1.36 SD |
 > | `fast_digital_onboarding_claim` | 0.67 | 0.15 | +1.42 SD |
 > | `page_height_px` | 11,149 | 6,412 | +1.42 SD |
 > | `has_animation` | 0.33 | 0.62 | -0.58 SD — the one place ING is below |
@@ -124,13 +124,13 @@ over with a false "winner".
 ## 2. ING's page is the most urgent and the most persuasion-heavy in the set
 
 ING's `urgency_marker_count` is 4.00 against a peer mean of 0.64 (+3.69 SD) —
-the largest gap of any measured feature. Its `persuasion_lever_count` (3.67
-vs peer mean 1.74, +2.46 SD) is the second-largest — this one is rubric-
+the largest gap of any measured feature. Its `persuasion_lever_count` (5.00
+vs peer mean 1.44, +3.32 SD) is the second-largest — this one is rubric-
 sourced, from the one judged sheet, so its peer group is thinner (9 banks,
 against 13 for the measured features) and it should be quoted with that
 caveat. ING also claims fast digital onboarding at 0.67
 against a peer mean of 0.15 (+1.42 SD) — the fourth-largest gap, behind
-`value_prop_clarity` (5.00 vs 3.74, +1.46 SD).
+`value_prop_clarity` (5.00 vs 3.97, +1.36 SD).
 
 **Read the urgency number with its history.** Until it was re-derived, this
 figure said the opposite: 0.33 against 0.64, *below* peers. `urgency_marker_count`
@@ -237,7 +237,7 @@ communication content — it says nothing about *what* a page argues, only
 matching their known regional roots is a sanity check on the pipeline, not a
 discovery on its own. ING breaking that pattern, in the same direction as
 every challenger in the set, is the one region-level result that lines up
-with the overall traditional↔challenger positioning score (0.28, clearly
+with the overall traditional↔challenger positioning score (0.39, clearly
 with the traditional banks) from a completely independent measurement. Worth
 noting in the room as a second signal pointing the same way, not proof of
 anything by itself — the same "context, never an outcome" rule the existing

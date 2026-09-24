@@ -31,12 +31,12 @@
 | urgency markers | 2 |
 | primary product | La Formule Silver / Gold / Green |
 | rate shown | no |
-| rate prominence | above_fold |
+| rate prominence | absent |
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 2 |
-| persuasion levers | - |
-| lever count | - |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** numeric claim count well above the market average (+2.5 SD); background luminance well above the market average (+1.7 SD); aida desire well below the market average (-1.3 SD).
@@ -78,7 +78,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** has comparison table well above the market average (+1.3 SD); value prop clarity well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD).
+**Signature:** has comparison table well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).
 
 ### beobank  (traditional)
 
@@ -187,7 +187,7 @@
 | urgency markers | 3 |
 | primary product | bunq Free - Ton compte bancaire gratuit |
 | rate shown | yes (all pages) |
-| rate prominence | below_fold |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | advantage |
 | aida coverage | 4 |
@@ -195,7 +195,7 @@
 | lever count | 3 |
 | personas | mass_market 100%, expat 100% |
 
-**Signature:** people present well below the market average (-3.6 SD); rate shown well above the market average (+2.4 SD); page height px well above the market average (+2.4 SD).
+**Signature:** people present well below the market average (-3.6 SD); formality score well below the market average (-2.8 SD); rate shown well above the market average (+2.4 SD).
 
 ### cbc  (traditional)
 
@@ -234,7 +234,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** aida interest well below the market average (-2.4 SD); is bundled offer well below the market average (-1.6 SD); aida desire well below the market average (-1.3 SD).
+**Signature:** aida interest well below the market average (-2.4 SD); is bundled offer well below the market average (-1.6 SD); value prop clarity well below the market average (-1.4 SD).
 
 ### crelan  (traditional)
 
@@ -245,7 +245,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | - |
+| accent locations | none |
 | background luminance | 0.44 |
 | image count | 72 |
 | dominant image type | photo |
@@ -265,12 +265,12 @@
 | urgency markers | 0 |
 | primary product | Performance Pack |
 | rate shown | no |
-| rate prominence | above_fold |
+| rate prominence | absent |
 | benefit framing | rational |
 | fab level | advantage |
 | aida coverage | 3 |
-| persuasion levers | - |
-| lever count | - |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** section count well above the market average (+3.5 SD); image count well above the market average (+3.2 SD); question count well above the market average (+2.5 SD).
@@ -308,11 +308,11 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 4 |
-| persuasion levers | - |
-| lever count | - |
+| persuasion levers | none |
+| lever count | 0 |
 | personas | mass_market 100% |
 
-**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); has animation well below the market average (-1.3 SD).
+**Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); value prop clarity well below the market average (-1.4 SD).
 
 ### ing  (traditional)
 
@@ -323,7 +323,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | buttons, icons, imagery |
+| accent locations | buttons, imagery, icons, text |
 | background luminance | 0.55 |
 | image count | 33 |
 | dominant image type | photo |
@@ -343,15 +343,15 @@
 | urgency markers | 4 |
 | primary product | Belgian bank account for expats (ING pack) |
 | rate shown | no |
-| rate prominence | below_fold |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | feature |
-| aida coverage | 3.33 |
-| persuasion levers | reciprocity, scarcity, social_proof, authority |
-| lever count | 3.67 |
+| aida coverage | 3.67 |
+| persuasion levers | authority, social_proof, reciprocity, scarcity, liking |
+| lever count | 5 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
-**Signature:** urgency marker count well above the market average (+2.5 SD); value prop clarity well above the market average (+1.3 SD); fast digital onboarding claim well above the market average (+1.3 SD).
+**Signature:** urgency marker count well above the market average (+2.5 SD); persuasion lever count well above the market average (+2.4 SD); fast digital onboarding claim well above the market average (+1.3 SD).
 
 ### kbc  (traditional)
 
@@ -382,7 +382,7 @@
 | urgency markers | 0.33 |
 | primary product | Compte Base KBC |
 | rate shown | no |
-| rate prominence | above_fold |
+| rate prominence | absent |
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 2.67 |
@@ -390,7 +390,7 @@
 | lever count | 1.67 |
 | personas | mass_market 100% |
 
-**Signature:** images have alt text well above the market average (+1.9 SD); is bundled offer well below the market average (-1.6 SD); has comparison table well above the market average (+1.3 SD).
+**Signature:** images have alt text well above the market average (+1.9 SD); formality score well below the market average (-1.7 SD); is bundled offer well below the market average (-1.6 SD).
 
 ### keytrade  (challenger)
 
@@ -479,7 +479,7 @@
 | dominant colour | #ffffff |
 | brand colour share | 0 |
 | accent colour count | 4 |
-| accent locations | background |
+| accent locations | background, imagery, buttons |
 | background luminance | 0.09 |
 | image count | 10 |
 | dominant image type | render_3d |
@@ -494,17 +494,17 @@
 | cta above fold | no |
 | word count | 1,352 |
 | readability band | hard |
-| formality score | 1 |
+| formality score | 2 |
 | second person ratio | 0.76 |
 | urgency markers | 1 |
 | primary product | Compte courant |
 | rate shown | yes (all pages) |
-| rate prominence | above_fold |
+| rate prominence | absent |
 | benefit framing | mixed |
 | fab level | feature |
 | aida coverage | 4 |
-| persuasion levers | social_proof, authority, reciprocity |
-| lever count | 3 |
+| persuasion levers | social_proof, authority, reciprocity, commitment |
+| lever count | 4 |
 | personas | mass_market 100%, family 100%, entrepreneur_self_employed 100%, expat 100% |
 
 **Signature:** institutional trust signal present well above the market average (+3.6 SD); rate shown well above the market average (+2.4 SD); subscription style framing well above the market average (+2.4 SD).
@@ -542,8 +542,8 @@
 | benefit framing | mixed |
 | fab level | feature |
 | aida coverage | 3 |
-| persuasion levers | - |
-| lever count | - |
+| persuasion levers | none |
+| lever count | 0 |
 | personas | student 100% |
 
 **Signature:** aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).

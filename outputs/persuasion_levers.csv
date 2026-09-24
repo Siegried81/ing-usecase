@@ -1,7 +1,8 @@
 lever,challenger,traditional
-authority,2,4
-commitment,0,2
-liking,1,5
+authority,2,5
+commitment,1,2
+liking,1,10
+none,0,2
 reciprocity,4,3
 scarcity,0,3
 social_proof,2,4

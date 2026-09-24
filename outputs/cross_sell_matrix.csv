@@ -1,6 +1,6 @@
 product_family,term_account,current_account_pack,savings_account,mortgage,investment,pension,insurance,credit_card,partner_perk,other
 term_account,0,0,0,0,0,0,0,0,0,0
-current_account_pack,0,0,5,1,6,0,8,10,4,1
+current_account_pack,0,0,6,3,7,2,8,10,5,3
 savings_account,0,0,0,0,0,0,0,0,0,0
 mortgage,0,0,0,0,0,0,0,0,0,0
 investment,0,0,0,0,0,0,0,0,0,0
