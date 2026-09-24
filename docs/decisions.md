@@ -809,3 +809,27 @@ validates, the five Cohen's d values on slide 8 match category_comparison.csv
 exactly, and the two rows labelled by a second model (groq, on BNP investment
 and N26 savings) are both outside the compared family, so no deck figure is a
 model-versus-model comparison.
+
+**sieg 24/09, two measures that describe our method rather than the banks.**
+Both were challenged from the pages themselves and both hold up as challenges.
+
+*Cross-sell is inverted on the pages that cross-sell hardest.*
+`cross_sold_products` may only name a `product_family`, and the taxonomy is the
+six banking families plus `other`. Insurance, credit cards, Amazon Prime,
+cashback and identity protection are none of those, so all of them collapse
+into one `other` token, counted once. Counted on the stored HTML, ING's three
+pack pages name 8, 13 and 14 distinct add-on products and score 1/6 = 17%,
+while bunq (3 add-ons), Keytrade (3) and N26 (4) score 2/6 = 33%. The number
+says the opposite of what the pages show. Fixing it means adding values to the
+frozen dictionary, which is a team decision, so it is reported in
+`limitations.py` and must not be presented as a finding about ING.
+
+*Page colour is a property of our capture as much as of the page.*
+`background_luminance` was challenged as wrong because ING's pages look black.
+Re-measured from the stored screenshots: the captures genuinely are light -
+0 to 1% dark pixels on all three ING pack pages, against 99% for bunq and 45%
+for Revolut - and the captured ING HTML declares no `prefers-color-scheme:
+dark` rule, so the value is correct for what we collected. But every colour
+feature comes from one rendering, headless Chrome at the default light scheme,
+and a visitor whose browser or extension forces dark mode sees a different
+page. That difference is unmeasured and now says so in `limitations.py`.
