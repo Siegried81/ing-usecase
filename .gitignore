@@ -37,3 +37,10 @@ streamlit_log.txt
 # sieg 21/09: local AI-tool worktree/config (Kilo Code), not shared repo
 # content - was causing noise and a stray tracked file in git status.
 .kilo/
+
+# Deck render artifacts (LibreOffice/pdftoppm output, regenerable)
+docs/main-*.jpg
+docs/slide-*.jpg
+docs/Banking_Campaigns_Comparator.pdf
+docs/Recommendation_System.pdf
+docs/deck_assets/_*.png
