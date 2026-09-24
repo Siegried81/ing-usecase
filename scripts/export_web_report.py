@@ -122,7 +122,11 @@ LABELS = {
     # AI Score axis labels (comparator/ai_score.py).
     "digital": "Digital",
     "trust": "Trust",
-    "cross_sell": "Cross-sell",
+    # Named for what it measures, not for the dimension it belongs to: this axis
+    # is is_bundled_offer, a yes/no. Calling it "Cross-sell" put a 0-or-10 flag
+    # next to crossSellScore, a 0-1 breadth ratio, under one word on one screen -
+    # ING reads 10/10 here and 26% there, and both are right.
+    "cross_sell": "Bundled offer",
     "personalisation": "Personalisation",
     "innovation": "Innovation",
     "simplicity": "Simplicity",
@@ -160,6 +164,14 @@ FAMILY_NAMES = {
     "investment": "Investment",
     "pension": "Pension",
     "other": "Other",
+    # cross_sold_products names three things that are not product families -
+    # they are what a banking page cross-sells alongside one. They travel
+    # through the same label map because the cross-sell matrix draws its axes
+    # from that column; without an entry here they render raw, and the panel
+    # showed "credit_card" next to "Current-account packs".
+    "insurance": "Insurance",
+    "credit_card": "Credit cards",
+    "partner_perk": "Partner perks",
 }
 
 

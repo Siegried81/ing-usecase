@@ -1,6 +1,6 @@
 """AI Score - a transparent, rule-based composite index per bank.
 
-Six axes (Digital, Trust, Cross-sell, Personalisation,
+Six axes (Digital, Trust, Bundled offer, Personalisation,
 Innovation, Simplicity), each 0-10, computed for the radar chart in the web UI.
 
 WHY DETERMINISTIC, NOT A MODEL CALL: every other "proprietary index" idea in the
@@ -16,7 +16,9 @@ Formulas (all means are of already-collected page-level features for one bank):
                        mobile_first_design_signal
   * trust           - institutional_trust_signal_present, regulatory_disclosure_prominence
                        == prominent, branch_network_cited_as_benefit
-  * cross_sell      - is_bundled_offer
+  * cross_sell      - is_bundled_offer. Labelled "Bundled offer" on screen: it is a
+                       yes/no, and reusing the word "cross-sell" put it next to
+                       cross_sell.py's breadth ratio under one name.
   * personalisation - how many of the 8 target_personas values this bank's pages use at all,
                        out of the taxonomy size
   * innovation      - NOT MEASURABLE, returns None. Both inputs failed: has_animation

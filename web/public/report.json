@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T19:50:07+00:00",
+  "generated_at": "2026-09-24T20:37:27+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -1543,7 +1543,7 @@
     },
     {
       "key": "cross_sell",
-      "label": "Cross-sell"
+      "label": "Bundled offer"
     },
     {
       "key": "personalisation",
@@ -1566,9 +1566,9 @@
       "Mortgages",
       "Investment",
       "Pension",
-      "insurance",
-      "credit_card",
-      "partner_perk",
+      "Insurance",
+      "Credit cards",
+      "Partner perks",
       "Other"
     ],
     "matrix": [
@@ -1696,12 +1696,12 @@
     "mostAssociated": [
       {
         "from": "Current-account packs",
-        "to": "credit_card",
+        "to": "Credit cards",
         "count": 10
       },
       {
         "from": "Current-account packs",
-        "to": "insurance",
+        "to": "Insurance",
         "count": 8
       },
       {
@@ -1716,7 +1716,7 @@
       },
       {
         "from": "Current-account packs",
-        "to": "partner_perk",
+        "to": "Partner perks",
         "count": 5
       }
     ],
@@ -1750,15 +1750,15 @@
         },
         {
           "from": "Term accounts",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Term accounts",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Term accounts",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Term accounts",
@@ -1786,15 +1786,15 @@
         },
         {
           "from": "Savings accounts",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Savings accounts",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Savings accounts",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Savings accounts",
@@ -1822,15 +1822,15 @@
         },
         {
           "from": "Mortgages",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Mortgages",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Mortgages",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Mortgages",
@@ -1858,15 +1858,15 @@
         },
         {
           "from": "Investment",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Investment",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Investment",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Investment",
@@ -1894,126 +1894,126 @@
         },
         {
           "from": "Pension",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Pension",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Pension",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Pension",
           "to": "Other"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Term accounts"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Current-account packs"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Savings accounts"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Mortgages"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Investment"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Pension"
         },
         {
-          "from": "insurance",
-          "to": "credit_card"
+          "from": "Insurance",
+          "to": "Credit cards"
         },
         {
-          "from": "insurance",
-          "to": "partner_perk"
+          "from": "Insurance",
+          "to": "Partner perks"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Other"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Term accounts"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Current-account packs"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Savings accounts"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Mortgages"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Investment"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Pension"
         },
         {
-          "from": "credit_card",
-          "to": "insurance"
+          "from": "Credit cards",
+          "to": "Insurance"
         },
         {
-          "from": "credit_card",
-          "to": "partner_perk"
+          "from": "Credit cards",
+          "to": "Partner perks"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Other"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Term accounts"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Current-account packs"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Savings accounts"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Mortgages"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Investment"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Pension"
         },
         {
-          "from": "partner_perk",
-          "to": "insurance"
+          "from": "Partner perks",
+          "to": "Insurance"
         },
         {
-          "from": "partner_perk",
-          "to": "credit_card"
+          "from": "Partner perks",
+          "to": "Credit cards"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Other"
         },
         {
@@ -2042,15 +2042,15 @@
         },
         {
           "from": "Other",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Other",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Other",
-          "to": "partner_perk"
+          "to": "Partner perks"
         }
       ]
     }
