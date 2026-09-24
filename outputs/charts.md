@@ -8,18 +8,18 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 ## Why the charts use fewer features than the dictionary has
 
-The dictionary defines 104 features. The comparisons here use **36**. Nothing is thrown away quietly — this is the whole reduction:
+The dictionary defines 104 features. The comparisons here use **35**. Nothing is thrown away quietly — this is the whole reduction:
 
 ```
 104 features in the dictionary
   - 18  provenance                 identify a page, do not describe a campaign
   -  4  free text / identifiers    no two pages share them
   -  8  within_language, mixed languages present not comparable across languages (comparability in the dictionary)
-  -  1  withdrawn, capture not the page the stored capture is missing what the feature counts
+  -  2  withdrawn, capture not the page the stored capture is missing what the feature counts
   - 27  categorical / list         not encoded - see note below
   -  2  missing for some bank      cannot compare what one bank lacks
   -  8  no variation across banks  identical everywhere, carries no signal
-  = 36  features used in this comparison
+  = 35  features used in this comparison
 ```
 
 **The line worth arguing about is the 27 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
@@ -40,7 +40,7 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **How to read it.** Left is traditional, right is challenger. Colour carries the bank's declared category, so a dot far from its own colour's cluster is the interesting case. ING is ringed and bold.
 
-**What this run shows.** ING scores **0.28** — clearly with the traditional banks. Computed over 36 features.
+**What this run shows.** ING scores **0.28** — clearly with the traditional banks. Computed over 35 features.
 
 The two groups do not overlap: the most challenger-like incumbent sits at 0.29 and the most traditional challenger at 0.59, a gap of 0.30. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
@@ -53,7 +53,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 | crelan | traditional | -0.02 |
 | kbc | traditional | 0.01 |
 | vdk | traditional | 0.05 |
-| hellobank | traditional | 0.22 |
+| hellobank | traditional | 0.23 |
 | ing **(focus)** | traditional | 0.28 |
 | belfius | traditional | 0.29 |
 | keytrade | challenger | 0.59 |
@@ -108,12 +108,12 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 | --- | --- | --- | --- |
 | background_luminance | 0.43 | 0.17 | -2.36 |
 | above_fold_element_count | 36.57 | 21.50 | -2.12 |
-| subscription_style_framing | 0.00 | 0.50 | 2.00 |
 | rate_shown | 0.00 | 0.50 | 2.00 |
+| subscription_style_framing | 0.00 | 0.50 | 2.00 |
 | total_image_area_ratio | 0.10 | 0.31 | 1.99 |
 | hero_image_area_ratio | 0.25 | 0.62 | 1.49 |
 | question_count | 20.71 | 5.75 | -1.44 |
-| expat_cross_border_targeting | 0.07 | 0.50 | 1.23 |
+| disclaimer_present | 0.93 | 0.50 | -1.23 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 
@@ -129,7 +129,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.29 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **belfius** (5.8), **argenta** (6.5), **bnp_paribas_fortis** (6.7).
+**What this run shows.** The banks closest to ING are **belfius** (5.8), **argenta** (6.4), **bnp_paribas_fortis** (6.6).
 
 | Cluster | Banks |
 | --- | --- |

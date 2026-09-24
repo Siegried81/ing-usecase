@@ -54,7 +54,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3244.0,
-        "cta_count": 2.0,
+        "cta_count": 0.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -133,7 +133,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11110.0,
-        "cta_count": 6.0,
+        "cta_count": 5.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -212,7 +212,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 7078.0,
-        "cta_count": 10.0,
+        "cta_count": 9.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -292,7 +292,7 @@
         "hero_image": 1.0,
         "text_image_layout": "stacked",
         "page_height_px": 6387.0,
-        "cta_count": 13.0,
+        "cta_count": 12.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -374,7 +374,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 15135.0,
-        "cta_count": 22.0,
+        "cta_count": 21.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -459,7 +459,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 4447.0,
-        "cta_count": 5.0,
+        "cta_count": 4.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -534,7 +534,7 @@
         "hero_image": 1.0,
         "text_image_layout": "overlaid",
         "page_height_px": 2945.0,
-        "cta_count": 2.0,
+        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -611,7 +611,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3881.0,
-        "cta_count": 3.0,
+        "cta_count": 1.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -649,7 +649,7 @@
           -1.5811388300841895
         ],
         [
-          "animated_asset_count",
+          "has_animation",
           -1.2547140330712387
         ]
       ]
@@ -688,7 +688,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 11148.666666666666,
-        "cta_count": 1.0,
+        "cta_count": 0.6666666666666666,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -779,7 +779,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 3775.3333333333335,
-        "cta_count": 2.3333333333333335,
+        "cta_count": 1.3333333333333333,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -861,7 +861,7 @@
         "hero_image": 1.0,
         "text_image_layout": "beside",
         "page_height_px": 6440.0,
-        "cta_count": 3.0,
+        "cta_count": 2.0,
         "cta_above_fold": 0.0
       },
       "tone": {
@@ -905,8 +905,8 @@
           1.7522235987270867
         ],
         [
-          "cta_contrast_ratio",
-          -1.483632577196052
+          "numeric_claim_count",
+          -1.4309934313895196
         ]
       ]
     },

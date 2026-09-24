@@ -707,3 +707,22 @@ def test_ordinary_templates_are_left_alone():
     html = "<html><body><template><p>not rendered</p></template></body></html>"
     _flat, count = flatten_declarative_shadow_roots(html)
     assert count == 0
+
+
+def test_chrome_exclusion_catches_a_menu_built_from_plain_divs():
+    # Two of the fourteen captured banks (hellobank, keytrade) build their menu
+    # with <div class="navbar-container"> around <ul class="desktop-menu"> and
+    # carry no <nav>, no role="navigation" and no <footer>. Matching on tag and
+    # role alone let their whole mega-menu be eligible as calls to action.
+    html = """<html><body>
+      <div class="navbar-container"><ul class="desktop-menu">
+        <li><a href="/a">Ouvrir un compte</a></li>
+        <li><a href="/b">Découvrir nos offres</a></li>
+      </ul></div>
+      <main><a href="/go">Ouvrez votre compte</a></main>
+    </body></html>"""
+    from bs4 import BeautifulSoup
+    from comparator.collection.scraper import _count_ctas
+
+    count, _ = _count_ctas(BeautifulSoup(html, "html.parser"))
+    assert count == 1, "only the body CTA counts; the div-based menu is chrome"
