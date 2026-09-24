@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T06:15:26+00:00",
+  "generated_at": "2026-09-24T06:58:35+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -542,7 +542,7 @@
         "innovation": 5.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.167
+      "crossSellScore": 0.111
     },
     {
       "key": "beobank",
@@ -708,7 +708,7 @@
         "innovation": 0.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.0
+      "crossSellScore": 0.111
     },
     {
       "key": "bunq",
@@ -953,7 +953,7 @@
         "innovation": 5.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.0
+      "crossSellScore": 0.111
     },
     {
       "key": "hellobank",
@@ -1031,7 +1031,7 @@
         "innovation": 0.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.0
+      "crossSellScore": 0.444
     },
     {
       "key": "ing",
@@ -1124,7 +1124,7 @@
         "innovation": 1.7,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.167
+      "crossSellScore": 0.259
     },
     {
       "key": "kbc",
@@ -1205,7 +1205,7 @@
         "innovation": 5.0,
         "simplicity": 0.0
       },
-      "crossSellScore": 0.0
+      "crossSellScore": 0.333
     },
     {
       "key": "keytrade",
@@ -1290,7 +1290,7 @@
         "innovation": 5.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.333
+      "crossSellScore": 0.444
     },
     {
       "key": "n26",
@@ -1371,7 +1371,7 @@
         "innovation": 0.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.333
+      "crossSellScore": 0.444
     },
     {
       "key": "revolut",
@@ -1468,7 +1468,7 @@
         "innovation": 10.0,
         "simplicity": 2.5
       },
-      "crossSellScore": 0.333
+      "crossSellScore": 0.111
     },
     {
       "key": "vdk",
@@ -1583,6 +1583,9 @@
       "Mortgages",
       "Investment",
       "Pension",
+      "insurance",
+      "credit_card",
+      "partner_perk",
       "Other"
     ],
     "matrix": [
@@ -1593,18 +1596,27 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ],
       [
         0,
         0,
-        3,
+        5,
+        1,
+        6,
         0,
+        8,
+        10,
         4,
-        0,
-        5
+        1
       ],
       [
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -1620,12 +1632,6 @@
         0,
         0,
         0,
-        0
-      ],
-      [
-        0,
-        0,
-        0,
         0,
         0,
         0,
@@ -1638,9 +1644,63 @@
         0,
         0,
         0,
+        0,
+        0,
+        0,
         0
       ],
       [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
         0,
         0,
         0,
@@ -1653,18 +1713,28 @@
     "mostAssociated": [
       {
         "from": "Current-account packs",
-        "to": "Other",
-        "count": 5
+        "to": "credit_card",
+        "count": 10
+      },
+      {
+        "from": "Current-account packs",
+        "to": "insurance",
+        "count": 8
       },
       {
         "from": "Current-account packs",
         "to": "Investment",
-        "count": 4
+        "count": 6
       },
       {
         "from": "Current-account packs",
         "to": "Savings accounts",
-        "count": 3
+        "count": 5
+      },
+      {
+        "from": "Current-account packs",
+        "to": "partner_perk",
+        "count": 4
       }
     ],
     "neverPaired": {
@@ -1672,10 +1742,6 @@
         {
           "from": "Current-account packs",
           "to": "Term accounts"
-        },
-        {
-          "from": "Current-account packs",
-          "to": "Mortgages"
         },
         {
           "from": "Current-account packs",
@@ -1705,6 +1771,18 @@
         },
         {
           "from": "Term accounts",
+          "to": "insurance"
+        },
+        {
+          "from": "Term accounts",
+          "to": "credit_card"
+        },
+        {
+          "from": "Term accounts",
+          "to": "partner_perk"
+        },
+        {
+          "from": "Term accounts",
           "to": "Other"
         },
         {
@@ -1726,6 +1804,18 @@
         {
           "from": "Savings accounts",
           "to": "Pension"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "insurance"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "credit_card"
+        },
+        {
+          "from": "Savings accounts",
+          "to": "partner_perk"
         },
         {
           "from": "Savings accounts",
@@ -1753,6 +1843,18 @@
         },
         {
           "from": "Mortgages",
+          "to": "insurance"
+        },
+        {
+          "from": "Mortgages",
+          "to": "credit_card"
+        },
+        {
+          "from": "Mortgages",
+          "to": "partner_perk"
+        },
+        {
+          "from": "Mortgages",
           "to": "Other"
         },
         {
@@ -1774,6 +1876,18 @@
         {
           "from": "Investment",
           "to": "Pension"
+        },
+        {
+          "from": "Investment",
+          "to": "insurance"
+        },
+        {
+          "from": "Investment",
+          "to": "credit_card"
+        },
+        {
+          "from": "Investment",
+          "to": "partner_perk"
         },
         {
           "from": "Investment",
@@ -1801,6 +1915,126 @@
         },
         {
           "from": "Pension",
+          "to": "insurance"
+        },
+        {
+          "from": "Pension",
+          "to": "credit_card"
+        },
+        {
+          "from": "Pension",
+          "to": "partner_perk"
+        },
+        {
+          "from": "Pension",
+          "to": "Other"
+        },
+        {
+          "from": "insurance",
+          "to": "Term accounts"
+        },
+        {
+          "from": "insurance",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "insurance",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "insurance",
+          "to": "Mortgages"
+        },
+        {
+          "from": "insurance",
+          "to": "Investment"
+        },
+        {
+          "from": "insurance",
+          "to": "Pension"
+        },
+        {
+          "from": "insurance",
+          "to": "credit_card"
+        },
+        {
+          "from": "insurance",
+          "to": "partner_perk"
+        },
+        {
+          "from": "insurance",
+          "to": "Other"
+        },
+        {
+          "from": "credit_card",
+          "to": "Term accounts"
+        },
+        {
+          "from": "credit_card",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "credit_card",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "credit_card",
+          "to": "Mortgages"
+        },
+        {
+          "from": "credit_card",
+          "to": "Investment"
+        },
+        {
+          "from": "credit_card",
+          "to": "Pension"
+        },
+        {
+          "from": "credit_card",
+          "to": "insurance"
+        },
+        {
+          "from": "credit_card",
+          "to": "partner_perk"
+        },
+        {
+          "from": "credit_card",
+          "to": "Other"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Term accounts"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Current-account packs"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Savings accounts"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Mortgages"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Investment"
+        },
+        {
+          "from": "partner_perk",
+          "to": "Pension"
+        },
+        {
+          "from": "partner_perk",
+          "to": "insurance"
+        },
+        {
+          "from": "partner_perk",
+          "to": "credit_card"
+        },
+        {
+          "from": "partner_perk",
           "to": "Other"
         },
         {
@@ -1826,6 +2060,18 @@
         {
           "from": "Other",
           "to": "Pension"
+        },
+        {
+          "from": "Other",
+          "to": "insurance"
+        },
+        {
+          "from": "Other",
+          "to": "credit_card"
+        },
+        {
+          "from": "Other",
+          "to": "partner_perk"
         }
       ]
     }

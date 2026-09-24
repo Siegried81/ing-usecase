@@ -833,3 +833,44 @@ dark` rule, so the value is correct for what we collected. But every colour
 feature comes from one rendering, headless Chrome at the default light scheme,
 and a visitor whose browser or extension forces dark mode sees a different
 page. That difference is unmeasured and now says so in `limitations.py`.
+
+**sieg 24/09, the cross-sell taxonomy widened, and what OCR can and cannot do yet.**
+
+*Cross-sell, fixed.* `insurance`, `credit_card` and `partner_perk` were added to
+`cross_sold_products` (a pure addition, which the freeze rule allows and
+freeze.py classes as benign), the extraction prompt now lists them with
+examples, and `scripts/rederive_cross_sold_products.py` re-derived that ONE
+column from the stored HTML across all 51 rows. It discards the other 26
+model_assisted fields the same call returns, because six of them are quoted on
+slides and re-rolling those to fix an unrelated feature would trade a known
+problem for an unknown one. The frozen snapshot was re-synced on Siegried's
+explicit decision this morning, with Dan and Stephane absent - recorded here so
+they see it rather than discover it.
+
+Result: ING goes from last at 1/6 = 17% to sixth of fourteen at 25.9%, and
+`ing_vs_peers.csv` is byte-identical afterwards, so no figure on any slide
+moved. The measure now reports CATEGORY BREADTH honestly: ING names many
+products inside three categories (credit_card, insurance, partner_perk) while
+KBC spreads across five. It still does not measure how hard a page pushes the
+next product, and the limitation saying so stays.
+
+*OCR is installed and the CTA question is now answerable, but not automatically.*
+tesseract 5.5 with fra/nld/eng plus pytesseract and opencv are in the project
+environment. Line-level OCR of ING's pack page reads 314 text lines in 13s and
+surfaces ten CTA-shaped candidates against the HTML counter's 1 - but with
+false positives (FAQ headings, body sentences containing "découvrez"). A
+contour-based button detector was tried and rejected: it returns 0 on ING's
+flat, low-contrast buttons, which is worse than the number it was meant to
+repair.
+
+So no automated CTA count today. Slide 8 now states what IS defensible: the
+HTML reads 1, the stored screenshot of the same page shows at least nine named
+calls to action, and the feature therefore measured the capture. Building a
+reliable screenshot-based CTA counter is the highest-value next step - the
+evidence is already on disk.
+
+*One more capture defect found while reading the screenshots.* ING's pack page
+capture has a cookie-consent modal open across the page, covering a pack card
+and its button. Every geometric feature on that page - hero_image_area_ratio,
+above_fold_element_count, background_luminance - is measured with that overlay
+in frame. Not quantified here; named so it is not discovered by someone else.

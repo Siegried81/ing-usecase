@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T06:15:26+00:00",
+  "generated_at": "2026-09-24T06:58:35+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -1526,7 +1526,7 @@
       "tier": "extended",
       "required": false,
       "nullable": true,
-      "definition": "Other product families this page cross-sells or cross-references alongside its own product_family.",
+      "definition": "Other products this page cross-sells or cross-references alongside its own product_family. Not limited to banking families: a page that pitches insurance, a credit card or a partner perk is cross-selling, and collapsing those into `other` counts a page naming ten add-ons the same as one naming a single unknown.",
       "values": [
         "term_account",
         "current_account_pack",
@@ -1534,6 +1534,9 @@
         "mortgage",
         "investment",
         "pension",
+        "insurance",
+        "credit_card",
+        "partner_perk",
         "other"
       ],
       "range": null,
@@ -2055,7 +2058,13 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "insurance",
+          "investment",
+          "mortgage",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2179,7 +2188,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "credit_card",
+          "insurance",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -2301,7 +2312,11 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "insurance",
+          "partner_perk"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2422,8 +2437,10 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "insurance",
+          "investment",
+          "other",
+          "savings_account"
         ],
         "subscription_style_framing": true,
         "rate_framing": "not_shown",
@@ -2666,9 +2683,7 @@
           "family",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "term_account"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -2910,7 +2925,9 @@
           "mass_market",
           "student"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -3034,8 +3051,7 @@
           "expat"
         ],
         "cross_sold_products": [
-          "investment",
-          "other"
+          "investment"
         ],
         "subscription_style_framing": true,
         "rate_framing": "not_shown",
@@ -3159,7 +3175,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "credit_card",
+          "insurance",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -3392,7 +3410,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "book_advisor_or_branch",
@@ -3515,8 +3535,9 @@
           "expat"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "base_rate",
@@ -3640,7 +3661,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "other"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -3876,7 +3897,12 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "investment",
+          "partner_perk",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -4120,8 +4146,10 @@
           "investor"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "insurance",
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -4363,7 +4391,9 @@
         "target_personas": [
           "investor"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -4605,8 +4635,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "investment",
-          "pension"
+          "investment"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -4726,7 +4755,9 @@
         "target_personas": [
           "investor"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5207,7 +5238,7 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "investment"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5326,7 +5357,10 @@
           "investor",
           "retiree"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance",
+          "pension"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5446,8 +5480,9 @@
           "entrepreneur_self_employed"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "pension"
+          "insurance",
+          "pension",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5570,8 +5605,11 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "credit_card",
+          "current_account_pack",
+          "investment",
+          "mortgage",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5695,9 +5733,12 @@
           "mass_market"
         ],
         "cross_sold_products": [
+          "credit_card",
+          "current_account_pack",
+          "insurance",
           "investment",
-          "pension",
-          "other"
+          "mortgage",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -5814,7 +5855,10 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -5932,10 +5976,7 @@
           "retiree",
           "family"
         ],
-        "cross_sold_products": [
-          "investment",
-          "other"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "book_advisor_or_branch",
@@ -6051,7 +6092,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6170,7 +6213,13 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card",
+          "current_account_pack",
+          "mortgage",
+          "other",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6407,9 +6456,7 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [
-          "pension"
-        ],
+        "cross_sold_products": [],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -6652,8 +6699,8 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "investment"
+          "investment",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -6775,8 +6822,9 @@
           "family"
         ],
         "cross_sold_products": [
-          "savings_account",
-          "pension"
+          "insurance",
+          "pension",
+          "savings_account"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -6899,7 +6947,9 @@
           "family",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -7021,7 +7071,11 @@
           "retiree",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "insurance",
+          "investment",
+          "savings_account"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "other",
@@ -7144,11 +7198,11 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "current_account_pack",
-          "mortgage",
+          "credit_card",
+          "insurance",
           "investment",
-          "pension",
-          "other"
+          "mortgage",
+          "pension"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -7272,7 +7326,9 @@
           "investor",
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "current_account_pack"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",
@@ -7510,8 +7566,9 @@
         ],
         "cross_sold_products": [
           "current_account_pack",
-          "savings_account",
-          "other"
+          "insurance",
+          "partner_perk",
+          "savings_account"
         ],
         "subscription_style_framing": true,
         "rate_framing": "base_rate",
@@ -7631,8 +7688,9 @@
           "mass_market"
         ],
         "cross_sold_products": [
-          "current_account_pack",
-          "investment"
+          "credit_card",
+          "investment",
+          "partner_perk"
         ],
         "subscription_style_framing": false,
         "rate_framing": "promo_bonus",
@@ -7995,7 +8053,7 @@
           "expat"
         ],
         "cross_sold_products": [
-          "other"
+          "insurance"
         ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
@@ -8117,7 +8175,9 @@
         "target_personas": [
           "mass_market"
         ],
-        "cross_sold_products": [],
+        "cross_sold_products": [
+          "credit_card"
+        ],
         "subscription_style_framing": false,
         "rate_framing": "not_shown",
         "primary_cta_type": "self_service_online",

@@ -26,10 +26,19 @@ def df(fd):
     return build_fixture(fd)
 
 
+def _possible(fd):
+    """Products a page could cross-sell: the taxonomy minus the page's own family.
+
+    Derived from the dictionary rather than hardcoded, so widening the taxonomy
+    (insurance, credit_card, partner_perk were added on 24/09) changes the
+    expected value here automatically instead of failing a frozen number.
+    """
+    values = [f for f in fd.features if f.name == "cross_sold_products"][0].values
+    return len(values) - 1
+
 def test_score_bank_is_the_mean_share_of_possible_other_products(fd):
-    # taxonomy has 7 values, so 2 cross-sold products / 6 possible = 0.333...
     rows = pd.DataFrame({"cross_sold_products": [format_list(["mortgage", "pension"])]})
-    assert cross_sell.score_bank(rows, fd) == pytest.approx(2 / 6, rel=1e-3)
+    assert cross_sell.score_bank(rows, fd) == pytest.approx(2 / _possible(fd), rel=1e-3)
 
 
 def test_score_bank_is_none_when_the_column_is_missing():
@@ -48,7 +57,7 @@ def test_score_bank_is_none_when_every_page_cross_sells_nothing(fd):
 def test_score_all_matches_the_fixture_for_a_bundled_bank(df, fd):
     # ing's archetype cross-sells current_account_pack + investment on every page.
     scores = cross_sell.score_all(df, fd)
-    assert scores["ing"] == pytest.approx(2 / 6, rel=1e-3)
+    assert scores["ing"] == pytest.approx(2 / _possible(fd), rel=1e-3)
 
 
 def test_score_all_is_zero_for_a_challenger_with_no_bundle(df, fd):
