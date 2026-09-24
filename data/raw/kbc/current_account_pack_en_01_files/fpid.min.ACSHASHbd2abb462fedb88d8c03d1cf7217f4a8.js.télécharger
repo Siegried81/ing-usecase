@@ -1,0 +1,1 @@
+(function(){var a=new XMLHttpRequest;a.open("GET","/x0a-p-analytics/set-fpid.json",!1);a.send(null);if(200===a.status)if((a=JSON.parse(a.responseText))&&a.uuid)window.fpid=a.uuid;else throw TypeError("FPID was not retrieved from response, not calling websdk alloy");})();

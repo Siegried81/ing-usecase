@@ -1,0 +1,1 @@
+(function(){window.jsKbc=window.jsKbc||{};var a=!1;jsKbc.ready=function(b){a?b():document.addEventListener("DOMContentLoaded",function(){a=!0;b()})}})();
