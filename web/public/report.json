@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T07:48:12+00:00",
+  "generated_at": "2026-09-24T09:03:41+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -3415,7 +3415,7 @@
         "name": "ING",
         "regions": {
           "Bruxelles": 100,
-          "Région Flamande": 74,
+          "Région Flamande": 73,
           "Wallonie": 98
         }
       },
@@ -3430,32 +3430,32 @@
       "bnp_paribas_fortis": {
         "name": "BNP Paribas Fortis",
         "regions": {
-          "Bruxelles": 71,
-          "Région Flamande": 64,
+          "Bruxelles": 68,
+          "Région Flamande": 66,
           "Wallonie": 100
         }
       },
       "argenta": {
         "name": "Argenta",
         "regions": {
-          "Bruxelles": 30,
+          "Bruxelles": 29,
           "Région Flamande": 100,
-          "Wallonie": 24
+          "Wallonie": 27
         }
       },
       "crelan": {
         "name": "Crelan",
         "regions": {
-          "Bruxelles": 32,
-          "Région Flamande": 95,
+          "Bruxelles": 31,
+          "Région Flamande": 96,
           "Wallonie": 100
         }
       },
       "belfius": {
         "name": "Belfius",
         "regions": {
-          "Bruxelles": 83,
-          "Région Flamande": 69,
+          "Bruxelles": 78,
+          "Région Flamande": 66,
           "Wallonie": 100
         }
       },
@@ -3463,8 +3463,8 @@
         "name": "Revolut",
         "regions": {
           "Bruxelles": 100,
-          "Région Flamande": 43,
-          "Wallonie": 52
+          "Région Flamande": 47,
+          "Wallonie": 53
         }
       },
       "n26": {
@@ -3479,8 +3479,8 @@
         "name": "bunq",
         "regions": {
           "Bruxelles": 100,
-          "Région Flamande": 73,
-          "Wallonie": 32
+          "Région Flamande": 78,
+          "Wallonie": 29
         }
       }
     }
