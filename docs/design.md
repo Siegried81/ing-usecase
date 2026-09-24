@@ -24,7 +24,7 @@ Each feature declares:
 **Freeze rule:** after the Day 2 freeze, columns may be *added* but never renamed
 or removed without all three of us agreeing. The analysis code depends on them.
 New *values* inside an existing enumeration count as an addition — that is how
-the bank list grew to twelve on 21/09 (see `D01_scope_and_compliance_note.md`).
+the bank list grew to fourteen on 21/09 (see `D01_scope_and_compliance_note.md`).
 
 Two checks enforce it, deliberately:
 
@@ -116,8 +116,8 @@ in `collection/compliance.py` and `schema.py`.
 
 Sample sizes are small by design (PRD risk R-03). Nothing here computes a p-value
 or claims significance — Cohen's d is reported as a description of separation, not
-as a test. With ten banks, one of which is a single page per family, a group mean
-is an anecdote (FR-13/F-14 scale).
+as a test. With 14 banks, most of which carry a single page per family, a group
+mean is an anecdote (FR-13/F-14 scale).
 
 ## The three signals that are not page measurements
 

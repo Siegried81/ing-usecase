@@ -44,7 +44,7 @@ as the first thing to add for a production build.
 | Rubric scoring | **one judged sheet**, merged into the dataset by `rubric_sheet.py merge`. No second rater and no reliability measure — the chosen scope, stated in `outputs/limitations.md` and listed there as future work |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
-Test suite: **401 passing, 1 skipped** (sieg 22/09). Pinned model per D6: `deepseek-chat` in decisions.md,
+Test suite: **423 passing, 1 skipped**. Pinned model per D6: `deepseek-chat` in decisions.md,
 but every `extraction_model` value actually on disk reads `deepseek/deepseek-flash` (and now, after
 tonight's re-fetches, occasionally `groq/openai/gpt-oss-120b` on fallback) — flagged for
 Stephane (D6 owner), not resolved here.
@@ -82,7 +82,7 @@ Stephane (D6 owner), not resolved here.
 pip install -r requirements.txt
 cp .env.example .env        # DEEPSEEK_API_KEY; optionally NEWSAPI_KEY / NEWSAPI_AI_KEY
 python3 scripts/run_analysis.py                 # end-to-end on real captures
-python3 -m pytest tests/ -q                     # 368 passing, no network
+python3 -m pytest tests/ -q                     # 423 passing, no network
 ```
 
 ## The short version of the design
@@ -154,7 +154,7 @@ scripts/
   import_captures.py             import pages a person saved from a normal browser
   browser_audit.py               Playwright audit of the UI + generated site
 streamlit_app.py                 earlier dashboard for share.streamlit.io; its views now live in the React UI's operator tabs
-tests/                           387 tests, no network calls
+tests/                           424 tests, no network calls
 data/rubric/                     human + model scoring sheets (tracked)
 data/raw/                        snapshots (tracked since 21/09 — see Next)
 data/processed/                  datasets (tracked since 21/09)

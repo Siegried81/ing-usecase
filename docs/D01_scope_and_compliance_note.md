@@ -138,8 +138,11 @@ produced a confident wrong number.
 MeDirect and Deutsche Bank Belgium offer savings/term only; Triodos' current
 account is business-only; CPH is savings/term/mortgage; Santander Consumer Bank's
 TLS handshake fails; and **AXA Bank no longer exists as a brand** — it merged into
-Crelan, and axa.be now redirects to insurance. Keytrade Bank remains unresolved:
+Crelan, and axa.be now redirects to insurance. Keytrade Bank was unresolved at this point:
 JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
+Superseded — its KeyPack current-account page was later captured with
+`method: headful` and a lighter navigation wait (`scripts/collection_targets.yaml`),
+and it is in the dataset.
 
 ### The dataset now spans every family each bank promotes
 
@@ -166,7 +169,7 @@ stale, both superseded by later re-collection (dated between the "steve
 
 - **BNP Paribas Fortis and Revolut are both live-captured, not
   manual-capture.** BNP via `method: headful` (decisions.md, "BNP Paribas Fortis captured"); Revolut via the current
-  `collection_targets.yaml` URL, a plain headless fetch. Every one of the 50
+  `collection_targets.yaml` URL, a plain headless fetch. Every one of the 51
   current rows has `collection_method` in `{headless_render, headful_render}`
   — checked directly against `data/processed/campaigns.csv`, zero
   `manual_capture` rows remain.

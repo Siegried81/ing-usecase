@@ -16,13 +16,11 @@
 | image count | 11 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | no |
 | image area share | 0.02 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,244 |
-| cta count | 0 |
 | cta above fold | no |
 | word count | 1,831 |
 | readability band | very_hard |
@@ -55,13 +53,11 @@
 | image count | 18 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.15 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,110 |
-| cta count | 5 |
 | cta above fold | no |
 | word count | 1,812 |
 | readability band | hard |
@@ -94,13 +90,11 @@
 | image count | 16 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | no |
 | image area share | 0.11 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 7,078 |
-| cta count | 10 |
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
@@ -133,13 +127,11 @@
 | image count | 17 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | no |
 | image area share | 0.1 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | stacked |
 | page height px | 6,387 |
-| cta count | 12 |
 | cta above fold | no |
 | word count | 2,199 |
 | readability band | hard |
@@ -152,8 +144,8 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 1 |
-| persuasion levers | commitment |
-| lever count | 1 |
+| persuasion levers | commitment, liking |
+| lever count | 2 |
 | personas | mass_market 100%, student 100% |
 
 **Signature:** aida interest well below the market average (-2.4 SD); fast digital onboarding claim well above the market average (+2.2 SD); aida coverage score well below the market average (-2.1 SD).
@@ -172,13 +164,11 @@
 | image count | 13 |
 | dominant image type | illustration |
 | people present | no |
-| animated | yes (all pages) |
 | image area share | 0.17 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 15,135 |
-| cta count | 20 |
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
@@ -211,13 +201,11 @@
 | image count | 12 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.05 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 4,447 |
-| cta count | 3 |
 | cta above fold | no |
 | word count | 2,613 |
 | readability band | very_hard |
@@ -245,18 +233,16 @@
 | dominant colour | #ffffff |
 | brand colour share | 0.01 |
 | accent colour count | 4 |
-| accent locations | none |
+| accent locations | icons |
 | background luminance | 0.44 |
 | image count | 72 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 2,945 |
-| cta count | 2 |
 | cta above fold | no |
 | word count | 2,315 |
 | readability band | hard |
@@ -289,13 +275,11 @@
 | image count | 15 |
 | dominant image type | illustration |
 | people present | yes (all pages) |
-| animated | no |
 | image area share | 0.32 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,881 |
-| cta count | 1 |
 | cta above fold | no |
 | word count | 1,661 |
 | readability band | hard |
@@ -308,8 +292,8 @@
 | benefit framing | rational |
 | fab level | feature |
 | aida coverage | 4 |
-| persuasion levers | none |
-| lever count | 0 |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | mass_market 100% |
 
 **Signature:** brand colour share well above the market average (+3.3 SD); is bundled offer well below the market average (-1.6 SD); value prop clarity well below the market average (-1.4 SD).
@@ -328,13 +312,11 @@
 | image count | 33 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | 33% of pages |
 | image area share | 0.12 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,149 |
-| cta count | 1 |
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
@@ -351,7 +333,7 @@
 | lever count | 5 |
 | personas | mass_market 67%, student 33%, expat 33% |
 
-**Signature:** urgency marker count well above the market average (+2.5 SD); persuasion lever count well above the market average (+2.4 SD); fast digital onboarding claim well above the market average (+1.3 SD).
+**Signature:** urgency marker count well above the market average (+2.5 SD); persuasion lever count well above the market average (+2.5 SD); fast digital onboarding claim well above the market average (+1.3 SD).
 
 ### kbc  (traditional)
 
@@ -367,13 +349,11 @@
 | image count | 8 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.04 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,775 |
-| cta count | 2.33 |
 | cta above fold | no |
 | word count | - |
 | readability band | very_hard |
@@ -406,13 +386,11 @@
 | image count | 21 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.26 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 6,440 |
-| cta count | 2 |
 | cta above fold | no |
 | word count | 1,193 |
 | readability band | hard |
@@ -445,13 +423,11 @@
 | image count | 29 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | no |
 | image area share | 0.59 |
 | archetype | split_columns |
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
-| cta count | 5 |
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
@@ -484,13 +460,11 @@
 | image count | 10 |
 | dominant image type | render_3d |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.24 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 6,615 |
-| cta count | 3 |
 | cta above fold | no |
 | word count | 1,352 |
 | readability band | hard |
@@ -523,13 +497,11 @@
 | image count | 5 |
 | dominant image type | photo |
 | people present | yes (all pages) |
-| animated | yes (all pages) |
 | image area share | 0.11 |
 | archetype | hero_stacked |
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 4,290 |
-| cta count | 0 |
 | cta above fold | no |
 | word count | 3,992 |
 | readability band | hard |
@@ -542,8 +514,8 @@
 | benefit framing | mixed |
 | fab level | feature |
 | aida coverage | 3 |
-| persuasion levers | none |
-| lever count | 0 |
+| persuasion levers | liking |
+| lever count | 1 |
 | personas | student 100% |
 
 **Signature:** aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).

@@ -8,18 +8,18 @@ Companion to the figures in this folder. Each section says what the chart is act
 
 ## Why the charts use fewer features than the dictionary has
 
-The dictionary defines 104 features. The comparisons here use **36**. Nothing is thrown away quietly — this is the whole reduction:
+The dictionary defines 104 features. The comparisons here use **34**. Nothing is thrown away quietly — this is the whole reduction:
 
 ```
 104 features in the dictionary
   - 18  provenance                 identify a page, do not describe a campaign
   -  4  free text / identifiers    no two pages share them
   -  8  within_language, mixed languages present not comparable across languages (comparability in the dictionary)
-  -  2  withdrawn, capture not the page the stored capture is missing what the feature counts
+  -  4  withdrawn, measurement not the page the rule does not reproduce what the feature claims to measure
   - 27  categorical / list         not encoded - see note below
   -  1  missing for some bank      cannot compare what one bank lacks
   -  8  no variation across banks  identical everywhere, carries no signal
-  = 36  features used in this comparison
+  = 34  features used in this comparison
 ```
 
 **The line worth arguing about is the 27 categorical and list features.** They are not free text and not redundant — things like `benefit_framing`, `fab_level`, `layout_archetype`, `dominant_image_type`, `persuasion_levers`, and seven of the banking-domain dimensions. A euclidean distance cannot take a raw category, so they sit out of every distance and positioning calculation today.
@@ -40,26 +40,26 @@ The four bands (`word_count_band` and friends) are excluded on purpose: each is 
 
 **How to read it.** Left is traditional, right is challenger. Colour carries the bank's declared category, so a dot far from its own colour's cluster is the interesting case. ING is ringed and bold.
 
-**What this run shows.** ING scores **0.39** — traditional, but leaning towards the challengers. Computed over 36 features.
+**What this run shows.** ING scores **0.41** — traditional, but leaning towards the challengers. Computed over 34 features.
 
-The two groups do not overlap: the most challenger-like incumbent sits at 0.39 and the most traditional challenger at 0.57, a gap of 0.17. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
+The two groups do not overlap: the most challenger-like incumbent sits at 0.41 and the most traditional challenger at 0.54, a gap of 0.14. That separation is what makes the axis meaningful — if the groups interleaved, the projection would be measuring noise.
 
 | Bank | Category | Position |
 | --- | --- | --- |
-| argenta | traditional | -0.33 |
-| cbc | traditional | -0.25 |
-| bnp_paribas_fortis | traditional | -0.15 |
-| beobank | traditional | -0.14 |
-| crelan | traditional | -0.05 |
-| vdk | traditional | 0.01 |
-| kbc | traditional | 0.02 |
-| hellobank | traditional | 0.18 |
-| belfius | traditional | 0.31 |
-| ing **(focus)** | traditional | 0.39 |
-| keytrade | challenger | 0.57 |
-| n26 | challenger | 0.93 |
-| bunq | challenger | 1.15 |
-| revolut | challenger | 1.35 |
+| argenta | traditional | -0.30 |
+| cbc | traditional | -0.29 |
+| beobank | traditional | -0.12 |
+| bnp_paribas_fortis | traditional | -0.10 |
+| crelan | traditional | -0.09 |
+| kbc | traditional | -0.01 |
+| vdk | traditional | -0.00 |
+| hellobank | traditional | 0.23 |
+| belfius | traditional | 0.28 |
+| ing **(focus)** | traditional | 0.41 |
+| keytrade | challenger | 0.54 |
+| n26 | challenger | 0.98 |
+| bunq | challenger | 1.14 |
+| revolut | challenger | 1.33 |
 
 **What it cannot tell you.** The axis is defined by the banks in this dataset. Add or remove a bank and the centroids move, so a score is a position *within this sample*, not an absolute coordinate. It also says nothing about which end is better.
 
@@ -80,7 +80,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.39 a
 | Feature | Dimension | ing | Peer mean | Gap (SD) |
 | --- | --- | --- | --- | --- |
 | urgency_marker_count | tone_messaging | 4.00 | 0.64 | 3.69 |
-| persuasion_lever_count | marketing_principles | 5.00 | 1.44 | 3.32 |
+| persuasion_lever_count | marketing_principles | 5.00 | 1.67 | 3.68 |
 | fast_digital_onboarding_claim | banking_domain | 0.67 | 0.15 | 1.42 |
 | page_height_px | layout_structure | 11,149 | 6,412 | 1.42 |
 | background_luminance | colours_design | 0.55 | 0.34 | 1.40 |
@@ -129,12 +129,12 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.39 a
 
 **Why a single hue.** Distance is a magnitude, not an identity — a categorical palette here would imply the banks are categories of distance, which they are not.
 
-**What this run shows.** The banks closest to ING are **belfius** (6.3), **argenta** (7.3), **bnp_paribas_fortis** (7.4).
+**What this run shows.** The banks closest to ING are **belfius** (6.2), **vdk** (7.1), **bnp_paribas_fortis** (7.2).
 
 | Cluster | Banks |
 | --- | --- |
-| 1 | bunq, revolut |
-| 2 | argenta, belfius, beobank, bnp_paribas_fortis, cbc, crelan, hellobank, ing, kbc, keytrade, n26, vdk |
+| 1 | bunq, ing, revolut |
+| 2 | argenta, belfius, beobank, bnp_paribas_fortis, cbc, crelan, hellobank, kbc, keytrade, n26, vdk |
 
 Clusters come from hierarchical clustering (Ward linkage) on the same distances.
 
@@ -150,7 +150,7 @@ Not a chart, but the same discipline: the deck's five eyeball observations, test
 | --- | --- | --- | --- |
 | H1 | Belfius is pretty verbose | not supported | belfius='long'; highest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk'] |
 | H2 | KBC is straight to the point | not supported | kbc='long'; lowest traditional is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'vdk'] |
-| H3 | ING is the only traditional bank using animation | not supported | ing=0.33; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk', 'cbc'] |
+| H3 | ING is the only traditional bank using animation | not testable | feature absent from the dataset |
 | H4 | ING no longer places text next to picture | not supported | ing's most common text_image_layout: 'beside' (claim: not 'beside') |
 | H5 | Revolut uses very little text | not supported | revolut='long'; lowest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk'] |
 

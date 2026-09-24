@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T16:20:09+00:00",
+  "generated_at": "2026-09-24T18:55:41+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "product_family": "current_account_pack",
   "validation": {
@@ -1106,8 +1106,7 @@
         "icons",
         "imagery",
         "background",
-        "buttons",
-        "none"
+        "buttons"
       ],
       "range": null,
       "unit": null
@@ -1417,8 +1416,7 @@
         "social_proof",
         "authority",
         "liking",
-        "scarcity",
-        "none"
+        "scarcity"
       ],
       "range": null,
       "unit": null
@@ -2929,9 +2927,10 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "commitment"
+          "commitment",
+          "liking"
         ],
-        "persuasion_lever_count": 1,
+        "persuasion_lever_count": 2,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "not_applicable",
@@ -3409,7 +3408,7 @@
         "brand_colour_share": 0.006,
         "accent_colour_count": 4,
         "accent_locations": [
-          "none"
+          "icons"
         ],
         "background_luminance": 0.441,
         "cta_contrast_ratio": 11.03,
@@ -3800,9 +3799,9 @@
         "aida_action": true,
         "aida_coverage_score": 3,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "not_applicable",
@@ -3920,9 +3919,9 @@
         "aida_action": true,
         "aida_coverage_score": 4,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -4656,9 +4655,9 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -4783,9 +4782,10 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 2,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5146,9 +5146,11 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "commitment",
+          "authority"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 3,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5386,9 +5388,9 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5510,9 +5512,11 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "authority",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 3,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -5759,9 +5763,9 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -5868,6 +5872,8 @@
         "brand_colour_share": 0.003,
         "accent_colour_count": 4,
         "accent_locations": [
+          "buttons",
+          "text",
           "buttons"
         ],
         "background_luminance": 0.443,
@@ -5888,9 +5894,10 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 2,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -5991,7 +5998,7 @@
         "brand_colour_share": 0.012,
         "accent_colour_count": 4,
         "accent_locations": [
-          "buttons",
+          "text",
           "imagery"
         ],
         "background_luminance": 0.396,
@@ -6012,9 +6019,9 @@
         "aida_action": false,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -6111,7 +6118,8 @@
         "brand_colour_share": 0.002,
         "accent_colour_count": 4,
         "accent_locations": [
-          "imagery"
+          "imagery",
+          "buttons"
         ],
         "background_luminance": 0.439,
         "cta_contrast_ratio": 11.03,
@@ -6131,9 +6139,10 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 2,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6369,9 +6378,11 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "commitment",
+          "liking",
+          "authority"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 3,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -6864,9 +6875,10 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 2,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -7239,9 +7251,9 @@
         "aida_action": true,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "mixed",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "internal_advisor_led",
@@ -7497,9 +7509,9 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "not_applicable",
@@ -7615,9 +7627,9 @@
         "aida_action": false,
         "aida_coverage_score": 0,
         "persuasion_levers": [
-          "none"
+          "authority"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 1,
         "audience_segment": "mixed",
         "is_bundled_offer": true,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -7692,7 +7704,7 @@
         "primary_product": "Compte d'épargne N26",
         "rate_shown": true,
         "rate_value_pct": 1.5,
-        "rate_prominence": "hero",
+        "rate_prominence": "below_fold",
         "benefit_framing": "rational",
         "fab_level": "feature",
         "value_prop_clarity": 5,
@@ -7739,9 +7751,11 @@
         "aida_action": false,
         "aida_coverage_score": 1,
         "persuasion_levers": [
-          "none"
+          "liking",
+          "authority",
+          "commitment"
         ],
-        "persuasion_lever_count": 0,
+        "persuasion_lever_count": 3,
         "audience_segment": "retail",
         "is_bundled_offer": false,
         "cross_sell_delivery_model": "partner_addon_digital",
@@ -9041,7 +9055,7 @@
             "clarity_score": 4.0,
             "rate_prominence": "absent",
             "value_prop_clarity": 3.0,
-            "accent_locations": "none",
+            "accent_locations": "icons",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
             "mobile_first_design_signal": false,
@@ -9241,7 +9255,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9361,7 +9375,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9385,7 +9399,7 @@
             "aida_interest": true,
             "aida_desire": true,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9553,7 +9567,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9577,7 +9591,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|commitment"
           },
           {
             "rater": "siegried",
@@ -9649,7 +9663,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|commitment|authority"
           },
           {
             "rater": "siegried",
@@ -9697,7 +9711,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "commitment"
+            "persuasion_levers": "commitment|liking"
           },
           {
             "rater": "siegried",
@@ -9721,7 +9735,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9745,7 +9759,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|authority|commitment"
           },
           {
             "rater": "siegried",
@@ -9793,7 +9807,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9809,7 +9823,7 @@
             "clarity_score": 4.0,
             "rate_prominence": "absent",
             "value_prop_clarity": 3.0,
-            "accent_locations": "buttons",
+            "accent_locations": "buttons|text|buttons",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
             "mobile_first_design_signal": false,
@@ -9817,7 +9831,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|commitment"
           },
           {
             "rater": "siegried",
@@ -9833,7 +9847,7 @@
             "clarity_score": 4.0,
             "rate_prominence": "absent",
             "value_prop_clarity": 4.0,
-            "accent_locations": "buttons|imagery",
+            "accent_locations": "text|imagery",
             "text_image_layout": "stacked",
             "layout_archetype": "split_columns",
             "mobile_first_design_signal": false,
@@ -9841,7 +9855,7 @@
             "aida_interest": true,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -9857,7 +9871,7 @@
             "clarity_score": 4.0,
             "rate_prominence": "below_fold",
             "value_prop_clarity": 3.0,
-            "accent_locations": "imagery",
+            "accent_locations": "imagery|buttons",
             "text_image_layout": "overlaid",
             "layout_archetype": "hero_stacked",
             "mobile_first_design_signal": false,
@@ -9865,7 +9879,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|commitment"
           },
           {
             "rater": "siegried",
@@ -9913,7 +9927,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "commitment|liking|authority"
           },
           {
             "rater": "siegried",
@@ -10033,7 +10047,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|commitment"
           },
           {
             "rater": "siegried",
@@ -10105,7 +10119,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": true,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking"
           },
           {
             "rater": "siegried",
@@ -10153,7 +10167,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "commitment"
           },
           {
             "rater": "siegried",
@@ -10177,7 +10191,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "authority"
           },
           {
             "rater": "siegried",
@@ -10191,7 +10205,7 @@
             "capture_quality": "ok",
             "formality_score": 2.0,
             "clarity_score": 5.0,
-            "rate_prominence": "hero",
+            "rate_prominence": "below_fold",
             "value_prop_clarity": 5.0,
             "accent_locations": "imagery|background",
             "text_image_layout": "overlaid",
@@ -10201,7 +10215,7 @@
             "aida_interest": false,
             "aida_desire": false,
             "aida_action": false,
-            "persuasion_levers": "none"
+            "persuasion_levers": "liking|authority|commitment"
           },
           {
             "rater": "siegried",
@@ -10361,8 +10375,7 @@
           "icons",
           "imagery",
           "background",
-          "buttons",
-          "none"
+          "buttons"
         ],
         "range": null,
         "rubric": {
@@ -10372,7 +10385,7 @@
           "background": "Accent colour used as a section or page background.",
           "buttons": "Accent colour used on call-to-action buttons or other interactive elements."
         },
-        "notes": "Directly tests the deck's distinction - Fortis uses green \"in text and icons, not in pictures\", Belfius uses red \"in text and pictures\". sieg 15/09: this is a perceptual judgement call, independent from the automatic brand_colour_share (strict pixel-distance match on the hero image only). The two are expected to disagree sometimes - e.g. a human says \"yes, accent in imagery\" for a subtle tint that brand_colour_share's Euclidean tolerance doesn't count. Do not try to reconcile them; report both, a mismatch between \"looks branded\" and \"measures as branded\" is itself a finding."
+        "notes": "Directly tests the deck's distinction - Fortis uses green \"in text and icons, not in pictures\", Belfius uses red \"in text and pictures\". this is a perceptual judgement call, independent from the automatic brand_colour_share (strict pixel-distance match on the hero image only). The two are expected to disagree sometimes - e.g. a human says \"yes, accent in imagery\" for a subtle tint that brand_colour_share's Euclidean tolerance doesn't count. Do not try to reconcile them; report both, a mismatch between \"looks branded\" and \"measures as branded\" is itself a finding."
       },
       {
         "name": "text_image_layout",
@@ -10389,7 +10402,7 @@
           "stacked": "Image and text follow each other vertically, not overlapping.",
           "overlaid": "Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it)."
         },
-        "notes": "The single observation the deck repeats for every bank. ING is called out as the one where \"text and picture not anymore next to each other\". sieg 15/09: no \"no_image\" value on purpose - a page with no image at all leaves this field null (nullable: true), it is not forced into one of the three categories above."
+        "notes": "The single observation the deck repeats for every bank. ING is called out as the one where \"text and picture not anymore next to each other\". no \"no_image\" value on purpose - a page with no image at all leaves this field null (nullable: true), it is not forced into one of the three categories above."
       },
       {
         "name": "layout_archetype",
@@ -10408,7 +10421,7 @@
           "card_grid": "Content is organised as a grid of self-contained cards or tiles.",
           "long_form": "Continuous scrolling sections with no strong grid or card structure."
         },
-        "notes": "sieg 15/09: real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule."
+        "notes": "real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule."
       },
       {
         "name": "mobile_first_design_signal",
@@ -10480,8 +10493,7 @@
           "social_proof",
           "authority",
           "liking",
-          "scarcity",
-          "none"
+          "scarcity"
         ],
         "range": null,
         "rubric": {

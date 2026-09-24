@@ -111,15 +111,14 @@ bank/family/language group renumbers every page after it. A rater's scoring
 sheet built before that re-collection then carries scores under `page_id`s
 that no longer exist in `campaigns.csv`, and `merge_scores()` drops them
 silently (same failure mode, one step earlier in the pipeline). Found live
-22/09: 13 of Siegried's and 1 of Stephane's already-scored rows reference
-`page_id`s absent from the current 50-row `campaigns.csv`, and their URLs no
-longer appear in it either — those specific captures were superseded by a
-later re-collection, not just renumbered, so the scores cannot be
-auto-remapped. Needs a team decision, not a script: were those pages replaced
-by an equivalent page (re-score the new `page_id`) or dropped (nothing to
-recover). Not yet covered by an automated test.
+22/09: 6 rows in the judged sheet (there is only ever the one, Siegried's)
+reference `page_id`s absent from the current 51-row `campaigns.csv`. Each was
+checked individually rather than auto-remapped: one was a duplicate URL, two
+were professional-account pages that do not belong in a retail comparison,
+one was a filename typo, and two were pages never captured. None needed a
+re-score or a recovery. Not yet covered by an automated test.
 
-## Two things a range check cannot catch
+## Three things a range check cannot catch
 
 **A capture can be honestly measured and still be the wrong page.** The first
 live collection returned ING as an unrendered JavaScript shell (16 words — the
@@ -128,7 +127,17 @@ feature on those rows was in range. `collection/quality.py` judges whether a
 capture looks like a campaign page at all, and the verdict travels with the row
 in `capture_quality`. Analysis excludes `unusable` rows and says which.
 
-**13 core features are scored by a person**, so a collected dataset can never
+**A capture can also be the right page with something else on top of it.**
+Three of the 18 compared pages — Argenta, BNP Paribas Fortis and Crelan — were
+captured with a cookie-consent modal open across the page. Their
+screenshot-derived features (`background_luminance`, `hero_image_area_ratio`,
+`accent_colour_count`, `brand_colour_share`, `above_fold_element_count`)
+describe the modal, not the page underneath it; every value is still in range,
+so nothing in `schema.validate` catches it. Text-derived and judged features
+are unaffected. Not corrected here — named so it is not discovered by someone
+else.
+
+**13 features (10 core, 3 extended) are scored by a person**, so a collected dataset can never
 pass strict validation on its own. `scripts/rubric_sheet.py` emits a sheet with
 the screenshot path and merges the completed one back in. One judged sheet, one
 named rater: no second opinion and no reliability figure, which is the scope
@@ -167,7 +176,7 @@ as permanently unreachable. Both are resolved: BNP via `method: headful` (see
 "Two escape hatches" above and `decisions.md`'s "BNP Paribas
 Fortis captured" entry), Revolut via the current `collection_targets.yaml`
 URL, which robots.txt allows (a straight headless fetch, no method override
-needed). **There is no manual-capture-only bank left** — every one of the 50
+needed). **There is no manual-capture-only bank left** — every one of the 51
 current rows has `collection_method` in `{static_fetch, headless_render,
 headful_render}`, never `manual_capture`.
 

@@ -33,12 +33,16 @@ def test_score_cross_sell_is_the_share_of_bundled_pages():
     assert ai_score.score_cross_sell(rows) == 5.0
 
 
-def test_score_innovation_averages_animation_and_render_3d():
+# Innovation is withdrawn: has_animation reports that a stylesheet declares an
+# animation, not that the page moves, and render_3d occurs on one page in the
+# whole set. The axis must return None even when both columns are present and
+# would have scored, or a number nobody can defend creeps back onto the radar.
+def test_score_innovation_is_withdrawn_even_when_its_columns_are_present():
     rows = pd.DataFrame({
         "has_animation": [True, False],
         "dominant_image_type": ["render_3d", "photo"],
     })
-    assert ai_score.score_innovation(rows) == 5.0
+    assert ai_score.score_innovation(rows) is None
 
 
 def test_score_simplicity_maps_the_modal_readability_band():

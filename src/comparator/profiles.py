@@ -11,12 +11,28 @@ from collections import Counter
 
 import pandas as pd
 
-from comparator.analysis import bank_vectors, comparable_features, standardise
+from comparator.analysis import (
+    CAPTURE_INVALID_FEATURES,
+    bank_vectors,
+    comparable_features,
+    standardise,
+)
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.schema import parse_list
 
 # How many features the auto-written signature line is allowed to cite.
 SIGNATURE_FEATURES = 3
+
+# Card fields backed by a feature that may be withdrawn from comparison. A card
+# sits next to thirteen others, so printing a withdrawn number invites exactly
+# the cross-bank reading the withdrawal exists to prevent - a reader flipping
+# the cards sees a ranking even when no ranking is stated. The raw values stay
+# in the dataset and in operations.json; only the card drops them. Driven off
+# CAPTURE_INVALID_FEATURES so the card follows the withdrawal automatically.
+_FIELD_SOURCE = {
+    ("imagery", "animated"): "has_animation",
+    ("layout", "cta_count"): "cta_count",
+}
 
 # Card fields whose value is the mean of a boolean feature. A mean of 0.5 means
 # "half the pages", not "0.5" - the renderer says so rather than printing a float.
@@ -86,7 +102,7 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
         values = pd.to_numeric(rows[col].astype("float64"), errors="coerce").dropna()
         return None if values.empty else float(values.mean())
 
-    return {
+    profile = {
         "identity": {
             "bank": bank,
             "category": _mode(rows["bank_category"]),
@@ -145,6 +161,10 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
         "personas": _persona_distribution(rows.get("target_personas", pd.Series(dtype="object")), len(rows)),
         "signature": _distinctive(bank, df, fd, tier=tier),
     }
+    for (section, field), feature in _FIELD_SOURCE.items():
+        if feature in CAPTURE_INVALID_FEATURES:
+            profile.get(section, {}).pop(field, None)
+    return profile
 
 
 def build_all(df: pd.DataFrame, fd: FeatureDictionary | None = None, *, tier: str | None = None) -> dict[str, dict]:

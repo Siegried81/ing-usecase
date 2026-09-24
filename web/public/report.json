@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T16:20:09+00:00",
+  "generated_at": "2026-09-24T18:55:41+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 36
+    "n_features": 34
   },
   "headline": {
     "focus": "ING",
-    "score": 0.395,
+    "score": 0.406,
     "verdict": "traditional, but leaning towards the challengers",
     "has_focus": true
   },
@@ -62,98 +62,98 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.326,
+      "score": -0.303,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.252,
-      "isFocus": false
-    },
-    {
-      "bank": "BNP Paribas Fortis",
-      "key": "bnp_paribas_fortis",
-      "category": "traditional",
-      "score": -0.148,
+      "score": -0.293,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.141,
+      "score": -0.116,
+      "isFocus": false
+    },
+    {
+      "bank": "BNP Paribas Fortis",
+      "key": "bnp_paribas_fortis",
+      "category": "traditional",
+      "score": -0.103,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.05,
-      "isFocus": false
-    },
-    {
-      "bank": "VDK Bank",
-      "key": "vdk",
-      "category": "traditional",
-      "score": 0.013,
+      "score": -0.087,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": 0.022,
+      "score": -0.014,
+      "isFocus": false
+    },
+    {
+      "bank": "VDK Bank",
+      "key": "vdk",
+      "category": "traditional",
+      "score": -0.003,
       "isFocus": false
     },
     {
       "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.177,
+      "score": 0.23,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.31,
+      "score": 0.281,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.395,
+      "score": 0.406,
       "isFocus": true
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.568,
+      "score": 0.545,
       "isFocus": false
     },
     {
       "bank": "N26",
       "key": "n26",
       "category": "challenger",
-      "score": 0.933,
+      "score": 0.981,
       "isFocus": false
     },
     {
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.153,
+      "score": 1.139,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.346,
+      "score": 1.335,
       "isFocus": false
     }
   ],
@@ -174,8 +174,8 @@
       "dimension": "marketing_principles",
       "extraction": "rubric",
       "focusValue": 5.0,
-      "peerMean": 1.4358974358974357,
-      "gapSd": 3.32,
+      "peerMean": 1.6666666666666665,
+      "gapSd": 3.68,
       "direction": "above"
     },
     {
@@ -461,7 +461,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
-        "innovation": 0.0,
+        "innovation": null,
         "simplicity": 0.0
       },
       "crossSellScore": 0.0
@@ -541,7 +541,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.111
@@ -622,7 +622,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
-        "innovation": 0.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.0
@@ -686,9 +686,10 @@
       "marketing": {
         "Aida coverage": 1.0,
         "Persuasion levers": [
-          "commitment"
+          "commitment",
+          "liking"
         ],
-        "Lever count": 1.0
+        "Lever count": 2.0
       },
       "personas": [
         {
@@ -707,7 +708,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
-        "innovation": 0.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.111
@@ -794,7 +795,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 5.0
       },
       "crossSellScore": 0.333
@@ -874,7 +875,7 @@
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 0.0
       },
       "crossSellScore": 0.0
@@ -954,7 +955,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.111
@@ -1018,9 +1019,9 @@
       "marketing": {
         "Aida coverage": 4.0,
         "Persuasion levers": [
-          "none"
+          "liking"
         ],
-        "Lever count": 0.0
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -1034,7 +1035,7 @@
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
-        "innovation": 0.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.667
@@ -1052,7 +1053,7 @@
         },
         {
           "label": "Persuasion techniques used",
-          "sd": 2.4,
+          "sd": 2.5,
           "direction": "above"
         },
         {
@@ -1128,7 +1129,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 3.8,
-        "innovation": 1.7,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.259
@@ -1209,7 +1210,7 @@
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 0.0
       },
       "crossSellScore": 0.519
@@ -1294,7 +1295,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 2.5,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.444
@@ -1375,7 +1376,7 @@
         "trust": 0.0,
         "cross_sell": 0.0,
         "personalisation": 1.2,
-        "innovation": 0.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.556
@@ -1473,7 +1474,7 @@
         "trust": 3.3,
         "cross_sell": 10.0,
         "personalisation": 5.0,
-        "innovation": 10.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.222
@@ -1537,9 +1538,9 @@
       "marketing": {
         "Aida coverage": 3.0,
         "Persuasion levers": [
-          "none"
+          "liking"
         ],
-        "Lever count": 0.0
+        "Lever count": 1.0
       },
       "personas": [
         {
@@ -1553,7 +1554,7 @@
         "trust": 0.0,
         "cross_sell": 10.0,
         "personalisation": 1.2,
-        "innovation": 5.0,
+        "innovation": null,
         "simplicity": 2.5
       },
       "crossSellScore": 0.0
@@ -2102,226 +2103,226 @@
     "matrix": [
       [
         0.0,
-        6.92,
-        6.49,
-        6.24,
-        11.13,
-        6.38,
-        9.76,
-        7.95,
-        7.27,
-        6.73,
-        8.77,
+        6.25,
+        6.5,
+        6.29,
+        10.75,
+        5.64,
+        9.3,
+        7.91,
+        7.36,
+        6.04,
+        8.25,
         10.41,
-        11.27,
-        6.52
+        10.93,
+        5.76
       ],
       [
-        6.92,
+        6.25,
         0.0,
-        7.81,
-        8.09,
-        8.79,
+        7.23,
+        7.57,
+        8.82,
         6.63,
         9.15,
-        7.66,
-        6.34,
-        6.46,
+        7.02,
+        6.21,
+        6.47,
         5.94,
-        9.73,
-        8.59,
-        4.57
+        9.27,
+        8.66,
+        4.51
       ],
       [
-        6.49,
-        7.81,
+        6.5,
+        7.23,
         0.0,
-        7.07,
-        11.42,
-        7.25,
-        8.51,
-        7.42,
-        7.99,
-        7.59,
-        8.02,
+        7.04,
+        11.03,
+        6.62,
+        7.98,
+        7.32,
+        8.01,
+        6.98,
+        7.46,
         9.21,
-        11.21,
-        6.93
+        10.84,
+        6.14
       ],
       [
-        6.24,
-        8.09,
-        7.07,
+        6.29,
+        7.57,
+        7.04,
         0.0,
-        11.04,
-        6.89,
-        10.01,
-        8.91,
-        7.44,
-        7.98,
-        8.12,
-        10.3,
-        11.55,
-        7.26
-      ],
-      [
-        11.13,
-        8.79,
-        11.42,
-        11.04,
-        0.0,
-        10.95,
-        12.3,
-        11.31,
-        8.16,
-        9.65,
-        10.04,
-        11.94,
-        9.66,
-        9.94
-      ],
-      [
-        6.38,
-        6.63,
-        7.25,
-        6.89,
-        10.95,
-        0.0,
-        9.0,
-        7.77,
-        8.63,
-        5.35,
-        7.72,
-        10.64,
-        10.97,
-        5.13
-      ],
-      [
-        9.76,
-        9.15,
-        8.51,
-        10.01,
-        12.3,
-        9.0,
-        0.0,
-        9.34,
-        10.01,
-        8.34,
-        8.04,
-        11.64,
-        11.68,
-        8.65
-      ],
-      [
-        7.95,
-        7.66,
-        7.42,
-        8.91,
-        11.31,
-        7.77,
-        9.34,
-        0.0,
-        8.7,
-        7.8,
-        7.0,
-        8.29,
-        10.98,
-        7.48
-      ],
-      [
-        7.27,
-        6.34,
-        7.99,
-        7.44,
-        8.16,
-        8.63,
-        10.01,
-        8.7,
-        0.0,
-        7.8,
-        7.94,
-        9.36,
-        9.47,
-        7.5
-      ],
-      [
-        6.73,
-        6.46,
+        10.56,
+        6.26,
+        9.59,
+        8.92,
+        7.22,
+        7.39,
         7.59,
-        7.98,
-        9.65,
-        5.35,
-        8.34,
-        7.8,
-        7.8,
-        0.0,
-        7.71,
-        9.88,
-        10.02,
-        5.97
+        10.27,
+        11.06,
+        6.64
       ],
       [
-        8.77,
+        10.75,
+        8.82,
+        11.03,
+        10.56,
+        0.0,
+        10.98,
+        12.33,
+        10.81,
+        7.96,
+        9.66,
+        10.07,
+        11.57,
+        9.66,
+        9.84
+      ],
+      [
+        5.64,
+        6.63,
+        6.62,
+        6.26,
+        10.98,
+        0.0,
+        9.0,
+        7.14,
+        8.54,
+        5.36,
+        7.72,
+        10.22,
+        11.03,
+        5.07
+      ],
+      [
+        9.3,
+        9.15,
+        7.98,
+        9.59,
+        12.33,
+        9.0,
+        0.0,
+        8.82,
+        9.93,
+        8.34,
+        8.04,
+        11.26,
+        11.74,
+        8.62
+      ],
+      [
+        7.91,
+        7.02,
+        7.32,
+        8.92,
+        10.81,
+        7.14,
+        8.82,
+        0.0,
+        8.5,
+        7.13,
+        6.29,
+        8.2,
+        10.46,
+        6.86
+      ],
+      [
+        7.36,
+        6.21,
+        8.01,
+        7.22,
+        7.96,
+        8.54,
+        9.93,
+        8.5,
+        0.0,
+        7.65,
+        7.83,
+        9.38,
+        9.26,
+        7.06
+      ],
+      [
+        6.04,
+        6.47,
+        6.98,
+        7.39,
+        9.66,
+        5.36,
+        8.34,
+        7.13,
+        7.65,
+        0.0,
+        7.71,
+        9.42,
+        10.06,
+        5.87
+      ],
+      [
+        8.25,
         5.94,
-        8.02,
-        8.12,
-        10.04,
+        7.46,
+        7.59,
+        10.07,
         7.72,
         8.04,
-        7.0,
-        7.94,
+        6.29,
+        7.83,
         7.71,
         0.0,
-        9.12,
-        8.87,
-        5.96
+        8.62,
+        8.94,
+        5.91
       ],
       [
         10.41,
-        9.73,
+        9.27,
         9.21,
-        10.3,
-        11.94,
-        10.64,
-        11.64,
-        8.29,
-        9.36,
-        9.88,
-        9.12,
+        10.27,
+        11.57,
+        10.22,
+        11.26,
+        8.2,
+        9.38,
+        9.42,
+        8.62,
         0.0,
-        11.0,
-        10.36
+        10.61,
+        9.85
       ],
       [
-        11.27,
-        8.59,
-        11.21,
-        11.55,
+        10.93,
+        8.66,
+        10.84,
+        11.06,
         9.66,
-        10.97,
-        11.68,
-        10.98,
-        9.47,
-        10.02,
-        8.87,
-        11.0,
+        11.03,
+        11.74,
+        10.46,
+        9.26,
+        10.06,
+        8.94,
+        10.61,
         0.0,
-        9.53
+        9.4
       ],
       [
-        6.52,
-        4.57,
-        6.93,
-        7.26,
-        9.94,
-        5.13,
-        8.65,
-        7.48,
-        7.5,
-        5.97,
-        5.96,
-        10.36,
-        9.53,
+        5.76,
+        4.51,
+        6.14,
+        6.64,
+        9.84,
+        5.07,
+        8.62,
+        6.86,
+        7.06,
+        5.87,
+        5.91,
+        9.85,
+        9.4,
         0.0
       ]
     ]
@@ -2331,6 +2332,7 @@
       "cluster": 1,
       "banks": [
         "bunq",
+        "ING",
         "Revolut"
       ]
     },
@@ -2344,7 +2346,6 @@
         "CBC",
         "Crelan",
         "Hello bank!",
-        "ING",
         "KBC",
         "Keytrade Bank",
         "N26",
@@ -2355,15 +2356,15 @@
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 6.34
+      "distance": 6.21
     },
     {
-      "bank": "Argenta",
-      "distance": 7.27
+      "bank": "VDK Bank",
+      "distance": 7.06
     },
     {
       "bank": "BNP Paribas Fortis",
-      "distance": 7.44
+      "distance": 7.22
     }
   ],
   "deckClaims": [
@@ -2385,8 +2386,8 @@
       "id": "H3",
       "bank": "ing",
       "claim": "ING is the only traditional bank using animation",
-      "verdict": "not supported",
-      "evidence": "ing=0.33; other traditional banks above zero: ['kbc', 'crelan', 'belfius', 'vdk', 'cbc']"
+      "verdict": "not testable",
+      "evidence": "feature absent from the dataset"
     },
     {
       "id": "H4",
@@ -2412,7 +2413,9 @@
       "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
-      "**The cross-sell score counts product families, not products.** `cross_sold_products` can only name one of six banking families plus `other`, so insurance, credit cards, subscription perks and cashback all collapse into a single `other` and are counted once. Measured on the captured pages, ING's packs name 8 to 14 distinct add-ons and score 1/6, while pages naming 3 or 4 score 2/6 — the ranking is inverted for any bank whose cross-sell is mostly non-banking. Read the score as family coverage, never as how hard a page cross-sells.",
+      "**The cross-sell score counts distinct product types, not selling effort.** `cross_sold_products` names nine product types plus `other`, and a page's score is how many of the nine it mentions, averaged over the bank's pages. A page that pushes one product ten times and a page that mentions it once score identically, and anything outside the nine still collapses into a single `other` counted once. Read the score as breadth of coverage, never as how hard a page cross-sells.",
+      "**Four features are measured but never compared.** `cta_count` and `cta_contrast_ratio` are withdrawn because no counting rule reproduced a human count of calls to action across fourteen banks: navigation, several links pointing at one target, and clickable product cards are marked up differently by every bank, so the number reports the markup convention. `has_animation` and `animated_asset_count` are withdrawn because the rule asks whether the stylesheet declares an animation, not whether the page moves — across the compared pages exactly one carries real motion. The columns stay in the dataset; they are excluded from every comparison and no finding rests on them.",
+      "**Three captures were taken with a cookie-consent modal over the page.** Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features — `background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, `brand_colour_share` and `above_fold_element_count` — describe the modal rather than the page beneath it, which is why those three report a near-zero hero area. Text-derived and judged features are unaffected, so the word, urgency, persuasion and rubric findings stand.",
       "**Page colour is measured on one rendering.** `background_luminance`, `brand_colour_share` and the palette features come from a single capture in headless Chrome with the default light colour scheme. A visitor using dark mode, or a browser extension that forces it, may see a substantially darker page than the one measured here — that difference is unmeasured, and any brightness comparison should be read as a comparison of our captures.",
       "The judged features carry the opinion of a single person. No inter-rater reliability was measured — that is the chosen scope of this proof of concept, not an oversight. Single-judge bias is a question for the real product and is listed under next steps.",
       "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-23** and no later. Campaign pages change without notice (DR-05).",
@@ -2696,9 +2699,9 @@
           },
           {
             "feature": "persuasion_lever_count",
-            "z": -0.02,
-            "focusZ": 2.39,
-            "gapSd": -2.41,
+            "z": -0.19,
+            "focusZ": 2.53,
+            "gapSd": -2.72,
             "direction": "below",
             "label": "Persuasion techniques used"
           },
@@ -2739,20 +2742,20 @@
             "label": "Content sections"
           },
           {
+            "feature": "persuasion_lever_count",
+            "z": -0.74,
+            "focusZ": 2.53,
+            "gapSd": -3.27,
+            "direction": "below",
+            "label": "Persuasion techniques used"
+          },
+          {
             "feature": "urgency_marker_count",
             "z": -0.72,
             "focusZ": 2.53,
             "gapSd": -3.25,
             "direction": "below",
             "label": "Urgency and deadline language"
-          },
-          {
-            "feature": "persuasion_lever_count",
-            "z": -0.5,
-            "focusZ": 2.39,
-            "gapSd": -2.89,
-            "direction": "below",
-            "label": "Persuasion techniques used"
           },
           {
             "feature": "value_prop_clarity",
@@ -2816,13 +2819,6 @@
         "focusZ": -0.52,
         "direction": "above",
         "label": "Images carry alt text"
-      },
-      {
-        "feature": "animated_asset_count",
-        "meanZ": 0.85,
-        "focusZ": -0.55,
-        "direction": "above",
-        "label": "Animated elements"
       }
     ],
     "divergent": [
@@ -2915,26 +2911,26 @@
         "label": "Clarity of the offer"
       },
       {
-        "feature": "background_luminance",
-        "spreadSd": 2.29,
+        "feature": "persuasion_lever_count",
+        "spreadSd": 2.45,
         "values": [
           {
             "bank": "KBC",
             "key": "kbc",
-            "z": -0.03
+            "z": -0.19
           },
           {
             "bank": "Crelan",
             "key": "crelan",
-            "z": 0.58
+            "z": -0.74
           },
           {
             "bank": "Revolut",
             "key": "revolut",
-            "z": -1.7
+            "z": 1.71
           }
         ],
-        "label": "Page brightness"
+        "label": "Persuasion techniques used"
       }
     ],
     "caveat": "These 3 brands were selected on search attention alone. What follows is what their pages measurably do differently - not a demonstration that those choices are why they are searched for. This data cannot show that."
