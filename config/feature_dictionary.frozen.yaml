@@ -937,7 +937,10 @@ features:
     dimension: colours_design
     definition: Where the brand accent actually appears.
     type: list[string]
-    values: [text, icons, imagery, background, buttons]
+    # `none` is a SCORED zero, same as in persuasion_levers: the judge looked
+    # and the brand accent appears nowhere. A blank cell would mean the page was
+    # not judged, which is a different statement. Pure addition.
+    values: [text, icons, imagery, background, buttons, none]
     extraction: rubric
     source: screenshot
     comparability: cross_language
@@ -1257,7 +1260,10 @@ features:
     dimension: marketing_principles
     definition: Which of Cialdini's six persuasion principles are used on the page.
     type: list[string]
-    values: [reciprocity, commitment, social_proof, authority, liking, scarcity]
+    # `none` is a SCORED zero, not a blank. A blank cell means the page was not
+    # judged and drops the whole bank from persuasion_lever_count; `none` means
+    # the judge looked and found no lever, which must count as 0. Pure addition.
+    values: [reciprocity, commitment, social_proof, authority, liking, scarcity, none]
     extraction: rubric
     source: screenshot
     comparability: cross_language

@@ -281,6 +281,9 @@ class GeneratedCampaign(BaseModel):
 # The Cialdini lever list below duplicates
 # config/feature_dictionary.yaml's persuasion_levers values - guarded against
 # drift by test_generation.py's test_prompt_lever_list_matches_the_dictionary.
+# It carries the six real levers and NOT the `none` sentinel: `none` is a judge
+# recording that a page has no lever, which is not an instruction a generator
+# can act on.
 SYSTEM_PROMPT = """You write structured marketing campaign specifications for a bank, for a
 research comparison. You are NOT writing a finished advert.
 

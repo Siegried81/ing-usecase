@@ -433,6 +433,37 @@
         }
       ]
     },
-    "vdk": null
+    "vdk": {
+      "headline_count": 1,
+      "themes": {
+        "innovation_digital": 0,
+        "crisis_or_scandal": 0,
+        "financial_results": 1,
+        "product_launch": 0,
+        "esg_sustainability": 0,
+        "regulatory": 0,
+        "other": 0
+      },
+      "theme_headlines": {
+        "innovation_digital": [],
+        "crisis_or_scandal": [],
+        "financial_results": [
+          {
+            "title": "Tout en lettres d’or chez VDK",
+            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
+          }
+        ],
+        "product_launch": [],
+        "esg_sustainability": [],
+        "regulatory": [],
+        "other": []
+      },
+      "notable_headlines": [
+        {
+          "title": "Tout en lettres d’or chez VDK",
+          "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
+        }
+      ]
+    }
   }
 }
