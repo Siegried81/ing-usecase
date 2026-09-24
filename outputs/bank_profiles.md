@@ -100,7 +100,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 7,078 |
-| cta count | 9 |
+| cta count | 10 |
 | cta above fold | no |
 | word count | 3,310 |
 | readability band | hard |
@@ -178,7 +178,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 15,135 |
-| cta count | 21 |
+| cta count | 20 |
 | cta above fold | no |
 | word count | 1,763 |
 | readability band | medium |
@@ -217,7 +217,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 4,447 |
-| cta count | 4 |
+| cta count | 3 |
 | cta above fold | no |
 | word count | 2,613 |
 | readability band | very_hard |
@@ -256,7 +256,7 @@
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 2,945 |
-| cta count | 1 |
+| cta count | 2 |
 | cta above fold | no |
 | word count | 2,315 |
 | readability band | hard |
@@ -334,7 +334,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 11,149 |
-| cta count | 0.67 |
+| cta count | 1 |
 | cta above fold | no |
 | word count | - |
 | readability band | hard |
@@ -373,7 +373,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 3,775 |
-| cta count | 1.33 |
+| cta count | 2.33 |
 | cta above fold | no |
 | word count | - |
 | readability band | very_hard |
@@ -451,7 +451,7 @@
 | hero image | yes (all pages) |
 | text image layout | beside |
 | page height px | 8,005 |
-| cta count | 7 |
+| cta count | 5 |
 | cta above fold | no |
 | word count | 2,019 |
 | readability band | hard |
@@ -529,7 +529,7 @@
 | hero image | yes (all pages) |
 | text image layout | overlaid |
 | page height px | 4,290 |
-| cta count | 2 |
+| cta count | 0 |
 | cta above fold | no |
 | word count | 3,992 |
 | readability band | hard |

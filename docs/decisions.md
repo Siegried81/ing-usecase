@@ -909,3 +909,37 @@ human counts 27 raw. No rule reproduces a human count, because "is a clickable
 product card a call to action" is a marketing judgement and not a property of
 the markup. cta_count therefore stays withdrawn, no direction is claimed in
 either direction, and the definition is named as the open question it is.
+
+**sieg 24/09, the CTA finding, settled.** Siegried's two statements looked
+contradictory - "il y a plein de CTA chez ING" on 22/09 and "ING est clairement
+le pire" today - and both are true. Measured on the captured pack pages:
+
+| rule | ING | bunq | BNP | beobank | hellobank | argenta |
+| --- | --- | --- | --- | --- | --- | --- |
+| action verbs only | 1.0 | 21.0 | 12.0 | 10.0 | 1.0 | 0.0 |
+| plus clickable product cards | 9.0 | 20.0 | 12.0 | 17.0 | 1.0 | 0.0 |
+
+ING's page carries nine clickable things and exactly one that opens an account,
+on a page 11,149px long. That is the finding, and it is better than either
+number alone: plenty to click, almost nothing that converts.
+
+`cta_count` keeps the dictionary's definition - "distinct call-to-action buttons
+or links" - so it counts action verbs, not cards. Counting cards was tried and
+reverted: it moved ING from 1.0 to 9.0 and put it mid-pack, which hides the
+finding rather than reporting it. `_in_card()` stays in scraper.py so the card
+count can be measured deliberately if it ever becomes a feature of its own.
+
+The feature stays WITHDRAWN from the comparison and no ranking is published,
+because hellobank still reads 1.0 where a human counts about 10 - the rule is
+markup-dependent and not comparable across fourteen sites.
+
+One regression of mine, found and fixed within the hour: adding "header" to the
+chrome-name match hit `class="product-header"`, which is the hero block, and
+excluded ING's main CTA. Chrome names are now matched on whole hyphen-separated
+parts, with "header" deliberately absent and "footer" whole-word only.
+
+Corrected in the docs at the same time: the D06 banner claimed the pack cards
+were absent from the captured HTML, which is false - they are all there;
+pipeline.md had two sentences left dangling by the comment sweep; and
+web_ui_proposal.md still listed a `/api/rubric/agreement` endpoint that no
+longer exists.

@@ -160,7 +160,6 @@ sync problem, and the audit trail stays exactly where it is.
 | `GET` | `/api/runs/{id}/stream` | SSE progress + log |
 | `GET` | `/api/rubric/{rater}/next` | next unscored page for this rater |
 | `PUT` | `/api/rubric/{rater}/{page_id}` | save one page's scores |
-| `GET` | `/api/rubric/agreement` | raw % and Cohen's kappa |
 | `GET` | `/api/results/*` | charts, limitations, profiles |
 
 Validation is the existing `schema.validate` and the dictionary's own allowed

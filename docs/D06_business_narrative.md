@@ -15,9 +15,11 @@
 > | `page_height_px` | 11,149 | 6,412 | +1.42 SD |
 > | `has_animation` | 0.33 | 0.62 | -0.58 SD — the one place ING is below |
 >
-> `cta_count` is WITHDRAWN and must not be quoted: ING's pack cards load
-> client-side and are absent from the captured HTML, so any count measures the
-> capture, not the page. See `decisions.md`, 23/09.
+> `cta_count` is WITHDRAWN and must not be quoted, in either direction. The
+> captured HTML holds every ING pack card - nothing is missing from the capture
+> - but the counter recognises one label in eight on that page, and no rule
+> tried so far reproduces a human count on the other banks. See `decisions.md`,
+> 23-24/09.
 >
 > Still true: don't hand-copy a number from this file into a deck. Pull it from
 > `report.json` or a fresh `run_analysis.py --product-family auto` run.
