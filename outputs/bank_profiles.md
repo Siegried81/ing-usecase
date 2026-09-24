@@ -74,7 +74,7 @@
 | lever count | 1 |
 | personas | mass_market 100% |
 
-**Signature:** has comparison table well above the market average (+1.3 SD); page height px well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).
+**Signature:** page height px well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD); value prop clarity well above the market average (+1.2 SD).
 
 ### beobank  (traditional)
 
@@ -481,7 +481,7 @@
 | lever count | 4 |
 | personas | mass_market 100%, family 100%, entrepreneur_self_employed 100%, expat 100% |
 
-**Signature:** institutional trust signal present well above the market average (+3.6 SD); rate shown well above the market average (+2.4 SD); subscription style framing well above the market average (+2.4 SD).
+**Signature:** institutional trust signal present well above the market average (+3.6 SD); subscription style framing well above the market average (+2.4 SD); rate shown well above the market average (+2.4 SD).
 
 ### vdk  (traditional)
 
@@ -518,4 +518,4 @@
 | lever count | 1 |
 | personas | student 100% |
 
-**Signature:** aida desire well below the market average (-1.3 SD); has comparison table well above the market average (+1.3 SD); youth student targeting well above the market average (+1.3 SD).
+**Signature:** aida desire well below the market average (-1.3 SD); youth student targeting well above the market average (+1.3 SD); numeric claim count well below the market average (-1.2 SD).

@@ -51,6 +51,15 @@ export function AiScoreRadar({
 
   if (!selected || axes.length === 0) return null;
 
+  // An axis every bank reports null for is withdrawn upstream (ai_score.py
+  // returns None when its inputs do not survive scrutiny), not missing for this
+  // one bank. Derived rather than configured so the chart follows the module:
+  // restore the axis in Python and the label here goes back on its own.
+  const withdrawn = new Set(
+    axes.filter((a) => banks.every((b) => b.aiScore[a.key] === null || b.aiScore[a.key] === undefined))
+        .map((a) => a.key),
+  );
+
   const rings = [0.25, 0.5, 0.75, 1];
   const polygon = (scoreOf: (axisKey: string) => number | null | undefined) =>
     axes
@@ -90,9 +99,17 @@ export function AiScoreRadar({
           const [lx, ly] = point(angle, RADIUS + 16);
           return (
             <g key={axis.key}>
-              <line x1={CENTER} y1={CENTER} x2={x2} y2={y2} stroke="var(--line)" />
-              <text x={lx} y={ly} fontSize={11} fill="var(--ink-2)" textAnchor="middle" dominantBaseline="middle">
-                {axis.label}
+              <line
+                x1={CENTER} y1={CENTER} x2={x2} y2={y2}
+                stroke="var(--line)"
+                strokeDasharray={withdrawn.has(axis.key) ? "3 3" : undefined}
+              />
+              <text
+                x={lx} y={ly} fontSize={11}
+                fill={withdrawn.has(axis.key) ? "var(--ink-3)" : "var(--ink-2)"}
+                textAnchor="middle" dominantBaseline="middle"
+              >
+                {withdrawn.has(axis.key) ? `${axis.label} (withdrawn)` : axis.label}
               </text>
             </g>
           );
@@ -120,6 +137,14 @@ export function AiScoreRadar({
         <strong style={{ color: COLOUR[selected.category] }}>{selected.name}</strong> (solid) vs{" "}
         <span style={{ color: "var(--ink-3)" }}>market average</span> (dashed)
       </div>
+      <p className="note" style={{ textAlign: "center", marginTop: 6 }}>
+        A vertex at the centre is a <strong>measured zero</strong>, not missing data.{" "}
+        <em>Trust</em> is genuinely 0 for thirteen banks of fourteen: not one page in this family
+        cites a branch network as a benefit, and the only two that carry an institutional or
+        regulatory trust signal belong to Revolut and bunq — both challengers. An axis marked{" "}
+        <em>withdrawn</em> is a different thing: its inputs did not survive scrutiny, so it reports
+        nothing at all.
+      </p>
 
       {/* Reuses DeckClaims' .claims table styling - the accessibility
           fallback for the radar above, same doctrine as charts.py's companion tables. */}

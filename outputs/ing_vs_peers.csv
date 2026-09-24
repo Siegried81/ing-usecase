@@ -31,7 +31,6 @@ first_time_investor_targeting,banking_domain,model_assisted,0.0,0.07692307692307
 people_present,visuals,model_assisted,1.0,0.9230769230769231,0.26646935501059654,13,0.28867513459481264,True,,7.6923076923076925,above peers
 total_image_area_ratio,visuals,automatic,0.12366666666666666,0.1667948717948718,0.1527842195761044,13,-0.2822818040231062,True,,53.84615384615385,below peers
 aida_attention,marketing_principles,rubric,0.6666666666666666,0.5641025641025641,0.4783271309276315,13,0.2144225069675589,True,,46.15384615384615,above peers
-has_comparison_table,layout_structure,automatic,0.3333333333333333,0.38461538461538464,0.48650425541051995,13,-0.10540925533894605,True,,61.53846153846154,below peers
 brand_colour_share,colours_design,automatic,0.007333333333333333,0.008384615384615386,0.015494606811296838,13,-0.06784825611164153,True,,76.92307692307693,below peers
 hero_image_present,visuals,automatic,1.0,1.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers
 accent_colour_count,colours_design,automatic,4.0,4.0,0.0,13,0.0,False,every peer has the same value - no spread to measure against,0.0,below peers

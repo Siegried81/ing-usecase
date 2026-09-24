@@ -163,16 +163,16 @@
       ],
       "signature": [
         [
-          "has_comparison_table",
-          1.3199500146737049
-        ],
-        [
           "page_height_px",
           1.266925386170157
         ],
         [
           "youth_student_targeting",
           1.2547140330712392
+        ],
+        [
+          "value_prop_clarity",
+          1.2285902336679027
         ]
       ]
     },
@@ -1059,11 +1059,11 @@
           3.6055512754639896
         ],
         [
-          "rate_shown",
+          "subscription_style_framing",
           2.4494897427831783
         ],
         [
-          "subscription_style_framing",
+          "rate_shown",
           2.4494897427831783
         ]
       ]
@@ -1135,12 +1135,12 @@
           -1.319950014673705
         ],
         [
-          "has_comparison_table",
-          1.3199500146737049
-        ],
-        [
           "youth_student_targeting",
           1.2547140330712392
+        ],
+        [
+          "numeric_claim_count",
+          -1.1851786088195408
         ]
       ]
     }

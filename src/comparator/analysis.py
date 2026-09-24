@@ -69,11 +69,20 @@ FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "r
 # animated has no video and no GIF, only CSS rules that may drive a spinner or a
 # cookie-banner fade. Deck claim H3 was tested against this column, so the claim
 # rested on a measurement that does not mean what its name says.
+# has_comparison_table: the rule is `soup.find("table") is not None`, so it
+# reports whether the page uses an HTML <table> element, not whether it compares
+# anything. Traditional banks mark their tariff grids up as tables; N26 and
+# Revolut build the same plan comparison in CSS and score False - their captured
+# text carries the plan names and monthly prices all the same ("standard" 148
+# times on N26's page, "metal" 19). The split it produced, 0.57 of traditional
+# pages against 0.00 of challenger pages at d = -1.23, is a difference in HTML
+# authoring style reported as a difference in strategy.
 CAPTURE_INVALID_FEATURES = {
     "cta_count",
     "cta_contrast_ratio",
     "has_animation",
     "animated_asset_count",
+    "has_comparison_table",
 }
 
 

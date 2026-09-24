@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T18:55:41+00:00",
+  "generated_at": "2026-09-24T19:50:07+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -49,11 +49,11 @@
     "captured_from": "2026-09-21T04:48:14.259669+00:00",
     "captured_to": "2026-09-23T06:18:33.296978+00:00",
     "total_collected": 51,
-    "n_features": 34
+    "n_features": 33
   },
   "headline": {
     "focus": "ING",
-    "score": 0.406,
+    "score": 0.407,
     "verdict": "traditional, but leaning towards the challengers",
     "has_focus": true
   },
@@ -62,77 +62,77 @@
       "bank": "Argenta",
       "key": "argenta",
       "category": "traditional",
-      "score": -0.303,
+      "score": -0.277,
       "isFocus": false
     },
     {
       "bank": "CBC",
       "key": "cbc",
       "category": "traditional",
-      "score": -0.293,
+      "score": -0.266,
       "isFocus": false
     },
     {
       "bank": "Beobank",
       "key": "beobank",
       "category": "traditional",
-      "score": -0.116,
+      "score": -0.167,
       "isFocus": false
     },
     {
       "bank": "BNP Paribas Fortis",
       "key": "bnp_paribas_fortis",
       "category": "traditional",
-      "score": -0.103,
+      "score": -0.153,
       "isFocus": false
     },
     {
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.087,
+      "score": -0.137,
       "isFocus": false
     },
     {
       "bank": "KBC",
       "key": "kbc",
       "category": "traditional",
-      "score": -0.014,
+      "score": 0.026,
       "isFocus": false
     },
     {
       "bank": "VDK Bank",
       "key": "vdk",
       "category": "traditional",
-      "score": -0.003,
+      "score": 0.037,
       "isFocus": false
     },
     {
       "bank": "Hello bank!",
       "key": "hellobank",
       "category": "traditional",
-      "score": 0.23,
+      "score": 0.195,
       "isFocus": false
     },
     {
       "bank": "Belfius",
       "key": "belfius",
       "category": "traditional",
-      "score": 0.281,
+      "score": 0.334,
       "isFocus": false
     },
     {
       "bank": "ING",
       "key": "ing",
       "category": "traditional",
-      "score": 0.406,
+      "score": 0.407,
       "isFocus": true
     },
     {
       "bank": "Keytrade Bank",
       "key": "keytrade",
       "category": "challenger",
-      "score": 0.545,
+      "score": 0.524,
       "isFocus": false
     },
     {
@@ -146,14 +146,14 @@
       "bank": "bunq",
       "key": "bunq",
       "category": "challenger",
-      "score": 1.139,
+      "score": 1.145,
       "isFocus": false
     },
     {
       "bank": "Revolut",
       "key": "revolut",
       "category": "challenger",
-      "score": 1.335,
+      "score": 1.35,
       "isFocus": false
     }
   ],
@@ -313,18 +313,18 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "rate_shown",
-      "label": "Shows a rate",
-      "extraction": "automatic",
+      "feature": "subscription_style_framing",
+      "label": "Subscription style framing",
+      "extraction": "model_assisted",
       "traditional": 0.0,
       "challenger": 0.5,
       "effect": 2.0,
       "higherAt": "challenger"
     },
     {
-      "feature": "subscription_style_framing",
-      "label": "Subscription style framing",
-      "extraction": "model_assisted",
+      "feature": "rate_shown",
+      "label": "Shows a rate",
+      "extraction": "automatic",
       "traditional": 0.0,
       "challenger": 0.5,
       "effect": 2.0,
@@ -358,15 +358,6 @@
       "higherAt": "traditional"
     },
     {
-      "feature": "disclaimer_present",
-      "label": "Carries legal small print",
-      "extraction": "automatic",
-      "traditional": 0.9285714285714286,
-      "challenger": 0.5,
-      "effect": -1.23,
-      "higherAt": "traditional"
-    },
-    {
       "feature": "expat_cross_border_targeting",
       "label": "Targets expats",
       "extraction": "model_assisted",
@@ -376,13 +367,22 @@
       "higherAt": "challenger"
     },
     {
-      "feature": "has_comparison_table",
-      "label": "Includes a comparison table",
+      "feature": "disclaimer_present",
+      "label": "Carries legal small print",
       "extraction": "automatic",
-      "traditional": 0.5714285714285714,
-      "challenger": 0.0,
+      "traditional": 0.9285714285714286,
+      "challenger": 0.5,
       "effect": -1.23,
       "higherAt": "traditional"
+    },
+    {
+      "feature": "first_time_investor_targeting",
+      "label": "Targets first-time investors",
+      "extraction": "model_assisted",
+      "traditional": 0.0,
+      "challenger": 0.25,
+      "effect": 1.15,
+      "higherAt": "challenger"
     }
   ],
   "banks": [
@@ -419,7 +419,6 @@
         "Images": 11.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.0,
         "Image area share": 0.023
       },
       "layout": {
@@ -427,7 +426,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3244.0,
-        "Calls to action": 0.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -473,11 +471,6 @@
       "pages": 1,
       "signature": [
         {
-          "label": "Includes a comparison table",
-          "sd": 1.3,
-          "direction": "above"
-        },
-        {
           "label": "Page length",
           "sd": 1.3,
           "direction": "above"
@@ -485,6 +478,11 @@
         {
           "label": "Targets students or young people",
           "sd": 1.3,
+          "direction": "above"
+        },
+        {
+          "label": "Clarity of the offer",
+          "sd": 1.2,
           "direction": "above"
         }
       ],
@@ -499,7 +497,6 @@
         "Images": 18.0,
         "Dominant image type": "illustration",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.149
       },
       "layout": {
@@ -507,7 +504,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11110.0,
-        "Calls to action": 5.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -579,7 +575,6 @@
         "Images": 16.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.0,
         "Image area share": 0.109
       },
       "layout": {
@@ -587,7 +582,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 7078.0,
-        "Calls to action": 10.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -660,7 +654,6 @@
         "Images": 17.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.0,
         "Image area share": 0.104
       },
       "layout": {
@@ -668,7 +661,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "stacked",
         "Page length": 6387.0,
-        "Calls to action": 12.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -746,7 +738,6 @@
         "Images": 13.0,
         "Dominant image type": "illustration",
         "People present": 0.0,
-        "Animated": 1.0,
         "Image area share": 0.167
       },
       "layout": {
@@ -754,7 +745,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 15135.0,
-        "Calls to action": 20.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -833,7 +823,6 @@
         "Images": 12.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.046
       },
       "layout": {
@@ -841,7 +830,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 4447.0,
-        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -913,7 +901,6 @@
         "Images": 72.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.002
       },
       "layout": {
@@ -921,7 +908,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 2945.0,
-        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -993,7 +979,6 @@
         "Images": 15.0,
         "Dominant image type": "illustration",
         "People present": 1.0,
-        "Animated": 0.0,
         "Image area share": 0.322
       },
       "layout": {
@@ -1001,7 +986,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3881.0,
-        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1073,7 +1057,6 @@
         "Images": 33.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.3333333333333333,
         "Image area share": 0.12366666666666666
       },
       "layout": {
@@ -1081,7 +1064,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 11148.666666666666,
-        "Calls to action": 1.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1167,7 +1149,6 @@
         "Images": 8.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.042333333333333334
       },
       "layout": {
@@ -1175,7 +1156,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 3775.3333333333335,
-        "Calls to action": 2.3333333333333335,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1248,7 +1228,6 @@
         "Images": 21.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.26
       },
       "layout": {
@@ -1256,7 +1235,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 6440.0,
-        "Calls to action": 2.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1333,7 +1311,6 @@
         "Images": 29.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 0.0,
         "Image area share": 0.587
       },
       "layout": {
@@ -1341,7 +1318,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "beside",
         "Page length": 8005.0,
-        "Calls to action": 5.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1393,12 +1369,12 @@
           "direction": "above"
         },
         {
-          "label": "Shows a rate",
+          "label": "Subscription style framing",
           "sd": 2.4,
           "direction": "above"
         },
         {
-          "label": "Subscription style framing",
+          "label": "Shows a rate",
           "sd": 2.4,
           "direction": "above"
         }
@@ -1414,7 +1390,6 @@
         "Images": 10.0,
         "Dominant image type": "render_3d",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.243
       },
       "layout": {
@@ -1422,7 +1397,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 6615.0,
-        "Calls to action": 3.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -1491,14 +1465,14 @@
           "direction": "below"
         },
         {
-          "label": "Includes a comparison table",
+          "label": "Targets students or young people",
           "sd": 1.3,
           "direction": "above"
         },
         {
-          "label": "Targets students or young people",
-          "sd": 1.3,
-          "direction": "above"
+          "label": "Figures and percentages quoted",
+          "sd": -1.2,
+          "direction": "below"
         }
       ],
       "tone": {
@@ -1512,7 +1486,6 @@
         "Images": 5.0,
         "Dominant image type": "photo",
         "People present": 1.0,
-        "Animated": 1.0,
         "Image area share": 0.114
       },
       "layout": {
@@ -1520,7 +1493,6 @@
         "Hero image": 1.0,
         "Text and image arrangement": "overlaid",
         "Page length": 4290.0,
-        "Calls to action": 0.0,
         "Call to action visible without scrolling": 0.0
       },
       "valueProposition": {
@@ -2104,225 +2076,225 @@
       [
         0.0,
         6.25,
-        6.5,
-        6.29,
-        10.75,
+        6.14,
+        5.92,
+        10.53,
         5.64,
-        9.3,
-        7.91,
-        7.36,
+        9.05,
+        7.62,
+        7.22,
         6.04,
-        8.25,
-        10.41,
-        10.93,
+        7.97,
+        10.19,
+        10.72,
         5.76
       ],
       [
         6.25,
         0.0,
-        7.23,
-        7.57,
-        8.82,
+        6.91,
+        7.26,
+        8.56,
         6.63,
-        9.15,
-        7.02,
-        6.21,
+        8.9,
+        6.69,
+        6.05,
         6.47,
-        5.94,
-        9.27,
-        8.66,
+        5.54,
+        9.02,
+        8.4,
         4.51
       ],
       [
-        6.5,
-        7.23,
+        6.14,
+        6.91,
         0.0,
         7.04,
         11.03,
-        6.62,
+        6.26,
         7.98,
         7.32,
-        8.01,
-        6.98,
+        7.98,
+        6.65,
         7.46,
         9.21,
         10.84,
-        6.14
+        5.75
       ],
       [
-        6.29,
-        7.57,
+        5.92,
+        7.26,
         7.04,
         0.0,
         10.56,
-        6.26,
+        5.89,
         9.59,
         8.92,
-        7.22,
-        7.39,
+        7.18,
+        7.08,
         7.59,
         10.27,
         11.06,
-        6.64
+        6.28
       ],
       [
-        10.75,
-        8.82,
+        10.53,
+        8.56,
         11.03,
         10.56,
         0.0,
-        10.98,
+        10.77,
         12.33,
         10.81,
-        7.96,
-        9.66,
+        7.92,
+        9.42,
         10.07,
         11.57,
         9.66,
-        9.84
+        9.6
       ],
       [
         5.64,
         6.63,
-        6.62,
         6.26,
-        10.98,
+        5.89,
+        10.77,
         0.0,
-        9.0,
-        7.14,
-        8.54,
+        8.74,
+        6.81,
+        8.42,
         5.36,
-        7.72,
-        10.22,
-        11.03,
+        7.42,
+        9.99,
+        10.82,
         5.07
       ],
       [
-        9.3,
-        9.15,
+        9.05,
+        8.9,
         7.98,
         9.59,
         12.33,
-        9.0,
+        8.74,
         0.0,
         8.82,
-        9.93,
-        8.34,
+        9.9,
+        8.06,
         8.04,
         11.26,
         11.74,
-        8.62
+        8.36
       ],
       [
-        7.91,
-        7.02,
+        7.62,
+        6.69,
         7.32,
         8.92,
         10.81,
-        7.14,
+        6.81,
         8.82,
         0.0,
-        8.5,
-        7.13,
+        8.47,
+        6.8,
         6.29,
         8.2,
         10.46,
-        6.86
+        6.52
       ],
       [
-        7.36,
-        6.21,
-        8.01,
         7.22,
-        7.96,
-        8.54,
-        9.93,
-        8.5,
+        6.05,
+        7.98,
+        7.18,
+        7.92,
+        8.42,
+        9.9,
+        8.47,
         0.0,
-        7.65,
-        7.83,
-        9.38,
-        9.26,
-        7.06
+        7.52,
+        7.8,
+        9.35,
+        9.24,
+        6.92
       ],
       [
         6.04,
         6.47,
-        6.98,
-        7.39,
-        9.66,
-        5.36,
-        8.34,
-        7.13,
-        7.65,
-        0.0,
-        7.71,
+        6.65,
+        7.08,
         9.42,
-        10.06,
+        5.36,
+        8.06,
+        6.8,
+        7.52,
+        0.0,
+        7.41,
+        9.18,
+        9.83,
         5.87
       ],
       [
-        8.25,
-        5.94,
+        7.97,
+        5.54,
         7.46,
         7.59,
         10.07,
-        7.72,
+        7.42,
         8.04,
         6.29,
-        7.83,
-        7.71,
+        7.8,
+        7.41,
         0.0,
         8.62,
         8.94,
-        5.91
+        5.51
       ],
       [
-        10.41,
-        9.27,
+        10.19,
+        9.02,
         9.21,
         10.27,
         11.57,
-        10.22,
+        9.99,
         11.26,
         8.2,
-        9.38,
-        9.42,
+        9.35,
+        9.18,
         8.62,
         0.0,
         10.61,
-        9.85
+        9.61
       ],
       [
-        10.93,
-        8.66,
+        10.72,
+        8.4,
         10.84,
         11.06,
         9.66,
-        11.03,
+        10.82,
         11.74,
         10.46,
-        9.26,
-        10.06,
+        9.24,
+        9.83,
         8.94,
         10.61,
         0.0,
-        9.4
+        9.16
       ],
       [
         5.76,
         4.51,
-        6.14,
-        6.64,
-        9.84,
+        5.75,
+        6.28,
+        9.6,
         5.07,
-        8.62,
-        6.86,
-        7.06,
+        8.36,
+        6.52,
+        6.92,
         5.87,
-        5.91,
-        9.85,
-        9.4,
+        5.51,
+        9.61,
+        9.16,
         0.0
       ]
     ]
@@ -2330,14 +2302,6 @@
   "clusters": [
     {
       "cluster": 1,
-      "banks": [
-        "bunq",
-        "ING",
-        "Revolut"
-      ]
-    },
-    {
-      "cluster": 2,
       "banks": [
         "Argenta",
         "Belfius",
@@ -2348,23 +2312,31 @@
         "Hello bank!",
         "KBC",
         "Keytrade Bank",
-        "N26",
         "VDK Bank"
+      ]
+    },
+    {
+      "cluster": 2,
+      "banks": [
+        "bunq",
+        "ING",
+        "N26",
+        "Revolut"
       ]
     }
   ],
   "nearestToFocus": [
     {
       "bank": "Belfius",
-      "distance": 6.21
+      "distance": 6.05
     },
     {
       "bank": "VDK Bank",
-      "distance": 7.06
+      "distance": 6.92
     },
     {
       "bank": "BNP Paribas Fortis",
-      "distance": 7.22
+      "distance": 7.18
     }
   ],
   "deckClaims": [
@@ -2414,7 +2386,7 @@
     ],
     "standing": [
       "**The cross-sell score counts distinct product types, not selling effort.** `cross_sold_products` names nine product types plus `other`, and a page's score is how many of the nine it mentions, averaged over the bank's pages. A page that pushes one product ten times and a page that mentions it once score identically, and anything outside the nine still collapses into a single `other` counted once. Read the score as breadth of coverage, never as how hard a page cross-sells.",
-      "**Four features are measured but never compared.** `cta_count` and `cta_contrast_ratio` are withdrawn because no counting rule reproduced a human count of calls to action across fourteen banks: navigation, several links pointing at one target, and clickable product cards are marked up differently by every bank, so the number reports the markup convention. `has_animation` and `animated_asset_count` are withdrawn because the rule asks whether the stylesheet declares an animation, not whether the page moves — across the compared pages exactly one carries real motion. The columns stay in the dataset; they are excluded from every comparison and no finding rests on them.",
+      "**Five features are measured but never compared.** `cta_count` and `cta_contrast_ratio` are withdrawn because no counting rule reproduced a human count of calls to action across fourteen banks: navigation, several links pointing at one target, and clickable product cards are marked up differently by every bank, so the number reports the markup convention. `has_animation` and `animated_asset_count` are withdrawn because the rule asks whether the stylesheet declares an animation, not whether the page moves — across the compared pages exactly one carries real motion. The `has_comparison_table` is withdrawn because it tests for an HTML `<table>` element: traditional banks mark their tariff grids up as tables, while N26 and Revolut build the same plan comparison in CSS, so the 0.57-against-0.00 split it produced is a difference in authoring style, not in strategy. The columns stay in the dataset; they are excluded from every comparison and no finding rests on them.",
       "**Three captures were taken with a cookie-consent modal over the page.** Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features — `background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, `brand_colour_share` and `above_fold_element_count` — describe the modal rather than the page beneath it, which is why those three report a near-zero hero area. Text-derived and judged features are unaffected, so the word, urgency, persuasion and rubric findings stand.",
       "**Page colour is measured on one rendering.** `background_luminance`, `brand_colour_share` and the palette features come from a single capture in headless Chrome with the default light colour scheme. A visitor using dark mode, or a browser extension that forces it, may see a substantially darker page than the one measured here — that difference is unmeasured, and any brightness comparison should be read as a comparison of our captures.",
       "The judged features carry the opinion of a single person. No inter-rater reliability was measured — that is the chosen scope of this proof of concept, not an oversight. Single-judge bias is a question for the real product and is listed under next steps.",
