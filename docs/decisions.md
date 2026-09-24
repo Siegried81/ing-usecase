@@ -943,3 +943,26 @@ were absent from the captured HTML, which is false - they are all there;
 pipeline.md had two sentences left dangling by the comment sweep; and
 web_ui_proposal.md still listed a `/api/rubric/agreement` endpoint that no
 longer exists.
+
+**sieg 24/09, slide 11's third row removed: it rested on one data point.**
+`institutional_trust_signal_present` is False on 17 of the 18 compared pages -
+Revolut is the only True in the whole family. The row read "+1.02 vs -0.28",
+but the trio's +1.02 came entirely from that single page and ING's -0.28 meant
+only "False, like almost everyone". The flag is also wrong on its face: ING's
+pages carry FSMA registration, RPM Bruxelles and the 100.000 EUR deposit
+guarantee, more institutional markers than KBC's on two of three pages, and are
+still labelled False. It is model_assisted, and this is what a model judging
+from text without vision produces.
+
+The row is gone and the animation row moved up to fill it. No replacement was
+found, and that search is itself worth recording: of the features where the
+KBC/Crelan/Revolut trio sits above ING, every candidate is either binary
+(images_have_alt_text and animated_asset_count have 2 and 3 distinct values
+across fourteen banks) or markup-dependent. `section_count` looked like the one
+real-variance candidate until it was checked: KBC and CBC score 1 while
+carrying 12 and 13 headings, Crelan scores 154, and ING has no value at all -
+it counts <section> tags, so it measures markup style.
+
+WORTH SAYING TO DAN: the two rows left on that slide are both near-binary. They
+are not wrong, but a reader who asks "how many banks is that over" deserves the
+answer, and the answer is two distinct values across fourteen banks.
