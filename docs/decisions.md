@@ -966,3 +966,32 @@ it counts <section> tags, so it measures markup style.
 WORTH SAYING TO DAN: the two rows left on that slide are both near-binary. They
 are not wrong, but a reader who asks "how many banks is that over" deserves the
 answer, and the answer is two distinct values across fourteen banks.
+
+**sieg 24/09, a slide of Dan's own, and the regional data refreshed.**
+
+Slide 11 was rewritten to "What ING's pages do that theirs don't" - urgency,
+clarity of the offer and page length against the KBC/Crelan/Revolut trio - after
+its institutional-trust row was removed. A repetition check across the presented
+slides then showed those three features already appear on slide 8 and on
+Stephane's slide 15, so the slide confirms rather than adds. It is kept on
+Siegried's call, with Dan framing it as a check against a different peer set.
+
+The answer to the thinness was a slide built on data only Dan has. New slide 13,
+"Where each brand is searched from", from the Google Trends regional breakdown,
+which was in `outputs/geo_trends.json` and on no slide at all:
+
+  * every challenger peaks in Brussels - Revolut, N26 and bunq all index 100
+    there and fall away outside it
+  * every incumbent is regional and predictably so - KBC 100 in Flanders against
+    11 in Wallonia, Argenta 100 against 27, Belfius/BNP/Crelan peaking in
+    Wallonia. Five of six sitting where their history put them is the sanity
+    check on the data, not the finding
+  * ING is the exception: Brussels 100, Wallonia 98, Flanders 73, national with
+    no regional home, behaving like the challengers on this one measure
+  * it lands where the traditional-challenger score already puts ING, from a
+    completely independent source - search behaviour rather than page features
+
+`geo_trends.json` was regenerated before the slide was written, and three of the
+figures had moved since the 21/09 file: ING's Flanders index 74 -> 73, Argenta's
+Wallonia 24 -> 27, bunq's Wallonia 32 -> 29. The slide carries the new ones, and
+every figure on it was checked back against the regenerated file.
