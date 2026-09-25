@@ -144,6 +144,49 @@ def test_build_recommendations_drops_feature_ids_the_report_does_not_have(monkey
     assert result.recommendations[0].features == ["rate_shown"]
 
 
+def test_build_recommendations_keeps_no_feature_when_every_id_is_invented(monkeypatch):
+    # `known or all` put every phantom id back when NONE was real,
+    # which is exactly the evidence the UI must not link to.
+    raw = json.dumps({"summary": "s", "recommendations": [
+        {"title": "t", "finding": "f", "recommendation": "r",
+         "features": ["made_up", "also_made_up"], "page_targets": ["index"]},
+    ]})
+    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (raw, "m"))
+    assert build_recommendations(_REPORT).recommendations[0].features == []
+
+
+def test_build_recommendations_drops_unknown_page_targets(monkeypatch):
+    # An unknown page key would keep the recommendation off every generated
+    # page; it is dropped, and an empty list means "all pages".
+    raw = json.dumps({"summary": "s", "recommendations": [
+        {"title": "t", "finding": "f", "recommendation": "r", "features": [],
+         "page_targets": ["homepage", "index", "index"]},
+        {"title": "t2", "finding": "f", "recommendation": "r", "features": [],
+         "page_targets": ["nowhere"]},
+    ]})
+    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (raw, "m"))
+    result = build_recommendations(_REPORT)
+    assert result.recommendations[0].page_targets == ["index"]
+    assert result.recommendations[1].page_targets == []
+
+
+def test_reputation_recommendation_never_carries_page_features(monkeypatch):
+    raw = json.dumps({"summary": "s", "recommendations": [
+        {"title": "t", "finding": "f", "recommendation": "r", "basis": "reputation",
+         "features": ["rate_shown"], "page_targets": []},
+    ]})
+    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (raw, "m"))
+    assert build_recommendations(_REPORT).recommendations[0].features == []
+
+
+def test_page_keys_match_the_generated_site():
+    # recommendations.py cannot import site_generator (import cycle), so the
+    # two lists are kept in step here.
+    from comparator.recommendations import PAGE_KEYS
+
+    assert list(PAGE_KEYS) == [p.slug for p in PAGES]
+
+
 def test_build_recommendations_retries_on_invalid_json(monkeypatch):
     calls = {"n": 0}
 

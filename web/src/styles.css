@@ -16,6 +16,7 @@
   --focus-ring: #12131a;
   --warn: #9a6a00;
   --warn-bg: #fdf6e3;
+  --warn-line: #e8d9a8;
   --radius: 14px;
   --maxw: 1080px;
   --sans: ui-sans-serif, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -424,3 +425,23 @@ section { margin: 40px 0; }
   .sig-bar { grid-template-columns: 1fr 120px 46px; }
 }
 
+
+/* Regulatory-style notice. Sits above the figures on Home because a reader who
+   scrolls past it has already formed an impression of the numbers - the point
+   of the box is that it is read first, not that it exists somewhere. */
+.disclaimer {
+  background: var(--warn-bg);
+  border: 1px solid var(--warn-line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  margin-bottom: 16px;
+}
+.disclaimer-label {
+  margin: 0 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--warn);
+}
+.disclaimer p { margin: 0; font-size: 14.5px; color: var(--ink-2); }

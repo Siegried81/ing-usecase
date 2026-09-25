@@ -22,6 +22,7 @@ from comparator import load_dictionary
 from comparator import ai_score
 from comparator import cross_sell
 from comparator import reputation
+from comparator.banks import display_name
 from comparator.analysis import (
     category_comparison,
     family_options,
@@ -332,7 +333,9 @@ def main() -> int:
     # Same optional/degrade-gracefully shape as the trends step
     # above. Themes only, never sentiment - see comparator/reputation.py.
     _header("11b. Bank reputation (NewsAPI, optional)")
-    rep_banks = [(b, b) for b in sorted(banks_df["bank"].unique())]
+    # (key, display name): the name is what the news search looks for, so it
+    # must be "BNP Paribas Fortis", never the key "bnp_paribas_fortis".
+    rep_banks = [(b, display_name(b)) for b in sorted(banks_df["bank"].unique())]
     reputation_dashboard = reputation.build_dashboard(rep_banks)
     if not reputation_dashboard["available"]:
         print("  NEWSAPI_KEY not set - skipped. Nothing else is affected.")

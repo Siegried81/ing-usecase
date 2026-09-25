@@ -169,13 +169,19 @@ class ModelAssistedFields(BaseModel):
     subscription_style_framing: bool = False  # New field, see feature_dictionary.yaml
 
 
+# The pinned model's default name, in ONE place. generation.pinned_model() used
+# to carry its own "deepseek-chat" default, so the provenance it printed could
+# disagree with the model this chain actually called.
+DEEPSEEK_DEFAULT_MODEL = "deepseek-flash"
+
+
 class LLMExtractionError(Exception):
     """Raised when every provider fails or the response can't be validated."""
 
 
 # (provider name, env var prefix, chat-completions URL, model env var, default model)
-# Same order as .env.example - Groq first (with key rotation),
-# then hosted fallbacks, then local Ollama for dev.
+# DeepSeek first (the pinned model), then Groq (with key rotation), then the
+# hosted fallbacks, then local Ollama for dev.
 #
 # Decision 6: DEEPSEEK IS THE PINNED MODEL for this project - one model,
 # named, so every bank is labelled by the same judge. The chain stays
@@ -187,7 +193,7 @@ _PROVIDERS = [
     # DeepSeek retired "deepseek-chat" - the API now serves
     # "deepseek-flash" (fast/economical) and "deepseek-v4-pro". Default
     # updated to match; .env's DEEPSEEK_MODEL overrides this regardless.
-    ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", "deepseek-flash"),
+    ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", DEEPSEEK_DEFAULT_MODEL),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
     # Kept the provider-tuple structure (name + deepseek pin,
     # decision 6) but fixed the default model ids for these three fallbacks -
@@ -232,7 +238,24 @@ def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str
         timeout=timeout,
     )
     response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"]
+    return _content_of(response)
+
+
+def _content_of(response: requests.Response) -> str:
+    """The message text of an OpenAI-compatible answer.
+
+    A provider can return HTTP 200 with an error object or an empty choices
+    list (quota pages, gateway errors). That used to raise KeyError/IndexError
+    straight out of the fallback loop, skipping every remaining provider; it is
+    now a RequestException like any other failed call, so the chain moves on.
+    """
+    try:
+        content = response.json()["choices"][0]["message"]["content"]
+    except (ValueError, KeyError, IndexError, TypeError) as exc:
+        raise requests.RequestException(f"malformed response body: {exc!r}") from exc
+    if not isinstance(content, str):
+        raise requests.RequestException("response content is not text")
+    return content
 
 
 def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 60) -> str:
@@ -251,7 +274,7 @@ def _call_ollama(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeou
         timeout=timeout,
     )
     response.raise_for_status()
-    return response.json()["choices"][0]["message"]["content"]
+    return _content_of(response)
 
 
 def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> tuple[str, str]:
@@ -286,6 +309,34 @@ def _call_llm(user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: 
     raise LLMExtractionError(f"every provider failed: {'; '.join(errors)}")
 
 
+# Characters of page text sent to the model. Real pages
+# carry 950-5,000 words (~6-30k characters), so the model sees the top of the
+# page only - small print, disclaimers and footer cross-sell usually sit below
+# this cut. Kept as-is so existing rows stay comparable; raising it is a team
+# decision that means re-extracting every page.
+PAGE_TEXT_LIMIT = 3000
+
+
+def _check_against_dictionary(fields: ModelAssistedFields) -> None:
+    """Refuse a categorical or list value the feature dictionary does not allow.
+
+    The pydantic model only checks types (str, bool, list), so an off-list
+    label ("very_prominent", "students") used to pass here and fail much later
+    in schema.validate(), after the row was written. Checked now, it becomes a
+    retry like any other malformed answer. The dictionary stays the contract.
+    """
+    from comparator.dictionary import load_dictionary  # local: keeps import light
+
+    fd = load_dictionary()
+    for name, value in fields.model_dump().items():
+        if name not in fd or not fd[name].values:
+            continue
+        allowed = set(fd[name].values)
+        members = value if isinstance(value, list) else [value]
+        if (fd[name].is_categorical or fd[name].is_list) and not set(members) <= allowed:
+            raise ValueError(f"{name}: {sorted(set(members) - allowed)} not in the dictionary's values")
+
+
 def extract_model_assisted(
     page_text: str, *, image_count: int, has_animation: bool, product_family: str, retries: int = 1
 ) -> ModelAssistedFields:
@@ -295,12 +346,6 @@ def extract_model_assisted(
     cannot be judged without knowing which disclosure is even expected (TAEG only
     applies to a mortgage, not a savings account); see its dictionary entry.
     """
-    user_prompt = (
-        f"Page text (truncated): {page_text[:3000]}\n\n"
-        f"Image count on page: {image_count}\n"
-        f"Contains animation/video: {has_animation}\n"
-        f"Product family: {product_family}"
-    )
     fields, _model = extract_model_assisted_with_provenance(
         page_text, image_count=image_count, has_animation=has_animation,
         product_family=product_family, retries=retries,
@@ -318,7 +363,7 @@ def extract_model_assisted_with_provenance(
     wrapper for callers that only want the fields.
     """
     user_prompt = (
-        f"Page text (truncated): {page_text[:3000]}\n\n"
+        f"Page text (truncated): {page_text[:PAGE_TEXT_LIMIT]}\n\n"
         f"Image count on page: {image_count}\n"
         f"Contains animation/video: {has_animation}\n"
         f"Product family: {product_family}"
@@ -328,9 +373,10 @@ def extract_model_assisted_with_provenance(
         raw, model_id = _call_llm(user_prompt)
         cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
-            data = json.loads(cleaned)
-            return ModelAssistedFields.model_validate(data), model_id
-        except (json.JSONDecodeError, ValidationError) as exc:
+            fields = ModelAssistedFields.model_validate(json.loads(cleaned))
+            _check_against_dictionary(fields)
+            return fields, model_id
+        except (json.JSONDecodeError, ValidationError, ValueError) as exc:
             last_error = exc
             continue
     raise LLMExtractionError(f"could not get a valid structured response after {retries + 1} attempt(s): {last_error}")

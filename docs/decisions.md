@@ -1036,3 +1036,55 @@ Two rows of the sheet that described uncaptured pages were completed - a bunq
 savings page whose URL was missing its leading h, and a Revolut ETF page with no
 product family or language. Both now carry a conforming page_id, and both remain
 unmatched at merge time because the pages have never been collected.
+
+---
+
+**sieg 25/09, a claim a measure cannot rank is not a claim the measure refuted.**
+Three of the five kickoff-deck observations were reported **not supported** off
+`word_count_band`, a column that reads `long` for all fourteen banks: real pages
+carry 950 to 5,000 words and the band's top edge stops at 600, so it saturates
+and cannot rank anyone. Telling ING their observation was disproved, on a
+measure that separates nobody, is a stronger statement than the evidence allows.
+`check_deck_claims()` now returns **not testable** when the column it would rank
+on has one distinct value, and says so in the evidence: "every bank has the same
+word_count_band ('long') - the measure does not separate the banks". H1, H2 and
+H5 move from *not supported* to *not testable*; H3 was already there after
+`has_animation` was withdrawn; H4 (`text_image_layout`) is unchanged and remains
+the one claim the data genuinely contradicts.
+
+A withdrawn feature also stopped reporting itself as "absent from the dataset" -
+the column IS there, it is excluded from comparison, and the old wording sent
+readers looking for a missing column instead of at `CAPTURE_INVALID_FEATURES`.
+
+**sieg 25/09, "not applicable" is not "no".** The AI Score's trust axis counted
+`regulatory_disclosure_prominence == "not_applicable"` as a failed condition.
+That value is on 17 of the 18 current-account pages, because a current account
+has no credit component and no TAEG is expected - so the axis was charging every
+bank for a property of the product family. Those pages are now masked out of the
+axis rather than counted as a no. Effect is narrow and worth stating plainly:
+Revolut moves 3.3 to 5.0, and the other thirteen banks stay at 0.0, because
+their two remaining inputs really are false - no page in this family cites a
+branch network as a benefit, and only Revolut's and bunq's carry an
+institutional or regulatory trust signal at all.
+
+**sieg 25/09, defects found by a full read of the repository.** A line-by-line
+pass over `src/`, `scripts/`, `tests/` and `web/src/` produced the two entries
+above plus: `recommendations.py` put every invented feature id back when the
+model had named no real one (`known or list(...)`, so an empty list fell through
+to the unfiltered one) and phantom evidence could reach the UI;
+`run_analysis.py` asked `reputation` for the key `bnp_paribas_fortis` instead of
+the display name "BNP Paribas Fortis", so that bank could never return a
+headline, and "Hello bank!" was searched as the bare word "Hello";
+`llm_extractor.py` stopped the provider chain on a malformed HTTP 200 instead of
+falling through, and accepted categorical values the dictionary does not define;
+`render.py` read a background transparent all the way to the root as black,
+which is the wrong contrast reference; `serve_web.py` left the site status
+pinned at "generating" until a restart when `report.json` was absent; and
+`rubric_sheet.py emit` overwrote a scored sheet without warning - it now
+requires `--force`. Bank display names are centralised in `banks.py`. CI gained
+a pyflakes-level lint and a job that type-checks and builds the web UI, which it
+had never compiled: a broken `web/` could merge green.
+
+Tests 423 -> 444. Not adopted from that pass: dated `Audit 25/09` tags in code
+comments, which this repo keeps out of comments on purpose, and a second audit
+document parallel to this file.

@@ -31,7 +31,6 @@ from comparator.trends import (  # noqa: E402
     build_trends_dashboard,
     context_or_none,
     interest_context,
-    load_series,
     load_trends,
     share_of_search,
 )
@@ -513,7 +512,6 @@ def test_periods_are_52_week_blocks_anchored_on_the_last_week():
 
 def test_period_shares_are_volume_weighted_not_a_mean_of_weekly_shares():
     """One near-zero-volume week must not weigh as much as a peak week."""
-    weeks = PERIOD_WEEKS * 2
     # In the last period ING dominates the high-volume weeks and KBC wins only
     # the flat ones; a mean of weekly shares would put them far closer.
     ing = [50] * PERIOD_WEEKS + [100] * (PERIOD_WEEKS - 1) + [0]
@@ -530,7 +528,6 @@ def test_period_shares_are_volume_weighted_not_a_mean_of_weekly_shares():
 def test_slope_and_relative_slope_on_a_hand_computed_fixture():
     """Three periods at 40 / 50 / 60% of the panel: +10 pts per year on a mean
     of 50, so +20% per year in relative terms."""
-    weeks = PERIOD_WEEKS * 3
     ing = [40] * PERIOD_WEEKS + [50] * PERIOD_WEEKS + [60] * PERIOD_WEEKS
     kbc = [60] * PERIOD_WEEKS + [50] * PERIOD_WEEKS + [40] * PERIOD_WEEKS
     traj = _trajectory_of(_weekly("ING", ing) + _weekly("KBC", kbc))
@@ -543,7 +540,6 @@ def test_slope_and_relative_slope_on_a_hand_computed_fixture():
 
 def test_direction_labels_respect_the_flat_band():
     """A drift smaller than the band is flat, not a trend."""
-    weeks = PERIOD_WEEKS * 3
     # ING moves by a fraction of a point per year: well inside the band.
     ing = [50] * PERIOD_WEEKS + [50.2] * PERIOD_WEEKS + [50.4] * PERIOD_WEEKS
     kbc = [50] * PERIOD_WEEKS + [49.8] * PERIOD_WEEKS + [49.6] * PERIOD_WEEKS
@@ -556,7 +552,6 @@ def test_direction_labels_respect_the_flat_band():
 def test_robust_is_false_when_only_the_first_period_drives_the_trend():
     """The first period straddles Google's 2022 collection change, so a trend
     that disappears without it is flagged rather than reported as a finding."""
-    weeks = PERIOD_WEEKS * 3
     # A big step between period 1 and 2, then flat: the slope is real overall
     # but vanishes once the first period is dropped.
     ing = [20] * PERIOD_WEEKS + [60] * PERIOD_WEEKS + [60] * PERIOD_WEEKS
@@ -583,7 +578,6 @@ def test_a_reshuffle_inside_a_tie_group_is_neither_a_rank_change_nor_an_overtake
 
 
 def test_a_real_overtake_is_reported_with_its_direction():
-    weeks = PERIOD_WEEKS * 2
     ing = [60] * PERIOD_WEEKS + [30] * PERIOD_WEEKS
     kbc = [40] * PERIOD_WEEKS + [70] * PERIOD_WEEKS
     traj = _trajectory_of(_weekly("ING", ing) + _weekly("KBC", kbc))

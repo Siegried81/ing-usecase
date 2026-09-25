@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import io
 
+import numpy as np
 import requests
 from PIL import Image
 
@@ -176,12 +177,13 @@ def _measure(
         # of the banks. Scanning all pixels is the measurement the dictionary
         # describes ("share of coloured pixels within tolerance of the brand
         # colour") and it is cheap on a 150x150 thumbnail.
+        # Vectorised with numpy: Image.getdata() is deprecated (removed in
+        # Pillow 14) and the per-pixel Python loop was the slow part anyway.
+        # int32 so the squared differences cannot overflow uint8.
         tolerance_sq = _BRAND_COLOUR_TOLERANCE ** 2
-        pixels = list(img.getdata())
-        matching = sum(
-            1 for r, g, b in pixels
-            if (r - br) ** 2 + (g - bg) ** 2 + (b - bb) ** 2 <= tolerance_sq
-        )
+        pixels = np.asarray(img, dtype=np.int32).reshape(-1, 3)
+        distance_sq = ((pixels - np.array([br, bg, bb], dtype=np.int32)) ** 2).sum(axis=1)
+        matching = int((distance_sq <= tolerance_sq).sum())
         brand_share = round(matching / max(len(pixels), 1), 3)
 
     return {

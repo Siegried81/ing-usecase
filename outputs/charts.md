@@ -148,11 +148,11 @@ Not a chart, but the same discipline: the deck's five eyeball observations, test
 
 | # | Claim | Verdict | Evidence |
 | --- | --- | --- | --- |
-| H1 | Belfius is pretty verbose | not supported | belfius='long'; highest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk'] |
-| H2 | KBC is straight to the point | not supported | kbc='long'; lowest traditional is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'vdk'] |
-| H3 | ING is the only traditional bank using animation | not testable | feature absent from the dataset |
+| H1 | Belfius is pretty verbose | not testable | every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them |
+| H2 | KBC is straight to the point | not testable | every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them |
+| H3 | ING is the only traditional bank using animation | not testable | has_animation is withdrawn from comparison - its rule does not measure what the claim is about |
 | H4 | ING no longer places text next to picture | not supported | ing's most common text_image_layout: 'beside' (claim: not 'beside') |
-| H5 | Revolut uses very little text | not supported | revolut='long'; lowest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk'] |
+| H5 | Revolut uses very little text | not testable | every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them |
 
 ---
 

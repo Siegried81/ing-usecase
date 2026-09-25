@@ -97,12 +97,21 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
             "",
         ]
 
-    if len(traditional) and len(challenger):
+    # Stated only when true: the sentence used to be printed whatever the gap,
+    # so an overlapping run would have claimed a separation it did not have.
+    if len(traditional) and len(challenger) and gap > 0:
         lines += [
             f"The two groups do not overlap: the most challenger-like incumbent sits at "
             f"{traditional.max():.2f} and the most traditional challenger at {challenger.min():.2f}, "
             f"a gap of {gap:.2f}. That separation is what makes the axis meaningful — if the groups "
             "interleaved, the projection would be measuring noise.",
+            "",
+        ]
+    elif len(traditional) and len(challenger):
+        lines += [
+            f"**The two groups overlap**: the most challenger-like incumbent sits at "
+            f"{traditional.max():.2f} and the most traditional challenger at {challenger.min():.2f}. "
+            "Where the groups interleave, a position on this axis says less than the chart suggests.",
             "",
         ]
 

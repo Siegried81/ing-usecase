@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-24T19:50:07+00:00",
+  "generated_at": "2026-09-25T05:03:04+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -1445,7 +1445,7 @@
       ],
       "aiScore": {
         "digital": 6.7,
-        "trust": 3.3,
+        "trust": 5.0,
         "cross_sell": 10.0,
         "personalisation": 5.0,
         "innovation": null,
@@ -1543,7 +1543,7 @@
     },
     {
       "key": "cross_sell",
-      "label": "Cross-sell"
+      "label": "Bundled offer"
     },
     {
       "key": "personalisation",
@@ -1566,9 +1566,9 @@
       "Mortgages",
       "Investment",
       "Pension",
-      "insurance",
-      "credit_card",
-      "partner_perk",
+      "Insurance",
+      "Credit cards",
+      "Partner perks",
       "Other"
     ],
     "matrix": [
@@ -1696,12 +1696,12 @@
     "mostAssociated": [
       {
         "from": "Current-account packs",
-        "to": "credit_card",
+        "to": "Credit cards",
         "count": 10
       },
       {
         "from": "Current-account packs",
-        "to": "insurance",
+        "to": "Insurance",
         "count": 8
       },
       {
@@ -1716,7 +1716,7 @@
       },
       {
         "from": "Current-account packs",
-        "to": "partner_perk",
+        "to": "Partner perks",
         "count": 5
       }
     ],
@@ -1750,15 +1750,15 @@
         },
         {
           "from": "Term accounts",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Term accounts",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Term accounts",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Term accounts",
@@ -1786,15 +1786,15 @@
         },
         {
           "from": "Savings accounts",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Savings accounts",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Savings accounts",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Savings accounts",
@@ -1822,15 +1822,15 @@
         },
         {
           "from": "Mortgages",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Mortgages",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Mortgages",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Mortgages",
@@ -1858,15 +1858,15 @@
         },
         {
           "from": "Investment",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Investment",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Investment",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Investment",
@@ -1894,126 +1894,126 @@
         },
         {
           "from": "Pension",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Pension",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Pension",
-          "to": "partner_perk"
+          "to": "Partner perks"
         },
         {
           "from": "Pension",
           "to": "Other"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Term accounts"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Current-account packs"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Savings accounts"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Mortgages"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Investment"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Pension"
         },
         {
-          "from": "insurance",
-          "to": "credit_card"
+          "from": "Insurance",
+          "to": "Credit cards"
         },
         {
-          "from": "insurance",
-          "to": "partner_perk"
+          "from": "Insurance",
+          "to": "Partner perks"
         },
         {
-          "from": "insurance",
+          "from": "Insurance",
           "to": "Other"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Term accounts"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Current-account packs"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Savings accounts"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Mortgages"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Investment"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Pension"
         },
         {
-          "from": "credit_card",
-          "to": "insurance"
+          "from": "Credit cards",
+          "to": "Insurance"
         },
         {
-          "from": "credit_card",
-          "to": "partner_perk"
+          "from": "Credit cards",
+          "to": "Partner perks"
         },
         {
-          "from": "credit_card",
+          "from": "Credit cards",
           "to": "Other"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Term accounts"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Current-account packs"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Savings accounts"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Mortgages"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Investment"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Pension"
         },
         {
-          "from": "partner_perk",
-          "to": "insurance"
+          "from": "Partner perks",
+          "to": "Insurance"
         },
         {
-          "from": "partner_perk",
-          "to": "credit_card"
+          "from": "Partner perks",
+          "to": "Credit cards"
         },
         {
-          "from": "partner_perk",
+          "from": "Partner perks",
           "to": "Other"
         },
         {
@@ -2042,15 +2042,15 @@
         },
         {
           "from": "Other",
-          "to": "insurance"
+          "to": "Insurance"
         },
         {
           "from": "Other",
-          "to": "credit_card"
+          "to": "Credit cards"
         },
         {
           "from": "Other",
-          "to": "partner_perk"
+          "to": "Partner perks"
         }
       ]
     }
@@ -2344,22 +2344,22 @@
       "id": "H1",
       "bank": "belfius",
       "claim": "Belfius is pretty verbose",
-      "verdict": "not supported",
-      "evidence": "belfius='long'; highest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk']"
+      "verdict": "not testable",
+      "evidence": "every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them"
     },
     {
       "id": "H2",
       "bank": "kbc",
       "claim": "KBC is straight to the point",
-      "verdict": "not supported",
-      "evidence": "kbc='long'; lowest traditional is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'vdk']"
+      "verdict": "not testable",
+      "evidence": "every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them"
     },
     {
       "id": "H3",
       "bank": "ing",
       "claim": "ING is the only traditional bank using animation",
       "verdict": "not testable",
-      "evidence": "feature absent from the dataset"
+      "evidence": "has_animation is withdrawn from comparison - its rule does not measure what the claim is about"
     },
     {
       "id": "H4",
@@ -2372,8 +2372,8 @@
       "id": "H5",
       "bank": "revolut",
       "claim": "Revolut uses very little text",
-      "verdict": "not supported",
-      "evidence": "revolut='long'; lowest is 'long', tied: ['argenta', 'belfius', 'beobank', 'bnp_paribas_fortis', 'bunq', 'cbc', 'crelan', 'hellobank', 'ing', 'kbc', 'keytrade', 'n26', 'revolut', 'vdk']"
+      "verdict": "not testable",
+      "evidence": "every bank has the same word_count_band ('long') - the measure does not separate the banks, so it cannot rank them"
     }
   ],
   "limitations": {
@@ -2943,15 +2943,15 @@
         ]
       },
       "belfius": {
-        "headline_count": 28,
+        "headline_count": 26,
         "themes": {
           "innovation_digital": 0,
-          "crisis_or_scandal": 10,
+          "crisis_or_scandal": 11,
           "financial_results": 4,
           "product_launch": 0,
           "esg_sustainability": 0,
-          "regulatory": 7,
-          "other": 7
+          "regulatory": 9,
+          "other": 2
         },
         "theme_headlines": {
           "innovation_digital": [],
@@ -2959,10 +2959,6 @@
             {
               "title": "Dossier Dexia/Belfius : les coopérateurs Arco attendent toujours des dédommagements du fédéral et menacent - RTBF Actus",
               "url": "https://www.rtbf.be/article/dossier-dexia-belfius-les-cooperateurs-arco-attendent-toujours-des-dedommagements-du-federal-et-menacent-11781870"
-            },
-            {
-              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
-              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
             },
             {
               "title": "Elle perd près de 100.000 euros après un faux appel de Card Stop : elle attaque Belfius au pénal",
@@ -2995,6 +2991,14 @@
             {
               "title": "Arco-coöperanten dagvaarden kandidaat-investeerders in Belfius",
               "url": "https://www.tijd.be/ondernemen/banken/arco-cooperanten-dagvaarden-kandidaat-investeerders-in-belfius/10684481.html"
+            },
+            {
+              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
+              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
+            },
+            {
+              "title": "Belfius annonce des perturbations sur ses services bancaires ce week-end",
+              "url": "https://www.lesoir.be/770488/article/2026-09-11/belfius-annonce-des-perturbations-sur-ses-services-bancaires-ce-week-end"
             }
           ],
           "financial_results": [
@@ -3019,6 +3023,10 @@
           "esg_sustainability": [],
           "regulatory": [
             {
+              "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
+              "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
+            },
+            {
               "title": "Du changement pour Belfius en vue de sa privatisation partielle",
               "url": "https://www.lesoir.be/772092/article/2026-09-21/du-changement-pour-belfius-en-vue-de-sa-privatisation-partielle"
             },
@@ -3035,12 +3043,16 @@
               "url": "https://www.lesoir.be/770194/article/2026-09-10/privatisation-de-belfius-etudiants-gazaouis-plusieurs-dossiers-sur-la-table-du"
             },
             {
-              "title": "Belfius amenée à s'adapter dans la perspective de sa privatisation partielle",
-              "url": "https://www.7sur7.be/economie/belfius-amenee-a-sadapter-dans-la-perspective-de-sa-privatisation-partielle~af66748a/"
+              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
             },
             {
               "title": "Verkoop Belfius verloopt ondermaats, partijen bieden met handrem op",
               "url": "https://www.standaard.be/economie/verkoop-belfius-verloopt-ondermaats-partijen-bieden-met-handrem-op/160611782.html"
+            },
+            {
+              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
+              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
             },
             {
               "title": "Belgische regering krijgt meteen enkele moeilijke dossiers voorgeschoteld op de kern met Gaza en Belfius",
@@ -3049,32 +3061,12 @@
           ],
           "other": [
             {
-              "title": "\" Tu as dû être mal informé \" : Maxime Prévot s'attaque directement à Georges-Louis Bouchez concernant les dossiers Belfius et Ethias",
-              "url": "https://www.sudinfo.be/id1192499/article/2026-09-11/tu-du-etre-mal-informe-maxime-prevot-sattaque-directement-georges-louis-bouchez"
-            },
-            {
               "title": "\" Je commence à perdre patience \" : Jean-Christophe veut fermer le compte d'épargne de son fils chez Belfius, mais les démarches durent plus d'un an",
               "url": "https://www.rtl.be/actu/vos-temoignages/je-commence-perdre-patience-jean-christophe-veut-fermer-le-compte-depargne-de/2026-09-11/article/799849"
             },
             {
               "title": "Coupe du monde de hockey : 2 000 clients de Belfius ont vécu \"une expérience unique\" dans les tribunes",
               "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/07/coupe-du-monde-de-hockey-2-000-clients-de-belfius-ont-vecu-une-experience-unique-dans-les-tribunes-TD7QUX5JBFEZBBJ7KEFAR2UDWM/"
-            },
-            {
-              "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-              "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
-            },
-            {
-              "title": "L'impact insoupçonné et favorable à l'État d'un rapprochement entre Belfius et Ethias",
-              "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/22/limpact-insoupconne-et-favorable-a-letat-dun-rapprochement-entre-belfius-et-ethias-RSKWYVUA3RCKLPFLIF3TFFWPGE/"
-            },
-            {
-              "title": "Het Belfius-dossier verdient niet de schoonheidsprijs",
-              "url": "https://www.standaard.be/opinies/het-belfius-dossier-verdient-niet-de-schoonheidsprijs/161271914.html"
-            },
-            {
-              "title": "Belgische zakenlieden Roland Duchâtelet en Luc Tack overwegen investering van 20 procent in Belfius",
-              "url": "https://businessam.be/belgische-zakenlieden-roland-duchatelet-en-luc-tack-overwegen-investering-van-20-procent-in-belfius/"
             }
           ]
         },
@@ -3088,16 +3080,16 @@
             "url": "https://www.brusselstimes.com/brussels-2/2326254/belfius-changes-dividend-policy-ahead-of-potential-20-privatisation"
           },
           {
+            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
+            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
+          },
+          {
             "title": "Belfius pourrait distribuer 1,2 milliard de dividendes à l'État belge en 2026",
             "url": "https://www.lalibre.be/economie/entreprises-startup/2026/09/21/belfius-pourrait-distribuer-12-milliard-de-dividendes-a-letat-belge-en-2026-Y3U7MAJ6TJFFVPQUQBGGHKX624/"
           },
           {
             "title": "Belfius poursuivie au pénal pour n'avoir pas indemnisé une victime de phishing",
             "url": "https://www.lesoir.be/769152/article/2026-09-05/belfius-poursuivie-au-penal-pour-navoir-pas-indemnise-une-victime-de-phishing"
-          },
-          {
-            "title": "Les hommes d'affaires belges Roland Duchâtelet et Luc Tack envisagent de prendre une participation de 20 pour cent dans Belfius",
-            "url": "https://fr.businessam.be/les-hommes-daffaires-belges-roland-duchatelet-et-luc-tack-envisagent-de-prendre-une-participation-de-20-pour-cent-dans-belfius/"
           }
         ]
       },
@@ -3107,19 +3099,16 @@
           "innovation_digital": 0,
           "crisis_or_scandal": 0,
           "financial_results": 0,
-          "product_launch": 0,
+          "product_launch": 3,
           "esg_sustainability": 0,
           "regulatory": 0,
-          "other": 4
+          "other": 1
         },
         "theme_headlines": {
           "innovation_digital": [],
           "crisis_or_scandal": [],
           "financial_results": [],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": [
+          "product_launch": [
             {
               "title": "Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
               "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
@@ -3129,12 +3118,16 @@
               "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
             },
             {
-              "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
-              "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
-            },
-            {
               "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
               "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
+            }
+          ],
+          "esg_sustainability": [],
+          "regulatory": [],
+          "other": [
+            {
+              "title": "Stap in de wereld van een Relationship Manager Business Banking bij Beobank: \"Je draagt bij aan mooie projecten",
+              "url": "https://www.standaard.be/extra/stap-in-de-wereld-van-een-relationship-manager-business-banking-bij-beobank-je-draagt-bij-aan-mooie-projecten/160985828.html"
             }
           ]
         },
@@ -3144,12 +3137,12 @@
             "url": "https://www.lesoir.be/767029/article/2026-08-25/beobank-revoit-la-hausse-les-taux-de-ses-comptes-terme-des-mercredi"
           },
           {
-            "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
-            "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
-          },
-          {
             "title": "Taux d'intérêt - Beobank revoit à la hausse les taux de ses comptes à terme dès mercredi",
             "url": "https://www.lalibre.be/dernieres-depeches/2026/08/25/taux-dinteret-beobank-revoit-a-la-hausse-les-taux-de-ses-comptes-a-terme-des-mercredi-VJPPT2HNGFGPVGF2MN4MOMVBFQ/"
+          },
+          {
+            "title": "Beobank trekt rente termijnrekeningen op | VRT NWS Nieuws",
+            "url": "https://www.vrt.be/vrtnws/nl/2026/08/25/beobank-rente-termijnrekening/"
           }
         ]
       },
@@ -3246,50 +3239,7 @@
           }
         ]
       },
-      "hellobank": {
-        "headline_count": 3,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
-          "financial_results": 0,
-          "product_launch": 3,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 0
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [],
-          "financial_results": [],
-          "product_launch": [
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
-              "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-              "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-            },
-            {
-              "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-              "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-            }
-          ],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": []
-        },
-        "notable_headlines": [
-          {
-            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne \"Boost\" à partir de ce mardi",
-            "url": "https://www.lavenir.net/actu/conso/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-boost-a-partir-de-ce-mardi-HKYSKC6MCVEAHK7TG44PDN22WE/"
-          },
-          {
-            "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
-            "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
-          }
-        ]
-      },
+      "hellobank": null,
       "ing": {
         "headline_count": 2,
         "themes": {
@@ -3321,12 +3271,12 @@
         },
         "notable_headlines": [
           {
-            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
-            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
-          },
-          {
             "title": "ING op de favorietenlijst van JPMorgan",
             "url": "https://www.beursduivel.be/Nieuws/877298/ING-op-de-favorietenlijst-van-JPMorgan.aspx"
+          },
+          {
+            "title": "ING, Belfius, BNP, Crelan... Vos virements limités à 5.000 € par jour, mais est-ce le cas dans toutes les banques ?",
+            "url": "https://www.sudinfo.be/id1188672/article/2026-09-02/ing-belfius-bnp-crelan-vos-virements-limites-5000-eu-par-jour-mais-est-ce-le-cas"
           }
         ]
       },
@@ -3422,38 +3372,7 @@
           }
         ]
       },
-      "vdk": {
-        "headline_count": 1,
-        "themes": {
-          "innovation_digital": 0,
-          "crisis_or_scandal": 0,
-          "financial_results": 1,
-          "product_launch": 0,
-          "esg_sustainability": 0,
-          "regulatory": 0,
-          "other": 0
-        },
-        "theme_headlines": {
-          "innovation_digital": [],
-          "crisis_or_scandal": [],
-          "financial_results": [
-            {
-              "title": "Tout en lettres d’or chez VDK",
-              "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-            }
-          ],
-          "product_launch": [],
-          "esg_sustainability": [],
-          "regulatory": [],
-          "other": []
-        },
-        "notable_headlines": [
-          {
-            "title": "Tout en lettres d’or chez VDK",
-            "url": "https://www.lalibre.be/culture/arts/2026/09/16/tout-en-lettres-dor-chez-vdk-PS55F22UE5F4ZP4HHICVXLJCHY/"
-          }
-        ]
-      }
+      "vdk": null
     }
   },
   "geoTrends": {

@@ -53,7 +53,6 @@ from __future__ import annotations
 
 import logging
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
 
@@ -184,7 +183,10 @@ _MEASURE_JS = """
       if (!node) break;
       bg = getComputedStyle(node).backgroundColor;
     }
-    ctaColours = { fg: s.color, bg: bg || 'rgb(255, 255, 255)' };
+    // Transparent all the way up means the browser canvas shows through,
+    // which is white here. Kept as 'rgba(0, 0, 0, 0)' it parsed as BLACK.
+    if (!bg || bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') bg = 'rgb(255, 255, 255)';
+    ctaColours = { fg: s.color, bg: bg };
     break;
   }
 

@@ -119,14 +119,14 @@ one by one:
 
 | Observation | Verdict |
 | --- | --- |
-| Belfius is pretty verbose | **Not supported** |
-| KBC is straight to the point | **Not supported** |
-| ING is the only traditional bank using animation | **Not testable** — feature absent from the dataset |
+| Belfius is pretty verbose | **Not testable** — every bank is in the same word-count band |
+| KBC is straight to the point | **Not testable** — same reason |
+| ING is the only traditional bank using animation | **Not testable** — the animation feature is withdrawn |
 | ING no longer places text next to picture | **Not supported** — "beside" is still ING's most common layout |
-| Revolut uses very little text | **Not supported** |
+| Revolut uses very little text | **Not testable** — same reason |
 
 **What it means, and a limitation worth naming out loud.** The three
-word-count claims are "not supported" for an unglamorous reason: **all 9
+word-count claims are "not testable" for an unglamorous reason: **all 14
 banks now land in the same word-count band ("long")**. The comparison had to
 switch from a raw word count to a coarser, language-safe band once a second
 and third language entered the dataset (a raw count silently drops out of a
@@ -135,9 +135,10 @@ that band no longer separates anyone. Of the two claims that don't depend on
 word count, image/text layout is cleanly not supported; animation is not
 testable — the feature that measured it is withdrawn (see above).
 Net honest takeaway for the room: **zero of the five launch-deck impressions
-survive measurement on the current dataset** — one on real evidence, one not
-testable, three because the current method can't yet tell these particular
-banks apart on length. That gap is itself worth a line in the room, not something to paper
+survive measurement on the current dataset** — one is not supported on real
+evidence, and four are not testable: one because its feature is withdrawn,
+three because the current method can't yet tell these banks apart on length
+(the band's edges stop at 600 words; every captured page carries 950 or more). That gap is itself worth a line in the room, not something to paper
 over with a false "winner".
 
 ## 2. ING's page is the most urgent and the most persuasion-heavy in the set

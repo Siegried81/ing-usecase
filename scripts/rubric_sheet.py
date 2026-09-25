@@ -70,6 +70,8 @@ def main() -> int:
     emit.add_argument("--rater", default="siegried")
     emit.add_argument("--include-unusable", action="store_true",
                       help="also emit rows whose capture is unusable")
+    emit.add_argument("--force", action="store_true",
+                      help="overwrite an existing sheet (it may hold a rater's scores)")
 
     merge = sub.add_parser("merge", help="fold the completed sheet into the dataset")
     merge.add_argument("--dataset", type=Path, default=DEFAULT_DATASET)
@@ -86,6 +88,13 @@ def main() -> int:
 
         sheet = make_sheet(df, fd, rater=args.rater, skip_unusable=not args.include_unusable)
         path = args.outdir / f"{args.rater}_scores.csv"
+        # The default rater's file IS the judged sheet the whole analysis runs
+        # on (data/rubric/siegried_scores.csv): re-running emit used to replace
+        # it with an empty sheet without a word.
+        if path.exists() and not args.force:
+            print(f"\n  {path} already exists and may hold scores - not overwritten.\n"
+                  "  Pass --force to replace it, or --rater <name> for a new sheet.")
+            return 1
         sheet.to_csv(path, index=False)
         print(f"  {len(sheet)} page(s) to score -> {path}")
 

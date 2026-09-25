@@ -47,6 +47,7 @@ from comparator.analysis import (
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
+from comparator.banks import display_name
 from comparator.benchmarks import build_benchmark_lessons
 from comparator.trends import build_trends_dashboard
 
@@ -122,7 +123,11 @@ LABELS = {
     # AI Score axis labels (comparator/ai_score.py).
     "digital": "Digital",
     "trust": "Trust",
-    "cross_sell": "Cross-sell",
+    # Named for what it measures, not for the dimension it belongs to: this axis
+    # is is_bundled_offer, a yes/no. Calling it "Cross-sell" put a 0-or-10 flag
+    # next to crossSellScore, a 0-1 breadth ratio, under one word on one screen -
+    # ING reads 10/10 here and 26% there, and both are right.
+    "cross_sell": "Bundled offer",
     "personalisation": "Personalisation",
     "innovation": "Innovation",
     "simplicity": "Simplicity",
@@ -144,13 +149,6 @@ PERSONA_LABELS = {
 # missing here falls through to .title(), which produced "Hellobank" and "Vdk"
 # on one tab while the Trends tab said "Hello bank!" and "VDK Bank" - two names
 # for one institution inside one deliverable.
-BANK_NAMES = {
-    "ing": "ING", "kbc": "KBC", "belfius": "Belfius", "argenta": "Argenta",
-    "crelan": "Crelan", "bnp_paribas_fortis": "BNP Paribas Fortis",
-    "revolut": "Revolut", "n26": "N26", "bunq": "bunq", "cbc": "CBC",
-    "beobank": "Beobank", "hellobank": "Hello bank!", "keytrade": "Keytrade Bank",
-    "vdk": "VDK Bank",
-}
 
 FAMILY_NAMES = {
     "current_account_pack": "Current-account packs",
@@ -160,6 +158,14 @@ FAMILY_NAMES = {
     "investment": "Investment",
     "pension": "Pension",
     "other": "Other",
+    # cross_sold_products names three things that are not product families -
+    # they are what a banking page cross-sells alongside one. They travel
+    # through the same label map because the cross-sell matrix draws its axes
+    # from that column; without an entry here they render raw, and the panel
+    # showed "credit_card" next to "Current-account packs".
+    "insurance": "Insurance",
+    "credit_card": "Credit cards",
+    "partner_perk": "Partner perks",
 }
 
 
@@ -183,7 +189,8 @@ def label(feature: str) -> str:
 
 
 def bank_name(bank: str) -> str:
-    return BANK_NAMES.get(bank, bank.replace("_", " ").title())
+    # One definition of the names, shared with run_analysis.py (banks.py).
+    return display_name(bank)
 
 
 def _clean(value):
