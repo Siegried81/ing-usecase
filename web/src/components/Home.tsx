@@ -23,6 +23,14 @@ export function Home({ report, operations }: { report: Report; operations: Opera
 
   return (
     <>
+      <div className="disclaimer" role="note">
+        <p className="disclaimer-label">Important</p>
+        <p>
+          We have no internal data. Nothing here claims a design choice caused a commercial
+          outcome — every recommendation is an argued hypothesis worth testing.
+        </p>
+      </div>
+
       <div className="metrics">
         <Metric k="Banks with captures" v={metrics.banks} />
         <Metric k="Pages collected" v={metrics.pages} />
@@ -37,8 +45,8 @@ export function Home({ report, operations }: { report: Report; operations: Opera
         </div>
         <p style={{ color: "var(--ink-2)", margin: "8px 0 0", fontSize: 14.5 }}>
           Snapshot of {report.scope.product_family_label.toLowerCase()} across {scope.banks.length} banks, captured{" "}
-          {scope.captured_from ? new Date(scope.captured_from).toLocaleDateString("en-GB") : "—"}. This is a
-          proof of concept, not a production study: nothing here links a design choice to a click or a sale.
+          {scope.captured_from ? new Date(scope.captured_from).toLocaleDateString("en-GB") : "—"}. A proof of
+          concept, not a production study.
         </p>
         {report.validation.warnings.length > 0 && (
           <ul className="note-list">
