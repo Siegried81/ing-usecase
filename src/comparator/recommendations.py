@@ -85,8 +85,12 @@ Hard rules, no exceptions:
 - Respect the limitations: where the evidence is thin, say so rather than overclaiming.
 - Write in English."""
 
-_PAGE_KEYS = ("index, comptes-epargne, compte-a-terme, compte-courant, jeunes, investir, "
-              "credit-hypothecaire, ouvrir-compte, pourquoi-ing, contact")
+# The ten page keys of the generated site. Kept here (not imported from
+# site_generator.py, which imports this module) and checked against
+# site_generator.PAGES by a test, so the two lists cannot drift apart.
+PAGE_KEYS = ("index", "comptes-epargne", "compte-a-terme", "compte-courant", "jeunes", "investir",
+             "credit-hypothecaire", "ouvrir-compte", "pourquoi-ing", "contact")
+_PAGE_KEYS = ", ".join(PAGE_KEYS)
 
 _REPUTATION_ADDENDUM = """You are ALSO given recent news headline THEMES (never sentiment) for some
 banks: counts of what real headlines about that bank were ABOUT in the last 90 days, plus up to 5
@@ -278,6 +282,20 @@ def _known_features(report: dict) -> set[str]:
     return ids
 
 
+def _verified_features(rec: RecommendationModel, known: set[str]) -> list[str]:
+    """Feature ids the report really carries, in the model's order, de-duplicated.
+
+    this used to be `[...known...] or list(r.features)`, so when
+    EVERY id was invented the `or` put all of them back - the exact phantom
+    evidence the docstring of build_recommendations() promises to drop.
+    A reputation recommendation may not cite page features at all (see
+    _REPUTATION_ADDENDUM), so its list is always empty.
+    """
+    if rec.basis == "reputation":
+        return []
+    return [f for f in dict.fromkeys(rec.features) if f in known]
+
+
 def _reputation_digest(report: dict) -> str | None:
     """The slice of the reputation dashboard the model is allowed to see.
 
@@ -371,8 +389,13 @@ def build_recommendations(
                 priority=r.priority,
                 finding=r.finding.strip(),
                 recommendation=r.recommendation.strip(),
-                features=[f for f in dict.fromkeys(r.features) if f in known] or list(dict.fromkeys(r.features)),
-                page_targets=list(dict.fromkeys(r.page_targets)),
+                features=_verified_features(r, known),
+                # An unknown page key would silently keep the recommendation off
+                # every page of the site (site_generator only applies a
+                # recommendation to the pages it names), so unknown keys are
+                # dropped; an empty list means "every page", which is the
+                # honest reading of "the model named no real page".
+                page_targets=[p for p in dict.fromkeys(r.page_targets) if p in PAGE_KEYS],
                 basis=r.basis,
                 reputation_context=(r.reputation_context or "").strip() or None,
             )

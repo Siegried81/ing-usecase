@@ -1,4 +1,7 @@
 # sieg 16/09: runs the test suite and the schema freeze check on every push/PR.
+# + a pyflakes-level lint (unused imports/variables, undefined
+# names) and a job that type-checks and builds the React UI, which CI never
+# compiled before - a broken web/ could merge green.
 name: Tests
 
 on:
@@ -18,8 +21,31 @@ jobs:
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      - name: Lint (pyflakes rules only - dead code and undefined names)
+        run: pip install ruff==0.16.9 && ruff check --select F .
+
       - name: Run tests
         run: python3 -m pytest tests/ -q
 
       - name: Check the feature dictionary against the frozen schema (Decision D5)
         run: python3 scripts/check_schema_freeze.py
+
+  web:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type-check and build
+        run: npm run build

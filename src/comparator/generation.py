@@ -59,7 +59,7 @@ import pandas as pd
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.analysis import bank_vectors, category_comparison
-from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
+from comparator.collection.llm_extractor import DEEPSEEK_DEFAULT_MODEL, LLMExtractionError, _call_llm
 from comparator.collection.scraper import extract
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.generation_guardrails import GuardrailReport, check_generated_campaign
@@ -547,4 +547,5 @@ def guardrails(row: dict) -> GuardrailReport:
 
 def pinned_model() -> str:
     """The model Decision 6 pins this project to, for the record."""
-    return f"deepseek/{os.getenv('DEEPSEEK_MODEL', 'deepseek-chat')}"
+    # Same default as the extraction chain, from one constant (was "deepseek-chat").
+    return f"deepseek/{os.getenv('DEEPSEEK_MODEL', DEEPSEEK_DEFAULT_MODEL)}"

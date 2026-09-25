@@ -579,6 +579,9 @@ def category_comparison(
         )
 
     out = pd.DataFrame(rows)
+    if out.empty:  # fewer than two pages on one side: nothing to rank
+        return pd.DataFrame(columns=["feature", "dimension", "traditional_mean", "challenger_mean",
+                                     "difference", "effect_size_d", "n_traditional", "n_challenger"])
     return out.reindex(out["effect_size_d"].abs().sort_values(ascending=False).index).reset_index(drop=True)
 
 
@@ -656,6 +659,8 @@ def positioning_axis(
 
     axis = (chal_centroid - trad_centroid).to_numpy()
     norm = float(np.dot(axis, axis))
+    if not np.isfinite(norm):
+        raise ValueError("one side of the traditional/challenger split has no bank - no axis to project onto")
     if norm < 1e-9:
         raise ValueError("the two groups have identical centroids - no axis to project onto")
 
@@ -827,6 +832,10 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
     for claim in DECK_CLAIMS:
         feature, bank, test = claim["feature"], claim["bank"], claim["test"]
         verdict, evidence = "not testable", "feature absent from the dataset"
+        # A withdrawn feature IS in the dataset; saying "absent" sent readers
+        # looking for a missing column instead of at CAPTURE_INVALID_FEATURES.
+        if feature in CAPTURE_INVALID_FEATURES and feature in df.columns:
+            evidence = f"{feature} is withdrawn from comparison - its rule does not measure what the claim is about"
 
         # Categorical claims can't go through bank_vectors (it
         # only carries numeric/boolean columns) - test the per-bank mode from
@@ -862,6 +871,14 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
             # winner, so a tie is never "supported".
             if bank not in series.index:
                 pass
+            # word_count_band reads "long" for all 14 banks (real
+            # pages carry 950-5,000 words; the band's edges stop at 600), so
+            # H1/H2/H5 were each reported "not supported" off a column with no
+            # variation at all. A column that cannot rank anyone tests nothing.
+            elif test in {"highest", "lowest", "lowest_traditional"} and series.nunique() <= 1:
+                only = fmt(series.iloc[0])
+                evidence = (f"every bank has the same {feature} ({only}) - "
+                            "the measure does not separate the banks, so it cannot rank them")
             elif test == "highest":
                 value = series[bank]
                 extreme = series.max()
@@ -926,7 +943,12 @@ def insight_candidates(
     """
     fd = fd or load_dictionary()
     gaps = ing_vs_peers(df, fd, focus=focus, tier=tier)
-    candidates = gaps[gaps["gap_sd"].abs() >= min_gap_sd].head(top_n).copy()
+    if gaps.empty:
+        return gaps
+    # Only reportable gaps: an unreportable one is an artefact (collapsed peer
+    # spread, failed extraction) and ing_vs_peers() says so in its note.
+    usable = gaps[gaps["reportable"] & (gaps["gap_sd"].abs() >= min_gap_sd)]
+    candidates = usable.head(top_n).copy()
 
     def example_pages(feature: str, direction: str) -> list[str]:
         rows = df[(df["bank"] == focus) & df[feature].notna()] if feature in df.columns else df.iloc[0:0]

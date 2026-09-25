@@ -215,3 +215,38 @@ def test_build_dashboard_covers_every_bank_when_a_key_is_present():
         dashboard = reputation.build_dashboard([("ing", "ING"), ("kbc", "KBC")], api_key="fake-key")
     assert dashboard["available"] is True
     assert set(dashboard["banks"]) == {"ing", "kbc"}
+
+
+def test_bank_snapshot_finds_the_url_of_a_re_cased_headline():
+    # a title the model only re-cased is still the fetched article.
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://news.example/1"}]):
+        with patch("comparator.reputation.classify_headlines", return_value=reputation.ReputationModel(
+            theme_headlines={"product_launch": ["ing  launches NEW app"]},
+            notable_headlines=["ing launches new app"],
+        )):
+            snapshot = reputation.bank_snapshot("ING", api_key="fake-key")
+    assert snapshot["notable_headlines"][0]["url"] == "https://news.example/1"
+    assert snapshot["theme_headlines"]["product_launch"][0]["url"] == "https://news.example/1"
+
+
+def test_hello_bank_is_searched_as_a_brand_not_as_the_word_hello():
+    # "Hello" alone matches countless unrelated headlines.
+    assert reputation._bank_token("Hello bank!") == "Hello bank"
+    kept = reputation._mentions(
+        [{"title": "Hello bank! lance une offre"}, {"title": "Hello world, says a startup"}],
+        "Hello bank!",
+    )
+    assert [h["title"] for h in kept] == ["Hello bank! lance une offre"]
+
+
+def test_cache_path_does_not_depend_on_the_current_directory():
+    # The autouse fixture swaps CACHE_PATH for a temp file, so reload the
+    # module in a fresh namespace to read the real, repository-anchored value.
+    import importlib.util
+
+    spec = importlib.util.spec_from_file_location("_rep_fresh", reputation.__file__)
+    fresh = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fresh)
+    repo_root = Path(reputation.__file__).resolve().parents[2]
+    assert fresh.CACHE_PATH == repo_root / "data" / "processed" / "reputation_cache.json"

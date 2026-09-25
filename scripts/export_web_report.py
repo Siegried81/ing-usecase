@@ -47,6 +47,7 @@ from comparator.analysis import (
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
+from comparator.banks import display_name
 from comparator.benchmarks import build_benchmark_lessons
 from comparator.trends import build_trends_dashboard
 
@@ -148,13 +149,6 @@ PERSONA_LABELS = {
 # missing here falls through to .title(), which produced "Hellobank" and "Vdk"
 # on one tab while the Trends tab said "Hello bank!" and "VDK Bank" - two names
 # for one institution inside one deliverable.
-BANK_NAMES = {
-    "ing": "ING", "kbc": "KBC", "belfius": "Belfius", "argenta": "Argenta",
-    "crelan": "Crelan", "bnp_paribas_fortis": "BNP Paribas Fortis",
-    "revolut": "Revolut", "n26": "N26", "bunq": "bunq", "cbc": "CBC",
-    "beobank": "Beobank", "hellobank": "Hello bank!", "keytrade": "Keytrade Bank",
-    "vdk": "VDK Bank",
-}
 
 FAMILY_NAMES = {
     "current_account_pack": "Current-account packs",
@@ -195,7 +189,8 @@ def label(feature: str) -> str:
 
 
 def bank_name(bank: str) -> str:
-    return BANK_NAMES.get(bank, bank.replace("_", " ").title())
+    # One definition of the names, shared with run_analysis.py (banks.py).
+    return display_name(bank)
 
 
 def _clean(value):

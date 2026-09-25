@@ -117,7 +117,6 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
     )
 
     scope = profiles.get("_scope", {})
-    profs = profiles.get("profiles", {})
 
     # FIXED: this used to replace a missing df with an empty
     # DataFrame() and then call df["bank"] on it below - an empty frame has no

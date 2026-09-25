@@ -96,7 +96,8 @@ def import_one(path: Path, bank: str, *, raw_dir: Path, fd) -> dict | None:
         logger.warning("skipping %s: could not verify robots.txt (%s)", page_id, exc)
         return None
 
-    flattened, shadow_hosts = flatten_declarative_shadow_roots(html)
+    # Only the count is needed here: extract() flattens the HTML itself.
+    _, shadow_hosts = flatten_declarative_shadow_roots(html)
     features = extract(html, language=language, page_url=url)
 
     # Store the capture alongside the live ones so re-extraction needs no re-fetch.

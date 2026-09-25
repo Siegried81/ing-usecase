@@ -524,6 +524,54 @@ def test_extract_model_assisted_retries_once_then_raises():
             extract_model_assisted("some page text", image_count=3, has_animation=False, product_family="term_account", retries=1)
 
 
+# a label outside the dictionary used to pass the pydantic model
+# (typed only as str) and fail much later in schema.validate().
+def test_extract_model_assisted_retries_an_off_dictionary_label_then_raises():
+    bad = {**_VALID_RESPONSE, "regulatory_disclosure_prominence": "very_prominent"}
+    with patch("comparator.collection.llm_extractor._call_llm",
+               return_value=(__import__("json").dumps(bad), "test/model")) as call:
+        with pytest.raises(LLMExtractionError, match="regulatory_disclosure_prominence"):
+            extract_model_assisted("t", image_count=1, has_animation=False,
+                                   product_family="term_account", retries=1)
+    assert call.call_count == 2
+
+
+def test_extract_model_assisted_rejects_an_unknown_persona():
+    bad = {**_VALID_RESPONSE, "target_personas": ["students"]}
+    with patch("comparator.collection.llm_extractor._call_llm",
+               return_value=(__import__("json").dumps(bad), "test/model")):
+        with pytest.raises(LLMExtractionError, match="target_personas"):
+            extract_model_assisted("t", image_count=1, has_animation=False,
+                                   product_family="term_account", retries=0)
+
+
+def test_a_malformed_provider_body_falls_through_to_the_next_provider(monkeypatch):
+    # HTTP 200 with an error object used to raise KeyError out of the chain,
+    # so no fallback was ever tried.
+    import requests as _requests
+
+    _clear_provider_keys(monkeypatch)
+    monkeypatch.setenv("DEEPSEEK_API_KEY", "k1")
+    monkeypatch.setenv("GROQ_API_KEY", "k2")
+
+    class _Response:
+        def __init__(self, body):
+            self._body = body
+
+        def raise_for_status(self):
+            return None
+
+        def json(self):
+            return self._body
+
+    good = {"choices": [{"message": {"content": __import__("json").dumps(_VALID_RESPONSE)}}]}
+    bodies = iter([{"error": {"message": "quota"}}, good])
+    monkeypatch.setattr(_requests, "post", lambda *a, **k: _Response(next(bodies)))
+    _fields, model_id = extract_model_assisted_with_provenance(
+        "t", image_count=1, has_animation=False, product_family="term_account")
+    assert model_id.startswith("groq/")
+
+
 def _clear_provider_keys(monkeypatch):
     """Provider tests read the real environment, so a developer who
     has DEEPSEEK_API_KEY exported would get different ordering than CI. Clear

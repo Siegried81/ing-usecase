@@ -26,14 +26,31 @@ BANK_CATEGORY: dict[str, str] = {
     "vdk": "traditional",
     "hellobank": "traditional",
     "beobank": "traditional",
-    # CBC is KBC Group's francophone brand (traditional, like cbc's
-    # own entry above); Keytrade Bank is a branchless direct bank since 1998,
-    # so it sits with the challengers on the business-model axis.
+    # Keytrade Bank is a branchless direct bank since 1998, so it sits with
+    # the challengers on the business-model axis.
     "keytrade": "challenger",
     "revolut": "challenger",
     "n26": "challenger",
     "bunq": "challenger",
 }
+
+
+# How each bank is named to a reader, and to a news search. One home for it:
+# run_analysis.py used to pass the raw key ("bnp_paribas_fortis") as the name,
+# so the reputation search for BNP Paribas Fortis and Hello bank! found nothing
+# while the web export, with its own copy of these names, found headlines.
+BANK_DISPLAY: dict[str, str] = {
+    "ing": "ING", "kbc": "KBC", "belfius": "Belfius", "argenta": "Argenta",
+    "crelan": "Crelan", "bnp_paribas_fortis": "BNP Paribas Fortis",
+    "revolut": "Revolut", "n26": "N26", "bunq": "bunq", "cbc": "CBC",
+    "beobank": "Beobank", "hellobank": "Hello bank!", "keytrade": "Keytrade Bank",
+    "vdk": "VDK Bank",
+}
+
+
+def display_name(bank: str) -> str:
+    """The reader-facing name, or a tidied key for a bank not listed above."""
+    return BANK_DISPLAY.get(bank, bank.replace("_", " ").title())
 
 
 def category_for(bank: str | None) -> str | None:

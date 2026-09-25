@@ -15,7 +15,8 @@ Formulas (all means are of already-collected page-level features for one bank):
   * digital         - primary_cta_type == self_service_online, fast_digital_onboarding_claim,
                        mobile_first_design_signal
   * trust           - institutional_trust_signal_present, regulatory_disclosure_prominence
-                       == prominent, branch_network_cited_as_benefit
+                       == prominent (pages where it is "not_applicable" are left out, not
+                       counted as a no), branch_network_cited_as_benefit
   * cross_sell      - is_bundled_offer. Labelled "Bundled offer" on screen: it is a
                        yes/no, and reusing the word "cross-sell" put it next to
                        cross_sell.py's breadth ratio under one name.
@@ -47,6 +48,18 @@ AXES = ("digital", "trust", "cross_sell", "personalisation", "innovation", "simp
 
 PERSONA_TAXONOMY_SIZE = 8  # Len(target_personas.values) in the dictionary
 
+# Categorical values that mean "this condition does not apply to this page",
+# so the page is left out of the axis rather than counted as a "no".
+# regulatory_disclosure_prominence is "not_applicable" on 17 of the
+# 18 current-account pages (no credit component, so no TAEG is expected), and
+# counting those as "not prominent" charged the banks for a property of the
+# product family. Masking them moves one bank (Revolut, 3.3 to 5.0); the other
+# thirteen stay at 0.0 because their two remaining inputs really are false -
+# no page here cites a branch network as a benefit.
+_NOT_APPLICABLE: dict[str, set[str]] = {
+    "regulatory_disclosure_prominence": {"not_applicable"},
+}
+
 _READABILITY_TO_SIMPLICITY = {
     "very_easy": 10.0, "easy": 7.5, "medium": 5.0, "hard": 2.5, "very_hard": 0.0,
 }
@@ -72,6 +85,8 @@ def _mean_of_bools(rows: pd.DataFrame, specs: list[tuple[str, object]]) -> float
             # masking, a page where this categorical was never extracted would
             # silently count as "condition false" instead of being excluded.
             eq = (rows[col] == expected).mask(rows[col].isna())
+            # Same idea for an explicit "does not apply": excluded, not false.
+            eq = eq.mask(rows[col].isin(_NOT_APPLICABLE.get(col, set())))
             columns.append(eq.astype("boolean"))
     if not columns:
         return None

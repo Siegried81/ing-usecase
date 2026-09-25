@@ -103,7 +103,15 @@ def _bank_token(bank_name: str) -> str:
     Registry ("KBC" alone -> 24 title matches, "KBC bank" -> 0), so the token is
     the first word: ING, KBC, N26, BNP, ...
     """
+    if bank_name in _SEARCH_TOKENS:
+        return _SEARCH_TOKENS[bank_name]
     return (bank_name.split() or [bank_name])[0]
+
+
+# Names whose first word is an ordinary word, so the first-word rule above
+# would match unrelated news ("Hello" alone is in countless headlines). The
+# whole brand is searched instead.
+_SEARCH_TOKENS = {"Hello bank!": "Hello bank"}
 
 
 def _is_newsapi_ai_key(key: str) -> bool:
@@ -269,6 +277,11 @@ def classify_headlines(headlines: list[str], bank_name: str) -> ReputationModel 
         return None
 
 
+def _title_key(title: str) -> str:
+    """Case- and whitespace-insensitive key used to find a headline's URL."""
+    return " ".join(title.split()).casefold()
+
+
 def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
     """Keep only headlines where the bank's name appears as a whole word.
 
@@ -296,7 +309,9 @@ def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
 # never a None, because bank_snapshot returns None both when a bank genuinely has
 # no matching headlines and when the fetch failed (rate limit, timeout, bad key);
 # caching that would freeze a quota outage into a permanent "nothing found".
-CACHE_PATH = Path("data/processed/reputation_cache.json")
+# Anchored to the repository, not to the current directory: a relative path
+# wrote a second, empty cache wherever a script happened to be started from.
+CACHE_PATH = Path(__file__).resolve().parents[2] / "data" / "processed" / "reputation_cache.json"
 
 
 def _load_cache() -> dict:
@@ -337,12 +352,20 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
     # requires it) - look each one up in what we actually fetched to attach its
     # real URL. Never let the model produce the URL itself: that is exactly the
     # kind of figure this project never lets a model invent.
-    url_by_title = {h["title"]: h.get("url") for h in headlines}
-    notable = [{"title": t, "url": url_by_title.get(t)} for t in classified.notable_headlines]
+    # Matched on a case- and whitespace-insensitive key, so a title the model
+    # re-cased ("ing launches..." for "ING launches...") still gets its link.
+    # A title that matches nothing keeps a null URL (team decision, see
+    # test_bank_snapshot_gives_a_null_url_when_the_model_did_not_copy_verbatim).
+    url_by_key = {_title_key(h["title"]): h.get("url") for h in headlines}
+
+    def url_of(title: str) -> str | None:
+        return url_by_key.get(_title_key(title))
+
+    notable = [{"title": t, "url": url_of(t)} for t in classified.notable_headlines]
     # Every headline under its theme, with its URL - lets the UI show, on
     # hover over a theme's count, the full list of articles that count is made of.
     theme_headlines = {
-        t: [{"title": h, "url": url_by_title.get(h)} for h in classified.theme_headlines.get(t, [])]
+        t: [{"title": h, "url": url_of(h)} for h in classified.theme_headlines.get(t, [])]
         for t in THEMES
     }
     snapshot = {

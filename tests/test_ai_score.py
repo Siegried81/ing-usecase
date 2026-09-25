@@ -91,3 +91,26 @@ def test_score_bank_and_score_all_cover_every_axis():
     all_scores = ai_score.score_all(df)
     assert set(all_scores) == {"ing", "kbc"}
     assert all(set(axes) == set(ai_score.AXES) for axes in all_scores.values())
+
+
+# "not_applicable" means the disclosure does not apply to the
+# product (a current account has no TAEG), so the page is left out of Trust
+# instead of counting as "not prominent".
+def test_trust_leaves_out_pages_where_the_disclosure_does_not_apply():
+    rows = pd.DataFrame({
+        "regulatory_disclosure_prominence": ["not_applicable", "not_applicable", "prominent"],
+    })
+    assert ai_score.score_trust(rows) == 10.0
+
+
+def test_trust_is_none_when_the_disclosure_never_applies():
+    rows = pd.DataFrame({"regulatory_disclosure_prominence": ["not_applicable", "not_applicable"]})
+    assert ai_score.score_trust(rows) is None
+
+
+# The persona taxonomy size is a copy of the dictionary's value list; this keeps
+# the copy honest if a persona is ever added.
+def test_persona_taxonomy_size_matches_the_dictionary():
+    from comparator.dictionary import load_dictionary
+
+    assert ai_score.PERSONA_TAXONOMY_SIZE == len(load_dictionary()["target_personas"].values)

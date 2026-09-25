@@ -526,3 +526,40 @@ def test_capture_invalid_features_are_reported_not_silently_dropped(df, fd):
     assert accounting["capture_invalid"] == present
     if present:
         assert "withdrawn, measurement not the page" in render_accounting(accounting)
+
+
+# --- verdicts a measure cannot support ------------------------------------
+def test_a_claim_on_a_column_with_no_variation_is_not_testable(df, fd):
+    # The real dataset: word_count_band is "long" for every bank, so no bank
+    # can be "the most verbose" - that is untestable, not "not supported".
+    flat = df.copy()
+    flat["word_count_band"] = "long"
+    verdicts = check_deck_claims(flat, fd).set_index("id")
+    for claim_id in ("H1", "H2", "H5"):
+        assert verdicts.loc[claim_id, "verdict"] == "not testable"
+        assert "same word_count_band" in verdicts.loc[claim_id, "evidence"]
+
+
+def test_a_claim_on_a_withdrawn_feature_says_withdrawn_not_absent(df, fd):
+    h3 = check_deck_claims(df, fd).set_index("id").loc["H3"]
+    assert h3["verdict"] == "not testable"
+    assert "withdrawn" in h3["evidence"]
+
+
+def test_insight_candidates_never_argue_from_an_unreportable_gap(df, fd):
+    candidates = insight_candidates(df, fd, min_gap_sd=0.0, top_n=50)
+    assert candidates["reportable"].all()
+
+
+def test_positioning_refuses_a_split_with_an_empty_side(df, fd):
+    one_sided = df.copy()
+    one_sided["bank_category"] = "traditional"
+    with pytest.raises(ValueError, match="no bank"):
+        positioning_axis(one_sided, fd)
+
+
+def test_category_comparison_is_empty_not_a_crash_when_a_side_is_missing(df, fd):
+    one_sided = df.copy()
+    one_sided["bank_category"] = "traditional"
+    out = category_comparison(one_sided, fd)
+    assert out.empty and "effect_size_d" in out.columns

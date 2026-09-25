@@ -177,7 +177,7 @@ def assess(
         "as how hard a page cross-sells."
     )
 
-    # Four features are withdrawn in analysis.CAPTURE_INVALID_FEATURES. They are
+    # Five features are withdrawn in analysis.CAPTURE_INVALID_FEATURES. They are
     # named here because a reader of this file alone would otherwise see a
     # complete-looking dataset and assume every column in it was compared.
     standing.append(
@@ -351,7 +351,7 @@ def next_steps(assessment: dict) -> list[tuple[str, str]]:
     dropped = assessment.get("dropped_banks") or []
     if dropped:
         steps.append((
-            f"Collect {', '.join(dropped)} a page in the compared product family",
+            f"Collect a page in the compared product family for {', '.join(dropped)}",
             f"They have usable captures but none in '{assessment.get('family')}', so they sit out "
             "of the comparison entirely rather than for any analytical reason.",
         ))

@@ -23,7 +23,6 @@ from __future__ import annotations
 
 import json
 import threading
-from datetime import datetime, timezone
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
@@ -157,13 +156,16 @@ def post_site_generate(request: SiteRequest) -> dict:
     else:
         chosen = full
 
+    # Read BEFORE claiming the "generating" slot: a missing report.json raised
+    # its 503 after the state was set, and nothing ever reset it - every later
+    # request got "already being generated" until the server was restarted.
+    report = _read_report()
+
     with _state_lock:
         if _site_state["status"] == "generating":
             raise HTTPException(status_code=409, detail="A site is already being generated.")
         _site_state.update(status="generating", progress=0, total=len(PAGES), page=None,
                            error=None, manifest=None)
-
-    report = _read_report()
 
     def on_progress(done: int, total: int, slug: str) -> None:
         with _state_lock:

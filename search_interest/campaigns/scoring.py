@@ -223,8 +223,6 @@ def run_scoring(conn):
         for a in matches:
             claims_by_anomaly[a["id"]].append(campaign_id)
 
-    campaigns_by_id = {c["id"]: c for c in campaigns}
-
     # Third pass: flag confound/overlap and score each campaign.
     match_rows = []
     score_rows = []

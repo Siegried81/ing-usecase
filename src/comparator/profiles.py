@@ -14,7 +14,6 @@ import pandas as pd
 from comparator.analysis import (
     CAPTURE_INVALID_FEATURES,
     bank_vectors,
-    comparable_features,
     standardise,
 )
 from comparator.dictionary import FeatureDictionary, load_dictionary

@@ -161,3 +161,18 @@ def test_mixed_language_note_matches_what_the_pipeline_actually_does(fd):
     assert "banded versions travel" not in text
     assert "excluded from every" in text
     assert "word_count" in text
+
+
+# "the two groups do not overlap" was printed whatever the gap.
+def test_overlapping_groups_are_never_described_as_separated():
+    import pandas as pd
+
+    from comparator.analysis import Positioning
+    from comparator.report import _positioning_section
+
+    scores = pd.Series({"kbc": 0.1, "ing": 0.7, "revolut": 0.4, "n26": 1.0})
+    categories = pd.Series({"kbc": "traditional", "ing": "traditional",
+                            "revolut": "challenger", "n26": "challenger"})
+    text = "\n".join(_positioning_section(Positioning(scores, "ing", 10), categories))
+    assert "do not overlap" not in text
+    assert "groups overlap" in text

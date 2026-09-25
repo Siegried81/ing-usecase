@@ -44,7 +44,7 @@ as the first thing to add for a production build.
 | Rubric scoring | **one judged sheet**, merged into the dataset by `rubric_sheet.py merge`. No second rater and no reliability measure — the chosen scope, stated in `outputs/limitations.md` and listed there as future work |
 | Operator surface in the web UI | Home, Bank profiles, Data, Rubric, Collection and Research tabs read the run's own files through `operations.json` — read-only, no pipeline control, no scoring, no dataset editing |
 
-Test suite: **423 passing, 1 skipped**. Pinned model per D6: `deepseek-chat` in decisions.md,
+Test suite: **447 passing, 1 skipped** (the skip needs the optional `pytrends`). Pinned model per D6: `deepseek-chat` in decisions.md,
 but every `extraction_model` value actually on disk reads `deepseek/deepseek-flash` (and now, after
 tonight's re-fetches, occasionally `groq/openai/gpt-oss-120b` on fallback) — flagged for
 Stephane (D6 owner), not resolved here.
@@ -66,6 +66,7 @@ Stephane (D6 owner), not resolved here.
 | [`docs/pipeline.md`](docs/pipeline.md) | **runbook** — commands in order, where data lands, the quality gate, manual capture, optional signals |
 | [`docs/design.md`](docs/design.md) | **design** — the feature-dictionary contract, the freeze rule, one pinned model, what the validator refuses, what analysis answers |
 | [`docs/decisions.md`](docs/decisions.md) | **decision log** — what was decided, when, and why (dated entries) |
+| [`docs/AUDIT_2026-09-25.md`](docs/AUDIT_2026-09-25.md) | **code audit** — what was fixed on 25/09, and the open findings that need a team decision |
 | [`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md) | **scope + compliance** — banks in scope, product family and language choices, per-domain robots.txt findings |
 | [`docs/D06_business_narrative.md`](docs/D06_business_narrative.md) | **business narrative (D-06)** — draft insights for the ING audience; figures pending re-verification after the 21/09 scope change |
 | [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | **generated** from `config/feature_dictionary.yaml` by `scripts/build_feature_docs.py` — never edit by hand |
@@ -82,7 +83,7 @@ Stephane (D6 owner), not resolved here.
 pip install -r requirements.txt
 cp .env.example .env        # DEEPSEEK_API_KEY; optionally NEWSAPI_KEY / NEWSAPI_AI_KEY
 python3 scripts/run_analysis.py                 # end-to-end on real captures
-python3 -m pytest tests/ -q                     # 423 passing, no network
+python3 -m pytest tests/ -q                     # 447 passing, no network
 ```
 
 ## The short version of the design
@@ -154,7 +155,7 @@ scripts/
   import_captures.py             import pages a person saved from a normal browser
   browser_audit.py               Playwright audit of the UI + generated site
 streamlit_app.py                 earlier dashboard for share.streamlit.io; its views now live in the React UI's operator tabs
-tests/                           424 tests, no network calls
+tests/                           448 tests, no network calls
 data/rubric/                     human + model scoring sheets (tracked)
 data/raw/                        snapshots (tracked since 21/09 — see Next)
 data/processed/                  datasets (tracked since 21/09)
