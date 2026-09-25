@@ -998,7 +998,7 @@
     }
   },
   "Hello bank!": {
-    "cached_on": "2026-09-24",
+    "cached_on": "2026-09-25",
     "snapshot": {
       "headline_count": 3,
       "themes": {
@@ -1040,12 +1040,16 @@
         {
           "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne",
           "url": "https://www.lalibre.be/economie/mes-finances/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-ZOUKXT5SOJGSNHI3LIKV4VS4MI/"
+        },
+        {
+          "title": "BNP Paribas Fortis, Fintro et Hello bank! augmentent le taux de leur compte épargne - Clone",
+          "url": "https://www.lalibre.be/economie/placements/2026/09/01/bnp-paribas-fortis-fintro-et-hello-bank-augmentent-le-taux-de-leur-compte-epargne-clone-CKYX6755V5DWDBRHYAR47YG6SY/"
         }
       ]
     }
   },
   "VDK Bank": {
-    "cached_on": "2026-09-24",
+    "cached_on": "2026-09-25",
     "snapshot": {
       "headline_count": 1,
       "themes": {
