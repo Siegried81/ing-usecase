@@ -39,9 +39,20 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 import requests
+from dotenv import load_dotenv
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
+
+# This module reads NEWSAPI_KEY / NEWSAPI_AI_KEY straight from the environment.
+# Until now the keys only arrived because the llm_extractor import above calls
+# load_dotenv() at module load - an import-order dependency, and a silent one:
+# move _call_llm elsewhere and every fetch here loses its key, bank_snapshot()
+# returns None for all fourteen banks, and the UI shows the same "no data" it
+# shows for a genuine quota outage. Loading it here makes the dependency this
+# module's own. load_dotenv() never overrides a variable already set, so a real
+# environment variable still wins over the file.
+load_dotenv()
 
 # Two different companies share a confusingly similar name, and their keys are
 # NOT interchangeable. Both may be configured at once; headlines are merged and

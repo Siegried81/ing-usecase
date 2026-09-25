@@ -250,3 +250,21 @@ def test_cache_path_does_not_depend_on_the_current_directory():
     spec.loader.exec_module(fresh)
     repo_root = Path(reputation.__file__).resolve().parents[2]
     assert fresh.CACHE_PATH == repo_root / "data" / "processed" / "reputation_cache.json"
+
+
+# The keys this module reads used to arrive only because the llm_extractor
+# import calls load_dotenv() at module load. That is an import-order
+# dependency and a silent one: move _call_llm and every fetch loses its key,
+# which the UI renders as the same "no data" a quota outage produces. Pin that
+# reputation.py loads the file itself, so the failure cannot come back quietly.
+def test_module_loads_the_env_file_itself_not_via_another_import():
+    import importlib.util
+
+    from comparator import reputation
+
+    with patch("dotenv.load_dotenv") as loader:
+        spec = importlib.util.spec_from_file_location("_rep_env", reputation.__file__)
+        fresh = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(fresh)
+
+    assert loader.called, "reputation.py must call load_dotenv() at import, not rely on another module"
