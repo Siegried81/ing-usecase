@@ -1,0 +1,47 @@
+# Secrets never enter the image. Keys are passed at runtime with --env-file.
+.env
+
+# 638 MB of history the running pipeline never reads.
+.git
+.gitignore
+
+# Rebuilt inside the image by the node stage.
+web/node_modules
+web/dist
+web/tsconfig.tsbuildinfo
+
+# Host virtualenvs: wrong platform, and the image installs its own.
+.venv
+venv
+.venv-*
+
+__pycache__
+**/__pycache__
+*.py[cod]
+.pytest_cache
+.coverage
+
+# Deliverables for humans, not inputs to any command: ~100 MB of video, decks
+# and PDFs. The markdown in docs/ is kept - decisions.md and pipeline.md are
+# worth having next to the code.
+docs/*.mp4
+docs/*.pptx
+docs/*.potx
+docs/*.docx
+docs/*.pdf
+docs/deck_assets
+docs/ing-docs
+
+# Local tooling and editor state.
+.claude
+.kilo
+.vscode
+.github
+
+# Logs and local caches.
+*.log
+data/*.log
+streamlit_log.txt
+campaigns_streamlit_log.txt
+benchmark.db
+benchmark_backup_*.db
