@@ -278,6 +278,26 @@ def get_capture(bank: str) -> FileResponse:
     raise HTTPException(status_code=404, detail=f"No capture for {bank}.")
 
 
+# ---------------------------------------------------------------------------
+# The built React UI, served last.
+#
+# Registered AFTER every /api route and after /site on purpose: Starlette
+# matches routes in registration order, so a mount at "/" declared earlier
+# would swallow the API. Declared here it only catches what nothing else
+# claimed.
+#
+# Optional by design. In development the UI is served by Vite on :5173 and
+# talks to this process through the proxy in web/vite.config.ts, so web/dist
+# does not exist and must not be required - a missing bundle leaves the API
+# working exactly as before. It is built in CI and in the Docker image, which
+# is where serving it from here actually matters: one process, one port, no
+# static server in front.
+# ---------------------------------------------------------------------------
+UI_DIR = REPO_ROOT / "web" / "dist"
+if UI_DIR.is_dir():
+    app.mount("/", StaticFiles(directory=str(UI_DIR), html=True), name="ui")
+
+
 def main() -> int:
     import argparse
 
@@ -291,6 +311,7 @@ def main() -> int:
     print(f"recommendations + site backend on http://{args.host}:{args.port}")
     print(f"  report : {REPORT_PATH}")
     print(f"  site   : {SITE_DIR}")
+    print(f"  ui     : {UI_DIR if UI_DIR.is_dir() else 'not built (npm run build in web/)'}")
     uvicorn.run(app, host=args.host, port=args.port, log_level="info")
     return 0
 

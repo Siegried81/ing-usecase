@@ -36,3 +36,34 @@ def test_a_download_name_cannot_leave_outputs():
     with pytest.raises(HTTPException) as err:
         serve_web.get_download("../README.md")
     assert err.value.status_code == 400
+
+
+def test_the_ui_mount_never_shadows_the_api():
+    """A StaticFiles mount at the root matches everything under it, and
+    Starlette matches routes in registration order. Declared before the API it
+    would swallow every /api call.
+
+    Matched on the mount's NAME, not its path: Starlette normalises a root
+    mount to "", so looking for "/" skips this test instead of running it.
+    """
+    names = [getattr(r, "name", None) for r in serve_web.app.routes]
+    paths = [getattr(r, "path", "") for r in serve_web.app.routes]
+    if "ui" not in names:
+        pytest.skip("web/dist not built in this tree")
+
+    root = names.index("ui")
+    assert paths[root] in ("", "/"), "the UI is not mounted at the root"
+
+    api = [i for i, p in enumerate(paths) if p.startswith("/api")]
+    assert api, "no /api routes found - this test would be checking nothing"
+    assert max(api) < root, "the UI mount is registered before an /api route"
+    assert names.index("site") < root, "the UI mount is registered before /site"
+
+
+def test_the_ui_mount_stays_optional():
+    """In development the UI is served by Vite on :5173 and web/dist does not
+    exist. An unbuilt bundle must not be a startup failure, so the mount stays
+    behind an is_dir() guard rather than being registered unconditionally.
+    """
+    src = Path(serve_web.__file__).read_text(encoding="utf-8")
+    assert "if UI_DIR.is_dir():" in src, "the UI mount must stay conditional"
