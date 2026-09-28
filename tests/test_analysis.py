@@ -22,6 +22,7 @@ from comparator.analysis import (  # noqa: E402
     comparable_features,
     ing_vs_peers,
     insight_candidates,
+    capture_window_excluded_features,
     language_excluded_features,  # Audit fix, comparability enforcement
     nearest_neighbours,
     positioning_axis,
@@ -100,6 +101,65 @@ def test_accounting_reports_the_language_exclusion(fd):
     assert "word_count" in accounting["language_excluded"]
     text = render_accounting(accounting)
     assert "mixed languages present" in text
+
+
+# The same treatment for the third comparability value. Rates move, so a
+# within_capture_window feature compared across two capture dates measures the
+# day as much as the bank - the dictionary says "valid for the capture date
+# only (DR-05)" and nothing used to act on it.
+def test_within_capture_window_features_stay_in_when_one_capture_date(df, fd):
+    """A run captured in one sitting is unaffected."""
+    single = df.copy()
+    single["captured_at"] = pd.Timestamp("2026-09-21T10:00:00+00:00")
+    assert capture_window_excluded_features(fd, single) == []
+    assert "rate_value_pct" in comparable_features(fd, single)
+
+
+def test_within_capture_window_features_are_excluded_across_capture_dates(df, fd):
+    """The real dataset spans 21-23/09, which is exactly this scenario."""
+    spanning = df.copy()
+    half = spanning.index[: len(spanning) // 2]
+    spanning.loc[half, "captured_at"] = pd.Timestamp("2026-09-21T10:00:00+00:00")
+    spanning.loc[spanning.index.difference(half), "captured_at"] = pd.Timestamp(
+        "2026-09-23T10:00:00+00:00"
+    )
+
+    excluded = capture_window_excluded_features(fd, spanning)
+    assert "rate_value_pct" in excluded
+    assert all(fd[name].comparability == "within_capture_window" for name in excluded)
+
+    cols = comparable_features(fd, spanning)
+    assert "rate_value_pct" not in cols
+    # Scoped, not a blanket drop: cross_language features still compare.
+    assert any(fd[c].comparability == "cross_language" for c in cols)
+
+
+def test_a_time_of_day_difference_is_not_a_different_capture_window(df, fd):
+    """The rule is the capture DATE, per the dictionary. Two pages collected in
+    the same run hours apart must not drop the rate features."""
+    same_day = df.copy()
+    half = same_day.index[: len(same_day) // 2]
+    same_day.loc[half, "captured_at"] = pd.Timestamp("2026-09-21T08:00:00+00:00")
+    same_day.loc[same_day.index.difference(half), "captured_at"] = pd.Timestamp(
+        "2026-09-21T23:30:00+00:00"
+    )
+    assert capture_window_excluded_features(fd, same_day) == []
+
+
+def test_accounting_reports_the_capture_window_exclusion(fd):
+    from comparator.analysis import feature_accounting, render_accounting
+    from comparator.fixtures import build_fixture
+
+    spanning = build_fixture(fd)
+    half = spanning.index[: len(spanning) // 2]
+    spanning.loc[half, "captured_at"] = pd.Timestamp("2026-09-21T10:00:00+00:00")
+    spanning.loc[spanning.index.difference(half), "captured_at"] = pd.Timestamp(
+        "2026-09-23T10:00:00+00:00"
+    )
+
+    accounting = feature_accounting(spanning, fd)
+    assert "rate_value_pct" in accounting["capture_window_excluded"]
+    assert ">1 capture date" in render_accounting(accounting)
 
 
 # band_redundant_features() judges on "does the raw feature actually enter the
@@ -325,7 +385,7 @@ def test_accounting_adds_up_to_the_whole_dictionary(df, fd):
     # empty on single-language, nothing-withdrawn data - leaving one out here
     # would let a real exclusion go uncounted the moment it is not empty.
     buckets = (a["provenance"] + a["free_text"] + a["band_redundant"]
-               + a["language_excluded"] + a["capture_invalid"]
+               + a["language_excluded"] + a["capture_window_excluded"] + a["capture_invalid"]
                + a["categorical"] + a["incomplete"] + a["constant"] + a["used"])
     assert len(buckets) == len(set(buckets)), "a feature is counted in two buckets"
     assert len(buckets) == a["dictionary_total"] == len(fd)

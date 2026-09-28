@@ -55,6 +55,17 @@ def test_ai_score_axes_are_listed_at_the_top_level(report):
     assert keys == set(ai_score.AXES)
 
 
+def test_generated_scorecards_never_score_a_withdrawn_feature(report):
+    """outputs/generated/ is read from disk, not recomputed, so it can predate a
+    withdrawal: the 22/09 scorecards still score cta_count and call it a hit,
+    while this same report's limitations say the feature is never compared."""
+    withdrawn = {export_web_report.label(n) for n in export_web_report.CAPTURE_INVALID_FEATURES}
+    for variant in report["generated"]:
+        published = {row["label"] for row in variant["scorecard"]}
+        leaked = sorted(published & withdrawn)
+        assert not leaked, f"{variant['variant']} scores a withdrawn feature: {leaked}"
+
+
 def test_every_bank_carries_personas_and_an_ai_score(report):
     assert report["banks"], "fixture should produce at least one bank"
     for bank in report["banks"]:

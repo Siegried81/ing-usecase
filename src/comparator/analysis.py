@@ -133,6 +133,41 @@ def language_excluded_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[
     )
 
 
+# The third comparability value, which the dictionary declared and nothing
+# enforced. Rates move, so rate_value_pct and rate_framing are only comparable
+# between pages captured in the same window - the dictionary's own wording is
+# "valid for the capture date only (DR-05)". A strict reading of that wording
+# excludes them whenever more than one capture date is in scope, exactly as
+# language_excluded_features() does for language.
+#
+# THIS MOVES NO PUBLISHED FIGURE TODAY, and it is worth saying why rather than
+# leaving a reader to check: on the 18 compared pages rate_value_pct is non-null
+# on 2, so bank_vectors()'s dropna had already removed it, and rate_framing is
+# categorical and never entered the numeric comparison at all. What changes is
+# that the exclusion becomes deliberate and reported instead of an accident of
+# missing data - a fuller rate column would otherwise have walked straight into
+# the comparison across three capture dates.
+def capture_window_excluded_features(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
+    """within_capture_window features dropped because the pages span >1 capture date.
+
+    Mirrors language_excluded_features(): empty when every usable page was
+    captured on the same date, so a single-window run is unaffected.
+    """
+    if "captured_at" not in df.columns:
+        return []
+    captured = df["captured_at"]
+    if not pd.api.types.is_datetime64_any_dtype(captured):
+        captured = pd.to_datetime(captured, format="ISO8601", errors="coerce")
+    if captured.dropna().dt.date.nunique() <= 1:
+        return []
+    return sorted(
+        f.name for f in fd.features
+        if (f.is_numeric or f.is_boolean)
+        and f.name in df.columns
+        and f.comparability == "within_capture_window"
+    )
+
+
 def encodable_categoricals(fd: FeatureDictionary, df: pd.DataFrame) -> list[str]:
     """Categorical and list features that carry real signal and could be encoded.
 
@@ -171,6 +206,9 @@ def feature_accounting(
     # Report the within_language exclusion the same way every other
     # reduction here is reported - see language_excluded_features().
     language_excluded = language_excluded_features(fd, df)
+    # Same treatment for the capture-window exclusion, so the reduction is
+    # visible rather than showing up later as "missing for some bank".
+    capture_window_excluded = capture_window_excluded_features(fd, df)
     capture_invalid = sorted(n for n in CAPTURE_INVALID_FEATURES if n in fd and n in df.columns)
 
     matrix = bank_vectors(df, fd, include_categorical=include_categorical)
@@ -185,6 +223,7 @@ def feature_accounting(
         "free_text": free_text,
         "band_redundant": bands,
         "language_excluded": language_excluded,
+        "capture_window_excluded": capture_window_excluded,
         "capture_invalid": capture_invalid,
         "categorical": categoricals,
         "categorical_included": bool(include_categorical),
@@ -209,6 +248,8 @@ def render_accounting(accounting: dict) -> str:
     # within_language features dropped because >1 language is present.
     row("within_language, mixed languages present", accounting["language_excluded"],
         "not comparable across languages (comparability in the dictionary)")
+    row("within_capture_window, >1 capture date", accounting.get("capture_window_excluded", []),
+        "rates move - valid for the capture date only (DR-05)")
     row("withdrawn, measurement not the page", accounting.get("capture_invalid", []),
         "the rule does not reproduce what the feature claims to measure")
     if accounting["categorical_included"]:
@@ -326,11 +367,18 @@ def comparable_features(
     Provenance columns are excluded - they identify a page, they do not describe
     a campaign. within_language features (word_count, readability_score, ...)
     are excluded too whenever the usable pages span more than one language -
-    See language_excluded_features() above. So are the features in
-    CAPTURE_INVALID_FEATURES, whose values describe the capture and not the page.
+    See language_excluded_features() above. within_capture_window features
+    (rate_value_pct, rate_framing) go the same way whenever the pages span more
+    than one capture date - see capture_window_excluded_features(). So are the
+    features in CAPTURE_INVALID_FEATURES, whose values describe the capture and
+    not the page.
     """
     feats = fd.select(tier=tier, exclude_dimensions=PROVENANCE)
-    excluded = set(language_excluded_features(fd, df)) | CAPTURE_INVALID_FEATURES
+    excluded = (
+        set(language_excluded_features(fd, df))
+        | set(capture_window_excluded_features(fd, df))
+        | CAPTURE_INVALID_FEATURES
+    )
     return [
         f.name for f in feats
         if (f.is_numeric or f.is_boolean) and f.name in df.columns and f.name not in excluded

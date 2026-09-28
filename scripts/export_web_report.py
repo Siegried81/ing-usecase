@@ -34,6 +34,7 @@ from comparator import cross_sell
 from comparator import reputation
 from comparator import rubric  # the Rubric tab reads real sheets
 from comparator.analysis import (
+    CAPTURE_INVALID_FEATURES,
     category_comparison,
     check_deck_claims,
     cluster_banks,
@@ -412,10 +413,16 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         scorecard = []
         if scorecard_path.is_file():
             sc = pd.read_csv(scorecard_path)
+            # The scorecard is read from disk, not recomputed, so it can predate
+            # a withdrawal: the 22/09 files still score cta_count and report a
+            # "hit" on it, while this same report's limitations say the feature
+            # is never compared. Filtering here rather than hand-editing the
+            # artefact - a correction a re-run undoes is not a correction.
             scorecard = [
                 {"label": label(r["feature"]), "target": r["target"],
                  "actual": _clean(r["actual"]), "result": r["result"]}
                 for _, r in sc.iterrows()
+                if r["feature"] not in CAPTURE_INVALID_FEATURES
             ]
         hits = [s for s in scorecard if s["result"] == "hit"]
         measured = [s for s in scorecard if s["result"] in ("hit", "miss")]
