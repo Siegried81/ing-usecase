@@ -37,6 +37,11 @@ docs/ing-docs
 .kilo
 .vscode
 .github
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
 
 # Logs and local caches.
 *.log
@@ -45,3 +50,20 @@ streamlit_log.txt
 campaigns_streamlit_log.txt
 benchmark.db
 benchmark_backup_*.db
+.pytest_cache
+.ruff_cache
+
+# Test coverage and mypy.
+.mypy_cache
+htmlcov/
+.coverage.*
+
+# Node/Playwright artifacts (should already be built in stage 1).
+node_modules/
+.npm
+.pnp
+.pnp.js
+
+# OS and container runtime files.
+.containerignore
+Dockerfile.*.bak

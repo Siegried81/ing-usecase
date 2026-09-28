@@ -3,3 +3,8 @@ pandas==2.3.3
 pyyaml==6.0.3
 requests==2.34.2
 python-dotenv==1.2.2
+# The Home page reads its feature count from analysis.feature_accounting()
+# rather than recomputing it, and comparator.analysis imports both of these.
+# Same pins as requirements.txt - two files must not disagree on a version.
+numpy==2.3.4
+scipy==1.16.3
