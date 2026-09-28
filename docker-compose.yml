@@ -1,0 +1,102 @@
+services:
+  # Streamlit dashboard — no API key required, reads committed data
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ing-comparator-streamlit
+    ports:
+      - "8501:8501"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    volumes:
+      # For development: hot-reload on file changes
+      - ./src:/app/src
+      - ./streamlit_app.py:/app/streamlit_app.py
+      - ./config:/app/config
+      # Preserve data/outputs across container restarts
+      - streamlit_data:/app/data
+      - streamlit_outputs:/app/outputs
+      - streamlit_cache:/app/.streamlit
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  # FastAPI backend — needs LLM_KEY, serves generated assets and recommendations
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ing-comparator-api
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+      - ./web/dist:/app/web/dist:ro
+      - api_outputs:/app/outputs
+      - api_data:/app/data:ro
+    command: python3 scripts/serve_web.py --host 0.0.0.0 --port 8000
+    depends_on:
+      - streamlit
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health').read()"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  # Health Dashboard — monitors Streamlit and API endpoints
+  dashboard:
+    build:
+      context: .
+      dockerfile: services/Dockerfile
+    container_name: ing-comparator-dashboard
+    ports:
+      - "8080:8080"
+    depends_on:
+      - streamlit
+      - api
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health').read()"]
+      interval: 15s
+      timeout: 5s
+      retries: 2
+
+  # Analysis runner — one-shot container for pipeline steps (optional for orchestration)
+  # Uncomment to include; use `docker compose run analysis python3 scripts/run_analysis.py`
+  # analysis:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: ing-comparator-analysis
+  #   environment:
+  #     - PYTHONUNBUFFERED=1
+  #   volumes:
+  #     - ./src:/app/src
+  #     - ./scripts:/app/scripts
+  #     - ./data:/app/data
+  #     - ./outputs:/app/outputs
+  #   working_dir: /app
+  #   profiles: ["tools"]
+
+volumes:
+  streamlit_data:
+  streamlit_outputs:
+  streamlit_cache:
+  api_data:
+  api_outputs:

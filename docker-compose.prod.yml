@@ -1,0 +1,53 @@
+# Production override: security hardening, resource limits, read-only root
+# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+
+services:
+  streamlit:
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    resources:
+      limits:
+        cpus: '1'
+        memory: 1G
+      reservations:
+        cpus: '0.5'
+        memory: 512M
+    tmpfs:
+      - /tmp
+      - /app/.streamlit
+    volumes:
+      - streamlit_data:/app/data:ro
+      - streamlit_outputs:/app/outputs:ro
+      - streamlit_cache:/app/.streamlit
+    environment:
+      - STREAMLIT_SERVER_HEADLESS=true
+      - STREAMLIT_CLIENT_TOOLBARPOSITION=hidden
+
+  api:
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - NET_BIND_SERVICE
+    resources:
+      limits:
+        cpus: '2'
+        memory: 2G
+      reservations:
+        cpus: '1'
+        memory: 1G
+    tmpfs:
+      - /tmp
+      - /app/.cache
+    volumes:
+      - api_outputs:/app/outputs
+      - api_data:/app/data:ro
+    environment:
+      - PYTHONOPTIMIZE=2
