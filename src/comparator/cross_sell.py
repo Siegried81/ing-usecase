@@ -9,10 +9,20 @@ that one column, same spirit as `ai_score.py`.
 SCORE: the brief's own formula, "products offered / products possible", kept
 as a literal 0-1 ratio (not rescaled to 0-10 like ai_score.py's axes, since
 this already IS a share, not a composite index). Per page: len(cross_sold_
-products) / (taxonomy size - 1) - the page's own product_family is excluded
-from the denominator, since a page cannot cross-sell itself. A bank's score is
-the mean across its pages; None (never a fabricated 0) if the column is absent
-or entirely empty for that bank.
+products) / (taxonomy size - 1). The -1 stands for "a page cannot cross-sell
+itself", but read it as a flat constant, not as a per-page exclusion: the code
+never looks at that page's own product_family, and the cross_sold_products
+taxonomy carries 10 values against product_family's 7, so the denominator is 9
+for every page. Two consequences worth knowing before quoting a number. The
+numerator counts `other` along with the nine real types, so a page naming all
+nine plus `other` would score above the nominal 1.0 ceiling. And the never_paired
+matrix indexes the full 10-value taxonomy, so rows that are not a product_family
+at all (insurance, credit_card, partner_perk) always have a page count of 0 and
+land in insufficient_data by construction rather than by measurement. Neither
+has bitten on this dataset, and changing the denominator now would move a figure
+already quoted, so the behaviour stands and this describes it rather than the
+intention. A bank's score is the mean across its pages; None (never a fabricated
+0) if the column is absent or entirely empty for that bank.
 
 MATRIX (the "graph"): this repo has no graph-drawing library, and one wasn't
 worth adding for 7 nodes - a co-occurrence table already answers the brief's

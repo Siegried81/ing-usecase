@@ -152,11 +152,14 @@ the AI Score, cross-sell, the regional search interest, the deck-claim verdicts
 and the generated limitations. Trends, Reputation and Recommendations are the
 three signal tabs described above.
 
-**Operator views.** Home, Bank profiles, Data, Rubric, Collection and Research
-are the read-only views that used to live in `streamlit_app.py`. They read
+**Operator views.** Home, Bank profiles, Data, Rubric and Collection are the
+read-only views that used to live in `streamlit_app.py`. They read
 `operations.json`, which `export_web_report.py` writes from the same library
 calls as `report.json`, so the scope banner and the collection status cannot
-disagree. Two boundaries are deliberate and enforced by the shape of the code:
+disagree. Research is not one of them: it is served live by `serve_web.py`'s
+`/api/research/search`, the one outbound call the UI makes, so it needs the
+backend rather than the snapshot. Two boundaries are deliberate and enforced by
+the shape of the code:
 
 - **No pipeline control and no dataset editing.** There is no endpoint that
   writes a dataset row, a rubric cell or the dictionary. The dictionary is the

@@ -10,8 +10,14 @@ than remembered. One entry per decision; append, never rewrite.
 
 **Owner** Stephane · **Due** Day 2 (Tue 15 Sep 2026) · **Status** decided
 
-**Decision.** DeepSeek `deepseek-chat` is the pinned model for this project.
+**Decision.** DeepSeek `deepseek-flash` is the pinned model for this project.
 Every model-assisted feature and every generated campaign is produced by it.
+
+This entry originally named `deepseek-chat`, which DeepSeek has since retired as
+an alias. `deepseek-flash` is what the code pins and what every row on disk
+records, so the name is corrected here rather than left pointing at a model that
+appears nowhere in the dataset. The decision itself — one named model, recorded
+per row — is unchanged.
 
 **Why this one.** It is the model we actually have a working key for today, and
 Day 2 is the deadline. The requirement was never "the best model" — it was *one*

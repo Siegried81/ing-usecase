@@ -46,8 +46,10 @@ python3 -m pytest tests/ -q
 calls: `report.json` is the business surface the Analysis tab reads, and
 `operations.json` is the operator surface (feature dictionary, dataset table,
 collection status, the judged sheet and the scales). The React UI needs
-`operations.json` for its Home, Bank profiles, Data, Rubric, Collection and
-Research tabs; without it those tabs say so and the Analysis tab is unaffected.
+`operations.json` for its Home, Bank profiles, Data, Rubric and Collection tabs;
+without it those tabs say so and the Analysis tab is unaffected. The Research tab
+is not on that list - it queries Semantic Scholar live through `serve_web.py`, so
+it needs the backend running rather than the snapshot.
 
 `serve_web.py` is optional and read-only apart from the two model calls. It adds
 four things a static bundle cannot hold: the recommendations and site generation
