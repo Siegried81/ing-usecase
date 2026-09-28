@@ -26,7 +26,8 @@ REPO = Path(__file__).resolve().parent
 # needs a top-level entry point), so `comparator` isn't importable without
 # putting src/ on the path first - same technique as scripts/_bootstrap.py.
 sys.path.insert(0, str(REPO / "src"))
-from comparator import research  # noqa: E402
+from comparator import analysis, research, schema  # noqa: E402
+from comparator.dictionary import load_dictionary as load_feature_dictionary  # noqa: E402
 
 # The Research page reads SEMANTIC_SCHOLAR_API_KEY via os.getenv()
 # inside research.search_papers() - without this, a real local .env key was
@@ -48,10 +49,46 @@ st.set_page_config(page_title="Banking Campaigns Comparator", layout="wide")
 
 @st.cache_data
 def load_campaigns() -> pd.DataFrame | None:
-    p = DATA / "campaigns.csv"
-    if p.is_file():
-        return pd.read_csv(p)
+    """The rubric-merged dataset, falling back to the unscored one.
+
+    campaigns_scored.csv is what run_analysis.py and export_web_report.py read:
+    it carries the 13 judged features that campaigns.csv does not. Reading the
+    unscored file here meant every rubric-derived figure was silently absent
+    from this dashboard while the React UI showed it - the same two-derived-
+    files hazard decisions.md records for the web export on 20/09.
+    """
+    for name in ("campaigns_scored.csv", "campaigns.csv"):
+        p = DATA / name
+        if p.is_file():
+            return pd.read_csv(p)
     return None
+
+
+def features_compared(df: pd.DataFrame | None, family: str | None) -> tuple[int, int] | None:
+    """(declared, actually compared), read from analysis.feature_accounting().
+
+    Deliberately not recomputed here. feature_accounting() is where this project
+    decides which features survive into a comparison - provenance, withdrawn,
+    bands redundant with their raw value, language- and capture-window-excluded,
+    missing for some bank - and outputs/charts.md prints the same two numbers
+    from the same call. A second definition living in the dashboard is exactly
+    how two surfaces start quoting different figures for the same run.
+
+    Scoped to one product family, like the comparison itself (DR-04). Pooled
+    across all six families the count is 36; every other artefact quotes the
+    scoped 33, so the dashboard quotes it too.
+
+    This replaced len(df.columns), which read 89: the width of the unscored CSV,
+    provenance columns included, and no relation to what was compared.
+    """
+    if df is None:
+        return None
+    fd = load_feature_dictionary()
+    typed = schema.coerce_types(df, fd)
+    if family:
+        typed, _scope = analysis.scope_to_family(typed, family)
+    accounting = analysis.feature_accounting(typed, fd)
+    return accounting["dictionary_total"], accounting["n_used"]
 
 
 @st.cache_data
@@ -107,6 +144,17 @@ def load_output_csv(name: str, **kwargs) -> pd.DataFrame | None:
         return None
 
 
+@st.cache_data
+def load_json_output(name: str) -> dict | None:
+    p = OUTPUTS / name
+    if not p.is_file():
+        return None
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+
+
 # ── page 1: Home ──────────────────────────────────────────────────────
 
 def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
@@ -123,23 +171,39 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
     # "bank" column, so that raised KeyError and took the whole page down.
     # Every metric/loop below now degrades to "N/A" instead of crashing.
     if df is None:
-        st.warning("No campaign data available (`data/processed/campaigns.csv` is gitignored - "
-                    "run `python3 scripts/run_analysis.py` locally to regenerate it).")
+        st.warning("No campaign data available - expected `data/processed/campaigns_scored.csv` "
+                   "(or `campaigns.csv`). Both are tracked, so this usually means the working "
+                   "tree is incomplete; see docs/pipeline.md to regenerate them.")
 
     col1, col2, col3, col4 = st.columns(4)
     col1.metric("Banks with captures", df["bank"].nunique() if df is not None else "N/A")
     col2.metric("Pages collected", len(df) if df is not None else "N/A")
-    col3.metric("Features measured", len(df.columns) if df is not None else "N/A")
+    counts = features_compared(df, scope.get("product_family"))
+    col3.metric(
+        "Features compared",
+        counts[1] if counts else "N/A",
+        help=(
+            f"of {counts[0]} declared in the dictionary. The rest are provenance, "
+            "withdrawn, redundant with a band, excluded for mixing languages or "
+            "capture dates, or missing for at least one bank - see Limitations."
+        ) if counts else None,
+    )
     col4.metric("Banks in scope", len(scope.get("banks_included", [])))
 
     st.divider()
 
     st.subheader("Project status")
-    st.info(
-        "The pipeline runs end to end on real captures: 51 pages across 14 banks "
-        "and 6 product families, 104 features, one judged rubric sheet complete. "
-        "Comparisons run within one product family at a time."
-    )
+    # Counted, not written in. This sentence said "51 pages across 14 banks and
+    # 6 product families, 104 features" as a literal, which is a claim that goes
+    # stale the next time anything is collected.
+    if df is not None:
+        declared = len(load_dictionary().get("features", []))
+        st.info(
+            f"The pipeline runs end to end on real captures: {len(df)} pages across "
+            f"{df['bank'].nunique()} banks and {df['product_family'].nunique()} product "
+            f"families, {declared} features, one judged rubric sheet. "
+            "Comparisons run within one product family at a time."
+        )
 
     if df is not None:
         st.subheader("Banks — collection status")
@@ -450,6 +514,96 @@ def page_collection(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
     st.caption("Compliance: assert_can_fetch() checks robots.txt before each fetch (fail closed).")
 
 
+# ── page: Reputation ─────────────────────────────────────────────────────
+
+def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
+    st.title("📰 Reputation")
+    st.caption(
+        "What each bank is in the news ABOUT, over the last 90 days of Belgian "
+        "coverage. Themes, never sentiment: how positively a bank is covered is "
+        "a different and harder claim this project does not make."
+    )
+
+    data = load_json_output("reputation.json")
+    if data is None:
+        st.warning("`outputs/reputation.json` not found - run `python3 scripts/run_analysis.py`.")
+        return
+    if not data.get("available"):
+        st.info("No news API key configured, so no headlines were fetched.")
+        return
+
+    banks = data.get("banks") or {}
+    if not banks:
+        st.info("A key is configured but no headlines came back.")
+        return
+
+    # available: true means a key is configured, not that articles were
+    # returned (docs/pipeline.md) - a bank at 0 may be quiet or may be a failed
+    # request, and the two must not read the same.
+    st.caption(
+        "A headline count of 0 means nothing matched in the window - it is not "
+        "evidence that a bank is absent from the news."
+    )
+
+    themes = sorted({t for b in banks.values() for t in (b.get("themes") or {})})
+    rows = [
+        {"Bank": name, "Headlines": b.get("headline_count", 0),
+         **{t.replace("_", " ").capitalize(): (b.get("themes") or {}).get(t, 0) for t in themes}}
+        for name, b in sorted(banks.items())
+    ]
+    st.dataframe(pd.DataFrame(rows).set_index("Bank"), use_container_width=True)
+
+    chosen = st.selectbox("Headlines for", sorted(banks))
+    for theme, items in (banks[chosen].get("theme_headlines") or {}).items():
+        if items:
+            st.markdown(f"**{theme.replace('_', ' ').capitalize()}**")
+            for h in items:
+                title = h.get("title", "")
+                url = h.get("url")
+                st.markdown(f"- [{title}]({url})" if url else f"- {title}")
+
+
+# ── page: Recommendations ────────────────────────────────────────────────
+
+def page_recommendations(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
+    st.title("💡 Recommendations")
+    st.caption(
+        "Changes ING could test, each argued from a measured feature. Read-only "
+        "here: generating them is the React UI's job, this page shows the last run."
+    )
+
+    data = load_json_output("web_recommendations.json")
+    if data is None:
+        st.warning(
+            "`outputs/web_recommendations.json` not found - it is written by "
+            "`scripts/serve_web.py` when recommendations are generated."
+        )
+        return
+
+    st.caption(
+        f"Generated {data.get('generated_at', 'unknown')} by {data.get('model', 'unknown')}. "
+        "No performance data exists in this project, so every item is a hypothesis "
+        "to test, never a demonstrated improvement."
+    )
+    if data.get("summary"):
+        st.info(data["summary"])
+
+    for r in data.get("recommendations", []):
+        with st.expander(f"{r.get('id', '?')} — {r.get('title', '')}  ·  {r.get('priority', '')}"):
+            if r.get("finding"):
+                st.markdown(f"**Finding.** {r['finding']}")
+            if r.get("recommendation"):
+                st.markdown(f"**Recommendation.** {r['recommendation']}")
+            feats = r.get("features") or []
+            # A reputation-basis item carries no features by design: news themes
+            # are context, and citing a page feature as their evidence would be
+            # the causal claim this project refuses.
+            st.caption(
+                "Measured features: " + ", ".join(feats) if feats
+                else f"No page feature cited (basis: {r.get('basis', 'unknown')})."
+            )
+
+
 # ── page 8: Trends ───────────────────────────────────────────────────────
 
 def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
@@ -530,15 +684,21 @@ def main() -> None:
     # need to know which pages care.
     st.sidebar.title("Navigation")
     pages = {
+        # Same order as the React UI's TABS (web/src/App.tsx), so the two
+        # surfaces read as one product. Limitations has no React tab of its own
+        # - it is a section of the Analysis tab there - and is kept last here
+        # rather than dropped, because it is deliverable D-09.
         "🏠 Home": page_accueil,
         "📊 Analysis": page_analyse,
         "🏷️ Bank profiles": page_profils,
-        "📝 Rubric": page_rubric,
         "🗄️ Data": page_data,
-        "⚠️ Limitations": page_limitations,
+        "📝 Rubric": page_rubric,
         "🕷️ Collection": page_collection,
         "📈 Trends": page_trends,
+        "📰 Reputation": page_reputation,
+        "💡 Recommendations": page_recommendations,
         "📚 Research": page_research,
+        "⚠️ Limitations": page_limitations,
     }
     choice = st.sidebar.radio("Pages", list(pages.keys()))
 
