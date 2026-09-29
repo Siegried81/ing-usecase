@@ -1,5 +1,5 @@
 # Development override: enables hot-reload, volume mounts, and extended timeouts
-# Usage: docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+# Usage: docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 
 services:
   streamlit:

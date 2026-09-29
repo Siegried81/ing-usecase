@@ -30,13 +30,13 @@ docker compose up --pull always
 
 ### Development (hot reload enabled)
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 # Changes in src/, config/, streamlit_app.py auto-reload
 ```
 
 ### Production (hardened, resource-limited)
 ```bash
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 ```
 
 ## Common Tasks
@@ -230,7 +230,7 @@ cd ing-comparator
 cp .env.example .env
 
 # 2. Start with dev overrides (hot reload)
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 
 # 3. Edit files locally — they auto-reload in the container
 # (src/, config/, streamlit_app.py, etc.)
@@ -251,7 +251,7 @@ git push origin main
 
 ```bash
 # 1. Use production overrides (security hardened)
-docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 
 # 2. Monitor with health dashboard
 curl http://localhost:8080/health
@@ -265,7 +265,7 @@ docker compose up -d --scale api=3
 
 ## References
 
-- [docs/pipeline.md](docs/pipeline.md) — full runbook
-- [README.md](README.md) — project overview
+- [docs/pipeline.md](pipeline.md) — full runbook
+- [README.md](../README.md) — project overview
 - [technical_deep_dive.md](technical_deep_dive.md) — architecture details
-- [GitHub Actions workflow](.github/workflows/docker.yml) — CI/CD pipeline
+- [GitHub Actions workflow](../.github/workflows/docker.yml) — CI/CD pipeline

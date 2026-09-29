@@ -42,7 +42,7 @@ RUBRIC = REPO / "data" / "rubric"
 CONFIG = REPO / "config"
 KBCH = REPO / "search_interest"
 
-st.set_page_config(page_title="Banking Campaigns Comparator", layout="wide")
+st.set_page_config(page_title="Banking Campaigns Comparator", page_icon="🏦", layout="wide")
 
 
 # ── helpers ──────────────────────────────────────────────────────────────
@@ -125,6 +125,21 @@ def load_rubric_sheet(name: str) -> pd.DataFrame | None:
         return None
 
 
+def fit_height(n_rows: int) -> int:
+    """Pixel height that shows every row of an st.dataframe, header included.
+
+    st.dataframe caps itself at about ten rows and scrolls the rest, so a
+    fourteen-bank table hid four banks behind a scrollbar. 35 px is Streamlit's
+    row height; the extra 3 px is the border.
+    """
+    return 35 * (n_rows + 1) + 3
+
+
+# The bank sits in the index of every per-bank table. Left unsized, the index
+# column is as narrow as its header and cuts "bnp_paribas_fortis" in half.
+BANK_INDEX = {"_index": st.column_config.TextColumn("Bank", width=150)}
+
+
 def _dict_table(d: dict) -> None:
     """A flat dict as a clean two-column table, instead of a raw st.json() blob."""
     if not d:
@@ -157,6 +172,29 @@ def load_json_output(name: str) -> dict | None:
 
 # ── page 1: Home ──────────────────────────────────────────────────────
 
+def bank_status_table(df: pd.DataFrame, scope: dict) -> pd.DataFrame:
+    """One row per captured bank: category, pages captured, scope status.
+
+    A table rather than one bullet per bank, so fourteen banks fit on one
+    screen. The status reads profiles["_scope"], the same scope run_analysis.py
+    compared, so this page cannot claim a bank is in a comparison it was left
+    out of.
+    """
+    included = set(scope.get("banks_included", []))
+    no_page = set(scope.get("banks_excluded_no_page_in_family", []))
+    rows = []
+    for bank, pages in df.groupby("bank"):
+        if bank in included:
+            status = "✅ In scope"
+        elif bank in no_page:
+            status = "⛔ Out of scope (no page in family)"
+        else:
+            status = "⚠️ Captured, currently out of scope"
+        category = pages["bank_category"].iat[0] if "bank_category" in pages else "N/A"
+        rows.append({"Bank": bank, "Category": category, "Pages": len(pages), "Status": status})
+    return pd.DataFrame(rows, columns=["Bank", "Category", "Pages", "Status"]).set_index("Bank")
+
+
 def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
     st.title("🏦 Banking Campaigns Comparator")
     st.caption(
@@ -166,10 +204,9 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
 
     scope = profiles.get("_scope", {})
 
-    # FIXED: this used to replace a missing df with an empty
-    # DataFrame() and then call df["bank"] on it below - an empty frame has no
-    # "bank" column, so that raised KeyError and took the whole page down.
-    # Every metric/loop below now degrades to "N/A" instead of crashing.
+    # A missing dataset stays None rather than becoming an empty DataFrame():
+    # an empty frame has no "bank" column, so df["bank"] below would raise
+    # KeyError and take the whole page down. Every metric degrades to "N/A".
     if df is None:
         st.warning("No campaign data available - expected `data/processed/campaigns_scored.csv` "
                    "(or `campaigns.csv`). Both are tracked, so this usually means the working "
@@ -193,9 +230,8 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
     st.divider()
 
     st.subheader("Project status")
-    # Counted, not written in. This sentence said "51 pages across 14 banks and
-    # 6 product families, 104 features" as a literal, which is a claim that goes
-    # stale the next time anything is collected.
+    # Counted, not written in: a literal page or bank count is a claim that
+    # goes stale the next time anything is collected.
     if df is not None:
         declared = len(load_dictionary().get("features", []))
         st.info(
@@ -207,13 +243,9 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
 
     if df is not None:
         st.subheader("Banks — collection status")
-        banks = df.drop_duplicates("bank").sort_values("bank")
-        for _, b in banks.iterrows():
-            bank = b["bank"]
-            in_scope = bank in scope.get("banks_included", [])
-            excluded = bank in scope.get("banks_excluded_no_page_in_family", [])
-            status = "✅ In scope" if in_scope else ("⛔ Out of scope (no page in family)" if excluded else "⚠️ Captured, currently out of scope")
-            st.markdown(f"- **{bank}** ({b.get('bank_category', 'N/A')}) — {status}")
+        status = bank_status_table(df, scope)
+        st.dataframe(status, width="stretch", height=fit_height(len(status)),
+                     column_config={**BANK_INDEX, "Pages": st.column_config.NumberColumn(format="%d")})
 
     if scope.get("banks_excluded_no_page_in_family"):
         st.markdown(
@@ -223,14 +255,17 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
         )
 
     st.divider()
-    st.subheader("Available deliverables")
-    for f in sorted(OUTPUTS.iterdir()):
-        if f.is_file() and f.suffix in (".png", ".csv", ".json", ".md"):
-            st.download_button(
+    deliverables = [f for f in sorted(OUTPUTS.iterdir())
+                    if f.is_file() and f.suffix in (".png", ".csv", ".json", ".md")]
+    with st.expander(f"📦 Available deliverables ({len(deliverables)} files)"):
+        grid = st.columns(3)
+        for i, f in enumerate(deliverables):
+            grid[i % 3].download_button(
                 label=f"📄 {f.name}",
                 data=f.read_bytes(),
                 file_name=f.name,
                 key=f"dl_{f.name}",
+                width="stretch",
             )
 
 
@@ -251,6 +286,19 @@ def _csv_or_missing(name: str, note: str, **kwargs) -> pd.DataFrame | None:
     return frame
 
 
+VERDICT_COLOURS = {"supported": "green", "not supported": "red", "not testable": "gray"}
+
+
+def verdict_badge(verdict: str) -> str:
+    """A deck-claim verdict as a coloured Streamlit markdown badge.
+
+    The three colours map to the three verdicts analysis.check_deck_claims()
+    writes. An unknown verdict falls back to grey rather than raising, so a
+    new verdict label shows up as plain text instead of taking the page down.
+    """
+    return f":{VERDICT_COLOURS.get(verdict, 'gray')}-badge[{verdict}]"
+
+
 def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
     st.title("📊 Analysis")
     st.caption("Every number below is read live from `outputs/`, generated by `scripts/run_analysis.py` - "
@@ -265,7 +313,11 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         st.caption("0 = traditional centroid, 1 = challenger centroid. Computed from real captures.")
         png = OUTPUTS / "01_positioning.png"
         if png.is_file():
-            st.image(str(png), width="stretch")  # use_column_width deprecated as of streamlit 1.54.0 (dependabot bump) - width="stretch" is its replacement
+            # The PNG is drawn for a slide, about 9.5 inches wide. Stretched across
+            # a wide layout it blows up and blurs, so it is shown at a fixed
+            # width in a centred middle column instead.
+            _left, middle, _right = st.columns([1, 4, 1])
+            middle.image(str(png), width=820)
         else:
             st.info("`outputs/01_positioning.png` not found. Run `python3 scripts/run_analysis.py`.")
 
@@ -275,7 +327,17 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         gaps = _csv_or_missing("ing_vs_peers.csv", "")
         if gaps is not None:
             cols = [c for c in ("feature", "dimension", "ing_value", "peer_mean", "peer_n", "gap_sd", "direction") if c in gaps.columns]
-            st.dataframe(gaps[cols].set_index("feature"), use_container_width=True, height=350)
+            st.dataframe(
+                gaps[cols].set_index("feature"), width="stretch", height=420,
+                column_config={
+                    "dimension": st.column_config.TextColumn("Dimension"),
+                    "ing_value": st.column_config.NumberColumn("ING", format="%.2f"),
+                    "peer_mean": st.column_config.NumberColumn("Peer mean", format="%.2f"),
+                    "peer_n": st.column_config.NumberColumn("Peers", format="%d"),
+                    "gap_sd": st.column_config.NumberColumn("Gap (SD)", format="%+.1f"),
+                    "direction": st.column_config.TextColumn("Direction"),
+                },
+            )
 
     with tab3:
         st.subheader("Traditional vs challenger — which separates the most?")
@@ -283,21 +345,41 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         sep = _csv_or_missing("category_comparison.csv", "")
         if sep is not None:
             cols = [c for c in ("feature", "traditional_mean", "challenger_mean", "effect_size_d") if c in sep.columns]
-            st.dataframe(sep[cols].set_index("feature"), use_container_width=True, height=350)
+            st.dataframe(
+                sep[cols].set_index("feature"), width="stretch", height=420,
+                column_config={
+                    "traditional_mean": st.column_config.NumberColumn("Traditional mean", format="%.2f"),
+                    "challenger_mean": st.column_config.NumberColumn("Challenger mean", format="%.2f"),
+                    "effect_size_d": st.column_config.NumberColumn("Cohen's d", format="%+.2f"),
+                },
+            )
 
     with tab4:
         st.subheader("Similarity between banks")
         st.caption("Euclidean distance in standardised feature space. Lower = more similar.")
         dist = _csv_or_missing("similarity_matrix.csv", "", index_col=0)
         if dist is not None:
-            st.dataframe(dist.style.background_gradient(cmap="Blues_r", axis=None), use_container_width=True)
+            st.dataframe(
+                dist.style.background_gradient(cmap="Blues_r", axis=None).format("{:.2f}"),
+                width="stretch", height=fit_height(len(dist)), column_config=BANK_INDEX,
+            )
 
     with tab5:
         st.subheader("AI Score — six independently-measured signals")
         st.caption("0-10 per axis, deterministic from features already in the dataset. Blank = no data, never a zero.")
         scores = _csv_or_missing("ai_score.csv", "")
         if scores is not None:
-            st.dataframe(scores.set_index("bank"), use_container_width=True)
+            # Bars on a fixed 0-10 scale, so every axis reads against the same
+            # ruler. A blank cell stays blank: the bar is only drawn for a number.
+            st.dataframe(
+                scores.set_index("bank"), width="stretch", height=fit_height(len(scores)),
+                column_config={**BANK_INDEX, **{
+                    axis: st.column_config.ProgressColumn(
+                        axis.replace("_", " ").capitalize(), format="%.1f", min_value=0, max_value=10,
+                    )
+                    for axis in scores.columns if axis != "bank"
+                }},
+            )
 
     with tab6:
         st.subheader("Cross-sell")
@@ -306,10 +388,15 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
         cs_matrix = load_output_csv("cross_sell_matrix.csv", index_col=0)
         if cs_score is not None:
             st.markdown("**Cross-sell score per bank**")
-            st.bar_chart(cs_score.set_index("bank")["cross_sell_score"])
+            st.dataframe(
+                cs_score.set_index("bank"), width="stretch", height=fit_height(len(cs_score)),
+                column_config={**BANK_INDEX, "cross_sell_score": st.column_config.ProgressColumn(
+                    "Share of other products cross-sold", format="percent", min_value=0, max_value=1,
+                )},
+            )
         if cs_matrix is not None:
             st.markdown("**Product co-occurrence matrix** (row = a page's own product, column = what else it cross-sells)")
-            st.dataframe(cs_matrix, use_container_width=True)
+            st.dataframe(cs_matrix, width="stretch")
         if cs_score is None and cs_matrix is None:
             st.info("`outputs/cross_sell_*.csv` not found. Run `python3 scripts/run_analysis.py`.")
 
@@ -318,8 +405,15 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
     st.caption("Five observations from ING's own kickoff deck, tested against the measured pages.")
     claims = _csv_or_missing("deck_claims.csv", "")
     if claims is not None:
-        cols = [c for c in ("id", "bank", "claim", "verdict", "evidence") if c in claims.columns]
-        st.dataframe(claims[cols].set_index("id"), use_container_width=True)
+        # One card per claim rather than a table: the evidence is a full
+        # sentence, and a dataframe cell cut it off mid-word.
+        for c in claims.to_dict("records"):
+            with st.container(border=True):
+                st.markdown(
+                    f"{verdict_badge(c.get('verdict', ''))} &nbsp; **{c.get('id', '')}** · "
+                    f"{c.get('claim', '')} &nbsp; `{c.get('bank', '')}`"
+                )
+                st.caption(c.get("evidence", ""))
 
 
 # ── page 3: Bank profiles ──────────────────────────────────────────────────────
@@ -371,7 +465,7 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
         pngs = list(bank_dir.glob("*.png"))
         if pngs:
             st.subheader("Capture")
-            st.image(str(pngs[0]), caption=f"{pngs[0].name}", width="stretch")  # See note above
+            st.image(str(pngs[0]), caption=f"{pngs[0].name}", width="stretch")
 
 
 # ── page 4: Rubric ───────────────────────────────────────────────────────
@@ -390,7 +484,7 @@ def page_rubric(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
         if df_sheet is None:
             st.warning("No judged sheet found")
         else:
-            st.dataframe(df_sheet, use_container_width=True, height=300)
+            st.dataframe(df_sheet, width="stretch", height=300)
 
     st.divider()
     st.subheader("Why there is no agreement figure")
@@ -437,11 +531,10 @@ def page_data(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 
             families = sorted(df["product_family"].dropna().unique())
             picked_families = st.multiselect("Filter by family", families, default=families)
 
-        # FIXED: these two filters were built and shown but never
-        # applied - picking a bank/family did nothing to the table below it.
+        # The filters must be applied to the table below them, not just shown.
         filtered = df[df["bank"].isin(picked_banks) & df["product_family"].isin(picked_families)]
         st.caption(f"Showing {len(filtered)} of {len(df)} pages.")
-        st.dataframe(filtered, use_container_width=True, height=400)
+        st.dataframe(filtered, width="stretch", height=400)
 
         csv = filtered.to_csv(index=False).encode("utf-8")
         st.download_button("Download filtered CSV", data=csv, file_name="campaigns.csv")
@@ -464,7 +557,7 @@ def page_data(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 
                 }
                 for f in features
             ])
-            st.dataframe(fd_df, use_container_width=True, height=500)
+            st.dataframe(fd_df, width="stretch", height=500)
         else:
             st.warning("No features found in dictionary YAML")
 
@@ -502,7 +595,7 @@ def page_collection(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
     st.subheader("Detailed pages")
     cols = ["page_id", "bank", "product_family", "language", "collection_method", "capture_quality", "data_source"]
     available = [c for c in cols if c in df.columns]
-    st.dataframe(df[available], use_container_width=True)
+    st.dataframe(df[available], width="stretch")
 
     st.divider()
     st.subheader("Collection pipeline")
@@ -515,6 +608,28 @@ def page_collection(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
 
 
 # ── page: Reputation ─────────────────────────────────────────────────────
+
+def reputation_table(banks: dict) -> pd.DataFrame:
+    """One row per bank: headline count, then one count per news theme.
+
+    A bank can be null in reputation.json - bank_snapshot() returns None when
+    nothing could be fetched or classified. That row stays empty, never zero:
+    0 means the query ran and matched nothing, an empty cell means there is no
+    result to read, and the two must not look the same.
+    """
+    themes = sorted({t for b in banks.values() if b for t in (b.get("themes") or {})})
+    labels = {t: t.replace("_", " ").capitalize() for t in themes}
+    rows = []
+    for name, b in sorted(banks.items()):
+        if b is None:
+            rows.append({"Bank": name})
+            continue
+        counts = b.get("themes") or {}
+        rows.append({"Bank": name, "Headlines": b.get("headline_count", 0),
+                     **{labels[t]: counts.get(t, 0) for t in themes}})
+    columns = ["Bank", "Headlines", *labels.values()]
+    return pd.DataFrame(rows, columns=columns).set_index("Bank").astype("Int64")
+
 
 def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
     st.title("📰 Reputation")
@@ -545,15 +660,32 @@ def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
         "evidence that a bank is absent from the news."
     )
 
-    themes = sorted({t for b in banks.values() for t in (b.get("themes") or {})})
-    rows = [
-        {"Bank": name, "Headlines": b.get("headline_count", 0),
-         **{t.replace("_", " ").capitalize(): (b.get("themes") or {}).get(t, 0) for t in themes}}
-        for name, b in sorted(banks.items())
-    ]
-    st.dataframe(pd.DataFrame(rows).set_index("Bank"), use_container_width=True)
+    table = reputation_table(banks)
+    no_snapshot = [name for name, b in sorted(banks.items()) if b is None]
+    # A null bank's theme cells read "—" rather than "None". Display-only copy:
+    # Streamlit ignores a Styler's na_rep on nullable integers, so the theme
+    # columns become text here, while reputation_table() keeps the numbers.
+    themes = [c for c in table.columns if c != "Headlines"]
+    shown = table.astype({c: "object" for c in themes})
+    shown[themes] = shown[themes].where(table[themes].notna(), "—")
+    st.dataframe(
+        shown,
+        width="stretch",
+        height=fit_height(len(table)),
+        column_config={**BANK_INDEX, "Headlines": st.column_config.ProgressColumn(
+            "Headlines", format="%d", min_value=0,
+            max_value=max(int(table["Headlines"].fillna(0).max()), 1),
+        )},
+    )
+    if no_snapshot:
+        st.caption(
+            f"No snapshot for {', '.join(no_snapshot)}: nothing could be fetched or "
+            "classified for them, so their row is empty rather than zero."
+        )
 
-    chosen = st.selectbox("Headlines for", sorted(banks))
+    chosen = st.selectbox("Headlines for", [name for name, b in sorted(banks.items()) if b is not None])
+    if chosen is None:
+        return
     for theme, items in (banks[chosen].get("theme_headlines") or {}).items():
         if items:
             st.markdown(f"**{theme.replace('_', ' ').capitalize()}**")
@@ -675,14 +807,12 @@ def page_research(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG
 # ── main ─────────────────────────────────────────────────────────────────
 
 def main() -> None:
-    # Simplified: every page function now takes the same (df,
-    # profiles) signature, whether it uses both, one or neither - the old
-    # needs_df/needs_profiles branching was one fragile hand-maintained rule
-    # away from calling a page with the wrong number of arguments the next
-    # time a page's data needs changed. Pages that already guard `df is None`
-    # (Data, Collection) keep doing so themselves; this dispatch does not
-    # need to know which pages care.
-    st.sidebar.title("Navigation")
+    # Every page function takes the same (df, profiles) signature, whether it
+    # uses both, one or neither. Per-page argument rules would be one
+    # hand-maintained mistake away from calling a page with the wrong number
+    # of arguments the next time its data needs change. Pages that need
+    # `df` guard `df is None` themselves; this dispatch does not need to know
+    # which pages care.
     pages = {
         # Same order as the React UI's TABS (web/src/App.tsx), so the two
         # surfaces read as one product. Limitations has no React tab of its own
@@ -700,14 +830,25 @@ def main() -> None:
         "📚 Research": page_research,
         "⚠️ Limitations": page_limitations,
     }
-    choice = st.sidebar.radio("Pages", list(pages.keys()))
-
-    st.sidebar.divider()
-    st.sidebar.caption("Banking Campaigns Comparator\nING DACI / Customer AI\nPOC — 2 weeks, Sep 2026")
-
     df = load_campaigns()
     profiles = load_profiles()
-    pages[choice](df, profiles)
+
+    # st.navigation instead of a sidebar radio: each page gets its own URL
+    # (/analysis, /reputation...), so a link can point straight at one page.
+    # The label's leading emoji becomes the icon, the rest the title, and the
+    # URL is the title in kebab case - one dict above stays the only list.
+    nav = st.navigation([
+        st.Page(
+            lambda page=page: page(df, profiles),
+            title=label.split(" ", 1)[1],
+            icon=label.split(" ", 1)[0],
+            url_path=label.split(" ", 1)[1].lower().replace(" ", "-"),
+            default=i == 0,
+        )
+        for i, (label, page) in enumerate(pages.items())
+    ])
+    st.sidebar.caption("Banking Campaigns Comparator\nING DACI / Customer AI\nPOC — 2 weeks, Sep 2026")
+    nav.run()
 
 
 if __name__ == "__main__":

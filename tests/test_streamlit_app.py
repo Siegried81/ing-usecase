@@ -124,3 +124,70 @@ def test_the_shared_tabs_are_in_the_same_order():
     react = _react_tabs()
     shared = [p for p in _streamlit_pages() if p in react]
     assert shared == [t for t in react if t in shared]
+
+
+def test_a_null_reputation_bank_does_not_take_the_page_down():
+    """Regression: bank_snapshot() writes null for a bank it could not fetch or
+    classify, and b.get("themes") on that null raised AttributeError - the
+    deployed Reputation page crashed on bunq, cbc, keytrade and n26."""
+    banks = {
+        "ing": {"headline_count": 2, "themes": {"regulatory": 1, "other": 1}},
+        "n26": None,
+    }
+    table = streamlit_app.reputation_table(banks)
+    assert list(table.index) == ["ing", "n26"]
+    assert table.loc["ing", "Headlines"] == 2
+    assert table.loc["ing", "Regulatory"] == 1
+
+
+def test_a_null_reputation_bank_reads_empty_not_zero():
+    """0 means the query ran and matched nothing; a null means there is no
+    result. Filling the null row with zeros would make the two look the same."""
+    table = streamlit_app.reputation_table({"ing": {"headline_count": 0, "themes": {"other": 0}}, "n26": None})
+    assert table.loc["ing"].tolist() == [0, 0]
+    assert table.loc["n26"].isna().all()
+
+
+def test_every_reputation_bank_null_still_builds_a_table():
+    table = streamlit_app.reputation_table({"bunq": None, "n26": None})
+    assert table["Headlines"].isna().all()
+
+
+def test_the_real_reputation_snapshot_builds_a_table():
+    """The committed outputs/reputation.json is what the deployed app reads."""
+    data = streamlit_app.load_json_output("reputation.json")
+    if not data or not data.get("banks"):
+        pytest.skip("no reputation snapshot in the working tree")
+    table = streamlit_app.reputation_table(data["banks"])
+    assert len(table) == len(data["banks"])
+
+
+@pytest.mark.parametrize("verdict, colour", [
+    ("supported", "green"), ("not supported", "red"), ("not testable", "gray"),
+])
+def test_each_deck_claim_verdict_gets_its_own_badge_colour(verdict, colour):
+    assert streamlit_app.verdict_badge(verdict) == f":{colour}-badge[{verdict}]"
+
+
+def test_an_unknown_verdict_falls_back_to_grey_instead_of_raising():
+    assert streamlit_app.verdict_badge("new label") == ":gray-badge[new label]"
+
+
+def test_bank_status_follows_the_analysed_scope():
+    df = pd.DataFrame({
+        "bank": ["ing", "ing", "kbc", "bunq"],
+        "bank_category": ["traditional", "traditional", "traditional", "challenger"],
+    })
+    scope = {"banks_included": ["ing"], "banks_excluded_no_page_in_family": ["kbc"]}
+    table = streamlit_app.bank_status_table(df, scope)
+    assert table.loc["ing", "Pages"] == 2
+    assert table.loc["ing", "Status"] == "✅ In scope"
+    assert table.loc["kbc", "Status"].startswith("⛔")
+    assert table.loc["bunq", "Status"].startswith("⚠️")
+    assert table.loc["bunq", "Category"] == "challenger"
+
+
+def test_fit_height_grows_with_the_row_count():
+    """Fourteen banks must all fit: the default height scrolled four away."""
+    assert streamlit_app.fit_height(14) > streamlit_app.fit_height(10)
+    assert streamlit_app.fit_height(14) == 35 * 15 + 3

@@ -1,6 +1,6 @@
 # Technical deep dive
 
-Everything the [README](README.md) leaves out: what each module does, why the
+Everything the [README](../README.md) leaves out: what each module does, why the
 measurement decisions are what they are, and the defects that shaped them.
 
 Line references point at the code as it stands on `main` at the end of the project
