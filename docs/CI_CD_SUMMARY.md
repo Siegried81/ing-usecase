@@ -65,10 +65,10 @@ services/
   health_dashboard.py           ← FastAPI health monitor
   Dockerfile                    ← Lightweight dashboard image
 docker-compose.yml             ← Updated with dashboard service
-docker-compose.dev.yml         ← Development overrides
-docker-compose.prod.yml        ← Production hardening
-DOCKER.md                       ← Complete Docker guide
-GITHUB_ACTIONS_SETUP.md        ← Setup instructions
+docker/docker-compose.dev.yml  ← Development overrides
+docker/docker-compose.prod.yml ← Production hardening
+docs/DOCKER.md                  ← Complete Docker guide
+docs/GITHUB_ACTIONS_SETUP.md   ← Setup instructions
 ```
 
 ## Key Features
@@ -87,7 +87,7 @@ GITHUB_ACTIONS_SETUP.md        ← Setup instructions
 ### Scenario 1: Regular development
 ```bash
 # Edit code locally
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 
 # Services auto-reload
 # Dashboard shows real-time status at http://localhost:8080
@@ -106,7 +106,7 @@ git push origin v2.0.0
 # Wait for GitHub Actions to finish (~2-3 min)
 # Pull and deploy
 docker pull siegried/ing-comparator:v2.0.0
-docker compose up -f docker-compose.yml -f docker-compose.prod.yml up -d
+docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 ```
 
 ### Scenario 3: Monitor all services

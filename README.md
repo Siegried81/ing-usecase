@@ -12,7 +12,7 @@ structural, not caution — there is no outcome variable in the dataset at all.
 
 A full technical walkthrough — what every module does, the measurement decisions,
 and the twenty bugs that shaped them — is in
-[`technical_deep_dive.md`](technical_deep_dive.md).
+[`docs/technical_deep_dive.md`](docs/technical_deep_dive.md).
 
 ## What it does
 
@@ -93,7 +93,7 @@ Full reasoning in [`docs/design.md`](docs/design.md).
 
 | File | What it is |
 | --- | --- |
-| [`technical_deep_dive.md`](technical_deep_dive.md) | **this system, explained** — every module, the measurement decisions, the bugs and their fixes |
+| [`docs/technical_deep_dive.md`](docs/technical_deep_dive.md) | **this system, explained** — every module, the measurement decisions, the bugs and their fixes |
 | [`docs/pipeline.md`](docs/pipeline.md) | runbook — commands in order, where data lands, the quality gate |
 | [`docs/design.md`](docs/design.md) | design — the dictionary contract, the freeze rule, what the validator refuses |
 | [`docs/decisions.md`](docs/decisions.md) | dated decision log, append-only |

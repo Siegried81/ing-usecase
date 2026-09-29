@@ -31,13 +31,13 @@
    - Dashboard depends on streamlit + api
    - All services have health checks
 
-5. **`docker-compose.dev.yml`** (NEW - 806 bytes)
+5. **`docker/docker-compose.dev.yml`** (NEW - 806 bytes)
    - Development overrides
    - Hot-reload volumes
    - Debug logging enabled
    - Bind entire source tree
 
-6. **`docker-compose.prod.yml`** (NEW - 1.2 KB)
+6. **`docker/docker-compose.prod.yml`** (NEW - 1.2 KB)
    - Production security hardening
    - Read-only root filesystem
    - Capability drop (CAP_DROP: ALL, CAP_ADD: NET_BIND_SERVICE)
@@ -130,8 +130,8 @@
 | docker.yml (workflow) | 92 |
 | services/Dockerfile | 15 |
 | docker-compose.yml | 88 |
-| docker-compose.dev.yml | 25 |
-| docker-compose.prod.yml | 45 |
+| docker/docker-compose.dev.yml | 25 |
+| docker/docker-compose.prod.yml | 45 |
 | **Total code** | **537** |
 
 ## Documentation
@@ -162,12 +162,12 @@
 
 ### Development Override
 - **Purpose**: Enable hot-reload for local development
-- **Usage**: `docker compose -f docker-compose.yml -f docker-compose.dev.yml up`
+- **Usage**: `docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up`
 - **Features**: Full source bind mount, debug logging, reload mode
 
 ### Production Override
 - **Purpose**: Security hardening for production deployments
-- **Usage**: `docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d`
+- **Usage**: `docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d`
 - **Features**: Read-only root, capability drop, resource limits, tmpfs
 
 ## Integration Points
@@ -183,8 +183,8 @@
 
 ### Local Development
 - Compose base: `docker-compose.yml`
-- Dev override: `docker-compose.dev.yml`
-- Prod override: `docker-compose.prod.yml`
+- Dev override: `docker/docker-compose.dev.yml`
+- Prod override: `docker/docker-compose.prod.yml`
 - Health dashboard: Automatic on `docker compose up`
 
 ### External Services (unchanged)

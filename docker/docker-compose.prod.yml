@@ -1,5 +1,5 @@
 # Production override: security hardening, resource limits, read-only root
-# Usage: docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+# Usage: docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 
 services:
   streamlit:
@@ -10,16 +10,19 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-    resources:
-      limits:
-        cpus: '1'
-        memory: 1G
-      reservations:
-        cpus: '0.5'
-        memory: 512M
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    # /app/.streamlit is writable through the streamlit_cache volume, not a
+    # tmpfs: an empty tmpfs would hide the image's .streamlit/config.toml (the
+    # theme), while a named volume is seeded from the image on first use.
     tmpfs:
       - /tmp
-      - /app/.streamlit
     volumes:
       - streamlit_data:/app/data:ro
       - streamlit_outputs:/app/outputs:ro
@@ -36,13 +39,14 @@ services:
       - ALL
     cap_add:
       - NET_BIND_SERVICE
-    resources:
-      limits:
-        cpus: '2'
-        memory: 2G
-      reservations:
-        cpus: '1'
-        memory: 1G
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G
     tmpfs:
       - /tmp
       - /app/.cache

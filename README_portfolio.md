@@ -85,7 +85,7 @@ pipeline were built by my teammates. I have not relabelled their work.
 
 ## Read next
 
-**[`technical_deep_dive.md`](technical_deep_dive.md)** — the real documentation:
+**[`docs/technical_deep_dive.md`](docs/technical_deep_dive.md)** — the real documentation:
 every module explained, the measurement decisions and why, the twenty bugs that
 shaped the code, and an honest list of what is still open.
 

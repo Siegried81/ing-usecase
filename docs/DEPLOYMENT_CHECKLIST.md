@@ -105,14 +105,14 @@
   
   # Copy compose files
   curl -O https://raw.githubusercontent.com/your-repo/.../docker-compose.yml
-  curl -O https://raw.githubusercontent.com/your-repo/.../docker-compose.prod.yml
+  curl -O https://raw.githubusercontent.com/your-repo/.../docker/docker-compose.prod.yml
   
   # Setup environment
   cp .env.example .env
   # Edit .env with production keys
   
   # Start with production overrides
-  docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d
+  docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
   
   # Verify health
   curl http://localhost:8080/health
@@ -184,9 +184,9 @@ git push origin v-hotfix
 - [DOCKER.md](DOCKER.md) — Complete Docker guide
 - [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) — Setup instructions
 - [CI_CD_SUMMARY.md](CI_CD_SUMMARY.md) — Architecture overview
-- [.github/workflows/docker.yml](.github/workflows/docker.yml) — CI/CD workflow
-- [docker-compose.yml](docker-compose.yml) — Service definitions
-- [docker-compose.prod.yml](docker-compose.prod.yml) — Production hardening
+- [.github/workflows/docker.yml](../.github/workflows/docker.yml) — CI/CD workflow
+- [docker-compose.yml](../docker-compose.yml) — Service definitions
+- [docker/docker-compose.prod.yml](../docker/docker-compose.prod.yml) — Production hardening
 
 ## Success Metrics
 
