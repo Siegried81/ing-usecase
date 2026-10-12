@@ -139,7 +139,7 @@
 - [ ] **Update base images**
   ```bash
   docker pull python:3.11-slim
-  docker pull node:20-slim
+  docker pull node:22-slim
   
   # Rebuild locally
   docker compose build --no-cache

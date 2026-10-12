@@ -23,7 +23,7 @@
 
 ## 2. CI/CD Workflow
 
-The workflow file is at `.github/workflows/docker.yml`.
+The workflow file is at `.github/workflows/publish.yml`.
 
 ### What it does
 
@@ -46,16 +46,23 @@ git push origin v1.0.0
 ```
 
 Your image will be available as:
-- `docker.io/siegried/ing-comparator:v1.0.0`
-- `docker.io/siegried/ing-comparator:1.0`
+- `docker.io/siegried/ing-comparator:1.0.0`
 - `docker.io/siegried/ing-comparator:1`
-- `docker.io/siegried/ing-comparator:main` (if you push to main first)
+- `docker.io/siegried/ing-comparator:latest` (every push to main)
+- `docker.io/siegried/ing-comparator:sha-xxxxxxx` (one commit)
+- same tags on `ghcr.io/siegried81/ing-comparator` and for `ing-comparator-dashboard`
 
 ### Jobs included
 
-1. **build** — Multi-stage Docker build with layer caching
-2. **test-image** — Runs pytest inside the built image (PR only)
-3. **security-scan** — Trivy vulnerability scanner
+One `publish` job per image (`ing-comparator`, `ing-comparator-dashboard`):
+
+1. **build** — Docker build with layer caching
+2. **smoke test** — starts the container and waits for its health endpoint
+3. **Trivy** — HIGH/CRITICAL vulnerability report (non-blocking)
+4. **push** — Docker Hub + GitHub Container Registry, then the Docker Hub page is
+   updated from `DOCKERHUB.md`
+
+The test suite itself runs in `tests.yml`.
 
 ## 3. Using Pre-built Images
 
