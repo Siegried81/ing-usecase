@@ -174,7 +174,7 @@ Clear all with: `docker compose down -v`
 ## Dockerfile Details
 
 ### Main application (Dockerfile)
-1. **Stage 1 (web)**: Node 20-slim → React build → dist/ bundle
+1. **Stage 1 (web)**: Node 22-slim → React build → dist/ bundle
 2. **Stage 2 (pipeline)**: Python 3.11-slim → install deps + Playwright → runs Streamlit + FastAPI
 3. **Non-root user**: `app` (UID 1000) for security
 

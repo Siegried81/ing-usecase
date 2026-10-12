@@ -3,7 +3,7 @@
 ## New Files Created
 
 ### CI/CD & GitHub Actions
-1. **`.github/workflows/docker.yml`** (2.6 KB)
+1. **`.github/workflows/publish.yml`** (2.6 KB)
    - Multi-stage Docker build with BuildKit + caching
    - Auto-push to Docker Hub on: main, develop, tags, PRs
    - Security scanning with Trivy
@@ -174,7 +174,7 @@
 
 ### GitHub
 - Secrets needed: `DOCKERHUB_USERNAME`, `DOCKERHUB_TOKEN`
-- Workflow file: `.github/workflows/docker.yml`
+- Workflow file: `.github/workflows/publish.yml`
 - Triggers: Push, tags, PRs
 
 ### Docker Hub

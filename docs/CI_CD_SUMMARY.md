@@ -2,7 +2,7 @@
 
 ## What was created
 
-### 1. GitHub Actions Workflow (`.github/workflows/docker.yml`)
+### 1. GitHub Actions Workflow (`.github/workflows/publish.yml`)
 - **Multi-stage Docker build** with BuildKit + layer caching
 - **Automatic push to Docker Hub** on:
   - Push to `main` → tagged as `latest`, `main`
@@ -75,7 +75,7 @@ docs/GITHUB_ACTIONS_SETUP.md   ← Setup instructions
 
 | Feature | Location | Description |
 |---------|----------|-------------|
-| **Auto-build** | `.github/workflows/docker.yml` | Push triggers → Docker Hub |
+| **Auto-build** | `.github/workflows/publish.yml` | Push triggers → Docker Hub |
 | **Health checks** | `docker-compose.yml` | All services monitored |
 | **Dashboard** | Port 8080 | Visual health status |
 | **JSON API** | `/health` | Programmatic health checks |

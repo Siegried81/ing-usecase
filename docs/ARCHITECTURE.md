@@ -185,7 +185,7 @@ All services:
 ## Build Pipeline Stages (Multi-stage Dockerfile)
 
 ```
-Stage 1: node:20-slim
+Stage 1: node:22-slim
   │
   ├─ COPY web/package*.json
   ├─ RUN npm ci                   ← Cache layer

@@ -4,6 +4,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # build + image: `docker compose up --build` builds from source and tags it with the
+    # Docker Hub name; `docker compose pull` downloads the published image instead.
+    image: ${DOCKERHUB_USERNAME:-siegried}/ing-comparator:latest
     container_name: ing-comparator-streamlit
     ports:
       - "8501:8501"
@@ -32,14 +35,18 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # Same Dockerfile as streamlit, so the same image: one pull serves both.
+    image: ${DOCKERHUB_USERNAME:-siegried}/ing-comparator:latest
     container_name: ing-comparator-api
     ports:
       - "8000:8000"
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
+    # Optional: someone who pulled the image has no .env, and the UI must still start.
     env_file:
-      - .env
+      - path: .env
+        required: false
     volumes:
       - ./src:/app/src
       - ./scripts:/app/scripts
@@ -62,6 +69,7 @@ services:
     build:
       context: .
       dockerfile: services/Dockerfile
+    image: ${DOCKERHUB_USERNAME:-siegried}/ing-comparator-dashboard:latest
     container_name: ing-comparator-dashboard
     ports:
       - "8080:8080"
