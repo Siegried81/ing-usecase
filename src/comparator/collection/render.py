@@ -51,6 +51,7 @@ see that function's docstring.
 
 from __future__ import annotations
 
+import json
 import logging
 from dataclasses import dataclass
 from pathlib import Path
@@ -122,6 +123,41 @@ _FLATTEN_JS = """
 }
 """
 
+# The one list of call-to-action terms, shared by the two features that read it:
+# scraper._count_ctas() (cta_count, static HTML) and the primary-CTA pick in
+# _MEASURE_JS below (cta_contrast_ratio, rendered page). It lives here because
+# scraper imports render, not the other way round. The two lists had drifted:
+# this module's held the infinitives only, so on a FR page whose button reads
+# "Ouvrez un compte" cta_count found the CTA and cta_contrast_ratio returned
+# None - two features named for the same thing measuring different ones.
+CTA_KEYWORDS = (
+    "discover", "open", "apply", "get started", "sign up", "learn more",
+    "decouvrir", "découvrir", "ouvrir", "demander", "en savoir plus",
+    # The FR imperative forms, verified live on kbc.be. Banking CTAs are
+    # near-universally the imperative in French, not the infinitive, and
+    # "ouvrir" is not a substring of "ouvrez" - with infinitives only, real
+    # buttons ("Ouvrez un compte à vue") score cta_count=0. Per this module's
+    # own rule: extend as real pages surface terms these miss.
+    "ouvrez", "découvrez", "decouvrez", "demandez", "profitez", "simulez", "calculez",
+    "ontdek", "openen", "aanvragen", "meer weten",
+    # Verified live on ING/Beobank/KBC/N26: "commencer/commencez"
+    # ("start"), "démarrer/démarrez" ("start"), "comparer/comparez"
+    # ("compare") and "choisir/choisissez" ("choose") are common French
+    # banking CTAs this list missed entirely - démarrer scored cta_count=0
+    # on a page whose only button read "Démarrer". "choisir" is also the
+    # single most common false positive, from cookie-consent banners
+    # ("choisir soi-même les cookies") - see the cookie-banner exclusion
+    # in scraper._count_ctas(), mirrored in _MEASURE_JS below.
+    "commenc", "démarr", "demarr", "comparez", "comparer les", "choisir", "choisissez",
+    # Verified live on Argenta: "devenir client" ("become a customer") is
+    # arguably the single most important conversion CTA on a current-account
+    # page, and was entirely unmatched - the page's only counted "CTA" turned
+    # out to be a link to its cookie policy (see the cookie-banner exclusion
+    # above). "téléchargez" ("download") covers app-download CTAs, a distinct
+    # and common conversion action this list had no term for at all.
+    "devenir client", "téléchargez", "telechargez",
+)
+
 # JavaScript runs in the page: geometry has to be read where the layout lives.
 _MEASURE_JS = """
 (minEdge) => {
@@ -167,14 +203,18 @@ _MEASURE_JS = """
   }
 
   // Primary CTA: first link/button whose label reads like a call to action.
-  const CTA = ['discover','open','apply','get started','sign up','learn more',
-               'decouvrir','découvrir','ouvrir','demander','en savoir plus',
-               'ontdek','openen','aanvragen','meer weten'];
+  // CTA_KEYWORDS is injected below, so this pick and the static cta_count read
+  // the same list. The two exclusions mirror scraper._count_ctas(): consent
+  // chrome is not a CTA ("choisir ... les cookies" matches "choisir"), and a
+  // nav/footer link is navigation, not a conversion action.
+  const CTA = __CTA_KEYWORDS__;
   let ctaColours = null;
   for (const el of deep('a, button')) {
     if (!visible(el)) continue;
+    if (el.closest && el.closest('nav, footer, header')) continue;
     const label = (el.textContent || '').trim().toLowerCase();
-    if (!label || !CTA.some(k => label.includes(k))) continue;
+    if (!label || label.includes('cookie')) continue;
+    if (!CTA.some(k => label.includes(k))) continue;
     const s = getComputedStyle(el);
     let bg = s.backgroundColor, node = el;
     // Walk up while the background is transparent - that is what a reader sees.
@@ -201,6 +241,8 @@ _MEASURE_JS = """
   };
 }
 """
+# Substituted once at import: the JS gets the same terms as the static counter.
+_MEASURE_JS = _MEASURE_JS.replace("__CTA_KEYWORDS__", json.dumps(list(CTA_KEYWORDS)))
 
 
 def _parse_css_colour(value: str | None) -> tuple[float, float, float] | None:

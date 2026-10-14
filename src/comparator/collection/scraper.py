@@ -40,7 +40,7 @@ from bs4 import BeautifulSoup
 
 from comparator import bands
 from comparator.collection.compliance import USER_AGENT, assert_can_fetch
-from comparator.collection.render import RenderUnavailable, render
+from comparator.collection.render import CTA_KEYWORDS, RenderUnavailable, render
 
 logger = logging.getLogger(__name__)
 
@@ -103,33 +103,10 @@ _LOYALTY_REFERRAL_TERMS = [
     "parrainage", "fidelite", "fidélité", "programme de fidelite",
     "vriend werven", "beloningsprogramma",
 ]
-_CTA_KEYWORDS = (
-    "discover", "open", "apply", "get started", "sign up", "learn more",
-    "decouvrir", "découvrir", "ouvrir", "demander", "en savoir plus",
-    # The FR imperative forms, verified live on kbc.be. Banking CTAs are
-    # near-universally the imperative in French, not the infinitive, and
-    # "ouvrir" is not a substring of "ouvrez" - with infinitives only, real
-    # buttons ("Ouvrez un compte à vue") score cta_count=0. Per this module's
-    # own rule: extend as real pages surface terms these miss.
-    "ouvrez", "découvrez", "decouvrez", "demandez", "profitez", "simulez", "calculez",
-    "ontdek", "openen", "aanvragen", "meer weten",
-    # Verified live on ING/Beobank/KBC/N26: "commencer/commencez"
-    # ("start"), "démarrer/démarrez" ("start"), "comparer/comparez"
-    # ("compare") and "choisir/choisissez" ("choose") are common French
-    # banking CTAs this list missed entirely - démarrer scored cta_count=0
-    # on a page whose only button read "Démarrer". "choisir" is also the
-    # single most common false positive, from cookie-consent banners
-    # ("choisir soi-même les cookies") - see the cookie-banner exclusion
-    # in _count_ctas() below, which exists because of exactly that phrase.
-    "commenc", "démarr", "demarr", "comparez", "comparer les", "choisir", "choisissez",
-    # Verified live on Argenta: "devenir client" ("become a customer") is
-    # arguably the single most important conversion CTA on a current-account
-    # page, and was entirely unmatched - the page's only counted "CTA" turned
-    # out to be a link to its cookie policy (see the cookie-banner exclusion
-    # above). "téléchargez" ("download") covers app-download CTAs, a distinct
-    # and common conversion action this list had no term for at all.
-    "devenir client", "téléchargez", "telechargez",
-)
+# One list for both CTA features: it lives in render (which scraper imports),
+# with the per-term reasoning. cta_count and cta_contrast_ratio had each kept
+# their own copy and drifted apart - see CTA_KEYWORDS there.
+_CTA_KEYWORDS = CTA_KEYWORDS
 
 # Standard-form readability coefficients (words/sentence, syllables/word).
 # VERIFIED against published sources (see module docstring) -

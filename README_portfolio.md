@@ -37,7 +37,7 @@ targets.yaml → robots.txt gate → capture (static / headless / headful)
              → analysis → report.json → recommendations → generated demo site
 ```
 
-51 pages · 14 banks · 6 product families · 104 declared features · 451 tests, all
+51 pages · 14 banks · 6 product families · 104 declared features · 465 tests, all
 network mocked.
 
 ## What makes it worth reading

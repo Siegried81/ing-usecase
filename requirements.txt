@@ -2,37 +2,34 @@
 pandas==2.3.3
 numpy==2.3.4
 scipy==1.16.3
-# sieg 17/09: scikit-learn REMOVED - audit finding, never imported anywhere.
+# scikit-learn is deliberately absent: it was never imported anywhere.
 # cluster_banks() (analysis.py) uses scipy.cluster.hierarchy, not sklearn.
 matplotlib==3.10.7
 PyYAML==6.0.3
-# sieg 15/09: bumped from 8.4.2 - flagged by GitHub Dependabot as vulnerable.
+# Bumped from 8.4.2, which GitHub Dependabot flagged as vulnerable.
 pytest==9.0.3
 
-# sieg 14/09: collection module dependencies - were missing entirely, my
-# oversight when I added src/comparator/collection/ and tests/test_collection.py.
+# Collection module dependencies (src/comparator/collection/,
+# tests/test_collection.py).
 requests==2.34.2
 beautifulsoup4==4.15.0
 pydantic==2.13.5
 Pillow==12.3.0
 
-# steph 15/09: headless render path (collection/render.py). Five geometry
-# features need a real browser - page_height_px is core, required and not
-# nullable, so strict validation failed on every real static row until this.
+# Headless render path (collection/render.py). Five geometry features need a
+# real browser - page_height_px is core, required and not nullable, so strict
+# validation failed on every real static row without it.
 # After installing, also run: python3 -m playwright install chromium
 playwright==1.57.0
 
-# sieg 16/09: loads .env into the environment. Pinned to 1.2.2, not 1.0.1 -
-# GHSA-mf9w-mj56-hr94 (moderate), fixed upstream in 1.2.2. A merge briefly
-# reverted this pin; re-fixed here, same version as before.
+# Loads .env into the environment. Pinned to 1.2.2, not 1.0.1 -
+# GHSA-mf9w-mj56-hr94 (moderate), fixed upstream in 1.2.2.
 python-dotenv==1.2.2
 
-# sieg 18/09: NOT adding pytrends/streamlit/plotly here - that's
-# kbc-ing-benchmark/'s own tool, already pinned in its own
-# kbc-ing-benchmark/requirements.txt. This file stays the main pipeline's.
+# pytrends/streamlit/plotly are NOT here on purpose: the dashboard and the
+# search-interest tool pin their own in requirements-streamlit.txt and
+# requirements-geo.txt. This file stays the main pipeline's.
 
-# sieg 21/09: scripts/serve_web.py (recommendations + site backend) needs
-# these but they were never added here - ModuleNotFoundError for anyone who
-# hadn't already installed them by hand.
+# scripts/serve_web.py (recommendations + site backend).
 fastapi==0.141.1
 uvicorn==0.53.0

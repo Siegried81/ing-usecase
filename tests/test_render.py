@@ -180,3 +180,43 @@ def test_rendered_geometry_overrides_the_static_placeholders():
 def test_unknown_method_is_rejected():
     with pytest.raises(ValueError, match="unknown method"):
         scrape("https://example.invalid/p", language="en", method="turbo")
+
+
+def test_both_cta_features_read_one_keyword_list():
+    """cta_count and cta_contrast_ratio must agree on what a CTA is.
+
+    They each kept their own list and drifted: the rendered pick held the
+    infinitives only, so a FR page whose button reads "Ouvrez un compte" scored
+    a cta_count but no cta_contrast_ratio.
+    """
+    import json
+
+    from comparator.collection import render as render_mod
+    from comparator.collection import scraper as scraper_mod
+
+    assert scraper_mod._CTA_KEYWORDS is render_mod.CTA_KEYWORDS
+    # The browser gets the same terms, injected as a JSON array.
+    injected = json.loads(render_mod._MEASURE_JS.split("const CTA = ")[1].split(";")[0])
+    assert injected == list(render_mod.CTA_KEYWORDS)
+    assert "__CTA_KEYWORDS__" not in render_mod._MEASURE_JS
+
+
+def test_rendered_cta_pick_excludes_consent_and_chrome():
+    """The JS mirrors scraper._count_ctas(): no cookie banners, no nav/footer.
+
+    "choisir" is in the list for real CTAs and is also the most common consent
+    wording ("choisir soi-meme les cookies"), so without these the shared list
+    would make the contrast reading pick a cookie link.
+    """
+    from comparator.collection.render import _MEASURE_JS
+
+    assert "label.includes('cookie')" in _MEASURE_JS
+    assert "closest('nav, footer, header')" in _MEASURE_JS
+
+
+def test_french_imperative_cta_is_known_to_both_features():
+    """The term that exposed the drift stays covered on both sides."""
+    from comparator.collection.render import CTA_KEYWORDS, _MEASURE_JS
+
+    assert "ouvrez" in CTA_KEYWORDS
+    assert "ouvrez" in _MEASURE_JS
