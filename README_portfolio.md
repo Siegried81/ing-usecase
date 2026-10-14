@@ -37,7 +37,7 @@ targets.yaml → robots.txt gate → capture (static / headless / headful)
              → analysis → report.json → recommendations → generated demo site
 ```
 
-51 pages · 14 banks · 6 product families · 104 declared features · 449 tests, all
+51 pages · 14 banks · 6 product families · 104 declared features · 451 tests, all
 network mocked.
 
 ## What makes it worth reading
@@ -75,7 +75,7 @@ From the git history, my own contributions were concentrated on:
   the quota-outage handling that stops "no key" from reading as "no news".
 - **The judged rubric sheet** — I am the single named rater for the 13
   judgement-based features, against the written scales in `SCORING_GUIDE.md`.
-- **Integration** — 66 of the 75 merged pull requests, and the correction passes
+- **Integration** — 55 of the 77 pull requests merged during the project (14–25 Sept), and the correction passes
   that kept the deck's figures matching the code.
 - **The Streamlit operator dashboard**, later folded into the React UI's operator
   tabs.
