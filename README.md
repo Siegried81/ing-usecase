@@ -131,7 +131,7 @@ scripts/                         run_collection, run_analysis, export_web_report
                                  serve_web, rubric_sheet, deterministic re-derive scripts
 web/                             React business UI
 streamlit_app.py                 earlier dashboard; superseded by the React operator tabs
-tests/                           465 passing + 3 skipped, network blocked
+tests/                           489 tests (488 + 1 skipped in CI), network blocked
 ```
 
 ## Known open items
@@ -152,8 +152,6 @@ Recorded rather than fixed, because the project window closed on 25 September:
 4. **`within_capture_window` is declared but never enforced.** Two rate features
    carry it; no code excludes them when a dataset spans capture dates, unlike the
    `within_language` gate which is fully enforced.
-5. **`src/comparator/banks.py` has no test.** 58 lines, and it owns the
-   traditional-vs-challenger split every group comparison depends on.
-6. **The repository is heavy.** `docs/` alone is ~102 MB, mostly one video and the
+5. **The repository is heavy.** `docs/` alone is ~102 MB, mostly one video and the
    decks. Tracked data was a deliberate 21/09 decision so a fresh clone works
    without re-collecting; revisit if the diffs stop being reviewable.
