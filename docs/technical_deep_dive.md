@@ -259,10 +259,10 @@ specific wrong capture it fixes.
 
 ## 4. Testing and CI
 
-**451 passing, 3 skipped, no network.** Proven rather than asserted: the suite was
+**465 passing, 3 skipped, no network.** Proven rather than asserted: the suite was
 re-run with `socket.connect`, `connect_ex` and `getaddrinfo` all raising, and still
 passed (449 at the time; re-measured on 14 October 2026 with `requirements.txt`
-only: 451 passed, 3 skipped). The three skips are whole modules whose optional
+only: 451 passed, 3 skipped; 465 once the bank-facts tests and the conftest network block were added). The three skips are whole modules whose optional
 dependency is absent: `pytrends` (`requirements-geo.txt`), `streamlit`, and a
 built `web/dist`.
 
