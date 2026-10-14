@@ -15,7 +15,7 @@
    - Real-time health checks every 10s
    - HTML dashboard with auto-refresh
    - JSON API endpoint: `/health`
-   - WebSocket API: `ws://localhost:8080/ws/health`
+   - WebSocket API: `ws://localhost:8081/ws/health`
    - Checks: Streamlit, FastAPI latency & status
 
 3. **`services/Dockerfile`** (431 bytes)
@@ -149,7 +149,7 @@
 
 ### Health Dashboard Service
 - **Purpose**: Monitor all services in real-time
-- **Access**: http://localhost:8080
+- **Access**: http://localhost:8081
 - **Coverage**: Streamlit (port 8501), FastAPI (port 8000)
 - **Metrics**: Latency (ms), Status, Last check time
 - **APIs**: JSON (`/health`), WebSocket (`/ws/health`), HTML (`/`)
@@ -223,7 +223,7 @@
 2. **Git push** → Watch GitHub Actions build
 3. **Verify Docker Hub** → See image appear
 4. **Test locally** → `docker compose up`
-5. **Access dashboard** → http://localhost:8080
+5. **Access dashboard** → http://localhost:8081
 6. **Create release** → `git tag v1.0.0 && git push origin v1.0.0`
 
 ## Testing Checklist

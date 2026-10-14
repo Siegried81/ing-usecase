@@ -14,16 +14,16 @@
   ```
 
 - [ ] **Health dashboard works**
-  - Navigate to http://localhost:8080
+  - Navigate to http://localhost:8081
   - See all 3 services status (green = healthy)
-  - Check JSON API: `curl http://localhost:8080/health`
+  - Check JSON API: `curl http://localhost:8081/health`
 
 - [ ] **Streamlit accessible**
-  - Navigate to http://localhost:8501
+  - Navigate to http://localhost:8511
   - Dashboard loads without errors
 
 - [ ] **API accessible**
-  - Navigate to http://localhost:8000/docs
+  - Navigate to http://localhost:8012/docs
   - Swagger UI shows available endpoints
 
 - [ ] **Tests pass in Docker**
@@ -75,7 +75,7 @@
 - [ ] **Pull and test the image**
   ```bash
   docker pull siegried/ing-comparator:main
-  docker run -p 8501:8501 siegried/ing-comparator:main
+  docker run -p 8511:8501 siegried/ing-comparator:main
   # Should start Streamlit in ~10s
   ```
 
@@ -115,7 +115,7 @@
   docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
   
   # Verify health
-  curl http://localhost:8080/health
+  curl http://localhost:8081/health
   ```
 
 ## Ongoing Maintenance
@@ -192,7 +192,7 @@ git push origin v-hotfix
 
 ✅ **You're ready when:**
 1. Local `docker compose up` starts all 3 services
-2. Health dashboard at http://localhost:8080 shows all services healthy
+2. Health dashboard at http://localhost:8081 shows all services healthy
 3. GitHub Actions builds on push (check Actions tab)
 4. Images appear on Docker Hub with correct tags
 5. `docker pull siegried/ing-comparator:main` works and starts correctly
