@@ -259,14 +259,27 @@ specific wrong capture it fixes.
 
 ## 4. Testing and CI
 
-**465 passing, 3 skipped, no network.** Proven rather than asserted: the suite was
-re-run with `socket.connect`, `connect_ex` and `getaddrinfo` all raising, and still
-passed (449 at the time; re-measured on 14 October 2026 with `requirements.txt`
-only: 451 passed, 3 skipped; 465 once the bank-facts tests and the conftest network block were added). The three skips are whole modules whose optional
-dependency is absent: `pytrends` (`requirements-geo.txt`), `streamlit`, and a
-built `web/dist`.
+**489 tests, no network.** How many run depends on which optional dependencies
+are installed, so the count is given per environment:
 
-There is no mocking library and no `conftest.py`. Mocking is stdlib only —
+| Environment | Result |
+|---|---|
+| CI test job (`requirements.txt` + `-streamlit` + `-geo`, no `web/dist`) | 488 passed, 1 skipped |
+| Same, with `web/dist` built | 489 passed |
+| `requirements.txt` only, no `web/dist` | 465 passed, 3 skipped |
+
+Each skip is a test that needs something optional which is absent: `pytrends`
+(`requirements-geo.txt`), `streamlit` (`requirements-streamlit.txt`), and a built
+`web/dist`.
+
+The no-network rule is enforced, not promised: `tests/conftest.py` holds an
+autouse fixture that makes `socket.connect` and `connect_ex` raise for any
+non-loopback address, so a forgotten mock fails the test instead of fetching a
+bank's website. Before that fixture existed, the claim was checked by hand once,
+re-running the suite with `socket.connect`, `connect_ex` and `getaddrinfo` all
+raising.
+
+There is no mocking library. Mocking is stdlib only —
 `unittest.mock.patch` against the module-local `requests` attribute, plus
 `monkeypatch` — which is consistent with the project's "no extra abstraction
 layers" rule. Every test file bootstraps `src/` onto `sys.path` itself, so
@@ -292,8 +305,9 @@ deliberately narrow), `pytest`, `check_schema_freeze.py`, and a parallel job tha
 type-checks and builds the React UI — added late, because *"a broken `web/` could
 merge green."*
 
-Coverage gap worth naming: `banks.py` has no test at all, and it owns the
-traditional-vs-challenger split every group comparison depends on.
+`banks.py` owns the traditional-vs-challenger split every group comparison
+depends on; `tests/test_banks.py` pins it, so a typo in a key cannot silently
+move a bank between the two groups.
 
 ---
 
