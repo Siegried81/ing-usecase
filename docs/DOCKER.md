@@ -15,7 +15,7 @@ Before running the CI/CD pipeline, add these secrets to your GitHub repository (
 ### Dashboard only (no API keys required)
 ```bash
 docker compose up streamlit
-# Visit http://localhost:8501
+# Visit http://localhost:8511
 ```
 
 ### Full stack with Health Dashboard
@@ -23,9 +23,9 @@ docker compose up streamlit
 cp .env.example .env
 # Fill in your LLM keys in .env (optional for dashboard)
 docker compose up --pull always
-# Health Dashboard: http://localhost:8080
-# Streamlit:        http://localhost:8501
-# API:              http://localhost:8000
+# Health Dashboard: http://localhost:8081
+# Streamlit:        http://localhost:8511
+# API:              http://localhost:8012
 ```
 
 ### Development (hot reload enabled)
@@ -88,23 +88,23 @@ docker compose down -v
 
 ## Health Dashboard
 
-A dedicated monitoring service automatically included in `docker compose up`. Access it at **http://localhost:8080**.
+A dedicated monitoring service automatically included in `docker compose up`. Access it at **http://localhost:8081**.
 
 **Features:**
 - Real-time health checks every 10 seconds
 - Latency measurement (ms) per service  
 - Service status indicators with color coding (green/yellow/red)
-- JSON API endpoint: `GET http://localhost:8080/health`
-- WebSocket support for live updates: `ws://localhost:8080/ws/health`
+- JSON API endpoint: `GET http://localhost:8081/health`
+- WebSocket support for live updates: `ws://localhost:8081/ws/health`
 - Auto-refresh HTML dashboard every 10 seconds
 
 **Manual health check:**
 ```bash
-curl http://localhost:8080/health | jq
+curl http://localhost:8081/health | jq
 ```
 
 **View in browser:**
-Simply navigate to http://localhost:8080 after running `docker compose up`.
+Simply navigate to http://localhost:8081 after running `docker compose up`.
 
 ## CI/CD Pipeline
 
@@ -136,7 +136,7 @@ Trivy vulnerability scanner runs on all pushed images (non-blocking).
 ### Pull pre-built image
 ```bash
 docker pull siegried/ing-comparator:latest
-docker run -p 8501:8501 siegried/ing-comparator:latest
+docker run -p 8511:8501 siegried/ing-comparator:latest
 ```
 
 ## Environment Variables
@@ -236,7 +236,7 @@ docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 # (src/, config/, streamlit_app.py, etc.)
 
 # 4. View health dashboard
-open http://localhost:8080
+open http://localhost:8081
 
 # 5. Run tests in container
 docker compose exec streamlit python3 -m pytest tests/ -q
@@ -254,7 +254,7 @@ git push origin main
 docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 
 # 2. Monitor with health dashboard
-curl http://localhost:8080/health
+curl http://localhost:8081/health
 
 # 3. View logs
 docker compose logs -f streamlit api dashboard

@@ -25,11 +25,11 @@ Images from this repository:
 ## How to use this image
 
 ```bash
-docker run -d -p 8501:8501 siegried/ing-comparator
-# open http://localhost:8501
+docker run -d -p 8511:8501 siegried/ing-comparator
+# open http://localhost:8511
 
 # web UI + API
-docker run -d -p 8000:8000 --env-file .env siegried/ing-comparator \
+docker run -d -p 8012:8000 --env-file .env siegried/ing-comparator \
   python3 scripts/serve_web.py --host 0.0.0.0 --port 8000
 ```
 

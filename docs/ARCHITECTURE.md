@@ -240,9 +240,9 @@ Health Dashboard (port 8080)
 
 Browser or API client:
     │
-    ├─ GET http://localhost:8080/          → HTML dashboard
-    ├─ GET http://localhost:8080/health    → JSON API
-    └─ WS  ws://localhost:8080/ws/health   → WebSocket stream
+    ├─ GET http://localhost:8081/          → HTML dashboard
+    ├─ GET http://localhost:8081/health    → JSON API
+    └─ WS  ws://localhost:8081/ws/health   → WebSocket stream
 ```
 
 ## Data Flow: Analysis Pipeline
@@ -250,7 +250,7 @@ Browser or API client:
 ```
 User Input (Streamlit UI)
     │
-    ├─ Browse data at http://localhost:8501
+    ├─ Browse data at http://localhost:8511
     ├─ View analysis results
     ├─ Download outputs
     └─ Triggers optional pipeline runs

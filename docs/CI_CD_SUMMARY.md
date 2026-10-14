@@ -21,7 +21,7 @@
   - Color-coded status (green/yellow/red)
   - HTML dashboard with auto-refresh
   - JSON API: `GET /health`
-  - WebSocket API: `ws://localhost:8080/ws/health`
+  - WebSocket API: `ws://localhost:8081/ws/health`
 
 ### 3. Docker Compose Integration
 - **Service**: `dashboard` added to `docker-compose.yml`
@@ -44,9 +44,9 @@
 ### Step 2: Start everything locally
 ```bash
 docker compose up --pull always
-# Dashboard: http://localhost:8080
-# Streamlit: http://localhost:8501
-# API:       http://localhost:8000
+# Dashboard: http://localhost:8081
+# Streamlit: http://localhost:8511
+# API:       http://localhost:8012
 ```
 
 ### Step 3: Deploy a release
@@ -90,7 +90,7 @@ docs/GITHUB_ACTIONS_SETUP.md   ← Setup instructions
 docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 
 # Services auto-reload
-# Dashboard shows real-time status at http://localhost:8080
+# Dashboard shows real-time status at http://localhost:8081
 
 # Commit and push
 git push origin main
@@ -115,9 +115,9 @@ docker compose -f docker-compose.yml -f docker/docker-compose.prod.yml up -d
 docker compose up
 
 # View health dashboard
-curl http://localhost:8080/health | jq
+curl http://localhost:8081/health | jq
 
-# Or visit http://localhost:8080 in browser
+# Or visit http://localhost:8081 in browser
 ```
 
 ## Monitoring & Troubleshooting

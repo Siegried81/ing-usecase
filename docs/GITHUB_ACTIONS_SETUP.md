@@ -71,7 +71,7 @@ Once pushed to Docker Hub, anyone can use it:
 ```bash
 # Pull and run the latest
 docker pull siegried/ing-comparator:latest
-docker run -p 8501:8501 siegried/ing-comparator:latest
+docker run -p 8511:8501 siegried/ing-comparator:latest
 
 # Or use in docker-compose
 docker compose up  # Uses the image from the registry
