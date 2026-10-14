@@ -87,7 +87,7 @@ Not by convention — by twenty distinct checkpoints. The load-bearing ones:
   them — the dictionary is the contract."* Values outside a declared enum or
   range, nulls in a non-nullable column, and any row with `robots_allowed = false`
   are all errors too.
-- **Comparison time** (`analysis.py:318-337`). The set of comparable features is
+- **Comparison time** (`analysis.py:359`, `comparable_features`). The set of comparable features is
   computed from `f.is_numeric or f.is_boolean` plus dimension and comparability —
   never from a hand-written column list.
 - **Two freeze checks.** A byte-equality test between `feature_dictionary.yaml`
@@ -177,7 +177,7 @@ re-extracting every page.
 
 ### Analysis
 
-`analysis.py` (976 l.) is the comparison engine. The parts worth knowing:
+`analysis.py` (1,024 l.) is the comparison engine. The parts worth knowing:
 
 - **`comparable_features()`** subtracts language-excluded features, withdrawn
   features and provenance columns from the dictionary's numeric/boolean set.
@@ -243,7 +243,7 @@ anecdote and the code says so.
 
 ### Surfaces
 
-`streamlit_app.py` (554 l.) is the earlier operator dashboard, nine pages, all
+`streamlit_app.py` (855 l.) is the operator dashboard, with `st.Page` navigation, all
 data loaders cached and every missing file degrading to a visible warning rather
 than a `KeyError`. `web/` is the React business UI (React 18 + Vite 6, no router,
 no state library), fed by a single `report.json` snapshot plus live calls to
@@ -259,10 +259,12 @@ specific wrong capture it fixes.
 
 ## 4. Testing and CI
 
-**449 tests, 449 passing, no network.** Proven rather than asserted: the suite was
+**451 passing, 3 skipped, no network.** Proven rather than asserted: the suite was
 re-run with `socket.connect`, `connect_ex` and `getaddrinfo` all raising, and still
-returned 449 passed. Expect `445 passed, 4 skipped` in CI, because `pytrends` lives
-in `requirements-geo.txt` and CI installs only `requirements.txt`.
+passed (449 at the time; re-measured on 14 October 2026 with `requirements.txt`
+only: 451 passed, 3 skipped). The three skips are whole modules whose optional
+dependency is absent: `pytrends` (`requirements-geo.txt`), `streamlit`, and a
+built `web/dist`.
 
 There is no mocking library and no `conftest.py`. Mocking is stdlib only —
 `unittest.mock.patch` against the module-local `requests` attribute, plus

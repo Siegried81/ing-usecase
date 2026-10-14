@@ -38,7 +38,7 @@ targets.yaml → robots gate → capture (static / headless / headful)
 | Human judgement | **one judged sheet**, one named rater, 13 rubric features |
 | Capture methods | 45 headless, 6 headful, **zero** manual-only |
 | Labelling model | `deepseek/deepseek-flash` on 49 rows, `groq/openai/gpt-oss-120b` on 2 (fallback, recorded not silent) |
-| Tests | 449 passing, no network — proven by re-running with sockets disabled |
+| Tests | 451 passing, 3 skipped (optional pytrends / streamlit, unbuilt `web/dist`), no network |
 | CI | `.github/workflows/tests.yml` — ruff (pyflakes), pytest, schema-freeze check, plus a React type-check and build |
 
 ## Quick start
@@ -131,7 +131,7 @@ scripts/                         run_collection, run_analysis, export_web_report
                                  serve_web, rubric_sheet, deterministic re-derive scripts
 web/                             React business UI
 streamlit_app.py                 earlier dashboard; superseded by the React operator tabs
-tests/                           449 tests, all network mocked
+tests/                           451 passing + 3 skipped, all network mocked
 ```
 
 ## Known open items
