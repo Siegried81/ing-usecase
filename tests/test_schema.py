@@ -18,7 +18,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.dictionary import REPO_ROOT, load_dictionary  # noqa: E402
 from comparator.fixtures import build_fixture  # noqa: E402
-from comparator.schema import coerce_types, format_list, parse_list, validate  # noqa: E402
+from comparator.schema import coerce_types, format_list, parse_list, validate, write_dataset  # noqa: E402
+from comparator.derive import recompute_derived  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -178,3 +179,36 @@ def test_timestamps_of_different_iso_precision_parse(fd):
     })
     out = coerce_types(df, fd)
     assert out["captured_at"].notna().all()
+
+
+def test_a_blank_list_cell_stays_missing_after_coercion(fd):
+    """Not judged and judged-with-nothing-found are different statements.
+
+    parse_list maps both to [], so coerce_types kept the distinction by leaving a
+    missing cell missing. derive.persuasion_lever_count reads exactly this: with
+    the blanks parsed, 50 of the 52 rows of the generated dataset scored 0 levers
+    instead of NA.
+    """
+    df = pd.DataFrame({"persuasion_levers": [None, float("nan"), "", "authority|liking"]})
+    out = coerce_types(df, fd)["persuasion_levers"].tolist()
+    assert out[0] is None and out[1] is None          # not judged
+    assert out[2] == []                               # judged, no lever found
+    assert out[3] == ["authority", "liking"]
+
+
+def test_blank_and_empty_list_cells_derive_differently(fd):
+    """The whole point of keeping them apart: NA versus 0."""
+    df = pd.DataFrame({"persuasion_levers": [None, "", "authority"]})
+    counts = recompute_derived(coerce_types(df, fd), fd)["persuasion_lever_count"].tolist()
+    assert pd.isna(counts[0])
+    assert counts[1] == 0
+    assert counts[2] == 1
+
+
+def test_a_missing_list_cell_round_trips_as_blank(tmp_path, fd):
+    """write_dataset must put a missing list back as an empty cell, not 'None'."""
+    df = pd.DataFrame({"bank": ["ing", "kbc"], "persuasion_levers": [None, "authority"]})
+    path = write_dataset(coerce_types(df, fd), tmp_path / "out.csv", fd)
+    raw = pd.read_csv(path)
+    assert pd.isna(raw["persuasion_levers"].iat[0])
+    assert raw["persuasion_levers"].iat[1] == "authority"

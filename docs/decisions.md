@@ -1094,3 +1094,46 @@ had never compiled: a broken `web/` could merge green.
 Tests 423 -> 444. Not adopted from that pass: dated `Audit 25/09` tags in code
 comments, which this repo keeps out of comments on purpose, and a second audit
 document parallel to this file.
+
+**sieg 05/10, the `none` lever sentinel removed, and the persuasion figures
+re-measured.**
+
+The 24/09 entry above says `none` became an allowed value of `persuasion_levers`
+and `accent_locations`. It never did: neither feature carries it in
+`config/feature_dictionary.yaml` or in the frozen copy, so `schema.validate`
+would have rejected any row containing it. Nothing produced it either — not the
+rubric (six keys), not the generator prompt (six levers), not the LLM extractor.
+Across every dataset in the repo, `persuasion_levers` contains `none` in zero
+cells. The sentinel existed only as defensive handling in `derive.py` and
+`analysis.lever_frequency`, for a value that could not legally exist.
+
+Removed from both, plus the test that fed it and the two comments describing it.
+This changes no number: counted the old way (`v != "none"`) and the new way
+(`len(set(...))`), all 51 rows of `data/processed/campaigns_scored.csv` agree, and
+the dataset still validates with 0 errors. What `derive.py` still has to keep — a
+blank meaning "not judged" (NA) versus a judged page with no lever (0) — is
+unchanged and still commented, because that distinction is what stops an unscored
+page being averaged as a zero.
+
+What actually brought Argenta, Crelan, VDK and hellobank into the comparison was
+re-judging their 21 blank pages, which found real levers on all of them (`liking`,
+`commitment`, `authority`). So the 13-peer coverage is real; its cause was the
+re-judging, not the sentinel.
+
+The published figures were re-checked at the same time and they hold.
+`scripts/run_analysis.py --dataset data/processed/campaigns_scored.csv
+--product-family current_account_pack` (18 pages, 14 banks) reproduces
+`outputs/` and the D-06 table exactly: `persuasion_lever_count` ING **5.00** vs
+peer mean **1.67**, **+3.68 SD**; `urgency_marker_count` 4.00 vs 0.64, +3.69 SD;
+positioning ING **0.41**. The `5.00 vs 1.44 / +3.32 / 0.39` triple in the 24/09
+entry above is from that day's code and cannot be re-measured.
+
+One trap found while checking, worth writing down: run *without*
+`--product-family` and the same features read 4.29 vs 1.83 (+3.03 SD) and
+positioning 0.45, because the comparison then pools 51 pages across 6 product
+families. Those numbers look like a correction of the published ones and are not —
+they are the confounded comparison DR-04 forbids, and `run_analysis.py` defaults
+to it. `outputs/` was overwritten by such a pooled run during this check and has
+been restored to the committed, family-scoped version.
+
+Tests 466 passed, 2 skipped — unchanged by the removal.

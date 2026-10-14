@@ -56,6 +56,13 @@ class ValidationReport:
         return "\n".join(lines)
 
 
+def _is_missing(value: object) -> bool:
+    """True for the several ways a blank cell reaches us: None, NaN or pd.NA."""
+    if value is None or value is pd.NA:
+        return True
+    return isinstance(value, float) and pd.isna(value)
+
+
 def parse_list(value: object) -> list[str]:
     """List-valued columns are stored pipe-separated so the dataset stays plain CSV."""
     if value is None or (isinstance(value, float) and pd.isna(value)):
@@ -107,7 +114,16 @@ def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
             # that had a perfectly good timestamp.
             out[name] = pd.to_datetime(out[name], errors="coerce", utc=True, format="ISO8601")
         elif feature.is_list:
-            out[name] = out[name].map(parse_list)
+            # A missing cell stays missing. parse_list maps a blank cell and an
+            # explicitly empty one both to [], which collapses "not judged" into
+            # "judged, found nothing" - two different statements. derive's
+            # persuasion_lever_count reads exactly that difference, and with the
+            # blanks parsed it scored 50 of the 52 rows of
+            # outputs/generated/dataset_with_generated.csv as 0 levers instead of
+            # NA, putting the mean at 0.135 against the 3.5 of the two rows that
+            # were actually judged. Writing back is unchanged: write_dataset maps
+            # the column through parse_list again, so None becomes a blank cell.
+            out[name] = out[name].map(lambda v: None if _is_missing(v) else parse_list(v))
         else:
             out[name] = out[name].astype("string")
     return out

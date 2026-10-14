@@ -78,12 +78,17 @@ def recompute_derived(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
         def count(cell) -> object:
             if cell is None or (isinstance(cell, float) and pd.isna(cell)) or cell is pd.NA:
                 return pd.NA
-            # `none` is the judge saying "I looked and there is no lever here", which
-            # is a score of 0. A blank cell is a different statement - not judged - and
-            # stays NA above, because averaging an unscored page as zero would invent
-            # a finding. Five banks sat out the persuasion comparison on blanks that
-            # meant zero.
-            return len({v for v in parse_list(cell) if v != "none"})
+            # A blank cell means "not judged" and must stay NA, because averaging
+            # an unscored page as zero would invent a finding. A page judged to
+            # have no lever is an empty list of levers, which counts as 0.
+            #
+            # The NA test above only works because schema.coerce_types keeps a
+            # missing list cell missing instead of parsing it to []. It used to
+            # parse it, which collapsed "not judged" into "judged, no levers":
+            # on outputs/generated/dataset_with_generated.csv that scored 50 of
+            # 52 unjudged rows as 0 and put the mean at 0.135 against the 3.5 of
+            # the two rows actually judged.
+            return len(set(parse_list(cell)))
 
         out["persuasion_lever_count"] = out["persuasion_levers"].map(count)
 

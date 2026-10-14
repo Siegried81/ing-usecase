@@ -43,3 +43,6 @@ web/tsconfig.tsbuildinfo
 # third-party brand assets (page captures and screenshots) that were never
 # meant for redistribution - confirm that is still acceptable before pushing
 # them anywhere public. These rules are one revert away.
+
+# Local repo snapshots: multi-gigabyte, never belong in git history.
+*.zip

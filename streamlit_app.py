@@ -255,8 +255,11 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
         )
 
     st.divider()
+    # OUTPUTS only exists once the pipeline has run once; a fresh clone has no
+    # outputs/ and iterdir() would raise FileNotFoundError on the Home page.
     deliverables = [f for f in sorted(OUTPUTS.iterdir())
-                    if f.is_file() and f.suffix in (".png", ".csv", ".json", ".md")]
+                    if f.is_file() and f.suffix in (".png", ".csv", ".json", ".md")
+                    ] if OUTPUTS.is_dir() else []
     with st.expander(f"📦 Available deliverables ({len(deliverables)} files)"):
         grid = st.columns(3)
         for i, f in enumerate(deliverables):
@@ -589,7 +592,9 @@ def page_collection(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
     col3.metric("Robots allowed", int(df["robots_allowed"].sum()) if "robots_allowed" in df.columns else "N/A")
     col4.metric("Quality ok", int((df["capture_quality"] == "ok").sum()) if "capture_quality" in df.columns else "N/A")
     col5.metric("Manual captures", int((df["collection_method"] == "manual_capture").sum()) if "collection_method" in df.columns else "N/A")
-    col6.metric("Languages", ", ".join(sorted(df["language"].unique())))
+    # language is nullable, and sorted() cannot compare a NaN with a string -
+    # one unlabelled capture crashed this whole page with a TypeError.
+    col6.metric("Languages", ", ".join(sorted(df["language"].dropna().astype(str).unique())) or "N/A")
 
     st.divider()
     st.subheader("Detailed pages")

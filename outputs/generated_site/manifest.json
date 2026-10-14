@@ -1,6 +1,6 @@
 {
-  "language": "en",
-  "locale": "en-BE",
+  "language": "nl",
+  "locale": "nl-BE",
   "generated_at": "2026-09-25T08:49:52+00:00",
   "model": "deepseek/deepseek-flash",
   "explained": true,
@@ -8,177 +8,183 @@
     {
       "slug": "index",
       "nav": "Home",
-      "title": "Savings at ING | The rate is the whole offer",
+      "title": "Sparen bij ING | ING België",
       "file": "index.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R3",
-        "R4",
-        "R8"
+        "R2",
+        "R5",
+        "R6",
+        "R7",
+        "R9",
+        "R11"
       ]
     },
     {
       "slug": "comptes-epargne",
-      "nav": "Savings accounts",
-      "title": "Savings accounts: rate, conditions and how to open | ING Belgium",
+      "nav": "Spaarrekeningen",
+      "title": "Spaarrekeningen: rente en voorwaarden | ING België",
       "file": "comptes-epargne.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R2",
-        "R6"
+        "R3"
       ]
     },
     {
       "slug": "compte-a-terme",
-      "nav": "Term account",
-      "title": "Term account | ING Belgium",
+      "nav": "Termijnrekening",
+      "title": "Termijnrekening: vaste rente voor een vaste termijn | ING België",
       "file": "compte-a-terme.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R6"
+        "R3"
       ]
     },
     {
       "slug": "compte-courant",
-      "nav": "Current account",
-      "title": "Current account | ING Belgium",
+      "nav": "Zichtrekening",
+      "title": "Zichtrekening voor elke dag | ING België",
       "file": "compte-courant.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
         "R2",
         "R3",
-        "R5",
+        "R4",
+        "R6",
+        "R7",
         "R9",
-        "R10"
+        "R10",
+        "R11"
       ]
     },
     {
       "slug": "jeunes",
-      "nav": "Youth",
-      "title": "Youth account for your child | ING",
+      "nav": "Jongeren",
+      "title": "Jongeren: een rekening voor je kind | ING België",
       "file": "jeunes.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R2",
-        "R4",
         "R5",
         "R8"
       ]
     },
     {
       "slug": "investir",
-      "nav": "Invest",
-      "title": "Investing for the first time | ING Belgium",
+      "nav": "Beleggen",
+      "title": "Beleggen voor beginners | ING België",
       "file": "investir.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R4",
-        "R6"
+        "R5"
       ]
     },
     {
       "slug": "credit-hypothecaire",
-      "nav": "Mortgage",
-      "title": "Mortgage | ING Belgium",
+      "nav": "Hypothecair krediet",
+      "title": "Hypothecair krediet | ING België",
       "file": "credit-hypothecaire.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R1",
-        "R3",
-        "R7"
+        "R4",
+        "R8"
       ]
     },
     {
       "slug": "ouvrir-compte",
-      "nav": "Open an account",
-      "title": "Open an account | ING Belgium",
+      "nav": "Rekening openen",
+      "title": "Rekening openen: uw zichtrekening digitaal | ING België",
       "file": "ouvrir-compte.html",
       "used_fallback": false,
       "recommendations_implemented": [
         "R1",
-        "R2",
-        "R4",
-        "R5",
-        "R8",
+        "R6",
+        "R7",
         "R9",
-        "R10"
+        "R10",
+        "R11"
       ]
     },
     {
       "slug": "pourquoi-ing",
-      "nav": "Why ING",
-      "title": "Why ING: banking that stays close | ING Belgium",
+      "nav": "Waarom ING",
+      "title": "Waarom ING | ING België",
       "file": "pourquoi-ing.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R3",
-        "R7",
-        "R9"
+        "R8"
       ]
     },
     {
       "slug": "contact",
       "nav": "Contact",
-      "title": "Contact us | ING Belgium",
+      "title": "Contact en veelgestelde vragen | ING België",
       "file": "contact.html",
       "used_fallback": false,
       "recommendations_implemented": [
-        "R7"
+        "R8",
+        "R10"
       ]
     }
   ],
   "recommendations": [
     {
       "id": "R1",
-      "title": "Strip back urgency and deadline language",
+      "title": "Cut urgency and deadline language",
       "priority": "high"
     },
     {
       "id": "R2",
-      "title": "Make the conditions of a 'free' account explicit where the claim is made",
+      "title": "Thin out the persuasion stack",
       "priority": "high"
     },
     {
       "id": "R3",
-      "title": "Shorten the opening screen, not just the page",
+      "title": "Put the conditions next to the 'free' claim",
       "priority": "high"
     },
     {
       "id": "R4",
-      "title": "Reduce the number of persuasion techniques stacked per page",
+      "title": "Shorten the campaign pages",
       "priority": "medium"
     },
     {
       "id": "R5",
-      "title": "Substantiate the fast sign-up promise",
+      "title": "Consolidate imagery into fewer, larger visuals",
       "priority": "medium"
     },
     {
       "id": "R6",
-      "title": "Put a concrete rate or price in the offer block",
+      "title": "Protect the clear offer while you trim",
       "priority": "medium"
     },
     {
       "id": "R7",
-      "title": "Replace question-style headings with statements",
-      "priority": "low"
+      "title": "Back the fast digital sign-up promise with detail",
+      "priority": "medium"
     },
     {
       "id": "R8",
-      "title": "Hold the light, mobile-first rendering while trimming",
+      "title": "Keep the mobile-first layout on every campaign page",
       "priority": "low"
     },
     {
       "id": "R9",
-      "title": "Only claim digital leadership the news cycle supports",
+      "title": "Check the digital promise against what ING is in the news for",
       "priority": "medium"
     },
     {
       "id": "R10",
-      "title": "Keep urgent deadline copy away from the payments-access context",
+      "title": "Explain payment limits where the account is described",
       "priority": "medium"
+    },
+    {
+      "id": "R11",
+      "title": "Review promotional urgency against a regulatory-heavy news period",
+      "priority": "low"
     }
   ],
   "asset_warnings": []

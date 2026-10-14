@@ -1,7 +1,6 @@
-# sieg 16/09: runs the test suite and the schema freeze check on every push/PR.
-# + a pyflakes-level lint (unused imports/variables, undefined
-# names) and a job that type-checks and builds the React UI, which CI never
-# compiled before - a broken web/ could merge green.
+# Runs the test suite and the schema freeze check on every push/PR, plus a
+# pyflakes-level lint (unused imports/variables, undefined names) and a job
+# that type-checks and builds the React UI, so a broken web/ cannot merge green.
 name: Tests
 
 on:
@@ -19,7 +18,11 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install -r requirements.txt
+        # The dashboard and geo requirements are installed too. Without them
+        # tests/test_streamlit_app.py and tests/test_geo_trends.py hit their
+        # importorskip, so the whole dashboard suite was silently SKIPPED in CI
+        # and a broken dashboard could merge green.
+        run: pip install -r requirements.txt -r requirements-streamlit.txt -r requirements-geo.txt
 
       - name: Lint (pyflakes rules only - dead code and undefined names)
         run: pip install ruff==0.16.9 && ruff check --select F .
