@@ -229,7 +229,7 @@ Health Dashboard (port 8080)
     │  ├─ Latency: X ms
     │  └─ Color: Green
     │
-    ├─ GET http://api:8000/health
+    ├─ GET http://api:8000/api/health
     │  │
     │  ├─ Status: ✅ (if 200ms response)
     │  ├─ Latency: X ms

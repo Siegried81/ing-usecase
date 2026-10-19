@@ -32,7 +32,7 @@ SERVICES = {
         "name": "Streamlit Dashboard",
     },
     "api": {
-        "url": "http://api:8000/health",
+        "url": "http://api:8000/api/health",
         "name": "FastAPI Backend",
     },
 }
