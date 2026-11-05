@@ -43,6 +43,7 @@ from comparator.charts import (
     positioning_chart,
     similarity_heatmap,
 )
+from comparator.dq import score as dq_score, render_markdown as dq_markdown
 from comparator.limitations import assess, render as render_limitations
 from comparator.profiles import build_all, render_all_markdown
 from comparator.report import build_chart_report
@@ -103,6 +104,18 @@ def main() -> int:
     if synthetic:
         print(f"\n{SYNTHETIC_BANNER}")
     note = "SYNTHETIC FIXTURE DATA — not findings" if synthetic else None
+
+    # --- 1b. data-quality scorecard ------------------------------------------
+    # The dataset scored by DQ dimension, next to the schema check. validate()
+    # above says pass/fail; this says how complete, how valid, how unique, how
+    # consistent and how fresh - the view a data-quality team reads, and the one
+    # the CI gate (scripts/check_data_quality.py) blocks on.
+    _header("1b. Data-quality scorecard (completeness / validity / uniqueness / consistency / timeliness)")
+    dq = dq_score(df, fd)
+    print(dq.render())
+    pd.DataFrame(dq.as_rows()).to_csv(args.outdir / "dq_scorecard.csv", index=False)
+    (args.outdir / "dq_report.md").write_text(
+        dq_markdown(dq, dataset=str(args.dataset), synthetic=synthetic), encoding="utf-8")
 
     # LLM-generated rows are scored, never mixed into the bank comparison.
     banks_df = df[df["data_source"] != "llm_generated"] if "data_source" in df else df

@@ -45,6 +45,7 @@ from comparator.analysis import (
     scope_to_family,
     similarity_matrix,
 )
+from comparator.dq import score as dq_score
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
@@ -213,6 +214,9 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
                  trends_dir: Path | None) -> tuple[dict, dict | None]:
     fd = load_dictionary()
     df, validation = read_dataset(dataset, fd, tier="core", strict=False)
+    # Scored on the whole loaded dataset, the same frame validation ran on, so the
+    # DQ panel and the validation line describe one thing.
+    dq = dq_score(df, fd)
 
     all_rows = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
     usable = all_rows[all_rows.get("capture_quality", "ok") != "unusable"] \
@@ -365,6 +369,12 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         "validation": {
             "ok": validation.ok,
             "warnings": validation.warnings[:6],
+        },
+        "dataQuality": {
+            "ok": dq.ok,
+            "rows": dq.rows,
+            "columnsChecked": dq.columns_checked,
+            "dimensions": dq.as_rows(),
         },
         "generated": [],
         "trends": None,

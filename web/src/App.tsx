@@ -11,6 +11,7 @@ import { AiScoreRadar } from "./components/AiScoreRadar";
 import { CrossSell } from "./components/CrossSell";
 import { GeneratedCampaigns } from "./components/Generated";
 import { Limitations } from "./components/Limitations";
+import { DataQualityPanel } from "./components/DataQuality";
 import { DeckClaims } from "./components/Claims";
 import { Recommendations } from "./components/Recommendations";
 import { Trends } from "./components/Trends";
@@ -300,6 +301,13 @@ export default function App() {
             <GeneratedCampaigns campaigns={report.generated} />
           </Section>
         )}
+
+        <Section
+          title="How good is the underlying data"
+          lede="Before any finding: the dataset scored on the standard data-quality dimensions. The checks that would block a build (completeness, validity, uniqueness) are separated from the ones that only warn, and accuracy is stated as not measurable here rather than invented."
+        >
+          <DataQualityPanel dq={report.dataQuality} />
+        </Section>
 
         <Section
           title="What this cannot tell you"

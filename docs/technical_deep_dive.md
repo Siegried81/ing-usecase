@@ -102,6 +102,34 @@ demoted from core to extended, or a nullable column becomes non-nullable. Adding
 features or widening an enum is explicitly allowed — that is how the bank list
 grew to fourteen on 21/09 without breaking the freeze.
 
+### The data-quality scorecard
+
+`validate()` reports pass or fail; it does not say *how* complete or *how* valid.
+A data-quality team reads a dataset by dimension, so `dq.py` names them. It scores
+the dataset on the six standard dimensions — completeness, validity, uniqueness,
+consistency, timeliness, accuracy — and does not re-implement the contract: it
+reuses the dictionary's own rules (`nullable`, `required`, allowed values, ranges,
+the primary key), so a value is valid in the scorecard exactly when it is valid in
+`schema.validate()`.
+
+Three of the six gate. Completeness, validity and uniqueness fail the build — the
+same defects `validate()` already raises, because an out-of-contract value or a
+duplicate key is not a dip. Consistency and timeliness only warn: consistency
+carries the recorded single-model fallback (2 of 51 rows on a groq model, D6 /
+NFR-02), and failing a build on a limitation that was agreed and written down is
+noise; timeliness is a window, not a freshness deadline, so it checks only that
+every row is dated. Accuracy is not scored at all — there is no golden source, and
+a made-up accuracy number would be the one dishonest line on a data-quality page,
+so the dimension is reported as *"not measurable here"*, with the reason.
+
+`scripts/check_data_quality.py` runs it in CI next to `check_schema_freeze.py` —
+the third gate: freeze says the contract did not change in a breaking way, this
+says the data still meets it. The thresholds live in `dq.py`, not the dictionary,
+because they are a property of the gate rather than of the contract. On the
+committed scored dataset the gate passes: completeness 99.8%, validity 100%,
+uniqueness 100%, consistency 96.1% (warn), timeliness 100%. The scorecard is
+written to `outputs/dq_report.md` and shown in the Analysis tab (decision D7).
+
 ### What `comparability` actually does
 
 `within_language` is fully gated. `analysis.language_excluded_features()` returns
@@ -300,10 +328,10 @@ The most valuable assertions in the suite:
 That last pattern is the one worth stealing: **a withdrawn claim gets a regression
 test**, so a corrected mistake cannot come back.
 
-CI runs on every push and every PR: `ruff check --select F` (pyflakes only,
-deliberately narrow), `pytest`, `check_schema_freeze.py`, and a parallel job that
-type-checks and builds the React UI — added late, because *"a broken `web/` could
-merge green."*
+CI runs on every push and every PR: `ruff check --select F,W` (pyflakes plus
+whitespace rules, deliberately narrow), `pytest`, `check_schema_freeze.py`,
+`check_data_quality.py`, and a parallel job that type-checks and builds the React
+UI — added late, because *"a broken `web/` could merge green."*
 
 `banks.py` owns the traditional-vs-challenger split every group comparison
 depends on; `tests/test_banks.py` pins it, so a typo in a key cannot silently

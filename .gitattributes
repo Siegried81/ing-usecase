@@ -1,0 +1,11 @@
+# Every text file is stored with LF in the repo, whatever the contributor's OS.
+# Without this, a Windows commit can rewrite every line ending of a file and the
+# pull request shows the whole file as changed, which also breeds merge
+# conflicts. It also keeps shell scripts runnable inside the Linux container.
+* text=auto eol=lf
+
+# Input CSVs (fixtures, rubric scores) are kept byte for byte as they were
+# saved. Some hold CRLF or mixed endings, partly inside quoted cells, and
+# converting them would change cell contents. This rule must stay below the one
+# above: the later match wins.
+data/**/*.csv -text

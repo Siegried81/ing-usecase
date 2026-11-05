@@ -6,6 +6,53 @@ than remembered. One entry per decision; append, never rewrite.
 
 ---
 
+## D7 — Name and gate the data-quality dimensions
+
+**Owner** Siegried · **Added** Thu 5 Nov 2026 · **Status** done
+
+**Decision.** Add a data-quality scorecard (`comparator/dq.py`) that scores the
+dataset on the six standard DQ dimensions — completeness, validity, uniqueness,
+consistency, timeliness, accuracy — and a CI gate (`scripts/check_data_quality.py`)
+that fails the build when a gating dimension drops. It runs in `tests.yml` next to
+the schema-freeze check, and the scorecard is written to `outputs/dq_scorecard.csv`
++ `outputs/dq_report.md` and shown in the business UI.
+
+**What this does NOT change.** No existing measurement was redefined.
+`schema.validate()` does exactly what it did; `dq.py` reuses its rules (nullable,
+required, allowed values, ranges, primary key), so "valid" keeps one definition
+in the codebase. The scorecard is a new view over those signals, not a second
+way of computing them.
+
+**Why.** The signals were already there but scattered across a flat error/warning
+list. A data-quality team reads a dataset by dimension — how complete, how valid,
+how unique — and wants one number each plus a gate. The gate also catches a
+regression that `validate()`'s warnings would let through: a future row that
+nulls a required-but-nullable field, or a dataset that quietly splits across two
+models, now has a threshold to breach.
+
+**Why completeness/validity/uniqueness gate, but consistency/timeliness only
+warn.** The first three are real defects — an out-of-contract value or a
+duplicate key is an error, matching what `validate()` already raises. Consistency
+carries the recorded single-model fallback (2 of 51 rows on a groq model, D6 /
+NFR-02); failing the build on a limitation that was agreed and written down is
+noise, not a gate. Timeliness is a window, not a freshness deadline — a POC
+snapshot is deliberately one window — so it checks only that every row is dated.
+
+**Why accuracy is not scored.** Accuracy is agreement with a trusted reference,
+and this project has none; the model_assisted features were validated against
+human labels on a sample only. A made-up accuracy number would be the one
+dishonest line on a data-quality page, so the dimension is reported as "not
+measurable here", with the reason.
+
+**Thresholds** live in `dq.py` (a property of the gate), not the dictionary (the
+contract): completeness fails below 0.95 / warns below 0.99; validity and
+uniqueness fail below 1.0; consistency fails with no strict majority model;
+timeliness fails when a row lacks a timestamp. On the committed scored dataset:
+completeness 99.8 %, validity 100 %, uniqueness 100 %, consistency 96.1 % (warn),
+timeliness 100 % — the gate passes.
+
+---
+
 ## D6 — Which LLM for model-assisted features and generation
 
 **Owner** Stephane · **Due** Day 2 (Tue 15 Sep 2026) · **Status** decided

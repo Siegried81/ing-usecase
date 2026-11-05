@@ -38,8 +38,8 @@ targets.yaml → robots gate → capture (static / headless / headful)
 | Human judgement | **one judged sheet**, one named rater, 13 rubric features |
 | Capture methods | 45 headless, 6 headful, **zero** manual-only |
 | Labelling model | `deepseek/deepseek-flash` on 49 rows, `groq/openai/gpt-oss-120b` on 2 (fallback, recorded not silent) |
-| Tests | 465 passing, 3 skipped (optional pytrends / streamlit, unbuilt `web/dist`), no network — every socket is blocked in `tests/conftest.py` |
-| CI | `.github/workflows/tests.yml` — ruff (pyflakes), pytest, schema-freeze check, plus a React type-check and build |
+| Tests | **502 passing**, no network — every socket is blocked in `tests/conftest.py` |
+| CI | `.github/workflows/tests.yml` — ruff (pyflakes + whitespace), pytest, schema-freeze check, data-quality gate, plus a React type-check and build |
 
 ## Quick start
 
@@ -64,7 +64,7 @@ install and network access; re-scoring the rubric needs a human.
 Real-data command order, the mandatory re-merge rule and the failure modes a range
 check cannot catch are in [`docs/pipeline.md`](docs/pipeline.md).
 
-## The design, in five points
+## The design, in six points
 
 - **One measuring stick.** Every number comes from
   `config/feature_dictionary.yaml`. The schema, the validator and the generated
@@ -86,6 +86,14 @@ check cannot catch are in [`docs/pipeline.md`](docs/pipeline.md).
   compared, because each turned out to describe the capture rather than the bank.
   The exclusion lives in the analysis and is printed in the feature accounting, so
   a re-run cannot quietly undo it.
+- **Quality is scored, not assumed.** The dataset is graded on the six standard
+  data-quality dimensions — completeness, validity, uniqueness, consistency,
+  timeliness, accuracy — reusing the dictionary's own rules, so a value is valid
+  here exactly as it is in the validator. The first three fail the build; the
+  recorded single-model fallback only warns, because it was agreed and written
+  down; and accuracy is reported as *not measurable here*, with the reason, rather
+  than invented. `scripts/check_data_quality.py` runs it in CI next to the schema
+  freeze, and the scorecard is written to `outputs/dq_report.md` and shown in the UI.
 
 Full reasoning in [`docs/design.md`](docs/design.md).
 
@@ -103,8 +111,10 @@ Full reasoning in [`docs/design.md`](docs/design.md).
 | [`data/rubric/SCORING_GUIDE.md`](data/rubric/SCORING_GUIDE.md) | how a rater fills the 13 judgement-based features |
 | [`web/README.md`](web/README.md) | the React business UI |
 | [`outputs/limitations.md`](outputs/limitations.md) | generated (D-09) — what this run cannot support, read off the dataset |
+| [`outputs/dq_report.md`](outputs/dq_report.md) | generated — the dataset graded on the six data-quality dimensions, gating checks separated from warnings |
 
-`outputs/charts.md`, `outputs/bank_profiles.md`, `outputs/limitations.md` and
+`outputs/charts.md`, `outputs/bank_profiles.md`, `outputs/limitations.md`,
+`outputs/dq_report.md`, `outputs/dq_scorecard.csv` and
 `outputs/search_interest_context.md` are all generated every run. Do not hand-edit
 them; a correction a re-run undoes is not a correction.
 
@@ -126,12 +136,14 @@ src/comparator/
   recommendations.py             LLM advice grounded in one report
   report.py charts.py            the generated chart companion and the four PNGs
   limitations.py freeze.py       D-09 from the data, and the schema freeze rule
+  dq.py                          the data-quality scorecard and its thresholds
 search_interest/                 standalone Google Trends share-of-search pipeline
 scripts/                         run_collection, run_analysis, export_web_report,
-                                 serve_web, rubric_sheet, deterministic re-derive scripts
+                                 serve_web, rubric_sheet, check_schema_freeze,
+                                 check_data_quality, deterministic re-derive scripts
 web/                             React business UI
 streamlit_app.py                 earlier dashboard; superseded by the React operator tabs
-tests/                           489 tests (488 + 1 skipped in CI), network blocked
+tests/                           502 tests, network blocked
 ```
 
 ## Known open items
