@@ -24,14 +24,22 @@ jobs:
         # and a broken dashboard could merge green.
         run: pip install -r requirements.txt -r requirements-streamlit.txt -r requirements-geo.txt
 
-      - name: Lint (pyflakes rules only - dead code and undefined names)
-        run: pip install ruff==0.16.9 && ruff check --select F .
+      # F (pyflakes): dead code and undefined names. W: trailing whitespace and a
+      # missing final newline, invisible edits that show up as noise in PR diffs.
+      - name: Lint (pyflakes + whitespace rules)
+        run: pip install ruff==0.16.9 && ruff check --select F,W .
 
       - name: Run tests
         run: python3 -m pytest tests/ -q
 
       - name: Check the feature dictionary against the frozen schema (Decision D5)
         run: python3 scripts/check_schema_freeze.py
+
+      # The companion to the freeze check: freeze says the contract did not change
+      # in a breaking way, this says the data still meets it. Fails on completeness,
+      # validity or uniqueness; consistency and timeliness only warn.
+      - name: Check data quality against thresholds
+        run: python3 scripts/check_data_quality.py
 
   web:
     runs-on: ubuntu-latest

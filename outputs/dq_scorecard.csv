@@ -1,0 +1,7 @@
+dimension,score,status,detail
+completeness,0.9977,pass,"60 required field(s) 99.8% filled; most blank: section_count (-6), text_image_layout (-1)"
+validity,1.0,pass,"3243 checked value(s), 100.0% within the contract"
+uniqueness,1.0,pass,page_id: 51/51 rows unique
+consistency,0.9608,warn,49/51 rows on deepseek/deepseek-flash; other model(s): groq/openai/gpt-oss-120b (2) - recorded fallback (NFR-02)
+timeliness,1.0,pass,51/51 rows timestamped - captured 2026-09-21 to 2026-09-23; valid for that window only
+accuracy,,not_measured,no golden source; model_assisted values validated against human labels on a sample only. Measured against a reference feed in production.

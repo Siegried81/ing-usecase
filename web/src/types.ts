@@ -619,6 +619,25 @@ export interface SearchInterestLessons {
   caveat: string;
 }
 
+/** Mirrors comparator/dq.py. One DQ dimension: a 0-1 score (null when not
+ *  measurable), a status, and the line explaining it. */
+export interface DataQualityDimension {
+  dimension: string;
+  score: number | null;
+  status: "pass" | "warn" | "fail" | "not_measured";
+  detail: string;
+}
+
+/** The dataset scored on the standard DQ dimensions. completeness, validity and
+ *  uniqueness gate the build; consistency and timeliness warn; accuracy is
+ *  reported as not measurable here. */
+export interface DataQuality {
+  ok: boolean;
+  rows: number;
+  columnsChecked: number;
+  dimensions: DataQualityDimension[];
+}
+
 export interface Report {
   generated_at: string;
   dataset: string;
@@ -637,6 +656,7 @@ export interface Report {
   deckClaims: { id: string; bank: string; claim: string; verdict: string; evidence: string }[];
   limitations: { blocking: string[]; material: string[]; standing: string[] };
   validation: { ok: boolean; warnings: string[] };
+  dataQuality: DataQuality;
   generated: GeneratedCampaign[];
   trends: TrendsSummary | null;
   searchInterestLessons: SearchInterestLessons | null;
