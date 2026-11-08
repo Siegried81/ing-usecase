@@ -1184,3 +1184,41 @@ to it. `outputs/` was overwritten by such a pooled run during this check and has
 been restored to the committed, family-scoped version.
 
 Tests 466 passed, 2 skipped — unchanged by the removal.
+
+**2026-11-08, a failed news fetch no longer reads as "no headlines".** A 401, a
+429 or a timeout made `reputation.py` return `[]`, exactly what a quiet bank
+returns, and `bank_snapshot()` then returned `None` for both. Measured with
+mocked responses: a dashboard where every request got 401 and one where every
+request got an empty 200 were identical, `{"available": true, "banks": {"ing":
+null}}`. A snapshot thinned by a partial outage (fr and nl at 429, en answered)
+was also cached for the rest of the day.
+
+What the numbers mean now. `headline_count: 0` is a real zero: every request was
+answered and nothing matched. `null` means there is no result, and the new
+`failures` block names the reason per bank (`newsapi.org/fr: HTTP 429`,
+`classification failed`). A snapshot built while some requests failed is kept,
+lists them in `fetch_errors`, and is never cached, because its counts are a lower
+bound. `run_analysis.py`, the Streamlit Reputation page and the web UI show the
+reason instead of "no headlines recorded". The recommendation digest still skips
+banks with no theme, so a zero snapshot does not reach the model.
+
+**2026-11-08, a model-extracted empty list is a zero again, not a gap.** The CSV
+writes an empty list and a missing one as the same blank cell. Since the
+`coerce_types` change that keeps a blank list missing (needed for the rubric's
+"not judged"), `cross_sold_products` blanks were read as "not judged" too. They
+are not: the structured call returns every field or raises, and
+`extraction_model` is written only when it returned, which is the case on all 51
+rows. All 23 blank cells are the model saying "none".
+
+The effect was live. On the current-account family, Argenta, Beobank, CBC and VDK
+had no cross-sell score where the committed `outputs/cross_sell_score.csv` and
+`web/public/report.json` say 0.0. Over all pages, judged-empty pages dropped out
+of each bank's mean: Hello bank! read 0.667 for a measured 0.222, ING 0.278 for
+0.159, Crelan 0.278 for 0.139. `schema.coerce_types` now reads a blank
+model_assisted list as `[]` on a row that has an `extraction_model`, and only
+there; rubric lists keep the blank as "not judged". After the fix,
+`run_analysis.py --dataset data/processed/campaigns_scored.csv --product-family
+current_account_pack` reproduces the published `cross_sell_score.csv` byte for
+byte. No published figure moves; the code had drifted away from them.
+
+Tests 502 passed before these two fixes, 510 after.

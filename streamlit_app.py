@@ -658,11 +658,12 @@ def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
         return
 
     # available: true means a key is configured, not that articles were
-    # returned (docs/pipeline.md) - a bank at 0 may be quiet or may be a failed
-    # request, and the two must not read the same.
+    # returned (docs/pipeline.md). A failed request leaves the bank null and
+    # names the reason under "failures"; only a fully answered query reads 0.
+    failures = data.get("failures") or {}
     st.caption(
-        "A headline count of 0 means nothing matched in the window - it is not "
-        "evidence that a bank is absent from the news."
+        "A headline count of 0 means every request was answered and nothing "
+        "matched in the window - it is not evidence that a bank is absent from the news."
     )
 
     table = reputation_table(banks)
@@ -686,6 +687,12 @@ def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
         st.caption(
             f"No snapshot for {', '.join(no_snapshot)}: nothing could be fetched or "
             "classified for them, so their row is empty rather than zero."
+        )
+    for name in sorted(failures):
+        partial = banks.get(name) is not None
+        st.warning(
+            f"{name}: {'some requests failed, counts are a lower bound' if partial else 'fetch failed'}"
+            f" ({'; '.join(failures[name])})."
         )
 
     chosen = st.selectbox("Headlines for", [name for name, b in sorted(banks.items()) if b is not None])

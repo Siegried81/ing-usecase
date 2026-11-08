@@ -238,7 +238,7 @@ anecdote and the code says so.
 | `cross_sell.py` | Distinct add-on product types per page ÷ 9 | Counts **breadth, not effort**. A page pushing one product ten times and a page mentioning it once score identically. `never_paired()` splits confirmed from insufficient-data, because with 1–2 pages a zero means "never had the chance to see it". |
 | `rubric.py` | Nothing — it emits the sheet and merges it back | Computes no score. First non-empty value wins; nothing is averaged, because averaging was only safe while `agreement()` reported the spread it hid. |
 | `benchmarks.py` | What three attention-selected brands measurably do differently | Ships its refusal *inside the payload*: "selected on search attention alone… not a demonstration that those choices are why they are searched for", and a test fails the build if that sentence is dropped. |
-| `reputation.py` | Counts of Belgian headlines per theme, 90-day window | Themes, never sentiment. Belgian-source filtering by `.be` domain plus an allowlist, deduplication across languages and providers, and a same-day cache that **only ever caches a success**. |
+| `reputation.py` | Counts of Belgian headlines per theme, 90-day window | Themes, never sentiment. Belgian-source filtering by `.be` domain plus an allowlist, deduplication across languages and providers, and a same-day cache that **only ever caches a complete success**. Failed requests are reported per bank under `failures`, never read as zero headlines. |
 | `market_context.py`, `research.py` | Share prices; paper search | Both deliberately standalone, not wired into the report, so nobody can put a share price next to a page feature. |
 
 ### Generation and reporting
@@ -287,14 +287,14 @@ specific wrong capture it fixes.
 
 ## 4. Testing and CI
 
-**489 tests, no network.** How many run depends on which optional dependencies
+**510 tests, no network.** How many run depends on which optional dependencies
 are installed, so the count is given per environment:
 
 | Environment | Result |
 |---|---|
-| CI test job (`requirements.txt` + `-streamlit` + `-geo`, no `web/dist`) | 488 passed, 1 skipped |
-| Same, with `web/dist` built | 489 passed |
-| `requirements.txt` only, no `web/dist` | 465 passed, 3 skipped |
+| CI test job (`requirements.txt` + `-streamlit` + `-geo`, no `web/dist`) | 509 passed, 1 skipped |
+| Same, with `web/dist` built | 510 passed |
+| `requirements.txt` only, no `web/dist` | 486 passed, 3 skipped |
 
 Each skip is a test that needs something optional which is absent: `pytrends`
 (`requirements-geo.txt`), `streamlit` (`requirements-streamlit.txt`), and a built
@@ -547,7 +547,10 @@ a difference in business strategy.*
 - **HTTP failures indistinguishable from genuine zero results.** Both returned
   `[]`. Adding a warning with the status code immediately surfaced that the API was
   returning **401 (rejected key), not 429 (quota)**, for seven banks the UI had been
-  showing as "no recent headlines found".
+  showing as "no recent headlines found". The warning only reached the console, so
+  each failed request is now also recorded: the dashboard's `failures` block names
+  it per bank, a real zero is a snapshot with `headline_count: 0`, and a snapshot
+  with some failed requests carries `fetch_errors` and is never cached.
 
 > An empty result and a failed request must never share a return value.
 

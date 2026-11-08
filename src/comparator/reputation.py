@@ -171,8 +171,14 @@ class ReputationModel(BaseModel):
 
 
 def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
-                        page_size: int, timeout: int) -> list[dict]:
+                        page_size: int, timeout: int,
+                        errors: list[str] | None = None) -> list[dict]:
     """Title + source URL pairs for one provider in one language. Empty list on any failure.
+
+    An empty list alone cannot say whether the request failed or the provider
+    really had nothing, so every failure is also appended to `errors` (when
+    given) as "provider/language: reason". That list is what lets the caller
+    tell a rejected key or a spent quota from a bank that is not in the news.
 
     Keep the URL alongside the title (both APIs already return it) so a
     notable headline can link back to its source - was title-only before, which left
@@ -219,8 +225,14 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
         status = exc.response.status_code if exc.response is not None else "?"
         print(f"  [WARNING] reputation fetch failed ({provider}, {language}, HTTP {status}) "
               f"for query {query!r} - treating as no data, NOT as zero headlines")
+        if errors is not None:
+            errors.append(f"{provider}/{language}: HTTP {status}")
         return []
-    except (requests.RequestException, ValueError, AttributeError, TypeError):
+    except (requests.RequestException, ValueError, AttributeError, TypeError) as exc:
+        print(f"  [WARNING] reputation fetch failed ({provider}, {language}, "
+              f"{type(exc).__name__}) for query {query!r} - treating as no data")
+        if errors is not None:
+            errors.append(f"{provider}/{language}: {type(exc).__name__}")
         return []
     # Newsapi.ai has no domain filter to narrow the fetch with, so this
     # second check is the one both providers actually rely on - see _is_belgian_source().
@@ -231,7 +243,8 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
     ]
 
 
-def _fetch_from(provider: str, query: str, api_key: str, page_size: int, timeout: int) -> list[dict]:
+def _fetch_from(provider: str, query: str, api_key: str, page_size: int, timeout: int,
+                errors: list[str] | None = None) -> list[dict]:
     """Title/URL pairs from one provider, across every language it publishes in.
 
     One language failing (or hitting a rate limit) leaves the others intact, so
@@ -239,24 +252,27 @@ def _fetch_from(provider: str, query: str, api_key: str, page_size: int, timeout
     """
     headlines: list[dict] = []
     for language in PROVIDER_LANGUAGES[provider]:
-        headlines.extend(_fetch_for_language(provider, query, api_key, language, page_size, timeout))
+        headlines.extend(_fetch_for_language(provider, query, api_key, language, page_size, timeout,
+                                             errors))
     return headlines
 
 
 def fetch_headlines(query: str, api_key: str | None = None, *,
-                    page_size: int = 20, timeout: int = 20) -> list[dict]:
+                    page_size: int = 20, timeout: int = 20,
+                    errors: list[str] | None = None) -> list[dict]:
     """Recent {"title", "url"} headlines mentioning `query`, merged across configured keys.
 
     Passing `api_key` pins the query to that one key (and picks the provider from
-    the key's shape); leaving it out uses every key in the environment.
+    the key's shape); leaving it out uses every key in the environment. Each
+    failed request is appended to `errors`, see _fetch_for_language().
     """
     if api_key:
         provider = "newsapi.ai" if _is_newsapi_ai_key(api_key) else "newsapi.org"
-        headlines = _fetch_from(provider, query, api_key, page_size, timeout)
+        headlines = _fetch_from(provider, query, api_key, page_size, timeout, errors)
     else:
         headlines = []
         for provider, key in configured_sources():
-            headlines.extend(_fetch_from(provider, query, key, page_size, timeout))
+            headlines.extend(_fetch_from(provider, query, key, page_size, timeout, errors))
 
     # De-duplicate across languages and across providers: the same story arrives
     # translated (fr + nl) and syndicated (both APIs), and counting it twice
@@ -316,10 +332,11 @@ def _mentions(headlines: list[dict], bank_name: str) -> list[dict]:
 # bank's signal silently thinned out (bank_snapshot degrades to None on a failed
 # fetch, by design - see its docstring). A same-day cache means iterating on
 # unrelated code (the UI, the prompt wording) doesn't re-spend quota that was
-# already spent finding this run's headlines. Only a REAL snapshot is cached -
-# never a None, because bank_snapshot returns None both when a bank genuinely has
-# no matching headlines and when the fetch failed (rate limit, timeout, bad key);
-# caching that would freeze a quota outage into a permanent "nothing found".
+# already spent finding this run's headlines. Only a COMPLETE snapshot is cached:
+# never a None (the fetch or the classification failed), and never a snapshot
+# built while some requests failed, since its counts are thinned by the outage.
+# Caching either would freeze a quota outage into "nothing found" for the day.
+# A genuine zero (every request answered, nothing matched) is complete and is cached.
 # Anchored to the repository, not to the current directory: a relative path
 # wrote a second, empty cache wherever a script happened to be started from.
 CACHE_PATH = Path(__file__).resolve().parents[2] / "data" / "processed" / "reputation_cache.json"
@@ -339,12 +356,22 @@ def _save_cache(cache: dict) -> None:
     CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2), encoding="utf-8")
 
 
-def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
-    """None when NEWSAPI_KEY is absent, or nothing could be fetched/classified.
+def bank_snapshot(bank_name: str, *, api_key: str | None = None,
+                  errors: list[str] | None = None) -> dict | None:
+    """The bank's theme snapshot, or None when there is no result to read.
+
+    None means NEWSAPI_KEY is absent, every request failed, or the classifier
+    call failed; the reason is appended to `errors`. A bank whose requests all
+    succeeded but matched nothing gets a real zero snapshot (headline_count 0),
+    so a quiet bank and a failed fetch never look the same downstream. A
+    snapshot built while some requests failed lists them in "fetch_errors":
+    its counts are a lower bound, not the bank's coverage.
 
     Reuses today's cached snapshot for this bank when there is one - see the
-    CACHE_PATH note above for why only a successful snapshot is ever cached.
+    CACHE_PATH note above for why only a complete snapshot is ever cached.
     """
+    if errors is None:
+        errors = []
     if not api_key and not configured_sources():
         return None
     cache = _load_cache()
@@ -353,12 +380,22 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
     if cached and cached.get("cached_on") == today:
         return cached["snapshot"]
 
-    matched = _mentions(fetch_headlines(f'"{_bank_token(bank_name)}"', api_key), bank_name)
+    fetch_errors: list[str] = []
+    fetched = fetch_headlines(f'"{_bank_token(bank_name)}"', api_key, errors=fetch_errors)
+    errors.extend(fetch_errors)
+    if fetch_errors and not fetched:
+        return None
+    matched = _mentions(fetched, bank_name)
     headlines = matched[:MAX_HEADLINES]
     titles = [h["title"] for h in headlines]
-    classified = classify_headlines(titles, bank_name)
-    if classified is None:
-        return None
+    if titles:
+        classified = classify_headlines(titles, bank_name)
+        if classified is None:
+            errors.append("classification failed")
+            return None
+    else:
+        # Nothing matched: there is nothing to classify, and that is a finding.
+        classified = ReputationModel()
     # The model returns notable headlines verbatim (SYSTEM_PROMPT
     # requires it) - look each one up in what we actually fetched to attach its
     # real URL. Never let the model produce the URL itself: that is exactly the
@@ -384,19 +421,30 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None) -> dict | None:
         "themes": {t: len(theme_headlines[t]) for t in THEMES},
         "theme_headlines": theme_headlines,
         "notable_headlines": notable,
+        "fetch_errors": fetch_errors,
     }
-    cache[bank_name] = {"cached_on": today, "snapshot": snapshot}
-    _save_cache(cache)
+    if not fetch_errors:
+        cache[bank_name] = {"cached_on": today, "snapshot": snapshot}
+        _save_cache(cache)
     return snapshot
 
 
 def build_dashboard(banks: list[tuple[str, str]], *, api_key: str | None = None) -> dict:
     """`banks` is a list of (key, display_name). Always returns a dict - "available" says
     whether NEWSAPI_KEY was configured at all, so the UI can show an honest empty state
-    instead of a report with every bank silently missing."""
+    instead of a report with every bank silently missing.
+
+    "failures" maps a bank key to why its snapshot is None or incomplete (failed
+    requests, failed classification). A bank absent from it was fully fetched, so
+    a headline_count of 0 there is a real zero.
+    """
     if not api_key and not configured_sources():
-        return {"available": False, "banks": {}}
-    return {
-        "available": True,
-        "banks": {key: bank_snapshot(name, api_key=api_key) for key, name in banks},
-    }
+        return {"available": False, "banks": {}, "failures": {}}
+    snapshots: dict = {}
+    failures: dict[str, list[str]] = {}
+    for key, name in banks:
+        errors: list[str] = []
+        snapshots[key] = bank_snapshot(name, api_key=api_key, errors=errors)
+        if errors:
+            failures[key] = errors
+    return {"available": True, "banks": snapshots, "failures": failures}

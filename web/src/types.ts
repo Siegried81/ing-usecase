@@ -456,11 +456,17 @@ export interface BankReputation {
   /** Every headline behind a theme's count, for the hover popup. */
   theme_headlines: Record<string, ReputationHeadline[]>;
   notable_headlines: ReputationHeadline[];
+  /** Requests that failed while this snapshot was built: its counts are a lower bound. */
+  fetch_errors?: string[];
 }
 
 export interface ReputationPayload {
   available: boolean;
+  /** null = no result (every request failed, or classification failed). A real zero
+   *  is a snapshot with headline_count 0. */
   banks: Record<string, BankReputation | null>;
+  /** Why a bank is null or incomplete. A bank absent here was fully fetched. */
+  failures?: Record<string, string[]>;
 }
 
 /** Comparator/geo_trends.py - Google Trends by Belgian region, a

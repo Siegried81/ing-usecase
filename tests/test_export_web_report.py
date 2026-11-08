@@ -78,7 +78,7 @@ def test_every_bank_carries_personas_and_an_ai_score(report):
 
 
 def test_reputation_is_an_honest_not_configured_state_without_a_key(report):
-    assert report["reputation"] == {"available": False, "banks": {}}
+    assert report["reputation"] == {"available": False, "banks": {}, "failures": {}}
 
 
 # geo_trends.py's output file is optional and rate-limited to

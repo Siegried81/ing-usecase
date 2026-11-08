@@ -38,7 +38,7 @@ targets.yaml → robots gate → capture (static / headless / headful)
 | Human judgement | **one judged sheet**, one named rater, 13 rubric features |
 | Capture methods | 45 headless, 6 headful, **zero** manual-only |
 | Labelling model | `deepseek/deepseek-flash` on 49 rows, `groq/openai/gpt-oss-120b` on 2 (fallback, recorded not silent) |
-| Tests | **502 passing**, no network — every socket is blocked in `tests/conftest.py` |
+| Tests | **510 passing**, no network: every socket is blocked in `tests/conftest.py` |
 | CI | `.github/workflows/tests.yml` — ruff (pyflakes + whitespace), pytest, schema-freeze check, data-quality gate, plus a React type-check and build |
 
 ## Quick start
@@ -143,7 +143,7 @@ scripts/                         run_collection, run_analysis, export_web_report
                                  check_data_quality, deterministic re-derive scripts
 web/                             React business UI
 streamlit_app.py                 earlier dashboard; superseded by the React operator tabs
-tests/                           502 tests, network blocked
+tests/                           510 tests, network blocked
 ```
 
 ## Known open items
