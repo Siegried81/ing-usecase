@@ -228,8 +228,12 @@ Both optional signals degrade instead of failing:
   `available: false` and the tab says so.
 
 `available: true` on the reputation block means *a key is configured*, not that
-articles were returned — a working key with a thin 90-day window yields an empty
-bank snapshot rather than a false "not configured".
+articles were returned. A bank whose requests were all answered but matched
+nothing gets a snapshot with `headline_count: 0`: that is a real zero. A bank
+whose requests all failed (401, 429, timeout) or whose classification failed is
+`null`, and `failures` names the reason per bank. A snapshot built while only some
+requests failed is kept, lists them in `fetch_errors`, and is not cached: its
+counts are a lower bound.
 
 ## Housekeeping
 

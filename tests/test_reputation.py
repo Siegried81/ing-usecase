@@ -194,20 +194,92 @@ def test_bank_snapshot_reuses_a_same_day_cached_result_without_refetching():
     assert classify_mock.call_count == 1
 
 
+def _failing_fetch(*_args, errors=None, **_kwargs):
+    """A fetch_headlines stand-in whose every request failed."""
+    errors.append("newsapi.org/en: HTTP 401")
+    return []
+
+
 def test_bank_snapshot_does_not_cache_a_failed_fetch():
-    # A None (no headlines, or the fetch/classify failed - bank_snapshot cannot tell
-    # which) must never be cached: caching it would freeze a quota outage into a
-    # permanent "nothing found" for the rest of the day.
-    with patch("comparator.reputation.fetch_headlines", return_value=[]):
-        assert reputation.bank_snapshot("ING", api_key="fake-key") is None
+    # Caching a failed fetch would freeze a quota outage into a permanent
+    # "nothing found" for the rest of the day.
+    errors: list[str] = []
+    with patch("comparator.reputation.fetch_headlines", side_effect=_failing_fetch):
+        assert reputation.bank_snapshot("ING", api_key="fake-key", errors=errors) is None
+    assert errors == ["newsapi.org/en: HTTP 401"]
     assert reputation._load_cache() == {}
+
+
+class _StatusResponse(_FakeResponse):
+    def __init__(self, status, payload=None):
+        super().__init__(payload or {"articles": []})
+        self.status_code = status
+
+    def raise_for_status(self):
+        if self.status_code >= 400:
+            raise requests.HTTPError(response=self)
+
+
+def test_a_rejected_key_and_a_real_zero_no_longer_look_the_same():
+    with patch("comparator.reputation.requests.get", return_value=_StatusResponse(401)):
+        failed = reputation.build_dashboard([("ing", "ING")], api_key="0" * 32)
+    with patch("comparator.reputation.requests.get", return_value=_StatusResponse(200)):
+        quiet = reputation.build_dashboard([("ing", "ING")], api_key="0" * 32)
+    assert failed["banks"]["ing"] is None
+    assert failed["failures"]["ing"] == [f"newsapi.org/{lang}: HTTP 401" for lang in ("en", "fr", "nl")]
+    assert quiet["failures"] == {}
+    assert quiet["banks"]["ing"]["headline_count"] == 0
+    assert set(quiet["banks"]["ing"]["themes"].values()) == {0}
+    assert quiet["banks"]["ing"]["fetch_errors"] == []
+
+
+def test_a_connection_error_is_recorded_too():
+    errors: list[str] = []
+    with patch("comparator.reputation.requests.get", side_effect=requests.ConnectionError("down")):
+        assert reputation.fetch_headlines("ING", "0" * 32, errors=errors) == []
+    assert errors == [f"newsapi.org/{lang}: ConnectionError" for lang in ("en", "fr", "nl")]
+
+
+def test_a_real_zero_skips_the_classifier_and_is_cached():
+    with patch("comparator.reputation.requests.get", return_value=_StatusResponse(200)),          patch("comparator.reputation._call_llm") as llm:
+        snapshot = reputation.bank_snapshot("ING", api_key="0" * 32)
+    llm.assert_not_called()
+    assert snapshot["headline_count"] == 0
+    assert reputation._load_cache()["ING"]["snapshot"] == snapshot
+
+
+def test_a_partial_failure_is_flagged_and_not_cached():
+    # en answers, fr and nl hit the rate limit: the counts are a lower bound,
+    # and caching them would serve the thinned numbers all day.
+    def get(_url, params, **_kwargs):
+        if params["language"] == "en":
+            return _StatusResponse(200, {"articles": [
+                {"title": "ING opens office", "url": "https://www.lesoir.be/1"}]})
+        return _StatusResponse(429)
+
+    payload = '{"theme_headlines": {"other": ["ING opens office"]}, "notable_headlines": []}'
+    with patch("comparator.reputation.requests.get", side_effect=get),          patch("comparator.reputation._call_llm", return_value=(payload, "test/model")):
+        dashboard = reputation.build_dashboard([("ing", "ING")], api_key="0" * 32)
+    snapshot = dashboard["banks"]["ing"]
+    assert snapshot["headline_count"] == 1
+    assert snapshot["fetch_errors"] == ["newsapi.org/fr: HTTP 429", "newsapi.org/nl: HTTP 429"]
+    assert dashboard["failures"]["ing"] == snapshot["fetch_errors"]
+    assert reputation._load_cache() == {}
+
+
+def test_a_failed_classification_is_named_as_such():
+    errors: list[str] = []
+    with patch("comparator.reputation.fetch_headlines",
+               return_value=[{"title": "ING launches new app", "url": "https://www.lesoir.be/1"}]),          patch("comparator.reputation.classify_headlines", return_value=None):
+        assert reputation.bank_snapshot("ING", api_key="fake-key", errors=errors) is None
+    assert errors == ["classification failed"]
 
 
 def test_build_dashboard_is_unavailable_without_a_key(monkeypatch):
     monkeypatch.delenv("NEWSAPI_KEY", raising=False)
     monkeypatch.delenv("NEWSAPI_AI_KEY", raising=False)
     dashboard = reputation.build_dashboard([("ing", "ING")])
-    assert dashboard == {"available": False, "banks": {}}
+    assert dashboard == {"available": False, "banks": {}, "failures": {}}
 
 
 def test_build_dashboard_covers_every_bank_when_a_key_is_present():

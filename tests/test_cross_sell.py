@@ -47,7 +47,7 @@ def test_score_bank_is_none_when_the_column_is_missing():
     assert cross_sell.score_bank(rows, fd) is None
 
 
-def test_score_bank_is_none_when_every_page_cross_sells_nothing(fd):
+def test_score_bank_is_zero_when_every_page_cross_sells_nothing(fd):
     rows = pd.DataFrame({"cross_sold_products": [format_list([]), format_list([])]})
     # An explicit empty list still counts as "measured, ratio 0",
     # not "unmeasured" - dropna() keeps it, so the mean is 0.0, not None.
@@ -113,3 +113,39 @@ def test_never_paired_flags_a_thin_family_as_insufficient_data(fd):
     result = cross_sell.never_paired(matrix, page_counts)
     assert result["confirmed"] == []
     assert ("pension", "mortgage") in result["insufficient_data"]
+
+
+def _round_trip(tmp_path, fd, rows: list[dict]) -> pd.DataFrame:
+    """Write rows to CSV and read them back the way every real caller does."""
+    from comparator.schema import coerce_types
+
+    path = tmp_path / "rows.csv"
+    pd.DataFrame(rows).to_csv(path, index=False)
+    return coerce_types(pd.read_csv(path), fd)
+
+
+def test_a_model_extracted_empty_list_survives_the_csv_as_a_zero(tmp_path, fd):
+    # The extractor always returns a list, so a blank cell on a row that
+    # carries an extraction_model is the model saying "none", not "not judged".
+    rows = _round_trip(tmp_path, fd, [
+        {"bank": "argenta", "extraction_model": "deepseek/deepseek-flash",
+         "cross_sold_products": format_list([])},
+    ])
+    assert rows["cross_sold_products"].iloc[0] == []
+    assert cross_sell.score_all(rows, fd) == {"argenta": 0.0}
+
+
+def test_a_judged_empty_page_pulls_the_bank_mean_down(tmp_path, fd):
+    rows = _round_trip(tmp_path, fd, [
+        {"bank": "ing", "extraction_model": "m", "cross_sold_products": format_list(["insurance"])},
+        {"bank": "ing", "extraction_model": "m", "cross_sold_products": format_list([])},
+    ])
+    assert cross_sell.score_all(rows, fd)["ing"] == pytest.approx(0.5 / _possible(fd), abs=1e-3)
+
+
+def test_a_blank_list_without_an_extraction_model_stays_unjudged(tmp_path, fd):
+    rows = _round_trip(tmp_path, fd, [
+        {"bank": "vdk", "extraction_model": None, "cross_sold_products": None},
+    ])
+    assert rows["cross_sold_products"].iloc[0] is None
+    assert cross_sell.score_all(rows, fd) == {"vdk": None}

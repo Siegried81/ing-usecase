@@ -126,7 +126,31 @@ def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
             out[name] = out[name].map(lambda v: None if _is_missing(v) else parse_list(v))
         else:
             out[name] = out[name].astype("string")
-    return out
+    return _restore_model_empty_lists(out, fd)
+
+
+def _restore_model_empty_lists(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
+    """Read a blank model_assisted list as [] on rows the model actually ran on.
+
+    The CSV cannot tell an empty list from a missing one: write_dataset writes
+    both as a blank cell. For rubric lists that blank must stay "not judged"
+    (see coerce_types). A model_assisted list is different: the structured call
+    either returns every field, lists defaulting to [], or raises, and
+    extraction_model is written only when it returned. So a blank on a row with
+    an extraction_model is the model saying "none". Read as missing, it dropped
+    those pages from cross_sell's per-bank mean and left four banks with no
+    score at all where the measured answer is 0.0.
+    """
+    if "extraction_model" not in df.columns:
+        return df
+    ran = df["extraction_model"].notna()
+    for feature in fd.features:
+        if feature.is_list and feature.extraction == "model_assisted" and feature.name in df.columns:
+            blank = ran & df[feature.name].isna()
+            if blank.any():
+                df.loc[blank, feature.name] = pd.Series([[] for _ in range(int(blank.sum()))],
+                                                        index=df.index[blank], dtype=object)
+    return df
 
 
 def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> ValidationReport:

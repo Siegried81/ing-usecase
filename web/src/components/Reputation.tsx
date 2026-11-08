@@ -75,8 +75,8 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
         Headline themes say what a bank is being written about. They are context
         about the bank, never evidence that a page or a campaign performed — no
         performance data exists in this project, so nothing here shows how well a
-        campaign is doing. A bank with no themes listed either had no matching
-        headlines or could not be fetched; the two look the same from here.
+        campaign is doing. "0 headlines" means every request was answered and
+        nothing matched; a bank that could not be fetched says so, with the reason.
       </p>
       <div className="banks">
       {entries.map(([key, snapshot]) => (
@@ -85,11 +85,16 @@ export function Reputation({ reputation }: { reputation: Report["reputation"] })
             <span className="bank-name">{key}</span>
           </div>
           {!snapshot ? (
-            <div style={{ fontSize: 12.5, color: "var(--ink-3)" }}>no headlines recorded</div>
+            <div style={{ fontSize: 12.5, color: "var(--ink-3)" }}>
+              no data: {(reputation.failures?.[key] ?? []).join("; ") || "nothing could be fetched or classified"}
+            </div>
           ) : (
             <>
               <div style={{ fontSize: 12.5, color: "var(--ink-3)", marginBottom: 8 }}>
                 {snapshot.headline_count} headline{snapshot.headline_count === 1 ? "" : "s"} scanned
+                {snapshot.fetch_errors && snapshot.fetch_errors.length > 0
+                  ? ` (incomplete, failed: ${snapshot.fetch_errors.join("; ")})`
+                  : ""}
               </div>
               {Object.entries(snapshot.themes)
                 .filter(([, count]) => count > 0)

@@ -353,12 +353,16 @@ def main() -> int:
     if not reputation_dashboard["available"]:
         print("  NEWSAPI_KEY not set - skipped. Nothing else is affected.")
     else:
+        failures = reputation_dashboard.get("failures", {})
         for bank, snapshot in reputation_dashboard["banks"].items():
             if snapshot is None:
-                print(f"  {bank:<20} no headlines found")
+                # None is never "no headlines": a real zero has a snapshot.
+                reason = "; ".join(failures.get(bank, [])) or "no result"
+                print(f"  {bank:<20} NO DATA ({reason})")
             else:
                 themes = ", ".join(f"{t}={c}" for t, c in snapshot["themes"].items() if c)
-                print(f"  {bank:<20} {snapshot['headline_count']} headlines - {themes or 'no theme detected'}")
+                partial = " [INCOMPLETE: some requests failed]" if snapshot.get("fetch_errors") else ""
+                print(f"  {bank:<20} {snapshot['headline_count']} headlines - {themes or 'no theme detected'}{partial}")
         (args.outdir / "reputation.json").write_text(
             json.dumps(reputation_dashboard, indent=2, ensure_ascii=False), encoding="utf-8")
 
