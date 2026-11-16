@@ -75,7 +75,11 @@ def _distinctive(bank: str, df: pd.DataFrame, fd: FeatureDictionary, n: int = SI
     if bank not in z.index:
         return []
     row = z.loc[bank].dropna()
-    return [(name, float(row[name])) for name in row.abs().sort_values(ascending=False).head(n).index]
+    # Binary features often share the exact same |z|; an unstable sort would
+    # reorder them, or swap one across the top-n cut, between runs on the same
+    # data. Ties are broken by feature name.
+    ranked = sorted(row.index, key=lambda name: (-abs(row[name]), name))
+    return [(name, float(row[name])) for name in ranked[:n]]
 
 
 def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = None, *, tier: str | None = None) -> dict:

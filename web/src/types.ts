@@ -662,7 +662,8 @@ export interface Report {
   deckClaims: { id: string; bank: string; claim: string; verdict: string; evidence: string }[];
   limitations: { blocking: string[]; material: string[]; standing: string[] };
   validation: { ok: boolean; warnings: string[] };
-  dataQuality: DataQuality;
+  /** Absent from a report.json exported before the data-quality scorecard. */
+  dataQuality?: DataQuality;
   generated: GeneratedCampaign[];
   trends: TrendsSummary | null;
   searchInterestLessons: SearchInterestLessons | null;

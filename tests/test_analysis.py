@@ -623,3 +623,33 @@ def test_category_comparison_is_empty_not_a_crash_when_a_side_is_missing(df, fd)
     one_sided["bank_category"] = "traditional"
     out = category_comparison(one_sided, fd)
     assert out.empty and "effect_size_d" in out.columns
+
+
+def test_category_comparison_breaks_effect_size_ties_by_feature_name(df, fd):
+    """Equal |d| must not be ordered by an unstable sort: the exporter keeps the
+    top 10, so an arbitrary tie order decides which feature is published at all.
+    Six boolean features are given identical values, hence an exact tie."""
+    tied = sorted(["senior_preretirement_targeting", "rate_shown", "aida_interest",
+                   "people_present", "hero_image_present", "first_time_investor_targeting"])
+    frame = df.copy()
+    source = frame[tied[0]]
+    for name in tied:
+        frame[name] = source
+    out = category_comparison(frame, fd)
+    order = [f for f in out["feature"] if f in tied]
+    assert order == tied
+    effect = out["effect_size_d"].abs().tolist()
+    assert effect == sorted(effect, reverse=True)
+
+
+def test_profile_signature_breaks_ties_by_feature_name(monkeypatch, fd):
+    """The signature keeps the top 3 |z|. Exact ties are routine with binary
+    features, and an unstable sort reordered them between runs on the same data."""
+    from comparator import profiles
+
+    names = ["rate_shown", "aida_interest", "people_present", "hero_image_present", "cta_above_fold"]
+    z = pd.DataFrame([[2.0, -2.0, 2.0, -2.0, 0.5]], index=["bank_x"], columns=names)
+    monkeypatch.setattr(profiles, "bank_vectors", lambda *a, **k: z)
+    monkeypatch.setattr(profiles, "standardise", lambda frame: frame)
+    out = profiles._distinctive("bank_x", pd.DataFrame(), fd, n=3)
+    assert [name for name, _ in out] == ["aida_interest", "hero_image_present", "people_present"]

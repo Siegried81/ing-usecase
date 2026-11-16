@@ -15,9 +15,9 @@ The dictionary defines 104 features. The comparisons here use **33**. Nothing is
   - 18  provenance                 identify a page, do not describe a campaign
   -  4  free text / identifiers    no two pages share them
   -  8  within_language, mixed languages present not comparable across languages (comparability in the dictionary)
+  -  1  within_capture_window, >1 capture date rates move - valid for the capture date only (DR-05)
   -  5  withdrawn, measurement not the page the rule does not reproduce what the feature claims to measure
   - 27  categorical / list         not encoded - see note below
-  -  1  missing for some bank      cannot compare what one bank lacks
   -  8  no variation across banks  identical everywhere, carries no signal
   = 33  features used in this comparison
 ```
@@ -113,7 +113,7 @@ The two groups do not overlap: the most challenger-like incumbent sits at 0.41 a
 | total_image_area_ratio | 0.10 | 0.31 | 1.99 |
 | hero_image_area_ratio | 0.25 | 0.62 | 1.49 |
 | question_count | 20.71 | 5.75 | -1.44 |
-| expat_cross_border_targeting | 0.07 | 0.50 | 1.23 |
+| disclaimer_present | 0.93 | 0.50 | -1.23 |
 
 **What it cannot tell you.** A feature can separate the groups perfectly and still be irrelevant — the split is by business model, so anything that correlates with being a digital-first bank will show up here whether or not it is a communication choice.
 
