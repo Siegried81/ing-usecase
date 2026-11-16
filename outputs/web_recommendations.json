@@ -1,19 +1,52 @@
 {
-  "generated_at": "2026-11-16T13:34:19+00:00",
+  "generated_at": "2026-11-16T15:56:53+00:00",
   "model": "deepseek/deepseek-flash",
-  "summary": "ING's current-account pages sit in the traditional camp but lean towards the challengers: the offer is clearly stated, the layout is mobile-first and the desire score is maximal, so the core proposition is not the problem. What separates ING from the peer set is intensity — roughly four urgency markers per page against a peer mean of 0.64, five persuasion techniques against 1.67, and pages almost twice as long as peers, on a much brighter background. None of this is linked to any click, conversion or sale in the data, so every point below is a hypothesis to test, not a proven cause.",
+  "summary": "ING's current-account pages are the clearest and most mobile-first in the measured set, but they also carry far more pressure and persuasion than the market: roughly four urgency or deadline markers against a peer average of 0.6, five persuasion techniques against 1.7, and a page about twice as long as peers. The strengths (offer clarity, mobile-first design, desire-building) are worth protecting, while the urgency, 'free'-with-conditions and fast-sign-up claims are the biggest credibility risks. Every point below is a hypothesis to test: the dataset contains no click, conversion or sales data, spans six product families and three languages, and rests on a single judge's scores.",
   "recommendations": [
     {
       "id": "R1",
-      "title": "Cut urgency and deadline language down to near zero",
+      "title": "Strip back urgency and deadline language",
       "priority": "high",
-      "finding": "Urgency and deadline language is ING's single largest deviation from the market: 4.0 markers per page against a peer mean of 0.64, a gap of 3.69 standard deviations, and 2.5 standard deviations from the market overall. This is an automatic, countable measure rather than a judgement call, so the size of the gap is solid even though its effect on behaviour is unmeasured.",
-      "recommendation": "Audit every deadline, countdown and 'only until' phrasing on the current-account pages and keep at most one genuine, dated deadline per page. Where a deadline is not a real regulatory or product cut-off, replace it with a plain statement of the offer.",
+      "finding": "ING uses about 4 urgency or deadline markers per page against a peer average of 0.6, a gap of 3.69 standard deviations and the single largest difference in the comparison; it is also one of the three signals that most distinguishes ING from the market.",
+      "recommendation": "On the current-account pages, remove countdown and deadline phrasing (closing dates, 'only until', 'last chance') and keep at most one time-bound element per page, tied to a real, verifiable end date.",
       "features": [
         "urgency_marker_count"
       ],
       "page_targets": [
-        "index",
+        "compte-courant",
+        "ouvrir-compte",
+        "index"
+      ],
+      "basis": "analysis",
+      "reputation_context": null
+    },
+    {
+      "id": "R2",
+      "title": "Reduce the number of persuasion techniques stacked per page",
+      "priority": "high",
+      "finding": "ING pages combine five persuasion techniques on average versus 1.67 for peers (3.68 standard deviations above), the second-largest gap measured; the effect size is a rubric judgment by a single rater, so treat the direction as reliable and the exact size as indicative.",
+      "recommendation": "Pick one persuasion lever per page (for example a clear product benefit or a social-proof element) and delete the rest, so the argument for opening the account is not diluted by stacked pressure tactics.",
+      "features": [
+        "persuasion_lever_count"
+      ],
+      "page_targets": [
+        "compte-courant",
+        "ouvrir-compte",
+        "pourquoi-ing"
+      ],
+      "basis": "analysis",
+      "reputation_context": null
+    },
+    {
+      "id": "R3",
+      "title": "Make the conditions behind 'free' explicit",
+      "priority": "high",
+      "finding": "In 0.67 of ING's pages a 'free' claim carries conditions, against 0.23 for peers; this is a model-assisted measure, so verify the flagged instances manually before rewriting.",
+      "recommendation": "Where a free account, card or transfer is claimed, state the qualifying conditions (minimum deposit, salary transfer, age or package requirement) directly next to the claim rather than only in the legal small print.",
+      "features": [
+        "hidden_conditions_behind_free_claim"
+      ],
+      "page_targets": [
         "compte-courant",
         "ouvrir-compte",
         "jeunes"
@@ -22,70 +55,34 @@
       "reputation_context": null
     },
     {
-      "id": "R2",
-      "title": "Thin out the stacked persuasion techniques",
-      "priority": "high",
-      "finding": "ING uses 5.0 persuasion techniques per page where peers average 1.67, a gap of 3.68 standard deviations and a 2.5 standard deviation signature against the market. The count is rubric-scored by a single judge, so treat the size of the gap as indicative rather than exact, but the direction is consistent with the urgency finding.",
-      "recommendation": "Per page, pick one primary persuasive argument for the account pack and remove the secondary levers that repeat it — instead of stacking scarcity, social proof and reassurance in the same block, sequence them across the page or drop the weaker ones.",
-      "features": [
-        "persuasion_lever_count"
-      ],
-      "page_targets": [
-        "compte-courant",
-        "ouvrir-compte",
-        "index"
-      ],
-      "basis": "analysis",
-      "reputation_context": null
-    },
-    {
-      "id": "R3",
-      "title": "Make the 'free account' claim carry its conditions visibly",
-      "priority": "high",
-      "finding": "On 0.67 of ING pages the free claim carries conditions attached, against a peer mean of 0.23 — a gap of 1.03 standard deviations. ING also already runs legal small print on 93% of traditional-bank pages versus 50% at challengers, so the conditions exist; the issue is how prominently they sit relative to the free headline.",
-      "recommendation": "Place the qualifying condition (minimum deposit, salary transfer, age or package requirement) in the same visual block as the word 'free', at readable size, rather than only in the footer small print. Keep the legal disclaimer, but stop relying on it as the only disclosure.",
-      "features": [
-        "hidden_conditions_behind_free_claim",
-        "disclaimer_present"
-      ],
-      "page_targets": [
-        "compte-courant",
-        "ouvrir-compte",
-        "jeunes",
-        "index"
-      ],
-      "basis": "analysis",
-      "reputation_context": null
-    },
-    {
       "id": "R4",
-      "title": "Shorten the current-account pages and lift the offer above the fold",
-      "priority": "medium",
-      "finding": "ING pages run to 11148.67 pixels against a peer mean of 6411.72, a gap of 1.42 standard deviations. The offer itself is not the weak point — clarity of the offer scores 5.0 against 3.97 — so length is adding volume rather than adding information.",
-      "recommendation": "Set a target page length close to the peer mean and cut the repeating blocks first: duplicated product explanations, restated conditions and secondary cross-sell panels. Keep the clearest offer statement in the opening screen and move supporting detail into expandable sections.",
+      "title": "Shorten the current-account page",
+      "priority": "high",
+      "finding": "ING pages measure about 11,100 pixels tall against a peer average of about 6,400, and carry 33 images against 19; length and image volume together make the page roughly twice the market norm.",
+      "recommendation": "Cut the page to the sections that carry the decision (offer, conditions, price, how to open) and move documentation, FAQ-style detail and secondary products to separate pages linked from the main one.",
       "features": [
         "page_height_px",
-        "value_prop_clarity"
+        "image_count"
       ],
       "page_targets": [
         "compte-courant",
-        "ouvrir-compte",
-        "index"
+        "ouvrir-compte"
       ],
       "basis": "analysis",
       "reputation_context": null
     },
     {
       "id": "R5",
-      "title": "Substantiate the fast digital sign-up promise",
+      "title": "Replace image volume with one strong opening visual",
       "priority": "medium",
-      "finding": "Promises of fast digital sign-up appear on 0.67 of ING pages against a peer mean of 0.15, but this is a model-assisted measure produced by more than one model, so part of the gap may be measurement rather than copy. The evidence is thin: the promise is frequent, its effect on sign-up completion is unknown, and no performance data exists in this study.",
-      "recommendation": "Keep the digital sign-up promise but attach a concrete, checkable proof point next to it — the number of steps, the documents needed, or the moment the account becomes usable — so the claim can be verified by the reader instead of asserted.",
+      "finding": "ING runs 33 images per page against a peer average of 19, while challenger pages put a much larger share of the page into a single opening image (0.62 against 0.25 at traditional banks) and show fewer elements above the fold (21.5 against 36.6).",
+      "recommendation": "Consolidate the image set into one dominant hero visual plus a small number of supporting visuals, and reduce the number of competing blocks visible before the first scroll so the opening screen has one clear focal point.",
       "features": [
-        "fast_digital_onboarding_claim"
+        "image_count",
+        "hero_image_area_ratio",
+        "above_fold_element_count"
       ],
       "page_targets": [
-        "ouvrir-compte",
         "compte-courant",
         "index"
       ],
@@ -94,34 +91,14 @@
     },
     {
       "id": "R6",
-      "title": "Consolidate many small images into fewer, larger visuals",
+      "title": "Put a concrete price or rate on the page",
       "priority": "medium",
-      "finding": "ING carries 33 images per page against a peer mean of 19, yet the share of the page that is imagery sits at 0.10 for traditional banks versus 0.31 for challengers, and the opening image at 0.25 versus 0.62. ING therefore has many images but a comparatively small visual footprint — the opposite of the challenger pattern.",
-      "recommendation": "Replace clusters of small decorative images with one dominant hero visual per page and let the remaining imagery support specific sections. Note that the opening-image measure is affected by cookie-consent overlays at three other banks, so compare ING's own pages before and after rather than relying on the cross-bank gap alone.",
+      "finding": "None of the traditional bank pages in the set shows a rate, while half of the challenger pages do (0.5); ING's profile places it between the two groups, so a visible figure is a plausible point of differentiation rather than a break with its positioning.",
+      "recommendation": "Show the account's headline price signal (monthly fee, or the fee waived under stated conditions) as a plain figure near the top of the page instead of describing the offer only qualitatively.",
       "features": [
-        "image_count",
-        "total_image_area_ratio",
-        "hero_image_area_ratio"
+        "rate_shown"
       ],
       "page_targets": [
-        "index",
-        "compte-courant",
-        "pourquoi-ing"
-      ],
-      "basis": "analysis",
-      "reputation_context": null
-    },
-    {
-      "id": "R7",
-      "title": "Review the very bright page surfaces",
-      "priority": "low",
-      "finding": "Page brightness measures 0.55 at ING against a peer mean of 0.34, and brightness is one of the strongest separators in the dataset: traditional banks average 0.43 and challengers 0.17. Read this as a comparison of our captures only — it is measured on a single rendering in a default light colour scheme, and dark-mode visitors may see something different.",
-      "recommendation": "Test a calmer surface treatment behind the hero and offer blocks — a lower-luminance background or a contained coloured section rather than an all-over bright field — and check it in both light and dark rendering before rolling it out.",
-      "features": [
-        "background_luminance"
-      ],
-      "page_targets": [
-        "index",
         "compte-courant",
         "ouvrir-compte"
       ],
@@ -129,55 +106,98 @@
       "reputation_context": null
     },
     {
-      "id": "R8",
-      "title": "Protect the mobile-first layout and the desire score while trimming",
-      "priority": "low",
-      "finding": "Two of ING's measured strengths are already at the ceiling: designed mobile-first scores 1.0 against a peer mean of 0.56, and makes the offer feel worth having scores 1.0 against 0.59. Clarity of the offer (5.0 vs 3.97) is also above peers. These are the assets to preserve while cutting urgency, persuasion stacking and length.",
-      "recommendation": "Treat mobile-first layout and the desirability of the offer as guardrails in the redesign: when removing blocks, remove them from the desktop presentation first and verify on mobile that the value proposition and the primary call to action are still the first things seen.",
+      "id": "R7",
+      "title": "Substantiate the fast digital sign-up promise",
+      "priority": "medium",
+      "finding": "ING claims fast digital sign-up on 0.67 of its pages against 0.15 for peers, but this is a model-assisted signal with a smaller gap (1.42 standard deviations) and the smallest evidence base of the gaps listed.",
+      "recommendation": "Back the promise with concrete, checkable detail on the page (number of steps, what the customer needs at hand, expected time to a usable account) or drop the speed claim where it cannot be supported.",
       "features": [
-        "mobile_first_design_signal",
-        "aida_desire",
-        "value_prop_clarity"
+        "fast_digital_onboarding_claim"
       ],
       "page_targets": [
-        "index",
+        "ouvrir-compte",
+        "compte-courant"
+      ],
+      "basis": "analysis",
+      "reputation_context": null
+    },
+    {
+      "id": "R8",
+      "title": "Protect the clarity and mobile-first strengths",
+      "priority": "low",
+      "finding": "ING scores 5.0 on offer clarity against a peer mean of 3.97, is designed mobile-first on every measured page (1.0 against 0.56) and makes the offer feel worth having on every page (1.0 against 0.59); these are the areas where it already leads.",
+      "recommendation": "Treat these as constraints on the changes above: any shortening or copy rewrite should keep one plainly stated value proposition and the mobile-first layout intact, and should be checked first on a phone-sized rendering.",
+      "features": [
+        "value_prop_clarity",
+        "mobile_first_design_signal",
+        "aida_desire"
+      ],
+      "page_targets": [
         "compte-courant",
         "ouvrir-compte",
-        "jeunes"
+        "index"
       ],
       "basis": "analysis",
       "reputation_context": null
     },
     {
       "id": "R9",
-      "title": "Do not build the page around a digital-leadership claim the news does not echo",
+      "title": "Test a calmer background against the current bright treatment",
       "priority": "low",
-      "finding": "Across the last 90 days ING has 2 headlines in this dataset and both fall under the theme 'other'; there is no innovation_digital coverage recorded for ING at all, while BNP Paribas Fortis has 1 innovation_digital headline and Revolut 1. If ING's pages lead with a digital-leadership framing, that framing is not being reinforced by what is being written about the bank right now. This is a hypothesis to verify, not evidence about page performance, and theme counts say nothing about how any page performed.",
-      "recommendation": "Keep digital sign-up as a functional, proof-backed message rather than a leadership claim, and test a version of the current-account page whose headline leads with the concrete account proposition instead of a broader digital positioning.",
+      "finding": "ING's pages measure 0.55 background luminance against a peer average of 0.34, brighter than both the traditional (0.43) and challenger (0.17) groups; brightness is measured on a single light-mode capture, so this describes our screenshot rather than every visitor's experience.",
+      "recommendation": "Run a page-level test of a lower-luminance background on one current-account page and compare engagement with the current treatment before rolling it out.",
+      "features": [
+        "background_luminance"
+      ],
+      "page_targets": [
+        "compte-courant"
+      ],
+      "basis": "analysis",
+      "reputation_context": null
+    },
+    {
+      "id": "R10",
+      "title": "Do not build campaign copy on digital-superiority claims",
+      "priority": "medium",
+      "finding": "ING's 20 headlines in the last 90 days are about financial results (7), product launch (6), other (5), esg_sustainability (1) and regulatory (1), and none falls under an innovation_digital theme. That is context about what the press covers, not evidence about any page; the link to page wording is a hypothesis to verify.",
+      "recommendation": "On the open-account and youth pages, replace broad digital-leadership framing with concrete, checkable descriptions of what happens when someone opens the account, and align product messaging with the product-launch themes the press is actually covering.",
       "features": [],
       "page_targets": [
-        "index",
+        "ouvrir-compte",
+        "jeunes",
+        "pourquoi-ing"
+      ],
+      "basis": "reputation",
+      "reputation_context": "Drawn from ING's 90-day theme counts: financial_results 7, product_launch 6, esg_sustainability 1, regulatory 1, other 5, with no innovation_digital theme present. Hypothesis only; theme counts describe topics, not performance."
+    },
+    {
+      "id": "R11",
+      "title": "Keep employment and earnings framing out of campaign copy",
+      "priority": "medium",
+      "finding": "Several of ING's results headlines pair a profit figure of close to 1.9 billion euros with the announcement of 400 job cuts worldwide, and one reports a Dutch court barring ING from closing Gazprom's accounts. This is news context only and says nothing about how any page performed; any effect on page reception is a hypothesis to verify.",
+      "recommendation": "Review the current-account and open-account pages for copy that leans on savings or price framing in a way that could read oddly against that coverage, and keep the campaign text focused on the product itself rather than on the bank's scale or cost position.",
+      "features": [],
+      "page_targets": [
         "compte-courant",
         "ouvrir-compte",
         "pourquoi-ing"
       ],
       "basis": "reputation",
-      "reputation_context": "ING's 90-day themes are 'other' with 2 headlines and no innovation_digital theme; the two notable headlines given are an analyst-favourites item and a piece on daily transfer limits across banks."
+      "reputation_context": "Drawn from ING's 20 headlines in the last 90 days and its financial_results theme count of 7, of which the notable headlines concern 400 job cuts announced alongside close to 1.9 billion euros of profit and the Gazprom court ruling."
     },
     {
-      "id": "R10",
-      "title": "Keep fee and transfer-limit disclosure factual, and separate it from urgency framing",
+      "id": "R12",
+      "title": "Avoid broad sustainability claims in the current-account copy",
       "priority": "low",
-      "finding": "One of only two ING headlines in the window sits in a cross-bank story about daily transfer limits, and the other is an analyst note; both are recorded under the theme 'other'. Practical payment conditions are therefore part of the current news context around the bank. Pairing limit and fee information with deadline or scarcity language risks amplifying an operational topic with unrelated framing. The link is a hypothesis to verify; theme counts are topics, not sentiment and not performance.",
-      "recommendation": "Place transfer limits, fees and eligibility in a plain, clearly labelled disclosure block on the current-account and open-account pages, position it close to the relevant product claim, and deliberately keep it free of countdowns, 'last chance' phrasing or promotional styling.",
+      "finding": "ING's themes include esg_sustainability with 1 headline, and that notable headline reports that ING is barely reducing fossil financing. That is a topic count, not a sentiment measure, and it is not evidence about any page; the recommendation is a hypothesis to verify.",
+      "recommendation": "Keep any environmental mention on the campaign pages narrow and factual — tied to a specific, verifiable product or scheme — rather than using general green framing that could be read against that coverage.",
       "features": [],
       "page_targets": [
-        "compte-courant",
-        "ouvrir-compte",
-        "contact"
+        "pourquoi-ing",
+        "compte-courant"
       ],
       "basis": "reputation",
-      "reputation_context": "ING has 2 headlines in the 90-day window, both under the theme 'other', one of which is a cross-bank article on daily transfer limits ('Vos virements limités à 5.000 € par jour')."
+      "reputation_context": "Drawn from ING's esg_sustainability theme count of 1 among 20 headlines in the last 90 days, whose notable headline concerns ING's fossil financing record."
     }
   ],
   "used_reputation": true
