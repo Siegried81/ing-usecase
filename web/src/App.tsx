@@ -306,7 +306,17 @@ export default function App() {
           title="How good is the underlying data"
           lede="Before any finding: the dataset scored on the standard data-quality dimensions. The checks that would block a build (completeness, validity, uniqueness) are separated from the ones that only warn, and accuracy is stated as not measurable here rather than invented."
         >
-          <DataQualityPanel dq={report.dataQuality} />
+          {/* A report.json exported before the scorecard existed has no
+              dataQuality. The panel would throw on it and blank the whole app,
+              so the section says the snapshot is stale instead. */}
+          {report.dataQuality ? (
+            <DataQualityPanel dq={report.dataQuality} />
+          ) : (
+            <div className="card" style={{ color: "var(--ink-2)" }}>
+              This report.json was exported before the data-quality scorecard existed. Re-run{" "}
+              <code>scripts/export_web_report.py</code> to include it.
+            </div>
+          )}
         </Section>
 
         <Section

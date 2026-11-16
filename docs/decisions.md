@@ -1222,3 +1222,34 @@ current_account_pack` reproduces the published `cross_sell_score.csv` byte for
 byte. No published figure moves; the code had drifted away from them.
 
 Tests 502 passed before these two fixes, 510 after.
+
+**2026-11-16, tied effect sizes are ranked by feature name.** `category_comparison`
+sorted on |d| with pandas' default quicksort, which is unstable. On the
+current-account family three features tie exactly at |d| = 1.1547
+(`first_time_investor_targeting`, `institutional_trust_signal_present`,
+`people_present`) across the exporter's top-10 cut, so the published list
+depended on sort internals: the September export showed
+`institutional_trust_signal_present`, a November re-export of the same data showed
+`first_time_investor_targeting`. Ties now break alphabetically, which keeps
+`first_time_investor_targeting` and drops the other two. No effect size changes;
+what changes is that the cut is reproducible. It still cuts through a tie, and
+whether the separation list should extend to include every feature tied at the
+cut is an open choice. The same tie sits at the 8-row cut of the chart 3 table in
+`charts.md` (`disclaimer_present` and `expat_cross_border_targeting`, |d| = 1.2344);
+it now shows `disclaimer_present`.
+
+`profiles._distinctive` had the same unstable sort. Revolut's signature has two
+features tied at |z| = 2.4495 inside its top 3, and their order flipped between
+runs; it now follows the same rule, which restores the published order.
+`export_web_report.py` and `run_analysis.py` write the dataset path with forward
+slashes, so a run on Windows no longer shows a false diff.
+
+`outputs/` was regenerated with `run_analysis.py --dataset
+data/processed/campaigns_scored.csv --product-family current_account_pack`. Beyond
+the tie order, two changes catch up with earlier commits that never re-ran it:
+`rate_value_pct` is reported as excluded for spanning several capture dates rather
+than as missing (2026-09-28), and DQ validity checks 3,266 values instead of
+3,243, the 23 judged-empty `cross_sold_products` lists now read as `[]`
+(2026-11-08). No score moves.
+
+Tests 510 passed before, 512 after.

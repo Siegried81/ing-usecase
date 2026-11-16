@@ -115,7 +115,7 @@ def main() -> int:
     print(dq.render())
     pd.DataFrame(dq.as_rows()).to_csv(args.outdir / "dq_scorecard.csv", index=False)
     (args.outdir / "dq_report.md").write_text(
-        dq_markdown(dq, dataset=str(args.dataset), synthetic=synthetic), encoding="utf-8")
+        dq_markdown(dq, dataset=args.dataset.as_posix(), synthetic=synthetic), encoding="utf-8")
 
     # LLM-generated rows are scored, never mixed into the bank comparison.
     banks_df = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
@@ -301,7 +301,7 @@ def main() -> int:
         deviations=deviations if deviations is not None else pd.DataFrame(
             columns=["feature", "dimension", f"{args.focus}_value", "peer_mean", "gap_sd"]),
         comparison=comparison, distances=distances, clusters=clusters, claims=claims,
-        focus=args.focus, dataset_path=str(args.dataset),
+        focus=args.focus, dataset_path=args.dataset.as_posix(),
         n_pages=len(banks_df), n_banks=int(banks_df["bank"].nunique()),
         synthetic=synthetic, accounting=accounting,
     )

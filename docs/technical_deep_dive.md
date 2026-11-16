@@ -287,14 +287,14 @@ specific wrong capture it fixes.
 
 ## 4. Testing and CI
 
-**510 tests, no network.** How many run depends on which optional dependencies
+**512 tests, no network.** How many run depends on which optional dependencies
 are installed, so the count is given per environment:
 
 | Environment | Result |
 |---|---|
-| CI test job (`requirements.txt` + `-streamlit` + `-geo`, no `web/dist`) | 509 passed, 1 skipped |
-| Same, with `web/dist` built | 510 passed |
-| `requirements.txt` only, no `web/dist` | 486 passed, 3 skipped |
+| CI test job (`requirements.txt` + `-streamlit` + `-geo`, no `web/dist`) | 511 passed, 1 skipped |
+| Same, with `web/dist` built | 512 passed |
+| `requirements.txt` only, no `web/dist` | 488 passed, 3 skipped |
 
 Each skip is a test that needs something optional which is absent: `pytrends`
 (`requirements-geo.txt`), `streamlit` (`requirements-streamlit.txt`), and a built

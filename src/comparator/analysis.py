@@ -630,7 +630,13 @@ def category_comparison(
     if out.empty:  # fewer than two pages on one side: nothing to rank
         return pd.DataFrame(columns=["feature", "dimension", "traditional_mean", "challenger_mean",
                                      "difference", "effect_size_d", "n_traditional", "n_challenger"])
-    return out.reindex(out["effect_size_d"].abs().sort_values(ascending=False).index).reset_index(drop=True)
+    # Exact ties are common here (binary features over groups of 14 and 4 share
+    # the same |d|), and callers keep only the top N. A plain sort_values is an
+    # unstable quicksort, so which tied feature makes the cut could change
+    # between runs on the same data. Ties are broken by feature name instead.
+    out["_abs_d"] = out["effect_size_d"].abs()
+    out = out.sort_values(["_abs_d", "feature"], ascending=[False, True], kind="mergesort")
+    return out.drop(columns="_abs_d").reset_index(drop=True)
 
 
 @dataclass

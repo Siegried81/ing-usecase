@@ -266,7 +266,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
 
     report = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "dataset": str(dataset),
+        "dataset": dataset.as_posix(),
         "scope": {
             "product_family": scope.family,
             "product_family_label": FAMILY_NAMES.get(scope.family, scope.family or "All families"),
@@ -655,7 +655,7 @@ def build_operations(dataset: Path, *, family: str | None) -> dict:
     columns, rows = _frame_rows(all_rows)
     return {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "dataset": str(dataset),
+        "dataset": dataset.as_posix(),
         "product_family": scope.family,
         "validation": {"ok": bool(validation.ok), "warnings": list(validation.warnings[:6])},
         "dictionary": _dictionary_payload(fd),
