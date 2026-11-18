@@ -1,0 +1,43 @@
+# One grouped PR per ecosystem per month, instead of one PR per package.
+# Security fixes are not delayed by this: GitHub opens those as soon as an
+# advisory is published, once security updates are on in the repo settings.
+version: 2
+updates:
+  # requirements.txt pins exact versions (`==`) for reproducibility (NFR-01).
+  # Dependabot raises those pins in the PR; nothing moves until it is merged.
+  - package-ecosystem: "pip"
+    directories: ["/", "/search_interest"]
+    schedule: { interval: "monthly" }
+    open-pull-requests-limit: 2
+    groups:
+      python-deps:   { patterns: ["*"], update-types: ["minor", "patch"] }
+      python-majors: { patterns: ["*"], update-types: ["major"] }
+
+  - package-ecosystem: "npm"            # web/package.json
+    directory: "/web"
+    schedule: { interval: "monthly" }
+    open-pull-requests-limit: 2
+    groups:
+      web-deps:   { patterns: ["*"], update-types: ["minor", "patch"] }
+      web-majors: { patterns: ["*"], update-types: ["major"] }
+
+  - package-ecosystem: "github-actions" # .github/workflows/*.yml
+    directory: "/"
+    schedule: { interval: "monthly" }
+    open-pull-requests-limit: 1
+    groups: { actions: { patterns: ["*"] } }
+
+  # The pins are tested on Python 3.11 (CI and both images use it), so the
+  # base images only take 3.11 patch updates, and the Node build stage stays on
+  # 22. Moving either is a deliberate change: bump CI and the Dockerfiles
+  # together.
+  - package-ecosystem: "docker"         # Dockerfile and services/Dockerfile
+    directories: ["/", "/services"]
+    schedule: { interval: "monthly" }
+    open-pull-requests-limit: 1
+    ignore:
+      - dependency-name: "python"
+        versions: [">=3.12"]
+      - dependency-name: "node"
+        versions: [">=23"]
+    groups: { docker: { patterns: ["*"] } }
