@@ -51,26 +51,6 @@ BANK_DISPLAY_LABELS = {
     "KEYTRADE": "Keytrade Bank",
 }
 
-BANK_SEGMENTS = {
-    "ING": "traditionnelle",
-    "KBC": "traditionnelle",
-    "CBC": "traditionnelle",
-    "BNPPF": "traditionnelle",
-    "ARGENTA": "traditionnelle",
-    "CRELAN": "traditionnelle",
-    "REVOLUT": "néobanque",
-    "N26": "néobanque",
-    "BUNQ": "néobanque",
-    "BELFIUS": "traditionnelle",
-    "BEOBANK": "traditionnelle",
-    "VDK": "traditionnelle",
-    "HELLOBANK": "traditionnelle",
-    # Branchless direct bank since 1998, not a fintech app like Revolut/N26/
-    # bunq - but it sits with them on the incumbent-vs-challenger axis (same
-    # classification as src/comparator/banks.py in the wider project).
-    "KEYTRADE": "néobanque",
-}
-
 # Product sheets: source of truth for terms, banks and languages.
 # Order here defines display order across the pipeline and the Streamlit app.
 # Each sheet has at most 5 terms (pytrends hard limit per request).

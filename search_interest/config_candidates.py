@@ -9,32 +9,6 @@ data/term_validation_report.md; the winning terms are then copied into
 config.PRODUCTS by hand after human review.
 """
 
-PRODUCT_LABEL_BASE = {
-    "compte_professionnel": "Compte professionnel / indépendant",
-    "compte_a_vue": "Compte à vue particulier",
-    "compte_epargne": "Compte épargne particulier",
-    "investissement_courtage": "Investissement / courtage en ligne",
-    "app_mobile": "Application mobile bancaire",
-    "carte_credit": "Carte de crédit",
-    "epargne_pension": "Épargne-pension",
-    "assurance_habitation": "Assurance habitation",
-    "pret_hypothecaire": "Prêt hypothécaire",
-}
-
-# Notes to carry into the exports (section 8 of the extension brief).
-PRODUCT_NOTES = {
-    ("ARGENTA", "investissement_courtage"): (
-        "L'offre d'investissement d'Argenta repose sur des fonds et des plans "
-        "d'investissement avec conseil, pas sur une plateforme de courtage "
-        "d'actions comparable a Bolero."
-    ),
-    ("CRELAN", "investissement_courtage"): (
-        "L'offre d'investissement de Crelan repose sur des fonds et des plans "
-        "d'investissement avec conseil, pas sur une plateforme de courtage "
-        "d'actions comparable a Bolero."
-    ),
-}
-
 # Section 3.3 - brand terms. "topic_required" means a bare string is only
 # ever used as a last-resort fallback (flagged ambiguous_string); a valid
 # Knowledge Graph topic must be tried first.
