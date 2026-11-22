@@ -427,13 +427,28 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
                     else:
                         route.fulfill(response=response)
 
+                def _goto(target):
+                    """page.goto(), repeated once if Chrome's error page cuts it short.
+
+                    Aborting a redirect hop makes Chrome commit chrome-error://chromewebdata/.
+                    On Linux that commit can land after the next goto() has started and
+                    interrupt it, so the same target is requested again once it has.
+                    """
+                    for attempt in range(3):
+                        try:
+                            return page.goto(target, timeout=timeout_ms, wait_until=wait_until)
+                        except Exception as exc:
+                            if attempt == 2 or "chrome-error://" not in str(exc) or redirect_to or refused:
+                                raise
+                            page.wait_for_timeout(100)
+
                 def _navigate():
                     """page.goto() that follows redirects one gated hop at a time."""
                     target = url
                     for _ in range(MAX_REDIRECTS + 1):
                         redirect_to.clear()
                         try:
-                            return page.goto(target, timeout=timeout_ms, wait_until=wait_until)
+                            return _goto(target)
                         except Exception:
                             if refused or not redirect_to:
                                 raise
