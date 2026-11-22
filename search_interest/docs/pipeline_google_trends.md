@@ -2,7 +2,7 @@
 
 Pipeline autonome (config, base SQLite, app Streamlit propres). Il n'importe rien de
 `src/comparator` ; le comparateur lit seulement `search_interest/export/` via
-`src/comparator/trends.py`. Le dossier `campaigns/` est orphelin (voir section 9).
+`src/comparator/trends.py`.
 
 ## 1. Objectif
 
@@ -97,5 +97,5 @@ ING+KBC comme ancres, relancer la collecte, puis le chaînage et l'export.
 ## 9. Hors périmètre
 
 Pas de données publicitaires, pas de niveau produit, pas de détection d'anomalies
-(retirée). `campaigns/` reposait sur cette détection : orphelin, non importable en
-l'état et limité à KBC/CBC/ING ; à retirer ou reconstruire.
+(retirée, et avec elle l'ancien dossier `campaigns/`, qui rapprochait des campagnes
+publiques de ces anomalies).

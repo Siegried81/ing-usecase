@@ -194,6 +194,16 @@ def test_the_product_phase_is_gone(resolver):
     assert hasattr(resolver, "resolve_brand")
 
 
+def test_the_schema_has_no_campaign_or_anomaly_tables(cfg):
+    """The anomaly detector and the campaign scoring built on it are gone."""
+    conn = sqlite3.connect(":memory:")
+    conn.executescript(Path(cfg.SCHEMA_PATH).read_text(encoding="utf-8"))
+    names = {r[0] for r in conn.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+    assert names
+    assert not [n for n in names if "campaign" in n or "anomal" in n]
+    assert not (SI / "campaigns").exists()
+
+
 # --- collection --------------------------------------------------------------
 def test_the_unfinished_last_week_is_not_stored(monkeypatch):
     import pandas as pd
