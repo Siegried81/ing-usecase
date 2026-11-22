@@ -626,7 +626,7 @@ def test_extraction_records_which_model_answered(monkeypatch):
     """The whole point of Decision 6: the row must say who labelled it."""
     _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
-    monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-chat")
+    monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
 
     def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         return __import__("json").dumps(_VALID_RESPONSE)
@@ -635,7 +635,7 @@ def test_extraction_records_which_model_answered(monkeypatch):
         _fields, model_id = extract_model_assisted_with_provenance(
             "text", image_count=1, has_animation=False, product_family="term_account"
         )
-    assert model_id == "deepseek/deepseek-chat"
+    assert model_id == "deepseek/deepseek-v4-pro"
 
 
 def test_fallback_is_recorded_not_silent(monkeypatch):
@@ -774,3 +774,19 @@ def test_chrome_exclusion_catches_a_menu_built_from_plain_divs():
 
     count, _ = _count_ctas(BeautifulSoup(html, "html.parser"))
     assert count == 1, "only the body CTA counts; the div-based menu is chrome"
+
+
+@pytest.mark.parametrize("url,thinking", [
+    ("https://api.deepseek.com/chat/completions", {"type": "enabled"}),
+    ("https://api.groq.com/openai/v1/chat/completions", None),
+])
+def test_only_deepseek_gets_thinking_spelled_out(url, thinking):
+    """Every pinned-model row was labelled with thinking on; the request says so
+    instead of leaning on DeepSeek's default. Other hosts don't know the field."""
+    from comparator.collection import llm_extractor
+
+    answer = Mock(status_code=200)
+    answer.json.return_value = {"choices": [{"message": {"content": "{}"}}]}
+    with patch.object(llm_extractor.requests, "post", return_value=answer) as post:
+        llm_extractor._call_openai_compatible(url, "fake-key", "some-model", "prompt")
+    assert post.call_args.kwargs["json"].get("thinking") == thinking

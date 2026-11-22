@@ -136,9 +136,9 @@ def test_parse_response_accepts_a_json_fence():
 
 
 def test_build_recommendations_drops_feature_ids_the_report_does_not_have(monkeypatch):
-    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (_RAW, "deepseek/deepseek-chat"))
+    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (_RAW, "deepseek/deepseek-flash"))
     result = build_recommendations(_REPORT)
-    assert result.model == "deepseek/deepseek-chat"
+    assert result.model == "deepseek/deepseek-flash"
     assert [r.id for r in result.recommendations] == ["R1", "R2"]
     # "not_a_feature" is not in the report, so it is not linkable evidence.
     assert result.recommendations[0].features == ["rate_shown"]
@@ -251,7 +251,7 @@ def test_build_recommendations_with_reputation_adds_context_and_marks_basis(monk
     def fake_llm(prompt, *, system_prompt, timeout):
         seen["prompt"] = prompt
         seen["system"] = system_prompt
-        return _RAW_REPUTATION, "deepseek/deepseek-chat"
+        return _RAW_REPUTATION, "deepseek/deepseek-flash"
 
     monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
     result = build_recommendations(_REPUTATION_REPORT, include_reputation=True)

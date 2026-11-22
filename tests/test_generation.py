@@ -178,8 +178,8 @@ def test_a_row_without_a_disclaimer_fails_the_guardrails(campaign):
 
 
 def test_generated_rows_carry_the_model_that_wrote_them(campaign):
-    row = score(campaign, variant="on_brand", model_id="deepseek/deepseek-chat")
-    assert row["extraction_model"] == "deepseek/deepseek-chat"
+    row = score(campaign, variant="on_brand", model_id="deepseek/deepseek-flash")
+    assert row["extraction_model"] == "deepseek/deepseek-flash"
 
 
 # --- evaluation --------------------------------------------------------------

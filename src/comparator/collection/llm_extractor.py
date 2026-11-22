@@ -224,17 +224,29 @@ def _groq_keys() -> list[str]:
 
 
 def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> str:
+    """One chat-completions call to an OpenAI-compatible provider; returns the answer text.
+
+    DeepSeek gets ``"thinking": {"type": "enabled"}`` spelled out. Thinking is
+    DeepSeek's documented default, which these calls relied on without saying
+    so; naming it keeps the labelling mode fixed for the pinned model (D6) if
+    DeepSeek changes that default. In thinking mode DeepSeek ignores
+    ``temperature``, so the 0 below has no effect there. Other providers don't
+    know the field and never get it.
+    """
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "temperature": 0,
+    }
+    if "api.deepseek.com" in url:
+        payload["thinking"] = {"type": "enabled"}
     response = requests.post(
         url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "temperature": 0,
-        },
+        json=payload,
         timeout=timeout,
     )
     response.raise_for_status()
