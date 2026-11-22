@@ -24,8 +24,6 @@ services:
     tmpfs:
       - /tmp
     volumes:
-      - streamlit_data:/app/data:ro
-      - streamlit_outputs:/app/outputs:ro
       - streamlit_cache:/app/.streamlit
     environment:
       - STREAMLIT_SERVER_HEADLESS=true
@@ -52,6 +50,8 @@ services:
       - /app/.cache
     volumes:
       - api_outputs:/app/outputs
-      - api_data:/app/data:ro
     environment:
       - PYTHONOPTIMIZE=2
+
+volumes:
+  streamlit_cache:

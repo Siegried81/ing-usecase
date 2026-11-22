@@ -10,7 +10,8 @@
 #     version read from requirements-dev.txt so it is pinned in one place;
 #   - debug ports bound to 127.0.0.1: reachable from this PC only;
 #   - source mounted on /app: edit, restart the service, no rebuild.
-# Plain `docker compose up` never reads this file.
+# Plain `docker compose up` never reads this file (nor docker/docker-compose.dev.yml:
+# dev = live source and debug logs, debug = debugpy attach).
 
 services:
   streamlit:

@@ -1,11 +1,16 @@
 # Runs the test suite and the schema freeze check on every push/PR, plus a
-# pyflakes-level lint (unused imports/variables, undefined names) and a job
+# ruff lint (rules in ruff.toml) and a job
 # that type-checks and builds the React UI, so a broken web/ cannot merge green.
 name: Tests
 
 on:
   push:
+    branches: [main]
   pull_request:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   test:
@@ -24,10 +29,10 @@ jobs:
         # and a broken dashboard could merge green.
         run: pip install -r requirements.txt -r requirements-streamlit.txt -r requirements-geo.txt
 
-      # F (pyflakes): dead code and undefined names. W: trailing whitespace and a
-      # missing final newline, invisible edits that show up as noise in PR diffs.
-      - name: Lint (pyflakes + whitespace rules)
-        run: pip install ruff==0.16.9 && ruff check --select F,W .
+      # Rules are selected in ruff.toml (pyflakes, whitespace, import order,
+      # pyupgrade, bugbear, comprehensions).
+      - name: Lint
+        run: pip install ruff==0.16.9 && ruff check .
 
       - name: Run tests
         run: python3 -m pytest tests/ -q

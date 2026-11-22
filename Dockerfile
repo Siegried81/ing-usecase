@@ -13,7 +13,7 @@
 # ---- stage 1: the React business UI -------------------------------------
 # Built here so the image carries a ready bundle and no Node at runtime.
 # Node 22 = current LTS (Node 20 reached end of life in April 2026).
-FROM node:22-slim AS web
+FROM node:22.21-slim AS web
 WORKDIR /build
 # package files first: this layer is cached until the lockfile itself changes.
 COPY web/package.json web/package-lock.json ./
