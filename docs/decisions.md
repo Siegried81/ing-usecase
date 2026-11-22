@@ -1,168 +1,200 @@
 # Decision log
 
-One entry per decision: context, choice, consequence. The history of each change
-is in git.
+One entry per decision that still holds: date, what, why. Oldest first. The
+history of each change is in git.
 
-## D5 - Dataset schema and file format
+## 2026-09-15: Dataset schema and file format
 
-**Context.** Analysis code, the rubric and the UI all depend on one column set.
-**Choice.** One CSV, one row per campaign page, provenance columns first;
-list-valued features (`palette_hex`, `accent_locations`, `persuasion_levers`) are
-pipe-separated. The dictionary (`config/feature_dictionary.yaml`) is frozen:
-additions pass; renames, removals, type changes, narrowed ranges or categories,
-tier demotions and tightened nullability fail.
-**Consequence.** Two guards: `tests/test_schema.py` (byte equality with
-`config/feature_dictionary.frozen.yaml`, catches accidental edits) and
-`scripts/check_schema_freeze.py` (the rule itself, names the feature). Byte
-equality alone is not the rule: it rejects an allowed addition and accepts a
-rename once both files are updated.
+One CSV, one row per campaign page, provenance columns first; list features
+(`palette_hex`, `accent_locations`, `persuasion_levers`) are pipe-separated.
+`config/feature_dictionary.yaml` is frozen: additions pass, renames, removals,
+type changes, narrowed ranges, tier demotions and tighter nullability fail.
+Two guards: `tests/test_schema.py` (byte equality with the frozen copy) and
+`scripts/check_schema_freeze.py` (the rule itself, which names the feature).
 
-## D6 - One pinned model for model-assisted features and generation
+## 2026-09-15: One pinned model for model-assisted features
 
-**Context.** About a quarter of the dictionary is model-assisted, and a silent
-provider fallback could label two banks with two different judges.
-**Choice.** DeepSeek `deepseek-flash` (`llm_extractor.DEEPSEEK_DEFAULT_MODEL`,
-overridable with `DEEPSEEK_MODEL`) is the pinned model, `temperature=0`, prompts
-in the repository. The request names thinking mode explicitly
-(`"thinking": {"type": "enabled"}`, DeepSeek only), so a change of DeepSeek's
-default cannot relabel new rows silently.
-**Consequence.** Other providers stay as a fallback, but each row records its model
-in `extraction_model` and `schema.validate()` warns on a mixed dataset. A model
-change means re-running all banks, not mixing. In thinking mode DeepSeek ignores
-`temperature`.
-**Open (user decision).** The 49 rows labelled before the explicit parameter may
-have been labelled without thinking. Re-run a sample of banks and compare the
-model-assisted features before mixing old and new rows.
+About a quarter of the dictionary is model-assisted, and a silent provider
+fallback could label two banks with two judges. DeepSeek `deepseek-flash`
+(`llm_extractor.DEEPSEEK_DEFAULT_MODEL`, `DEEPSEEK_MODEL` to override),
+`temperature=0`, prompts in the repository. The request names thinking mode
+(`"thinking": {"type": "enabled"}`) so a change of DeepSeek's default cannot
+relabel new rows. Each row records its model in `extraction_model`, and
+`schema.validate()` warns on a mixed dataset. A model change means re-running all
+banks. Open: the 49 DeepSeek rows were labelled before the explicit parameter;
+re-run a sample and compare before mixing old and new rows.
 
-## D7 - Name and gate the data-quality dimensions
+## 2026-09-19: Personas, AI Score, cross-sell, subscription framing
 
-**Context.** Validation signals were a flat error/warning list.
-**Choice.** `comparator/dq.py` scores completeness, validity, uniqueness,
-consistency and timeliness; `scripts/check_data_quality.py` gates CI on the first
-three (the others warn). Accuracy is not scored: it needs a trusted reference.
-Thresholds live in `dq.py`.
-**Consequence.** Output in `outputs/dq_scorecard.csv`, `outputs/dq_report.md` and
-the Data quality tab. The `schema.validate()` rules are reused, so "valid" has one
-definition.
+Additive features `target_personas` (8 values), `cross_sold_products` and
+`subscription_style_framing`, from the same structured call (no new LLM call).
+The AI Score (`ai_score.py`) has six axes, each a documented mean of existing
+features, `None` and never a fabricated 0 when data is missing. Nothing in it is
+model-scored. `innovation` is withdrawn (both inputs fail).
 
-## D8 - Scope: 14 banks, 6 product families, additions only
+## 2026-09-20: `rate_value_pct` needs a rate keyword
 
-**Context.** The set grew from a few banks to the Belgian retail market.
-**Choice.** 14 banks and 6 families (`other` was a mislabelled Belfius pension page
-and became `pension`). New banks enter through the freeze rule's addition path
-(`bank` enum, `BANK_CATEGORY`, `BRAND_COLOURS`, colours taken from each bank's own
-assets). Product pages are discovered from each bank's navigation and
-quality-gated before collection; non-product pages are dropped.
-**Consequence.** `run_collection.py` overwrites its output from the targets file
-as it stands: trimming `collection_targets.yaml` silently narrows the dataset.
+The number must have a rate keyword within 40 characters ("100% en ligne" is not a
+rate). Rate keywords match whole words. Rates move over time, so the feature is
+valid for one capture date and is excluded when pages span several.
 
-## D9 - Collection stays inside robots.txt
+## 2026-09-20: Regional search interest
 
-**Context.** One bank returned HTTP 503 to every headless client.
-**Choice.** `method: headful` per target launches a visible browser for that host
-only; `robots.txt` is still checked before every fetch. Per-target `wait_until` and
-`timeout_ms` handle sites that never reach `networkidle`.
-**Consequence.** No evasion beyond using a normal browser. Manual saves go through
-`scripts/import_captures.py`.
+`geo_trends.py` reads Google Trends by region (pytrends, `requirements-geo.txt`,
+outside CI). It shows where people look for a brand, not what a page says.
 
-## D10 - Single judged rubric sheet
+## 2026-09-21: Scope is 14 banks and 6 product families
 
-**Context.** An inter-rater layer existed, but the rubric is scored by one person.
-**Choice.** Remove the agreement/kappa tooling; `_consensus()` became
-`_single_value()`. Every judged column comes from that one sheet and a scored zero
-is explicit.
-**Consequence.** No inter-rater claim is made anywhere.
+New banks enter through the freeze rule's addition path (`bank` enum,
+`BANK_CATEGORY`, `BRAND_COLOURS`, colours taken from each bank's own assets,
+because a guessed hex makes `brand_colour_share` confidently wrong). Product
+pages come from each bank's navigation and are quality-gated before collection.
+`other` was a mislabelled Belfius pension page and became `pension`.
+`run_collection.py` overwrites its output from the targets file: trimming
+`collection_targets.yaml` silently narrows the dataset. A comparison is only valid
+within one `product_family` (DR-04).
 
-## D11 - Findings are hypotheses until CTR data arrives
+## 2026-09-21: Collection stays inside robots.txt
 
-**Context.** No campaign performance data exists here; ING is chasing CTR figures.
-**Choice.** The guardrail stands: no claim of effect. Reputation and Trends are
-context (attention, not performance); the model never writes from search interest,
-and the Trends anomaly detector was removed because it answered a product-level
-question on brand-level series.
-**Consequence.** If CTR arrives, it is a new input, not a restructuring.
+One bank returned HTTP 503 to every headless client. `method: headful` per target
+opens a visible browser for that host only, and robots.txt is still checked before
+every fetch, on every redirect hop (since 2026-11-22). `wait_until` and
+`timeout_ms` per target handle sites that never reach `networkidle`. Manual saves
+go through `scripts/import_captures.py`. No evasion beyond a normal browser (LC-04).
 
-## D12 - A measure that cannot rank is not a refutation
+## 2026-09-21: Anomaly detection removed from the Trends tab
 
-**Context.** `word_count_band` reads `long` for all 14 banks.
-**Choice.** `check_deck_claims()` returns **not testable** when the ranking column
-has a single distinct value. "Not applicable" is masked out of the AI Score trust
-axis instead of counted as a no. A slide row resting on one data point is dropped.
-**Consequence.** Three kickoff observations moved from "not supported" to "not testable".
+The z-score detector answered a product-level question on brand-level series:
+32% of flagged weeks came from two brands peaking at 2/100. The tab reports share
+of search, 52-week trajectory and rank stability instead. The campaign matching
+built on it (`search_interest/campaigns/`) was removed on 2026-11-22.
 
-## D13 - `cta_count` is withdrawn as a finding about ING
+## 2026-09-21: React is the main UI, Streamlit stays as the key-free dashboard
 
-**Context.** ING scored 1.0 against a peer mean of 6.18, the largest negative gap.
-**Choice.** The detector now counts distinct calls to action (skips `<nav>`,
-`<footer>` and landmarks). The stored capture was shown to hold the page's cards,
-so the gap came from the measure. `analysis.CAPTURE_INVALID_FEATURES` excludes the
-feature inside the analysis; hand-editing `report.json` is undone by the next run.
-**Consequence.** The run prints the withdrawal in its feature accounting. The
-feature is still collected but never compared.
+Two dashboards on the same files let figures go stale. Read-only views (Home,
+Profiles, Data, Rubric, Collection, Research) are in `web/`, fed by
+`scripts/export_web_report.py`. `streamlit_app.py` needs no key and is the Docker
+default. New views go to React first.
 
-## D14 - Scraper measures fixed at the source
+## 2026-09-21: Recommendations and generated site
 
-**Context.** Some features measured our method, not the pages.
-**Choice.** `rate_value_pct` requires a rate keyword within 40 characters of the
-number ("100% en ligne" is not a rate). `urgency_marker_count` also counts dated
-deadlines. `cross_sold_products` gained `insurance`, `credit_card`, `partner_perk`
-(pure addition) and that one column was re-derived from stored HTML with
-`scripts/rederive_cross_sold_products.py`.
-**Consequence.** The `fix_*`, `rederive_*` and `reextract_*` scripts read
-`data/raw/` snapshots, which are not versioned (see README).
+Recommendations are written from `report.json` only, and Trends is marked context,
+never a cause. The model never writes from search interest (2026-09-22). The site
+is built from the chosen recommendations, in parallel, by `scripts/serve_web.py`;
+an "explain" layer tags each section with the recommendations it implements.
+Regenerating the site needs an LLM key.
 
-## D15 - Personas, AI Score, cross-sell, subscription framing
+## 2026-09-21: External signals: news
 
-**Context.** A wider "AI Marketing Intelligence" brief; most ideas already existed.
-**Choice.** Additive features `target_personas` (8 values), `cross_sold_products`
-and `subscription_style_framing`, extracted by the same structured call (no new LLM
-call). The AI Score (`ai_score.py`) is a derived output with six axes, each a
-documented mean of existing features; `None`, never a fabricated 0, without data.
-**Consequence.** Nothing in the score is model-scored.
+Reputation reads newsapi.org (`NEWSAPI_KEY`) and newsapi.ai (`NEWSAPI_AI_KEY`) in
+English, French and Dutch. A failed fetch is `null`, never `headline_count: 0`,
+and a partial outage is not cached. Since 2026-11-22 only titles that were
+fetched count, and a headline counts once, under the first theme in `THEMES`.
 
-## D16 - External signals: geography and news
+## 2026-09-22: One judged rubric sheet
 
-**Choice.** Regional interest (`geo_trends.py`, pytrends in `requirements-geo.txt`,
-outside CI). Reputation reads newsapi.org (`NEWSAPI_KEY`) and newsapi.ai
-(`NEWSAPI_AI_KEY`) in English, French and Dutch. A failed fetch is `null`, never
-`headline_count: 0`, and a partial outage is not cached.
-**Consequence.** `headline_count: 0` means every request was answered and nothing
-matched.
+The rubric is scored by one person, so the agreement and kappa tooling was removed
+(`_consensus()` became `_single_value()`). Every judged column comes from that
+sheet and a scored zero is explicit. No inter-rater claim is made anywhere.
 
-## D17 - A model-extracted empty list is a zero
+## 2026-09-23: `background_luminance` is measured on the first screen
 
-**Context.** A blank CSV cell meant both "none" and "not judged".
-**Choice.** For model-extracted lists blank is a zero (the call returns every field
-or raises); for rubric lists blank stays "not judged".
-**Consequence.** Cross-sell scores exist again for Argenta, Beobank, CBC and VDK.
+It averaged the whole page strip, so on a long page it reported how much white
+body text there is. It now reads the first viewport (`first_screen_px`), for live
+captures and manual imports alike. The earlier "ING is darker than its peers"
+reading was wrong: ING is brighter (0.55 against 0.34). Colour features come from
+one light-scheme rendering; a visitor in dark mode sees something else.
 
-## D18 - Reproducible rankings
+## 2026-09-23: `urgency_marker_count` counts dated deadlines
 
-**Choice.** `category_comparison` breaks tied effect sizes by feature name. The
-`none` lever sentinel, never valid in the dictionary, was removed.
-**Consequence.** The exported top 10 is stable; it still cuts through a tie.
+A deadline written as a date ("avant le 11/10/2026") carries no keyword and scored
+0, while "offre temporaire" scored several. Dates count now, and deadline and rate
+keywords match whole words. All 14 banks were re-measured from the stored
+snapshots; only ING's pages moved (0.33 to 4.00).
 
-## D19 - React is the main UI, Streamlit stays as the key-free dashboard
+## 2026-09-23: `cta_count` is withdrawn as a finding about ING
 
-**Context.** Two dashboards reading the same files let figures go stale.
-**Choice.** The read-only views (Home, Profiles, Data, Rubric, Collection,
-Research) are in `web/`, fed by `scripts/export_web_report.py`. `streamlit_app.py`
-remains the dashboard that needs no key and is the Docker default (port 8506).
-**Consequence.** New views go to React first.
+ING scored 1.0 against a peer mean of 6.18. The stored capture holds the page's
+cards, so the gap came from the measure, and no counting rule held across 14 banks.
+`analysis.CAPTURE_INVALID_FEATURES` excludes it inside the analysis (editing
+`report.json` by hand is undone by the next run). It is still collected, never
+compared.
 
-## D20 - Recommendations and generated site
+## 2026-09-24: Measures that describe our method are withdrawn
 
-**Choice.** Recommendations are written from `report.json` only. The site is built
-from chosen recommendations, in parallel, by `scripts/serve_web.py`. An "explain"
-layer tags each section with the recommendations it implements, and prompts forbid
-copy about the recommendations themselves.
-**Consequence.** Regenerating the site needs an LLM key; its HTML is not versioned.
+`has_animation` and `animated_asset_count` read "this stylesheet declares an
+animation", not "this page moves". `has_comparison_table` reads "uses an HTML
+table": N26 and Revolut build the same comparison in CSS. Both are withdrawn from
+comparisons. `cross_sold_products` collapses insurance, cards and perks into
+`other`, so ING (8 to 14 add-ons) scores below bunq (3); widening the frozen
+taxonomy is a team decision, and `limitations.py` says so.
 
-## D21 - Captured and generated HTML is not versioned
+## 2026-09-25: A measure that cannot rank is not a refutation
 
-**Context.** 76 HTML files (bank page captures, generated site) weighed on the
-repository, and the captures are third-party material.
-**Choice.** `data/raw/` and `outputs/generated*/*.html` are git-ignored; derived
-JSON/CSV stay tracked.
-**Consequence.** Re-deriving features from raw pages needs a re-capture. Git
-history is not rewritten; a `git filter-repo` pass is a separate user decision.
+`word_count_band` reads `long` for all 14 banks. `check_deck_claims()` returns
+"not testable" when the ranking column has one distinct value. "Not applicable" is
+masked out of the AI Score trust axis instead of counted as a no. A slide row that
+rests on one data point is dropped.
+
+## 2026-10-05: The `none` persuasion lever is removed
+
+A `none` sentinel, never valid in the dictionary, stood in for "no lever". An empty
+list says it. Persuasion figures were re-measured without it.
+
+## 2026-11-05: Name and gate the data-quality dimensions
+
+`comparator/dq.py` scores completeness, validity, uniqueness, consistency and
+timeliness; `scripts/check_data_quality.py` gates CI on the first three, the others
+warn. Accuracy is not scored: it needs a trusted reference. Thresholds live in
+`dq.py`. Output: `outputs/dq_scorecard.csv`, `outputs/dq_report.md`, the Data
+quality tab. The `schema.validate()` rules are reused, so "valid" has one definition.
+
+## 2026-11-08: A model-extracted empty list is a zero
+
+A blank CSV cell meant both "none" and "not judged". For model-extracted lists
+blank is `[]` (the call returns every field or raises); for rubric lists blank
+stays "not judged". Cross-sell scores exist again for Argenta, Beobank, CBC and VDK.
+
+## 2026-11-16: Tied effect sizes are ranked by feature name
+
+`category_comparison` sorted ties unstably, so the published top 10 depended on
+sort internals. Ties now break alphabetically. The cut still falls inside a tie.
+
+## 2026-11-20: Simplicity axis on a tie, search_interest views from the config
+
+`ai_score.score_simplicity` averages tied readability modes instead of taking the
+alphabetical first (Beobank over all families: 1.25). The search_interest app lists
+every bank of `BANK_DISPLAY_LABELS` (7 of 8 views were empty) and its export counts
+banks and sheets from the config. Manual imports and `rederive_*` scripts read the
+snapshot like a fresh capture.
+
+## 2026-11-22: Scraper and render fixes from the line-by-line review
+
+Re-measured offline from the 51 stored snapshots into `data/processed/`: a word
+needs a letter or digit (40 pages lose up to 0.73% of words; readability and
+sentence length follow); nested disclaimer blocks count once; `section_count` is 0
+and not missing on a page without `<section>` (ING mean 1.0 to 0.57); capture-quality
+error phrases count only under 120 words; an empty page has no readability score.
+`render.py` counts only the visible part of a hero image and skips `<picture>`; the
+stored image-area ratios keep the old rule until the next collection. Every redirect
+hop is checked against robots.txt.
+
+## 2026-11-22: Generation and search_interest follow-ups
+
+`site_generator.generate_page` uses one fixed prompt with a bounded retry (the
+pattern of `llm_extractor.py`), then the deterministic page. `term_resolver.py`
+lost its product phase (any call raised `KeyError`) and no longer fails when five
+or more topics match. `store_long_format` drops the unfinished last Trends week.
+`PRODUCT_NOTES`, `PRODUCT_LABEL_BASE` and `BANK_SEGMENTS` are removed (nothing read
+them), and with `search_interest/campaigns/` the campaign tables of `schema.sql`.
+
+## 2026-11-22: Captures and demo site not versioned, ruff widened, compose without bind mounts
+
+`data/raw/` (210 captures, third-party material), `outputs/generated_site/` and
+`outputs/generated/*.html` are git-ignored; derived JSON and CSV stay tracked.
+Re-deriving features from raw pages needs a re-capture, and the UI says so when
+the demo site is absent. History is not rewritten: a `git filter-repo` pass is a
+separate decision. Ruff runs on the whole repository with `ruff.toml` (one config
+for local and CI). The main compose file has no bind mounts; `docker/docker-compose.dev.yml`
+adds them, and the health dashboard starts only with `--profile monitoring`.
+Ports are 8506, 8006 and 8606.
