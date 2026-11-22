@@ -1,11 +1,9 @@
 """Google Trends geographic breakdown, by Belgian region.
 
-The kickoff brief's "intérêt géographique" (geographic
-interest) axis was never built: the existing Google Trends work pulls search
-interest for geo=BE as a whole and never breaks it down by region, so there is
-no view of whether a bank's search interest concentrates in Brussels, Flanders
-or Wallonia. This makes its own pytrends calls directly, alongside the
-existing Trends work, to cover that gap.
+The kickoff brief's "intérêt géographique" (geographic interest) axis. The
+existing Google Trends work pulls search interest for geo=BE as a whole, so it
+cannot show whether a bank's search interest concentrates in Brussels, Flanders
+or Wallonia. This module makes its own pytrends calls to cover that.
 
 WHY A SEPARATE REQUIREMENTS FILE, NOT requirements.txt: pytrends is an
 unofficial, rate-limited Google Trends client this project has deliberately
@@ -27,10 +25,13 @@ import time
 
 import pandas as pd
 
+from comparator.banks import display_name
+
+# The nine banks with enough search volume to break down by region.
 BANK_DISPLAY_NAMES: dict[str, str] = {
-    "ing": "ING", "kbc": "KBC", "bnp_paribas_fortis": "BNP Paribas Fortis",
-    "argenta": "Argenta", "crelan": "Crelan", "belfius": "Belfius",
-    "revolut": "Revolut", "n26": "N26", "bunq": "bunq",
+    key: display_name(key)
+    for key in ("ing", "kbc", "bnp_paribas_fortis", "argenta", "crelan", "belfius",
+                "revolut", "n26", "bunq")
 }
 
 

@@ -4,8 +4,8 @@
 
 Before running the CI/CD pipeline, add these secrets to your GitHub repository (Settings → Secrets and variables → Actions):
 
-1. **`DOCKERHUB_USERNAME`** — Your Docker Hub username (e.g., `siegried`)
-2. **`DOCKERHUB_TOKEN`** — Docker Hub personal access token
+1. **`DOCKERHUB_USERNAME`**: Your Docker Hub username (e.g., `siegried`)
+2. **`DOCKERHUB_TOKEN`**: Docker Hub personal access token
    - Go to https://hub.docker.com/settings/security
    - Create a new token with read/write permissions
    - Copy and paste it as the secret
@@ -82,9 +82,9 @@ docker compose down -v
 
 | Service | Port | Purpose |
 |---------|------|---------|
-| **streamlit** | 8501 | Dashboard — reads committed data/outputs, no API key needed |
-| **api** | 8000 | FastAPI — recommendations, generated site, requires .env keys |
-| **dashboard** | 8080 | Health Monitor — real-time health checks for all services |
+| **streamlit** | 8501 | Dashboard: reads committed data/outputs, no API key needed |
+| **api** | 8000 | FastAPI: recommendations, generated site, requires .env keys |
+| **dashboard** | 8080 | Health Monitor: real-time health checks for all services |
 
 ## Health Dashboard
 
@@ -110,7 +110,7 @@ Simply navigate to http://localhost:8606 after running `docker compose up`.
 
 GitHub Actions automatically builds and pushes your image to Docker Hub.
 
-**Workflow: `.github/workflows/docker.yml`**
+**Workflow: `.github/workflows/publish.yml`**
 
 ### Triggers
 - **Push to `main` or `develop`** → builds and pushes as `latest` and `branch-name`
@@ -142,10 +142,10 @@ docker run -p 8506:8501 siegried/ing-comparator:latest
 ## Environment Variables
 
 Copy `.env.example` to `.env` and fill in:
-- `DEEPSEEK_API_KEY` / `GROQ_API_KEY` — LLM extraction
-- `OPENROUTER_API_KEY`, `CEREBRAS_API_KEY` — LLM fallbacks
-- `NEWSAPI_KEY` — bank reputation headlines
-- `SEMANTIC_SCHOLAR_API_KEY` — academic search
+- `DEEPSEEK_API_KEY` / `GROQ_API_KEY`, LLM extraction
+- `OPENROUTER_API_KEY`, `CEREBRAS_API_KEY`, LLM fallbacks
+- `NEWSAPI_KEY`: bank reputation headlines
+- `SEMANTIC_SCHOLAR_API_KEY`: academic search
 
 **Never commit .env to version control.**
 
@@ -163,11 +163,11 @@ docker compose ps
 
 ## Volumes
 
-- `streamlit_data` — shared data/ directory
-- `streamlit_outputs` — generated outputs/
-- `api_data` — data/ for API (read-only)
-- `api_outputs` — API-generated files
-- `streamlit_cache` — Streamlit cache directory
+- `streamlit_data`: shared data/ directory
+- `streamlit_outputs`: generated outputs/
+- `api_data`: data/ for API (read-only)
+- `api_outputs`: API-generated files
+- `streamlit_cache`: Streamlit cache directory
 
 Clear all with: `docker compose down -v`
 
@@ -210,7 +210,7 @@ docker compose build --no-cache
 ```
 
 ### .env not loaded in API container
-Ensure `.env` exists and `docker compose restart api` — env_file is read on container start.
+Ensure `.env` exists and `docker compose restart api`, env_file is read on container start.
 
 ### Slow first startup
 Playwright downloads Chromium (~200MB) on first build. Subsequent rebuilds are cached.
@@ -232,7 +232,7 @@ cp .env.example .env
 # 2. Start with dev overrides (hot reload)
 docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
 
-# 3. Edit files locally — they auto-reload in the container
+# 3. Edit files locally: they auto-reload in the container
 # (src/, config/, streamlit_app.py, etc.)
 
 # 4. View health dashboard
@@ -241,7 +241,7 @@ open http://localhost:8606
 # 5. Run tests in container
 docker compose exec streamlit python3 -m pytest tests/ -q
 
-# 6. Commit and push — GitHub Actions takes it from here
+# 6. Commit and push: GitHub Actions takes it from here
 git add .
 git commit -m "feature: add X"
 git push origin main
@@ -265,7 +265,7 @@ docker compose up -d --scale api=3
 
 ## References
 
-- [docs/pipeline.md](pipeline.md) — full runbook
-- [README.md](../README.md) — project overview
-- [technical_deep_dive.md](technical_deep_dive.md) — architecture details
-- [GitHub Actions workflow](../.github/workflows/docker.yml) — CI/CD pipeline
+- [docs/pipeline.md](pipeline.md): full runbook
+- [README.md](../README.md): project overview
+- [technical_deep_dive.md](technical_deep_dive.md): architecture details
+- [GitHub Actions workflow](../.github/workflows/publish.yml): CI/CD pipeline

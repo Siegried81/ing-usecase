@@ -97,12 +97,9 @@ def _compare_feature(frozen: Feature, current: Feature, report: FreezeReport) ->
             report.benign.append(f"{name}: allowed value(s) added: {gained}")
 
     # Narrowing a range invalidates values already recorded outside the new one.
-    # Fixed - the "frozen.range and current.range" guard skipped a
-    # newly added range entirely, so a field with NO range before could gain
-    # one with no check at all, even though that is itself a narrowing (any
-    # value already recorded outside the new range becomes invalid). checked
-    # as its own case instead of folding it into the two checks below, since
-    # frozen.min/frozen.max don't exist to compare against.
+    # A range added to a field that had none is itself a narrowing (any value
+    # already recorded outside it becomes invalid). It is checked as its own
+    # case because frozen.min/frozen.max do not exist to compare against.
     if not frozen.range and current.range:
         report.breaking.append(
             f"{name}: range added {current.range!r} where none existed; "

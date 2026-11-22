@@ -50,7 +50,7 @@
 
 - [ ] **Verify workflow file exists**
   ```bash
-  cat .github/workflows/docker.yml
+  cat .github/workflows/publish.yml
   ```
 
 ## First Deployment (Testing)
@@ -174,19 +174,19 @@ git push origin v-hotfix
 | Issue | Solution |
 |-------|----------|
 | GitHub Actions build fails | Check Actions tab logs; usually Docker Hub auth issue |
-| Health dashboard red status | `docker compose logs streamlit api` — check app logs |
+| Health dashboard red status | `docker compose logs streamlit api`: check app logs |
 | Image doesn't pull | Ensure image tag exists on Docker Hub; check internet connection |
 | Port conflicts | `docker compose down` then restart |
 | Out of memory | `docker system prune -a` then rebuild |
 
 ## Documentation References
 
-- [DOCKER.md](DOCKER.md) — Complete Docker guide
-- [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md) — Setup instructions
-- [CI_CD_SUMMARY.md](CI_CD_SUMMARY.md) — Architecture overview
-- [.github/workflows/docker.yml](../.github/workflows/docker.yml) — CI/CD workflow
-- [docker-compose.yml](../docker-compose.yml) — Service definitions
-- [docker/docker-compose.prod.yml](../docker/docker-compose.prod.yml) — Production hardening
+- [DOCKER.md](DOCKER.md): Complete Docker guide
+- [GITHUB_ACTIONS_SETUP.md](GITHUB_ACTIONS_SETUP.md): Setup instructions
+- [CI_CD_SUMMARY.md](CI_CD_SUMMARY.md): Architecture overview
+- [.github/workflows/publish.yml](../.github/workflows/publish.yml): CI/CD workflow
+- [docker-compose.yml](../docker-compose.yml): Service definitions
+- [docker/docker-compose.prod.yml](../docker/docker-compose.prod.yml): Production hardening
 
 ## Success Metrics
 

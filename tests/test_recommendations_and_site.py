@@ -499,7 +499,7 @@ def test_download_assets_builds_a_white_logo_from_ings_own_svg(monkeypatch, tmp_
 
 def test_fallback_page_is_complete_and_honest():
     spec = PAGES[0]
-    page = _fallback_page(spec, "summary")
+    page = _fallback_page(spec)
     assert page.slug == spec.slug
     assert page.hero.primary_cta
     assert page.disclaimer

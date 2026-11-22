@@ -5,7 +5,7 @@
     python3 scripts/check_data_quality.py --dataset data/processed/campaigns.csv
 
 Scores the dataset on the standard DQ dimensions (comparator/dq.py) and exits
-non-zero when a GATING dimension — completeness, validity or uniqueness — falls
+non-zero when a GATING dimension (completeness, validity or uniqueness) falls
 under its threshold. Consistency and timeliness are reported but warn only: the
 single-model fallback is a recorded limitation (NFR-02, D-09), not a regression
 to block on. Accuracy is reported as not measurable here.

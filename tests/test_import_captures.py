@@ -62,7 +62,7 @@ def test_robots_is_rechecked_not_taken_on_trust(tmp_path, monkeypatch):
         raise ScrapingNotAllowed("disallowed")
 
     monkeypatch.setattr(import_captures, "assert_can_fetch", deny)
-    row = import_captures.import_one(page, "ing", raw_dir=tmp_path / "raw", fd=None)
+    row = import_captures.import_one(page, "ing", raw_dir=tmp_path / "raw")
     assert row is None, "a disallowed path must not produce a row"
     assert called["url"] == "https://www.ing.be/x"
 
@@ -78,7 +78,7 @@ def test_manual_rows_carry_no_invented_http_status(tmp_path, monkeypatch):
     monkeypatch.setattr(import_captures, "extract_model_assisted_with_provenance",
                         lambda *a, **k: (_ for _ in ()).throw(import_captures.LLMExtractionError("skip")))
 
-    row = import_captures.import_one(page, "ing", raw_dir=tmp_path / "raw", fd=None)
+    row = import_captures.import_one(page, "ing", raw_dir=tmp_path / "raw")
     assert row is not None
     assert row["http_status"] is None
     assert row["collection_method"] == "manual_capture"

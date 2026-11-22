@@ -44,14 +44,14 @@ backend is not running.
 
 **Data** is the dataset explorer and the feature dictionary. The filters only
 choose which stored rows to show, and the CSV export serialises exactly those
-rows — no value is recomputed in the browser. The dictionary is read-only
+rows, no value is recomputed in the browser. The dictionary is read-only
 forever: it is the frozen contract (P-04), and editing it from a form would undo
 the freeze rule.
 
 **Rubric** is the read-only view of `data/rubric/*_scores.csv` after the fact:
 the judged sheet and the scoring guide generated from the dictionary. The
 project runs on ONE judged sheet by one named person, so there is no second
-rater to compare against and no agreement or kappa to show — and the tab says
+rater to compare against and no agreement or kappa to show, and the tab says
 that rather than rendering an empty comparison table. A live scoring screen
 must not exist in this shape either: it must not show one rater another's
 numbers, or any future reliability figure becomes an artefact of who looked at
@@ -63,7 +63,7 @@ stay server-side and non-overridable, so there is no "run collection" button.
 
 **Research** searches Semantic Scholar for papers to source a claim in the
 narrative. It is the one live external call in the operator surface, and it is
-deliberately a search box and nothing more — no per-bank metric is invented to
+deliberately a search box and nothing more, no per-bank metric is invented to
 justify it.
 
 **Trends** is the Google Trends benchmark given a home of its own. The exporter
@@ -81,8 +81,8 @@ and the tab deliberately offers no per-page number to regress.
 
 **From search-interest context** is the section that closes this tab, and the one
 part of it no model writes. The scope block above picks the competitor brands worth
-studying — the traditional bank with the largest share of brand search, the one
-whose share rose fastest, and the measurable challenger — and
+studying, the traditional bank with the largest share of brand search, the one
+whose share rose fastest, and the measurable challenger, and
 `comparator/benchmarks.py` reports what each of their pages measurably does
 differently from ING's, then what all of them share and where they part company.
 Every figure is a z-score from the same feature set as the Analysis tab.
@@ -94,7 +94,7 @@ caveat travels in the payload rather than sitting in a footnote.
 
 If `search_interest/export/` is absent, `trends.json` is not written and the tab
 renders an empty state; nothing else is affected. The pipeline only reads the CSV
-export — it does not need `pytrends`, `streamlit` or `plotly`.
+export, it does not need `pytrends`, `streamlit` or `plotly`.
 
 **Reputation** shows recent news headline *themes* per bank (innovation,
 crisis, results, ...), classified by one structured model call - counts only,
@@ -185,11 +185,11 @@ live scoring screen remain a separate question (see `docs/web_ui_proposal.md`).
 
 ## Keeping it honest
 
-`src/types.ts` mirrors `scripts/export_web_report.py` — both `build_report` and
+`src/types.ts` mirrors `scripts/export_web_report.py`, both `build_report` and
 `build_operations`; the recommendation and site shapes mirror
 `src/comparator/recommendations.py` and `src/comparator/site_generator.py`.
 Change one, change the other. Every figure comes from the library through the
-exporter — the UI does no arithmetic of its own, so there is no second
+exporter, the UI does no arithmetic of its own, so there is no second
 definition of any number on screen.
 
 The backend (`scripts/serve_web.py`) only orchestrates the model calls, serves
@@ -207,18 +207,18 @@ rendering ten pages with a marked fallback when a page fails.
 
 ## Browser audit
 
-`scripts/browser_audit.py` drives the real UI with Playwright — tick
+`scripts/browser_audit.py` drives the real UI with Playwright, tick
 recommendations down and up, pick a language, press Generate, open the result
-through the actual Browse link — then audits all ten pages in the browser:
+through the actual Browse link, then audits all ten pages in the browser:
 recommendation expression per selected recommendation (by feature, multilingual
 cues), a single `h1`, an above-fold CTA, the full ten-link nav, rendered-text
 WCAG contrast, broken or alt-less images, horizontal overflow at 1440px and
 375px, console errors and failed requests, and single-language copy.
 
 It is a harness rather than a unit test: both servers must be running and it
-makes real model calls. Ten iterations (1–8 recommendations selected, alternating
+makes real model calls. Ten iterations (1 to 8 recommendations selected, alternating
 "start from all" and "start from none", across fr/nl/en) is what found the empty
 hero `alt=""`, the fallback page's English summary under Dutch chrome, and the
-selected recommendation that could be silently absent — which `generate_page`'s
+selected recommendation that could be silently absent, which `generate_page`'s
 coverage check now retries. Results land in `outputs/browser_audit/`
 (`summary.md`, `results.json`, per-iteration screenshots).

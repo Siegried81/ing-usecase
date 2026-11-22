@@ -365,9 +365,6 @@ python analysis/share_of_search.py         # quelques secondes
 
 python export/export_brand_notoriety.py
 
-python campaigns/scoring.py                # obligatoire : régénère les
-python campaigns/reports.py                # correspondances
-
 streamlit run app.py                       # UI sur http://localhost:8501
 ```
 
@@ -378,8 +375,8 @@ qu'une banque est ajoutée — voir sa docstring et
 
 Pour ajouter une fiche marque ou modifier un terme : éditer
 `config.PRODUCTS`, relancer `trends_collector.py` (skip automatique de ce
-qui existe déjà), puis `share_of_search.py`,
-l'export et la régénération `campaigns/`.
+qui existe déjà), puis `share_of_search.py` et
+l'export.
 
 ## 11. Pièges connus (déjà rencontrés, à ne pas re-découvrir)
 

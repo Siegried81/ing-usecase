@@ -103,7 +103,7 @@ def test_robots_gate_runs_before_the_browser_launches():
             with pytest.raises(ScrapingNotAllowed):
                 render("https://example.invalid/page")
     gate.assert_called_once()
-    browser.assert_not_called(), "the browser must never start for a disallowed URL"
+    browser.assert_not_called()  # the browser must never start for a disallowed URL
 
 
 # Same-origin sub-resources loaded during page.goto() are gated too, not just

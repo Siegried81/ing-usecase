@@ -34,9 +34,9 @@ from pathlib import Path
 import _bootstrap  # noqa: F401
 
 import pandas as pd
-from bs4 import BeautifulSoup
 
 from comparator.collection.llm_extractor import extract_model_assisted
+from comparator.collection.scraper import extract
 from comparator.schema import format_list
 
 COLUMN = "cross_sold_products"
@@ -56,12 +56,14 @@ def rederive(df: pd.DataFrame, path: Path) -> pd.DataFrame:
 
         try:
             html = Path(html_path).read_text(encoding="utf-8", errors="ignore")
-            soup = BeautifulSoup(html, "html.parser")
-            text = soup.get_text(" ", strip=True)
+            # Same inputs the capture gave the model: extract() drops
+            # script/style and flattens shadow roots before taking the text.
+            features = extract(html, language=str(row.get("language", "fr")),
+                               page_url=str(row.get("url", "")))
             fields = extract_model_assisted(
-                page_text=text,
-                image_count=len(soup.find_all("img")),
-                has_animation=False,
+                page_text=features["_page_text"],
+                image_count=features["image_count"],
+                has_animation=features["has_animation"],
                 product_family=str(row.get("product_family", "")),
             )
         except Exception as exc:  # noqa: BLE001 - one bad page must not stop the run

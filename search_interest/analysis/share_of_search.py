@@ -27,7 +27,7 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import (  # noqa: E402
+from config import (
     DB_PATH, PRODUCTS, SCHEMA_PATH, SHARE_OF_SEARCH_ANCHOR_BANKS,
     SHARE_OF_SEARCH_REFERENCE_FICHE,
 )

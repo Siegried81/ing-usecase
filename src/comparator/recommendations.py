@@ -17,7 +17,7 @@ Guardrails, because a recommendation is where this kind of project goes wrong:
     against the report before the list leaves this module.
   * `selected` is carried through so the UI can pass a subset to site
     generation without this module knowing anything about the site.
-  * Reputation (`include_reputation`, ) is an opt-in second context:
+  * Reputation (`include_reputation`) is an opt-in second context:
     news headline themes, `basis="reputation"`, context never evidence - the
     same line reputation.py draws - and never allowed to cite a page feature as
     proof. It needs no separate payload: the dashboard already travels inside
@@ -175,7 +175,7 @@ class RecommendationSet:
     def from_dict(cls, payload: dict) -> "RecommendationSet":
         """Rebuild a saved set, tolerating one written by an older version.
 
-        Sets saved while the model still wrote search-interest
+        Sets saved when the model also wrote search-interest
         recommendations carry a `trends` basis and a `market_context` field
         that no longer exist. Unknown keys are dropped and those entries are
         skipped, so an old file loads as the analysis set it still is rather
@@ -201,9 +201,8 @@ def _round(value: object, digits: int = 2) -> object:
 
     The report stores full float precision (e.g. 0.5912291666666667) for
     charts and exact recomputation; the model has no use for that precision
-    and was copying it verbatim into recommendation prose, which read as
-    unpolished. Rounding here changes formatting only, not the value the
-    guardrail above cares about (no new number is introduced)."""
+    and copies it verbatim into recommendation prose. Rounding here changes
+    formatting only, so no new number is introduced."""
     return round(value, digits) if isinstance(value, float) else value
 
 
@@ -245,9 +244,8 @@ def _digest(report: dict) -> str:
          "evidence": c.get("evidence")}
         for c in report.get("deckClaims", [])
     ]
-    focus = report.get("banks", [])
     focus_signature = []
-    for bank in focus:
+    for bank in report.get("banks", []):
         if bank.get("key") == "ing":
             focus_signature = bank.get("signature", [])
 
@@ -285,10 +283,9 @@ def _known_features(report: dict) -> set[str]:
 def _verified_features(rec: RecommendationModel, known: set[str]) -> list[str]:
     """Feature ids the report really carries, in the model's order, de-duplicated.
 
-    this used to be `[...known...] or list(r.features)`, so when
-    EVERY id was invented the `or` put all of them back - the exact phantom
-    evidence the docstring of build_recommendations() promises to drop.
-    A reputation recommendation may not cite page features at all (see
+    An id the report does not carry is dropped even when ALL of them are
+    invented: falling back to the model's own list would keep exactly the phantom
+    evidence build_recommendations() promises to drop. A reputation recommendation may not cite page features at all (see
     _REPUTATION_ADDENDUM), so its list is always empty.
     """
     if rec.basis == "reputation":

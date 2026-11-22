@@ -72,7 +72,7 @@
     │      GitHub Repository                 │
     ├────────────────────────────────────────┤
     │                                        │
-    │  .github/workflows/docker.yml          │
+    │  .github/workflows/publish.yml         │
     │  (CI/CD Pipeline)                      │
     │                                        │
     │  On push/tag:                          │
@@ -123,7 +123,7 @@
 │  GitHub Repository   │
 │                      │
 │  Trigger Workflow:   │
-│  docker.yml          │
+│  publish.yml         │
 └────────┬─────────────┘
          │
          │ Build & Test

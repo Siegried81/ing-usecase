@@ -1,7 +1,7 @@
 """Cross-sell score and product co-occurrence matrix.
 
-the "cross-sell score/graph" from the AI Marketing
-Intelligence brief, built on `cross_sold_products` (feature_dictionary.yaml,
+The "cross-sell score/graph" from the AI Marketing Intelligence brief, built on
+`cross_sold_products` (feature_dictionary.yaml,
 extracted by the same single structured call as `target_personas`). No new
 LLM call here either - the score and matrix below are pure arithmetic over
 that one column, same spirit as `ai_score.py`.
@@ -30,7 +30,7 @@ two questions directly: the largest cells are "products most associated", the
 zero cells (see `never_paired`) are "missed opportunities" / products never
 offered together.
 
-`never_paired` split into confirmed vs insufficient_data. With
+`never_paired` splits its result into confirmed and insufficient_data. With
 only 1-2 real pages in a product family (mortgage, pension, savings_account
 today), a "0" in that row is almost always "we never had the chance to see
 it", not "these two products are genuinely never combined" - the same small-N

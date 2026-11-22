@@ -52,7 +52,7 @@ Alongside it, `search_interest/` is a **separate** Google Trends share-of-search
 pipeline with its own config, its own SQLite database and its own Streamlit app.
 It imports nothing from `src/comparator`. The main pipeline reads two committed
 CSVs from `search_interest/export/` through `src/comparator/trends.py` and nothing
-else — the coupling is deliberately file-shaped so neither side can break the other
+else, the coupling is deliberately file-shaped so neither side can break the other
 at import time.
 
 ---
@@ -68,27 +68,27 @@ Each feature declares:
 | Key | Meaning |
 | --- | --- |
 | `type` | `categorical` 31 · `boolean` 27 · `integer` 20 · `float` 11 · `string` 9 · `list[string]` 5 |
-| `extraction` | `automatic` 53 · `model_assisted` 27 · `rubric` 13 · `derived` 11 — i.e. how far the value can be trusted |
+| `extraction` | `automatic` 53 · `model_assisted` 27 · `rubric` 13 · `derived` 11: i.e. how far the value can be trusted |
 | `comparability` | `cross_language` 93 · `within_language` 9 · `within_capture_window` 2 |
 | `tier` | `core` 66 (required for the MVP) · `extended` 38 (never blocking) |
 | `values` / `range` | the allowed set, for categoricals and numerics |
 
 ### How the contract is enforced
 
-Not by convention — by twenty distinct checkpoints. The load-bearing ones:
+Not by convention, by twenty distinct checkpoints. The load-bearing ones:
 
 - **Load time** (`dictionary.py`). An unknown YAML key, an unknown dimension or
   tier, a categorical with no declared values, a `required` feature outside
   `core`, or anything other than exactly one non-nullable primary key, all raise
   before anything else runs. The docstring is explicit about why: *"Fail loudly on
-  a malformed dictionary — it is the contract for three people."*
+  a malformed dictionary, it is the contract for three people."*
 - **Validation time** (`schema.py`). A column absent from the dictionary is a hard
   **error**, not a warning: *"Add them to config/feature_dictionary.yaml or drop
-  them — the dictionary is the contract."* Values outside a declared enum or
+  them, the dictionary is the contract."* Values outside a declared enum or
   range, nulls in a non-nullable column, and any row with `robots_allowed = false`
   are all errors too.
 - **Comparison time** (`analysis.py:359`, `comparable_features`). The set of comparable features is
-  computed from `f.is_numeric or f.is_boolean` plus dimension and comparability —
+  computed from `f.is_numeric or f.is_boolean` plus dimension and comparability,
   never from a hand-written column list.
 - **Two freeze checks.** A byte-equality test between `feature_dictionary.yaml`
   and `.frozen.yaml` says *"you changed it on purpose"*; `freeze.py` says *"what
@@ -99,34 +99,34 @@ Not by convention — by twenty distinct checkpoints. The load-bearing ones:
 `freeze.py` classifies a change as breaking if a feature is removed or renamed, a
 type changes, an allowed value disappears, a range is added or narrowed, a tier is
 demoted from core to extended, or a nullable column becomes non-nullable. Adding
-features or widening an enum is explicitly allowed — that is how the bank list
+features or widening an enum is explicitly allowed, that is how the bank list
 grew to fourteen on 21/09 without breaking the freeze.
 
 ### The data-quality scorecard
 
 `validate()` reports pass or fail; it does not say *how* complete or *how* valid.
 A data-quality team reads a dataset by dimension, so `dq.py` names them. It scores
-the dataset on the six standard dimensions — completeness, validity, uniqueness,
-consistency, timeliness, accuracy — and does not re-implement the contract: it
+the dataset on the six standard dimensions, completeness, validity, uniqueness,
+consistency, timeliness, accuracy, and does not re-implement the contract: it
 reuses the dictionary's own rules (`nullable`, `required`, allowed values, ranges,
 the primary key), so a value is valid in the scorecard exactly when it is valid in
 `schema.validate()`.
 
-Three of the six gate. Completeness, validity and uniqueness fail the build — the
+Three of the six gate. Completeness, validity and uniqueness fail the build, the
 same defects `validate()` already raises, because an out-of-contract value or a
 duplicate key is not a dip. Consistency and timeliness only warn: consistency
 carries the recorded single-model fallback (2 of 51 rows on a groq model, D6 /
 NFR-02), and failing a build on a limitation that was agreed and written down is
 noise; timeliness is a window, not a freshness deadline, so it checks only that
-every row is dated. Accuracy is not scored at all — there is no golden source, and
+every row is dated. Accuracy is not scored at all, there is no golden source, and
 a made-up accuracy number would be the one dishonest line on a data-quality page,
 so the dimension is reported as *"not measurable here"*, with the reason.
 
-`scripts/check_data_quality.py` runs it in CI next to `check_schema_freeze.py` —
+`scripts/check_data_quality.py` runs it in CI next to `check_schema_freeze.py`,
 the third gate: freeze says the contract did not change in a breaking way, this
 says the data still meets it. The thresholds live in `dq.py`, not the dictionary,
 because they are a property of the gate rather than of the contract. On the
-committed scored dataset the gate passes: completeness 99.8%, validity 100%,
+committed scored dataset the gate passes: completeness 100.0%, validity 100%,
 uniqueness 100%, consistency 96.1% (warn), timeliness 100%. The scorecard is
 written to `outputs/dq_report.md` and shown in the Analysis tab (decision D7).
 
@@ -135,7 +135,7 @@ written to `outputs/dq_report.md` and shown in the Analysis tab (decision D7).
 `within_language` is fully gated. `analysis.language_excluded_features()` returns
 nothing when the dataset holds one language, and every numeric or boolean
 `within_language` feature when it holds more. On the current 18-page scope that is
-exactly 8 features — `word_count`, `sentence_count`, `avg_sentence_length`,
+exactly 8 features, `word_count`, `sentence_count`, `avg_sentence_length`,
 `readability_score`, `second_person_ratio`, `first_person_plural_count`,
 `disclaimer_word_share`, `text_to_image_ratio`. The dictionary declares nine; the
 ninth, `meta_title`, is a string and never entered a numeric comparison anyway.
@@ -143,11 +143,11 @@ ninth, `meta_title`, is a string and never entered a numeric comparison anyway.
 The exclusion is *reported*, never silent: `feature_accounting()` prints it and
 `limitations.py` writes it into the generated limitations.
 
-`bands.py` is the escape hatch — it converts a within-language number into a
+`bands.py` is the escape hatch, it converts a within-language number into a
 cross-language ordinal band using fixed cutoffs, with an honesty note in its own
 docstring: those cutoffs *reduce* the cross-language problem, they do not
 eliminate it. A French sentence saying the same thing as an English one runs
-15–20% longer. Good enough for "which bank leans long", not for a ranking.
+15 to 20% longer. Good enough for "which bank leans long", not for a ranking.
 
 **Gap worth naming:** `within_capture_window` is declared on two rate features and
 enforced nowhere. A grep for the string across `src/` finds it only in the
@@ -162,24 +162,24 @@ dictionary loader's list of *valid* values. There is no analogue of
 
 | Module | What it does |
 | --- | --- |
-| `dictionary.py` (195 l.) | Parses the YAML into frozen `Feature` dataclasses and refuses to return an inconsistent one. Owns `NUMERIC_TYPES`, `LIST_TYPES`, `LIST_SEPARATOR`. The root of the dependency graph — imports nothing from the project. |
+| `dictionary.py` (195 l.) | Parses the YAML into frozen `Feature` dataclasses and refuses to return an inconsistent one. Owns `NUMERIC_TYPES`, `LIST_TYPES`, `LIST_SEPARATOR`. The root of the dependency graph: imports nothing from the project. |
 | `schema.py` (285 l.) | Types a CSV against the dictionary, validates it, writes it back in dictionary order with list columns pipe-separated. Explicitly passes `format="ISO8601"` to `to_datetime` because the live path wrote microseconds and the manual importer did not, and a mixed column silently coerced the odd rows to `NaT`. |
-| `bands.py` (107 l.) | Eight pure threshold functions. Centralised so the synthetic fixture and the real scraper use identical cutoffs — *"duplicating thresholds in two files is how they silently drift apart."* `readability_band` deliberately inverts the ascending convention, because a higher readability score means easier text. |
+| `bands.py` (107 l.) | Eight pure threshold functions. Centralised so the synthetic fixture and the real scraper use identical cutoffs: *"duplicating thresholds in two files is how they silently drift apart."* `readability_band` deliberately inverts the ascending convention, because a higher readability score means easier text. |
 | `banks.py` (58 l.) | Bank → `traditional`/`challenger`, and bank → display name. Exists because the category was living implicitly in a config file and a row from elsewhere would have had none. Judgement calls are annotated inline (CBC is KBC's francophone brand; hellobank is BNP's digital brand; Keytrade is branchless since 1998, so it sits with the challengers). |
-| `derive.py` (90 l.) | Recomputes all 11 `derived` features from their sources. Never invents: missing inputs stay missing. AIDA coverage requires all four booleans — *"2 of the 4 we bothered to score is not a score."* |
+| `derive.py` (90 l.) | Recomputes all 11 `derived` features from their sources. Never invents: missing inputs stay missing. AIDA coverage requires all four booleans: *"2 of the 4 we bothered to score is not a score."* |
 
 ### Collection
 
 | Module | What it does |
 | --- | --- |
-| `collection/compliance.py` (105 l.) | The gate. `check_robots()` fetches `robots.txt` **with `requests`, not `urllib`** — see bug 18 — caches it per domain per process, mirrors `RobotFileParser` status semantics (401/403 → disallow all, other 4xx → allow all), and fails closed on any read error. `assert_can_fetch()` raises `ScrapingNotAllowed`. |
+| `collection/compliance.py` (105 l.) | The gate. `check_robots()` fetches `robots.txt` **with `requests`, not `urllib`**: see bug 18, caches it per domain per process, mirrors `RobotFileParser` status semantics (401/403 → disallow all, other 4xx → allow all), and fails closed on any read error. `assert_can_fetch()` raises `ScrapingNotAllowed`. |
 | `collection/scraper.py` (636 l.) | Every deterministic feature: word counts, readability per language, CTA counting, rate detection, urgency markers, footnotes, shadow-DOM flattening. This is where most of the measurement bugs lived. |
 | `collection/render.py` (411 l.) | Playwright at a **fixed** 1440×900 viewport for the five geometry features a static fetch cannot produce. Flattens shadow roots into the light DOM *after* the screenshot and geometry pass, because the flatten rewrites the DOM. Re-tracks `page_origin` on `framenavigated` so a host-changing redirect cannot turn the same-origin sub-resource gate into a no-op. |
 | `collection/visual_features.py` (195 l.) | Colour. Measures `background_luminance` on the first screen *before* the 150×150 squash, and `brand_colour_share` over every pixel of the full-page screenshot rather than a quantised top-5 palette. Returns `None` for an unknown bank rather than a number that means something else. |
-| `collection/llm_extractor.py` (382 l.) | 27 model-assisted fields in **one** structured call per page. Fixed system prompt, pydantic validation, then a cross-check against the dictionary's allowed values, then a bounded retry (default 1, so at most 2 identical calls). Its docstring states the design outright: *"Every page gets the same fixed prompt and schema, applied identically — consistency across banks is the point, not autonomous tool use."* |
+| `collection/llm_extractor.py` (382 l.) | 27 model-assisted fields in **one** structured call per page. Fixed system prompt, pydantic validation, then a cross-check against the dictionary's allowed values, then a bounded retry (default 1, so at most 2 identical calls). Its docstring states the design outright: *"Every page gets the same fixed prompt and schema, applied identically: consistency across banks is the point, not autonomous tool use."* |
 | `collection/quality.py` (140 l.) | The gate a range check cannot be: is this a campaign page, or a JS shell, a maintenance notice, or a consent wall? Thresholds `MIN_PLAUSIBLE_WORDS = 120`, `UNUSABLE_WORDS = 40`, plus non-2xx status and NL/FR/EN error-phrase matching. |
 
-**The compliance gate is called from four places** — `scraper.py:151` before the
+**The compliance gate is called from four places**, `scraper.py:151` before the
 HTML fetch, `render.py:303` before Playwright is even imported,
 `visual_features.py:112` before the hero-image fetch, and `import_captures.py:91`
 when re-importing a manually saved page. A sweep of every network call inside
@@ -189,18 +189,18 @@ Two honest caveats: cross-origin sub-resources during a render are deliberately
 **not** robots-checked (blocking third-party fonts and CDNs would corrupt the very
 geometry the module measures, and it is documented as such), and
 `site_generator.py` fetches ING's own published SVGs from `assets.ing.com` outside
-the gate — ING's own assets for ING's own demo, not a competitor scrape.
+the gate, ING's own assets for ING's own demo, not a competitor scrape.
 
 **Provider chain.** DeepSeek is pinned; Groq, OpenRouter, Cerebras, SambaNova and
 a local Ollama sit underneath as outage fallbacks, all through the same
 OpenAI-compatible `/chat/completions` shape. Groq alone rotates keys, and
-`_groq_keys()` reads exactly three slots — this is the declared surface in
+`_groq_keys()` reads exactly three slots, this is the declared surface in
 `.env.example`, not an oversight. A fallback is written into `extraction_model` on
 the row, and `schema.validate()` warns, naming which banks got which model.
 
 `PAGE_TEXT_LIMIT = 3000` characters means the model sees the top of a page only;
-real pages carry 950–5,000 words. Small print and footer cross-sell usually sit
-below the cut. Kept as-is so existing rows stay comparable — raising it means
+real pages carry 950 to 5,000 words. Small print and footer cross-sell usually sit
+below the cut. Kept as-is so existing rows stay comparable, raising it means
 re-extracting every page.
 
 ### Analysis
@@ -211,13 +211,13 @@ re-extracting every page.
   features and provenance columns from the dictionary's numeric/boolean set.
 - **`comparison_matrix()`** exists as one function specifically because
   `positioning_axis()` and `similarity_matrix()` each built the standardised
-  matrix inline — *"which is how a bug could live in one and not the other."*
+  matrix inline, *"which is how a bug could live in one and not the other."*
   One-hot blocks are scaled by `1/√k` **after** standardisation, because z-scoring
   erases any constant applied before it.
 - **`ing_vs_peers()`** attaches a `reportable` flag with four guards: fewer than 3
   peers, zero spread, peers at or near zero ("likely a failed extraction, not a
   real gap"), and `|gap| > 8 SD`. Unreportable gaps are ranked last but **never
-  dropped** — "colour extraction failed for four banks" is itself worth seeing.
+  dropped**, "colour extraction failed for four banks" is itself worth seeing.
 - **`check_deck_claims()`** has three verdicts, not two. A tie is never
   "supported", and a ranking column with one distinct value returns **not
   testable**.
@@ -234,9 +234,9 @@ anecdote and the code says so.
 
 | Module | What it measures | The caveat it carries |
 | --- | --- | --- |
-| `ai_score.py` | Six 0–10 axes per bank, all arithmetic, no LLM call | *"six independent means, not a validated psychometric scale — a bank can score high on trust by citing its branch network alone."* `innovation` returns `None` permanently and is kept on the radar so the gap is visible. |
-| `cross_sell.py` | Distinct add-on product types per page ÷ 9 | Counts **breadth, not effort**. A page pushing one product ten times and a page mentioning it once score identically. `never_paired()` splits confirmed from insufficient-data, because with 1–2 pages a zero means "never had the chance to see it". |
-| `rubric.py` | Nothing — it emits the sheet and merges it back | Computes no score. First non-empty value wins; nothing is averaged, because averaging was only safe while `agreement()` reported the spread it hid. |
+| `ai_score.py` | Six 0 to 10 axes per bank, all arithmetic, no LLM call | *"six independent means, not a validated psychometric scale: a bank can score high on trust by citing its branch network alone."* `innovation` returns `None` permanently and is kept on the radar so the gap is visible. |
+| `cross_sell.py` | Distinct add-on product types per page ÷ 9 | Counts **breadth, not effort**. A page pushing one product ten times and a page mentioning it once score identically. `never_paired()` splits confirmed from insufficient-data, because with 1 to 2 pages a zero means "never had the chance to see it". |
+| `rubric.py` | Nothing: it emits the sheet and merges it back | Computes no score. First non-empty value wins; nothing is averaged, because averaging was only safe while `agreement()` reported the spread it hid. |
 | `benchmarks.py` | What three attention-selected brands measurably do differently | Ships its refusal *inside the payload*: "selected on search attention alone… not a demonstration that those choices are why they are searched for", and a test fails the build if that sentence is dropped. |
 | `reputation.py` | Counts of Belgian headlines per theme, 90-day window | Themes, never sentiment. Belgian-source filtering by `.be` domain plus an allowlist, deduplication across languages and providers, and a same-day cache that **only ever caches a complete success**. Failed requests are reported per bank under `failures`, never read as zero headlines. |
 | `market_context.py`, `research.py` | Share prices; paper search | Both deliberately standalone, not wired into the report, so nobody can put a share price next to a page feature. |
@@ -251,7 +251,7 @@ anecdote and the code says so.
   you cannot ask a generator to match a bank's density of figures while forbidding
   it to invent figures.
 - **`site_generator.py`** (1052 l.) builds the 10-page demo site. The **skeleton
-  is fixed in code** — ten page keys, shared nav, shared stylesheet — and only the
+  is fixed in code**, ten page keys, shared nav, shared stylesheet, and only the
   **content** is generated, one call per page, because a model asked to invent a
   site invents a different one every time and a different site cannot be compared
   with the last one. Three distinct retry reasons: wrong language, explain mode
@@ -263,10 +263,10 @@ anecdote and the code says so.
   Every section carries a small table as the accessibility fallback, the
   non-overlap sentence is printed only when it is true, and a chart drawn without
   the focus bank retitles itself *"The market, without ING"* and stamps a warning
-  on the figure — because the PNG is what ends up in a deck.
+  on the figure, because the PNG is what ends up in a deck.
 - **`limitations.py`** generates D-09 from the dataset. Its docstring names the
   failure it exists to prevent: D-09 is *"the deliverable most likely to be
-  written from memory at 11pm on Day 9 — which is exactly when the inconvenient
+  written from memory at 11pm on Day 9, which is exactly when the inconvenient
   limitations get forgotten."*
 
 ### Surfaces
@@ -307,21 +307,21 @@ bank's website. Before that fixture existed, the claim was checked by hand once,
 re-running the suite with `socket.connect`, `connect_ex` and `getaddrinfo` all
 raising.
 
-There is no mocking library. Mocking is stdlib only —
+There is no mocking library. Mocking is stdlib only,
 `unittest.mock.patch` against the module-local `requests` attribute, plus
-`monkeypatch` — which is consistent with the project's "no extra abstraction
+`monkeypatch`, which is consistent with the project's "no extra abstraction
 layers" rule. Every test file bootstraps `src/` onto `sys.path` itself, so
 `python -m pytest` works with no install step.
 
 The most valuable assertions in the suite:
 
-1. `tests/test_render.py` — `gate.assert_called_once()` then
+1. `tests/test_render.py`: `gate.assert_called_once()` then
    `browser.assert_not_called()`: the robots gate must fire **before** Playwright
    starts. A headless render is still a fetch, and that is easy to forget.
-2. `tests/test_collection.py` — an unreadable `robots.txt` must fail **closed**.
-3. `tests/test_schema.py` — the working dictionary against the frozen snapshot.
-4. `tests/test_serve_web.py` — path traversal on the download endpoint.
-5. `tests/test_rubric.py` — asserts the strings "Cohen", "kappa" and "disagreement
+2. `tests/test_collection.py`: an unreadable `robots.txt` must fail **closed**.
+3. `tests/test_schema.py`: the working dictionary against the frozen snapshot.
+4. `tests/test_serve_web.py`: path traversal on the download endpoint.
+5. `tests/test_rubric.py`: asserts the strings "Cohen", "kappa" and "disagreement
    is measured" are **absent**. The deliverable is test-forbidden from implying a
    reliability measure it does not have.
 
@@ -331,7 +331,7 @@ test**, so a corrected mistake cannot come back.
 CI runs on every push and every PR: `ruff check --select F,W` (pyflakes plus
 whitespace rules, deliberately narrow), `pytest`, `check_schema_freeze.py`,
 `check_data_quality.py`, and a parallel job that type-checks and builds the React
-UI — added late, because *"a broken `web/` could merge green."*
+UI, added late, because *"a broken `web/` could merge green."*
 
 `banks.py` owns the traditional-vs-challenger split every group comparison
 depends on; `tests/test_banks.py` pins it, so a typo in a key cannot silently
@@ -343,12 +343,12 @@ move a bank between the two groups.
 
 The instructive thing about this list is its shape. **Almost none of these are
 crashes.** The dominant failure mode is a measurement that runs cleanly, passes
-every range check, and reports the wrong thing — and in several cases the wrong
+every range check, and reports the wrong thing, and in several cases the wrong
 number had already reached a slide.
 
 ### 5.1 The extractor was blind to shadow DOM
 
-ING's page recorded **16 words and 0 images** — the `<title>`, twice — and was
+ING's page recorded **16 words and 0 images**, the `<title>`, twice, and was
 marked unusable. It looked like a failed render.
 
 ing.be is built from web components, and page content lives in shadow roots.
@@ -373,7 +373,7 @@ A successful HTTP transaction is not a successful capture.
 
 ### 5.3 `brand_colour_share` put ING at +33.8 SD
 
-ING topped the headline chart. The peer values were `[0.0, 0.014, nan, 0.0]` — a
+ING topped the headline chart. The peer values were `[0.0, 0.014, nan, 0.0]`, a
 peer standard deviation of about 0.007. The real story was that colour extraction
 had **failed** for the other banks; the z-score simply divided by almost nothing.
 
@@ -385,8 +385,8 @@ rather than dropped.
 
 `brand_colour_share` read 0.0 for KBC and Revolut and null for Belfius. Two
 stacked causes: it measured the **hero image**, while the dictionary declares
-these features `source: screenshot` — a brand colour lives in buttons and headers,
-not the lifestyle photo — and after switching to the screenshot it still read
+these features `source: screenshot`, a brand colour lives in buttons and headers,
+not the lifestyle photo, and after switching to the screenshot it still read
 0.000 for *every* bank, because it only inspected the quantised top-5 palette, and
 a brand accent is a few percent of a mostly-white page.
 
@@ -399,7 +399,7 @@ black. The mean is pixel-weighted and the hero is about 6% of a 14,516px capture
 so the feature measured *"how much white body copy does this page have"*. The
 first screen of the same page reads 0.521.
 
-A D06 claim — "ING is measurably darker than its peers" — had already been
+A D06 claim, "ING is measurably darker than its peers", had already been
 published on this. After re-deriving from the top crop, the ranking **inverted**:
 ING became the brightest bank. The claim was withdrawn with the correction written
 next to it.
@@ -431,7 +431,7 @@ that script's docstring.
 `has_animation` was true for pages that merely serve modern image formats:
 **217 of 219 `<source>` tags across 16 real captures sat inside `<picture>`**.
 
-Deck claim H3 — "ING is the only traditional bank using animation" — flipped: ING
+Deck claim H3, "ING is the only traditional bank using animation", flipped: ING
 went 0.40 → **0.00**, the inverse of the deck. The commit is explicit that it does
 **not** fix already-collected rows, since `has_animation` is stored at collection
 time.
@@ -448,7 +448,7 @@ world.
 ### 5.9 The model scored 8 of 9 rubric features from the wrong evidence
 
 The best bug in the repo. Caught by computing Cohen's kappa against the human
-sheet: `value_prop_clarity` kappa **−0.12, Spearman −0.77** — the model ranked
+sheet: `value_prop_clarity` kappa **−0.12, Spearman −0.77**, the model ranked
 pages almost exactly *opposite* to the human. `aida_interest` and `aida_action`
 scored 0.00.
 
@@ -457,7 +457,7 @@ scored 0.00.
 refused to score from the wrong evidence, and then did exactly that.
 
 Impact already on screen: `value_prop_clarity` moved from −2.47 SD (*less* clear)
-to +1.41 SD (*more* clear) — sign flipped. `aida_coverage_score` was a headline web
+to +1.41 SD (*more* clear), sign flipped. `aida_coverage_score` was a headline web
 finding, "ING fails at campaign structure", at 0.00 vs 2.42; it evaporated at 3.00
 under human scoring.
 
@@ -465,21 +465,21 @@ Fixed by deriving the text/vision split from the dictionary's `source` field, wi
 a test so no future edit can quietly re-add one.
 
 > A quality metric turned out to be a bug detector. And a docstring promise is not
-> an enforcement mechanism — derive the constraint from the source of truth.
+> an enforcement mechanism, derive the constraint from the source of truth.
 
 ### 5.10 Averaging two integer rubric scores broke the dataset load
 
 `"cannot safely cast non-equivalent float64 to int64"`. `merge_scores` averaged two
 integer rubric scores into 2.5, and the dictionary declares those features as
-integers. Only reachable once a second rater existed — which happened that day.
+integers. Only reachable once a second rater existed, which happened that day.
 
 Now rounded to the scale the feature is declared on, with the reasoning that an
-ordinal 1–5 rubric has no half-step.
+ordinal 1 to 5 rubric has no half-step.
 
 ### 5.11 A one-hot weighting fix that did nothing
 
 Self-caught by measuring. The first version scaled each one-hot block by `1/√k`
-**before** standardising — and `standardise()` z-scores every column, which erases
+**before** standardising, and `standardise()` z-scores every column, which erases
 any constant applied beforehand. Every dummy came back at unit variance, so 19
 categoricals became 55 columns and collectively outvoted all 50 numeric features:
 the exact opposite of what the docstring claimed.
@@ -490,7 +490,7 @@ copies of the matrix construction into one shared function.
 > "I wrote a normalisation" is not "the normalisation has an effect" until you
 > measure it. And duplicated computation is where asymmetric bugs hide.
 
-### 5.12 `cta_count` — three bugs, a regression, and a withdrawal
+### 5.12 `cta_count`: three bugs, a regression, and a withdrawal
 
 The most instructive *thread*, because it ends in refusing to publish a number.
 
@@ -498,21 +498,20 @@ The most instructive *thread*, because it ends in refusing to publish a number.
    list, **chrome and duplicates included**, so it measured how often a page
    repeats "En savoir plus". Crelan scored **42** against ING's 4, and slide 12
    read that as "ING is behind on calls to action". Fixed to skip chrome and count
-   distinct `(label, href)` pairs — which is what the dictionary already said the
+   distinct `(label, href)` pairs, which is what the dictionary already said the
    feature was. Crelan 42 → 2.
 2. That fix was **silently overwritten by a later re-collection**. Crelan was back
    to 42, and the same re-collection destroyed English-language coverage.
-3. The stated cause of the eventual withdrawal — client-side rendering — was
+3. The stated cause of the eventual withdrawal, client-side rendering, was
    **wrong**. `render.py` stores the post-JS DOM and the saved ING HTML holds all
    144 clickable elements. An hour went into prototyping OCR for a problem that
    did not exist. The real second bug: `_in_chrome()` tested only `<nav>`/`<footer>`
-   tags and ARIA roles, but hellobank's menu is a `<div class="navbar-container">`
-   — so 2 of 14 banks had their entire mega-menu eligible to be counted.
+   tags and ARIA roles, but hellobank's menu is a `<div class="navbar-container">`, so 2 of 14 banks had their entire mega-menu eligible to be counted.
 4. Fixing *that* caused a self-inflicted regression within the hour: adding
    `header` to the chrome match hit `class="product-header"` and excluded ING's own
    main CTA. Chrome names are now matched on whole hyphen-separated parts.
 5. The withdrawal itself had been done by **hand-deleting the gap from
-   `report.json`** — which `export_web_report.py` rebuilds from the analysis, so
+   `report.json`**, which `export_web_report.py` rebuilds from the analysis, so
    the first re-run put it straight back.
 
 > A correction a re-run undoes is not a correction.
@@ -523,7 +522,7 @@ call to action is a marketing judgement, not a property of the markup."*
 
 ### 5.13 `has_comparison_table` measured HTML authoring style
 
-A 0.57-vs-0.00 traditional/challenger split at **d = −1.23** — a big, publishable
+A 0.57-vs-0.00 traditional/challenger split at **d = −1.23**, a big, publishable
 effect. The rule was `soup.find("table") is not None`. Traditional banks mark
 tariff grids up as `<table>`; N26 and Revolut build the same plan comparison in
 CSS and scored False, **though their captured text carries the plan names and
@@ -536,7 +535,7 @@ a difference in business strategy.*
 
 - **Language matching leaked non-Belgian sources.** A Dutch accountancy trade site
   writing about "ING" counted as Belgian ING coverage, because Dutch and French
-  are spoken well beyond Belgium. Fixed with a `.be`-or-allowlist filter — and the
+  are spoken well beyond Belgium. Fixed with a `.be`-or-allowlist filter, and the
   regression test caught an **over-correction** before it shipped, when a real
   Belgian regional paper on a `.net` domain was being wrongly dropped.
 - **Quota exhaustion read as "no news".** The free tier is 100 requests/24h; a
@@ -555,7 +554,7 @@ a difference in business strategy.*
 > An empty result and a failed request must never share a return value.
 
 A fourth, related one: the key was being sent to newsapi.**org** when it belonged
-to newsapi.**ai** — two different companies that share a name, with
+to newsapi.**ai**, two different companies that share a name, with
 non-interchangeable keys.
 
 ### 5.15 `check_deck_claims()` awarded "supported" on a tie, by index order
@@ -566,7 +565,7 @@ verdict was decided by index order alone.
 
 The deeper version followed: three of five kickoff-deck observations were reported
 "not supported" off `word_count_band`, **a column that reads "long" for all
-fourteen banks** — real pages carry 950–5,000 words and the band's top edge stops
+fourteen banks**, real pages carry 950 to 5,000 words and the band's top edge stops
 at 600, so it saturates and cannot rank anyone. Verdict logic gained a third state.
 
 > A claim a measure cannot rank is not a claim the measure refuted.
@@ -577,13 +576,13 @@ at 600, so it saturates and cannot rank anyone. Verdict logic gained a third sta
 Crelan, VDK and hellobank were sitting out, because `persuasion_levers` was empty
 on 21 pages and a blank reads as "not judged" → NA → the whole bank drops.
 
-But the judge had confirmed those pages genuinely have **no lever** — a zero, not
+But the judge had confirmed those pages genuinely have **no lever**, a zero, not
 an absence. Adding `none` as an allowed value (a pure addition the freeze rule
 permits) let `derive.py` count it as zero while a blank still returns NA.
 
 ING's gap moved from +2.46 over 9 peers to **+3.32 over 13**; positioning 0.28 →
 0.39. The same pass found 47 of 642 judged cells that were not the rater's, because
-her morning corrections had never been re-merged — while a slide claimed every
+her morning corrections had never been re-merged, while a slide claimed every
 judged feature came from one sheet.
 
 > Missing-vs-zero is the most under-appreciated data-quality bug there is.
@@ -596,7 +595,7 @@ rubric-merged file) while `run_analysis.py` defaults to `campaigns.csv`, so
 re-running only the latter leaves the merged file silently behind. ING's positioning
 moved 0.437 → 0.362 once corrected.
 
-The fix in that commit was **procedural** — re-run both, plus documentation. The
+The fix in that commit was **procedural**, re-run both, plus documentation. The
 actual guard landed two days later as `tests/test_dataset_sync.py`, asserting every
 `page_id` in one file has a row in the other.
 
@@ -605,7 +604,7 @@ actual guard landed two days later as `tests/test_dataset_sync.py`, asserting ev
 
 ### 5.18 The compliance gate bypassed on the hero-image fetch
 
-No observable symptom — a silent policy violation. `extract_colours()` fetched the
+No observable symptom, a silent policy violation. `extract_colours()` fetched the
 hero image with a plain `requests.get()`, skipping the gate that the HTML fetch
 runs. `robots.txt` can allow a page while disallowing its `/images/` path.
 
@@ -615,7 +614,7 @@ A sibling of this one, in the opposite direction: the gate itself was once
 **refusing permission it could in fact obtain**. `_fetch_robots` used
 `RobotFileParser.read()`, which goes through urllib; a stock macOS Python has no CA
 bundle, so every HTTPS `robots.txt` raised `CERTIFICATE_VERIFY_FAILED`, the gate
-failed closed, and **every target was skipped** — while the pages themselves were
+failed closed, and **every target was skipped**, while the pages themselves were
 perfectly fetchable through `requests`. One HTTP stack for both means "we can read
 the rules" and "we can fetch the page" cannot disagree.
 
@@ -623,7 +622,7 @@ the rules" and "we can fetch the page" cannot disagree.
 
 Rows got null colours with nothing to notice. `_hero_image_url()` fell back to the
 raw `<img src>` when no `og:image` existed, returning a relative path, which raised
-`MissingSchema` — caught by a deliberately broad `except` that exists so a
+`MissingSchema`, caught by a deliberately broad `except` that exists so a
 best-effort feature never kills a row.
 
 The textbook interaction: a broad `except` designed for resilience turned a real
@@ -631,16 +630,16 @@ bug into invisible data loss. Both decisions were individually defensible.
 
 ### 5.20 A full read of the repository, six more defects
 
-A deliberate line-by-line pass found a different *class* of bug than testing did —
+A deliberate line-by-line pass found a different *class* of bug than testing did,
 mostly wrong-identifier and wrong-default errors that produce plausible-looking
 empty results:
 
-- `recommendations.py`: `[...known...] or list(r.features)` — when the model named
+- `recommendations.py`: `[...known...] or list(r.features)`, when the model named
   **no** real feature id, the empty list fell through the `or` and put **every
   invented id back**, so phantom evidence reached the UI.
 - `ai_score.py`: the trust axis counted `regulatory_disclosure_prominence ==
   "not_applicable"` as a *failed* condition, and that value is on 17 of 18
-  current-account pages — no TAEG is expected on a current account. *"Not
+  current-account pages, no TAEG is expected on a current account. *"Not
   applicable" is not "no."*
 - `llm_extractor.py`: a provider returning **HTTP 200 with a malformed body**
   raised `KeyError` straight out of the fallback loop, skipping every remaining
@@ -648,8 +647,7 @@ empty results:
 - `run_analysis.py`: asked reputation for the key `bnp_paribas_fortis` instead of
   the display name, so that bank could never return a headline; and "Hello bank!"
   was searched as the bare word "Hello".
-- `render.py`: a background transparent all the way to the root was read as black
-  — the wrong contrast reference.
+- `render.py`: a background transparent all the way to the root was read as black, the wrong contrast reference.
 - `rubric_sheet.py emit` overwrote a scored sheet without warning.
 
 Tests went 423 → 444, and CI gained the lint and the web build.
@@ -701,14 +699,14 @@ Full end-to-end reproduction from an empty `data/` is **not** achievable without
   → Cerebras → SambaNova → local Ollama);
 - a Playwright Chromium install, which is a separate download not covered by
   `pip install`;
-- a human rater re-doing the judged sheet — no command can produce that.
+- a human rater re-doing the judged sheet, no command can produce that.
 
 Every dependency is pinned with the reason stated in `requirements.txt`: *"Pinned
 so the pipeline is reproducible by a third party (NFR-01)."* `pytrends` and
 `streamlit` are deliberately split into their own files, to keep an unofficial,
 rate-limited library and a UI-only dependency out of the pipeline's core list.
 
-Generated campaigns are described as *"mostly, not perfectly, reproducible"* — a
+Generated campaigns are described as *"mostly, not perfectly, reproducible"*, a
 measured statement, not a hedge. The repo's own code is deterministic; the model
 is not entirely, because temperature controls sampling and not routing, and an MoE
 model served in batches can still vary. Every generated artefact records the

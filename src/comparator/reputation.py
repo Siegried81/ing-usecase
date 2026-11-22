@@ -18,15 +18,14 @@ ONE structured LLM call per bank (a batch of headlines in, one classification
 out) - same "single call, fixed prompt + schema, no agent" rule as
 `collection/llm_extractor.py`.
 
-`notable_headlines` now carries each headline's source URL
-alongside its title, so the web UI can link out to the article. The URL is
-looked up locally against what we actually fetched, never produced by the
-model.
+`notable_headlines` carries each headline's source URL alongside its title, so
+the web UI can link out to the article. The URL is looked up locally against
+what we actually fetched, never produced by the model.
 
-Every fetched headline is now also checked against
-`_is_belgian_source()` - language alone let through a Dutch accountancy
-trade site (accountancyvanmorgen.nl) writing about "ING" that had nothing
-to do with ING Belgium, because Dutch is spoken well beyond Belgium too.
+Every fetched headline is also checked against `_is_belgian_source()`: language
+alone let through a Dutch accountancy trade site (accountancyvanmorgen.nl)
+writing about "ING" that had nothing to do with ING Belgium, because Dutch is
+spoken well beyond Belgium too.
 """
 
 from __future__ import annotations
@@ -45,13 +44,11 @@ from pydantic import BaseModel, Field, ValidationError
 from comparator.collection.llm_extractor import LLMExtractionError, _call_llm
 
 # This module reads NEWSAPI_KEY / NEWSAPI_AI_KEY straight from the environment.
-# Until now the keys only arrived because the llm_extractor import above calls
-# load_dotenv() at module load - an import-order dependency, and a silent one:
-# move _call_llm elsewhere and every fetch here loses its key, bank_snapshot()
-# returns None for all fourteen banks, and the UI shows the same "no data" it
-# shows for a genuine quota outage. Loading it here makes the dependency this
-# module's own. load_dotenv() never overrides a variable already set, so a real
-# environment variable still wins over the file.
+# Relying on the llm_extractor import to call load_dotenv() would be a silent
+# import-order dependency: move _call_llm elsewhere and every fetch here loses
+# its key, bank_snapshot() returns None for every bank, and the UI shows the same
+# "no data" it shows for a genuine quota outage. load_dotenv() never overrides a
+# variable already set, so a real environment variable still wins over the file.
 load_dotenv()
 
 # Two different companies share a confusingly similar name, and their keys are
@@ -91,9 +88,8 @@ BELGIAN_NEWS_DOMAINS = (
     "bruzz.be,brusselstimes.com,hln.be,standaard.be,nieuwsblad.be,demorgen.be,"
     "vrt.be,tijd.be,knack.be,gva.be,hbvl.be,lavenir.net"
 )
-# Caught by the regression test below - lavenir.net (L'Avenir, a real
-# Belgian regional paper) was wrongly dropped because it isn't a .be domain. The
-# allowlist is for exactly this: known Belgian outlets on a non-.be TLD.
+# Known Belgian outlets on a non-.be TLD (lavenir.net, L'Avenir, a regional
+# paper, would otherwise be dropped).
 _BELGIAN_DOMAIN_ALLOWLIST = frozenset(BELGIAN_NEWS_DOMAINS.split(","))
 
 
@@ -180,9 +176,8 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
     given) as "provider/language: reason". That list is what lets the caller
     tell a rejected key or a spent quota from a bank that is not in the news.
 
-    Keep the URL alongside the title (both APIs already return it) so a
-    notable headline can link back to its source - was title-only before, which left
-    the web UI with no way to open the article.
+    The URL stays alongside the title (both APIs already return it) so a notable
+    headline can link back to its source.
     """
     try:
         if provider == "newsapi.ai":
@@ -234,8 +229,8 @@ def _fetch_for_language(provider: str, query: str, api_key: str, language: str,
         if errors is not None:
             errors.append(f"{provider}/{language}: {type(exc).__name__}")
         return []
-    # Newsapi.ai has no domain filter to narrow the fetch with, so this
-    # second check is the one both providers actually rely on - see _is_belgian_source().
+    # newsapi.ai has no domain filter to narrow the fetch with, so this
+    # check is the one both providers actually rely on - see _is_belgian_source().
     return [
         {"title": a["title"], "url": a.get("url")}
         for a in articles
@@ -412,10 +407,22 @@ def bank_snapshot(bank_name: str, *, api_key: str | None = None,
     notable = [{"title": t, "url": url_of(t)} for t in classified.notable_headlines]
     # Every headline under its theme, with its URL - lets the UI show, on
     # hover over a theme's count, the full list of articles that count is made of.
-    theme_headlines = {
-        t: [{"title": h, "url": url_of(h)} for h in classified.theme_headlines.get(t, [])]
-        for t in THEMES
-    }
+    # The counts come from the model's answer, so they are checked: a title that
+    # is not one of the fetched headlines is not counted (the model may not
+    # invent an article), and a headline listed under several themes counts once,
+    # under the first theme in THEMES order. Unknown theme names are ignored.
+    fetched_by_key = {_title_key(h["title"]): h for h in headlines}
+    claimed: set[str] = set()
+    theme_headlines: dict[str, list[dict]] = {}
+    for theme in THEMES:
+        entries = []
+        for title in classified.theme_headlines.get(theme, []):
+            key = _title_key(title)
+            if key in fetched_by_key and key not in claimed:
+                claimed.add(key)
+                fetched = fetched_by_key[key]
+                entries.append({"title": fetched["title"], "url": fetched.get("url")})
+        theme_headlines[theme] = entries
     snapshot = {
         "headline_count": len(headlines),
         "themes": {t: len(theme_headlines[t]) for t in THEMES},

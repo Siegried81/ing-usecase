@@ -30,8 +30,8 @@
 - **Dependencies**: Dashboard depends on streamlit + api
 
 ### 4. Documentation
-- **DOCKER.md** — 7.5KB comprehensive guide with all workflows
-- **GITHUB_ACTIONS_SETUP.md** — Step-by-step setup instructions
+- **DOCKER.md**: 7.5KB comprehensive guide with all workflows
+- **GITHUB_ACTIONS_SETUP.md**: Step-by-step setup instructions
 
 ## Quick Start
 
@@ -60,7 +60,7 @@ git push origin v1.0.0
 
 ```
 .github/workflows/
-  docker.yml                    ← CI/CD workflow (auto-build on push)
+  publish.yml                   ← CI/CD workflow (auto-build on push)
 services/
   health_dashboard.py           ← FastAPI health monitor
   Dockerfile                    ← Lightweight dashboard image

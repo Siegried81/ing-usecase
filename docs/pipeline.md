@@ -72,11 +72,11 @@ prose cannot drift away from the picture.
 | --- | --- | --- |
 | `data/raw/<bank>/` | yes (since 21/09, see Housekeeping) | HTML snapshots + screenshots, one pair per page |
 | `data/processed/campaigns.csv` | yes (since 21/09) | the collected dataset (auto features + model-assisted) |
-| `data/processed/campaigns_scored.csv` | yes (since 21/09) | the same rows with rubric scores merged in — what analysis reads |
+| `data/processed/campaigns_scored.csv` | yes (since 21/09) | the same rows with rubric scores merged in: what analysis reads |
 | `data/rubric/*_scores.csv` | yes | the human and model scoring sheets |
 | `outputs/` | yes (team decision, see Housekeeping) | charts, tables, profiles, limitations, reputation |
 | `web/public/report.json` | yes | the one JSON snapshot the business UI reads |
-| `web/public/operations.json` | yes | the operator snapshot: dictionary, dataset, collection, rubric — read by the Home, Bank profiles, Data, Rubric and Collection tabs |
+| `web/public/operations.json` | yes | the operator snapshot: dictionary, dataset, collection, rubric: read by the Home, Bank profiles, Data, Rubric and Collection tabs |
 | `web/public/trends.json` | yes | the Trends tab's series (written when the export is present) |
 
 `scripts/reextract_model_fields.py` is not a no-op: it refreshes **every**
@@ -85,12 +85,12 @@ so re-running it changes personas/cross-sell/imagery values. Only run it to fix 
 specific gap (a timed-out extraction), and prefer note-taking over repeated runs.
 
 The deterministic alternatives re-read `snapshot_html_path` and touch only the
-columns whose detector changed — no LLM call, no re-fetch, so nothing else on the
+columns whose detector changed, no LLM call, no re-fetch, so nothing else on the
 row is re-rolled:
 
-- `scripts/fix_rate_fields.py` — `rate_shown`, `rate_value_pct`, re-derived with
+- `scripts/fix_rate_fields.py`: `rate_shown`, `rate_value_pct`, re-derived with
   the keyword-proximity rule in `_rate()`.
-- `scripts/fix_cta_count.py` — `cta_count`, `cta_above_fold`: distinct
+- `scripts/fix_cta_count.py`: `cta_count`, `cta_above_fold`: distinct
   (label, href) pairs, chrome excluded. `cta_count` is currently withdrawn from
   the comparison (`analysis.CAPTURE_INVALID_FEATURES`); the script stays because
   the stored column should still be the best value the rule can produce.
@@ -98,8 +98,8 @@ row is re-rolled:
 **MANDATORY re-merge after ANY change to campaigns.csv.**  
 `scripts/rubric_sheet.py merge` **must be re-run** after any modification to
 `data/processed/campaigns.csv` (rate fix, CTA fix, new captures, re-extraction,
-etc.) — even if rubric scores haven't changed. The merge matches on `page_id`
-(corrected — `merge_scores()` joins on `page_id`, not URL, see
+etc.), even if rubric scores haven't changed. The merge matches on `page_id`
+(corrected, `merge_scores()` joins on `page_id`, not URL, see
 `rubric.py:154`) and produces `campaigns_scored.csv` which `export_web_report.py`
 and `run_analysis.py --dataset campaigns_scored.csv` read. Skipping this step
 leaves the web report and analysis on stale data (silent drift). See
@@ -108,7 +108,7 @@ automatically (audit item #6).
 
 **`page_id` itself can drift, not just the merge.** `page_id` is
 built from `{bank}_{product_family}_{language}_{page_index:02d}` at collection
-time (`run_collection.py:69`) — a re-collection that adds/removes a page in a
+time (`run_collection.py:69`), a re-collection that adds/removes a page in a
 bank/family/language group renumbers every page after it. A rater's scoring
 sheet built before that re-collection then carries scores under `page_id`s
 that no longer exist in `campaigns.csv`, and `merge_scores()` drops them
@@ -123,20 +123,20 @@ re-score or a recovery. Not yet covered by an automated test.
 ## Three things a range check cannot catch
 
 **A capture can be honestly measured and still be the wrong page.** The first
-live collection returned ING as an unrendered JavaScript shell (16 words — the
+live collection returned ING as an unrendered JavaScript shell (16 words, the
 `<title>`, twice) and BNP Paribas Fortis as a maintenance notice. Every numeric
 feature on those rows was in range. `collection/quality.py` judges whether a
 capture looks like a campaign page at all, and the verdict travels with the row
 in `capture_quality`. Analysis excludes `unusable` rows and says which.
 
 **A capture can also be the right page with something else on top of it.**
-Three of the 18 compared pages — Argenta, BNP Paribas Fortis and Crelan — were
+Three of the 18 compared pages, Argenta, BNP Paribas Fortis and Crelan, were
 captured with a cookie-consent modal open across the page. Their
 screenshot-derived features (`background_luminance`, `hero_image_area_ratio`,
 `accent_colour_count`, `brand_colour_share`, `above_fold_element_count`)
 describe the modal, not the page underneath it; every value is still in range,
 so nothing in `schema.validate` catches it. Text-derived and judged features
-are unaffected. Not corrected here — named so it is not discovered by someone
+are unaffected. Not corrected here, named so it is not discovered by someone
 else.
 
 **13 features (10 core, 3 extended) are scored by a person**, so a collected dataset can never
@@ -144,8 +144,8 @@ pass strict validation on its own. `scripts/rubric_sheet.py` emits a sheet with
 the screenshot path and merges the completed one back in. One judged sheet, one
 named rater: no second opinion and no reliability figure, which is the scope
 this proof of concept chose and which `outputs/limitations.md` states in those
-words. The merge prints what it joined — rows that matched no page, and pages
-left unscored — because a silent drop there is how a rater's work goes missing.
+words. The merge prints what it joined, rows that matched no page, and pages
+left unscored, because a silent drop there is how a rater's work goes missing.
 
 **One judged sheet, by one named person.** An earlier plan split the 14 banks
 across rater pairs so every page carried two independent judgements, which is
@@ -161,7 +161,7 @@ add, rather than left for a reader to notice.
 ## Two escape hatches for hosts that will not serve us
 
 Both live in the targets file, per target, and neither changes what the pipeline
-asks for — one request, robots.txt checked first, no IP or identity rotation:
+asks for, one request, robots.txt checked first, no IP or identity rotation:
 
 - **`method: headful`** launches a real, visible Chrome instead of headless.
   BNP Paribas Fortis returns HTTP 503 to *every* headless client (bundled
@@ -173,12 +173,12 @@ asks for — one request, robots.txt checked first, no IP or identity rotation:
 
 ## When a site will not serve the pipeline
 
-corrected — this section described BNP Paribas Fortis and Revolut
+corrected, this section described BNP Paribas Fortis and Revolut
 as permanently unreachable. Both are resolved: BNP via `method: headful` (see
 "Two escape hatches" above and `decisions.md`'s "BNP Paribas
 Fortis captured" entry), Revolut via the current `collection_targets.yaml`
 URL, which robots.txt allows (a straight headless fetch, no method override
-needed). **There is no manual-capture-only bank left** — every one of the 51
+needed). **There is no manual-capture-only bank left**, every one of the 51
 current rows has `collection_method` in `{static_fetch, headless_render,
 headful_render}`, never `manual_capture`.
 
@@ -199,13 +199,13 @@ recovers the URL from the browser's own "saved from url" comment so there is no
 hand-written manifest to drift.
 
 A manual capture carries `collection_method = manual_capture`, **no
-`http_status`** (we made no request — writing 200 would claim a response nobody
+`http_status`** (we made no request, writing 200 would claim a response nobody
 received) and **no `page_height_px`** (a browser save is a *viewport* screenshot,
 not a full-page one, so the height genuinely cannot be measured). A live capture
 that worked is always preferred over a manual one for the same page.
 
 Chrome writes shadow DOM out as `<template shadowrootmode>`, which BeautifulSoup
-does not walk into — one saved ING page parsed as 14 words while carrying 4,858
+does not walk into, one saved ING page parsed as 14 words while carrying 4,858
 inside templates. `extract()` flattens those, so a manual capture and a live
 capture are measured the same way.
 
@@ -244,6 +244,6 @@ clone can therefore run the analysis without collecting first.
 
 The trade-off is explicit: every collection or analysis run now produces a large
 diff, including binary screenshots and charts, and `data/raw/` carries the banks'
-own page captures and brand assets. Runtime artefacts stay ignored — `.env`,
+own page captures and brand assets. Runtime artefacts stay ignored, `.env`,
 `benchmark.db` and its backups, `*.log`, `web/dist/`, caches. If the diffs stop
 being reviewable, restoring the four rules is one commit.

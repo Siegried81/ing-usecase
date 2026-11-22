@@ -1,6 +1,6 @@
-# Ten questions for Diego and Victor — 18/09
+# Ten questions for Diego and Victor: 18/09
 
-> **** kept as written — these are the questions, not the answers.
+> **** kept as written, these are the questions, not the answers.
 > Question 1 is worth re-reading beside the code, because the project's central
 > guardrail follows from it: with no CTR or accept-rate data, nothing here may
 > claim that a design choice changes an outcome, and every recommendation in the
@@ -15,12 +15,12 @@ question we could have answered ourselves.
 ## 1. Can we have CTR or accept-rate data for even one product?
 
 **Why we are asking.** Every finding in the deck is of the form *"ING does X
-differently"* — never *"X works better"*. That ceiling is not caution, it is
+differently"*, never *"X works better"*. That ceiling is not caution, it is
 structural: we have no outcome variable at all. Your own kickoff deck showed
-weekly CTR of 0.60–1.06% across 1,307 banners, so the data exists somewhere.
+weekly CTR of 0.60 to 1.06% across 1,307 banners, so the data exists somewhere.
 
 **What changes.** One product's banner CTR joined to our feature rows turns a
-descriptive comparison into a testable one — we could say which measured
+descriptive comparison into a testable one, we could say which measured
 features move with performance and which do not. Without it, every
 recommendation stays a hypothesis for someone else to test. This is the single
 largest upgrade available to the project.
@@ -29,7 +29,7 @@ largest upgrade available to the project.
 
 ---
 
-## 2. Which product should anchor the comparison — current-account packs, or term accounts?
+## 2. Which product should anchor the comparison: current-account packs, or term accounts?
 
 **Why we are asking.** We compare **current-account packs**, because that is the
 one product where enough banks had a comparable page. But your own deck framed
@@ -46,7 +46,7 @@ knowing before we harden anything.
 
 ## 3. Are public marketing pages the right surface, given your problem is inbound banners?
 
-**Why we are asking.** The problem you described is **inbound** — 110M
+**Why we are asking.** The problem you described is **inbound**, 110M
 interactions, banners inside web and app, a top-5 NPS irritator. What we can
 legally and practically collect is the **public open web**: acquisition pages
 aimed at non-customers. These are not the same communication, to the same
@@ -61,7 +61,7 @@ own right, we stop caveating it as a proxy.
 
 ## 4. ING writes roughly twice as much as its peers. Is that deliberate, or regulatory?
 
-**Why we are asking.** It is our most robust finding — word count is counted, not
+**Why we are asking.** It is our most robust finding, word count is counted, not
 judged, and ING's pages carry markedly more text than the peer average on the
 same product. But we cannot tell *why* from the outside, and the two
 explanations point in opposite directions.
@@ -72,12 +72,12 @@ actionable thing we have. Nobody outside ING can settle this.
 
 ---
 
-## 5. Which language should be the reference — FR or NL?
+## 5. Which language should be the reference: FR or NL?
 
 **Why we are asking.** Our current dataset mixes both. Word counts and
 readability are not comparable across languages, so those features currently
 carry a translation effect on top of the editorial one. (We also found the team
-had scored a KBC page in English while the dataset held the Dutch one — the same
+had scored a KBC page in English while the dataset held the Dutch one, the same
 ambiguity, one layer down.)
 
 **What changes.** One language across all banks removes a confound from the
@@ -89,11 +89,11 @@ headline finding in question 4. A day of re-collection, and worth it.
 
 ## 6. Do you have internal standards we should be scoring against?
 
-**Why we are asking.** Our judged features encode *our* notion of good marketing
-— AIDA, Cialdini, feature-advantage-benefit. Defensible, and generic. If ING has
+**Why we are asking.** Our judged features encode *our* notion of good marketing:
+AIDA, Cialdini, feature-advantage-benefit. Defensible, and generic. If ING has
 its own campaign standards, tone-of-voice guide or accessibility bar, scoring
 against those would change the question from *"how does ING differ from the
-market?"* to *"where does ING miss its own standard?"* — which is far more
+market?"* to *"where does ING miss its own standard?"*, which is far more
 actionable internally.
 
 **What changes.** We would re-point the rubric at your framework. The machinery
@@ -105,7 +105,7 @@ does not care which rubric it runs.
 
 **Why we are asking.** The deck stated that Belfius is verbose, KBC is concise,
 ING is the only traditional bank using animation. Measured, the first two do
-not hold — KBC is the longest page in the set. The animation claim is not in
+not hold, KBC is the longest page in the set. The animation claim is not in
 that "not supported" bucket: the only rule we had for it detects a CSS
 `animation` declaration, not real page motion, and across the 18 compared
 pages exactly one has genuine motion (Revolut, via a `<video>`). We withdrew
@@ -134,7 +134,7 @@ traditional peer, and half our dataset becomes context rather than subject.
 
 ---
 
-## 9. What happens to this after Day 10 — and who owns it?
+## 9. What happens to this after Day 10: and who owns it?
 
 **Why we are asking.** The framework is built to extend to social and in-app
 banners, and that extension is where it becomes genuinely useful to your team.
@@ -155,7 +155,7 @@ reproducibility. We treat everything as internal and redistribute nothing, but
 "internal" has not been confirmed by anyone at ING, and it affects where this
 can live after we hand it over.
 
-**What changes.** Whether the handover is a repository, a report, or both — and
+**What changes.** Whether the handover is a repository, a report, or both, and
 whether the stored captures travel with it.
 
 *PRD Q-05.*
@@ -165,17 +165,17 @@ whether the stored captures travel with it.
 ## Two things to state, not ask
 
 - **Our numbers moved this morning.** Human rubric scores replaced model ones on
-  several features, and two findings reversed — including one that had ING
+  several features, and two findings reversed, including one that had ING
   looking *less* clear than peers, which now reads *more* clear. Anything
   quoted from the draft narrative needs re-checking against today's run before
   the deck is locked.
 - **BNP Paribas Fortis declines automated access.** Their edge returns 503 to any
   automated client, including from a normal residential connection. We did not
-  work around it — we used a page a person opened in a browser and saved. Worth
+  work around it, we used a page a person opened in a browser and saved. Worth
   them hearing from us rather than discovering it.
-  **superseded — no longer true, do not say this in the meeting.**
+  **superseded, no longer true, do not say this in the meeting.**
   BNP is now live-captured via `method: headful` (a real, visible browser
-  instead of headless — same robots.txt gate, same single request, no IP
+  instead of headless, same robots.txt gate, same single request, no IP
   rotation). The manual-capture path was a stopgap, not the final state; see
   `decisions.md`, "BNP Paribas Fortis captured".
 
@@ -186,21 +186,21 @@ whether the stored captures travel with it.
 Four of these questions came back answered. Recorded verbatim in substance,
 with what each one settles.
 
-**1. CTR / performance data — pending, not refused.** "We are trying to get you
+**1. CTR / performance data, pending, not refused.** "We are trying to get you
 some data about the current account campaigns, we have contacted people in
 charge of those and are waiting for their reply." So the guardrail stands for
 this deliverable: no performance data exists here, every finding is a
-hypothesis. Nothing is redesigned in anticipation — if numbers arrive, they
+hypothesis. Nothing is redesigned in anticipation, if numbers arrive, they
 arrive after this two-week window.
 
-**2. Reputation — wanted, but for the wrong reason, and this needs correcting
+**2. Reputation, wanted, but for the wrong reason, and this needs correcting
 out loud.** "I think it matter in the sense of it giving insights about how
 well the campaigns are doing. If its useful to you, use it." Press themes say
 what a bank is being written about; they do not say whether a campaign worked.
 That distinction is enforced in the code (`recommendations.py`: theme counts
 are context, never evidence that a page or campaign performed) but it has to be
 said in the room, because the sentence above reads the feature as a performance
-proxy — which is exactly the claim this project refuses to make.
+proxy, which is exactly the claim this project refuses to make.
 
 **3. Comparative, and "actionable" means communication, not website changes.**
 "The goal is mostly comparative as we are not the one deciding on the change

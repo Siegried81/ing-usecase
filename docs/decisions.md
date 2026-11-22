@@ -1253,3 +1253,53 @@ than as missing (2026-09-28), and DQ validity checks 3,266 values instead of
 (2026-11-08). No score moves.
 
 Tests 510 passed before, 512 after.
+
+## 2026-11-20: simplicity axis on a tie, and the band note in charts.md
+
+`ai_score.score_simplicity` took the first mode of `readability_band`, which on a tie is the alphabetical one. Beobank has 3 pages "hard" and 3 "very_hard": it got 2.5 only because "hard" sorts before "very_hard". Tied modes are now averaged. On a run over every product family Beobank's simplicity becomes 1.25. On the published run (`--product-family auto`, current-account pages only) nobody has a tie, so `outputs/ai_score.csv` doesn't move. Single-mode banks are unchanged either way.
+
+`charts.md` said "The four bands are excluded on purpose" on every run. The dictionary has 8 band features and, on a mixed-language run, none of them is excluded as redundant. The sentence now appears only when `band_redundant` is not empty, with the real count.
+
+---
+
+**2026-11-20, search_interest app and export follow the config.** Measured on the Streamlit app: 7 of the 8 bank views were empty (the page stopped on "Aucune fiche"), the default KBC view showed only the 2 newest sheets, and the five banks added after the first nine (Belfius, Beobank, VDK, Hello bank, Keytrade) had no view. The sidebar now lists every bank of `BANK_DISPLAY_LABELS` except ING, a bank view shows the sheets where that bank has a term, and "Marques & contexte" shows all sheets. The export prose said "9 banques" and "3 fiches"; both counts now come from `config.PRODUCTS`, so the next `export_brand_notoriety.py` run says 14 and 5. The committed `brand_notoriety_export.md` is not regenerated (needs `benchmark.db`).
+
+---
+
+**2026-11-20, scripts and services review (set C).** `import_captures.py` measured `background_luminance` on the whole page strip, while the live path and `fix_background_luminance.py` use the first screen (`first_screen_px=VIEWPORT_HEIGHT`). New manual imports now use the first screen too, so the column means the same thing for every `collection_method`. Rows already in the datasets are unchanged (they were re-derived earlier). `rederive_urgency_markers.py` and `rederive_cross_sold_products.py` now read the snapshot through `scraper.extract()` like a fresh capture, so `<noscript>` text and shadow roots no longer count differently; on the 51 current pages the urgency count is identical either way. `--merge-with` no longer crashes on a dataset without a `capture_quality` column.
+
+---
+
+**2026-11-22, search_interest follow-ups.** `collectors/term_resolver.py` lost its product phase (and the product-only data in `config_candidates.py` and the `PRODUCT_*` coverage constants in `config.py`): `PRODUCTS` holds only brand sheets, so any call to it raised a `KeyError`. Brand resolution is unchanged except for one fix: with 5 or more matching topics the 5-term request cut every string candidate and `decide_brand_winner` raised an `IndexError`; strings are now always kept. `store_long_format` no longer stores the `isPartial` last week of a Trends series, so a newly collected sheet has one point fewer than before (the unfinished week was an artificial drop). Sheets already in `benchmark.db` are not recollected, so no stored value changes until a sheet is collected again. `campaigns/` is dead (no `anomalies` table, `import reports` fails) and is listed for deletion, not deleted; the quickstart in `pipeline_google_trends.md` no longer tells to run it.
+
+## 2026-11-22: one fixed prompt for site pages, checked theme counts
+
+`site_generator.generate_page` used to add correction text to the prompt between attempts (wrong language, no cited section, missing coverage), up to 3 calls. It now follows the pattern of `collection/llm_extractor.py`: one fixed prompt, a bounded retry of the same prompt when the answer fails validation (default 1 retry), then the deterministic fallback page. The same three content checks still reject an answer, but they no longer rewrite the prompt.
+
+`reputation.bank_snapshot` counted themes straight from the model's answer. A title that is not one of the fetched headlines is no longer counted, and a headline listed under several themes counts once, under the first theme in `THEMES` order. Notable headlines keep the null-URL rule. No published count is regenerated: the September cache had Belfius at 30 headlines but 29 unique titles, so that count would drop by one on a rerun. The November cache entries are already consistent.
+
+Also removed: the ignored `_summary` parameter of `_fallback_page`, the unused `fd` of `profiles.render_markdown` and `render_all_markdown`, and the `generation.guardrails()` wrapper (callers use `check_generated_campaign` directly).
+
+## 2026-11-22: scraper and render fixes found by the line-by-line review
+
+Eight rules in the collection code read a page differently now. Stored values were re-measured offline with `scripts/rederive_scraper_fields.py` from the HTML snapshots already on disk (51 of 51 present, nothing fetched) and written to `data/processed/campaigns.csv` and `campaigns_scored.csv`. No band changed and no urgency or rate value moved. `outputs/` and `real_captures.csv` (older rules, not re-measured) were left alone.
+
+`word_count` counted a bare "-" or "'" between words as a word (`[\w'-]+`). A word now needs a letter or digit. 40 of 51 pages lose 0 to 0.73 % of their words (total 123,779 to 123,474; ING mean 2,922.7 to 2,912.3). `avg_sentence_length` (40 pages), `readability_score` (29 pages, at most 0.4 points) and `text_to_image_ratio` (40 pages) follow from it.
+
+`disclaimer_word_share` counted the words of a block twice when two matching blocks were nested (`div.legal > p.legal-note`: 0.261 instead of 0.13 on a test page). Each stretch of text counts once. 11 pages change, by 0.017 at most (mean 0.0700 to 0.0693; ING 0.2161 to 0.2160).
+
+`section_count` was `None` for a page with no `<section>` or `<article>` tag. That is a measured zero, not a missing value. 6 pages move from blank to 0, 3 of them ING pages. The ING mean goes from 1.0 (4 pages with a value out of 7) to 0.57 (7 of 7), the peer mean from 23.29 to 21.70. The feature still measures markup style, as written on 2026-09-24, but ING is no longer missing from it.
+
+Deadline words ("by", "tot", "voor") and rate words ("rate", "tae", "apr") were matched inside longer words: "baby 12/10/2026" counted as a deadline, "100% online with a corporate bank" as a rate of 100. They now match whole words, a keyword may take a plural "s", and "taeg" was added to the French rate words so "0 % TAEG" still reads as before. Re-measured: no stored value changes.
+
+Capture quality: error phrases ("onderhoud", "temporarily unavailable"...) only count when the captured text is under 120 words. A 600-word Dutch page that mentions "onderhoud" (a meeting with an advisor) was `unusable`. No current row is affected.
+
+`readability_score` of an empty page is now missing instead of 50.0 "medium". `ing_vs_peers.direction` follows the sign of ING minus the peer mean, so ING above peers with no peer spread is no longer "below peers" (no current row affected). `schema.coerce_types` counts the values that became missing because they could not be read (for example "3,5" in a number column) and `validate` warns about them. `parse_list(pd.NA)` returns an empty list instead of `['<NA>']`.
+
+`render.py` measured the whole box of a hero image instead of the part inside the first viewport, and counted a `<picture>` and its `<img>` as two images. Proved with Chrome on a local page: hero 864,000 px reported for 432,000 visible, total 1,944,000 for 1,224,000. Now only the visible part counts and `<picture>` is skipped. `hero_image_area_ratio` and `total_image_area_ratio` cannot be re-measured without a live render, so the 51 stored values keep the old rule until the next collection run. Treat them as overstated for pages with large images below the fold or `<picture>` markup.
+
+Compliance: every fetch now checks robots.txt on each redirect hop, not only on the first URL. `compliance.get_checked` follows redirects by hand for the static fetch and the image fetch. `render.py` makes the main document request itself (`route.fetch` without redirects) because the browser never shows a redirect hop to the route handler, and it refuses a target the robots.txt disallows. Checked with two loopback servers (A redirects to B, B disallows everything): the page of B was fetched before, `ScrapingNotAllowed` is raised now, and an allowed redirect still renders. The static fetch also decodes a page with no declared charset from its content instead of ISO-8859-1.
+
+Removed because nothing used them: `MODEL_FIELDS`, `Feature.is_core`, `render.is_available`, `scraper._in_card` and `_CTA_CARD_PARTS`.
+
+Left as is, for a decision: `has_animation` is still sent to the LLM in the extraction prompt although the feature is withdrawn from comparisons (changing the prompt means re-extracting every page), and the per-bank mode of a band picks the alphabetical first value on a tie (no tie today, every bank is "long").

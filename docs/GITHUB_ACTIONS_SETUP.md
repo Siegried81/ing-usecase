@@ -56,10 +56,10 @@ Your image will be available as:
 
 One `publish` job per image (`ing-comparator`, `ing-comparator-dashboard`):
 
-1. **build** — Docker build with layer caching
-2. **smoke test** — starts the container and waits for its health endpoint
-3. **Trivy** — HIGH/CRITICAL vulnerability report (non-blocking)
-4. **push** — Docker Hub + GitHub Container Registry, then the Docker Hub page is
+1. **build**: Docker build with layer caching
+2. **smoke test**: starts the container and waits for its health endpoint
+3. **Trivy**: HIGH/CRITICAL vulnerability report (non-blocking)
+4. **push**: Docker Hub + GitHub Container Registry, then the Docker Hub page is
    updated from `DOCKERHUB.md`
 
 The test suite itself runs in `tests.yml`.
@@ -86,9 +86,9 @@ docker compose up  # Uses the image from the registry
 4. Click a run to see logs and output
 
 ### Access build logs
-- **Build steps** — Full Docker build output
-- **Test results** — Pytest and schema freeze check
-- **Security scan** — Trivy report (HIGH/CRITICAL only)
+- **Build steps**: Full Docker build output
+- **Test results**: Pytest and schema freeze check
+- **Security scan**: Trivy report (HIGH/CRITICAL only)
 
 ## 5. Troubleshooting CI/CD
 

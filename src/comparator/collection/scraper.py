@@ -35,11 +35,10 @@ import re
 from datetime import datetime, timezone
 from urllib.parse import urljoin
 
-import requests
 from bs4 import BeautifulSoup
 
 from comparator import bands
-from comparator.collection.compliance import USER_AGENT, assert_can_fetch
+from comparator.collection.compliance import USER_AGENT, assert_can_fetch, get_checked
 from comparator.collection.render import CTA_KEYWORDS, RenderUnavailable, render
 
 logger = logging.getLogger(__name__)
@@ -50,6 +49,10 @@ REQUEST_TIMEOUT_S = 15
 # Starter lists, not exhaustive - extend as real pages surface
 # terms these miss. Matches the dictionary's own examples (second_person_ratio,
 # urgency_marker_count) almost word for word.
+# A word is a run of word characters, hyphens and apostrophes that holds at least
+# one real word character: a stray " - " or "'" between words is not a word.
+_WORD_RE = re.compile(r"[\w'-]*\w[\w'-]*", re.UNICODE)
+
 _SECOND_PERSON = {
     "nl": {"u", "uw", "je", "jij", "jouw"},
     "fr": {"vous", "votre", "vos", "tu", "ton", "ta", "tes"},
@@ -95,7 +98,7 @@ _DATE_RE = re.compile(
 # The keywords _rate() requires near a percentage - see its docstring.
 _RATE_KEYWORDS = {
     "nl": ["rente", "rentevoet", "interest", "tarief", "jaarlijkse"],
-    "fr": ["taux", "interet", "intérêt", "rendement", "tae"],
+    "fr": ["taux", "interet", "intérêt", "rendement", "tae", "taeg"],
     "en": ["rate", "interest", "apr", "yield"],
 }
 _LOYALTY_REFERRAL_TERMS = [
@@ -103,9 +106,8 @@ _LOYALTY_REFERRAL_TERMS = [
     "parrainage", "fidelite", "fidélité", "programme de fidelite",
     "vriend werven", "beloningsprogramma",
 ]
-# One list for both CTA features: it lives in render (which scraper imports),
-# with the per-term reasoning. cta_count and cta_contrast_ratio had each kept
-# their own copy and drifted apart - see CTA_KEYWORDS there.
+
+# One list for both CTA features, owned by render.py (see CTA_KEYWORDS there).
 _CTA_KEYWORDS = CTA_KEYWORDS
 
 # Standard-form readability coefficients (words/sentence, syllables/word).
@@ -125,9 +127,14 @@ _READABILITY_FORMULA_NAME = {
 
 
 def _fetch_html(url: str) -> str:
-    assert_can_fetch(url)  # fails closed - see collection/compliance.py
-    response = requests.get(url, headers={"User-Agent": USER_AGENT}, timeout=REQUEST_TIMEOUT_S)
+    # Robots gate on the URL and on every redirect hop; fails closed (compliance.py).
+    response = get_checked(url, gate=assert_can_fetch, headers={"User-Agent": USER_AGENT},
+                           timeout=REQUEST_TIMEOUT_S)
     response.raise_for_status()
+    if "charset" not in response.headers.get("Content-Type", "").lower():
+        # requests falls back to ISO-8859-1 for text/* without a charset, which
+        # turns accented French and Dutch into mojibake and misses accented keywords.
+        response.encoding = response.apparent_encoding
     return response.text
 
 
@@ -139,11 +146,12 @@ def _syllable_count(word: str) -> int:
     return max(1, len(groups))
 
 
-def _readability(text: str, language: str) -> tuple[float, str, str]:
-    words = re.findall(r"[\w'-]+", text, flags=re.UNICODE)
+def _readability(text: str, language: str) -> tuple[float | None, str, str | None]:
+    words = _WORD_RE.findall(text)
     sentences = [s for s in re.split(r"[.!?]+", text) if s.strip()]
     if not words or not sentences:
-        return 50.0, _READABILITY_FORMULA_NAME[language], "medium"
+        # Nothing to score. A made-up mid-scale number would read as a measurement.
+        return None, _READABILITY_FORMULA_NAME[language], None
     syllables = sum(_syllable_count(w) for w in words)
     c = _READABILITY_COEFFS[language]
     score = c["base"] - c["per_word"] * (len(words) / len(sentences)) - c["per_syllable"] * (syllables / len(words))
@@ -152,8 +160,19 @@ def _readability(text: str, language: str) -> tuple[float, str, str]:
     return round(score, 1), _READABILITY_FORMULA_NAME[language], band
 
 
+def _whole_word(term: str, *, plural: bool = False) -> re.Pattern:
+    """Pattern for a term that must not sit inside a longer word.
+
+    "by" must not match inside "baby" nor "rate" inside "corporate". The end
+    boundary is skipped for a term that ends in punctuation ("avant l'"), and
+    `plural` lets a keyword take a trailing "s" ("interests", "intérêts").
+    """
+    tail = r"s?(?!\w)" if plural else (r"(?!\w)" if term[-1].isalnum() else "")
+    return re.compile(r"(?<!\w)" + re.escape(term) + tail)
+
+
 def _count_terms(text: str, terms) -> int:
-    tokens = re.findall(r"[\w'-]+", text.lower(), flags=re.UNICODE)
+    tokens = _WORD_RE.findall(text.lower())
     term_set = {t.lower() for t in terms}
     return sum(1 for t in tokens if t in term_set)
 
@@ -181,13 +200,10 @@ def _count_urgency_markers(text: str, language: str) -> int:
 
     total = len(counted_spans)
     for preposition in _DEADLINE_PREPOSITIONS[language]:
-        start = lowered.find(preposition)
-        while start != -1:
-            end = start + len(preposition)
-            already = any(lo <= start < hi for lo, hi in counted_spans)
-            if not already and _DATE_RE.search(lowered[end: end + _DEADLINE_WINDOW]):
+        for found in _whole_word(preposition).finditer(lowered):
+            already = any(lo <= found.start() < hi for lo, hi in counted_spans)
+            if not already and _DATE_RE.search(lowered[found.end(): found.end() + _DEADLINE_WINDOW]):
                 total += 1
-            start = lowered.find(preposition, end)
     return total
 
 
@@ -232,13 +248,12 @@ def _is_chrome_token(token: str) -> bool:
 def _in_chrome(el) -> bool:
     """True when the element sits in navigation or footer chrome.
 
-    Cta_count counted every keyword-matching <a>/<button> in the
-    document, so a page's score was largely a count of how often its menu and
-    footer repeat "En savoir plus"-style links. Measured on the current dataset:
-    Crelan scored 42 of which 20 were distinct labels repeated up to 4 times in
-    link lists, against ING's 4, and slide 12 read that as "ING is behind on
-    calls to action". It was measuring link repetition, not calls to action.
-    Chrome is excluded now; a CTA a visitor can click in the page body counts.
+    Counting every keyword-matching <a>/<button> in the document makes a page's
+    score largely a count of how often its menu and footer repeat "En savoir
+    plus"-style links (Crelan scored 42, of which 20 were distinct labels repeated
+    up to 4 times in link lists, against ING's 4). That measures link repetition,
+    not calls to action, so chrome is excluded and only a CTA a visitor can click
+    in the page body counts.
     """
     for parent in (el, *el.parents):
         name = getattr(parent, "name", None)
@@ -259,41 +274,15 @@ def _is_hidden(el) -> bool:
     return el.get("aria-hidden") == "true" or el.has_attr("hidden")
 
 
-# A clickable product card is a call to action even when its label carries no
-# verb: "Pack ING Go", "ING Green Account" and "Faites grandir votre argent"
-# each invite the reader to the next step exactly as "Ouvrez un compte" does.
-# Recognised from the container the markup already names - card, tile,
-# product-card, pack, teaser - rather than from the wording, because the
-# wording is precisely what a keyword list cannot catch. A bare internal link
-# is NOT enough: that counts related-news and article links too.
-_CTA_CARD_PARTS = frozenset({"card", "tile", "teaser", "pack", "product", "offer"})
-
-
-def _in_card(el) -> bool:
-    """True when the element sits inside a product card or tile."""
-    for parent in (el, *el.parents):
-        name = (getattr(parent, "name", "") or "").lower()
-        if any(part in _CTA_CARD_PARTS for part in re.split(r"[-_]", name)):
-            return True
-        get = getattr(parent, "get", None)
-        if get is None:
-            continue
-        for token in list(get("class") or []) + [get("id") or ""]:
-            if any(part in _CTA_CARD_PARTS for part in re.split(r"[-_]", token.lower())):
-                return True
-    return False
-
-
 def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
     """Distinct calls to action, ignoring chrome (see _in_chrome).
 
-    Now counts distinct (label, href) pairs, which is what the
-    dictionary says the feature is - "Number of distinct call-to-action buttons
-    or links". Before, four links to four product pages all labelled "En savoir
-    plus" counted as four, and a link repeated in a menu counted once per
-    occurrence. The above-fold value keeps the old heuristic (document-order
-    index < 5), so it is still not a real viewport check - see the module
-    docstring - but it is now evaluated after chrome is dropped.
+    Counts distinct (label, href) pairs, which is what the dictionary says the
+    feature is: "Number of distinct call-to-action buttons or links". Four links
+    to four product pages all labelled "En savoir plus" are four, and a link
+    repeated in a menu counts once. The above-fold value is a heuristic
+    (document-order index < 5), not a viewport check - see the module docstring
+    - evaluated after chrome is dropped.
     """
     candidates = soup.find_all(["a", "button"])
     seen: set[tuple[str, str]] = set()
@@ -305,14 +294,12 @@ def _count_ctas(soup: BeautifulSoup) -> tuple[int, bool]:
         if not label or len(label.split()) > 7:
             continue
         href = (el.get("href") or "").strip()
-        # Action CTAs only, which is what the dictionary defines: "Number of
-        # distinct call-to-action buttons or links". A clickable product card
-        # ("Pack ING Go") invites a click but sends the reader to another page;
-        # it is navigation with a picture, not a conversion action. Counting
-        # cards here took ING from 1.0 to 9.0 and put it mid-pack, which hides
-        # the actual finding: ING's pack pages carry plenty to click and almost
-        # nothing that opens an account. _in_card() is kept so that observation
-        # can be measured deliberately rather than folded into this number.
+        # Action CTAs only, which is what the dictionary defines. A clickable
+        # product card ("Pack ING Go") invites a click but sends the reader to
+        # another page: it is navigation with a picture, not a conversion action.
+        # Counting cards took ING from 1.0 to 9.0 and hid the actual finding:
+        # ING's pack pages carry plenty to click and almost nothing that opens
+        # an account.
         if not any(k in label for k in _CTA_KEYWORDS):
             continue
         if "cookie" in label:  # "choisir ... les cookies" is consent chrome, not a CTA
@@ -336,7 +323,7 @@ def _has_animation(soup: BeautifulSoup, html: str) -> bool:
     # traditional bank using animation") is tested against exactly this column.
     # A <video><source> is still caught, via its <video> parent.
     #
-    # CSS keyframes stay in on purpose (team decision 21/09): the dictionary
+    # CSS keyframes stay in on purpose: the dictionary
     # defines animated_asset_count as "GIF, video, Lottie, CSS keyframe
     # animation", so dropping them would put this code at odds with its own
     # contract. Known consequence: a page whose only motion is a spinner or a
@@ -396,7 +383,11 @@ def _disclaimer_share(soup: BeautifulSoup, total_words: int) -> tuple[bool, floa
 
     if not candidates or total_words == 0:
         return False, 0.0
-    disclaimer_words = sum(len(c.get_text(strip=True).split()) for c in candidates)
+    # Count each stretch of text once: an element matched by class AND id, or one
+    # nested inside another match, would otherwise add its words twice.
+    ids = {id(c) for c in candidates}
+    outermost = {id(c): c for c in candidates if not any(id(p) in ids for p in c.parents)}
+    disclaimer_words = sum(len(c.get_text(strip=True).split()) for c in outermost.values())
     return True, round(min(1.0, disclaimer_words / total_words), 3)
 
 
@@ -409,10 +400,10 @@ def _rate(text: str, language: str):
     all extracted rate_value_pct=100.00 that way, which is "100% online", not
     a rate - see docs/decisions.md.
     """
-    keywords = _RATE_KEYWORDS.get(language, _RATE_KEYWORDS["en"])
+    keywords = [_whole_word(k, plural=True) for k in _RATE_KEYWORDS.get(language, _RATE_KEYWORDS["en"])]
     for match in re.finditer(r"(\d+[.,]\d+|\d+)\s?%", text):
         window = text[max(0, match.start() - 40): match.end() + 40].lower()
-        if any(keyword in window for keyword in keywords):
+        if any(keyword.search(window) for keyword in keywords):
             return True, float(match.group(1).replace(",", "."))
     return False, None
 
@@ -451,8 +442,7 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
         tag.decompose()
 
     text = soup.get_text(separator=" ", strip=True)
-    words = re.findall(r"[\w'-]+", text, flags=re.UNICODE)
-    word_count = len(words)
+    word_count = len(_WORD_RE.findall(text))
     sentence_count = max(1, len([s for s in re.split(r"[.!?]+", text) if s.strip()]))
     readability_score, readability_formula, readability_band = _readability(text, language)
 
@@ -513,7 +503,7 @@ def extract(html: str, *, language: str, page_url: str | None = None) -> dict:
         "animated_asset_count": 1 if animated else 0,  # coarse - counts "any", not each asset
         "has_animation": animated,
         # layout & structure
-        "section_count": len(soup.find_all(["section", "article"])) or None,
+        "section_count": len(soup.find_all(["section", "article"])),
         "cta_count": cta_count,
         "cta_above_fold": cta_above_fold_guess,  # heuristic, see docstring - not a real viewport check
         "text_to_image_ratio": text_to_image_ratio,  # APPROXIMATION, see module docstring

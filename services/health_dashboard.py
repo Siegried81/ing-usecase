@@ -1,6 +1,6 @@
 """Health check dashboard for docker compose services.
 
-Monitors Streamlit, FastAPI, and database health with a simple web interface.
+Polls the Streamlit and FastAPI health endpoints and shows the result on one page.
 Accessible at http://localhost:8080
 """
 
@@ -10,7 +10,7 @@ from datetime import datetime
 from typing import TypedDict
 
 import aiohttp
-from fastapi import FastAPI, WebSocket
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
 
 app = FastAPI(title="Health Dashboard")
@@ -41,7 +41,7 @@ SERVICES = {
 service_statuses: dict[str, ServiceStatus] = {}
 
 
-async def check_service_health(service_id: str, config: dict) -> ServiceStatus:
+async def check_service_health(config: dict) -> ServiceStatus:
     """Check a single service health."""
     url = config["url"]
     name = config["name"]
@@ -49,17 +49,18 @@ async def check_service_health(service_id: str, config: dict) -> ServiceStatus:
 
     try:
         async with aiohttp.ClientSession(timeout=aiohttp.ClientTimeout(total=5)) as session:
-            async with session.get(url, raise_for_status=True) as resp:
-                if resp.status == 200:
-                    latency = (time.time() - start) * 1000
-                    return {
-                        "name": name,
-                        "url": url,
-                        "status": "✅ Healthy",
-                        "latency_ms": round(latency, 1),
-                        "last_check": datetime.now().strftime("%H:%M:%S"),
-                        "color": "#10b981",
-                    }
+            # raise_for_status turns any 4xx/5xx into an exception, so reaching the
+            # return means the service answered with a success status.
+            async with session.get(url, raise_for_status=True):
+                latency = (time.time() - start) * 1000
+                return {
+                    "name": name,
+                    "url": url,
+                    "status": "✅ Healthy",
+                    "latency_ms": round(latency, 1),
+                    "last_check": datetime.now().strftime("%H:%M:%S"),
+                    "color": "#10b981",
+                }
     except asyncio.TimeoutError:
         return {
             "name": name,
@@ -85,8 +86,8 @@ async def health_check_loop():
     while True:
         try:
             tasks = [
-                check_service_health(sid, config)
-                for sid, config in SERVICES.items()
+                check_service_health(config)
+                for config in SERVICES.values()
             ]
             results = await asyncio.gather(*tasks)
             for sid, status in zip(SERVICES.keys(), results):
@@ -96,10 +97,19 @@ async def health_check_loop():
         await asyncio.sleep(10)  # Check every 10 seconds
 
 
+_background_tasks: set[asyncio.Task] = set()
+
+
 @app.on_event("startup")
 async def startup():
-    """Start the health check background task."""
-    asyncio.create_task(health_check_loop())
+    """Start the health check background task.
+
+    The task is kept in a set because the event loop holds only a weak reference
+    to it, and a task nobody references can be garbage-collected mid-run.
+    """
+    task = asyncio.create_task(health_check_loop())
+    _background_tasks.add(task)
+    task.add_done_callback(_background_tasks.discard)
 
 
 @app.get("/health")
@@ -116,7 +126,8 @@ async def health():
 async def dashboard():
     """Render the health dashboard HTML."""
     statuses_html = ""
-    overall_healthy = True
+    # No check has finished yet right after start-up: that is not "healthy".
+    overall_healthy = bool(service_statuses)
 
     for sid, status in service_statuses.items():
         color = status["color"]
@@ -140,8 +151,12 @@ async def dashboard():
         </div>
         """
 
-    overall_status = "All Systems Healthy" if overall_healthy else "Issues Detected"
-    overall_color = "#10b981" if overall_healthy else "#ef4444"
+    if not service_statuses:
+        overall_status, overall_color = "Waiting for the first check", "#f59e0b"
+    elif overall_healthy:
+        overall_status, overall_color = "All Systems Healthy", "#10b981"
+    else:
+        overall_status, overall_color = "Issues Detected", "#ef4444"
 
     return f"""
     <!DOCTYPE html>
@@ -149,7 +164,7 @@ async def dashboard():
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Banking Comparator — Health Dashboard</title>
+        <title>Banking Comparator - Health Dashboard</title>
         <style>
             * {{
                 margin: 0;
@@ -327,9 +342,10 @@ async def websocket_health(websocket: WebSocket):
                 "services": service_statuses,
             })
             await asyncio.sleep(5)
+    except WebSocketDisconnect:
+        return  # the client left; closing an already closed socket would raise
     except Exception as e:
         print(f"WebSocket error: {e}")
-    finally:
         await websocket.close()
 
 

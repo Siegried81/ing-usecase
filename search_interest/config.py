@@ -20,13 +20,12 @@ TIMEFRAME = "today 5-y"
 # "CBC Banque et Assurance", which is too specific to have real volume).
 TERM_DISPLAY_LABELS = {
     "/g/1z3t2x3c8": "CBC Banque & Assurance",
-    # Brand topics resolved by collectors/term_resolver.py (six-bank
-    # extension, phase 1A). A bare string was kept wherever it was already
-    # unambiguous on geo=BE, so only these banks use a topic mid.
+    # Brand topics resolved by collectors/term_resolver.py. A bare string was
+    # kept wherever it was already unambiguous on geo=BE, so only these banks
+    # use a topic mid.
     "/m/07sc3dj": "BNP Paribas Fortis",
     "/m/03lmky": "Argenta",
     "/g/11c1p5t9vb": "N26",
-    # Second wave (2026-09-21).
     "/g/121yyfq9": "VDK Bank",
 }
 
@@ -43,8 +42,8 @@ BANK_DISPLAY_LABELS = {
     "REVOLUT": "Revolut",
     "N26": "N26",
     "BUNQ": "bunq",
-    # Second wave (2026-09-21): matches the 14-bank scope of the wider ING
-    # Banking Campaigns Comparator project (src/comparator/banks.py there).
+    # Belfius to Keytrade: the 14-bank scope of the wider ING Banking
+    # Campaigns Comparator project (src/comparator/banks.py there).
     "BELFIUS": "Belfius",
     "BEOBANK": "Beobank",
     "VDK": "VDK Bank",
@@ -76,12 +75,11 @@ BANK_SEGMENTS = {
 # Order here defines display order across the pipeline and the Streamlit app.
 # Each sheet has at most 5 terms (pytrends hard limit per request).
 #
-# The project's scope was narrowed to brand notoriety only (share of
-# search): the 29 product-comparison sheets and the 2 M&A context sheets
-# from the six-bank extension were dropped. Only the 3 generic-brand sheets
-# remain. ING and KBC appear, unchanged, in all three: that shared anchor is
-# what lets analysis/share_of_search.py chain them into one 9-bank scale
-# despite pytrends' 5-term-per-request limit (see docs section 7ter).
+# The project only measures brand notoriety (share of search), so every
+# sheet here is a generic-brand sheet. ING and KBC appear, unchanged, in all
+# of them: that shared anchor is what lets analysis/share_of_search.py chain
+# the sheets into one common scale for all the banks despite pytrends'
+# 5-term-per-request limit (see docs section 7ter).
 PRODUCTS = [
     {
         "product_id": "marque_generique",
@@ -114,10 +112,9 @@ PRODUCTS = [
             {"term": "bunq", "bank": "BUNQ", "language": "multi"},
         ],
     },
-    # Second wave (2026-09-21): matches the 14-bank scope of the wider ING
-    # Banking Campaigns Comparator project (src/comparator/banks.py there).
-    # Two more bridge fiches were needed since the two existing bridges
-    # (traditionnelles, neobanques) were already full at 5 terms each.
+    # Two more bridge sheets were needed for the banks beyond the first nine,
+    # since the traditionnelles and neobanques bridges are already full at
+    # 5 terms each.
     {
         "product_id": "marque_generique_traditionnelles_2",
         "product_label": "Marques — banques traditionnelles (2)",
@@ -150,15 +147,8 @@ PRODUCTS = [
     },
 ]
 
-PRODUCT_BY_ID = {p["product_id"]: p for p in PRODUCTS}
-
-# Term resolution thresholds for the six-bank extension (BNPPF, Argenta,
-# Crelan, Revolut, N26, bunq). Used by collectors/term_resolver.py only,
-# kept for when a brand term ever needs re-resolving.
+# Term resolution thresholds, used by collectors/term_resolver.py only.
 BRAND_MIN_COVERAGE = 0.90
-PRODUCT_SELECT_COVERAGE = 0.50
-PRODUCT_FLOOR_COVERAGE = 0.25
-MAX_CANDIDATE_CALLS_PER_FICHE = 3
 
 # Structural market events. Display and exports only: no computation reads
 # this list, it only annotates a series after the fact.

@@ -1,7 +1,7 @@
-# D-01 — Scope and compliance note
+# D-01: Scope and compliance note
 
 first draft. Deliverable D-01 per PRD section 13 ("Scope and
-compliance note" — banks/product/pages/language selected with justification,
+compliance note", banks/product/pages/language selected with justification,
 what was excluded and why, robots.txt/sitemap findings, and the "what we
 considered acceptable, and why" statement). Audience: both decks.
 
@@ -52,12 +52,12 @@ on whether that interpretation matches what they meant (ties into Q-06).
 ## 1. Banks in scope
 
 Working from the PRD's own candidate list (section 2 / Appendix A):
-traditional — ING, KBC, BNP Paribas Fortis, Argenta, Crelan; challenger —
+traditional, ING, KBC, BNP Paribas Fortis, Argenta, Crelan; challenger,
 Revolut, N26, bunq. The PRD leaves Belfius ambiguous (Q-02: "appears in the
 deck comparison but not in the written bank list") with the working
 assumption "include only if capacity allows."
 
-**Decision:** Belfius is included — it already has a real captured page
+**Decision:** Belfius is included, it already has a real captured page
 (`data/raw/belfius/`) and appears throughout `config/feature_dictionary.yaml`
 (e.g. the 100%-state-owned trust-signal example). Capacity allowed it, per
 the PRD's own condition.
@@ -68,20 +68,20 @@ dataset that's actually in use today):**
 | Bank | Category | Real capture | Robots allowed | Screenshot | Model-assisted fields |
 | --- | --- | --- | --- | --- | --- |
 | ING | traditional | yes (3 pages) | yes | yes | yes |
-| KBC | traditional | yes (2 pages) | yes | **no** — file exists in `data/raw/kbc/` but not wired to a `screenshot_path` | yes |
+| KBC | traditional | yes (2 pages) | yes | **no**: file exists in `data/raw/kbc/` but not wired to a `screenshot_path` | yes |
 | Belfius | traditional | yes | yes | **no** | yes |
 | Revolut | challenger | yes | yes | yes | yes |
-| N26 | challenger | yes | yes | **no** | **no** — LLM extraction missing entirely |
+| N26 | challenger | yes | yes | **no** | **no**: LLM extraction missing entirely |
 | BNP Paribas Fortis | traditional | yes | yes | yes | yes |
 | Argenta | traditional | yes | yes | yes | yes |
 | Crelan | traditional | yes | yes | yes | yes |
 | bunq | challenger | yes | yes | yes | yes |
 
 All 9 banks now have a real, usable capture (`capture_quality=ok` for all
-12 pages) — the "not yet configured" state below is stale, superseded by
+12 pages), the "not yet configured" state below is stale, superseded by
 collection actually finishing. Every row's `collection_method` is
 `manual_capture` (the browser-save path in the README's "when a site will
-not serve the pipeline" section), not the live headless scrape — that
+not serve the pipeline" section), not the live headless scrape, that
 includes BNP Paribas Fortis, whose CDN-blocking issue (see
 `docs/decisions.md`) is resolved this way, not by getting past
 the block.
@@ -90,20 +90,20 @@ Two real gaps, not "not yet configured":
 
 - **No screenshot for Belfius, KBC and N26.** Blocks the 4 vision-only rubric
   features for those banks (`accent_locations`, `text_image_layout`,
-  `layout_archetype`, `mobile_first_design_signal`) — a rater has nothing to
+  `layout_archetype`, `mobile_first_design_signal`), a rater has nothing to
   score them against. KBC's case looks recoverable (a screenshot file exists
   on disk, just not linked); Belfius and N26 need an actual capture.
 - **No LLM extraction for N26.** Automatic non-model features are still
   present, but every model-assisted feature is empty for this bank.
 
-- **Headless rendering** — still not available; geometry fields
+- **Headless rendering**: still not available; geometry fields
   (`page_height_px` and three others) stay empty on every real row,
   unchanged since 16/09.
 
-### Scope update — 10 banks / 12 pages, nothing excluded
+### Scope update: 10 banks / 12 pages, nothing excluded
 
 Two things changed since the table above. **Headless rendering works in this
-environment now** — every live capture carries `page_height_px` and the other
+environment now**, every live capture carries `page_height_px` and the other
 geometry fields (Belfius's current-account page, for example, reports 11,110 px),
 so the "still not available, unchanged since 16/09" note above is superseded.
 And the bank list grew, through the freeze rule's *addition* path rather than a
@@ -137,10 +137,10 @@ produced a confident wrong number.
 **Checked and rejected for this family** (documented so nobody re-checks them):
 MeDirect and Deutsche Bank Belgium offer savings/term only; Triodos' current
 account is business-only; CPH is savings/term/mortgage; Santander Consumer Bank's
-TLS handshake fails; and **AXA Bank no longer exists as a brand** — it merged into
+TLS handshake fails; and **AXA Bank no longer exists as a brand**, it merged into
 Crelan, and axa.be now redirects to insurance. Keytrade Bank was unresolved at this point:
 JS-rendered, and its 3,171-URL sitemap surfaces no retail current-account page.
-Superseded — its KeyPack current-account page was later captured with
+Superseded, its KeyPack current-account page was later captured with
 `method: headful` and a lighter navigation wait (`scripts/collection_targets.yaml`),
 and it is in the dataset.
 
@@ -153,12 +153,12 @@ the targets file listed. It now holds **51 pages across 14 banks and 6 families*
 `belfius_other_fr_01` was Belfius's pension page, mislabeled; see the note
 below.) Product pages were discovered from each
 bank's own navigation and every one was verified by rendering it before
-collection — the automated picks included investor-relations pages, calculators
+collection, the automated picks included investor-relations pages, calculators
 and a jargon glossary, all dropped (the list is in the 21/09 decisions entry).
 
 `product_family` is still the comparison key (DR-04): the families are *stored*
 together, and a comparison is only valid within one of them. Banks whose sites
-publish fewer comparable landing pages contribute fewer rows — Revolut and bunq
+publish fewer comparable landing pages contribute fewer rows, Revolut and bunq
 have one each (app-first sites), Keytrade, N26 and Hellobank three.
 
 ### The three remaining gaps above are closed
@@ -170,8 +170,7 @@ stale, both superseded by later re-collection (dated between the "steve
 - **BNP Paribas Fortis and Revolut are both live-captured, not
   manual-capture.** BNP via `method: headful` (decisions.md, "BNP Paribas Fortis captured"); Revolut via the current
   `collection_targets.yaml` URL, a plain headless fetch. Every one of the 51
-  current rows has `collection_method` in `{headless_render, headful_render}`
-  — checked directly against `data/processed/campaigns.csv`, zero
+  current rows has `collection_method` in `{headless_render, headful_render}`, checked directly against `data/processed/campaigns.csv`, zero
   `manual_capture` rows remain.
 - **Screenshots exist and are correctly linked for Belfius, KBC and N26.**
   Checked directly: every `screenshot_path` in the current dataset resolves
@@ -183,20 +182,20 @@ stale, both superseded by later re-collection (dated between the "steve
 
 ## 2. Product family and language
 
-**Language:** French, consistently, across every page collected so far —
+**Language:** French, consistently, across every page collected so far,
 satisfies PRD Q-07 ("use one language consistently, state the choice"; word
 counts, readability etc. are `within_language` per the dictionary and cannot
 be compared across NL/FR/EN, see `bands.py`).
 
 **Product family:** the PRD's working assumption (Q-03) was "term accounts
 first, current-account packs second if capacity allows." **Decision:**
-superseded — the team wants a complete analysis, so every product family a
+superseded, the team wants a complete analysis, so every product family a
 bank actually promotes on its campaign pages is in scope, not one family
 narrowed for like-for-like comparison. What is actually collected reflects
 this: `current_account_pack` (ING, KBC, Belfius, Argenta, Crelan, vdk,
-hellobank, beobank, N26 and bunq — the family the analysis compares),
+hellobank, beobank, N26 and bunq, the family the analysis compares),
 `savings_account` (ING), `mortgage` (BNP Paribas Fortis) and `pension`
-(Belfius's second page — its current-account page is the one that counts for
+(Belfius's second page, its current-account page is the one that counts for
 `current_account_pack`; this was labelled `other` until tonight,
 corrected in place, same capture).
 `category_comparison`/`check_deck_claims` and any like-for-like read (DR-04)
@@ -206,7 +205,7 @@ dataset.
 ## 3. Compliance / robots.txt findings
 
 `collection/compliance.py::assert_can_fetch()` checks `robots.txt` live
-before every fetch (page HTML and, since today's fix, the hero image too —
+before every fetch (page HTML and, since today's fix, the hero image too,
 see the compliance-gate fix on `feat/sync_main`) and fails closed: if
 `robots.txt` can't be read at all, the URL is treated as not allowed. Every
 row in `real_captures.csv` has `robots_allowed=True`.
@@ -214,24 +213,24 @@ row in `real_captures.csv` has `robots_allowed=True`.
 Per-domain reasoning (read each domain's live `robots.txt`
 directly and checked it with the same parser `compliance.py` uses):
 
-- **Revolut** (`fr-BE/bank-account/`) — no `Disallow` rule covers that path
+- **Revolut** (`fr-BE/bank-account/`), no `Disallow` rule covers that path
   (no query string, not under `/api/`, not one of the blocked
   send-money/currency-converter paths). Documented in
   `scripts/collection_targets.yaml`.
-- **KBC** (`.../ouvrir-un-compte-de-base.html`) — `Disallow` rules cover
+- **KBC** (`.../ouvrir-un-compte-de-base.html`), `Disallow` rules cover
   `/*/$`, `/site/*`, `/PBL/CC028/*`, `*/aemform.iframe.html`; none match our
   `.html` page.
-- **N26** (`/fr-fr/compte-bancaire-gratuit`) — the `robots.txt` has a
+- **N26** (`/fr-fr/compte-bancaire-gratuit`), the `robots.txt` has a
   `Disallow: /` block, but it is scoped to a long list of named "bad bot"
   user agents (Wget, HTTrack, etc.), not to `User-agent: *`. Our identified
   user agent isn't in that list, so it's allowed.
-- **Belfius** (`/retail/fr/moments-cles/pension/index.aspx`) — roughly 60
+- **Belfius** (`/retail/fr/moments-cles/pension/index.aspx`), roughly 60
   specific `Disallow` rules (contest pages, PDFs, credit simulators, "my
   Belfius" login area); none match our page.
-- **ING** (`/fr/particuliers/epargner`) — only `Disallow: /video`.
-- **BNP Paribas Fortis** (`.../pret-hypothecaire`) — `Disallow` covers
+- **ING** (`/fr/particuliers/epargner`), only `Disallow: /video`.
+- **BNP Paribas Fortis** (`.../pret-hypothecaire`), `Disallow` covers
   `/site/`, `/images/`, `/local/`, `/PAPL-*/`, `/pas/`, `/promo/`, `/de/*`,
-  `/*.pdf`; none match our page. Note the `/images/` rule specifically — it's
+  `/*.pdf`; none match our page. Note the `/images/` rule specifically, it's
   why the hero-image compliance fix (assert_can_fetch on the image URL too,
   not just the page) matters for this bank in particular.
 
@@ -240,26 +239,26 @@ No domain has been excluded on compliance grounds so far.
 ## 4. What was excluded, and why
 
 - **superseded.** Argenta, Crelan and bunq are now captured and
-  in scope like every other bank — nothing was excluded here after all, they
+  in scope like every other bank, nothing was excluded here after all, they
   were just collected later than the rest.
-- **Social media sentiment** (candidate analysis dimension, PRD 11 bis) —
+- **Social media sentiment** (candidate analysis dimension, PRD 11 bis),
   deliberately deferred to a documented D-09 next step, not in v1 scope, to
   avoid the scope-creep risk R-07.
-- **ING campaign performance data** (CTR, accept rates) — assumed unavailable
+- **ING campaign performance data** (CTR, accept rates), assumed unavailable
   per Q-04; comparison stays descriptive, no performance modelling.
-- **A mobile viewport capture** — out of scope; every page is captured at one
+- **A mobile viewport capture**: out of scope; every page is captured at one
   fixed 1440×900 desktop viewport (see `config/feature_dictionary.yaml`,
   `mobile_first_design_signal` and `page_height_px` notes). This is a known
   limitation, not a silent gap: features that would need a real mobile render
   are documented as such rather than guessed from the desktop screenshot.
-- **Public repository / public competitor assets** — treated as internal
+- **Public repository / public competitor assets**: treated as internal
   only per Q-05; no public redistribution of competitor screenshots, HTML or
   brand assets outside the team.
-- **English, alongside French and Dutch** — revisited and added
+- **English, alongside French and Dutch**: revisited and added
   (Stephane agreed). Checked first: ING's English site is a genuine full
   mirror of the French one (same packs, same pricing, same promos), not an
   expat-only subset, so this is the same audience in a third language, not a
-  different one — no DR-04 comparability issue. The known cost, stated
+  different one, no DR-04 comparability issue. The known cost, stated
   plainly: three languages roughly triples the manual rubric scoring
   workload (13 features × bank × language) against the original one-language
   plan, right before Friday's session. Team decision to take that on rather
@@ -269,9 +268,9 @@ No domain has been excluded on compliance grounds so far.
 
 - A page is fetched only after its own `robots.txt` allows it for our
   identified user agent (`BeCode-ING-CampaignComparator/0.2`, see
-  `compliance.py`) — never assumed, always re-checked live at fetch time, and
+  `compliance.py`), never assumed, always re-checked live at fetch time, and
   the check fails closed on any read error.
-- We only capture and analyse a bank's own public marketing page — no login,
+- We only capture and analyse a bank's own public marketing page, no login,
   no scraping behind authentication, no personal or customer data (public
   campaign pages only, consistent with DR-01/DR-09).
 - Competitor brand assets (logos, photos) are stored locally for feature
@@ -279,5 +278,5 @@ No domain has been excluded on compliance grounds so far.
   (step 5 guardrails) or in the public-facing decks beyond citation.
 - One language, one measuring stick (one pinned LLM, D6) and one fixed
   viewport are all recorded as explicit, named limitations rather than left
-  implicit — a reviewer can see exactly what the numbers can and cannot
+  implicit, a reviewer can see exactly what the numbers can and cannot
   support.

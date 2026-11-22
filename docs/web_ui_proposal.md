@@ -1,16 +1,16 @@
-# Proposal — a web UI over the comparator
+# Proposal: a web UI over the comparator
 
 > **Status, superseded by what was actually built.** This is kept as
 > the proposal that was accepted and amended, not as a description of the current
 > UI. A React UI now exists with ten tabs: the four business tabs (Analysis,
 > Trends, Reputation, Recommendations), the recommendations flow and the
-> generated-site builder with its explanation mode, and — added last — the
+> generated-site builder with its explanation mode, and, added last, the
 > read-only operator tabs (Home, Bank profiles, Data, Rubric, Collection,
 > Research) that carry over what `streamlit_app.py` showed. For the shipped
 > behaviour read [`../web/README.md`](../web/README.md); for how to run it,
 > [`pipeline.md`](pipeline.md). Two things here still never happened as written:
 > the operator **scoring** UI (writing is still `scripts/rubric_sheet.py` and the
-> joint session — the Rubric tab only reads finished sheets) and the
+> joint session, the Rubric tab only reads finished sheets) and the
 > dataset-editing endpoints, which are deliberately absent.
 
 For the team to accept, amend or reject before anything is built.
@@ -22,7 +22,7 @@ library with no I/O assumptions, and `scripts/*` are thin wrappers around it. A
 UI is a second caller of that library, not a rewrite of anything.
 
 But most of the pipeline does not benefit much from a UI. **One part benefits
-enormously** — rubric scoring — and it is the part currently blocking the
+enormously**, rubric scoring, and it is the part currently blocking the
 analysis. I would build that first and treat the rest as optional.
 
 ---
@@ -34,22 +34,22 @@ analysis. I would build that first and treat the rest as optional.
 | | why |
 | --- | --- |
 | Clean library/CLI split | the UI calls `comparator.*` directly; no shelling out to scripts |
-| Everything is a file | datasets, sheets, snapshots, screenshots, charts — all inspectable, all serveable |
+| Everything is a file | datasets, sheets, snapshots, screenshots, charts: all inspectable, all serveable |
 | Artefacts already exist | PNG, MD, CSV, JSON are produced today; a viewer is mostly plumbing |
-| Stateless analysis | `run_analysis` is <2s and pure — cheap to re-run on any parameter change |
+| Stateless analysis | `run_analysis` is <2s and pure: cheap to re-run on any parameter change |
 
 **Does not suit a UI, and should not be forced into one**
 
 | | why |
 | --- | --- |
-| Collection | ~5–8s per page, ~90s for the current 12. Needs a job model, not a request |
+| Collection | ~5 to 8s per page, ~90s for the current 12. Needs a job model, not a request |
 | The feature dictionary | it is the frozen contract (P-04). Editing it from a web form would undo the freeze rule. **Read-only in the UI, permanently** |
-| Compliance gates | `assert_can_fetch` must stay server-side and non-overridable. **No "skip robots check" toggle, ever** — not behind a flag, not for testing |
+| Compliance gates | `assert_can_fetch` must stay server-side and non-overridable. **No "skip robots check" toggle, ever**: not behind a flag, not for testing |
 | Provenance | a UI that lets someone hand-edit an extracted feature destroys the audit trail. Rubric scores are the one exception, because they are human by design |
 
 **A tradeoff worth stating once.** Dan already has a working Streamlit app in
 `trends-benchmark/`. Streamlit would get 80% of the value below in about a day;
-React is roughly 4–5 days for the full scope. With 8 working days left and two
+React is roughly 4 to 5 days for the full scope. With 8 working days left and two
 presentations to deliver, that is a real cost. If the goal is *a usable tool for
 the team*, Streamlit wins. If the goal is *something to show the business on
 Day 10*, React wins, because the rubric-scoring screen and the results view are
@@ -62,7 +62,7 @@ in the phase order below, stopping whenever the deck needs the time more.
 
 Ranked by value, not by how interesting it is to build.
 
-### ★★★ Rubric scoring — the one that pays for itself
+### ★★★ Rubric scoring: the one that pays for itself
 
 13 features × 12 pages × 3 raters, currently done by editing a CSV while the
 screenshot is open in another window. It is the single thing blocking every
@@ -80,11 +80,11 @@ Design points that matter more than the UI itself:
 - **The model's sheet is hidden during scoring** for the same reason, then shown
   in the comparison view afterwards.
 - **Vision-only features are the point.** `accent_locations`, `text_image_layout`,
-  `layout_archetype`, `mobile_first_design_signal` cannot be model-scored — the
+  `layout_archetype`, `mobile_first_design_signal` cannot be model-scored, the
   UI is where they get done.
 - Blank stays blank. No default selections, no "looks like a 3" nudges.
 
-### ★★★ Dataset explorer — makes "is this the right page?" answerable
+### ★★★ Dataset explorer: makes "is this the right page?" answerable
 
 Per page: the screenshot, the extracted features grouped by dimension, the
 quality verdict and its note, the source URL, and which model labelled it. This
@@ -100,7 +100,7 @@ The four charts, `charts.md`, `limitations.md`, the profile cards, side by side
 with the scope banner. Today these are scattered files and two of them disagreed
 on their counts until yesterday.
 
-Worth it mostly because it is **the demo surface for Day 10** — a business
+Worth it mostly because it is **the demo surface for Day 10**, a business
 audience should not be shown a folder.
 
 ### ★★ Run orchestration
@@ -114,7 +114,7 @@ learn the page was wrong. Marginal for analysis, which is faster than the click.
 ### ★ Generation studio
 
 Adjust the target profile, generate, see the scorecard and where the result lands
-against the real banks. Good demo value, lowest operational value — and it needs
+against the real banks. Good demo value, lowest operational value, and it needs
 the P-08 guardrails visible on screen, not buried: labelled synthetic, no invented
 rates, and the scorecard always shown next to the copy.
 
@@ -134,8 +134,7 @@ React (Vite + TS)  ──HTTP/SSE──►  FastAPI  ──►  comparator.*  �
                                      └── jobs (in-process, one at a time)
 ```
 
-**FastAPI over the library, not over the scripts.** The scripts stay as they are
-— they are how the pipeline runs in CI and on a laptop, and the UI must not
+**FastAPI over the library, not over the scripts.** The scripts stay as they are: they are how the pipeline runs in CI and on a laptop, and the UI must not
 become the only way to run anything.
 
 **Jobs.** Collection and generation are too slow for a request. One in-process
@@ -152,7 +151,7 @@ sync problem, and the audit trail stays exactly where it is.
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET` | `/api/state` | what exists: dataset, outputs, sheets, freeze status |
-| `GET` | `/api/dictionary` | features, dimensions, rubric levels — **read-only** |
+| `GET` | `/api/dictionary` | features, dimensions, rubric levels: **read-only** |
 | `GET` | `/api/dataset` | rows + quality verdicts + scope |
 | `GET` | `/api/dataset/{page_id}` | one page, with screenshot and snapshot URLs |
 | `GET` | `/api/targets` · `PUT` | collection targets (the scope decision stays a file) |
@@ -163,20 +162,20 @@ sync problem, and the audit trail stays exactly where it is.
 | `GET` | `/api/results/*` | charts, limitations, profiles |
 
 Validation is the existing `schema.validate` and the dictionary's own allowed
-values — the API should not grow a second, looser idea of what is valid.
+values, the API should not grow a second, looser idea of what is valid.
 
 ---
 
 ## 4. Screens
 
-1. **Run control** — pipeline stages, last-run times, live job log, quality
+1. **Run control**: pipeline stages, last-run times, live job log, quality
    verdicts as they arrive.
-2. **Dataset** — table of pages with quality badges; click through to screenshot
+2. **Dataset**: table of pages with quality badges; click through to screenshot
    + features + provenance.
-3. **Score** — the rubric screen. Screenshot left, form right, rubric levels
+3. **Score**: the rubric screen. Screenshot left, form right, rubric levels
    inline, progress across pages, nothing from other raters visible.
-4. **Results** — charts with the scope banner, limitations, profile cards.
-5. **Generate** — targets, output, scorecard, guardrail status.
+4. **Results**: charts with the scope banner, limitations, profile cards.
+5. **Generate**: targets, output, scorecard, guardrail status.
 
 ---
 
@@ -208,5 +207,5 @@ a human with a screenshot.
 ## 7. What I need agreed before building
 
 1. **React or Streamlit**, given Dan already has Streamlit working and we have 8 days.
-2. **Phase 1 only, or further** — my recommendation is Phase 1 now, decide on the rest after Friday.
-3. **Who runs it** — local-only on a laptop, or does it need to be reachable by the others?
+2. **Phase 1 only, or further**: my recommendation is Phase 1 now, decide on the rest after Friday.
+3. **Who runs it**: local-only on a laptop, or does it need to be reachable by the others?

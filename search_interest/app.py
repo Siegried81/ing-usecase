@@ -1,5 +1,5 @@
-"""Streamlit app: ING against eight competitor banks on Google Trends,
-one comparison per sidebar entry and one tab per product sheet.
+"""Streamlit app: ING against the other banks of the panel on Google Trends,
+one comparison per sidebar entry and one tab per sheet.
 
 Reads trends_data and term_validation from SQLite. Both tables are populated
 by separate pipeline steps (collectors/trends_collector.py,
@@ -31,35 +31,23 @@ BANK_DASH = {
     "REVOLUT": "dot",
     "N26": "longdash",
     "BUNQ": "longdashdot",
+    "BELFIUS": "dot",
+    "BEOBANK": "longdash",
+    "VDK": "longdashdot",
+    "HELLOBANK": "dot",
+    "KEYTRADE": "longdash",
 }
-
-# Sheets grouped under the "Marques & contexte" view rather than under the
-# view of a single competitor: they carry the ING/KBC anchor terms and are
-# meant to be read across banks.
-BRAND_CONTEXT_FICHES = [
-    "marque_generique",
-    "marque_generique_traditionnelles",
-    "marque_generique_neobanques",
-    "contexte_integration_bnppf_bpost",
-    "contexte_fusion_crelan_axa",
-]
 
 BRAND_CONTEXT_VIEW = "Marques & contexte"
 
 # Sidebar comparison selector: label -> bank code filtered on, or None for
-# the brand/context group. ING is the common anchor of every sheet and so
-# has no view of its own.
+# the view holding every sheet. ING is the common anchor of every sheet and
+# so has no view of its own. Built from BANK_DISPLAY_LABELS so a bank added
+# to the config shows up here without a second edit.
 COMPARISON_VIEWS = {
-    "KBC": "KBC",
-    "CBC": "CBC",
-    "BNP Paribas Fortis": "BNPPF",
-    "Argenta": "ARGENTA",
-    "Crelan": "CRELAN",
-    "Revolut": "REVOLUT",
-    "N26": "N26",
-    "bunq": "BUNQ",
-    BRAND_CONTEXT_VIEW: None,
+    label: bank for bank, label in BANK_DISPLAY_LABELS.items() if bank != "ING"
 }
+COMPARISON_VIEWS[BRAND_CONTEXT_VIEW] = None
 
 FLAG_LABELS = {
     "selected_low_coverage": "couverture faible (série peu dense)",
@@ -133,14 +121,11 @@ def load_term_flags():
 
 
 def fiches_for_view(view_label):
-    if COMPARISON_VIEWS[view_label] is None:
-        return [p for p in PRODUCTS if p["product_id"] in BRAND_CONTEXT_FICHES]
+    """Every sheet for the all-sheets view, else the sheets where the bank has a term."""
     bank = COMPARISON_VIEWS[view_label]
-    return [
-        p for p in PRODUCTS
-        if p["product_id"] not in BRAND_CONTEXT_FICHES
-        and any(t["bank"] == bank for t in p["terms"])
-    ]
+    if bank is None:
+        return list(PRODUCTS)
+    return [p for p in PRODUCTS if any(t["bank"] == bank for t in p["terms"])]
 
 
 def events_for_product(product):
@@ -280,8 +265,7 @@ def main():
     view = st.sidebar.selectbox("Comparaison", view_labels, index=view_labels.index("KBC"))
     st.sidebar.caption(
         "ING est l'ancre commune de toutes les fiches : chaque comparaison oppose ING à la "
-        "banque sélectionnée. « Marques & contexte » regroupe les fiches de marque et les "
-        "fiches expliquant les ruptures structurelles du marché."
+        "banque sélectionnée. « Marques & contexte » regroupe toutes les fiches."
     )
 
     products = fiches_for_view(view)

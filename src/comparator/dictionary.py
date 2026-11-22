@@ -59,10 +59,6 @@ class Feature:
         return self.type in LIST_TYPES
 
     @property
-    def is_core(self) -> bool:
-        return self.tier == "core"
-
-    @property
     def is_judgement_based(self) -> bool:
         """Rubric and model-assisted features carry a trust caveat."""
         return self.extraction in {"rubric", "model_assisted"}

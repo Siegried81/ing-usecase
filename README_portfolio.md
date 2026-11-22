@@ -1,9 +1,9 @@
-# Banking Campaigns Comparator — ING use case
+# Banking Campaigns Comparator: ING use case
 
 Measuring how fourteen Belgian banks communicate comparable products, so the
 differences can be argued from evidence instead of impression.
 
-A two-week proof of concept for ING DACI / Customer AI, built 14–25 September 2026
+A two-week proof of concept for ING DACI / Customer AI, built 14 to 25 September 2026
 by a team of three: Siegried Camus (lead, marketing framework, integration), Dan
 Ukendi (search-interest pipeline), Stephane van der Aa (collection architecture,
 GenAI). This fork carries the full project; the section below says which parts
@@ -14,7 +14,7 @@ were mine.
 ## The problem, and the ceiling
 
 A bank wants to know how its public campaign pages differ from its competitors'.
-The obvious approach — scrape some pages, ask a model which is better — produces a
+The obvious approach, scrape some pages, ask a model which is better, produces a
 number nobody can defend.
 
 So the project is built the other way round. Every claim traces to one declared
@@ -23,7 +23,7 @@ system is explicit about what it cannot say:
 
 **No performance data exists here.** Nothing links a design choice to a click, a
 conversion or a sale. Every finding is *"ING does X differently"*, never *"X works
-better"*. That is structural — there is no outcome variable in the dataset at all.
+better"*. That is structural. There is no outcome variable in the dataset at all.
 
 Getting that boundary right, and keeping it under deadline pressure, is most of
 what this project is about.
@@ -47,8 +47,8 @@ network mocked.
   that is not in it is a hard validation error. Each feature declares how it was
   produced and how far it can be compared across languages.
 - **Compliance as a gate, not a setting.** `assert_can_fetch()` checks live
-  `robots.txt` before every fetch — including hero images and same-origin
-  sub-resources — and fails closed. There is no flag to skip it, and a test asserts
+  `robots.txt` before every fetch, including hero images and same-origin
+  sub-resources, and fails closed. There is no flag to skip it, and a test asserts
   the gate fires before the browser even launches.
 - **No agent loops.** Every LLM call is one structured call: fixed prompt, schema
   validation against the dictionary's own allowed values, bounded retry. The model
@@ -64,18 +64,18 @@ network mocked.
 
 From the git history, my own contributions were concentrated on:
 
-- **Measurement correctness and the withdrawals** — finding and fixing the rate
+- **Measurement correctness and the withdrawals**: finding and fixing the rate
   parser that read "100% en ligne" as an interest rate; the luminance metric that
   averaged a whole page strip and inverted a published claim; the urgency counter
   that scored a dated deadline as zero; the blank-versus-zero bug that had silently
   cut a comparison's peer group by a third. Several of these moved a number that
   was already on a slide.
 - **The compliance gate**, including the hero-image fetch that was bypassing it.
-- **Reputation signals** — news-theme classification, Belgian-source filtering, and
+- **Reputation signals**: news-theme classification, Belgian-source filtering, and
   the quota-outage handling that stops "no key" from reading as "no news".
-- **The judged rubric sheet** — I am the single named rater for the 13
+- **The judged rubric sheet**: I am the single named rater for the 13
   judgement-based features, against the written scales in `SCORING_GUIDE.md`.
-- **Integration** — 55 of the 77 pull requests merged during the project (14–25 Sept), and the correction passes
+- **Integration**: 55 of the 77 pull requests merged during the project (14 to 25 Sept), and the correction passes
   that kept the deck's figures matching the code.
 - **The Streamlit operator dashboard**, later folded into the React UI's operator
   tabs.
@@ -85,12 +85,12 @@ pipeline were built by my teammates. I have not relabelled their work.
 
 ## Read next
 
-**[`docs/technical_deep_dive.md`](docs/technical_deep_dive.md)** — the real documentation:
+**[`docs/technical_deep_dive.md`](docs/technical_deep_dive.md)**, the real documentation:
 every module explained, the measurement decisions and why, the twenty bugs that
 shaped the code, and an honest list of what is still open.
 
 The bug section is the part I would point a reviewer at. Almost none of them are
-crashes — the dominant failure mode in a measurement pipeline is code that runs
+crashes, the dominant failure mode in a measurement pipeline is code that runs
 cleanly, passes every range check, and reports the wrong thing.
 
 ## Run it
@@ -100,13 +100,13 @@ The fixture path needs no API key and no network:
 ```bash
 pip install -r requirements.txt
 cp .env.example .env
-python3 scripts/make_fixture.py       # synthetic dataset — every row is invented
+python3 scripts/make_fixture.py       # synthetic dataset, every row is invented
 python3 scripts/run_analysis.py
 python3 -m pytest tests/ -q
 ```
 
 Fixture archetypes deliberately encode the kickoff deck's *claims*, so a fixture
-run always confirms them. Never read a fixture result as evidence — that warning is
+run always confirms them. Never read a fixture result as evidence, that warning is
 printed by the code itself.
 
 Real collection needs an LLM key, a Playwright Chromium install and network access.

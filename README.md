@@ -2,16 +2,16 @@
 
 How Belgian banks communicate comparable products differently, and what ING could
 learn from it. A two-week proof of concept for ING DACI / Customer AI, built
-14–25 September 2026 by Siegried (lead, marketing framework), Dan (collection,
+14 to 25 September 2026 by Siegried (lead, marketing framework), Dan (collection,
 extraction) and Stephane (analysis, GenAI).
 
 **The one thing this project refuses to claim:** no performance data exists here.
 Nothing links a design choice to a click, a conversion or a sale. Every finding is
 of the form *"ING does X differently"*, never *"X works better"*. That ceiling is
-structural, not caution — there is no outcome variable in the dataset at all.
+structural, not caution. There is no outcome variable in the dataset at all.
 
-A full technical walkthrough — what every module does, the measurement decisions,
-and the twenty bugs that shaped them — is in
+A full technical walkthrough, what every module does, the measurement decisions,
+and the twenty bugs that shaped them, is in
 [`docs/technical_deep_dive.md`](docs/technical_deep_dive.md).
 
 ## What it does
@@ -32,14 +32,14 @@ targets.yaml → robots gate → capture (static / headless / headful)
 | | |
 | --- | --- |
 | Dataset | **51 pages · 14 banks · 6 product families** (`current_account_pack` 18, `investment` 9, `savings_account` 9, `pension` 8, `mortgage` 5, `term_account` 2) |
-| Positioning view | one family at a time (DR-04) — currently the 18 current-account pages, 33 comparable features |
-| Languages | French 48, English 2, Dutch 1 — so the 8 numeric `within_language` features are **excluded** from cross-bank comparison rather than compared across languages |
+| Positioning view | one family at a time (DR-04): currently the 18 current-account pages, 33 comparable features |
+| Languages | French 48, English 2, Dutch 1: so the 8 numeric `within_language` features are **excluded** from cross-bank comparison rather than compared across languages |
 | Feature dictionary | **104 features** (66 core, 38 extended); working and frozen copies byte-identical |
 | Human judgement | **one judged sheet**, one named rater, 13 rubric features |
 | Capture methods | 45 headless, 6 headful, **zero** manual-only |
 | Labelling model | `deepseek/deepseek-flash` on 49 rows, `groq/openai/gpt-oss-120b` on 2 (fallback, recorded not silent) |
-| Tests | **512 passing**, no network: every socket is blocked in `tests/conftest.py` |
-| CI | `.github/workflows/tests.yml` — ruff (pyflakes + whitespace), pytest, schema-freeze check, data-quality gate, plus a React type-check and build |
+| Tests | **512 tests** (511 run, 1 skipped until `web/dist` is built), no network: every socket is blocked in `tests/conftest.py` |
+| CI | `.github/workflows/tests.yml`: ruff (pyflakes + whitespace), pytest, schema-freeze check, data-quality gate, plus a React type-check and build |
 
 ## Quick start
 
@@ -48,7 +48,7 @@ The fixture path needs no API key and no network:
 ```bash
 pip install -r requirements.txt
 cp .env.example .env
-python3 scripts/make_fixture.py       # synthetic dataset — every row invented
+python3 scripts/make_fixture.py       # synthetic dataset, every row invented
 python3 scripts/run_analysis.py
 python3 -m pytest tests/ -q
 ```
@@ -76,7 +76,7 @@ check cannot catch are in [`docs/pipeline.md`](docs/pipeline.md).
   always **recorded** on the row, and the validator warns when a dataset mixes
   models.
 - **Judgement is labelled.** Human-scored and machine-measured values look
-  different on screen. One judged sheet means no reliability figure is claimed —
+  different on screen. One judged sheet means no reliability figure is claimed,
   stated outright rather than left to be inferred.
 - **Compliance is a gate, not a setting.** `assert_can_fetch()` checks live
   `robots.txt` before every fetch, including hero images and same-origin
@@ -87,8 +87,8 @@ check cannot catch are in [`docs/pipeline.md`](docs/pipeline.md).
   The exclusion lives in the analysis and is printed in the feature accounting, so
   a re-run cannot quietly undo it.
 - **Quality is scored, not assumed.** The dataset is graded on the six standard
-  data-quality dimensions — completeness, validity, uniqueness, consistency,
-  timeliness, accuracy — reusing the dictionary's own rules, so a value is valid
+  data-quality dimensions (completeness, validity, uniqueness, consistency,
+  timeliness, accuracy), reusing the dictionary's own rules, so a value is valid
   here exactly as it is in the validator. The first three fail the build; the
   recorded single-model fallback only warns, because it was agreed and written
   down; and accuracy is reported as *not measurable here*, with the reason, rather
@@ -101,17 +101,17 @@ Full reasoning in [`docs/design.md`](docs/design.md).
 
 | File | What it is |
 | --- | --- |
-| [`docs/technical_deep_dive.md`](docs/technical_deep_dive.md) | **this system, explained** — every module, the measurement decisions, the bugs and their fixes |
-| [`docs/pipeline.md`](docs/pipeline.md) | runbook — commands in order, where data lands, the quality gate |
-| [`docs/design.md`](docs/design.md) | design — the dictionary contract, the freeze rule, what the validator refuses |
+| [`docs/technical_deep_dive.md`](docs/technical_deep_dive.md) | **this system, explained**: every module, the measurement decisions, the bugs and their fixes |
+| [`docs/pipeline.md`](docs/pipeline.md) | runbook: commands in order, where data lands, the quality gate |
+| [`docs/design.md`](docs/design.md) | design: the dictionary contract, the freeze rule, what the validator refuses |
 | [`docs/decisions.md`](docs/decisions.md) | dated decision log, append-only |
 | [`docs/D01_scope_and_compliance_note.md`](docs/D01_scope_and_compliance_note.md) | banks in scope, per-domain robots.txt findings, what was excluded and why |
 | [`docs/D06_business_narrative.md`](docs/D06_business_narrative.md) | the business insights, written for the ING audience |
-| [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | generated from the YAML — never edit by hand |
+| [`docs/feature_dictionary.md`](docs/feature_dictionary.md) | generated from the YAML: never edit by hand |
 | [`data/rubric/SCORING_GUIDE.md`](data/rubric/SCORING_GUIDE.md) | how a rater fills the 13 judgement-based features |
 | [`web/README.md`](web/README.md) | the React business UI |
-| [`outputs/limitations.md`](outputs/limitations.md) | generated (D-09) — what this run cannot support, read off the dataset |
-| [`outputs/dq_report.md`](outputs/dq_report.md) | generated — the dataset graded on the six data-quality dimensions, gating checks separated from warnings |
+| [`outputs/limitations.md`](outputs/limitations.md) | generated (D-09): what this run cannot support, read off the dataset |
+| [`outputs/dq_report.md`](outputs/dq_report.md) | generated: the dataset graded on the six data-quality dimensions, gating checks separated from warnings |
 
 `outputs/charts.md`, `outputs/bank_profiles.md`, `outputs/limitations.md`,
 `outputs/dq_report.md`, `outputs/dq_scorecard.csv` and

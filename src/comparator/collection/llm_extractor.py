@@ -36,29 +36,6 @@ from pydantic import BaseModel, ValidationError
 # Load environment variables via python-dotenv.
 load_dotenv()
 
-MODEL_FIELDS = (
-    "primary_product", "dominant_image_type", "people_present", "imagery_register",
-    "institutional_trust_signal_present", "youth_student_targeting",
-    "secondary_bank_positioning", "expat_cross_border_targeting",
-    "branch_network_cited_as_benefit", "first_time_investor_targeting",
-    "senior_preretirement_targeting",
-    # Moved from rubric to model_assisted - these 12 are all
-    # judged from page TEXT (source: html_text in the dictionary), same
-    # reasoning as the fields above, not from the screenshot. persuasion_levers
-    # and the 4 AIDA fields are deliberately NOT here - their dictionary
-    # source is "screenshot" (layout/visual prominence matters for them) and
-    # this extractor only ever sends text, never the image, to the LLM.
-    "benefit_framing", "fab_level", "audience_segment", "is_bundled_offer",
-    "cross_sell_delivery_model", "rate_framing", "primary_cta_type",
-    "switching_framing", "regulatory_disclosure_prominence",
-    "hidden_conditions_behind_free_claim", "esg_claim_specificity",
-    "green_product_specific_benefit", "fast_digital_onboarding_claim",
-    # New field, same structured call - see feature_dictionary.yaml.
-    "target_personas",
-    "cross_sold_products",
-    "subscription_style_framing",
-)
-
 SYSTEM_PROMPT = """You are extracting structured features from a bank campaign page for a
 comparison across several banks. Apply the SAME criteria to every bank - consistency across
 banks matters more than being generous to any single one.

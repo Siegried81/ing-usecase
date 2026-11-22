@@ -277,8 +277,7 @@ def test_deck_claims_lowest_traditional_does_not_crash_on_empty_subset(df, fd):
 # BO-04: recurring market-wide patterns.
 def test_recurring_patterns_are_sorted_and_above_the_threshold(df, fd):
     patterns = recurring_patterns(df, fd, min_abs_corr=0.5)
-    if patterns.empty:
-        return
+    assert not patterns.empty, "the fixture has pairs above 0.5, an empty frame would pass vacuously"
     assert (patterns["correlation"].abs() >= 0.5).all()
     corrs = patterns["correlation"].abs().tolist()
     assert corrs == sorted(corrs, reverse=True)
@@ -322,7 +321,7 @@ def test_every_profile_has_the_same_fields(df, fd):
 
 
 def test_profile_renders_to_markdown(df, fd):
-    text = render_markdown(build_profile(df, "ing", fd), fd)
+    text = render_markdown(build_profile(df, "ing", fd))
     assert text.startswith("### ing")
     assert "Signature:" in text
 
@@ -338,7 +337,7 @@ def test_profile_persona_distribution_matches_the_fixture(df, fd):
 
 
 def test_profile_renders_persona_distribution_to_markdown(df, fd):
-    text = render_markdown(build_profile(df, "ing", fd), fd)
+    text = render_markdown(build_profile(df, "ing", fd))
     assert "| personas |" in text
     assert "family 100%" in text
 
@@ -546,15 +545,18 @@ def test_reportable_gaps_are_ranked_above_unreportable_ones(df, fd):
     assert flags == sorted(flags, reverse=True), "reportable gaps must come first"
 
 
-def test_a_feature_only_one_peer_has_is_not_reportable(df, fd):
+def test_a_feature_with_too_few_peers_is_not_reportable(df, fd):
+    """Two peers with different values: the spread alone would call this a
+    finding, so only the minimum-peer rule can make it unreportable."""
     thin = df.copy()
-    thin["cta_contrast_ratio"] = float("nan")
-    thin.loc[thin["bank"] == "ing", "cta_contrast_ratio"] = 5.0
-    thin.loc[thin["bank"] == "kbc", "cta_contrast_ratio"] = 4.0
+    thin["brand_colour_share"] = float("nan")
+    thin.loc[thin["bank"] == "ing", "brand_colour_share"] = 0.3
+    thin.loc[thin["bank"] == "kbc", "brand_colour_share"] = 0.1
+    thin.loc[thin["bank"] == "revolut", "brand_colour_share"] = 0.5
 
-    out = ing_vs_peers(thin, fd).set_index("feature")
-    if "cta_contrast_ratio" in out.index:
-        assert not out.loc["cta_contrast_ratio", "reportable"]
+    row = ing_vs_peers(thin, fd).set_index("feature").loc["brand_colour_share"]
+    assert not row["reportable"]
+    assert "only 2 peer(s)" in row["note"]
 
 
 def test_a_normal_gap_stays_reportable(df, fd):
@@ -583,9 +585,9 @@ def test_capture_invalid_features_are_reported_not_silently_dropped(df, fd):
 
     accounting = feature_accounting(df, fd)
     present = sorted(n for n in CAPTURE_INVALID_FEATURES if n in fd and n in df.columns)
+    assert present, "the fixture carries withdrawn features, otherwise this test checks nothing"
     assert accounting["capture_invalid"] == present
-    if present:
-        assert "withdrawn, measurement not the page" in render_accounting(accounting)
+    assert "withdrawn, measurement not the page" in render_accounting(accounting)
 
 
 # --- verdicts a measure cannot support ------------------------------------

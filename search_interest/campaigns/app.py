@@ -19,8 +19,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import streamlit as st
 
-from config import ANOMALY_TYPE_LABELS, DB_PATH  # noqa: E402
-from reports import (  # noqa: E402
+from config import ANOMALY_TYPE_LABELS, DB_PATH
+from reports import (
     BANK_ORDER, CAMPAIGN_TYPE_LABELS, NOT_SCORABLE_REASON_LABELS, aggregate_stats,
     display_term, load_campaigns_with_scores, load_matches_for_campaign,
 )
