@@ -1,307 +1,93 @@
-# Architecture Overview
+# Architecture
 
-## System Diagram
+Central bet: every number on screen comes from one definition, and anything
+judgement-based says so. Runbook: [pipeline.md](pipeline.md). Decisions:
+[decisions.md](decisions.md).
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│                     Your Local Machine / Server                  │
-├──────────────────────────────────────────────────────────────────┤
-│                                                                  │
-│  ┌─────────────────────────────────────────────────────────┐    │
-│  │         Docker Compose Network (ing-usecase)            │    │
-│  │                                                          │    │
-│  │  ┌──────────────────┐  ┌──────────────────┐             │    │
-│  │  │  Streamlit UI    │  │   FastAPI API    │             │    │
-│  │  │  Port 8501       │  │   Port 8000      │             │    │
-│  │  │  (Dashboard)     │  │  (Backend)       │             │    │
-│  │  │                  │  │                  │             │    │
-│  │  │ - Home page      │  │ - Recommendations│             │    │
-│  │  │ - Analysis       │  │ - Web gen        │             │    │
-│  │  │ - Profiles       │  │ - API docs       │             │    │
-│  │  │ - Data view      │  │ - Site backend   │             │    │
-│  │  └──────────────────┘  └──────────────────┘             │    │
-│  │           ▲                      ▲                       │    │
-│  │           │ reads                │ depends on            │    │
-│  │           └──────────────────────┘                       │    │
-│  │                   ▲                                       │    │
-│  │                   │ monitors health                       │    │
-│  │           ┌───────┴────────┐                             │    │
-│  │           │  Health Dashboard      │                     │    │
-│  │           │  Port 8080             │                     │    │
-│  │           │  (Monitoring)          │                     │    │
-│  │           │                        │                     │    │
-│  │           │  - Service status      │                     │    │
-│  │           │  - Latency checks      │                     │    │
-│  │           │  - JSON API            │                     │    │
-│  │           │  - HTML dashboard      │                     │    │
-│  │           │  - WebSocket updates   │                     │    │
-│  │           └────────────────────────┘                     │    │
-│  │                   ▲                                       │    │
-│  │                   │ pings every 10s                       │    │
-│  │                                                          │    │
-│  │  ┌─────────────────────────────────────────────────┐   │    │
-│  │  │  Persistent Volumes                             │   │    │
-│  │  │                                                  │   │    │
-│  │  │  - streamlit_data   (data/)                     │   │    │
-│  │  │  - streamlit_outputs (outputs/)                 │   │    │
-│  │  │  - api_data         (data/, read-only)          │   │    │
-│  │  │  - api_outputs      (outputs/)                  │   │    │
-│  │  │  - streamlit_cache  (.streamlit/)               │   │    │
-│  │  └─────────────────────────────────────────────────┘   │    │
-│  │                                                          │    │
-│  └──────────────────────────────────────────────────────────┘    │
-│                              │                                   │
-│                              ▼                                   │
-│                         .env file                                │
-│              (LLM keys, API credentials)                         │
-│                                                                  │
-│  ┌────────────────────────────────────────────────────────┐    │
-│  │        External Services (via .env)                    │    │
-│  ├────────────────────────────────────────────────────────┤    │
-│  │  - DeepSeek LLM        (extraction)                   │    │
-│  │  - Groq LLM            (fallback extraction)          │    │
-│  │  - NewsAPI             (reputation headlines)         │    │
-│  │  - Semantic Scholar    (academic search)             │    │
-│  └────────────────────────────────────────────────────────┘    │
-│                                                                  │
-└──────────────────────────────────────────────────────────────────┘
-         │
-         │
-         ▼
-    ┌────────────────────────────────────────┐
-    │      GitHub Repository                 │
-    ├────────────────────────────────────────┤
-    │                                        │
-    │  .github/workflows/docker.yml          │
-    │  (CI/CD Pipeline)                      │
-    │                                        │
-    │  On push/tag:                          │
-    │  1. Checkout code                      │
-    │  2. Build Docker image (multi-stage)   │
-    │  3. Run tests in container             │
-    │  4. Security scan (Trivy)              │
-    │  5. Push to Docker Hub                 │
-    │                                        │
-    └────────────────────────────────────────┘
-         │
-         ▼
-    ┌────────────────────────────────────────┐
-    │      Docker Hub Registry               │
-    ├────────────────────────────────────────┤
-    │ siegried/ing-comparator                │
-    │                                        │
-    │ Tags:                                  │
-    │ - latest   (main branch)               │
-    │ - main     (main branch)               │
-    │ - develop  (develop branch)            │
-    │ - v1.0.0   (release tags)              │
-    │ - 1.0      (semantic versions)         │
-    │ - 1        (major version)             │
-    │ - branch-{sha} (commit hash)           │
-    │                                        │
-    └────────────────────────────────────────┘
-         │
-         ▼
-    Can be pulled anywhere:
-    docker pull siegried/ing-comparator:v1.0.0
-```
-
-## Workflow: Development → Production
+## Runtime
 
 ```
-┌─────────────────┐
-│  Local Dev      │
-│  Edit code      │
-│  docker compose │
-│  up --dev       │
-│  (hot reload)   │
-└────────┬────────┘
-         │
-         │ git push
-         ▼
-┌──────────────────────┐
-│  GitHub Repository   │
-│                      │
-│  Trigger Workflow:   │
-│  docker.yml          │
-└────────┬─────────────┘
-         │
-         │ Build & Test
-         ▼
-┌──────────────────────┐
-│  GitHub Actions      │
-│                      │
-│  1. Build image      │
-│  2. Run pytest       │
-│  3. Security scan    │
-│  4. Push to Hub      │
-└────────┬─────────────┘
-         │
-         │ Success
-         ▼
-┌──────────────────────┐
-│  Docker Hub          │
-│                      │
-│  Image available:    │
-│  siegried/ing-...    │
-│  {branch/version}    │
-└────────┬─────────────┘
-         │
-         │ docker pull
-         ▼
-┌──────────────────────┐
-│  Production Server   │
-│                      │
-│  docker compose      │
-│  -f prod.yml up      │
-│                      │
-│  Hardened + monitored│
-└──────────────────────┘
+Docker Compose
+  streamlit  :8501 (host 8506)  key-free dashboard, reads data baked into the image
+  api        :8000 (host 8006)  FastAPI: React bundle at /, /api/*, generated site at /site/
+  dashboard  :8080 (host 8606)  health monitor, profile "monitoring"
+.env  ->  LLM keys (DeepSeek, fallbacks), NewsAPI, Semantic Scholar
 ```
 
-## Service Dependencies
+CI: `tests.yml` (ruff, pytest, schema freeze, data-quality gate, web build) and
+`publish.yml` (build, smoke test, push to GHCR and Docker Hub). See
+[DOCKER.md](DOCKER.md).
 
-```
-dashboard (port 8080)
-    ├─ depends_on: streamlit
-    │               │
-    │               ├─ reads: data/, outputs/
-    │               └─ health: /_stcore/health
-    │
-    └─ depends_on: api
-                    │
-                    ├─ reads: .env
-                    ├─ reads: data/ (ro)
-                    ├─ reads: web/dist
-                    └─ health: /health
+## Data flow
 
-All services:
-- Non-root user (UID 1000)
-- Health checks enabled
-- Restart policy: unless-stopped
-- Network: shared (default bridge)
-```
+`scripts/collection_targets.yaml` → `collection/compliance.py` (robots gate) →
+`scraper.py` / `render.py` (static, headless, headful) → deterministic features +
+one LLM call per page → `data/processed/campaigns.csv` → judged rubric sheet merged
+into `campaigns_scored.csv` → `analysis.py` → `outputs/` and `web/public/report.json`
+→ `recommendations.py` → `site_generator.py`.
 
-## Build Pipeline Stages (Multi-stage Dockerfile)
+## The feature dictionary is the contract
 
-```
-Stage 1: node:22-slim
-  │
-  ├─ COPY web/package*.json
-  ├─ RUN npm ci                   ← Cache layer
-  ├─ COPY web/
-  └─ RUN npm run build            ← Produces dist/
+`config/feature_dictionary.yaml` is the source of truth; the schema, the validator
+and `docs/feature_dictionary.md` derive from it. Each feature declares:
 
+- **extraction**: `automatic`, `rubric` (human, written scale), `model_assisted`
+  (LLM, prompt recorded) or `derived`. It decides how far a value can be trusted.
+- **comparability**: `cross_language`, `within_language` (word counts and
+  readability cannot cross NL/FR/EN) or `within_capture_window` (declared, not enforced).
+- **tier**: `core` or `extended`.
 
-Stage 2: python:3.11-slim
-  │
-  ├─ COPY requirements*.txt
-  ├─ RUN pip install              ← Cache layer
-  ├─ RUN playwright install       ← Chromium binary (~200MB)
-  │       --with-deps chromium
-  ├─ COPY . .
-  ├─ COPY --from=web dist/        ← From stage 1
-  ├─ RUN useradd app              ← Non-root user
-  │       chown -R app:app
-  ├─ USER app
-  └─ CMD streamlit run ...        ← Default (Streamlit)
-     or python3 serve_web.py      ← Can override to FastAPI
+Freeze rule: columns may be added, never renamed or removed. A new value in an
+existing enumeration counts as an addition. Enforced by `tests/test_schema.py`
+(byte equality) and `scripts/check_schema_freeze.py` (the rule). See D5.
 
+## Principles
 
-Stage 3 (Dashboard): python:3.11-slim
-  │
-  ├─ COPY services/health_dashboard.py
-  ├─ RUN pip install fastapi aiohttp
-  ├─ USER 1000                    ← Non-root
-  └─ CMD python3 health_dashboard.py
-```
+- **One model labels every bank.** `extraction_model` is recorded per row and
+  `validate()` warns on a mixed dataset (D6). Nothing pre-fills the rubric sheet.
+- **Compare like for like.** `--product-family` restricts a run to one family;
+  `within_language` features are excluded when languages mix.
+- **The validator is strict.** It fails on missing columns, unknown columns,
+  out-of-range values, duplicate `page_id`, nulls in required features, and any row
+  with `robots_allowed = false`. It warns on synthetic rows and on a bank missing a
+  core feature.
+- **Data quality is scored.** `dq.py` grades completeness, validity, uniqueness,
+  consistency and timeliness; the first three gate CI (D7).
+- **Withdrawal is an outcome.** Features that describe the capture rather than
+  the bank are listed in `analysis.CAPTURE_INVALID_FEATURES` and printed in the
+  feature accounting (D13).
+- **No synthetic data in outputs.** `fixtures.py` builds a dataset in memory for
+  tests; its archetypes encode the kickoff claims, so a fixture run always
+  confirms them and is never evidence. Do not commit `data/fixtures/`.
+- **Small samples.** No p-value is computed; Cohen's d describes separation only.
 
-## Health Check Mechanism
+## What analysis answers
 
-```
-Health Dashboard (port 8080)
-    │
-    ├─ Every 10 seconds:
-    │
-    ├─ GET http://streamlit:8501/_stcore/health
-    │  │
-    │  ├─ Status: ✅ (if 200ms response)
-    │  ├─ Latency: X ms
-    │  └─ Color: Green
-    │
-    ├─ GET http://api:8000/api/health
-    │  │
-    │  ├─ Status: ✅ (if 200ms response)
-    │  ├─ Latency: X ms
-    │  └─ Color: Green
-    │
-    └─ Render HTML dashboard + JSON API
+| Question | Function |
+| --- | --- |
+| Where does ING stand vs peers? | `ing_vs_peers` |
+| Traditional or challenger? | `positioning_axis` |
+| Which banks communicate alike? | `similarity_matrix`, `cluster_banks` |
+| Recurring market patterns? | `recurring_patterns` |
+| What separates the two groups? | `category_comparison` |
+| Which gaps merit an argument? | `insight_candidates` |
+| Do the kickoff observations hold? | `check_deck_claims` |
 
+## Signals that are not page measurements
 
-Browser or API client:
-    │
-    ├─ GET http://localhost:8606/          → HTML dashboard
-    ├─ GET http://localhost:8606/health    → JSON API
-    └─ WS  ws://localhost:8606/ws/health   → WebSocket stream
-```
+- **Search interest** (`trends.py`, `search_interest/`): context only, never
+  regressed onto a page feature. It selects which competitor brands to study;
+  `benchmarks.py` then reports what their pages measurably do.
+- **News themes** (`reputation.py`): what each bank is in the news about, never
+  sentiment. A failed fetch is `null`, not zero.
+- No performance data exists: every recommendation is a hypothesis.
 
-## Data Flow: Analysis Pipeline
+## Web UI
 
-```
-User Input (Streamlit UI)
-    │
-    ├─ Browse data at http://localhost:8506
-    ├─ View analysis results
-    ├─ Download outputs
-    └─ Triggers optional pipeline runs
-
-
-Behind the scenes:
-    │
-    ├─ Reads: data/processed/campaigns_scored.csv
-    │
-    ├─ Transformations:
-    │  ├─ schema.coerce_types()
-    │  ├─ analysis.feature_accounting()
-    │  ├─ analysis.positioning()
-    │  └─ ai_score.compute()
-    │
-    ├─ Generates: outputs/*.png, *.csv, *.json
-    │
-    └─ Persisted in: streamlit_outputs volume
-
-
-FastAPI Backend (if used):
-    │
-    ├─ Endpoint: POST /recommendations
-    ├─ Reads: outputs/report.json
-    ├─ Uses: LLM keys from .env
-    ├─ Returns: Generated recommendations
-    └─ Serves: React UI + demo site
-```
-
-## Deployment Topology
-
-### Development
-```
-Local machine
-  └─ docker compose up --dev
-      ├─ Hot reload volumes bound
-      ├─ Debug logging enabled
-      └─ All ports exposed
-```
-
-### Production
-```
-Remote server
-  └─ docker compose -f prod.yml up -d
-      ├─ Read-only root filesystem
-      ├─ Cap drop (no dangerous capabilities)
-      ├─ Resource limits (CPU/Memory)
-      ├─ Restart policy: unless-stopped
-      └─ Health checks: continuous
-```
-
----
-
-**Update frequency:** Last updated when CI/CD was added (2026-09-28)
+`web/` (React, Vite) has findings tabs (Analysis, Trends, Reputation,
+Recommendations) and read-only operator tabs (Home, Bank profiles, Data, Rubric,
+Collection, Research). `scripts/export_web_report.py` writes `report.json`,
+`operations.json` and `trends.json` from the same library calls, so the UI does no
+arithmetic. There is no endpoint that edits a dataset row, a rubric cell or the
+dictionary, and no live scoring screen. Research queries Semantic Scholar through
+`serve_web.py`. Details: [../web/README.md](../web/README.md).
