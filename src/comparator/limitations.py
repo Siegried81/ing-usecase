@@ -1,10 +1,7 @@
 """D-09 - Limitations & next steps, read off the dataset rather than remembered.
 
-The RACI puts D-09 on me, and it is the deliverable
-most likely to be written from memory at 11pm on Day 9 - which is exactly when
-the inconvenient limitations get forgotten.
-
-So it is generated from the dataset that actually exists. If two captures
+A limitations section written from memory is where the inconvenient limitations
+get forgotten, so this one is generated from the dataset that actually exists. If two captures
 failed, it says which two and why. If the rubric scores are missing, it says
 so. If a bank is absent, it says which question that makes unanswerable. A
 limitation nobody can quietly drop is worth more than a well-written paragraph.
@@ -17,7 +14,9 @@ from __future__ import annotations
 
 import pandas as pd
 
-from comparator.analysis import language_excluded_features  # Accurate comparability note
+from comparator.analysis import (
+    language_excluded_features,  # Accurate comparability note
+)
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.rubric import rubric_features
 
@@ -97,7 +96,7 @@ def assess(
         if len(families) > 1:
             material.append(
                 f"The usable pages span **{len(families)} different product families** ({families}). "
-                "DR-04 requires comparisons within one family — a mortgage page and a current-account "
+                "DR-04 requires comparisons within one family: a mortgage page and a current-account "
                 "page differ because the products differ, not because the banks communicate differently. "
                 "Any cross-bank claim from this dataset is confounded by product."
             )
@@ -132,8 +131,8 @@ def assess(
         blocking.append(
             f"**{len(missing_rubric)} of {len(rubric_features(fd))} rubric features are unscored** "
             f"({missing_rubric[:4]}{' ...' if len(missing_rubric) > 4 else ''}). "
-            "Every judgement-based dimension — tone, layout archetype, AIDA coverage, persuasion "
-            "levers — is therefore absent from the comparison. Score the sheet and merge it "
+            "Every judgement-based dimension (tone, layout archetype, AIDA coverage, persuasion "
+            "levers) is therefore absent from the comparison. Score the sheet and merge it "
             "(`scripts/rubric_sheet.py merge`)."
         )
     # A feature present but incomplete is silently dropped from the
@@ -155,18 +154,16 @@ def assess(
             f"**{len(partly_scored)} judged feature(s) are scored on some banks but not all** "
             f"({named}{' ...' if len(partly_scored) > 4 else ''}). A feature missing on even one "
             "bank is dropped from the cross-bank comparison entirely, so these carry no weight "
-            "in the positioning, the peer gaps or the similarity — they are absent from the "
+            "in the positioning, the peer gaps or the similarity: they are absent from the "
             "result rather than partially present in it."
         )
 
     # Always said, never conditional: it is true of every run of this pipeline,
     # and it is the sentence a reader needs before they weigh a judged number.
-    # The taxonomy once held six banking families plus "other", which collapsed
-    # insurance, credit cards and partner perks into a single token and inverted
-    # the measure on the pages that cross-sell hardest. Those three values were
-    # since added, so what remains is the shape of the measure rather than a gap
-    # in it: the score counts how many distinct types a page names, so it cannot
-    # tell a page that mentions one product once from one that pushes it hard.
+    # What remains is the shape of the measure rather than a gap in the
+    # taxonomy: the score counts how many distinct types a page names, so it
+    # cannot tell a page that mentions one product once from one that pushes it
+    # hard.
     standing.append(
         "**The cross-sell score counts distinct product types, not selling effort.** "
         "`cross_sold_products` names nine product types plus `other`, and a page's "
@@ -188,7 +185,7 @@ def assess(
         "differently by every bank, so the number reports the markup convention. "
         "`has_animation` and `animated_asset_count` are withdrawn because the rule "
         "asks whether the stylesheet declares an animation, not whether the page "
-        "moves — across the compared pages exactly one carries real motion. The "
+        "moves: across the compared pages exactly one carries real motion. The "
         "`has_comparison_table` is withdrawn because it tests for an HTML `<table>` "
         "element: traditional banks mark their tariff grids up as tables, while N26 "
         "and Revolut build the same plan comparison in CSS, so the 0.57-against-0.00 "
@@ -203,8 +200,8 @@ def assess(
     standing.append(
         "**Three captures were taken with a cookie-consent modal over the page.** "
         "Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features "
-        "— `background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, "
-        "`brand_colour_share` and `above_fold_element_count` — describe the modal "
+        "(`background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, "
+        "`brand_colour_share` and `above_fold_element_count`) describe the modal "
         "rather than the page beneath it, which is why those three report a "
         "near-zero hero area. Text-derived and judged features are unaffected, so "
         "the word, urgency, persuasion and rubric findings stand."
@@ -221,13 +218,13 @@ def assess(
         "`brand_colour_share` and the palette features come from a single capture in "
         "headless Chrome with the default light colour scheme. A visitor using dark "
         "mode, or a browser extension that forces it, may see a substantially darker "
-        "page than the one measured here — that difference is unmeasured, and any "
+        "page than the one measured here: that difference is unmeasured, and any "
         "brightness comparison should be read as a comparison of our captures."
     )
 
     standing.append(
         "The judged features carry the opinion of a single person. No inter-rater "
-        "reliability was measured — that is the chosen scope of this proof of concept, "
+        "reliability was measured: that is the chosen scope of this proof of concept, "
         "not an oversight. Single-judge bias is a question for the real product and is "
         "listed under next steps."
     )
@@ -276,7 +273,7 @@ def assess(
         # this text verbatim, so an over-claim here reaches a stakeholder.
         "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is "
         "deterministic: the same dataset produces a byte-identical prompt, and each generated "
-        "artefact records that prompt's fingerprint. The model is the variable part — identical "
+        "artefact records that prompt's fingerprint. The model is the variable part: identical "
         "requests usually return identical copy but not always, because temperature controls "
         "sampling and not how the model routes internally. Treat a committed campaign as one "
         "sample rather than as the output.",
@@ -284,10 +281,8 @@ def assess(
         "whether the campaign would perform better (plan risk P-08).",
     ]
 
-    # Audit, point 1: --product-family drops every bank with no page
-    # in the chosen family, and the OUTPUT FILES never said so - Belfius (other)
-    # and BNP (mortgage) simply were not in bank_profiles.json. The console said
-    # it; the artefacts a reader actually opens did not.
+    # --product-family drops every bank with no page in the chosen family. The
+    # console says so, but the output files a reader opens must say it too.
     if scope is not None and getattr(scope, "family", None):
         if scope.dropped_banks:
             material.append(
@@ -320,11 +315,9 @@ def assess(
     }
 
 
-# Audit, point 2: this was a frozen list. It still told the team to
-# "collect a usable ING page" and described "two of six captures defeated by a
-# consent wall" long after ING was fixed and the dataset had grown - stale advice
-# sitting inside a file whose whole premise is that it describes the data in
-# hand. Built from the assessment now, like everything else here.
+# Steps that hold whatever the data looks like. The data-dependent ones are built
+# from the assessment in next_steps(), so the list never describes a dataset that
+# no longer exists.
 STANDING_NEXT_STEPS = [
     ("Measure single-judge bias", "Every judged feature in this run carries one person's "
      "reading. A second independent rater on a sample, with agreement reported, is what would "
@@ -333,7 +326,7 @@ STANDING_NEXT_STEPS = [
     ("Make generation attributable", "Store the generated artefact and its prompt hash and "
      "evaluate that, rather than regenerating on every run."),
     ("Extend beyond the open web", "Social media and in-app banners, using the same feature "
-     "framework — the extension the brief names, and the reason the framework is worth keeping."),
+     "framework: the extension the brief names, and the reason the framework is worth keeping."),
 ]
 
 
@@ -385,17 +378,16 @@ def render(assessment: dict, *, synthetic: bool = False) -> str:
         f"{assessment['n_usable_banks']} bank(s)**, from {assessment['n_pages']} collected.",
         "",
     ]
-    # Audit, point 3: this headline counts the WHOLE dataset, while
-    # charts.md and bank_profiles.json count what survived the product-family
-    # filter. Two honest views of one run, but nothing said so, and side by side
-    # they read as contradictory.
+    # This headline counts the WHOLE dataset, while charts.md and
+    # bank_profiles.json count what survived the product-family filter. The note
+    # below says so, otherwise the two read as contradictory.
     if assessment.get("family"):
         dropped = assessment.get("dropped_banks") or []
         lines += [
             f"> **These counts are pre-filter.** The comparison itself was restricted to the "
             f"`{assessment['family']}` product family, so `charts.md` and `bank_profiles.json` "
             f"report a smaller set"
-            + (f" — {', '.join(dropped)} have usable captures but no page in that family."
+            + (f": {', '.join(dropped)} have usable captures but no page in that family."
                if dropped else "."),
             "",
         ]
@@ -404,9 +396,9 @@ def render(assessment: dict, *, synthetic: bool = False) -> str:
                   "properties of the pipeline, but the counts describe invented rows.", ""]
 
     lines += ["## What this analysis cannot support", ""]
-    lines += _severity_block("Blocking — a question cannot be answered at all", assessment["blocking"])
-    lines += _severity_block("Material — findings survive, but weakened", assessment["material"])
-    lines += _severity_block("Standing — true regardless of how much we collect", assessment["standing"])
+    lines += _severity_block("Blocking: a question cannot be answered at all", assessment["blocking"])
+    lines += _severity_block("Material: findings survive, but weakened", assessment["material"])
+    lines += _severity_block("Standing: true regardless of how much we collect", assessment["standing"])
 
     lines += ["## Next steps", ""]
     for i, (title, detail) in enumerate(next_steps(assessment), 1):

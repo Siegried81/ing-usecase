@@ -333,6 +333,13 @@ export function Recommendations({ report }: { report: Report }) {
               <div className="scope-note" style={{ marginTop: 12 }}>{site.error}</div>
             )}
 
+            {!siteReady && !generating && site?.status !== "error" && (
+              <div className="muted-note" style={{ marginTop: 12 }}>
+                No website generated yet. The demo site is not versioned: tick recommendations and press
+                Generate (needs an LLM key on the backend).
+              </div>
+            )}
+
             {siteReady && (
               <div className="rec-ready">
                 <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>

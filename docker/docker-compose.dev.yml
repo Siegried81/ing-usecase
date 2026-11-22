@@ -1,28 +1,21 @@
-# Development override: enables hot-reload, volume mounts, and extended timeouts
-# Usage: docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up
+# Development override: live source (edit, restart the service, no rebuild).
+# Usage: docker compose -f docker-compose.yml -f docker/docker-compose.dev.yml up --build
+# The debugger variant is ../docker-compose.debug.yml; the hardened variant is docker-compose.prod.yml.
 
 services:
   streamlit:
     environment:
-      - STREAMLIT_SERVER_HEADLESS=false
       - STREAMLIT_LOGGER_LEVEL=debug
     volumes:
-      # Full source tree for live reload
-      - .:/app
-      - /app/node_modules
-      - /app/web/node_modules
+      - ./src:/app/src
+      - ./config:/app/config
+      - ./streamlit_app.py:/app/streamlit_app.py
     command: streamlit run streamlit_app.py --server.address 0.0.0.0 --server.port 8501 --logger.level=debug
-    ports:
-      - "8501:8501"
 
   api:
     environment:
       - DEBUG=1
-      - RELOAD=1
     volumes:
-      - .:/app
-      - /app/node_modules
-      - /app/web/node_modules
-    command: python3 scripts/serve_web.py --host 0.0.0.0 --port 8000 --reload
-    ports:
-      - "8000:8000"
+      - ./src:/app/src
+      - ./scripts:/app/scripts
+      - ./web/dist:/app/web/dist:ro

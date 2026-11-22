@@ -8,7 +8,7 @@
 **Grain** One row per campaign page per capture date.  
 **Freeze target** End of Day 2 - Tuesday 15 September 2026
 
-104 features — 66 core, 38 extended.
+104 features: 66 core, 38 extended.
 
 ## How to read the tables
 
@@ -18,14 +18,14 @@
 | **Comparability** | How far the value travels. `within_language` values cannot cross NL/FR/EN. |
 | **Tier** | `core` is the Day 6 MVP minimum; `extended` is added only after the gate passes. |
 
-- **automatic** (trust: high, owner: Dan) — Computed by code, deterministic, reproducible exactly.
-- **rubric** (trust: medium, owner: Siegried) — Scored by a human against a written scale with defined levels.
-- **model_assisted** (trust: medium, owner: Stephane) — Produced by an LLM or vision model with the prompt and model version recorded.
-- **derived** (trust: high, owner: Stephane) — Computed from other features in this dictionary. Never entered by hand.
+- **automatic** (trust: high, owner: Dan): Computed by code, deterministic, reproducible exactly.
+- **rubric** (trust: medium, owner: Siegried): Scored by a human against a written scale with defined levels.
+- **model_assisted** (trust: medium, owner: Stephane): Produced by an LLM or vision model with the prompt and model version recorded.
+- **derived** (trust: high, owner: Stephane): Computed from other features in this dictionary. Never entered by hand.
 
 ## Provenance & compliance
 
-*DR-02, DR-05, LC-01* — 18 features
+*DR-02, DR-05, LC-01*: 18 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -50,7 +50,7 @@
 
 ## Tone & messaging
 
-*PRD section 11 - "Is it formal, simple, persuasive?"* — 18 features
+*PRD section 11 - "Is it formal, simple, persuasive?"*: 18 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -73,25 +73,25 @@
 | `formality_score` | integer<br>[1, 5] | rubric | cross_language | core | How formal the register is. 1 = conversational, 5 = institutional. |
 | `clarity_score` | integer<br>[1, 5] | rubric | cross_language | extended | How easily a first-time reader grasps the offer. 1 = opaque, 5 = immediate. |
 
-### Rubric — `formality_score`
+### Rubric: `formality_score`
 
-- **1** — Speaks like a friend. Contractions, slang, direct address throughout.
-- **2** — Informal but composed. Direct address, short sentences, no jargon.
-- **3** — Neutral business register.
-- **4** — Formal. Full forms of address, product and regulatory vocabulary.
-- **5** — Institutional and legalistic. Reads like a product sheet.
+- **1**: Speaks like a friend. Contractions, slang, direct address throughout.
+- **2**: Informal but composed. Direct address, short sentences, no jargon.
+- **3**: Neutral business register.
+- **4**: Formal. Full forms of address, product and regulatory vocabulary.
+- **5**: Institutional and legalistic. Reads like a product sheet.
 
-### Rubric — `clarity_score`
+### Rubric: `clarity_score`
 
-- **1** — Can't tell what's being offered without reading twice.
-- **2** — Vague - the product is named but the offer itself (rate, benefit, condition) is unclear.
-- **3** — Understandable with effort - the offer is there but buried among secondary information.
-- **4** — Clear - offer, audience and next step are identifiable at a glance.
-- **5** — Immediate - the value proposition is unmistakable within the first few seconds.
+- **1**: Can't tell what's being offered without reading twice.
+- **2**: Vague - the product is named but the offer itself (rate, benefit, condition) is unclear.
+- **3**: Understandable with effort - the offer is there but buried among secondary information.
+- **4**: Clear - offer, audience and next step are identifiable at a glance.
+- **5**: Immediate - the value proposition is unmistakable within the first few seconds.
 
 ## Topics & value proposition
 
-*PRD section 11 - "What is being offered? How is it framed?"* — 10 features
+*PRD section 11 - "What is being offered? How is it framed?"*: 10 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -106,24 +106,24 @@
 | `disclaimer_present` | boolean | automatic | cross_language | extended | Whether legal or risk disclaimers appear on the page. |
 | `disclaimer_word_share` | float<br>[0, 1] | automatic | within_language | extended | Share of body words that sit inside disclaimer blocks. |
 
-### Rubric — `rate_prominence`
+### Rubric: `rate_prominence`
 
-- **above_fold** — The rate is visible without scrolling, but is not the dominant visual element.
-- **absent** — No rate is shown anywhere on the page.
-- **below_fold** — The rate only appears after scrolling.
-- **hero** — The rate is the largest or most visually dominant element on the page.
+- **above_fold**: The rate is visible without scrolling, but is not the dominant visual element.
+- **absent**: No rate is shown anywhere on the page.
+- **below_fold**: The rate only appears after scrolling.
+- **hero**: The rate is the largest or most visually dominant element on the page.
 
-### Rubric — `value_prop_clarity`
+### Rubric: `value_prop_clarity`
 
-- **1** — No stated value proposition - reads like a product description, not an offer.
-- **2** — What is offered is named, but who it is for and the alternative are absent.
-- **3** — What and who are clear, but the implied alternative is absent or only implicit.
-- **4** — What, who and the implied alternative are all identifiable.
-- **5** — What, who and the alternative are explicit and quantified.
+- **1**: No stated value proposition - reads like a product description, not an offer.
+- **2**: What is offered is named, but who it is for and the alternative are absent.
+- **3**: What and who are clear, but the implied alternative is absent or only implicit.
+- **4**: What, who and the implied alternative are all identifiable.
+- **5**: What, who and the alternative are explicit and quantified.
 
 ## Visuals & illustrations
 
-*PRD section 11 - "What kind of images are used? What do they show?"* — 9 features
+*PRD section 11 - "What kind of images are used? What do they show?"*: 9 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -139,7 +139,7 @@
 
 ## Colours & design
 
-*PRD section 11 - "How is attention guided? What stands out?"* — 7 features
+*PRD section 11 - "How is attention guided? What stands out?"*: 7 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -151,17 +151,17 @@
 | `background_luminance` | float<br>[0, 1] | automatic | cross_language | core | Mean relative luminance of the page background. 0 = black, 1 = white.<br>*Separates dark-themed challengers (Revolut "deep blue and dark") from white incumbent pages.* |
 | `cta_contrast_ratio` | float<br>[1, 21] | automatic | cross_language | extended | WCAG contrast ratio between the primary call-to-action and its background. |
 
-### Rubric — `accent_locations`
+### Rubric: `accent_locations`
 
-- **background** — Accent colour used as a section or page background.
-- **buttons** — Accent colour used on call-to-action buttons or other interactive elements.
-- **icons** — Accent colour used on icons or small graphic markers.
-- **imagery** — Accent colour appears within the photos, illustrations or renders themselves.
-- **text** — Accent colour used on headlines or body text.
+- **background**: Accent colour used as a section or page background.
+- **buttons**: Accent colour used on call-to-action buttons or other interactive elements.
+- **icons**: Accent colour used on icons or small graphic markers.
+- **imagery**: Accent colour appears within the photos, illustrations or renders themselves.
+- **text**: Accent colour used on headlines or body text.
 
 ## Layout & structure
 
-*PRD section 11 - "Is the page easy to read? How is it organised?"* — 11 features
+*PRD section 11 - "Is the page easy to read? How is it organised?"*: 11 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -177,27 +177,27 @@
 | `layout_archetype` | categorical<br>`hero_stacked` · `split_columns` · `card_grid` · `long_form` | rubric | cross_language | core | Overall structural pattern of the page.<br>*real pages often mix patterns (e.g. a hero_stacked header over a card_grid body) - score the pattern of the FIRST SCREEN (above the fold), not the page as a whole, so raters have one consistent rule.* |
 | `mobile_first_design_signal` | boolean | rubric | cross_language | extended | Whether the page's visual design reads as built mobile-first (single-column cards, large tap targets, minimal above-fold density) rather than desktop-first (multi-column, hover-dependent, dense), judged from the desktop screenshot. Not a responsive/viewport measurement - this project only captures one fixed viewport. |
 
-### Rubric — `text_image_layout`
+### Rubric: `text_image_layout`
 
-- **beside** — Text and image sit side by side, both fully visible (e.g. photo left, text block right).
-- **overlaid** — Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it).
-- **stacked** — Image and text follow each other vertically, not overlapping.
+- **beside**: Text and image sit side by side, both fully visible (e.g. photo left, text block right).
+- **overlaid**: Text is written directly on top of the image (e.g. a full-bleed hero photo with a headline over it).
+- **stacked**: Image and text follow each other vertically, not overlapping.
 
-### Rubric — `layout_archetype`
+### Rubric: `layout_archetype`
 
-- **card_grid** — Content is organised as a grid of self-contained cards or tiles.
-- **hero_stacked** — One large hero visual at the top, content stacked vertically below it.
-- **long_form** — Continuous scrolling sections with no strong grid or card structure.
-- **split_columns** — The page is organised into two or more side-by-side columns throughout.
+- **card_grid**: Content is organised as a grid of self-contained cards or tiles.
+- **hero_stacked**: One large hero visual at the top, content stacked vertically below it.
+- **long_form**: Continuous scrolling sections with no strong grid or card structure.
+- **split_columns**: The page is organised into two or more side-by-side columns throughout.
 
-### Rubric — `mobile_first_design_signal`
+### Rubric: `mobile_first_design_signal`
 
-- **False** — Multi-column layout, dense information, hover-dependent interactions.
-- **True** — Single-column, card-like blocks, large tap-friendly buttons, minimal density above the fold.
+- **False**: Multi-column layout, dense information, hover-dependent interactions.
+- **True**: Single-column, card-like blocks, large tap-friendly buttons, minimal density above the fold.
 
 ## Marketing principles
 
-*Plan section 4.3 - AIDA, Cialdini, feature-advantage-benefit* — 7 features
+*Plan section 4.3 - AIDA, Cialdini, feature-advantage-benefit*: 7 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |
@@ -209,39 +209,39 @@
 | `persuasion_levers` | list[string]<br>`reciprocity` · `commitment` · `social_proof` · `authority` · `liking` · `scarcity` | rubric | cross_language | core | Which of Cialdini's six persuasion principles are used on the page.<br>*Turns the vague word "persuasive" into a closed, countable list.* |
 | `persuasion_lever_count` | integer<br>[0, 6] | derived | cross_language | core | Number of distinct persuasion levers detected. |
 
-### Rubric — `aida_attention`
+### Rubric: `aida_attention`
 
-- **False** — The opening is generic enough that skipping it would lose nothing.
-- **True** — Something on the first screen (headline, visual, number) is genuinely arresting, not generic.
+- **False**: The opening is generic enough that skipping it would lose nothing.
+- **True**: Something on the first screen (headline, visual, number) is genuinely arresting, not generic.
 
-### Rubric — `aida_interest`
+### Rubric: `aida_interest`
 
-- **False** — The page front-loads everything, or gives no reason to continue past the first line.
-- **True** — There is a reason to keep reading beyond the headline - a specific detail, a question, a hinted benefit.
+- **False**: The page front-loads everything, or gives no reason to continue past the first line.
+- **True**: There is a reason to keep reading beyond the headline - a specific detail, a question, a hinted benefit.
 
-### Rubric — `aida_desire`
+### Rubric: `aida_desire`
 
-- **False** — The page states facts (rate, features) without making the reader want the outcome.
-- **True** — The offer is made to feel worth having - concrete benefit, social proof or emotional payoff, not only a spec sheet.
+- **False**: The page states facts (rate, features) without making the reader want the outcome.
+- **True**: The offer is made to feel worth having - concrete benefit, social proof or emotional payoff, not only a spec sheet.
 
-### Rubric — `aida_action`
+### Rubric: `aida_action`
 
-- **False** — No clear call to action, or several CTAs competing for the same visitor with no clear way to tell which applies.
-- **True** — There is one unmistakable next step - a single call to action, or several CTAs clearly segmented by audience/situation so each visitor still has exactly one obvious path (e.g. "not retired yet" vs "already retired").
+- **False**: No clear call to action, or several CTAs competing for the same visitor with no clear way to tell which applies.
+- **True**: There is one unmistakable next step - a single call to action, or several CTAs clearly segmented by audience/situation so each visitor still has exactly one obvious path (e.g. "not retired yet" vs "already retired").
 
 
-### Rubric — `persuasion_levers`
+### Rubric: `persuasion_levers`
 
-- **authority** — The page invokes expertise, credentials, regulator backing, or institutional tenure.
-- **commitment** — The page asks for a small first step that implies a larger one.
-- **liking** — The page uses a friendly tone, relatable imagery, or a likeable brand voice to build affinity.
-- **reciprocity** — The page offers something free or upfront before asking for commitment.
-- **scarcity** — The page uses deadlines, limited availability, or "only until" language.
-- **social_proof** — The page cites other customers, ratings, review counts, or user numbers.
+- **authority**: The page invokes expertise, credentials, regulator backing, or institutional tenure.
+- **commitment**: The page asks for a small first step that implies a larger one.
+- **liking**: The page uses a friendly tone, relatable imagery, or a likeable brand voice to build affinity.
+- **reciprocity**: The page offers something free or upfront before asking for commitment.
+- **scarcity**: The page uses deadlines, limited availability, or "only until" language.
+- **social_proof**: The page cites other customers, ratings, review counts, or user numbers.
 
 ## Banking-domain signals (Siegried's addendum)
 
-*PRD section 11 bis / Plan section 4.3 bis - retail-banking angles a generic marketing framework misses* — 24 features
+*PRD section 11 bis / Plan section 4.3 bis - retail-banking angles a generic marketing framework misses*: 24 features
 
 | Feature | Type | Extraction | Comparability | Tier | Definition |
 | --- | --- | --- | --- | --- | --- |

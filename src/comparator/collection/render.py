@@ -55,9 +55,16 @@ import json
 import logging
 from dataclasses import dataclass
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 
-from comparator.collection.compliance import USER_AGENT, assert_can_fetch, check_robots
+from comparator.collection.compliance import (
+    MAX_REDIRECTS,
+    REDIRECT_STATUSES,
+    USER_AGENT,
+    ScrapingNotAllowed,
+    assert_can_fetch,
+    check_robots,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -71,10 +78,9 @@ SETTLE_MS = 1_500
 MIN_IMAGE_EDGE_PX = 32
 
 
-# A 503 is sometimes genuinely transient. Retrying costs one extra
-# request and recovers a real outage without anyone re-running the pipeline by
-# hand. It does NOT get past BNP - see the note in run_collection.py - but it is
-# the right behaviour regardless of who is down.
+# A 503 is sometimes genuinely transient. Retrying costs one extra request and
+# recovers a real outage without re-running the pipeline by hand. It does not get
+# past a host that refuses headless clients (see the note in run_collection.py).
 RETRY_STATUSES = (429, 500, 502, 503, 504)
 RETRY_BACKOFF_S = (2, 8)
 
@@ -185,14 +191,18 @@ _MEASURE_JS = """
     return found;
   };
 
+  // <picture> is left out on purpose: its <img> is the rendered image, and the
+  // wrapper's own box would count the same picture a second time.
   let totalImageArea = 0, heroArea = 0;
-  for (const img of deep('img, picture, video')) {
+  for (const img of deep('img, video')) {
     if (!visible(img)) continue;
     const r = img.getBoundingClientRect();
     if (r.width < minEdge || r.height < minEdge) continue;
     totalImageArea += r.width * r.height;
-    const topOffset = r.top + window.scrollY;
-    if (topOffset < vh) heroArea = Math.max(heroArea, r.width * r.height);
+    // Only the part of the box inside the first viewport counts as hero area.
+    const shownW = Math.max(0, Math.min(r.right, vw) - Math.max(r.left, 0));
+    const shownH = Math.max(0, Math.min(r.bottom, vh) - Math.max(r.top, 0));
+    heroArea = Math.max(heroArea, shownW * shownH);
   }
 
   let aboveFold = 0;
@@ -316,8 +326,13 @@ def _features_from_measurement(raw: dict) -> dict:
 # check_robots() is cache-per-domain (compliance.py), so after the initial
 # assert_can_fetch(url) call this adds no extra network round-trip for the
 # page's own domain.
-def _blocks_same_origin_asset(request_url: str, page_origin: str) -> bool:
-    if urlparse(request_url).netloc != page_origin:
+#
+# The exception is the main frame's own navigation, which includes every redirect
+# hop: whatever document the browser ends up on is a page fetch, not an asset, so
+# it is checked whatever its origin. A redirect to another host (n26.com to
+# www.n26.com) would otherwise land on a page nobody asked robots.txt about.
+def _blocks_same_origin_asset(request_url: str, page_origin: str, *, main_navigation: bool = False) -> bool:
+    if not main_navigation and urlparse(request_url).netloc != page_origin:
         return False
     return not check_robots(request_url).allowed
 
@@ -335,7 +350,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
     Paribas Fortis: every headless variant returned HTTP 503 while the same URL
     in a headful browser returned the page). This is not evasion - robots.txt is
     still checked first, one request is still made, and nothing rotates the IP
-    or the identity. See docs/decisions.md, 21/09.
+    or the identity.
 
     `wait_until`/`timeout_ms` exist because a page that never goes idle (Keytrade
     Bank keeps loading consent and analytics) times out under the default
@@ -353,6 +368,8 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
     # actually committed - i.e. after redirects resolve and before the
     # resulting document's own sub-resources start loading.
     page_origin = urlparse(url).netloc
+    refused: list[str] = []
+    redirect_to: list[str] = []
 
     try:
         from playwright.sync_api import sync_playwright
@@ -385,13 +402,61 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
                         page_origin = urlparse(frame.url).netloc
 
                 page.on("framenavigated", _track_origin)
-                page.route(
-                    "**/*",
-                    lambda route: route.abort()
-                    if _blocks_same_origin_asset(route.request.url, page_origin)
-                    else route.continue_(),
-                )
-                response = page.goto(url, timeout=timeout_ms, wait_until=wait_until)
+
+                def _gate(route) -> None:
+                    request = route.request
+                    if not (request.is_navigation_request() and request.frame == page.main_frame):
+                        if _blocks_same_origin_asset(request.url, page_origin):
+                            route.abort()
+                        else:
+                            route.continue_()
+                        return
+                    # The main document. The browser follows redirects on its own
+                    # and never shows the route a hop, so the request is made here
+                    # without following them: a redirect is refused or handed back
+                    # to _navigate(), which gates the target before requesting it.
+                    if _blocks_same_origin_asset(request.url, page_origin, main_navigation=True):
+                        refused.append(request.url)
+                        route.abort()
+                        return
+                    response = route.fetch(max_redirects=0, timeout=timeout_ms)
+                    location = response.headers.get("location")
+                    if response.status in REDIRECT_STATUSES and location:
+                        redirect_to.append(urljoin(request.url, location))
+                        route.abort()
+                    else:
+                        route.fulfill(response=response)
+
+                def _goto(target):
+                    """page.goto(), repeated once if Chrome's error page cuts it short.
+
+                    Aborting a redirect hop makes Chrome commit chrome-error://chromewebdata/.
+                    On Linux that commit can land after the next goto() has started and
+                    interrupt it, so the same target is requested again once it has.
+                    """
+                    for attempt in range(3):
+                        try:
+                            return page.goto(target, timeout=timeout_ms, wait_until=wait_until)
+                        except Exception as exc:
+                            if attempt == 2 or "chrome-error://" not in str(exc) or redirect_to or refused:
+                                raise
+                            page.wait_for_timeout(100)
+
+                def _navigate():
+                    """page.goto() that follows redirects one gated hop at a time."""
+                    target = url
+                    for _ in range(MAX_REDIRECTS + 1):
+                        redirect_to.clear()
+                        try:
+                            return _goto(target)
+                        except Exception:
+                            if refused or not redirect_to:
+                                raise
+                            target = redirect_to[0]
+                    raise RuntimeError(f"more than {MAX_REDIRECTS} redirects from {url}")
+
+                page.route("**/*", _gate)
+                response = _navigate()
                 status = response.status if response else None
 
                 # Polite retry on a server-side status, backing off between tries.
@@ -400,7 +465,7 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
                         break
                     logger.info("HTTP %s from %s - retrying in %ss", status, url, delay)
                     page.wait_for_timeout(delay * 1000)
-                    response = page.goto(url, timeout=timeout_ms, wait_until=wait_until)
+                    response = _navigate()
                     status = response.status if response else None
 
                 page.wait_for_timeout(SETTLE_MS)
@@ -414,6 +479,8 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
             finally:
                 browser.close()
     except Exception as exc:
+        if refused:
+            raise ScrapingNotAllowed(f"{refused[0]}: robots.txt disallows this navigation or redirect") from exc
         message = str(exc)
         if "Executable doesn't exist" in message or "playwright install" in message:
             raise RenderUnavailable(
@@ -437,17 +504,3 @@ def render(url: str, *, screenshot_path: str | Path | None = None,
         http_status=status,
         shadow_hosts=hosts,
     )
-
-
-def is_available() -> bool:
-    """Whether this machine can render, without raising. For a preflight check."""
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        return False
-    try:
-        with sync_playwright() as p:
-            p.chromium.launch().close()
-        return True
-    except Exception:
-        return False

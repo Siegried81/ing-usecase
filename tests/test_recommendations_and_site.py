@@ -17,7 +17,6 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.collection.llm_extractor import LLMExtractionError  # noqa: E402
-
 from comparator.recommendations import (  # noqa: E402
     Recommendation,
     RecommendationSet,
@@ -136,9 +135,9 @@ def test_parse_response_accepts_a_json_fence():
 
 
 def test_build_recommendations_drops_feature_ids_the_report_does_not_have(monkeypatch):
-    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (_RAW, "deepseek/deepseek-chat"))
+    monkeypatch.setattr("comparator.recommendations._call_llm", lambda *a, **k: (_RAW, "deepseek/deepseek-flash"))
     result = build_recommendations(_REPORT)
-    assert result.model == "deepseek/deepseek-chat"
+    assert result.model == "deepseek/deepseek-flash"
     assert [r.id for r in result.recommendations] == ["R1", "R2"]
     # "not_a_feature" is not in the report, so it is not linkable evidence.
     assert result.recommendations[0].features == ["rate_shown"]
@@ -251,7 +250,7 @@ def test_build_recommendations_with_reputation_adds_context_and_marks_basis(monk
     def fake_llm(prompt, *, system_prompt, timeout):
         seen["prompt"] = prompt
         seen["system"] = system_prompt
-        return _RAW_REPUTATION, "deepseek/deepseek-chat"
+        return _RAW_REPUTATION, "deepseek/deepseek-flash"
 
     monkeypatch.setattr("comparator.recommendations._call_llm", fake_llm)
     result = build_recommendations(_REPUTATION_REPORT, include_reputation=True)
@@ -499,7 +498,7 @@ def test_download_assets_builds_a_white_logo_from_ings_own_svg(monkeypatch, tmp_
 
 def test_fallback_page_is_complete_and_honest():
     spec = PAGES[0]
-    page = _fallback_page(spec, "summary")
+    page = _fallback_page(spec)
     assert page.slug == spec.slug
     assert page.hero.primary_cta
     assert page.disclaimer

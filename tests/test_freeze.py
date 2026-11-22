@@ -9,7 +9,11 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from comparator.dictionary import Feature, FeatureDictionary, load_dictionary  # noqa: E402
+from comparator.dictionary import (  # noqa: E402
+    Feature,
+    FeatureDictionary,
+    load_dictionary,
+)
 from comparator.freeze import DEFAULT_FROZEN, check, compare  # noqa: E402
 
 

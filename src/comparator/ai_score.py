@@ -150,8 +150,11 @@ def score_simplicity(rows: pd.DataFrame) -> float | None:
     non_null = rows["readability_band"].dropna()
     if non_null.empty:
         return None
-    mode = non_null.mode().iat[0]
-    return _READABILITY_TO_SIMPLICITY.get(str(mode))
+    # Tied modes are averaged: picking one by alphabetical order would let the
+    # spelling of a band label decide the score.
+    scores = [_READABILITY_TO_SIMPLICITY.get(str(m)) for m in non_null.mode()]
+    scores = [s for s in scores if s is not None]
+    return round(sum(scores) / len(scores), 2) if scores else None
 
 
 _SCORERS = {

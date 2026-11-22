@@ -2,8 +2,8 @@
 
 `schema.validate()` already checks completeness, validity, uniqueness and
 consistency, but it reports them as a flat list of errors and warnings. A
-data-quality team reads a dataset by DIMENSION — how complete, how valid, how
-unique, how consistent, how fresh — and wants one number per dimension plus a
+data-quality team reads a dataset by DIMENSION (how complete, how valid, how
+unique, how consistent, how fresh) and wants one number per dimension plus a
 gate that fails when one drops. This module names those dimensions and scores
 them. It does not re-implement the contract: it reuses the dictionary's own
 rules (nullable, required, allowed values, ranges, primary key), so "valid"
@@ -18,7 +18,7 @@ on. Why each is scored the way it is:
   known, recorded single-model fallback (NFR-02, D-09); failing the build on a
   limitation that was agreed and written down would be noise, not a gate.
 - accuracy is NOT scored. Accuracy is agreement with a trusted reference, and
-  this project has no golden source — the model_assisted features were validated
+  this project has no golden source: the model_assisted features were validated
   against human labels on a sample only. A made-up accuracy number would be the
   one dishonest line on a data-quality page, so the dimension is reported as
   "not measurable here", with the reason. That is itself the honest answer.
@@ -116,7 +116,7 @@ def _status(score: float, *, warn: float, fail: float) -> str:
 def _completeness(df: pd.DataFrame, fd: FeatureDictionary) -> DimensionScore:
     """Share of filled cells over the features the contract insists on.
 
-    Measured over required or not-nullable features present in the frame — the
+    Measured over required or not-nullable features present in the frame: the
     columns the dictionary says must carry a value. Legitimately-optional
     nullable features are left out so a sparse optional column does not read as
     missing data.
@@ -144,8 +144,8 @@ def _completeness(df: pd.DataFrame, fd: FeatureDictionary) -> DimensionScore:
 def _validity(df: pd.DataFrame, fd: FeatureDictionary) -> DimensionScore:
     """Share of non-null values that satisfy their declared type/range/value set.
 
-    Reuses the dictionary's rules — the same allowed sets and ranges
-    `schema.validate()` checks — so a value is valid here exactly when it is
+    Reuses the dictionary's rules (the same allowed sets and ranges
+    `schema.validate()` checks), so a value is valid here exactly when it is
     valid there.
     """
     checked = valid = 0
@@ -232,7 +232,7 @@ def _consistency(df: pd.DataFrame) -> DimensionScore:
 def _timeliness(df: pd.DataFrame) -> DimensionScore:
     """Share of rows carrying a capture timestamp, plus the window they fall in.
 
-    Not a freshness gate — a proof-of-concept snapshot is deliberately a fixed
+    Not a freshness gate: a proof-of-concept snapshot is deliberately a fixed
     window. What matters for quality is that every row is dated, so a reader
     knows the single window every conclusion is valid for (DR-05).
     """

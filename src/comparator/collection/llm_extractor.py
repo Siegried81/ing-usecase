@@ -36,29 +36,6 @@ from pydantic import BaseModel, ValidationError
 # Load environment variables via python-dotenv.
 load_dotenv()
 
-MODEL_FIELDS = (
-    "primary_product", "dominant_image_type", "people_present", "imagery_register",
-    "institutional_trust_signal_present", "youth_student_targeting",
-    "secondary_bank_positioning", "expat_cross_border_targeting",
-    "branch_network_cited_as_benefit", "first_time_investor_targeting",
-    "senior_preretirement_targeting",
-    # Moved from rubric to model_assisted - these 12 are all
-    # judged from page TEXT (source: html_text in the dictionary), same
-    # reasoning as the fields above, not from the screenshot. persuasion_levers
-    # and the 4 AIDA fields are deliberately NOT here - their dictionary
-    # source is "screenshot" (layout/visual prominence matters for them) and
-    # this extractor only ever sends text, never the image, to the LLM.
-    "benefit_framing", "fab_level", "audience_segment", "is_bundled_offer",
-    "cross_sell_delivery_model", "rate_framing", "primary_cta_type",
-    "switching_framing", "regulatory_disclosure_prominence",
-    "hidden_conditions_behind_free_claim", "esg_claim_specificity",
-    "green_product_specific_benefit", "fast_digital_onboarding_claim",
-    # New field, same structured call - see feature_dictionary.yaml.
-    "target_personas",
-    "cross_sold_products",
-    "subscription_style_framing",
-)
-
 SYSTEM_PROMPT = """You are extracting structured features from a bank campaign page for a
 comparison across several banks. Apply the SAME criteria to every bank - consistency across
 banks matters more than being generous to any single one.
@@ -169,9 +146,7 @@ class ModelAssistedFields(BaseModel):
     subscription_style_framing: bool = False  # New field, see feature_dictionary.yaml
 
 
-# The pinned model's default name, in ONE place. generation.pinned_model() used
-# to carry its own "deepseek-chat" default, so the provenance it printed could
-# disagree with the model this chain actually called.
+# The pinned model's default name, in one place (generation.pinned_model() reuses it).
 DEEPSEEK_DEFAULT_MODEL = "deepseek-flash"
 
 
@@ -180,28 +155,14 @@ class LLMExtractionError(Exception):
 
 
 # (provider name, env var prefix, chat-completions URL, model env var, default model)
-# DeepSeek first (the pinned model), then Groq (with key rotation), then the
-# hosted fallbacks, then local Ollama for dev.
-#
-# Decision 6: DEEPSEEK IS THE PINNED MODEL for this project - one model,
-# named, so every bank is labelled by the same judge. The chain stays
-# underneath as a fallback for when DeepSeek is down, because losing a night
-# of collection to one provider outage is worse than a mixed dataset - but a
-# fallback is RECORDED in extraction_model rather than silent, and
-# schema.validate() warns when a dataset mixes models. See docs/decisions.md.
+# DeepSeek first: it is the pinned model (Decision 6), so every bank is labelled
+# by the same judge. The rest is a fallback chain; a fallback is recorded in
+# extraction_model, never silent, and schema.validate() warns on mixed models.
 _PROVIDERS = [
-    # DeepSeek retired "deepseek-chat" - the API now serves
-    # "deepseek-flash" (fast/economical) and "deepseek-v4-pro". Default
-    # updated to match; .env's DEEPSEEK_MODEL overrides this regardless.
+    # DEEPSEEK_MODEL in .env overrides the default.
     ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", DEEPSEEK_DEFAULT_MODEL),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    # Kept the provider-tuple structure (name + deepseek pin,
-    # decision 6) but fixed the default model ids for these three fallbacks -
-    # they were unverified guesses (old docstring: "VERIFY... Cerebras/
-    # SambaNova less so"). now verified against each provider's live model
-    # listing: openrouter serves qwen/qwen3-4b:free, cerebras and sambanova
-    # both serve gpt-oss-120b - matches the reference portfolio_forecasting
-    # .env.example, which is known to work.
+    # Default model ids checked against each provider's model listing.
     ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "qwen/qwen3-4b:free"),
     ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "gpt-oss-120b"),
     ("sambanova", "SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "gpt-oss-120b"),
@@ -224,17 +185,29 @@ def _groq_keys() -> list[str]:
 
 
 def _call_openai_compatible(url: str, api_key: str, model: str, user_prompt: str, *, system_prompt: str = SYSTEM_PROMPT, timeout: int = 30) -> str:
+    """One chat-completions call to an OpenAI-compatible provider; returns the answer text.
+
+    DeepSeek gets ``"thinking": {"type": "enabled"}`` spelled out. Thinking is
+    DeepSeek's documented default, which these calls relied on without saying
+    so; naming it keeps the labelling mode fixed for the pinned model (D6) if
+    DeepSeek changes that default. In thinking mode DeepSeek ignores
+    ``temperature``, so the 0 below has no effect there. Other providers don't
+    know the field and never get it.
+    """
+    payload = {
+        "model": model,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
+        ],
+        "temperature": 0,
+    }
+    if "api.deepseek.com" in url:
+        payload["thinking"] = {"type": "enabled"}
     response = requests.post(
         url,
         headers={"Authorization": f"Bearer {api_key}", "Content-Type": "application/json"},
-        json={
-            "model": model,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": user_prompt},
-            ],
-            "temperature": 0,
-        },
+        json=payload,
         timeout=timeout,
     )
     response.raise_for_status()

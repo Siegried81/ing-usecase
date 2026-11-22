@@ -18,15 +18,16 @@ from pytrends.request import TrendReq
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import CSV_DIR, DB_PATH, GEO, PRODUCTS, SCHEMA_PATH, TIMEFRAME  # noqa: E402
-from pytrends_network import MIN_DELAY_SECONDS, fetch_with_retry as _fetch_with_retry  # noqa: E402
+from pytrends_network import MIN_DELAY_SECONDS, fetch_with_retry
+
+from config import CSV_DIR, DB_PATH, GEO, PRODUCTS, SCHEMA_PATH, TIMEFRAME
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
 
 def init_db(conn):
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+    with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
     conn.commit()
 
@@ -53,10 +54,6 @@ def already_collected(conn, product_id):
     return row is not None
 
 
-def fetch_with_retry(pytrends, kw_list, timeframe):
-    return _fetch_with_retry(pytrends, kw_list, timeframe, GEO)
-
-
 def export_csv(product_id, df):
     os.makedirs(CSV_DIR, exist_ok=True)
     out = df.drop(columns=["isPartial"], errors="ignore").copy()
@@ -67,6 +64,15 @@ def export_csv(product_id, df):
 
 
 def store_long_format(conn, product, df):
+    """Store the series in long format, minus Google's still-incomplete last period.
+
+    pytrends flags the current, unfinished week with isPartial=True; its value
+    is built from a few days and sits well below the finished weeks, so storing
+    it would show up as a fake drop (term_resolver's coverage already ignores
+    partial points for the same reason).
+    """
+    if "isPartial" in df.columns:
+        df = df[~df["isPartial"].astype(bool)]
     term_meta = {t["term"]: (t["bank"], t["language"]) for t in product["terms"]}
     rows = []
     for term in df.columns:
@@ -111,7 +117,7 @@ def main():
 
         log.info("[%d/%d] Fetching '%s' (%d terms): %s", i, total, pid, len(kw_list), kw_list)
         try:
-            df = fetch_with_retry(pytrends, kw_list, TIMEFRAME)
+            df = fetch_with_retry(pytrends, kw_list, TIMEFRAME, GEO)
         except Exception:
             log.error("Skipping '%s' after repeated failures; will retry on next run.", pid)
             continue

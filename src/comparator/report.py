@@ -31,11 +31,12 @@ SYNTHETIC_WARNING = (
 )
 
 
-def _fmt(value: object, digits: int = 2) -> str:
+def _fmt(value: object) -> str:
+    """Format one table value: two decimals, thousands grouped, "-" for missing."""
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return "-"
     if isinstance(value, float):
-        return f"{value:,.{digits}f}" if abs(value) < 1000 else f"{value:,.0f}"
+        return f"{value:,.2f}" if abs(value) < 1000 else f"{value:,.0f}"
     return str(value)
 
 
@@ -49,9 +50,8 @@ def _table(df: pd.DataFrame, columns: list[str], headers: list[str], rows: int =
 def _positioning_section(positioning: Positioning, categories: pd.Series) -> list[str]:
     scores = positioning.scores
     focus = positioning.focus
-    # The focus bank can be legitimately absent - ING's own capture
-    # came back an unrendered shell on the first live run. The market section is
-    # still worth writing; the ING answer is not available, and says so.
+    # The focus bank can be legitimately absent (an unusable capture). The market
+    # section is still worth writing; the focus answer is not available, and says so.
     focus_score = positioning.focus_score if positioning.has_focus else None
 
     traditional = scores[[b for b in scores.index if categories.get(b) == "traditional"]]
@@ -59,18 +59,18 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
     gap = challenger.min() - traditional.max()
 
     lines = [
-        "## 1. Where does ING sit?",
+        f"## 1. Where does {focus.upper()} sit?",
         "",
         "![Banks positioned on the traditional-challenger axis](01_positioning.png)",
         "",
         "**What it measures.** Every bank is reduced to a vector of standardised features, "
-        "and the two business models are reduced to their centroids — the average traditional "
+        "and the two business models are reduced to their centroids: the average traditional "
         "bank and the average challenger. The line between those two points is the axis. Each "
         "bank is projected onto it and rescaled so **0 is the traditional centroid and 1 is the "
-        "challenger centroid**. A bank can land outside 0–1 by being more typical of its group "
+        "challenger centroid**. A bank can land outside 0 to 1 by being more typical of its group "
         "than the group average.",
         "",
-        "**Why an axis and not a cluster.** The stakeholders asked a directional question — "
+        "**Why an axis and not a cluster.** The stakeholders asked a directional question: "
         "\"are we closer to traditional banks or to challenger banks?\" A cluster label answers "
         "*which group*; this answers *how far along*, which is the question actually asked (BO-02).",
         "",
@@ -83,8 +83,8 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
     if focus_score is None:
         lines += [
             f"**{focus.upper()} IS NOT IN THIS CHART.** Its capture was unusable, so it was "
-            "excluded from the dataset. **BO-01 and BO-02 cannot be answered from this run** — "
-            "everything here describes the market without us in it. See `limitations.md`.",
+            "excluded from the dataset. **BO-01 and BO-02 cannot be answered from this run**. "
+            "Everything here describes the market without us in it. See `limitations.md`.",
             "",
             f"The axis is still computed over {positioning.n_features} features and still "
             "separates the two groups, so it is ready the moment a usable page exists.",
@@ -92,18 +92,17 @@ def _positioning_section(positioning: Positioning, categories: pd.Series) -> lis
         ]
     else:
         lines += [
-            f"**What this run shows.** {focus.upper()} scores **{focus_score:.2f}** — "
-            f"{positioning.verdict}. Computed over {positioning.n_features} features.",
+            f"**What this run shows.** {focus.upper()} scores **{focus_score:.2f}** "
+            f"({positioning.verdict}). Computed over {positioning.n_features} features.",
             "",
         ]
 
-    # Stated only when true: the sentence used to be printed whatever the gap,
-    # so an overlapping run would have claimed a separation it did not have.
+    # Stated only when true: an overlapping run must not claim a separation.
     if len(traditional) and len(challenger) and gap > 0:
         lines += [
             f"The two groups do not overlap: the most challenger-like incumbent sits at "
             f"{traditional.max():.2f} and the most traditional challenger at {challenger.min():.2f}, "
-            f"a gap of {gap:.2f}. That separation is what makes the axis meaningful — if the groups "
+            f"a gap of {gap:.2f}. That separation is what makes the axis meaningful: if the groups "
             "interleaved, the projection would be measuring noise.",
             "",
         ]
@@ -139,7 +138,6 @@ def _deviation_section(deviations: pd.DataFrame, focus: str, n_peers: int) -> li
             "is nothing to compare against its peers. See `limitations.md`.",
             "",
         ]
-    top = deviations.head(3)
     lines = [
         f"## 2. {focus.upper()} against its peers, feature by feature",
         "",
@@ -159,14 +157,13 @@ def _deviation_section(deviations: pd.DataFrame, focus: str, n_peers: int) -> li
         "that belongs in the business narrative.",
         "",
     ]
-    if len(top):
-        first = top.iloc[0]
-        lines += [
-            f"**What this run shows.** The largest gap is **{first['feature'].replace('_', ' ')}** "
-            f"at {first['gap_sd']:+.1f} SD ({focus} {_fmt(first[f'{focus}_value'])} against a peer "
-            f"mean of {_fmt(first['peer_mean'])}).",
-            "",
-        ]
+    first = deviations.iloc[0]
+    lines += [
+        f"**What this run shows.** The largest gap is **{first['feature'].replace('_', ' ')}** "
+        f"at {first['gap_sd']:+.1f} SD ({focus} {_fmt(first[f'{focus}_value'])} against a peer "
+        f"mean of {_fmt(first['peer_mean'])}).",
+        "",
+    ]
     lines += _table(
         deviations, ["feature", "dimension", f"{focus}_value", "peer_mean", "gap_sd"],
         ["Feature", "Dimension", f"{focus}", "Peer mean", "Gap (SD)"], rows=8,
@@ -188,7 +185,7 @@ def _category_section(comparison: pd.DataFrame, n_traditional: int, n_challenger
         "![Features ranked by separation between the two groups](03_category_separation.png)",
         "",
         "**What it measures.** For each feature, the difference between the two group means, "
-        "expressed as **Cohen's d** — the difference divided by the pooled standard deviation. "
+        "expressed as **Cohen's d**, the difference divided by the pooled standard deviation. "
         "Standardising this way makes features on wildly different scales rankable against each "
         "other.",
         "",
@@ -217,7 +214,7 @@ def _category_section(comparison: pd.DataFrame, n_traditional: int, n_challenger
     lines += [
         "",
         "**What it cannot tell you.** A feature can separate the groups perfectly and still be "
-        "irrelevant — the split is by business model, so anything that correlates with being a "
+        "irrelevant: the split is by business model, so anything that correlates with being a "
         "digital-first bank will show up here whether or not it is a communication choice.",
         "",
     ]
@@ -239,7 +236,7 @@ def _similarity_section(distances: pd.DataFrame, clusters: pd.Series, focus: str
         "reads the same in either direction. Every cell is labelled, so the figure is also its own "
         "table.",
         "",
-        "**Why a single hue.** Distance is a magnitude, not an identity — a categorical palette "
+        "**Why a single hue.** Distance is a magnitude, not an identity: a categorical palette "
         "here would imply the banks are categories of distance, which they are not.",
         "",
     ]
@@ -258,7 +255,7 @@ def _similarity_section(distances: pd.DataFrame, clusters: pd.Series, focus: str
         "",
         "Clusters come from hierarchical clustering (Ward linkage) on the same distances.",
         "",
-        "**What it cannot tell you.** Distance is unweighted — every feature counts the same, so "
+        "**What it cannot tell you.** Distance is unweighted: every feature counts the same, so "
         "a dozen correlated layout features will outvote a single strong tone feature. Clustering "
         "always returns clusters, including when there is no real structure to find; the cluster "
         "labels are only interesting because they were *not* told which bank is which.",
@@ -289,9 +286,9 @@ def build_chart_report(
         "",
         "Companion to the figures in this folder. Each section says what the chart is "
         "actually computing, how to read it, what this particular run shows, and what it "
-        "cannot support — in that order.",
+        "cannot support, in that order.",
         "",
-        f"*Generated by `scripts/run_analysis.py` from `{dataset_path}` — "
+        f"*Generated by `scripts/run_analysis.py` from `{dataset_path}`, "
         f"{n_pages} pages across {n_banks} banks.*",
         "",
     ]
@@ -302,13 +299,13 @@ def build_chart_report(
         lines += ["---", "", "## Why the charts use fewer features than the dictionary has", "",
                   "The dictionary defines "
                   f"{accounting['dictionary_total']} features. The comparisons here use "
-                  f"**{accounting['n_used']}**. Nothing is thrown away quietly — this is the "
+                  f"**{accounting['n_used']}**. Nothing is thrown away quietly. This is the "
                   "whole reduction:",
                   "", "```", render_accounting(accounting), "```", ""]
         if not accounting["categorical_included"]:
             lines += [
                 f"**The line worth arguing about is the {len(accounting['categorical'])} "
-                "categorical and list features.** They are not free text and not redundant — "
+                "categorical and list features.** They are not free text and not redundant: "
                 "things like `benefit_framing`, `fab_level`, `layout_archetype`, "
                 "`dominant_image_type`, `persuasion_levers`, and seven of the banking-domain "
                 "dimensions. A euclidean distance cannot take a raw category, so they sit out "
@@ -320,12 +317,13 @@ def build_chart_report(
                 "every number in the analysis, which is a team decision rather than a default.",
                 "",
             ]
-        lines += [
-            "The four bands (`word_count_band` and friends) are excluded on purpose: each is a "
-            "coarser view of a number already in the matrix, so counting both would double the "
-            "weight of that signal.",
-            "",
-        ]
+        if accounting["band_redundant"]:
+            lines += [
+                f"The {len(accounting['band_redundant'])} band features are excluded on purpose: "
+                "each is a coarser view of a number already in the matrix, so counting both "
+                "would double the weight of that signal.",
+                "",
+            ]
 
     lines += ["---", ""]
     lines += _positioning_section(positioning, categories)
@@ -342,7 +340,7 @@ def build_chart_report(
 
     if claims is not None and len(claims):
         lines += [
-            "## Appendix — the kickoff-deck observations",
+            "## Appendix: the kickoff-deck observations",
             "",
             "Not a chart, but the same discipline: the deck's five eyeball observations, "
             "tested against the data (FR-14).",

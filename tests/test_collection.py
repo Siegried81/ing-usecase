@@ -582,11 +582,9 @@ def _clear_provider_keys(monkeypatch):
 
 
 def test_groq_tried_before_other_fallbacks(monkeypatch):
-    # Confirms the provider ORDER matches .env.example, not just
-    # that "a" provider gets called.
-    # Unchanged in intent. DeepSeek now sits ahead of Groq
-    # (Decision 6), so this test pins the order BELOW DeepSeek by leaving its
-    # key unset - see test_deepseek_is_tried_first for the new head of the chain.
+    # Pins the provider ORDER below DeepSeek (its key is left unset here), not
+    # just that "a" provider gets called - see test_deepseek_is_tried_first for
+    # the head of the chain.
     _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
     monkeypatch.setenv("OPENROUTER_API_KEY", "fake-openrouter-key")
@@ -601,8 +599,8 @@ def test_groq_tried_before_other_fallbacks(monkeypatch):
     with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
         extract_model_assisted("text", image_count=1, has_animation=False, product_family="term_account")
 
-    assert any("groq" in c for c in calls), "groq must be tried first"
-    assert any("openrouter" in c for c in calls), "fallback must be tried after groq fails"
+    assert "groq" in calls[0], "groq must be tried first"
+    assert any("openrouter" in c for c in calls[1:]), "fallback must be tried after groq fails"
 
 
 def test_deepseek_is_tried_first(monkeypatch):
@@ -626,7 +624,7 @@ def test_extraction_records_which_model_answered(monkeypatch):
     """The whole point of Decision 6: the row must say who labelled it."""
     _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("DEEPSEEK_API_KEY", "fake-deepseek-key")
-    monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-chat")
+    monkeypatch.setenv("DEEPSEEK_MODEL", "deepseek-v4-pro")
 
     def fake_call(url, api_key, model, prompt, system_prompt=None, **kwargs):
         return __import__("json").dumps(_VALID_RESPONSE)
@@ -635,7 +633,7 @@ def test_extraction_records_which_model_answered(monkeypatch):
         _fields, model_id = extract_model_assisted_with_provenance(
             "text", image_count=1, has_animation=False, product_family="term_account"
         )
-    assert model_id == "deepseek/deepseek-chat"
+    assert model_id == "deepseek/deepseek-v4-pro"
 
 
 def test_fallback_is_recorded_not_silent(monkeypatch):
@@ -770,7 +768,35 @@ def test_chrome_exclusion_catches_a_menu_built_from_plain_divs():
       <main><a href="/go">Ouvrez votre compte</a></main>
     </body></html>"""
     from bs4 import BeautifulSoup
+
     from comparator.collection.scraper import _count_ctas
 
     count, _ = _count_ctas(BeautifulSoup(html, "html.parser"))
     assert count == 1, "only the body CTA counts; the div-based menu is chrome"
+
+
+@pytest.mark.parametrize("url,thinking", [
+    ("https://api.deepseek.com/chat/completions", {"type": "enabled"}),
+    ("https://api.groq.com/openai/v1/chat/completions", None),
+])
+def test_only_deepseek_gets_thinking_spelled_out(url, thinking):
+    """Every pinned-model row was labelled with thinking on; the request says so
+    instead of leaning on DeepSeek's default. Other hosts don't know the field."""
+    from comparator.collection import llm_extractor
+
+    answer = Mock(status_code=200)
+    answer.json.return_value = {"choices": [{"message": {"content": "{}"}}]}
+    with patch.object(llm_extractor.requests, "post", return_value=answer) as post:
+        llm_extractor._call_openai_compatible(url, "fake-key", "some-model", "prompt")
+    assert post.call_args.kwargs["json"].get("thinking") == thinking
+
+
+def test_deepseek_default_model_without_env(monkeypatch):
+    from comparator.collection import llm_extractor
+    from comparator.generation import pinned_model
+
+    monkeypatch.delenv("DEEPSEEK_MODEL", raising=False)
+    assert llm_extractor.DEEPSEEK_DEFAULT_MODEL == "deepseek-flash"
+    assert pinned_model() == "deepseek/deepseek-flash"
+    provider = next(p for p in llm_extractor._PROVIDERS if p[0] == "deepseek")
+    assert provider[4] == "deepseek-flash"

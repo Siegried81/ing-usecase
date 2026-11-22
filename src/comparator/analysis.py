@@ -26,7 +26,7 @@ BAND_SUFFIX = "_band"
 
 # A gap expressed in peer standard deviations is only meaningful if
 # the peers actually vary and there are enough of them. brand_colour_share came
-# back [0.0, 0.014, nan, 0.0] on the first real run: ING at 0.228 scored +33.8 SD
+# back [0.0, 0.014, nan, 0.0]: ING at 0.228 scored +33.8 SD
 # and topped the headline chart. That is not a finding about ING, it is a
 # division by a peer spread of 0.007 - and the real story was that colour
 # extraction had failed for most banks.
@@ -45,9 +45,8 @@ FREE_TEXT_FEATURES = {"meta_title", "primary_product", "dominant_colour_hex", "r
 # Features whose stored values do not describe the page, so the number is not a
 # property of the bank and must not enter a comparison. This is a different
 # failure from a missing value: the column is full, the figures look plausible,
-# and they are measuring the wrong thing. The constant is named for the first
-# case found; the set has since grown to cover rules that misdescribe the page
-# for reasons other than the capture.
+# and they are measuring the wrong thing, whether because of the capture or
+# because the rule misdescribes the page.
 #
 # cta_count: no counting rule proved defensible across the 14 banks. The stored
 # HTML is the post-JavaScript DOM (render.py returns page.content()), so the
@@ -397,8 +396,8 @@ def _one_hot(df: pd.DataFrame, fd: FeatureDictionary, columns: list[str]) -> pd.
 
     Indicators only - the weighting happens AFTER standardisation, in
     comparison_matrix(). Scaling here would be pointless: standardise() z-scores
-    every column, which erases any constant applied beforehand. (It was written
-    that way first; measured, and every dummy still came out at unit variance.)
+    every column, which erases any constant applied beforehand (every dummy would
+    still come out at unit variance).
     """
     frames = []
     for name in columns:
@@ -465,9 +464,8 @@ def comparison_matrix(
 ) -> pd.DataFrame:
     """Bank vectors, standardised and weighted - the one input every distance uses.
 
-    Positioning_axis() and similarity_matrix() each built this
-    inline, which is how the weighting bug below survived: fixing it in one
-    place would have left the other wrong.
+    Positioning_axis() and similarity_matrix() both read it, so the weighting
+    below is fixed in one place.
 
     THE WEIGHTING. A categorical with k values becomes k columns. After
     standardisation each of those columns has unit variance, so the feature
@@ -566,7 +564,9 @@ def ing_vs_peers(
                 "reportable": bool(not note),
                 "note": note,
                 "percentile": float((peer_values < focus_value).mean() * 100),
-                "direction": "above peers" if gap > 0 else "below peers",
+                # Sign of the raw difference, not of `gap`: gap is forced to 0 when
+                # the peers have no spread, which would label an ING above them as "below".
+                "direction": "above peers" if focus_value > peer_mean else "below peers",
             }
         )
 
@@ -654,11 +654,10 @@ class Positioning:
 
     @property
     def has_focus(self) -> bool:
-        """The focus bank can be missing for a real reason - ING's
-        own page came back as an unrendered shell on the first live run and was
-        excluded. The rest of the market analysis is still valid, so this is a
-        state to handle, not a crash - without this it surfaces as
-        KeyError: 'ing' from inside pandas, several frames from the cause."""
+        """The focus bank can be missing for a real reason: its page may be an
+        unrendered shell and be excluded. The rest of the market analysis is still
+        valid, so this is a state to handle, not a crash (otherwise it surfaces as
+        KeyError: 'ing' from inside pandas, several frames from the cause)."""
         return self.focus in self.scores.index
 
     def _require_focus(self) -> None:
@@ -783,7 +782,7 @@ def nearest_neighbours(
 # -----------------------------------------------------------------------------
 # BO-04 - recurring patterns across the whole market
 # -----------------------------------------------------------------------------
-# New function. Unlike category_comparison (traditional vs
+# Unlike category_comparison (traditional vs
 # challenger) or cluster_banks (which BANKS resemble each other), BO-04 asks
 # for patterns in how campaigns are built regardless of who built them -
 # "pages with X tend to also have Y", market-wide. Pairwise correlation is the
@@ -854,9 +853,8 @@ DECK_CLAIMS: list[dict] = [
          feature="word_count_band", test="lowest_traditional"),
     dict(id="H3", bank="ing", claim="ING is the only traditional bank using animation",
          feature="has_animation", test="only_traditional_true"),
-    # Feature renamed text_image_adjacent -> text_image_layout
-    # (boolean -> categorical: beside/stacked/overlaid) - "is_false" no longer
-    # applies to a categorical column, replaced with "categorical_is_not".
+    # text_image_layout is categorical (beside/stacked/overlaid), so the test is
+    # "categorical_is_not" rather than a boolean one.
     dict(id="H4", bank="ing", claim="ING no longer places text next to picture",
          feature="text_image_layout", test="categorical_is_not", not_value="beside"),
     dict(id="H5", bank="revolut", claim="Revolut uses very little text",
@@ -915,7 +913,7 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
             else:
                 series, band_labels = pd.Series(dtype="float64"), None
 
-            fmt = (lambda v: repr(band_labels[v])) if band_labels else (lambda v: f"{v:.1f}")
+            fmt = (lambda v, labels=band_labels: repr(labels[v])) if band_labels else (lambda v: f"{v:.1f}")
 
             # idxmax()/idxmin() pick an arbitrary bank on a tie (whichever
             # comes first in the Series), which let one claim read "supported"
@@ -974,13 +972,12 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
 # -----------------------------------------------------------------------------
 # FR-10 / BO-06 - insights and recommendations
 # -----------------------------------------------------------------------------
-# This was the one PRD deliverable (FR-10, priority M - mandatory,
-# not S/C) with no function behind it. ing_vs_peers already ranks every gap;
+# FR-10 (priority M, mandatory). ing_vs_peers already ranks every gap;
 # this only filters it to the ones big enough to argue from and attaches the
 # focus bank's own page_ids that show the gap, so every candidate is
 # "traceable to specific features and source pages" per FR-10's own wording.
-# It does NOT write the insight - "well-argued" is a human judgement call
-# (the), this only makes sure nothing is argued without evidence behind it.
+# It does NOT write the insight - "well-argued" is a human judgement call -
+# it only makes sure nothing is argued without evidence behind it.
 def insight_candidates(
     df: pd.DataFrame,
     fd: FeatureDictionary | None = None,

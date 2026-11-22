@@ -19,10 +19,10 @@ from __future__ import annotations
 import io
 
 import numpy as np
-import requests
+import requests  # noqa: F401 - the module attribute is the patch target of the image-fetch tests
 from PIL import Image
 
-from comparator.collection.compliance import USER_AGENT, assert_can_fetch
+from comparator.collection.compliance import USER_AGENT, assert_can_fetch, get_checked
 
 REQUEST_TIMEOUT_S = 15
 
@@ -63,7 +63,7 @@ def _relative_luminance(r: int, g: int, b: int) -> float:
 
 
 def extract_colours_from_image(
-    image: "Image.Image", *, bank: str | None = None, n_colours: int = 5,
+    image: Image.Image, *, bank: str | None = None, n_colours: int = 5,
     first_screen_px: int | None = None,
 ) -> dict:
     """Same measurement, on an already-decoded image.
@@ -109,8 +109,9 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     if not image_url:
         return empty
     try:
-        assert_can_fetch(image_url)  # Compliance gate, must run before every fetch
-        response = requests.get(image_url, headers={"User-Agent": USER_AGENT}, timeout=REQUEST_TIMEOUT_S)
+        # Compliance gate before the fetch and before every redirect hop.
+        response = get_checked(image_url, gate=assert_can_fetch, headers={"User-Agent": USER_AGENT},
+                               timeout=REQUEST_TIMEOUT_S)
         response.raise_for_status()
         img = Image.open(io.BytesIO(response.content)).convert("RGB")
     except Exception:  # noqa: BLE001 - best-effort feature, never fatal (incl. robots disallow)
@@ -119,7 +120,7 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     return _measure(img, bank=bank, n_colours=n_colours)
 
 
-def _mean_luminance(img: "Image.Image", n_colours: int) -> float:
+def _mean_luminance(img: Image.Image, n_colours: int) -> float:
     """Count-weighted mean luminance of an image's quantised palette."""
     thumb = img.resize((150, 150))
     quantized = thumb.quantize(colors=n_colours, method=Image.MEDIANCUT)
@@ -133,7 +134,7 @@ def _mean_luminance(img: "Image.Image", n_colours: int) -> float:
 
 
 def _measure(
-    img: "Image.Image", *, bank: str | None, n_colours: int, first_screen_px: int | None = None
+    img: Image.Image, *, bank: str | None, n_colours: int, first_screen_px: int | None = None
 ) -> dict:
     """The measurement itself, on a decoded RGB image."""
     empty = {

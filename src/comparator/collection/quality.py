@@ -107,7 +107,11 @@ def assess_capture(row: dict, page_text: str = "") -> QualityReport:
         verdict = UNUSABLE
         reasons.append(f"HTTP {int(status)} - the server did not serve the page")
 
-    hit = next((p for p in ERROR_PHRASES if p in text), None)
+    # An error page is short. The same words inside a full page are ordinary copy
+    # ("onderhoud" also means a meeting with an advisor; "temporarily unavailable"
+    # sits in many legal notices), so the phrases only count on a short captured text.
+    short_text = len(text.split()) < MIN_PLAUSIBLE_WORDS
+    hit = next((p for p in ERROR_PHRASES if p in text), None) if short_text else None
     if hit:
         verdict = UNUSABLE
         reasons.append(f"error or maintenance page - matched {hit!r}")

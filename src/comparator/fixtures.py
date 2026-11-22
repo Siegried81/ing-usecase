@@ -1,9 +1,7 @@
 """Synthetic fixture data, so analysis code can be built before the scraper exists.
 
-Project Plan, Day 2: five hand-collected rows in the agreed format, so the
-analysis code can be started before the full scrape exists. This module is the
-placeholder that unblocks day 2 - it is replaced by the real rows, not merged
-with them.
+Lets the analysis code run before the full scrape exists. It is a stand-in for
+the real rows, never merged with them.
 
 EVERY ROW IS INVENTED. Values are drawn from per-bank archetypes that encode the
 *hypotheses* in the kickoff deck (PRD section 2.4) so the pipeline produces
@@ -13,7 +11,7 @@ data_source = 'synthetic_fixture' so the validator says so out loud.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import numpy as np
 import pandas as pd
@@ -143,7 +141,7 @@ def build_fixture(
     fd = fd or load_dictionary()
     rng = np.random.default_rng(seed)
     banks = banks or list(ARCHETYPES)
-    captured = datetime(2026, 9, 15, 9, 0, tzinfo=timezone.utc)
+    captured = datetime(2026, 9, 15, 9, 0, tzinfo=UTC)
 
     rows: list[dict] = []
     for bank in banks:
@@ -276,7 +274,7 @@ def build_fixture(
                     # PUSHED in this funnel) and still be partner_addon_digital here (it
                     # HAS a travel/purchase-protection add-on via a third party elsewhere
                     # in the app) - that gap between the two fields is deliberate, it is
-                    # exactly the nuance the 15/09 discussion flagged: bancassurance
+                    # exactly the nuance that matters: bancassurance
                     # (own product, dedicated advisor) vs a distributed digital add-on
                     # are not the same thing even when both count as "some cross-sell".
                     "cross_sell_delivery_model": "internal_advisor_led" if a["category"] == "traditional" else "partner_addon_digital",

@@ -16,27 +16,16 @@ Scoring the output with a second, friendlier measuring stick would make the
 evaluation meaningless, so there is deliberately only one extractor in this
 repo and this module imports it rather than reimplementing anything.
 
-HONEST LIMITS, to repeat wherever this is shown (plan risk P-08, mine):
-REPRODUCIBILITY, measured rather than assumed (Audit, point 4).
-I had told the team the generation was "not reproducible" on the strength of
-five runs that disagreed. That was too strong, and the cause was not what I
-implied. Isolating it:
+HONEST LIMITS, to repeat wherever this is shown (plan risk P-08).
 
-  * Our code is deterministic. Rebuilding the brief three times on an unchanged
-    dataset gives a byte-identical prompt for both variants. Targets are derived
-    from the data, so when the DATA changes the prompt legitimately changes -
-    four of those five runs had re-collected in between, so they were never
-    comparing like with like.
-  * DeepSeek at temperature=0 is *mostly* deterministic: three identical short
-    calls returned byte-identical text. On the longer generation prompt, the
-    challenger variant reproduced exactly across runs and the on-brand one did
-    not. temperature controls sampling, not routing, so an MoE model served in
-    batches can still vary between otherwise identical requests.
-
-So: same data -> same prompt -> usually, not always, the same campaign. Each
-generated artefact now records the hash of the prompt that produced it, so a
-future difference can be attributed to the prompt or to the model instead of
-being argued about.
+REPRODUCIBILITY, measured. Our code is deterministic: rebuilding the brief on an
+unchanged dataset gives a byte-identical prompt for both variants. Targets are
+derived from the data, so when the data changes the prompt legitimately changes.
+DeepSeek at temperature=0 is mostly deterministic, not fully: temperature
+controls sampling, not routing, so an MoE model served in batches can still vary
+between identical requests. Same data, same prompt, usually the same campaign.
+Each generated artefact records the hash of the prompt that produced it, so a
+difference can be put on the prompt or on the model.
 
   * A generated page is text and specs, not a real rendered page. Features that
     need a browser or real assets - actual colours, image area, page height -
@@ -50,7 +39,9 @@ being argued about.
 
 from __future__ import annotations
 
+import hashlib
 import html as html_lib
+import json
 import os
 from dataclasses import dataclass, field
 from typing import Literal
@@ -59,10 +50,13 @@ import pandas as pd
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.analysis import bank_vectors, category_comparison
-from comparator.collection.llm_extractor import DEEPSEEK_DEFAULT_MODEL, LLMExtractionError, _call_llm
+from comparator.collection.llm_extractor import (
+    DEEPSEEK_DEFAULT_MODEL,
+    LLMExtractionError,
+    _call_llm,
+)
 from comparator.collection.scraper import extract
 from comparator.dictionary import FeatureDictionary, load_dictionary
-from comparator.generation_guardrails import GuardrailReport, check_generated_campaign
 from comparator.profiles import build_profile
 from comparator.schema import format_list
 
@@ -89,15 +83,22 @@ NUMERIC_TOLERANCE = 0.30
 # extractor counts a numeric claim by looking for digits - so a compliant
 # generation scores zero here by construction.
 #
-# This is worth saying out loud rather than quietly dropping: you cannot ask a
-# generator to match a bank's density of figures while forbidding it to invent
-# figures. On a real run those numbers come from the product team, not the
-# model. Listed here so the exclusion is visible in the scorecard output.
+# A generator cannot be asked to match a bank's density of figures while being
+# forbidden to invent figures: on a real run those numbers come from the product
+# team, not the model. Listed here so the exclusion is visible in the scorecard.
 GUARDRAIL_BLOCKED_FEATURES = {
     "numeric_claim_count": "generator may not invent figures - writes [RATE]/[AMOUNT] placeholders",
     "rate_value_pct": "same - no invented rates",
     "rate_shown": "same - no invented rates",
 }
+
+
+# cta_above_fold and disclaimer_present are appended to both variants as
+# rubric-driven fixes. cta_above_fold is also a real traditional/challenger
+# differentiator (see fixtures.py ARCHETYPES), so it could land in the movable
+# features too and be added to the specs twice, double-counting it in the
+# scorecard and in hit_rate(). They are excluded from the movable list.
+RUBRIC_FIXED_FEATURES = {"cta_above_fold", "disclaimer_present"}
 
 
 # =============================================================================
@@ -177,23 +178,13 @@ def build_targets(
     focus_row = vectors.loc[focus] if focus in vectors.index else None
     challengers = banks[banks["bank_category"] == "challenger"]
 
-    # Fixed - cta_above_fold and disclaimer_present are ALSO
-    # unconditionally appended below as rubric-driven fixes. On the current
-    # fixture neither lands in the top_n movable features, so this was never
-    # triggered, but cta_above_fold in particular is a real traditional/
-    # challenger differentiator (see fixtures.py ARCHETYPES) and could easily
-    # land there on real data - which would add it to specs twice, double-
-    # counting it in the scorecard and hit_rate(). Excluded here the same way
-    # GUARDRAIL_BLOCKED_FEATURES already excludes features handled elsewhere.
-    _RUBRIC_FIXED_FEATURES = {"cta_above_fold", "disclaimer_present"}
-
     # The features that actually separate the two groups, restricted to the ones
     # a text-and-DOM generation can genuinely move.
     movable = [
         f for f in separation["feature"]
         if f in MEASURED_FEATURES and f in vectors.columns
         and f not in GUARDRAIL_BLOCKED_FEATURES
-        and f not in _RUBRIC_FIXED_FEATURES
+        and f not in RUBRIC_FIXED_FEATURES
     ][:top_n]
 
     on_brand_specs: list[TargetSpec] = []
@@ -320,10 +311,10 @@ class GenerationBrief:
     competitor_patterns: list[str]
 
     def _structural_instructions(self) -> list[str]:
-        """Image_count and cta_count are measured from what the model
-        returns, but nothing told it how many to produce - so both variants missed
-        them on the first live run for no reason other than an unstated brief.
-        Counts the model can actually control are now stated as counts."""
+        """State image_count and cta_count as explicit counts in the brief.
+
+        Both are measured from what the model returns, so it has to be told how
+        many entries to produce; otherwise a miss only reflects an unstated brief."""
         lines: list[str] = []
         for spec in self.target.specs:
             if spec.feature == "image_count":
@@ -369,9 +360,8 @@ class GenerationBrief:
 def _focus_summary(df: pd.DataFrame, fd: FeatureDictionary, focus: str) -> dict:
     """The focus bank's own profile, or nothing if it has no usable page.
 
-    Not hypothetical - ING's capture came back an unrendered shell
-    on the first live run, so the bank we are writing 'on-brand' copy for was
-    absent from its own dataset.
+    The focus bank can be absent from its own dataset (an unrendered shell is an
+    unusable capture), and the brief then says so instead of inventing a profile.
     """
     if focus not in set(df.get("bank", [])):
         return {}
@@ -417,16 +407,12 @@ def build_brief(
 
 def prompt_fingerprint(brief: GenerationBrief) -> str:
     """Hash of the exact prompt sent, so a differing output is attributable."""
-    import hashlib
-
     payload = f"{SYSTEM_PROMPT}\n----\n{brief.to_prompt()}"
     return hashlib.sha256(payload.encode("utf-8")).hexdigest()[:16]
 
 
 def generate(brief: GenerationBrief, *, retries: int = 1) -> tuple[GeneratedCampaign, str]:
     """Call the pinned model. Returns (campaign, "provider/model")."""
-    import json
-
     last_error: Exception | None = None
     for _ in range(retries + 1):
         raw, model_id = _call_llm(brief.to_prompt(), system_prompt=SYSTEM_PROMPT)
@@ -537,12 +523,8 @@ def hit_rate(scorecard: pd.DataFrame) -> float:
     return 0.0 if measured.empty else float((measured["result"] == "hit").mean())
 
 
-def guardrails(row: dict) -> GuardrailReport:
-    """Reuse the checklist rather than writing a second one."""
-    return check_generated_campaign(row)
-
-
 def pinned_model() -> str:
-    """The model Decision 6 pins this project to, for the record."""
-    # Same default as the extraction chain, from one constant (was "deepseek-chat").
+    """The model Decision 6 pins this project to, for the record.
+
+    The default comes from the one constant the extraction chain also uses."""
     return f"deepseek/{os.getenv('DEEPSEEK_MODEL', DEEPSEEK_DEFAULT_MODEL)}"

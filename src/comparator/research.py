@@ -5,10 +5,10 @@ and names no concrete per-bank metric to compute from it (unlike personas,
 cross-sell, or news themes, which all have a defined output shape). Building
 a report.json section or an automatic per-bank/per-insight citation around
 "articles that exist" with no metric would still be inventing scope nobody
-asked for - so this function itself stays exactly what it always was.
+asked for - so this function stays a plain search.
 
-Wired into streamlit_app.py's new Research page (a search box,
-run on demand by whoever is writing the business narrative) - not into
+It is used by streamlit_app.py's Research page (a search box, run on demand by
+whoever is writing the business narrative), not by
 report.json or the FastAPI/React UI, and still no per-bank metric. The
 distinction that matters is manual/on-demand vs. automatic-and-cited-as-
 evidence: a human deciding a search result is relevant to what they are

@@ -27,8 +27,11 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import (  # noqa: E402
-    DB_PATH, PRODUCTS, SCHEMA_PATH, SHARE_OF_SEARCH_ANCHOR_BANKS,
+from config import (
+    DB_PATH,
+    PRODUCTS,
+    SCHEMA_PATH,
+    SHARE_OF_SEARCH_ANCHOR_BANKS,
     SHARE_OF_SEARCH_REFERENCE_FICHE,
 )
 
@@ -37,7 +40,7 @@ log = logging.getLogger(__name__)
 
 
 def ensure_schema(conn):
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+    with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
     conn.commit()
 

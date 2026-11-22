@@ -65,7 +65,7 @@ def _is_missing(value: object) -> bool:
 
 def parse_list(value: object) -> list[str]:
     """List-valued columns are stored pipe-separated so the dataset stays plain CSV."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
+    if _is_missing(value):
         return []
     if isinstance(value, list):
         return [str(v) for v in value]
@@ -94,12 +94,20 @@ def _coerce_boolean(series: pd.Series) -> pd.Series:
 
 
 def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
-    """Bring a freshly-read frame to the dictionary's types. Does not validate."""
+    """Bring a freshly-read frame to the dictionary's types. Does not validate.
+
+    A value that cannot be read as its type ("3,5" or "abc" in a number column,
+    "maybe" in a boolean one) becomes missing. That is silent for a nullable
+    feature, so the count per column is kept in df.attrs["coerced_to_missing"]
+    and validate() turns it into a warning.
+    """
     out = df.copy()
+    coerced: dict[str, int] = {}
     for name in out.columns:
         if name not in fd:
             continue
         feature = fd[name]
+        had_value = out[name].notna()
         if feature.is_numeric:
             out[name] = pd.to_numeric(out[name], errors="coerce")
             if feature.type == "integer":
@@ -126,6 +134,11 @@ def coerce_types(df: pd.DataFrame, fd: FeatureDictionary) -> pd.DataFrame:
             out[name] = out[name].map(lambda v: None if _is_missing(v) else parse_list(v))
         else:
             out[name] = out[name].astype("string")
+        if feature.is_numeric or feature.is_boolean or feature.type == "datetime":
+            lost = int((had_value & out[name].isna()).sum())
+            if lost:
+                coerced[name] = lost
+    out.attrs["coerced_to_missing"] = coerced
     return _restore_model_empty_lists(out, fd)
 
 
@@ -217,6 +230,11 @@ def validate(df: pd.DataFrame, fd: FeatureDictionary, *, tier: str = "core") -> 
                 report.errors.append(f"{feature.name}: values below the minimum of {lo}")
             if hi is not None and (numeric > hi).any():
                 report.errors.append(f"{feature.name}: values above the maximum of {hi}")
+
+    for name, lost in df.attrs.get("coerced_to_missing", {}).items():
+        report.warnings.append(
+            f"{name}: {lost} value(s) could not be read as {fd[name].type} and became missing"
+        )
 
     # --- compliance and provenance gates -------------------------------------
     if "robots_allowed" in df.columns:

@@ -59,10 +59,6 @@ class Feature:
         return self.type in LIST_TYPES
 
     @property
-    def is_core(self) -> bool:
-        return self.tier == "core"
-
-    @property
     def is_judgement_based(self) -> bool:
         """Rubric and model-assisted features carry a trust caveat."""
         return self.extraction in {"rubric", "model_assisted"}
@@ -192,4 +188,4 @@ def _check_consistency(fd: FeatureDictionary) -> None:
         if f.primary_key and f.nullable:
             raise ValueError(f"{f.name}: the primary key cannot be nullable")
 
-    fd.primary_key  # raises unless exactly one is defined
+    _ = fd.primary_key  # raises unless exactly one is defined

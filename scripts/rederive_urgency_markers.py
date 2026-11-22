@@ -26,11 +26,9 @@ import argparse
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
-from bs4 import BeautifulSoup
 
-from comparator.collection.scraper import _count_urgency_markers
+from comparator.collection.scraper import extract
 
 COLUMN = "urgency_marker_count"
 
@@ -49,12 +47,14 @@ def rederive(df: pd.DataFrame, path: Path) -> pd.DataFrame:
 
         try:
             html = Path(html_path).read_text(encoding="utf-8", errors="ignore")
-            text = BeautifulSoup(html, "html.parser").get_text(" ", strip=True)
+            # extract() is the capture's own parser: it drops script/style/noscript
+            # and flattens shadow roots, so the count is the one a fresh capture gives.
+            new = extract(html, language=str(row.get("language", "en")),
+                          page_url=str(row.get("url", "")))[COLUMN]
         except Exception as exc:  # noqa: BLE001 - one bad file must not stop the run
             print(f"  skip {row.get('page_id')}: unreadable snapshot ({exc})")
             continue
 
-        new = _count_urgency_markers(text, str(row.get("language", "en")))
         before = row.get(COLUMN)
         if pd.isna(before) or int(before) != new:
             print(f"  {row.get('page_id')}: {COLUMN} {before} -> {new}")

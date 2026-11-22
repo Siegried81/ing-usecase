@@ -27,11 +27,11 @@ from comparator.generation import (  # noqa: E402
     build_brief,
     build_targets,
     evaluate,
-    guardrails,
     hit_rate,
     score,
     to_html,
 )
+from comparator.generation_guardrails import check_generated_campaign  # noqa: E402
 
 
 @pytest.fixture(scope="module")
@@ -168,18 +168,18 @@ def test_scored_row_is_labelled_generated(campaign):
 
 
 def test_scored_row_passes_the_guardrails(campaign):
-    assert guardrails(score(campaign, variant="on_brand")).ok
+    assert check_generated_campaign(score(campaign, variant="on_brand")).ok
 
 
 def test_a_row_without_a_disclaimer_fails_the_guardrails(campaign):
     row = score(campaign, variant="on_brand")
     row["disclaimer_present"] = False
-    assert not guardrails(row).ok
+    assert not check_generated_campaign(row).ok
 
 
 def test_generated_rows_carry_the_model_that_wrote_them(campaign):
-    row = score(campaign, variant="on_brand", model_id="deepseek/deepseek-chat")
-    assert row["extraction_model"] == "deepseek/deepseek-chat"
+    row = score(campaign, variant="on_brand", model_id="deepseek/deepseek-flash")
+    assert row["extraction_model"] == "deepseek/deepseek-flash"
 
 
 # --- evaluation --------------------------------------------------------------
@@ -190,10 +190,12 @@ def test_scorecard_covers_every_target(df, fd, campaign):
     assert set(scorecard["result"]) <= {"hit", "miss", "not measured"}
 
 
-def test_hit_rate_ignores_unmeasured_criteria(df, fd, campaign):
-    target = build_targets(df, fd)["on_brand"]
-    scorecard = evaluate(score(campaign, variant="on_brand"), target)
-    assert 0.0 <= hit_rate(scorecard) <= 1.0
+def test_hit_rate_ignores_unmeasured_criteria():
+    import pandas as pd
+
+    scorecard = pd.DataFrame({"result": ["hit", "miss", "not measured", "not measured"]})
+    assert hit_rate(scorecard) == 0.5
+    assert hit_rate(pd.DataFrame({"result": ["not measured"]})) == 0.0
 
 
 def test_brief_states_the_targets_it_will_be_judged_on(df, fd):
@@ -203,15 +205,25 @@ def test_brief_states_the_targets_it_will_be_judged_on(df, fd):
         assert spec.feature in prompt
 
 
-def test_brief_states_the_counts_the_model_is_judged_on(df, fd):
-    """image_count and cta_count are measured from the output, so they must be asked for."""
-    target = build_targets(df, fd)["challenger_style"]
-    prompt = build_brief(df, target, fd).to_prompt()
-    named = {s.feature for s in target.specs}
-    if "image_count" in named:
-        assert "entries in image_briefs" in prompt
-    if "cta_count" in named:
-        assert "additional_cta_labels" in prompt
+def test_brief_states_the_counts_the_model_is_judged_on():
+    """image_count and cta_count are measured from the output, so they must be asked for.
+
+    The generated targets on the fixture never name these two, so the brief is
+    built around an explicit target: the counts must reach the prompt as counts.
+    """
+    from comparator.generation import GenerationBrief, TargetProfile
+
+    target = TargetProfile(
+        variant="challenger_style", description="d",
+        specs=[TargetSpec("image_count", "range", low=4, high=6),
+               TargetSpec("cta_count", "exact", value=3)],
+    )
+    brief = GenerationBrief(product="p", language="en", target=target,
+                            focus_profile={}, competitor_patterns=[])
+    prompt = brief.to_prompt()
+    assert "Return EXACTLY 5 entries in image_briefs." in prompt
+    assert "Return EXACTLY 2 entries in additional_cta_labels" in prompt
+    assert "= 3 calls to action in total" in prompt
 
 
 def test_every_cta_is_rendered_and_counted(campaign):

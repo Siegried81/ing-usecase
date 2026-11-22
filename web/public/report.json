@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-16T15:47:35+00:00",
+  "generated_at": "2026-11-22T12:18:49+00:00",
   "dataset": "data/processed/campaigns_scored.csv",
   "scope": {
     "product_family": "current_account_pack",
@@ -90,7 +90,7 @@
       "bank": "Crelan",
       "key": "crelan",
       "category": "traditional",
-      "score": -0.137,
+      "score": -0.136,
       "isFocus": false
     },
     {
@@ -409,7 +409,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 1831.0,
+        "Words on the page": 1825.0,
         "Readability band": "very_hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.746,
@@ -487,7 +487,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 1812.0,
+        "Words on the page": 1805.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.688,
@@ -565,7 +565,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 3310.0,
+        "Words on the page": 3306.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.603,
@@ -644,7 +644,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 2199.0,
+        "Words on the page": 2198.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.576,
@@ -728,7 +728,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 1763.0,
+        "Words on the page": 1762.0,
         "Readability band": "medium",
         "Formality of tone": 1.0,
         "Speaks to “you” rather than “we”": 0.889,
@@ -813,7 +813,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 2613.0,
+        "Words on the page": 2595.0,
         "Readability band": "very_hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.836,
@@ -969,7 +969,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 1661.0,
+        "Words on the page": 1653.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.595,
@@ -1218,7 +1218,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 1193.0,
+        "Words on the page": 1192.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.614,
@@ -1476,7 +1476,7 @@
         }
       ],
       "tone": {
-        "Words on the page": 3992.0,
+        "Words on the page": 3967.0,
         "Readability band": "hard",
         "Formality of tone": 2.0,
         "Speaks to “you” rather than “we”": 0.797,
@@ -2112,7 +2112,7 @@
         7.04,
         11.03,
         6.26,
-        7.98,
+        7.97,
         7.32,
         7.98,
         6.65,
@@ -2146,7 +2146,7 @@
         10.77,
         12.33,
         10.81,
-        7.92,
+        7.93,
         9.42,
         10.07,
         11.57,
@@ -2172,13 +2172,13 @@
       [
         9.05,
         8.9,
-        7.98,
+        7.97,
         9.59,
         12.33,
         8.74,
         0.0,
         8.82,
-        9.9,
+        9.91,
         8.06,
         8.04,
         11.26,
@@ -2206,9 +2206,9 @@
         6.05,
         7.98,
         7.18,
-        7.92,
+        7.93,
         8.42,
-        9.9,
+        9.91,
         8.47,
         0.0,
         7.52,
@@ -2379,22 +2379,22 @@
   "limitations": {
     "blocking": [],
     "material": [
-      "The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family — a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
+      "The usable pages span **6 different product families** (['current_account_pack', 'investment', 'mortgage', 'pension', 'savings_account', 'term_account']). DR-04 requires comparisons within one family: a mortgage page and a current-account page differ because the products differ, not because the banks communicate differently. Any cross-bank claim from this dataset is confounded by product.",
       "Pages are in **3 languages** (['en', 'fr', 'nl']). 8 within_language feature(s) (['avg_sentence_length', 'disclaimer_word_share', 'first_person_plural_count', 'readability_score', 'second_person_ratio', 'sentence_count', 'text_to_image_ratio', 'word_count']) are excluded from every cross-bank comparison while that is true (comparability in the dictionary). Band versions exist but are not compared in by default.",
-      "**1 judged feature(s) are scored on some banks but not all** (`text_image_layout` (1 bank(s))). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity — they are absent from the result rather than partially present in it.",
+      "**1 judged feature(s) are scored on some banks but not all** (`text_image_layout` (1 bank(s))). A feature missing on even one bank is dropped from the cross-bank comparison entirely, so these carry no weight in the positioning, the peer gaps or the similarity: they are absent from the result rather than partially present in it.",
       "Model-assisted features were produced by **more than one model** (['deepseek/deepseek-flash', 'groq/openai/gpt-oss-120b']). Part of any difference between those banks is a difference between two LLMs (NFR-02)."
     ],
     "standing": [
       "**The cross-sell score counts distinct product types, not selling effort.** `cross_sold_products` names nine product types plus `other`, and a page's score is how many of the nine it mentions, averaged over the bank's pages. A page that pushes one product ten times and a page that mentions it once score identically, and anything outside the nine still collapses into a single `other` counted once. Read the score as breadth of coverage, never as how hard a page cross-sells.",
-      "**Five features are measured but never compared.** `cta_count` and `cta_contrast_ratio` are withdrawn because no counting rule reproduced a human count of calls to action across fourteen banks: navigation, several links pointing at one target, and clickable product cards are marked up differently by every bank, so the number reports the markup convention. `has_animation` and `animated_asset_count` are withdrawn because the rule asks whether the stylesheet declares an animation, not whether the page moves — across the compared pages exactly one carries real motion. The `has_comparison_table` is withdrawn because it tests for an HTML `<table>` element: traditional banks mark their tariff grids up as tables, while N26 and Revolut build the same plan comparison in CSS, so the 0.57-against-0.00 split it produced is a difference in authoring style, not in strategy. The columns stay in the dataset; they are excluded from every comparison and no finding rests on them.",
-      "**Three captures were taken with a cookie-consent modal over the page.** Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features — `background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, `brand_colour_share` and `above_fold_element_count` — describe the modal rather than the page beneath it, which is why those three report a near-zero hero area. Text-derived and judged features are unaffected, so the word, urgency, persuasion and rubric findings stand.",
-      "**Page colour is measured on one rendering.** `background_luminance`, `brand_colour_share` and the palette features come from a single capture in headless Chrome with the default light colour scheme. A visitor using dark mode, or a browser extension that forces it, may see a substantially darker page than the one measured here — that difference is unmeasured, and any brightness comparison should be read as a comparison of our captures.",
-      "The judged features carry the opinion of a single person. No inter-rater reliability was measured — that is the chosen scope of this proof of concept, not an oversight. Single-judge bias is a question for the real product and is listed under next steps.",
+      "**Five features are measured but never compared.** `cta_count` and `cta_contrast_ratio` are withdrawn because no counting rule reproduced a human count of calls to action across fourteen banks: navigation, several links pointing at one target, and clickable product cards are marked up differently by every bank, so the number reports the markup convention. `has_animation` and `animated_asset_count` are withdrawn because the rule asks whether the stylesheet declares an animation, not whether the page moves: across the compared pages exactly one carries real motion. The `has_comparison_table` is withdrawn because it tests for an HTML `<table>` element: traditional banks mark their tariff grids up as tables, while N26 and Revolut build the same plan comparison in CSS, so the 0.57-against-0.00 split it produced is a difference in authoring style, not in strategy. The columns stay in the dataset; they are excluded from every comparison and no finding rests on them.",
+      "**Three captures were taken with a cookie-consent modal over the page.** Argenta, BNP Paribas Fortis and Crelan. Their screenshot-derived features (`background_luminance`, `hero_image_area_ratio`, `accent_colour_count`, `brand_colour_share` and `above_fold_element_count`) describe the modal rather than the page beneath it, which is why those three report a near-zero hero area. Text-derived and judged features are unaffected, so the word, urgency, persuasion and rubric findings stand.",
+      "**Page colour is measured on one rendering.** `background_luminance`, `brand_colour_share` and the palette features come from a single capture in headless Chrome with the default light colour scheme. A visitor using dark mode, or a browser extension that forces it, may see a substantially darker page than the one measured here: that difference is unmeasured, and any brightness comparison should be read as a comparison of our captures.",
+      "The judged features carry the opinion of a single person. No inter-rater reliability was measured: that is the chosen scope of this proof of concept, not an oversight. Single-judge bias is a question for the real product and is listed under next steps.",
       "Every conclusion is valid for the capture window **2026-09-21 to 2026-09-23** and no later. Campaign pages change without notice (DR-05).",
       "**No performance data exists in this project.** Nothing links a design choice to a click, a conversion or a sale. Every recommendation is a hypothesis ING could test, never a cause (PRD 5.2). Google Trends search interest is available as *context* and does not change this: it measures what people searched for, not what a campaign achieved, it says which brand was looked up and never why, and the pages captured here are today's pages rather than the pages live during any earlier movement in search interest.",
       "Only the open web is covered. Social media, in-app and email banners are out of scope and may well be where a bank's real communication happens.",
       "`total_image_area_ratio` sums image bounding boxes, so overlapping images are counted twice and the value is capped at 1.0. `above_fold_element_count` depends on what counts as an element. Both are exact about geometry and approximate about meaning.",
-      "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is deterministic: the same dataset produces a byte-identical prompt, and each generated artefact records that prompt's fingerprint. The model is the variable part — identical requests usually return identical copy but not always, because temperature controls sampling and not how the model routes internally. Treat a committed campaign as one sample rather than as the output.",
+      "The generated campaigns are **mostly, not perfectly, reproducible**. Our side is deterministic: the same dataset produces a byte-identical prompt, and each generated artefact records that prompt's fingerprint. The model is the variable part: identical requests usually return identical copy but not always, because temperature controls sampling and not how the model routes internally. Treat a committed campaign as one sample rather than as the output.",
       "Hitting a generation target shows the model followed instructions. It says nothing about whether the campaign would perform better (plan risk P-08)."
     ]
   },
@@ -2416,15 +2416,15 @@
     "dimensions": [
       {
         "dimension": "completeness",
-        "score": 0.9977,
+        "score": 0.9997,
         "status": "pass",
-        "detail": "60 required field(s) 99.8% filled; most blank: section_count (-6), text_image_layout (-1)"
+        "detail": "60 required field(s) 100.0% filled; most blank: text_image_layout (-1)"
       },
       {
         "dimension": "validity",
         "score": 1.0,
         "status": "pass",
-        "detail": "3266 checked value(s), 100.0% within the contract"
+        "detail": "3272 checked value(s), 100.0% within the contract"
       },
       {
         "dimension": "uniqueness",
@@ -2739,8 +2739,8 @@
           {
             "feature": "section_count",
             "z": 3.51,
-            "focusZ": -0.52,
-            "gapSd": 4.02,
+            "focusZ": -0.53,
+            "gapSd": 4.04,
             "direction": "above",
             "label": "Content sections"
           },

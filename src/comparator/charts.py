@@ -145,7 +145,7 @@ def positioning_chart(
         _title(ax, f"The market, without {positioning.focus.upper()}",
                note or f"{positioning.focus.upper()} had no usable capture, so it is not on this "
                        f"chart · {positioning.n_features} features")
-        ax.text(0.5, -0.16, f"{positioning.focus.upper()} IS MISSING — this chart cannot answer "
+        ax.text(0.5, -0.16, f"{positioning.focus.upper()} IS MISSING. This chart cannot answer "
                             f"where {positioning.focus.upper()} stands.",
                 transform=ax.transAxes, ha="center", va="top",
                 fontsize=9.5, color=CATEGORY_COLOUR["challenger"], fontweight="bold")
@@ -228,7 +228,7 @@ def category_effect_chart(
     ax.set_yticks(y, [_label(f) for f in data["feature"]], fontsize=9)
     span = float(np.abs(data["effect_size_d"]).max()) * 1.55
     ax.set_xlim(-span, span)
-    ax.set_xlabel("effect size (Cohen's d) — descriptive separation, not a significance test",
+    ax.set_xlabel("effect size (Cohen's d): descriptive separation, not a significance test",
                   fontsize=9.5, color=INK_SECONDARY)
     ax.grid(axis="x", color=GRID, lw=0.7, zorder=0)
     ax.set_axisbelow(True)

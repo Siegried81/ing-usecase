@@ -1,6 +1,6 @@
 """Generate a 10-page ING campaign website from the selected recommendations.
 
-stretch on top of step 5. The campaign generator
+A stretch goal on top of step 5. The campaign generator
 (`generation.py`) writes one page and scores it. This writes a small site and
 deliberately does NOT score it - the scorecard belongs to the single-page loop.
 What this module is for is showing a recommendation turned into something a
@@ -28,10 +28,10 @@ from __future__ import annotations
 
 import html as html_lib
 import json
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 import requests
 from pydantic import BaseModel, Field, ValidationError
@@ -42,7 +42,6 @@ from comparator.recommendations import RecommendationSet
 # -----------------------------------------------------------------------------
 # The fixed skeleton
 # -----------------------------------------------------------------------------
-ASSET_BASE = "web/public/ing-assets"
 
 
 @dataclass(frozen=True)
@@ -88,8 +87,6 @@ PAGES: tuple[PageSpec, ...] = (
              "the contact and FAQ page: the most common questions answered, routes to a human",
              "contact"),
 )
-
-PAGE_BY_SLUG = {p.slug: p for p in PAGES}
 
 # One label set per page, per language. The slug stays French in every case
 # because it is a file name and a recommendation target, not copy.
@@ -144,6 +141,7 @@ PAGE_TITLES: dict[str, dict[str, str]] = {
 UI: dict[str, dict[str, str]] = {
     "fr": {
         "locale_label": "Français", "personal": "Particuliers",
+        "skip": "Aller au contenu", "main_nav": "Principal",
         "search": "Que recherchez-vous ?", "contact": "Contact",
         "services": "Services", "login": "Connexion", "open": "Ouvrir un compte",
         "faq_heading": "Questions fréquentes",
@@ -163,6 +161,7 @@ UI: dict[str, dict[str, str]] = {
     },
     "nl": {
         "locale_label": "Nederlands", "personal": "Particulieren",
+        "skip": "Naar de inhoud", "main_nav": "Hoofdmenu",
         "search": "Waar zoekt u naar?", "contact": "Contact",
         "services": "Diensten", "login": "Aanmelden", "open": "Rekening openen",
         "faq_heading": "Veelgestelde vragen",
@@ -182,6 +181,7 @@ UI: dict[str, dict[str, str]] = {
     },
     "en": {
         "locale_label": "English", "personal": "Personal",
+        "skip": "Skip to content", "main_nav": "Main",
         "search": "What are you looking for?", "contact": "Contact",
         "services": "Services", "login": "Log in", "open": "Open an account",
         "faq_heading": "Frequently asked questions",
@@ -255,9 +255,8 @@ class Hero(BaseModel):
     primary_cta: str
     secondary_cta: str | None = None
     image: str = "home"
-    # Short description of the illustration, in the page language. Without it
-    # every hero image shipped alt="", which fails the accessibility
-    # recommendation the site is supposed to demonstrate.
+    # Short description of the illustration, in the page language. An empty alt
+    # would fail the accessibility recommendation the site is meant to demonstrate.
     image_alt: str = ""
 
 
@@ -443,7 +442,7 @@ def _missing_coverage(page: PageContent, recs: RecommendationSet) -> list[str]:
 
 
 def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
-                 extra: str = "", explain: bool = False) -> str:
+                 explain: bool = False) -> str:
     locale, language_name, language_rule = LANGUAGES.get(language, LANGUAGES["fr"])
     applicable = [r for r in recs.recommendations
                   if not r.page_targets or spec.slug in r.page_targets]
@@ -477,7 +476,6 @@ def _page_prompt(spec: PageSpec, recs: RecommendationSet, language: str, site_su
         f"Selected recommendations (written in English - read them, but output in the requested "
         f"language):\n{_rec_brief(recs)}\n\n"
         f"{action}\n"
-        f"{extra}\n"
         f"Reminder: the final output must be entirely in the requested language."
     )
 
@@ -523,15 +521,23 @@ def _content_text(page: PageContent) -> str:
 
 
 def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_summary: str,
-                  *, explain: bool = False, retries: int = 2) -> PageContent:
+                  *, explain: bool = False, retries: int = 1) -> PageContent:
+    """One structured call with a fixed prompt, validated, retried bounded on a bad answer.
+
+    Same pattern as collection/llm_extractor.py: the prompt never changes between
+    attempts, a response that fails validation is simply asked for again, and
+    after `retries + 1` attempts the caller falls back to the deterministic page.
+    Validation is the schema plus three checks on the content (language, a cited
+    section in explain mode, coverage of the briefed recommendations). On the last
+    attempt a valid, correctly-localised page is accepted even if a cue is
+    missing: a thin fallback is worse than a real page that underplays one
+    recommendation, and the coverage is still reported by the browser audit.
+    """
+    prompt = _page_prompt(spec, recs, language, site_summary, explain)
+    system_prompt = _page_system_prompt(explain)
     last_error: Exception | None = None
-    extra = ""
     for attempt in range(retries + 1):
-        raw, _model = _call_llm(
-            _page_prompt(spec, recs, language, site_summary, extra, explain),
-            system_prompt=_page_system_prompt(explain),
-            timeout=180,
-        )
+        raw, _model = _call_llm(prompt, system_prompt=system_prompt, timeout=180)
         cleaned = raw.strip().removeprefix("```json").removeprefix("```").removesuffix("```").strip()
         try:
             data = json.loads(cleaned)
@@ -546,39 +552,20 @@ def generate_page(spec: PageSpec, recs: RecommendationSet, language: str, site_s
 
         detected = _detected_language(_content_text(page))
         if detected is not None and detected != language:
-            # The model answered in the wrong language. That is the one error a
-            # reader will notice immediately, so it is worth another call.
             last_error = LLMExtractionError(
                 f"page came back in {detected} but {language} was requested"
             )
-            extra = (f"Your previous draft was written in {detected}; it must be in "
-                     f"{LANGUAGES.get(language, LANGUAGES['fr'])[1]}.")
             continue
 
-        # Explained mode must box at least one section on every page, otherwise
-        # the page reads as if nothing was generated from a recommendation.
-        if explain and not any(s.source_recs for s in page.sections) and attempt < retries:
+        last_attempt = attempt == retries
+        if explain and not any(s.source_recs for s in page.sections) and not last_attempt:
             last_error = LLMExtractionError("page has no section that cites a recommendation")
-            extra = ("Your previous draft had no section that implements a recommendation. Rewrite "
-                     "it so at least one section acts on a recommendation from the list, cites its "
-                     "id in source_recs, and explains why in rationale - in the requested language.")
             continue
 
-        # A recommendation the page was briefed on but does not express is the
-        # other failure a reader notices. Check it and ask again, naming the ids.
         missing = _missing_coverage(page, recs)
-        if missing and attempt < retries:
+        if missing and not last_attempt:
             last_error = LLMExtractionError(f"page did not express {', '.join(missing)}")
-            extra = ("Your previous draft was rejected because a reader could not see these "
-                     f"recommendations on the page: {', '.join(missing)}. Rewrite this page so "
-                     "each of them is explicit in the copy, a heading, a bullet or the structure. "
-                     f"Keep the entire page in {LANGUAGES.get(language, LANGUAGES['fr'])[1]} - do "
-                     "not switch language.")
             continue
-        # On the last attempt a valid, correctly-localised page is accepted even
-        # if one cue is missing: a thin deterministic fallback is worse than a
-        # real page that underplays one recommendation, and the coverage is
-        # still reported by the browser audit.
         return page
 
     raise LLMExtractionError(f"page {spec.slug} did not return valid content: {last_error}")
@@ -733,7 +720,7 @@ def render_page(content: PageContent, language: str, *, explain: bool = False,
 </head>
 <body>
 {_explain_bar(language) if explain else ""}
-<a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">{_esc(ui(language, "skip"))}</a>
 <div class="utility"><div class="wrap">
 <span class="u-active">{_esc(ui(language, "personal"))}</span><a href="#">Business</a><a href="#">Private Banking</a>
 <span class="u-lang">{_esc(ui(language, "locale_label"))} ▾</span>
@@ -747,7 +734,7 @@ def render_page(content: PageContent, language: str, *, explain: bool = False,
 <a class="pill-fill" href="ouvrir-compte.html">{_esc(ui(language, "open"))}</a>
 </nav>
 </div>
-<nav class="mainnav" aria-label="Principal"><div class="wrap">{_nav(content.slug, language)}</div></nav>
+<nav class="mainnav" aria-label="{_esc(ui(language, "main_nav"))}"><div class="wrap">{_nav(content.slug, language)}</div></nav>
 </header>
 
 <main id="main">
@@ -916,22 +903,18 @@ def _download_assets(dest: Path) -> list[str]:
     # White-on-dark logo: ING's own logo with only the blue wordmark recolored,
     # so the orange lion and the white details stay exactly as published. Dark
     # blue #000066 on the black masthead measured ~1.3:1 contrast - unreadable.
-    # Rebuilt every run rather than cached: an earlier version of this function
-    # shipped the blue-on-black logo, and a stale cache would keep it forever.
+    # Rebuilt every run rather than cached, so a stale blue-on-black copy can
+    # never survive.
     full = dest / "logo-full.svg"
     white = dest / "logo-white.svg"
     if full.is_file():
         try:
             svg = full.read_text(encoding="utf-8")
             svg = svg.replace('fill="#006"', 'fill="#ffffff"').replace('fill="#000066"', 'fill="#ffffff"')
-            _safe_write(white, svg)
+            white.write_text(svg, encoding="utf-8")
         except OSError as exc:
             warnings.append(f"could not build the white logo: {exc}")
     return warnings
-
-
-def _safe_write(path: Path, text: str) -> None:
-    path.write_text(text, encoding="utf-8")
 
 
 def generate_site(
@@ -959,7 +942,7 @@ def generate_site(
     out_dir.mkdir(parents=True, exist_ok=True)
     assets_dir = out_dir / "assets"
     asset_warnings = _download_assets(assets_dir)
-    _safe_write(assets_dir / "site.css", ASSETS_CSS)
+    (assets_dir / "site.css").write_text(ASSETS_CSS, encoding="utf-8")
 
     summary = recommendations.summary or "ING savings, made clear and easy to start."
 
@@ -972,7 +955,7 @@ def generate_site(
             return spec.slug, generate_page(spec, recommendations, language, summary,
                                             explain=explain), None
         except LLMExtractionError as exc:
-            return spec.slug, _fallback_page(spec, summary, language), str(exc)
+            return spec.slug, _fallback_page(spec, language), str(exc)
 
     with ThreadPoolExecutor(max_workers=max_workers) as pool:
         futures = {pool.submit(work, spec): spec for spec in PAGES}
@@ -987,9 +970,10 @@ def generate_site(
 
     rec_titles = {r.id: r.title for r in recommendations.recommendations}
     for spec in PAGES:
-        _safe_write(out_dir / f"{spec.slug}.html",
-                    render_page(contents[spec.slug], language, explain=explain,
-                                rec_titles=rec_titles))
+        (out_dir / f"{spec.slug}.html").write_text(
+            render_page(contents[spec.slug], language, explain=explain, rec_titles=rec_titles),
+            encoding="utf-8",
+        )
 
     manifest = {
         "language": language,
@@ -1014,11 +998,13 @@ def generate_site(
         ],
         "asset_warnings": asset_warnings,
     }
-    _safe_write(out_dir / "manifest.json", json.dumps(manifest, indent=2, ensure_ascii=False))
+    (out_dir / "manifest.json").write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
     return manifest
 
 
-def _fallback_page(spec: PageSpec, _summary: str, language: str = "fr") -> PageContent:
+def _fallback_page(spec: PageSpec, language: str = "fr") -> PageContent:
     """A complete, honest page when the model did not deliver one.
 
     Not hidden: the manifest marks it. This exists so a partial model outage
@@ -1032,8 +1018,8 @@ def _fallback_page(spec: PageSpec, _summary: str, language: str = "fr") -> PageC
         hero=Hero(
             eyebrow=nav_label(spec.slug, language),
             headline=PAGE_TITLES.get(language, PAGE_TITLES["fr"]).get(spec.slug, spec.slug),
-            # Never the English model summary here: it made the fallback page
-            # read as English under Dutch chrome. The fallback is localised.
+            # Never the English model summary here: it would read as English under
+            # Dutch chrome. The fallback is localised.
             subheading=ui(language, "fallback_body"),
             primary_cta=ui(language, "open"),
             secondary_cta=ui(language, "contact"),

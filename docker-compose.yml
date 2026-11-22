@@ -1,5 +1,5 @@
 services:
-  # Streamlit dashboard — no API key required, reads committed data
+  # Streamlit dashboard - no API key required, reads the data baked into the image
   streamlit:
     build:
       context: .
@@ -13,15 +13,6 @@ services:
     environment:
       - PYTHONUNBUFFERED=1
       - PYTHONDONTWRITEBYTECODE=1
-    volumes:
-      # For development: hot-reload on file changes
-      - ./src:/app/src
-      - ./streamlit_app.py:/app/streamlit_app.py
-      - ./config:/app/config
-      # Preserve data/outputs across container restarts
-      - streamlit_data:/app/data
-      - streamlit_outputs:/app/outputs
-      - streamlit_cache:/app/.streamlit
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8501/_stcore/health').read()"]
       interval: 30s
@@ -48,14 +39,10 @@ services:
       - path: .env
         required: false
     volumes:
-      - ./src:/app/src
-      - ./scripts:/app/scripts
-      - ./web/dist:/app/web/dist:ro
+      # Generated recommendations and site survive a restart. Remove the volume
+      # (docker compose down -v) to pick up new outputs from a newer image.
       - api_outputs:/app/outputs
-      - api_data:/app/data:ro
     command: python3 scripts/serve_web.py --host 0.0.0.0 --port 8000
-    depends_on:
-      - streamlit
     healthcheck:
       test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health').read()"]
       interval: 30s
@@ -64,13 +51,14 @@ services:
       start_period: 20s
     restart: unless-stopped
 
-  # Health Dashboard — monitors Streamlit and API endpoints
+  # Health dashboard - opt-in: docker compose --profile monitoring up
   dashboard:
     build:
       context: .
       dockerfile: services/Dockerfile
     image: ${DOCKERHUB_USERNAME:-siegried}/ing-comparator-dashboard:latest
     container_name: ing-comparator-dashboard
+    profiles: [monitoring]
     ports:
       - "8606:8080"
     depends_on:
@@ -85,26 +73,5 @@ services:
       timeout: 5s
       retries: 2
 
-  # Analysis runner — one-shot container for pipeline steps (optional for orchestration)
-  # Uncomment to include; use `docker compose run analysis python3 scripts/run_analysis.py`
-  # analysis:
-  #   build:
-  #     context: .
-  #     dockerfile: Dockerfile
-  #   container_name: ing-comparator-analysis
-  #   environment:
-  #     - PYTHONUNBUFFERED=1
-  #   volumes:
-  #     - ./src:/app/src
-  #     - ./scripts:/app/scripts
-  #     - ./data:/app/data
-  #     - ./outputs:/app/outputs
-  #   working_dir: /app
-  #   profiles: ["tools"]
-
 volumes:
-  streamlit_data:
-  streamlit_outputs:
-  streamlit_cache:
-  api_data:
   api_outputs:

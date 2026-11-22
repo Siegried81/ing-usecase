@@ -31,10 +31,12 @@ import argparse
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 
-from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted_with_provenance
+from comparator.collection.llm_extractor import (
+    LLMExtractionError,
+    extract_model_assisted_with_provenance,
+)
 from comparator.collection.scraper import extract
 from comparator.derive import recompute_derived
 from comparator.dictionary import load_dictionary

@@ -26,7 +26,6 @@ import threading
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
@@ -84,7 +83,8 @@ def _save_recommendations(payload: dict) -> None:
 
 def _load_site_manifest() -> dict | None:
     manifest = SITE_DIR / "manifest.json"
-    if manifest.is_file():
+    # A manifest without its pages describes a site that does not exist.
+    if manifest.is_file() and (SITE_DIR / "index.html").is_file():
         return json.loads(manifest.read_text(encoding="utf-8"))
     return None
 
@@ -195,7 +195,7 @@ def get_site_status() -> dict:
     manifest = state.get("manifest") or _load_site_manifest()
     ready = (SITE_DIR / "index.html").is_file()
     status = state["status"]
-    if status in ("idle",) and manifest and ready:
+    if status == "idle" and manifest and ready:
         status = "ready"
     return {
         "status": status,

@@ -1,16 +1,14 @@
 """The bridge between a collected dataset and the human rubric scores.
 
-The first real collection run stops at exactly this
-gap: 12 core, required features are rubric-scored by a person, so a collected
-dataset can never pass strict validation on its own. There was no mechanism to
-get those scores in.
+A collected dataset cannot pass strict validation on its own: 10 core, required
+features are rubric-scored by a person (13 rubric features in all). This module
+is how those scores get in.
 
-SCOPE CHANGE. The project now runs on ONE judged sheet, by one named
-person, and the inter-rater layer is gone: no agreement, no Cohen's kappa, no
-disagreement table, no model-written rubric to compare against. That was a
-deliberate narrowing, not an omission - this is a proof of concept, and
-single-judge bias is a question for the real product. limitations.py says so in
-those words, and next_steps() lists it as future work.
+The project runs on ONE judged sheet, by one named person: no inter-rater
+agreement, no Cohen's kappa, no model-written rubric to compare against. That is
+a deliberate narrowing, not an omission: this is a proof of concept, and
+single-judge bias is a question for the real product. limitations.py says so,
+and next_steps() lists it as future work.
 
 Two jobs remain:
 
@@ -80,7 +78,7 @@ def sheet_guide(fd: FeatureDictionary | None = None) -> str:
         "# Rubric scoring guide",
         "",
         "> Generated from `config/feature_dictionary.yaml`. Score each page with the",
-        "> screenshot open. Leave a cell blank rather than guessing — a missing score is",
+        "> screenshot open. Leave a cell blank rather than guessing: a missing score is",
         "> reported honestly; an invented one is not.",
         "",
         "One named person scores every page against these scales. No second rater",
@@ -109,16 +107,13 @@ def sheet_guide(fd: FeatureDictionary | None = None) -> str:
     return "\n".join(lines)
 
 
-def _single_value(values: pd.Series, feature) -> object:
+def _single_value(values: pd.Series) -> object:
     """The one judged value for a page.
 
-    This was _consensus(), averaging numeric scores and taking the
-    majority for categoricals across several raters. With one sheet there is
-    nothing to reconcile, and the averaging was only ever safe because
-    agreement() reported the spread it hid - that reporting is gone, so
-    averaging would now bury a disagreement instead of surfacing it. If a page
-    somehow carries more than one row, the first non-empty value wins and the
-    rest are ignored rather than blended into a number nobody wrote.
+    With one sheet there is nothing to reconcile, and averaging several rows
+    would bury a disagreement instead of surfacing it. If a page somehow carries
+    more than one row, the first non-empty value wins and the rest are ignored
+    rather than blended into a number nobody wrote.
     """
     clean = values.dropna()
     return pd.NA if clean.empty else clean.iat[0]
@@ -129,7 +124,7 @@ def merge_scores(
     sheets: list[pd.DataFrame],
     fd: FeatureDictionary | None = None,
 ) -> pd.DataFrame:
-    """Fold completed sheets into the dataset, one consensus value per page."""
+    """Fold completed sheets into the dataset, one judged value per page."""
     fd = fd or load_dictionary()
     if not sheets:
         return df.copy()
@@ -137,20 +132,18 @@ def merge_scores(
     combined = pd.concat(sheets, ignore_index=True)
     features = [f for f in rubric_features(fd) if f.name in combined.columns]
 
-    consensus = {}
+    judged = {}
     for page_id, group in combined.groupby("page_id", observed=True):
-        consensus[page_id] = {f.name: _single_value(group[f.name], f) for f in features}
+        judged[page_id] = {f.name: _single_value(group[f.name]) for f in features}
 
     out = df.copy()
     for feature in features:
         out[feature.name] = out["page_id"].map(
-            lambda pid, name=feature.name: consensus.get(pid, {}).get(name, pd.NA)
+            lambda pid, name=feature.name: judged.get(pid, {}).get(name, pd.NA)
         )
 
     # Merging rubric scores changes the inputs of derived features
-    # (aida_coverage_score, persuasion_lever_count). Nothing recomputed them, so
-    # the merged dataset failed validation on two features whose sources were
-    # sitting in the same row.
+    # (aida_coverage_score, persuasion_lever_count), so they are recomputed.
     from comparator.derive import recompute_derived
 
     return recompute_derived(out, fd)
@@ -159,10 +152,9 @@ def merge_scores(
 def _read_sheet(path: str | Path) -> pd.DataFrame:
     """Read one scoring sheet, sniffing comma vs semicolon.
 
-    These sheets get hand-edited in Excel between sessions, and
-    Excel's CSV export defaults to ";" under a French/Belgian locale - one
-    sheet has already flipped between "," and ";" more than once. Sniffing
-    the header line rather than assuming either survives the next re-save.
+    These sheets get hand-edited in Excel, whose CSV export defaults to ";" under
+    a French/Belgian locale, so a sheet can flip between "," and ";" on any
+    re-save. Sniffing the header line survives that.
     """
     path = Path(path)
     header = path.read_text(encoding="utf-8").splitlines()[0]

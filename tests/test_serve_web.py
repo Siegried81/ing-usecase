@@ -67,3 +67,19 @@ def test_the_ui_mount_stays_optional():
     """
     src = Path(serve_web.__file__).read_text(encoding="utf-8")
     assert "if UI_DIR.is_dir():" in src, "the UI mount must stay conditional"
+
+
+def test_no_generated_site_is_reported_cleanly(monkeypatch, tmp_path):
+    # The demo site is not versioned: a fresh clone has no pages, and a stray
+    # manifest must not pretend otherwise.
+    monkeypatch.setattr(serve_web, "SITE_DIR", tmp_path)
+    (tmp_path / "manifest.json").write_text('{"pages": []}', encoding="utf-8")
+    monkeypatch.setitem(serve_web._site_state, "status", "idle")
+    monkeypatch.setitem(serve_web._site_state, "manifest", None)
+
+    assert serve_web.health()["site"] is False
+    status = serve_web.get_site_status()
+    assert status["ready"] is False
+    assert status["site_url"] is None
+    assert status["manifest"] is None
+    assert status["status"] == "idle"

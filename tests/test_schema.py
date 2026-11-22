@@ -16,10 +16,16 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
+from comparator.derive import recompute_derived  # noqa: E402
 from comparator.dictionary import REPO_ROOT, load_dictionary  # noqa: E402
 from comparator.fixtures import build_fixture  # noqa: E402
-from comparator.schema import coerce_types, format_list, parse_list, validate, write_dataset  # noqa: E402
-from comparator.derive import recompute_derived  # noqa: E402
+from comparator.schema import (  # noqa: E402
+    coerce_types,
+    format_list,
+    parse_list,
+    validate,
+    write_dataset,
+)
 
 
 @pytest.fixture(scope="module")
