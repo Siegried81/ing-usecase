@@ -96,6 +96,4 @@ ING+KBC comme ancres, relancer la collecte, puis le chaînage et l'export.
 
 ## 9. Hors périmètre
 
-Pas de données publicitaires, pas de niveau produit, pas de détection d'anomalies
-(retirée, et avec elle l'ancien dossier `campaigns/`, qui rapprochait des campagnes
-publiques de ces anomalies).
+Pas de données publicitaires, pas de niveau produit, pas de détection d'anomalies.

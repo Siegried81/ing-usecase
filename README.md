@@ -89,4 +89,6 @@ feeds a performance claim. Details:
 [pipeline](docs/pipeline.md) (runbook) · [ARCHITECTURE](docs/ARCHITECTURE.md) ·
 [decisions](docs/decisions.md) · [technical deep dive](docs/technical_deep_dive.md) ·
 [feature dictionary](docs/feature_dictionary.md) (generated) · [DOCKER](docs/DOCKER.md) ·
-[web UI](web/README.md) · [scoring guide](data/rubric/SCORING_GUIDE.md)
+[web UI](web/README.md) · [scoring guide](data/rubric/SCORING_GUIDE.md) ·
+[D-01 scope and compliance](docs/D01_scope_and_compliance_note.md) ·
+[D-06 business narrative](docs/D06_business_narrative.md)
