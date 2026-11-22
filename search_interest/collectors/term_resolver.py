@@ -22,19 +22,31 @@ import re
 import sqlite3
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from pytrends.request import TrendReq
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import (  # noqa: E402
-    BASE_DIR, BRAND_MIN_COVERAGE, DB_PATH, GEO, MAX_CANDIDATE_CALLS_PER_FICHE,
-    PRODUCT_BY_ID, PRODUCT_FLOOR_COVERAGE, PRODUCT_SELECT_COVERAGE,
-    SCHEMA_PATH, TIMEFRAME,
-)
 import config_candidates as cc  # noqa: E402
-from pytrends_network import fetch_with_retry, pause_between_calls, suggestions_with_retry  # noqa: E402
+from pytrends_network import (  # noqa: E402
+    fetch_with_retry,
+    pause_between_calls,
+    suggestions_with_retry,
+)
+
+from config import (  # noqa: E402
+    BASE_DIR,
+    BRAND_MIN_COVERAGE,
+    DB_PATH,
+    GEO,
+    MAX_CANDIDATE_CALLS_PER_FICHE,
+    PRODUCT_BY_ID,
+    PRODUCT_FLOOR_COVERAGE,
+    PRODUCT_SELECT_COVERAGE,
+    SCHEMA_PATH,
+    TIMEFRAME,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
@@ -69,11 +81,11 @@ WORD_ING_RE = re.compile(r"\bING\b")
 
 
 def now_iso():
-    return datetime.now(timezone.utc).isoformat(timespec="seconds")
+    return datetime.now(UTC).isoformat(timespec="seconds")
 
 
 def ensure_schema(conn):
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+    with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
     conn.commit()
 

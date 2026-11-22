@@ -33,7 +33,7 @@ from __future__ import annotations
 
 import json
 from dataclasses import asdict, dataclass, field
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Literal
 
 from pydantic import BaseModel, Field, ValidationError
@@ -172,7 +172,7 @@ class RecommendationSet:
         return asdict(self)
 
     @classmethod
-    def from_dict(cls, payload: dict) -> "RecommendationSet":
+    def from_dict(cls, payload: dict) -> RecommendationSet:
         """Rebuild a saved set, tolerating one written by an older version.
 
         Sets saved while the model still wrote search-interest
@@ -402,7 +402,7 @@ def build_recommendations(
             for i, r in enumerate(parsed.recommendations)
         ]
         return RecommendationSet(
-            generated_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            generated_at=datetime.now(UTC).isoformat(timespec="seconds"),
             model=model_id,
             summary=parsed.summary.strip(),
             recommendations=recommendations,

@@ -29,10 +29,9 @@ static_fetch stays the fast path for everything else.
 from __future__ import annotations
 
 import logging
-from pathlib import Path
-
 import re
-from datetime import datetime, timezone
+from datetime import UTC, datetime
+from pathlib import Path
 from urllib.parse import urljoin
 
 import requests
@@ -609,5 +608,5 @@ def scrape(
 
     features["_html"] = html
     features["robots_allowed"] = True  # reaching this line means assert_can_fetch already passed
-    features["captured_at"] = datetime.now(timezone.utc).isoformat()
+    features["captured_at"] = datetime.now(UTC).isoformat()
     return features

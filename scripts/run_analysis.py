@@ -15,36 +15,34 @@ import json
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 
-from comparator import load_dictionary
-from comparator import ai_score
-from comparator import cross_sell
-from comparator import reputation
-from comparator.banks import display_name
+from comparator import ai_score, cross_sell, load_dictionary, reputation
 from comparator.analysis import (
     category_comparison,
-    family_options,
-    scope_to_family,
-    feature_accounting,
-    render_accounting,
     check_deck_claims,
     cluster_banks,
+    family_options,
+    feature_accounting,
     ing_vs_peers,
     lever_frequency,
     nearest_neighbours,
     positioning_axis,
+    render_accounting,
+    scope_to_family,
     similarity_matrix,
 )
+from comparator.banks import display_name
 from comparator.charts import (
     category_effect_chart,
     deviation_chart,
     positioning_chart,
     similarity_heatmap,
 )
-from comparator.dq import score as dq_score, render_markdown as dq_markdown
-from comparator.limitations import assess, render as render_limitations
+from comparator.dq import render_markdown as dq_markdown
+from comparator.dq import score as dq_score
+from comparator.limitations import assess
+from comparator.limitations import render as render_limitations
 from comparator.profiles import build_all, render_all_markdown
 from comparator.report import build_chart_report
 from comparator.schema import read_dataset

@@ -35,11 +35,10 @@ import logging
 import re
 import shutil
 import warnings
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 
 from comparator import load_dictionary
@@ -142,7 +141,7 @@ def import_one(path: Path, bank: str, *, raw_dir: Path, fd) -> dict | None:
         # Microsecond precision, matching the live path - two formats in one
         # column is what broke captured_at parsing in the first place.
         "captured_at": datetime.fromtimestamp(
-            path.stat().st_mtime, tz=timezone.utc
+            path.stat().st_mtime, tz=UTC
         ).isoformat(timespec="microseconds"),
         "snapshot_html_path": str(html_path),
         "screenshot_path": str(stored_shot) if stored_shot else None,

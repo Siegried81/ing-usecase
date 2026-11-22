@@ -169,9 +169,7 @@ class ModelAssistedFields(BaseModel):
     subscription_style_framing: bool = False  # New field, see feature_dictionary.yaml
 
 
-# The pinned model's default name, in ONE place. generation.pinned_model() used
-# to carry its own "deepseek-chat" default, so the provenance it printed could
-# disagree with the model this chain actually called.
+# The pinned model's default name, in one place (generation.pinned_model() reuses it).
 DEEPSEEK_DEFAULT_MODEL = "deepseek-flash"
 
 
@@ -180,28 +178,14 @@ class LLMExtractionError(Exception):
 
 
 # (provider name, env var prefix, chat-completions URL, model env var, default model)
-# DeepSeek first (the pinned model), then Groq (with key rotation), then the
-# hosted fallbacks, then local Ollama for dev.
-#
-# Decision 6: DEEPSEEK IS THE PINNED MODEL for this project - one model,
-# named, so every bank is labelled by the same judge. The chain stays
-# underneath as a fallback for when DeepSeek is down, because losing a night
-# of collection to one provider outage is worse than a mixed dataset - but a
-# fallback is RECORDED in extraction_model rather than silent, and
-# schema.validate() warns when a dataset mixes models. See docs/decisions.md.
+# DeepSeek first: it is the pinned model (Decision 6), so every bank is labelled
+# by the same judge. The rest is a fallback chain; a fallback is recorded in
+# extraction_model, never silent, and schema.validate() warns on mixed models.
 _PROVIDERS = [
-    # DeepSeek retired "deepseek-chat" - the API now serves
-    # "deepseek-flash" (fast/economical) and "deepseek-v4-pro". Default
-    # updated to match; .env's DEEPSEEK_MODEL overrides this regardless.
+    # DEEPSEEK_MODEL in .env overrides the default.
     ("deepseek", "DEEPSEEK_API_KEY", None, "DEEPSEEK_MODEL", DEEPSEEK_DEFAULT_MODEL),
     ("groq", "GROQ_API_KEY", "https://api.groq.com/openai/v1/chat/completions", "GROQ_MODEL", "openai/gpt-oss-120b"),
-    # Kept the provider-tuple structure (name + deepseek pin,
-    # decision 6) but fixed the default model ids for these three fallbacks -
-    # they were unverified guesses (old docstring: "VERIFY... Cerebras/
-    # SambaNova less so"). now verified against each provider's live model
-    # listing: openrouter serves qwen/qwen3-4b:free, cerebras and sambanova
-    # both serve gpt-oss-120b - matches the reference portfolio_forecasting
-    # .env.example, which is known to work.
+    # Default model ids checked against each provider's model listing.
     ("openrouter", "OPENROUTER_API_KEY", "https://openrouter.ai/api/v1/chat/completions", "OPENROUTER_MODEL", "qwen/qwen3-4b:free"),
     ("cerebras", "CEREBRAS_API_KEY", "https://api.cerebras.ai/v1/chat/completions", "CEREBRAS_MODEL", "gpt-oss-120b"),
     ("sambanova", "SAMBANOVA_API_KEY", "https://api.sambanova.ai/v1/chat/completions", "SAMBANOVA_MODEL", "gpt-oss-120b"),

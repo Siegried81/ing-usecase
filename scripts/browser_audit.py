@@ -262,7 +262,7 @@ def run_iteration(pw, index: int, cfg: dict, out_dir: Path) -> dict:
     want = set(cfg["ids"])
     # "down": start from all selected, remove the rest. "up": start from none, add.
     start_checked = True if cfg["direction"] == "down" else False
-    for rid, box in by_id.items():
+    for _rid, box in by_id.items():
         if box.is_checked() != start_checked:
             box.click()
     for rid, box in by_id.items():
@@ -422,7 +422,7 @@ def write_summary(results: list[dict], totals: dict, out_dir: Path) -> None:
                      f"{len(r['selected'])} selected, {r['direction']}")
         lines.append(f"- selected: {', '.join(r['selected'])}")
         lines.append(f"- manifest: {', '.join(r['manifest_recs'])} · fallbacks: {r['fallbacks'] or 'none'}")
-        lines.append(f"- page languages detected: {sorted(l for l in langs if l)}")
+        lines.append(f"- page languages detected: {sorted(lang for lang in langs if lang)}")
         lines.append(f"- recommendation checks failing: {fails or 'none'}")
         lines.append(f"- console errors: {r['console_errors'] or 'none'}")
         lines.append(f"- failed requests: {r['failed_requests'] or 'none'}")

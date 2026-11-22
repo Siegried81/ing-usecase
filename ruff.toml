@@ -1,0 +1,18 @@
+# One config for local runs and CI (`ruff check .`).
+target-version = "py311"
+extend-exclude = ["docs", "web", "search_interest/data", "search_interest/export"]
+
+[lint]
+select = ["F", "W", "I", "UP", "E4", "E7", "E9", "B", "C4"]
+# B905: zip(strict=) would change behaviour on uneven inputs; C408: dict()/list() calls are a style choice here.
+ignore = ["B905", "C408"]
+
+[lint.isort]
+known-first-party = ["comparator"]
+
+[lint.per-file-ignores]
+# sys.path bootstrap before the project imports is the point of these files.
+"scripts/*" = ["E402"]
+"streamlit_app.py" = ["E402"]
+# Throwaway deck-drawing scripts, compact on purpose.
+"scripts/deck/*" = ["E702"]

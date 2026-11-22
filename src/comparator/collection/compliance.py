@@ -21,7 +21,7 @@ ROBOTS_TIMEOUT_S = 15
 # One robots.txt per domain per process. We check before every page AND before
 # every hero-image fetch, so without this a six-page run re-downloads the same
 # file a dozen times - rude to the sites we are asking permission from (LC-05).
-_CACHE: dict[str, "ComplianceCheck | RobotFileParser | None"] = {}
+_CACHE: dict[str, ComplianceCheck | RobotFileParser | None] = {}
 
 
 @dataclass

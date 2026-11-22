@@ -770,6 +770,7 @@ def test_chrome_exclusion_catches_a_menu_built_from_plain_divs():
       <main><a href="/go">Ouvrez votre compte</a></main>
     </body></html>"""
     from bs4 import BeautifulSoup
+
     from comparator.collection.scraper import _count_ctas
 
     count, _ = _count_ctas(BeautifulSoup(html, "html.parser"))
@@ -790,3 +791,14 @@ def test_only_deepseek_gets_thinking_spelled_out(url, thinking):
     with patch.object(llm_extractor.requests, "post", return_value=answer) as post:
         llm_extractor._call_openai_compatible(url, "fake-key", "some-model", "prompt")
     assert post.call_args.kwargs["json"].get("thinking") == thinking
+
+
+def test_deepseek_default_model_without_env(monkeypatch):
+    from comparator.collection import llm_extractor
+    from comparator.generation import pinned_model
+
+    monkeypatch.delenv("DEEPSEEK_MODEL", raising=False)
+    assert llm_extractor.DEEPSEEK_DEFAULT_MODEL == "deepseek-flash"
+    assert pinned_model() == "deepseek/deepseek-flash"
+    provider = next(p for p in llm_extractor._PROVIDERS if p[0] == "deepseek")
+    assert provider[4] == "deepseek-flash"

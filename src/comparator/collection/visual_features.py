@@ -63,7 +63,7 @@ def _relative_luminance(r: int, g: int, b: int) -> float:
 
 
 def extract_colours_from_image(
-    image: "Image.Image", *, bank: str | None = None, n_colours: int = 5,
+    image: Image.Image, *, bank: str | None = None, n_colours: int = 5,
     first_screen_px: int | None = None,
 ) -> dict:
     """Same measurement, on an already-decoded image.
@@ -119,7 +119,7 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
     return _measure(img, bank=bank, n_colours=n_colours)
 
 
-def _mean_luminance(img: "Image.Image", n_colours: int) -> float:
+def _mean_luminance(img: Image.Image, n_colours: int) -> float:
     """Count-weighted mean luminance of an image's quantised palette."""
     thumb = img.resize((150, 150))
     quantized = thumb.quantize(colors=n_colours, method=Image.MEDIANCUT)
@@ -133,7 +133,7 @@ def _mean_luminance(img: "Image.Image", n_colours: int) -> float:
 
 
 def _measure(
-    img: "Image.Image", *, bank: str | None, n_colours: int, first_screen_px: int | None = None
+    img: Image.Image, *, bank: str | None, n_colours: int, first_screen_px: int | None = None
 ) -> dict:
     """The measurement itself, on a decoded RGB image."""
     empty = {

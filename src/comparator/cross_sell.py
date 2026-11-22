@@ -46,7 +46,6 @@ import pandas as pd
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.schema import parse_list
 
-
 MIN_PAGES_FOR_CONFIDENT_NEVER = 3  # Same threshold as analysis.py's MIN_PEERS_FOR_SD
 
 

@@ -19,19 +19,18 @@ import os
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 
 from comparator import load_dictionary
 from comparator.generation import (
     build_brief,
-    prompt_fingerprint,
     build_targets,
     evaluate,
     generate,
     guardrails,
     hit_rate,
     pinned_model,
+    prompt_fingerprint,
     score,
     to_html,
 )

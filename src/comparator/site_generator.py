@@ -28,10 +28,10 @@ from __future__ import annotations
 
 import html as html_lib
 import json
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Callable
 
 import requests
 from pydantic import BaseModel, Field, ValidationError

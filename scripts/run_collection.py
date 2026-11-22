@@ -31,7 +31,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from comparator.collection.compliance import ScrapingNotAllowed
-from comparator.collection.quality import assess_capture
 
 # BNP Paribas Fortis - diagnosed, not worked around.
 #   robots.txt           200, and no Disallow covers the target path
@@ -52,9 +51,16 @@ from comparator.collection.quality import assess_capture
 # genuinely transient 503 on any site, and BNP re-attempts on every run. If it
 # stays down, the honest deliverable is a named gap in D-09, not a bank
 # characterised from a maintenance page.
-from comparator.collection.llm_extractor import LLMExtractionError, extract_model_assisted_with_provenance
+from comparator.collection.llm_extractor import (
+    LLMExtractionError,
+    extract_model_assisted_with_provenance,
+)
+from comparator.collection.quality import assess_capture
 from comparator.collection.scraper import scrape
-from comparator.collection.visual_features import extract_colours, extract_colours_from_image
+from comparator.collection.visual_features import (
+    extract_colours,
+    extract_colours_from_image,
+)
 from comparator.dictionary import load_dictionary
 from comparator.schema import validate, write_dataset
 

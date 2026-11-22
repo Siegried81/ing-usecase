@@ -15,7 +15,10 @@ import pytest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from comparator.collection.compliance import ComplianceCheck, ScrapingNotAllowed  # noqa: E402
+from comparator.collection.compliance import (  # noqa: E402
+    ComplianceCheck,
+    ScrapingNotAllowed,
+)
 from comparator.collection.render import (  # noqa: E402
     VIEWPORT_HEIGHT,
     VIEWPORT_WIDTH,
@@ -216,7 +219,7 @@ def test_rendered_cta_pick_excludes_consent_and_chrome():
 
 def test_french_imperative_cta_is_known_to_both_features():
     """The term that exposed the drift stays covered on both sides."""
-    from comparator.collection.render import CTA_KEYWORDS, _MEASURE_JS
+    from comparator.collection.render import _MEASURE_JS, CTA_KEYWORDS
 
     assert "ouvrez" in CTA_KEYWORDS
     assert "ouvrez" in _MEASURE_JS

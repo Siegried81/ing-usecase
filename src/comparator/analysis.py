@@ -915,7 +915,7 @@ def check_deck_claims(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
             else:
                 series, band_labels = pd.Series(dtype="float64"), None
 
-            fmt = (lambda v: repr(band_labels[v])) if band_labels else (lambda v: f"{v:.1f}")
+            fmt = (lambda v, labels=band_labels: repr(labels[v])) if band_labels else (lambda v: f"{v:.1f}")
 
             # idxmax()/idxmin() pick an arbitrary bank on a tie (whichever
             # comes first in the Series), which let one claim read "supported"

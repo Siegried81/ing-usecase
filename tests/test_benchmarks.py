@@ -94,7 +94,7 @@ def test_every_lesson_clears_the_gap_threshold(df, fd):
 def test_shared_ground_needs_all_benchmarks_on_one_side_and_the_focus_on_the_other(df, fd):
     result = build_benchmark_lessons(df, fd, _trajectory(KBC, CRELAN, challenger=REVOLUT))
     keys = [b["key"] for b in result["banks"]]
-    lookup = {b["key"]: {l["feature"]: l for l in b["lessons"]} for b in result["banks"]}
+    lookup = {b["key"]: {lesson["feature"]: lesson for lesson in b["lessons"]} for b in result["banks"]}
     for item in result["common"]:
         assert abs(item["meanZ"]) >= COMMON_MIN_SD
         # The focus bank leans the other way, which is what makes it a lesson.
@@ -119,7 +119,7 @@ def test_twin_features_of_one_dimension_are_reported_once(df, fd):
     dimensions = [fd[i["feature"]].dimension for i in result["common"] if i["feature"] in fd]
     assert len(dimensions) == len(set(dimensions))
     for bank in result["banks"]:
-        dims = [fd[l["feature"]].dimension for l in bank["lessons"] if l["feature"] in fd]
+        dims = [fd[lesson["feature"]].dimension for lesson in bank["lessons"] if lesson["feature"] in fd]
         assert len(dims) == len(set(dims))
 
 
@@ -134,8 +134,8 @@ def test_the_caveat_refuses_the_causal_reading(df, fd):
 def test_figures_follow_the_data_not_the_copy(df, fd):
     """Change what a bank does and its lessons change with it."""
     def crelan(result):
-        return {l["feature"]: l["gapSd"] for b in result["banks"] if b["key"] == "crelan"
-                for l in b["lessons"]}
+        return {lesson["feature"]: lesson["gapSd"] for b in result["banks"] if b["key"] == "crelan"
+                for lesson in b["lessons"]}
 
     base = crelan(build_benchmark_lessons(df, fd, _trajectory(KBC, CRELAN, challenger=REVOLUT)))
     moved_feature = next(iter(base))

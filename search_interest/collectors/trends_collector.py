@@ -18,15 +18,17 @@ from pytrends.request import TrendReq
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+from pytrends_network import MIN_DELAY_SECONDS  # noqa: E402
+from pytrends_network import fetch_with_retry as _fetch_with_retry
+
 from config import CSV_DIR, DB_PATH, GEO, PRODUCTS, SCHEMA_PATH, TIMEFRAME  # noqa: E402
-from pytrends_network import MIN_DELAY_SECONDS, fetch_with_retry as _fetch_with_retry  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)
 
 
 def init_db(conn):
-    with open(SCHEMA_PATH, "r", encoding="utf-8") as f:
+    with open(SCHEMA_PATH, encoding="utf-8") as f:
         conn.executescript(f.read())
     conn.commit()
 

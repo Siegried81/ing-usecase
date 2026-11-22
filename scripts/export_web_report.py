@@ -21,18 +21,19 @@ from __future__ import annotations
 
 import argparse
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 
-from comparator import load_dictionary
-from comparator import ai_score
-from comparator import cross_sell
-from comparator import reputation
-from comparator import rubric  # the Rubric tab reads real sheets
+from comparator import (
+    ai_score,
+    cross_sell,
+    load_dictionary,
+    reputation,
+    rubric,  # the Rubric tab reads real sheets
+)
 from comparator.analysis import (
     CAPTURE_INVALID_FEATURES,
     category_comparison,
@@ -45,12 +46,12 @@ from comparator.analysis import (
     scope_to_family,
     similarity_matrix,
 )
+from comparator.banks import display_name
+from comparator.benchmarks import build_benchmark_lessons
 from comparator.dq import score as dq_score
 from comparator.limitations import assess
 from comparator.profiles import build_all
 from comparator.schema import read_dataset
-from comparator.banks import display_name
-from comparator.benchmarks import build_benchmark_lessons
 from comparator.trends import build_trends_dashboard
 
 DEFAULT_DATASET = Path("data/processed/campaigns_scored.csv")
@@ -265,7 +266,7 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     excluded_gaps = deviations[~deviations["reportable"]] if "reportable" in deviations.columns else pd.DataFrame()
 
     report = {
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "dataset": dataset.as_posix(),
         "scope": {
             "product_family": scope.family,
@@ -654,7 +655,7 @@ def build_operations(dataset: Path, *, family: str | None) -> dict:
 
     columns, rows = _frame_rows(all_rows)
     return {
-        "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "dataset": dataset.as_posix(),
         "product_family": scope.family,
         "validation": {"ok": bool(validation.ok), "warnings": list(validation.warnings[:6])},

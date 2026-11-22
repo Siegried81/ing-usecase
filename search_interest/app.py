@@ -13,7 +13,11 @@ import plotly.graph_objects as go
 import streamlit as st
 
 from config import (
-    BANK_DISPLAY_LABELS, DB_PATH, KNOWN_EVENTS, PRODUCTS, TERM_DISPLAY_LABELS,
+    BANK_DISPLAY_LABELS,
+    DB_PATH,
+    KNOWN_EVENTS,
+    PRODUCTS,
+    TERM_DISPLAY_LABELS,
 )
 
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#c98500", "#e87ba4"]

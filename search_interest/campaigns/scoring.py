@@ -30,8 +30,9 @@ from datetime import datetime
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import DB_PATH  # noqa: E402
 from date_utils import DateTooImprecise, attribution_window  # noqa: E402
+
+from config import DB_PATH  # noqa: E402
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)

@@ -19,8 +19,8 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.dictionary import load_dictionary  # noqa: E402
-from comparator.fixtures import build_fixture  # noqa: E402
 from comparator.dq import DQReport, score  # noqa: E402
+from comparator.fixtures import build_fixture  # noqa: E402
 
 
 @pytest.fixture(scope="module")

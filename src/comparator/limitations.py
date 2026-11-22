@@ -17,7 +17,9 @@ from __future__ import annotations
 
 import pandas as pd
 
-from comparator.analysis import language_excluded_features  # Accurate comparability note
+from comparator.analysis import (
+    language_excluded_features,  # Accurate comparability note
+)
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.rubric import rubric_features
 

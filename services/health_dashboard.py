@@ -60,7 +60,7 @@ async def check_service_health(service_id: str, config: dict) -> ServiceStatus:
                         "last_check": datetime.now().strftime("%H:%M:%S"),
                         "color": "#10b981",
                     }
-    except asyncio.TimeoutError:
+    except TimeoutError:
         return {
             "name": name,
             "url": url,
@@ -118,7 +118,7 @@ async def dashboard():
     statuses_html = ""
     overall_healthy = True
 
-    for sid, status in service_statuses.items():
+    for status in service_statuses.values():
         color = status["color"]
         status_str = status["status"]
         latency = status["latency_ms"]

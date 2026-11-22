@@ -26,7 +26,6 @@ import argparse
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-
 import pandas as pd
 from bs4 import BeautifulSoup
 

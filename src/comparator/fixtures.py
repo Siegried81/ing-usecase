@@ -13,7 +13,7 @@ data_source = 'synthetic_fixture' so the validator says so out loud.
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import numpy as np
 import pandas as pd
@@ -143,7 +143,7 @@ def build_fixture(
     fd = fd or load_dictionary()
     rng = np.random.default_rng(seed)
     banks = banks or list(ARCHETYPES)
-    captured = datetime(2026, 9, 15, 9, 0, tzinfo=timezone.utc)
+    captured = datetime(2026, 9, 15, 9, 0, tzinfo=UTC)
 
     rows: list[dict] = []
     for bank in banks:

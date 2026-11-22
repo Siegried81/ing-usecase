@@ -23,7 +23,13 @@ from pathlib import Path
 import _bootstrap  # noqa: F401
 
 from comparator import load_dictionary
-from comparator.rubric import make_sheet, merge_scores, read_sheets, rubric_features, sheet_guide
+from comparator.rubric import (
+    make_sheet,
+    merge_scores,
+    read_sheets,
+    rubric_features,
+    sheet_guide,
+)
 from comparator.schema import read_dataset, validate, write_dataset
 
 DEFAULT_DATASET = Path("data/processed/campaigns.csv")

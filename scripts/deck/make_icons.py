@@ -9,6 +9,7 @@ tofu box. Same shapes as the pipeline diagram, so the deck reads as one motif.
 from pathlib import Path
 
 import matplotlib
+
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Circle, FancyBboxPatch

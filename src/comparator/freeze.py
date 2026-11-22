@@ -27,7 +27,12 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from comparator.dictionary import DEFAULT_DICTIONARY, Feature, FeatureDictionary, load_dictionary
+from comparator.dictionary import (
+    DEFAULT_DICTIONARY,
+    Feature,
+    FeatureDictionary,
+    load_dictionary,
+)
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_FROZEN = REPO_ROOT / "config" / "feature_dictionary.frozen.yaml"

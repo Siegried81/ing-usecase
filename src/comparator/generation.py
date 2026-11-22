@@ -59,7 +59,11 @@ import pandas as pd
 from pydantic import BaseModel, Field, ValidationError
 
 from comparator.analysis import bank_vectors, category_comparison
-from comparator.collection.llm_extractor import DEEPSEEK_DEFAULT_MODEL, LLMExtractionError, _call_llm
+from comparator.collection.llm_extractor import (
+    DEEPSEEK_DEFAULT_MODEL,
+    LLMExtractionError,
+    _call_llm,
+)
 from comparator.collection.scraper import extract
 from comparator.dictionary import FeatureDictionary, load_dictionary
 from comparator.generation_guardrails import GuardrailReport, check_generated_campaign

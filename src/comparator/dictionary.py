@@ -192,4 +192,4 @@ def _check_consistency(fd: FeatureDictionary) -> None:
         if f.primary_key and f.nullable:
             raise ValueError(f"{f.name}: the primary key cannot be nullable")
 
-    fd.primary_key  # raises unless exactly one is defined
+    _ = fd.primary_key  # raises unless exactly one is defined

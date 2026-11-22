@@ -16,13 +16,13 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.analysis import (  # noqa: E402
     bank_vectors,
+    capture_window_excluded_features,
     category_comparison,
     check_deck_claims,
     cluster_banks,
     comparable_features,
     ing_vs_peers,
     insight_candidates,
-    capture_window_excluded_features,
     language_excluded_features,  # Audit fix, comparability enforcement
     nearest_neighbours,
     positioning_axis,

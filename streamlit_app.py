@@ -27,7 +27,9 @@ REPO = Path(__file__).resolve().parent
 # putting src/ on the path first - same technique as scripts/_bootstrap.py.
 sys.path.insert(0, str(REPO / "src"))
 from comparator import analysis, research, schema  # noqa: E402
-from comparator.dictionary import load_dictionary as load_feature_dictionary  # noqa: E402
+from comparator.dictionary import (
+    load_dictionary as load_feature_dictionary,  # noqa: E402
+)
 
 # The Research page reads SEMANTIC_SCHOLAR_API_KEY via os.getenv()
 # inside research.search_papers() - without this, a real local .env key was
@@ -672,7 +674,7 @@ def page_reputation(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: A
     # Streamlit ignores a Styler's na_rep on nullable integers, so the theme
     # columns become text here, while reputation_table() keeps the numbers.
     themes = [c for c in table.columns if c != "Headlines"]
-    shown = table.astype({c: "object" for c in themes})
+    shown = table.astype(dict.fromkeys(themes, "object"))
     shown[themes] = shown[themes].where(table[themes].notna(), "—")
     st.dataframe(
         shown,

@@ -17,7 +17,6 @@ import pytest
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from comparator.collection.llm_extractor import LLMExtractionError  # noqa: E402
-
 from comparator.recommendations import (  # noqa: E402
     Recommendation,
     RecommendationSet,
