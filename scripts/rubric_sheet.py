@@ -8,11 +8,9 @@
 never pass strict validation on its own - this is the missing step between
 collection and analysis.
 
-The project runs on ONE judged sheet by one named person. The
-`agreement`, `report` and `model` subcommands are gone with the inter-rater
-layer: no second rater, no Cohen's kappa, no disagreement table, no
-model-written sheet to compare against. Single-judge bias is out of scope for
-this proof of concept and is listed as future work by limitations.py.
+The project runs on ONE judged sheet by one named person: no second rater, no
+Cohen's kappa, no disagreement table. Single-judge bias is out of scope for this
+proof of concept and is listed as future work by limitations.py.
 """
 
 from __future__ import annotations
@@ -95,8 +93,8 @@ def main() -> int:
         sheet = make_sheet(df, fd, rater=args.rater, skip_unusable=not args.include_unusable)
         path = args.outdir / f"{args.rater}_scores.csv"
         # The default rater's file IS the judged sheet the whole analysis runs
-        # on (data/rubric/siegried_scores.csv): re-running emit used to replace
-        # it with an empty sheet without a word.
+        # on (data/rubric/siegried_scores.csv), so emit must never replace it
+        # with an empty sheet without --force.
         if path.exists() and not args.force:
             print(f"\n  {path} already exists and may hold scores - not overwritten.\n"
                   "  Pass --force to replace it, or --rater <name> for a new sheet.")

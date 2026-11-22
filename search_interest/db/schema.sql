@@ -1,4 +1,4 @@
--- KBC vs ING Google Trends benchmark schema.
+-- ING vs competitors Google Trends brand-notoriety schema.
 -- trends_data is created by collectors/trends_collector.py; kept here too
 -- for reference and so a fresh database can be built from this file alone.
 
@@ -51,11 +51,10 @@ CREATE TABLE IF NOT EXISTS term_validation (
     UNIQUE (scope, product_id, bank, slot_language, term, call_index)
 );
 
--- Share-of-search chaining (analysis/share_of_search.py): rescales the 3
--- generic-brand sheets onto one common 0-100 scale via their shared ING/KBC
--- anchor, then derives each bank's weekly share of the 9-bank panel. Fully
--- derived from trends_data - wiped and recomputed on every run, same
--- refresh policy: wiped and recomputed on every run.
+-- Share-of-search chaining (analysis/share_of_search.py): rescales every
+-- generic-brand sheet onto one common 0-100 scale via their shared ING/KBC
+-- anchor, then derives each bank's weekly share of the whole panel. Fully
+-- derived from trends_data: wiped and recomputed on every run.
 CREATE TABLE IF NOT EXISTS brand_share_of_search (
     bank TEXT NOT NULL,
     date TEXT NOT NULL,

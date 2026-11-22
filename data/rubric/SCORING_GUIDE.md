@@ -1,7 +1,7 @@
 # Rubric scoring guide
 
 > Generated from `config/feature_dictionary.yaml`. Score each page with the
-> screenshot open. Leave a cell blank rather than guessing — a missing score is
+> screenshot open. Leave a cell blank rather than guessing, a missing score is
 > reported honestly; an invented one is not.
 
 One named person scores every page against these scales. No second rater

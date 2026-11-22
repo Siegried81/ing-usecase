@@ -9,14 +9,17 @@ allowed rather than assumed fine.
 """
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from urllib.robotparser import RobotFileParser
 
 import requests
 
 USER_AGENT = "BeCode-ING-CampaignComparator/0.2 (student POC, contact: team)"
 ROBOTS_TIMEOUT_S = 15
+MAX_REDIRECTS = 5
+REDIRECT_STATUSES = (301, 302, 303, 307, 308)
 
 # One robots.txt per domain per process. We check before every page AND before
 # every hero-image fetch, so without this a six-page run re-downloads the same
@@ -103,3 +106,25 @@ def assert_can_fetch(url: str) -> None:
     result = check_robots(url)
     if not result.allowed:
         raise ScrapingNotAllowed(f"{url}: {result.reason}")
+
+
+def get_checked(url: str, *, gate: Callable[[str], None] | None = None, **kwargs) -> requests.Response:
+    """GET a URL, running the robots gate on it and on every redirect hop.
+
+    requests.get() follows redirects by itself, so a gate run on the first URL
+    alone never sees the page it ends on: a site whose robots.txt allows the
+    entry URL could bounce us to a host or path that disallows it. Redirects are
+    followed here by hand, the gate runs before each hop, and a disallowed hop
+    raises ScrapingNotAllowed before anything is requested from it. `gate` lets a
+    caller pass its own module-level assert_can_fetch (tests patch that name).
+    """
+    gate = gate or assert_can_fetch
+    for _ in range(MAX_REDIRECTS + 1):
+        gate(url)
+        response = requests.get(url, allow_redirects=False, **kwargs)
+        status = response.status_code
+        location = response.headers.get("Location") if status in REDIRECT_STATUSES else None
+        if not location:
+            return response
+        url = urljoin(url, location)
+    raise requests.TooManyRedirects(f"more than {MAX_REDIRECTS} redirects")

@@ -171,7 +171,8 @@ def test_dashboard_no_longer_carries_a_campaign_catalogue(tmp_path, campaigns):
 
 
 # -----------------------------------------------------------------------------
-# Share of search - # -----------------------------------------------------------------------------
+# Share of search
+# -----------------------------------------------------------------------------
 
 
 def _share_export(tmp_path: Path, rows: list[dict]) -> Path:
@@ -245,7 +246,7 @@ def test_headline_is_computed_from_the_aggregates_not_hardcoded():
 
 
 def test_share_payload_carries_the_chaining_method_with_it():
-    """A reader must be able to see WHY nine banks are on one scale without
+    """A reader must be able to see WHY every bank is on one scale without
     leaving the page - the anchors and the factors travel with the numbers."""
     rows = [_share_row("ING", "2026-01-04", 50), _share_row("KBC", "2026-01-04", 50)]
     with tempfile.TemporaryDirectory() as tmp:

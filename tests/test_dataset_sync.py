@@ -15,8 +15,11 @@ from pathlib import Path
 import pandas as pd
 import pytest
 
-CAMPAIGNS = Path("data/processed/campaigns.csv")
-SCORED = Path("data/processed/campaigns_scored.csv")
+# Anchored on the repository, not the working directory: a relative path made
+# the skipif below skip silently whenever pytest ran from another folder.
+ROOT = Path(__file__).resolve().parents[1]
+CAMPAIGNS = ROOT / "data" / "processed" / "campaigns.csv"
+SCORED = ROOT / "data" / "processed" / "campaigns_scored.csv"
 
 
 @pytest.mark.skipif(
@@ -24,10 +27,10 @@ SCORED = Path("data/processed/campaigns_scored.csv")
     reason="real collected dataset not present in this environment",
 )
 def test_campaigns_scored_has_every_campaigns_page_id():
-    """Catches the exact failure mode from decisions.md:277-300: campaigns.csv
-    gains or changes rows (a re-collection, a scope restoration) and
-    campaigns_scored.csv is not re-merged, so the web report and analysis
-    silently run on a stale dataset.
+    """Catches the failure mode logged in docs/decisions.md (the stale
+    campaigns_scored.csv entry): campaigns.csv gains or changes rows (a
+    re-collection, a scope restoration) and campaigns_scored.csv is not
+    re-merged, so the web report and analysis silently run on a stale dataset.
     """
     campaigns = pd.read_csv(CAMPAIGNS)
     scored = pd.read_csv(SCORED)

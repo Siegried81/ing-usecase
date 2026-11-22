@@ -148,11 +148,6 @@ PERSONA_LABELS = {
     "mass_market": "Mass market",
 }
 
-# Every bank in the dataset, spelled the way the bank spells itself. A key
-# missing here falls through to .title(), which produced "Hellobank" and "Vdk"
-# on one tab while the Trends tab said "Hello bank!" and "VDK Bank" - two names
-# for one institution inside one deliverable.
-
 FAMILY_NAMES = {
     "current_account_pack": "Current-account packs",
     "savings_account": "Savings accounts",
@@ -197,9 +192,14 @@ def bank_name(bank: str) -> str:
 
 
 def _clean(value):
-    """JSON cannot carry NaN, and a silent NaN renders as a confident 'null'."""
-    if value is None or (isinstance(value, float) and pd.isna(value)):
+    """JSON cannot carry NaN or pandas NA, and a silent NaN renders as a confident 'null'."""
+    if value is None:
         return None
+    try:
+        if pd.isna(value):
+            return None
+    except (TypeError, ValueError):
+        pass  # a container: pd.isna returns an array
     if isinstance(value, (pd.Timestamp, datetime)):
         return value.isoformat()
     if hasattr(value, "item"):
@@ -211,24 +211,33 @@ def _rows(df: pd.DataFrame, columns: list[str]) -> list[dict]:
     return [{c: _clean(r[c]) for c in columns if c in df.columns} for _, r in df.iterrows()]
 
 
-def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
-                 trends_dir: Path | None) -> tuple[dict, dict | None]:
+def _load_scoped(dataset: Path, family: str | None):
+    """Load the dataset and apply the scope both exports share.
+
+    Returns (fd, df, validation, all_rows, usable, compared, scope): all_rows drops
+    LLM-generated rows, usable also drops unusable captures, compared is usable
+    restricted to the product family ("auto" picks the first comparable one).
+    One definition, so report.json and operations.json cannot disagree on scope.
+    """
     fd = load_dictionary()
     df, validation = read_dataset(dataset, fd, tier="core", strict=False)
-    # Scored on the whole loaded dataset, the same frame validation ran on, so the
-    # DQ panel and the validation line describe one thing.
-    dq = dq_score(df, fd)
-
     all_rows = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
-    usable = all_rows[all_rows.get("capture_quality", "ok") != "unusable"] \
-        if "capture_quality" in all_rows.columns else all_rows
-
+    usable = (all_rows[all_rows["capture_quality"] != "unusable"]
+              if "capture_quality" in all_rows.columns else all_rows)
     options = family_options(usable)
     if family == "auto":
         comparable = options[options["comparable"]] if not options.empty else options
         family = comparable.iloc[0]["product_family"] if not comparable.empty else None
-
     compared, scope = scope_to_family(usable, family)
+    return fd, df, validation, all_rows, usable, compared, scope
+
+
+def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
+                 trends_dir: Path | None) -> tuple[dict, dict | None]:
+    fd, df, validation, all_rows, _usable, compared, scope = _load_scoped(dataset, family)
+    # Scored on the whole loaded dataset, the same frame validation ran on, so the
+    # DQ panel and the validation line describe one thing.
+    dq = dq_score(df, fd)
 
     positioning = positioning_axis(compared, fd, focus=focus)
     categories = compared.drop_duplicates("bank").set_index("bank")["bank_category"]
@@ -424,11 +433,10 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
         scorecard = []
         if scorecard_path.is_file():
             sc = pd.read_csv(scorecard_path)
-            # The scorecard is read from disk, not recomputed, so it can predate
-            # a withdrawal: the 22/09 files still score cta_count and report a
-            # "hit" on it, while this same report's limitations say the feature
-            # is never compared. Filtering here rather than hand-editing the
-            # artefact - a correction a re-run undoes is not a correction.
+            # The scorecard is read from disk, not recomputed, so it can still
+            # score a withdrawn feature (cta_count) as a "hit" while this report's
+            # limitations say it is never compared. Filter here: a hand edit of
+            # the artefact would be undone by the next run.
             scorecard = [
                 {"label": label(r["feature"]), "target": r["target"],
                  "actual": _clean(r["actual"]), "result": r["result"]}
@@ -489,25 +497,9 @@ def build_report(dataset: Path, *, family: str | None, focus: str, top_n: int,
     return report, context
 
 
-def _jsonable(value):
-    """Like _clean, but also turns pandas' NA scalars into JSON null."""
-    if value is None:
-        return None
-    try:
-        if pd.isna(value):
-            return None
-    except (TypeError, ValueError):
-        pass
-    if isinstance(value, (pd.Timestamp, datetime)):
-        return value.isoformat()
-    if hasattr(value, "item"):
-        return value.item()
-    return value
-
-
 def _frame_rows(frame: pd.DataFrame) -> tuple[list[str], list[dict]]:
     columns = [str(c) for c in frame.columns]
-    rows = [{c: _jsonable(r[c]) for c in frame.columns} for _, r in frame.iterrows()]
+    rows = [{c: _clean(r[c]) for c in frame.columns} for _, r in frame.iterrows()]
     return columns, rows
 
 
@@ -541,11 +533,9 @@ def _rubric_payload(fd) -> dict:
     `rubric_sheet.py merge`. A missing sheet is an honest empty list, never an
     error - the pipeline runs before anyone has scored anything.
 
-    Agreement and kappa are gone with the inter-rater layer. One
-    judged sheet, no reliability measure, said plainly rather than implied by
-    an empty table.
+    One judged sheet, no reliability measure: said plainly in "reliability"
+    rather than implied by an empty table.
     """
-    sheets = []
     raters = []
     if RUBRIC_DIR.is_dir():
         for path in sorted(RUBRIC_DIR.glob("*_scores.csv")):
@@ -559,9 +549,6 @@ def _rubric_payload(fd) -> dict:
                 "columns": columns,
                 "rows": rows,
             })
-            sheets.append(frame)
-
-
     guide = []
     for f in rubric.rubric_features(fd):
         guide.append({
@@ -595,17 +582,7 @@ def build_operations(dataset: Path, *, family: str | None) -> dict:
     `scope_to_family`), so the bank status here and the scope banner there cannot
     disagree. No number is recomputed in the browser.
     """
-    fd = load_dictionary()
-    df, validation = read_dataset(dataset, fd, tier="core", strict=False)
-    all_rows = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
-    usable = all_rows[all_rows.get("capture_quality", "ok") != "unusable"] \
-        if "capture_quality" in all_rows.columns else all_rows
-
-    options = family_options(usable)
-    if family == "auto":
-        comparable = options[options["comparable"]] if not options.empty else options
-        family = comparable.iloc[0]["product_family"] if not comparable.empty else None
-    _compared, scope = scope_to_family(usable, family)
+    fd, _df, validation, all_rows, _usable, _compared, scope = _load_scoped(dataset, family)
 
     in_scope = set(scope.banks)
     dropped = set(scope.dropped_banks)
@@ -696,7 +673,7 @@ def main() -> int:
 
     scope = report["scope"]
     print(f"wrote {args.out}")
-    print(f"  scope   : {scope['product_family_label']} — {scope['pages']} pages, "
+    print(f"  scope   : {scope['product_family_label']}: {scope['pages']} pages, "
           f"{len(scope['banks'])} banks, {scope['n_features']} features")
     print(f"  excluded: {[e['bank'] for e in scope['excluded']] or 'none'}")
     print(f"  headline: {report['headline']['focus']} {report['headline']['score']} "
@@ -707,7 +684,7 @@ def main() -> int:
         print(f"  trends  : {t['n_series']} weekly points -> {trends_path.name}")
     else:
         print("  trends  : the export not present - Trends tab will show an empty state")
-    print(f"  operators: {operations_path} — {len(operations['dictionary'])} features, "
+    print(f"  operators: {operations_path}: {len(operations['dictionary'])} features, "
           f"{len(operations['dataset_table']['rows'])} dataset rows, "
           f"{len(operations['rubric']['raters'])} rubric sheets")
     return 0

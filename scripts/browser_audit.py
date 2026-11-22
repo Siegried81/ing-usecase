@@ -262,7 +262,7 @@ def run_iteration(pw, index: int, cfg: dict, out_dir: Path) -> dict:
     want = set(cfg["ids"])
     # "down": start from all selected, remove the rest. "up": start from none, add.
     start_checked = True if cfg["direction"] == "down" else False
-    for _rid, box in by_id.items():
+    for box in by_id.values():
         if box.is_checked() != start_checked:
             box.click()
     for rid, box in by_id.items():
@@ -346,10 +346,10 @@ def run_iteration(pw, index: int, cfg: dict, out_dir: Path) -> dict:
     site.goto(f"{UI}/site/index.html", wait_until="networkidle")
     shot = out_dir / f"iteration_{index:02d}_index.png"
     site.screenshot(path=str(shot))
-    result["screenshot"] = str(shot.relative_to(REPO_ROOT))
+    result["screenshot"] = str(shot.relative_to(REPO_ROOT) if shot.is_relative_to(REPO_ROOT) else shot)
 
     # Recommendation expression, per selected recommendation.
-    recs = json.loads((REPO_ROOT / "outputs" / "web_recommendations.json").read_text())
+    recs = json.loads((REPO_ROOT / "outputs" / "web_recommendations.json").read_text(encoding="utf-8"))
     rec_by_id = {r["id"]: r for r in recs["recommendations"]}
     # A fallback page is explicitly *not* a generation; scoring recommendation
     # expression on it would blame the model for a page it never wrote.
@@ -367,7 +367,7 @@ def run_iteration(pw, index: int, cfg: dict, out_dir: Path) -> dict:
     return result
 
 
-def summarize(results: list[dict], out_dir: Path) -> dict:
+def summarize(results: list[dict]) -> dict:
     totals = {"iterations": len(results), "pages": 0, "contrast_violations": 0,
               "broken_images": 0, "empty_alt": 0, "overflow_pages": 0,
               "h1_ok": 0, "cta_above_fold_ok": 0, "nav_ok": 0,
@@ -395,7 +395,7 @@ def summarize(results: list[dict], out_dir: Path) -> dict:
 
 
 def write_summary(results: list[dict], totals: dict, out_dir: Path) -> None:
-    lines = ["# Browser audit — recommendations and generated website", "",
+    lines = ["# Browser audit: recommendations and generated website", "",
              f"Generated {time.strftime('%Y-%m-%d %H:%M')} · {totals['iterations']} iterations · "
              f"{totals['pages']} page loads.", ""]
     pct = (100 * totals["recommendation_passes"] / totals["recommendation_checks"]
@@ -418,7 +418,7 @@ def write_summary(results: list[dict], totals: dict, out_dir: Path) -> None:
         langs = {p["detected_language"] for p in r["pages"]}
         fails = [f"{rc['id']}:{c['feature']}" for rc in r["recommendation_checks"]
                  for c in rc["checks"] if not c["pass"]]
-        lines.append(f"### Iteration {r['iteration']:02d} — {r['language']}, "
+        lines.append(f"### Iteration {r['iteration']:02d}: {r['language']}, "
                      f"{len(r['selected'])} selected, {r['direction']}")
         lines.append(f"- selected: {', '.join(r['selected'])}")
         lines.append(f"- manifest: {', '.join(r['manifest_recs'])} · fallbacks: {r['fallbacks'] or 'none'}")
@@ -428,25 +428,32 @@ def write_summary(results: list[dict], totals: dict, out_dir: Path) -> None:
         lines.append(f"- failed requests: {r['failed_requests'] or 'none'}")
         if r["issues"]:
             lines.append(f"- **issues**: {'; '.join(r['issues'])}")
-        worst = sorted({p["contrast_violation_count"] for p in r["pages"]}, reverse=True)[:1]
-        lines.append(f"- max contrast violations on a page: {worst[0] if worst else 0}")
+        worst = max((p["contrast_violation_count"] for p in r["pages"]), default=0)
+        lines.append(f"- max contrast violations on a page: {worst}")
         lines.append(f"- screenshot: `{r['screenshot']}`")
         lines.append("")
     (out_dir / "summary.md").write_text("\n".join(lines), encoding="utf-8")
 
 
+def select_matrix(only: int | None) -> list[tuple[int, dict]]:
+    """(iteration number, config) pairs to run. Numbers start at 1, as in the output files."""
+    if only is None:
+        return list(enumerate(MATRIX, start=1))
+    if not 1 <= only <= len(MATRIX):
+        raise SystemExit(f"--only must be between 1 and {len(MATRIX)}, got {only}")
+    return [(only, MATRIX[only - 1])]
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--out", type=Path, default=REPO_ROOT / "outputs" / "browser_audit")
-    parser.add_argument("--only", type=int, default=None, help="run a single iteration index")
+    parser.add_argument("--only", type=int, default=None, help=f"run a single iteration, 1 to {len(MATRIX)}")
     args = parser.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
-    matrix = MATRIX if args.only is None else [MATRIX[args.only]]
     results: list[dict] = []
     with sync_playwright() as pw:
-        for i, cfg in enumerate(matrix, start=1):
-            idx = i if args.only is None else args.only
+        for idx, cfg in select_matrix(args.only):
             print(f"[{idx}] lang={cfg['lang']} selected={len(cfg['ids'])} dir={cfg['direction']} ...",
                   flush=True)
             t0 = time.time()
@@ -459,7 +466,7 @@ def main() -> int:
                   f"· contrast={sum(p['contrast_violation_count'] for p in res['pages'])}",
                   flush=True)
 
-    totals = summarize(results, args.out)
+    totals = summarize(results)
     (args.out / "results.json").write_text(
         json.dumps({"totals": totals, "iterations": results}, indent=2, ensure_ascii=False),
         encoding="utf-8")

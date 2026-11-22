@@ -53,9 +53,9 @@ def _flatten_lists(series: pd.Series) -> list[str]:
     return [item for item, _ in counter.most_common()]
 
 
-# New helper for target_personas. Unlike _flatten_lists (which only
-# ranks by frequency), this keeps the SHARE of this bank's pages that named each
-# persona - the brief's exact "ING: 35% family, 20% entrepreneur" shape.
+# Unlike _flatten_lists (which only ranks by frequency), this keeps the SHARE of
+# this bank's pages that named each persona: the "ING: 35% family, 20%
+# entrepreneur" shape the brief asks for.
 def _persona_distribution(series: pd.Series, n_pages: int) -> list[dict]:
     """Share of this bank's pages targeting each persona, most common first."""
     counter: Counter[str] = Counter()
@@ -160,7 +160,6 @@ def build_profile(df: pd.DataFrame, bank: str, fd: FeatureDictionary | None = No
             "persuasion_levers": _flatten_lists(rows.get("persuasion_levers", pd.Series(dtype="object"))),
             "lever_count": mean("persuasion_lever_count"),
         },
-        # New section - per-bank persona distribution.
         "personas": _persona_distribution(rows.get("target_personas", pd.Series(dtype="object")), len(rows)),
         "signature": _distinctive(bank, df, fd, tier=tier),
     }
@@ -187,26 +186,19 @@ def _fmt_share(value: object) -> str:
     return f"{share:.0%} of pages"
 
 
-def _fmt(value: object, digits: int = 2) -> str:
-    # - NOTE FOR LATER, not fixed now (never triggered today, every
-    # call site uses the default digits=2): with digits=0 there is no decimal
-    # point for rstrip("0") to stop at, so an integer like 200 would be
-    # stripped down to "2". Safe today only because digits=0 is never passed.
-    # If anyone parameterises this later, guard it, e.g.:
-    #   text = f"{value:,.{digits}f}"
-    #   return text.rstrip("0").rstrip(".") if "." in text else text
+def _fmt(value: object) -> str:
+    """Format one profile value: two decimals with trailing zeros trimmed, thousands grouped."""
     if value is None or (isinstance(value, float) and pd.isna(value)):
         return "-"
     if isinstance(value, float):
-        return f"{value:,.{digits}f}".rstrip("0").rstrip(".") if abs(value) < 1000 else f"{value:,.0f}"
+        return f"{value:,.2f}".rstrip("0").rstrip(".") if abs(value) < 1000 else f"{value:,.0f}"
     if isinstance(value, list):
         return ", ".join(value) if value else "-"
     return str(value)
 
 
-def render_markdown(profile: dict, fd: FeatureDictionary | None = None) -> str:
+def render_markdown(profile: dict) -> str:
     """Render one profile card as markdown, ready to drop into the deck."""
-    fd = fd or load_dictionary()
     ident = profile["identity"]
     lines = [
         f"### {ident['bank']}  ({ident['category']})",
@@ -238,6 +230,5 @@ def render_markdown(profile: dict, fd: FeatureDictionary | None = None) -> str:
     return "\n".join(lines)
 
 
-def render_all_markdown(profiles: dict[str, dict], fd: FeatureDictionary | None = None) -> str:
-    fd = fd or load_dictionary()
-    return "\n\n".join(render_markdown(p, fd) for p in profiles.values())
+def render_all_markdown(profiles: dict[str, dict]) -> str:
+    return "\n\n".join(render_markdown(p) for p in profiles.values())

@@ -582,11 +582,9 @@ def _clear_provider_keys(monkeypatch):
 
 
 def test_groq_tried_before_other_fallbacks(monkeypatch):
-    # Confirms the provider ORDER matches .env.example, not just
-    # that "a" provider gets called.
-    # Unchanged in intent. DeepSeek now sits ahead of Groq
-    # (Decision 6), so this test pins the order BELOW DeepSeek by leaving its
-    # key unset - see test_deepseek_is_tried_first for the new head of the chain.
+    # Pins the provider ORDER below DeepSeek (its key is left unset here), not
+    # just that "a" provider gets called - see test_deepseek_is_tried_first for
+    # the head of the chain.
     _clear_provider_keys(monkeypatch)
     monkeypatch.setenv("GROQ_API_KEY", "fake-groq-key")
     monkeypatch.setenv("OPENROUTER_API_KEY", "fake-openrouter-key")
@@ -601,8 +599,8 @@ def test_groq_tried_before_other_fallbacks(monkeypatch):
     with patch("comparator.collection.llm_extractor._call_openai_compatible", side_effect=fake_call):
         extract_model_assisted("text", image_count=1, has_animation=False, product_family="term_account")
 
-    assert any("groq" in c for c in calls), "groq must be tried first"
-    assert any("openrouter" in c for c in calls), "fallback must be tried after groq fails"
+    assert "groq" in calls[0], "groq must be tried first"
+    assert any("openrouter" in c for c in calls[1:]), "fallback must be tried after groq fails"
 
 
 def test_deepseek_is_tried_first(monkeypatch):

@@ -8,8 +8,8 @@
 
 | Dimension | Score | Status | What it asks | Detail |
 | --- | --- | --- | --- | --- |
-| Completeness | 99.8% | pass | are the required fields populated | 60 required field(s) 99.8% filled; most blank: section_count (-6), text_image_layout (-1) |
-| Validity | 100.0% | pass | do values sit inside the declared types, ranges and allowed sets | 3266 checked value(s), 100.0% within the contract |
+| Completeness | 100.0% | pass | are the required fields populated | 60 required field(s) 100.0% filled; most blank: text_image_layout (-1) |
+| Validity | 100.0% | pass | do values sit inside the declared types, ranges and allowed sets | 3272 checked value(s), 100.0% within the contract |
 | Uniqueness | 100.0% | pass | is the primary key free of duplicates | page_id: 51/51 rows unique |
 | Consistency | 96.1% | warn | were comparable features produced the same way across the dataset | 49/51 rows on deepseek/deepseek-flash; other model(s): groq/openai/gpt-oss-120b (2) - recorded fallback (NFR-02) |
 | Timeliness | 100.0% | pass | is every row dated, so the capture window is known | 51/51 rows timestamped - captured 2026-09-21 to 2026-09-23; valid for that window only |

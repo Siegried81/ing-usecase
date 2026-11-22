@@ -28,7 +28,7 @@ from reports import (  # noqa: E402
     load_matches_for_campaign,
 )
 
-from config import ANOMALY_TYPE_LABELS, DB_PATH  # noqa: E402
+from config import ANOMALY_TYPE_LABELS, DB_PATH
 
 PALETTE = ["#2a78d6", "#eb6834", "#1baf7a", "#c98500", "#e87ba4"]
 BANK_COLOR = {"KBC": PALETTE[0], "CBC": PALETTE[2], "ING": PALETTE[1]}

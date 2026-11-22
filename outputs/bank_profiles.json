@@ -56,7 +56,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1831.0,
+        "word_count": 1825.0,
         "readability_band": "very_hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.746,
@@ -135,7 +135,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1812.0,
+        "word_count": 1805.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.688,
@@ -212,7 +212,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 3310.0,
+        "word_count": 3306.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.603,
@@ -290,7 +290,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 2199.0,
+        "word_count": 2198.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.576,
@@ -371,7 +371,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1763.0,
+        "word_count": 1762.0,
         "readability_band": "medium",
         "formality_score": 1.0,
         "second_person_ratio": 0.889,
@@ -454,7 +454,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 2613.0,
+        "word_count": 2595.0,
         "readability_band": "very_hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.836,
@@ -558,7 +558,7 @@
       "signature": [
         [
           "section_count",
-          3.5072120031493106
+          3.5061610253820685
         ],
         [
           "image_count",
@@ -606,7 +606,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1661.0,
+        "word_count": 1653.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.595,
@@ -854,7 +854,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 1193.0,
+        "word_count": 1192.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.614,
@@ -1103,7 +1103,7 @@
         "cta_above_fold": 0.0
       },
       "tone": {
-        "word_count": 3992.0,
+        "word_count": 3967.0,
         "readability_band": "hard",
         "formality_score": 2.0,
         "second_person_ratio": 0.797,

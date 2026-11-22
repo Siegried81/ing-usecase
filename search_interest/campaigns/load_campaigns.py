@@ -15,9 +15,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from seed_data import CAMPAIGNS  # noqa: E402
+from seed_data import CAMPAIGNS
 
-from config import DB_PATH, SCHEMA_PATH  # noqa: E402
+from config import DB_PATH, SCHEMA_PATH
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)

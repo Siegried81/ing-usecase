@@ -1,4 +1,4 @@
-> **Scope: `current_account_pack` product family only** — 14 of 14 banks with usable captures.
+> **Scope: `current_account_pack` product family only.** 14 of 14 banks with usable captures.
 
 # Bank profile cards
 
@@ -22,7 +22,7 @@
 | text image layout | beside |
 | page height px | 3,244 |
 | cta above fold | no |
-| word count | 1,831 |
+| word count | 1,825 |
 | readability band | very_hard |
 | formality score | 2 |
 | second person ratio | 0.75 |
@@ -59,7 +59,7 @@
 | text image layout | beside |
 | page height px | 11,110 |
 | cta above fold | no |
-| word count | 1,812 |
+| word count | 1,805 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.69 |
@@ -96,7 +96,7 @@
 | text image layout | beside |
 | page height px | 7,078 |
 | cta above fold | no |
-| word count | 3,310 |
+| word count | 3,306 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.6 |
@@ -133,7 +133,7 @@
 | text image layout | stacked |
 | page height px | 6,387 |
 | cta above fold | no |
-| word count | 2,199 |
+| word count | 2,198 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.58 |
@@ -170,7 +170,7 @@
 | text image layout | beside |
 | page height px | 15,135 |
 | cta above fold | no |
-| word count | 1,763 |
+| word count | 1,762 |
 | readability band | medium |
 | formality score | 1 |
 | second person ratio | 0.89 |
@@ -207,7 +207,7 @@
 | text image layout | beside |
 | page height px | 4,447 |
 | cta above fold | no |
-| word count | 2,613 |
+| word count | 2,595 |
 | readability band | very_hard |
 | formality score | 2 |
 | second person ratio | 0.84 |
@@ -281,7 +281,7 @@
 | text image layout | beside |
 | page height px | 3,881 |
 | cta above fold | no |
-| word count | 1,661 |
+| word count | 1,653 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.59 |
@@ -392,7 +392,7 @@
 | text image layout | beside |
 | page height px | 6,440 |
 | cta above fold | no |
-| word count | 1,193 |
+| word count | 1,192 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.61 |
@@ -503,7 +503,7 @@
 | text image layout | overlaid |
 | page height px | 4,290 |
 | cta above fold | no |
-| word count | 3,992 |
+| word count | 3,967 |
 | readability band | hard |
 | formality score | 2 |
 | second person ratio | 0.8 |

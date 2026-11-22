@@ -40,7 +40,7 @@ import pandas as pd
 from comparator.collection.scraper import extract
 
 
-def fix_cta_count(df: pd.DataFrame, path: Path) -> pd.DataFrame:
+def fix_cta_count(df: pd.DataFrame) -> pd.DataFrame:
     """Re-derive cta_count/cta_above_fold wherever the snapshot HTML is on disk.
 
     Column order is preserved and only these two columns are written back: the
@@ -76,7 +76,7 @@ def main() -> int:
     for path in args.dataset:
         print(f"\n{path}")
         df = pd.read_csv(path, keep_default_na=True)
-        updated = fix_cta_count(df, path)
+        updated = fix_cta_count(df)
         updated.to_csv(path, index=False)
         print(f"wrote {len(updated)} row(s) -> {path}")
     return 0

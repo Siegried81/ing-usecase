@@ -195,7 +195,7 @@ def get_site_status() -> dict:
     manifest = state.get("manifest") or _load_site_manifest()
     ready = (SITE_DIR / "index.html").is_file()
     status = state["status"]
-    if status in ("idle",) and manifest and ready:
+    if status == "idle" and manifest and ready:
         status = "ready"
     return {
         "status": status,

@@ -36,9 +36,8 @@ BANK_CATEGORY: dict[str, str] = {
 
 
 # How each bank is named to a reader, and to a news search. One home for it:
-# run_analysis.py used to pass the raw key ("bnp_paribas_fortis") as the name,
-# so the reputation search for BNP Paribas Fortis and Hello bank! found nothing
-# while the web export, with its own copy of these names, found headlines.
+# the raw key ("bnp_paribas_fortis") is not a search term, so a news search on
+# it finds nothing where the display name finds headlines.
 BANK_DISPLAY: dict[str, str] = {
     "ing": "ING", "kbc": "KBC", "belfius": "Belfius", "argenta": "Argenta",
     "crelan": "Crelan", "bnp_paribas_fortis": "BNP Paribas Fortis",

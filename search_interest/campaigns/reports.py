@@ -19,12 +19,7 @@ from collections import defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import (  # noqa: E402
-    ANOMALY_TYPE_LABELS,
-    BASE_DIR,
-    DB_PATH,
-    TERM_DISPLAY_LABELS,
-)
+from config import ANOMALY_TYPE_LABELS, BASE_DIR, DB_PATH, TERM_DISPLAY_LABELS
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger(__name__)

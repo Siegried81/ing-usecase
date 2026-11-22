@@ -13,9 +13,9 @@ import sys
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from config import (  # noqa: E402
+from config import (
     BANK_DISPLAY_LABELS, DB_PATH, GEO, KNOWN_EVENTS, PRODUCTS,
-    TERM_DISPLAY_LABELS, TIMEFRAME,
+    SHARE_OF_SEARCH_REFERENCE_FICHE, TERM_DISPLAY_LABELS, TIMEFRAME,
 )
 
 EXPORT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -105,6 +105,16 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
     )
     min_date, max_date = trends_range[0]
 
+    panel_banks = [
+        display_bank(b) for b in BANK_DISPLAY_LABELS
+        if any(t["bank"] == b for p in PRODUCTS for t in p["terms"])
+    ]
+    bank_names = ", ".join(panel_banks)
+    bank_count = len(panel_banks)
+    sheet_count = len(PRODUCTS)
+    sheet_ids = ", ".join(f"`{p['product_id']}`" for p in PRODUCTS)
+    topic_names = ", ".join(TERM_DISPLAY_LABELS.values())
+
     lines = []
     lines.append("# Export notoriété de marque — Benchmark ING vs concurrents")
     lines.append("")
@@ -112,8 +122,7 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
         "Document généré automatiquement à partir de `benchmark.db`, destiné à servir "
         "d'entrée à un autre pipeline (rapprochement avec les campagnes publicitaires "
         "réelles). Le projet compare uniquement la notoriété de marque (recherche du nom de "
-        "banque, sans contexte produit) des 9 banques du panel : ING, KBC, CBC, BNP Paribas "
-        "Fortis, Argenta, Crelan, Revolut, N26, bunq."
+        f"banque, sans contexte produit) des {bank_count} banques du panel : {bank_names}."
     )
     lines.append("")
 
@@ -125,14 +134,14 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
         "en hebdomadaire pour une fenêtre de 5 ans, pas mensuel)."
     )
     lines.append(
-        "- **Chaînage / share of search** : les 9 banques sont réparties sur 3 fiches "
-        "(`marque_generique`, `marque_generique_traditionnelles`, "
-        "`marque_generique_neobanques`), limite pytrends de 5 termes par requête oblige. "
-        "`ING` et `KBC` apparaissent, inchangés, dans les 3 requêtes : ils servent d'ancre "
-        "commune. Pour chaque fiche autre que la référence (`marque_generique`), un facteur "
+        f"- **Chaînage / share of search** : les {bank_count} banques sont réparties sur "
+        f"{sheet_count} fiches ({sheet_ids}), limite pytrends de 5 termes par requête "
+        f"oblige. `ING` et `KBC` apparaissent, inchangés, dans les {sheet_count} requêtes : "
+        "ils servent d'ancre commune. Pour chaque fiche autre que la référence "
+        f"(`{SHARE_OF_SEARCH_REFERENCE_FICHE}`), un facteur "
         "d'échelle unique est calculé sur la moyenne des deux ancres, puis appliqué à ses "
         "autres termes (voir `analysis/share_of_search.py`). La part de voix se calcule ensuite "
-        "sur le volume rescalé : `part(banque) = volume_rescalé(banque) / somme_9_banques`, "
+        f"sur le volume rescalé : `part(banque) = volume_rescalé(banque) / somme_{bank_count}_banques`, "
         "sur la somme des valeurs de toute la période (pas une moyenne des parts "
         "hebdomadaires, pour ne pas sur-pondérer les semaines à volume quasi nul)."
     )
@@ -142,7 +151,7 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
         "méthode, mais approximative."
     )
     lines.append(
-        "- **Désambiguïsation des marques** (BNPPF, Argenta, N26 passent par un topic "
+        f"- **Désambiguïsation des marques** ({topic_names} passent par un topic "
         "Knowledge Graph plutôt qu'une chaîne brute) : voir `data/term_validation_report.md` "
         "et `docs/pipeline_google_trends.md` section 7bis."
     )
@@ -176,7 +185,7 @@ def build_markdown(conn, trends_csv_filename, share_csv_filename, trends_row_cou
     lines.append("## Part de voix (share of search)")
     lines.append("")
     lines.append(
-        "Part de chaque banque sur le volume de recherche total du panel des 9 banques, sur "
+        f"Part de chaque banque sur le volume de recherche total du panel des {bank_count} banques, sur "
         f"l'ensemble de la période. Détail hebdomadaire dans **`{share_csv_filename}`**."
     )
     lines.append("")

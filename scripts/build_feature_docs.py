@@ -29,7 +29,7 @@ def render(fd) -> str:
         f"**Grain** {meta['grain']}  ",
         f"**Freeze target** {meta['freeze_target']}",
         "",
-        f"{len(fd)} features — {len(fd.columns('core'))} core, "
+        f"{len(fd)} features: {len(fd.columns('core'))} core, "
         f"{len(fd) - len(fd.columns('core'))} extended.",
         "",
         "## How to read the tables",
@@ -43,7 +43,7 @@ def render(fd) -> str:
     ]
 
     for method, spec in fd.extraction_methods.items():
-        lines.append(f"- **{method}** (trust: {spec['trust']}, owner: {spec['owner']}) — {spec['description'].strip()}")
+        lines.append(f"- **{method}** (trust: {spec['trust']}, owner: {spec['owner']}): {spec['description'].strip()}")
     lines.append("")
 
     for dim_key, dim in fd.dimensions.items():
@@ -51,7 +51,7 @@ def render(fd) -> str:
         lines += [
             f"## {dim['label']}",
             "",
-            f"*{dim['prd_ref']}* — {len(features)} features",
+            f"*{dim['prd_ref']}*: {len(features)} features",
             "",
             "| Feature | Type | Extraction | Comparability | Tier | Definition |",
             "| --- | --- | --- | --- | --- | --- |",
@@ -74,9 +74,9 @@ def render(fd) -> str:
 
         rubrics = [f for f in features if f.rubric]
         for f in rubrics:
-            lines += [f"### Rubric — `{f.name}`", ""]
+            lines += [f"### Rubric: `{f.name}`", ""]
             for level, text in sorted(f.rubric.items()):
-                lines.append(f"- **{level}** — {text}")
+                lines.append(f"- **{level}**: {text}")
             lines.append("")
 
     return "\n".join(lines)

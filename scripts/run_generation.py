@@ -27,13 +27,13 @@ from comparator.generation import (
     build_targets,
     evaluate,
     generate,
-    guardrails,
     hit_rate,
     pinned_model,
     prompt_fingerprint,
     score,
     to_html,
 )
+from comparator.generation_guardrails import check_generated_campaign
 from comparator.schema import read_dataset, write_dataset
 
 DEFAULT_DATASET = Path("data/processed/campaigns.csv")
@@ -77,13 +77,11 @@ def main() -> int:
     fd = load_dictionary()
     args.outdir.mkdir(parents=True, exist_ok=True)
 
-    # Fixed - strict=True made read_dataset() raise BEFORE this
-    # function got (df, report) back, so the print(report.render()) below was
-    # dead code on any validation failure - the user got a raw traceback
-    # instead, the exact thing run_collection.py already avoids on purpose.
-    # Not hypothetical: the real captures are still missing the
-    # headless-render-only fields, so this WILL fail once someone points
-    # --dataset at them instead of the fixture.
+    # strict=True would make read_dataset() raise before it returns (df, report),
+    # so the report below would never print and the user would get a raw
+    # traceback, which run_collection.py avoids on purpose. Real captures can lack
+    # the headless-render-only fields, so this matters as soon as --dataset points
+    # at them instead of the fixture.
     df, report = read_dataset(args.dataset, fd, tier="core", strict=False)
     print(report.render())
     if not report.ok and not args.no_strict:
@@ -143,7 +141,7 @@ def main() -> int:
                     language=args.language, model_id=model_id,
                     captured_at=pd.Timestamp.now(tz="UTC").isoformat())
 
-        check = guardrails(row)
+        check = check_generated_campaign(row)
         print(f"  guardrails : {'PASS' if check.ok else 'FAIL'}")
         for violation in check.violations:
             print(f"    VIOLATION {violation}")
@@ -152,9 +150,8 @@ def main() -> int:
         print(f"\n  scorecard (hit rate on measured criteria: {hit_rate(scorecard):.0%})")
         print(scorecard.to_string(index=False, columns=["feature", "target", "actual", "result"]))
 
-        # Audit, point 4: record what produced this. Same data gives a
-        # byte-identical prompt, so a differing campaign is attributable to the
-        # model rather than argued about.
+        # Record what produced this. Same data gives a byte-identical prompt, so
+        # a differing campaign is attributable to the model.
         fingerprint = prompt_fingerprint(brief)
         print(f"  prompt     : {fingerprint}")
         (args.outdir / f"{variant}.json").write_text(

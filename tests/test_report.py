@@ -115,17 +115,27 @@ def test_no_significance_language_anywhere(report):
         assert banned not in report.lower()
 
 
-def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_path):
+def test_positioning_chart_says_so_when_the_focus_bank_is_absent(df, fd, tmp_path, monkeypatch):
     """The PNG is what ends up in a deck. A chart titled 'Where does ING sit?'
     with no ING on it reads as a finding."""
-    from comparator.charts import positioning_chart
+    from comparator import charts
+
+    titles = []
+    real_title = charts._title
+
+    def recording_title(ax, title, *args, **kwargs):
+        titles.append(title)
+        return real_title(ax, title, *args, **kwargs)
+
+    monkeypatch.setattr(charts, "_title", recording_title)
 
     without = df[df["bank"] != "ing"]
     categories = without.drop_duplicates("bank").set_index("bank")["bank_category"]
     pos = positioning_axis(without, fd, focus="ing")
-    path = positioning_chart(pos, categories, tmp_path / "p.png")
+    path = charts.positioning_chart(pos, categories, tmp_path / "p.png")
     assert path.exists()
     assert pos.has_focus is False
+    assert titles == ["The market, without ING"]
 
 
 def test_limitations_report_the_rows_that_were_excluded(fd):

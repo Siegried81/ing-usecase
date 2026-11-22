@@ -4,8 +4,8 @@
     python3 scripts/run_analysis.py --no-strict          # real collected data
     python3 scripts/run_analysis.py --dataset <other.csv>
 
-This is the chain the Day 6 gate asks about (Project Plan section 6): a dataset
-becomes a positioned, profiled, charted comparison with no manual step in between.
+A dataset becomes a positioned, profiled, charted comparison with no manual step
+in between (Project Plan section 6, the Day 6 gate).
 """
 
 from __future__ import annotations
@@ -91,7 +91,7 @@ def main() -> int:
     args.outdir.mkdir(parents=True, exist_ok=True)
 
     # --- 1. load and validate ------------------------------------------------
-    _header(f"1. Dataset — {args.dataset}")
+    _header(f"1. Dataset: {args.dataset}")
     df, report = read_dataset(args.dataset, fd, tier="core", strict=not args.no_strict)
     print(report.render())
     if not report.ok:
@@ -118,15 +118,14 @@ def main() -> int:
     # LLM-generated rows are scored, never mixed into the bank comparison.
     banks_df = df[df["data_source"] != "llm_generated"] if "data_source" in df else df
 
-    # A maintenance page and an unrendered shell are honest
-    # measurements of the wrong page. Left in, they would characterise a bank
-    # from content it never showed - see collection/quality.py.
     # --- restrict to one product family (DR-04) ------------------------------
-    # This was carried as a limitation on every run. It does not
-    # have to be one - it can be a filter.
+    # Pooling families confounds every cross-bank difference with the product,
+    # so the comparison can be filtered to one family instead of carrying that
+    # as a standing limitation.
     _header("Product families available")
-    options = family_options(banks_df[banks_df.get("capture_quality", "ok") != "unusable"]
-                             if "capture_quality" in banks_df.columns else banks_df)
+    usable_df = (banks_df[banks_df["capture_quality"] != "unusable"]
+                 if "capture_quality" in banks_df.columns else banks_df)
+    options = family_options(usable_df)
     print(options.to_string(index=False) if not options.empty else "  (no product_family column)")
 
     family = args.product_family
@@ -135,13 +134,16 @@ def main() -> int:
         family = usable.iloc[0]["product_family"] if not usable.empty else None
         print(f"\n  --product-family auto -> {family!r}")
 
-    all_banks_df = banks_df  # before exclusions - D-09 must see what was dropped
+    # A maintenance page and an unrendered shell are honest measurements of the
+    # wrong page. Left in, they would characterise a bank from content it never
+    # showed (see collection/quality.py).
+    all_banks_df = banks_df  # before exclusions: D-09 must see what was dropped
     if "capture_quality" in banks_df.columns:
         unusable = banks_df[banks_df["capture_quality"] == "unusable"]
         if not unusable.empty:
             print(f"\n  EXCLUDING {len(unusable)} unusable capture(s): "
                   f"{sorted(unusable['bank'].unique())} - see outputs/limitations.md")
-            banks_df = banks_df[banks_df["capture_quality"] != "unusable"]
+            banks_df = usable_df
 
     banks_df, scope = scope_to_family(banks_df, family)
     print(f"\n{scope.render()}")
@@ -155,14 +157,14 @@ def main() -> int:
     # --- 2. bank profiles (Plan, Appendix A) ---------------------------------
     _header("2. Bank profiles")
     profiles = build_all(banks_df, fd)
-    markdown = render_all_markdown(profiles, fd)
-    # Audit, point 1: this file listed 7 banks while the dataset had 9,
-    # with nothing on the page to say why. The scope belongs on the artefact, not
-    # only in the console output of the run that produced it.
+    markdown = render_all_markdown(profiles)
+    # The scope belongs on the artefact, not only in the console output of the
+    # run that produced it: without it the file lists fewer banks than the
+    # dataset holds, with nothing on the page to say why.
     scope_note = ""
     if scope.family:
         scope_note = (
-            f"> **Scope: `{scope.family}` product family only** — {len(scope.banks)} of "
+            f"> **Scope: `{scope.family}` product family only.** {len(scope.banks)} of "
             f"{len(scope.banks) + len(scope.dropped_banks)} banks with usable captures.\n"
         )
         if scope.dropped_banks:
@@ -186,7 +188,7 @@ def main() -> int:
         print(f"  {bank:<20} {profile['identity']['category']:<12} {signature}")
 
     # --- 3. where the dictionary's features go -------------------------------
-    # A chart saying "50 features" with 97 in the dictionary needs the
+    # A chart saying "50 features" when the dictionary declares more needs the
     # reduction spelled out: it is legitimate but invisible otherwise, so it is
     # printed on every run and carried next to the figure in charts.md.
     _header("3. Feature accounting")
@@ -221,15 +223,15 @@ def main() -> int:
           f"{len(never['insufficient_data'])} not enough data to say")
 
     # --- 4. BO-02 positioning ------------------------------------------------
-    _header("4. Positioning on the traditional ↔ challenger axis (BO-02)")
+    _header("4. Positioning on the traditional to challenger axis (BO-02)")
     positioning = positioning_axis(banks_df, fd, focus=args.focus)
     for bank, score in positioning.scores.items():
         marker = "  <-- focus" if bank == args.focus else ""
         print(f"  {bank:<20} {score:6.2f}{marker}")
     if positioning.has_focus:
-        print(f"\n  {args.focus.upper()} scores {positioning.focus_score:.2f} — {positioning.verdict}.")
+        print(f"\n  {args.focus.upper()} scores {positioning.focus_score:.2f}: {positioning.verdict}.")
     else:
-        print(f"\n  {args.focus.upper()} IS NOT IN THE USABLE DATA — BO-01 and BO-02 cannot be "
+        print(f"\n  {args.focus.upper()} IS NOT IN THE USABLE DATA, BO-01 and BO-02 cannot be "
               f"answered.\n  Everything below describes the market without us in it.")
     print(f"  (0 = traditional centroid, 1 = challenger centroid, {positioning.n_features} features)")
 
@@ -306,14 +308,13 @@ def main() -> int:
     (args.outdir / "charts.md").write_text(companion, encoding="utf-8")
     print(f"  wrote {args.outdir / 'charts.md'} ({len(companion.splitlines())} lines)")
 
-    # --- 12. persuasion levers ------------------------------------------------
     # --- 10. D-09 limitations ------------------------------------------------
-    # I am R on D-09. Generated from the dataset so an inconvenient
-    # limitation cannot be quietly forgotten while writing the deck on Day 9.
+    # Generated from the dataset so an inconvenient limitation cannot be quietly
+    # forgotten while writing the deck.
     _header("10. Limitations (D-09)")
-    # The UNFILTERED frame. Passing the filtered one made D-09 stop
-    # mentioning the excluded banks entirely - the limitation disappeared because
-    # we had acted on it, which is exactly backwards.
+    # The UNFILTERED frame: passing the filtered one would make D-09 stop
+    # mentioning the excluded banks, so the limitation would disappear because
+    # we had acted on it.
     assessment = assess(all_banks_df, fd, focus=args.focus, scope=scope)
     (args.outdir / "limitations.md").write_text(
         render_limitations(assessment, synthetic=synthetic), encoding="utf-8")
@@ -341,8 +342,7 @@ def main() -> int:
             "```\n" + trends_ctx.render() + "\n```\n", encoding="utf-8")
 
     # --- 11b. bank reputation (NewsAPI, optional) -----------------------------
-    # Same optional/degrade-gracefully shape as the trends step
-    # above. Themes only, never sentiment - see comparator/reputation.py.
+    # Optional and degrades gracefully, like the trends step above. Themes only, never sentiment - see comparator/reputation.py.
     _header("11b. Bank reputation (NewsAPI, optional)")
     # (key, display name): the name is what the news search looks for, so it
     # must be "BNP Paribas Fortis", never the key "bnp_paribas_fortis".
@@ -364,6 +364,7 @@ def main() -> int:
         (args.outdir / "reputation.json").write_text(
             json.dumps(reputation_dashboard, indent=2, ensure_ascii=False), encoding="utf-8")
 
+    # --- 12. persuasion levers ------------------------------------------------
     _header("12. Persuasion levers by category")
     levers = lever_frequency(banks_df)
     if not levers.empty:

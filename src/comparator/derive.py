@@ -2,10 +2,10 @@
 
 The dictionary says a derived feature is "computed
 from other features in this dictionary. Never entered by hand." Collection
-computed them at scrape time and nothing ever recomputed them afterwards - so
-the moment the rubric scores were merged in, `aida_coverage_score` and
-`persuasion_lever_count` stayed empty and the dataset failed validation on two
-features whose inputs were sitting in the same row.
+computes them at scrape time, but rubric scores merged in later change their
+inputs: without a recompute, `aida_coverage_score` and `persuasion_lever_count`
+stay empty and the dataset fails validation on two features whose inputs sit in
+the same row.
 
 One function, applied after anything that changes a source feature. It never
 invents a value: if the inputs are missing the derived feature stays missing,
@@ -83,11 +83,9 @@ def recompute_derived(df: pd.DataFrame, fd: FeatureDictionary | None = None) -> 
             # have no lever is an empty list of levers, which counts as 0.
             #
             # The NA test above only works because schema.coerce_types keeps a
-            # missing list cell missing instead of parsing it to []. It used to
-            # parse it, which collapsed "not judged" into "judged, no levers":
-            # on outputs/generated/dataset_with_generated.csv that scored 50 of
-            # 52 unjudged rows as 0 and put the mean at 0.135 against the 3.5 of
-            # the two rows actually judged.
+            # missing list cell missing instead of parsing it to []. Parsing it
+            # would collapse "not judged" into "judged, no levers" and score every
+            # unjudged row as 0.
             return len(set(parse_list(cell)))
 
         out["persuasion_lever_count"] = out["persuasion_levers"].map(count)

@@ -1,4 +1,4 @@
-"""Banking Campaigns Comparator — Streamlit dashboard.
+"""Banking Campaigns Comparator: Streamlit dashboard.
 
 Covers the whole repo: analysis, profiles, rubric, collection, data,
 limitations, trends, and research. Built for share.streamlit.io deployment.
@@ -244,7 +244,7 @@ def page_accueil(df: pd.DataFrame | None, profiles: dict) -> None:
         )
 
     if df is not None:
-        st.subheader("Banks — collection status")
+        st.subheader("Banks - collection status")
         status = bank_status_table(df, scope)
         st.dataframe(status, width="stretch", height=fit_height(len(status)),
                      column_config={**BANK_INDEX, "Pages": st.column_config.NumberColumn(format="%d")})
@@ -314,7 +314,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
     )
 
     with tab1:
-        st.subheader("Positioning — traditional ↔ challenger axis")
+        st.subheader("Positioning - traditional ↔ challenger axis")
         st.caption("0 = traditional centroid, 1 = challenger centroid. Computed from real captures.")
         png = OUTPUTS / "01_positioning.png"
         if png.is_file():
@@ -327,7 +327,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
             st.info("`outputs/01_positioning.png` not found. Run `python3 scripts/run_analysis.py`.")
 
     with tab2:
-        st.subheader("ING vs peers — largest differences")
+        st.subheader("ING vs peers - largest differences")
         st.caption("Gap in peer standard deviations. Positive = above the peer mean.")
         gaps = _csv_or_missing("ing_vs_peers.csv", "")
         if gaps is not None:
@@ -345,7 +345,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
             )
 
     with tab3:
-        st.subheader("Traditional vs challenger — which separates the most?")
+        st.subheader("Traditional vs challenger - which separates the most?")
         st.caption("Cohen's d. Positive = higher at challengers, negative = higher at traditional.")
         sep = _csv_or_missing("category_comparison.csv", "")
         if sep is not None:
@@ -370,7 +370,7 @@ def page_analyse(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG0
             )
 
     with tab5:
-        st.subheader("AI Score — six independently-measured signals")
+        st.subheader("AI Score - six independently-measured signals")
         st.caption("0-10 per axis, deterministic from features already in the dataset. Blank = no data, never a zero.")
         scores = _csv_or_missing("ai_score.csv", "")
         if scores is not None:
@@ -437,7 +437,7 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
     col1, col2 = st.columns(2)
 
     with col1:
-        st.subheader(f"{selected} — {ident.get('category', 'N/A')}")
+        st.subheader(f"{selected} - {ident.get('category', 'N/A')}")
         _dict_table(ident)
 
     with col2:
@@ -478,14 +478,16 @@ def page_profils(df: pd.DataFrame | None, profiles: dict) -> None:
 def page_rubric(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
     st.title("📝 Rubric scoring")
 
+    rubric_features = [f for f in load_dictionary().get("features", [])
+                       if f.get("extraction") == "rubric"]
     st.info(
-        "13 features are judgements rather than measurements. They come from ONE "
-        "judged sheet by one named person - `scripts/rubric_sheet.py emit` creates "
+        f"{len(rubric_features)} features are judgements rather than measurements. They come "
+        "from ONE judged sheet by one named person - `scripts/rubric_sheet.py emit` creates "
         "it, `merge` folds it into the dataset."
     )
 
     df_sheet = load_rubric_sheet("siegried_scores.csv")
-    with st.expander(f"siegried — {df_sheet.shape[0] if df_sheet is not None else 0} pages", expanded=False):
+    with st.expander(f"siegried - {df_sheet.shape[0] if df_sheet is not None else 0} pages", expanded=False):
         if df_sheet is None:
             st.warning("No judged sheet found")
         else:
@@ -499,19 +501,14 @@ def page_rubric(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG00
         "is therefore present and un-measured. It is named as a limitation rather "
         "than left for a reader to notice. Model-written sheets are kept in "
         "`data/rubric/model_reference/` as reference only: the pinned text-only "
-        "model can legitimately judge 1 of the 13 features, because the other 12 "
-        "are declared in the dictionary as judged from the screenshot."
+        "model can legitimately judge only the features the dictionary does not "
+        "declare as judged from the screenshot."
     )
 
-    st.subheader("Scoring guide — features to score")
-    fd = load_dictionary()
-    features = fd.get("features", [])
-    rubric_features = [f for f in features if f.get("extraction") == "rubric"]
-    if rubric_features:
-        for f in rubric_features:
-            st.markdown(
-                f"- **`{f['name']}`** — {f.get('definition', 'N/A')[:120]}…"
-            )
+    st.subheader("Scoring guide - features to score")
+    for f in rubric_features:
+        definition = f.get("definition", "N/A")
+        st.markdown(f"- **`{f['name']}`**: {definition[:120]}{'…' if len(definition) > 120 else ''}")
 
 
 # ── page 5: Data ──────────────────────────────────────────────────────
@@ -526,8 +523,8 @@ def page_data(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 
     tab1, tab2 = st.tabs(["Dataset", "Dictionary"])
 
     with tab1:
-        st.subheader(f"campaigns.csv — {df.shape[0]} pages × {df.shape[1]} columns")
-        st.caption("Each row = one campaign page. Gitignored, regenerated from raw captures.")
+        st.subheader(f"Dataset: {df.shape[0]} pages × {df.shape[1]} columns")
+        st.caption("Each row = one campaign page, read from data/processed/ (tracked in git).")
         col1, col2 = st.columns(2)
         with col1:
             banks = sorted(df["bank"].unique())
@@ -546,8 +543,9 @@ def page_data(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 
 
     with tab2:
         features = load_dictionary().get("features", [])
-        st.subheader(f"Feature dictionary — {len(features)} features")
-        st.caption("config/feature_dictionary.yaml — single source of truth. Frozen after Day 2.")
+        st.subheader(f"Feature dictionary - {len(features)} features")
+        st.caption("config/feature_dictionary.yaml is the single source of truth. "
+                   "Breaking changes are caught by scripts/check_schema_freeze.py.")
         if features:
             fd_df = pd.DataFrame([
                 {
@@ -735,7 +733,7 @@ def page_recommendations(df: pd.DataFrame | None, profiles: dict) -> None:  # no
         st.info(data["summary"])
 
     for r in data.get("recommendations", []):
-        with st.expander(f"{r.get('id', '?')} — {r.get('title', '')}  ·  {r.get('priority', '')}"):
+        with st.expander(f"{r.get('id', '?')} - {r.get('title', '')}  ·  {r.get('priority', '')}"):
             if r.get("finding"):
                 st.markdown(f"**Finding.** {r['finding']}")
             if r.get("recommendation"):
@@ -755,7 +753,7 @@ def page_recommendations(df: pd.DataFrame | None, profiles: dict) -> None:  # no
 def page_trends(df: pd.DataFrame | None, profiles: dict) -> None:  # noqa: ARG001 - uniform page signature, see main()
     st.title("📈 Trends (Google)")
     st.caption(
-        "Google Trends Belgium — ING vs competitors. "
+        "Google Trends Belgium - ING vs competitors. "
         "Separate pipeline in `search_interest/` (Streamlit + pytrends)."
     )
 
@@ -861,7 +859,7 @@ def main() -> None:
         )
         for i, (label, page) in enumerate(pages.items())
     ])
-    st.sidebar.caption("Banking Campaigns Comparator\nING DACI / Customer AI\nPOC — 2 weeks, Sep 2026")
+    st.sidebar.caption("Banking Campaigns Comparator\nING DACI / Customer AI\nPOC - 2 weeks, Sep 2026")
     nav.run()
 
 
