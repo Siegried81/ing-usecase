@@ -445,3 +445,13 @@ section { margin: 40px 0; }
   color: var(--warn);
 }
 .disclaimer p { margin: 0; font-size: 14.5px; color: var(--ink-2); }
+
+.privacy-foot {
+  padding: 16px 24px 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.privacy-foot a {
+  color: inherit;
+}

@@ -4,6 +4,11 @@ This is a student project built for an ING use case. It compares the public
 marketing pages of Belgian banks. It has no user accounts and asks no one for
 personal data.
 
+## Who is responsible
+
+The project's authors. Contact them by opening an issue on
+[the repository](https://github.com/Siegried81/ing-usecase/issues).
+
 ## What it collects
 
 **About banks.** Screenshots and text of public marketing pages, fetched only
@@ -27,6 +32,13 @@ bank. Headlines can name public figures. They're kept as theme counts plus up to
 - If the API asks for an access token, your browser keeps it in
   `sessionStorage`. It's gone when you close the tab.
 - A search on the Research tab sends your query to Semantic Scholar.
+
+## Why, and on what basis
+
+The page captures and headlines are there to compare how banks communicate.
+The access logs are there to keep the site running and fix errors. Both rest on
+legitimate interest (GDPR Art. 6(1)(f)). Nothing here relies on your consent, so
+there's no consent to withdraw.
 
 ## Outside services
 
@@ -59,6 +71,10 @@ current contract. That check hasn't been done.
 
 ## Your rights
 
-You can ask what we hold about you, and ask for it to be corrected or deleted,
-by opening an issue on the repository. We hold nothing about visitors beyond the
-host's logs.
+You can ask to see what we hold about you, have it corrected or deleted, limit
+how it's used, get a copy, or object to its use. Open an issue on the
+repository. We hold nothing about visitors beyond the host's logs.
+
+If you think your data was handled wrongly, please open an issue first. You can
+also complain to the Belgian Data Protection Authority (APD/GBA,
+[dataprotectionauthority.be](https://www.dataprotectionauthority.be)).
