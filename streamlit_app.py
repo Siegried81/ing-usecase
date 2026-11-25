@@ -46,6 +46,11 @@ KBCH = REPO / "search_interest"
 
 st.set_page_config(page_title="Banking Campaigns Comparator", page_icon="🏦", layout="wide")
 
+# GDPR Art. 12(1) wants the privacy notice one click away from every page. The
+# sidebar is on every page, and the repository is public, so the link works for
+# any visitor of the deployed dashboard.
+PRIVACY_URL = "https://github.com/Siegried81/ing-usecase/blob/main/PRIVACY.md"
+
 
 # ── helpers ──────────────────────────────────────────────────────────────
 
@@ -860,6 +865,7 @@ def main() -> None:
         for i, (label, page) in enumerate(pages.items())
     ])
     st.sidebar.caption("Banking Campaigns Comparator\nING DACI / Customer AI\nPOC - 2 weeks, Sep 2026")
+    st.sidebar.markdown(f"[Privacy notice]({PRIVACY_URL})")
     nav.run()
 
 

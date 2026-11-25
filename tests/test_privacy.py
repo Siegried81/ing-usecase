@@ -33,3 +33,25 @@ def test_the_privacy_notice_names_every_llm_provider():
 
 def test_the_readme_links_the_privacy_notice():
     assert "(PRIVACY.md)" in (ROOT / "README.md").read_text(encoding="utf-8")
+
+
+def test_both_uis_link_the_privacy_notice():
+    """GDPR Art. 12(1): the notice one click away from every page. The
+    Streamlit sidebar and the React footer are on every page, and they must
+    point at the same file.
+    """
+    import re
+
+    streamlit_src = (ROOT / "streamlit_app.py").read_text(encoding="utf-8")
+    url = re.search(r'^PRIVACY_URL = "([^"]+)"', streamlit_src, re.M).group(1)
+    assert url.endswith("/PRIVACY.md")
+    assert "st.sidebar.markdown(f\"[Privacy notice]({PRIVACY_URL})\")" in streamlit_src
+    assert f'href="{url}"' in (ROOT / "web" / "src" / "App.tsx").read_text(encoding="utf-8")
+
+
+def test_the_notice_covers_what_art_13_asks_for():
+    notice = (ROOT / "PRIVACY.md").read_text(encoding="utf-8")
+    for heading in ("## Who is responsible", "## Why, and on what basis", "## Your rights"):
+        assert heading in notice
+    assert "Art. 6(1)(f)" in notice
+    assert "Data Protection Authority" in notice

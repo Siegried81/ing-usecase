@@ -333,6 +333,14 @@ export default function App() {
         </div>
       </div>
       )}
+
+      {/* Outside every tab, so the notice is one click away from any page
+          (GDPR Art. 12(1)). Same URL as PRIVACY_URL in streamlit_app.py. */}
+      <footer className="privacy-foot">
+        <a href="https://github.com/Siegried81/ing-usecase/blob/main/PRIVACY.md" target="_blank" rel="noreferrer">
+          Privacy notice
+        </a>
+      </footer>
     </>
   );
 }

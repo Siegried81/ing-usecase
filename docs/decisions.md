@@ -237,3 +237,15 @@ A Kizo scan (GDPR, AI Act, ePrivacy) on 2026-11-25 listed 14 findings to review.
 - Not changed: the five "no timeout" findings are false positives (each call
   passes a timeout, through a parameter or `get_checked`), and the plaintext
   endpoint in `services/health_dashboard.py` is the internal compose network.
+
+## 2026-11-25: Privacy notice completed for GDPR Art. 12 and 13
+
+A second Kizo scan found `PRIVACY.md` but not what Art. 13 asks of it. The notice
+now names the controller as the project's authors (contact through repository
+issues, no personal name), gives legitimate interest (Art. 6(1)(f)) as the basis
+for the captures and the access logs, states that nothing relies on consent,
+lists the data-subject rights and the right to complain to the Belgian APD/GBA.
+The Streamlit sidebar and the React footer link to it from every page. The
+picomatch 4.0.7 finding is a withdrawn advisory (GHSA-fc5q-39xc-vjpf), marked
+false positive in Kizo; the Groq transfer check stays open as "needs
+investigation" until a provider contract is reviewed.
