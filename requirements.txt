@@ -14,6 +14,11 @@ pytest==9.0.3
 requests==2.34.2
 beautifulsoup4==4.15.0
 pydantic==2.13.5
+# Held below 13 on purpose: streamlit (requirements-streamlit.txt) requires
+# pillow<13 up to 1.59.2, and the Docker image and CI install both files
+# together, so 13.0.0 fails to resolve. 12.3.0 has known advisories, some in the
+# JPEG, PNG and GIF decoders that visual_features.py uses on bank hero images;
+# see docs/decisions.md. Bump as soon as streamlit allows it.
 Pillow==12.3.0
 
 # Headless render path (collection/render.py). Five geometry features need a

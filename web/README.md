@@ -13,6 +13,10 @@ npm run build                                                 # type-check + sta
 `serve_web.py` also serves `web/dist` at `/`, so the built UI and the API share one
 port (Docker: 8006).
 
+With `API_TOKEN` set on the server, Generate asks for the token once and keeps it
+in `sessionStorage` for the tab. A failed model call shows a generic message; the
+full error is in the server log.
+
 ## Data it reads
 
 | File | Written by | Used by |

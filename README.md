@@ -72,6 +72,9 @@ feeds a performance claim. Details:
 
 - `.env`: API keys (`DEEPSEEK_API_KEY`, optional `NEWSAPI_KEY`, `NEWSAPI_AI_KEY`,
   `SEMANTIC_SCHOLAR_API_KEY`); see `.env.example`. Never committed.
+- `API_TOKEN` (optional): once set, the two routes of `serve_web.py` that call
+  the model need an `X-API-Token` header. Set it on any host that isn't your own
+  machine; the web UI asks for it once per tab.
 - `config/feature_dictionary.yaml`: every feature, how it is produced and compared.
   After an edit run `python3 scripts/check_schema_freeze.py`.
 - `scripts/collection_targets.yaml`: banks, URLs and capture method per target.
@@ -84,6 +87,7 @@ feeds a performance claim. Details:
   public pages only, no login, no CAPTCHA solving, no rate-limit or bot-detection
   evasion (LC-04). `method: headful` is a normal visible browser, not evasion.
 - Repository and deliverables are internal: public release was never confirmed with ING.
+- What data goes where, and which services see it: [PRIVACY.md](PRIVACY.md).
 - `data/raw/` page captures (third-party material) and generated HTML are not
   versioned; re-deriving features from raw pages needs a re-capture.
 - `outputs/limitations.md` is generated from the data on every run.

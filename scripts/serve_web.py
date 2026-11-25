@@ -17,16 +17,24 @@ Design notes, because a demo server that lies is worse than no server:
     start-up, so restarting this process does not lose a generated site.
   * Nothing here re-derives a number. Recommendations read report.json; the
     site reads the recommendations. One direction only.
+  * The two POST routes are the only ones that spend LLM credit. When the
+    API_TOKEN environment variable is set they require a matching X-API-Token
+    header; unset (local development), they stay open as before.
+  * A failed model call is logged in full here and reported to the browser as
+    a generic message: provider errors can carry URLs, key prefixes or paths.
 """
 
 from __future__ import annotations
 
+import hmac
 import json
+import logging
+import os
 import threading
 from pathlib import Path
 
 import _bootstrap  # noqa: F401
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -55,6 +63,10 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+log = logging.getLogger("serve_web")
+
+MODEL_FAILURE = "The model call failed. The server log has the details."
 
 _state_lock = threading.Lock()
 _site_state: dict = {"status": "idle", "progress": 0, "total": len(PAGES), "page": None,
@@ -89,6 +101,21 @@ def _load_site_manifest() -> dict | None:
     return None
 
 
+def require_token(x_api_token: str | None = Header(default=None)) -> None:
+    """Gate for the routes that spend LLM credit.
+
+    Read from the environment on every call rather than at import, so a test or
+    a restarted container picks up the current value. The comparison is
+    constant-time so the token cannot be guessed byte by byte from timings.
+    """
+    expected = os.getenv("API_TOKEN")
+    if not expected:
+        return None
+    if not x_api_token or not hmac.compare_digest(x_api_token.encode(), expected.encode()):
+        raise HTTPException(status_code=401, detail="Missing or wrong X-API-Token.")
+    return None
+
+
 @app.get("/api/health")
 def health() -> dict:
     return {"ok": True, "report": REPORT_PATH.is_file(), "site": (SITE_DIR / "index.html").is_file()}
@@ -113,7 +140,7 @@ class RecommendationRequest(BaseModel):
     include_reputation: bool = False
 
 
-@app.post("/api/recommendations/generate")
+@app.post("/api/recommendations/generate", dependencies=[Depends(require_token)])
 def post_recommendations(request: RecommendationRequest | None = None) -> dict:
     """One model call over the analysis snapshot. Synchronous; the UI shows a wait state.
 
@@ -128,7 +155,8 @@ def post_recommendations(request: RecommendationRequest | None = None) -> dict:
             _read_report(), include_reputation=include_reputation,
         )
     except LLMExtractionError as exc:
-        raise HTTPException(status_code=502, detail=str(exc)) from exc
+        log.exception("recommendation call failed")
+        raise HTTPException(status_code=502, detail=MODEL_FAILURE) from exc
     payload = result.to_dict()
     _save_recommendations(payload)
     return {"available": True, **payload}
@@ -142,7 +170,7 @@ class SiteRequest(BaseModel):
     explain: bool = False
 
 
-@app.post("/api/site/generate")
+@app.post("/api/site/generate", dependencies=[Depends(require_token)])
 def post_site_generate(request: SiteRequest) -> dict:
     saved = _load_recommendations()
     if saved is None:
@@ -179,9 +207,10 @@ def post_site_generate(request: SiteRequest) -> dict:
             )
             with _state_lock:
                 _site_state.update(status="ready", manifest=manifest, page=None)
-        except Exception as exc:  # noqa: BLE001 - surfaced to the UI verbatim
+        except Exception:  # noqa: BLE001 - any failure must end the "generating" state
+            log.exception("site generation failed")
             with _state_lock:
-                _site_state.update(status="error", error=f"{type(exc).__name__}: {exc}")
+                _site_state.update(status="error", error=MODEL_FAILURE)
 
     threading.Thread(target=run, name="site-generator", daemon=True).start()
     return {"status": "generating", "total": len(PAGES),
@@ -307,11 +336,15 @@ def main() -> int:
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)
     args = parser.parse_args()
+    # Without a handler the full tracebacks of failed model calls, which the
+    # browser no longer sees, would have nowhere to go.
+    logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s: %(message)s")
 
     print(f"recommendations + site backend on http://{args.host}:{args.port}")
     print(f"  report : {REPORT_PATH}")
     print(f"  site   : {SITE_DIR}")
     print(f"  ui     : {UI_DIR if UI_DIR.is_dir() else 'not built (npm run build in web/)'}")
+    print(f"  token  : {'required on the LLM routes' if os.getenv('API_TOKEN') else 'off (API_TOKEN unset)'}")
     uvicorn.run(app, host=args.host, port=args.port, log_level="info")
     return 0
 
