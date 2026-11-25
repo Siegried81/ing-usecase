@@ -198,3 +198,14 @@ separate decision. Ruff runs on the whole repository with `ruff.toml` (one confi
 for local and CI). The main compose file has no bind mounts; `docker/docker-compose.dev.yml`
 adds them, and the health dashboard starts only with `--profile monitoring`.
 Ports are 8506, 8006 and 8606.
+
+## 2026-11-25: Hero images decoded only as web raster formats
+
+`visual_features.extract_colours` opens a fetched image with
+`formats=WEB_IMAGE_FORMATS` (JPEG, PNG, WEBP, GIF, AVIF). Pillow reads EPS by
+calling Ghostscript when one is installed, and Upload2Shell (CVE-2026-125396)
+makes a crafted file a code-execution path. No machine or image here has
+Ghostscript today; the allowlist keeps it that way if one ever does. A hero image
+in any other format now gets null colours, as an undecodable one already did.
+Screenshot measurements are not affected: they open our own PNG captures.
+Revisit if a bank serves its hero image in a format outside the list.
