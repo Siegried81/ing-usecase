@@ -1,0 +1,19 @@
+# Render blueprint: the Streamlit UI as one Docker web service.
+#
+# It serves the committed derived data (data/, outputs/); the collection
+# pipeline is not run there, and the raw captures are gitignored, so none reach
+# the image. No key is declared: every page that needs one says it is
+# unavailable. A key added in the dashboard is spent by anyone who finds the
+# public URL. Not exercised by CI: the first deploy is the test.
+services:
+  - type: web
+    name: ing-usecase
+    runtime: docker
+    plan: free
+    region: frankfurt
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /_stcore/health
+    envVars:
+      # The Dockerfile's CMD listens on 8501; Render routes to the port in PORT.
+      - key: PORT
+        value: "8501"
