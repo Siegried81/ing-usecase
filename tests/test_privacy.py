@@ -51,7 +51,14 @@ def test_both_uis_link_the_privacy_notice():
 
 def test_the_notice_covers_what_art_13_asks_for():
     notice = (ROOT / "PRIVACY.md").read_text(encoding="utf-8")
-    for heading in ("## Who is responsible", "## Why, and on what basis", "## Your rights"):
+    for heading in ("## Who is responsible", "## Purposes of processing and legal basis", "## Your rights"):
         assert heading in notice
     assert "Art. 6(1)(f)" in notice
     assert "Data Protection Authority" in notice
+    # The legal names of each Art. 15-21 right and a named contact channel:
+    # a plain-language paraphrase alone leaves a reader (and a scanner such as
+    # Kizo) unable to tell which right is meant.
+    assert "contact form" in notice
+    for right in ("right of access", "right to rectification", "right to erasure",
+                  "right to restriction", "right to data portability", "right to object"):
+        assert right in notice, right

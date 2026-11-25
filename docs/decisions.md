@@ -249,3 +249,11 @@ The Streamlit sidebar and the React footer link to it from every page. The
 picomatch 4.0.7 finding is a withdrawn advisory (GHSA-fc5q-39xc-vjpf), marked
 false positive in Kizo; the Groq transfer check stays open as "needs
 investigation" until a provider contract is reviewed.
+
+## 2026-11-25: Privacy notice names each right and the contact channel
+
+The third Kizo scan still missed three Art. 13 items because the notice said
+them in plain words only. It now gives the legal name of each right next to the
+plain one (access, rectification, erasure, restriction, data portability,
+object), titles the section "Purposes of processing and legal basis", and calls
+the issue link the repository's contact form. No personal email is added.
