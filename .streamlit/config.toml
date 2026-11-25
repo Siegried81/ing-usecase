@@ -1,6 +1,11 @@
 [server]
 headless = true
 
+[browser]
+# Streamlit sends visitors' usage statistics to its own servers unless this
+# is off. The dashboard is public, and nobody consented to that.
+gatherUsageStats = false
+
 [theme]
 base = "light"
 primaryColor = "#FF6200"

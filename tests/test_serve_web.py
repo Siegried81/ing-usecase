@@ -6,6 +6,7 @@ so no extra test dependency is needed and no model is ever called.
 from __future__ import annotations
 
 import sys
+import threading
 from pathlib import Path
 
 import pytest
@@ -83,3 +84,82 @@ def test_no_generated_site_is_reported_cleanly(monkeypatch, tmp_path):
     assert status["site_url"] is None
     assert status["manifest"] is None
     assert status["status"] == "idle"
+
+
+# ---------------------------------------------------------------------------
+# The two POST routes spend LLM credit. With API_TOKEN set they need the
+# X-API-Token header; without it (local development) nothing changes.
+# ---------------------------------------------------------------------------
+
+LLM_ROUTES = {"/api/recommendations/generate", "/api/site/generate"}
+
+
+def test_a_configured_token_is_required(monkeypatch):
+    monkeypatch.setenv("API_TOKEN", "s3cret")
+    for sent in (None, "", "wrong"):
+        with pytest.raises(HTTPException) as err:
+            serve_web.require_token(sent)
+        assert err.value.status_code == 401
+    assert serve_web.require_token("s3cret") is None
+
+
+def test_no_configured_token_keeps_local_use_open(monkeypatch):
+    monkeypatch.delenv("API_TOKEN", raising=False)
+    assert serve_web.require_token(None) is None
+
+
+def test_only_the_llm_routes_carry_the_token_check():
+    guarded = set()
+    for route in serve_web.app.routes:
+        dependant = getattr(route, "dependant", None)
+        if dependant and any(d.call is serve_web.require_token for d in dependant.dependencies):
+            guarded.add(route.path)
+    assert guarded == LLM_ROUTES
+
+
+# ---------------------------------------------------------------------------
+# A failed model call is logged in full on the server; the browser only gets a
+# generic message, because provider errors can carry URLs, key prefixes or
+# local paths.
+# ---------------------------------------------------------------------------
+
+LEAKY = "groq 401 for key gsk_abc123 at /home/someone/Users/.env"
+
+
+def test_a_failed_recommendation_call_does_not_leak_its_detail(monkeypatch):
+    def boom(*_args, **_kwargs):
+        raise serve_web.LLMExtractionError(LEAKY)
+
+    monkeypatch.setattr(serve_web, "_read_report", lambda: {})
+    monkeypatch.setattr(serve_web, "build_recommendations", boom)
+
+    with pytest.raises(HTTPException) as err:
+        serve_web.post_recommendations(serve_web.RecommendationRequest())
+    assert err.value.status_code == 502
+    assert "gsk_abc123" not in err.value.detail
+    assert "Users" not in err.value.detail
+
+
+def test_a_failed_site_run_does_not_leak_its_detail(monkeypatch):
+    def boom(*_args, **_kwargs):
+        raise RuntimeError(LEAKY)
+
+    monkeypatch.setattr(serve_web, "_read_report", lambda: {})
+    monkeypatch.setattr(serve_web, "_load_recommendations", lambda: {
+        "recommendations": [{"id": "R1", "title": "t", "priority": "high",
+                             "finding": "f", "recommendation": "r"}],
+    })
+    monkeypatch.setattr(serve_web, "generate_site", boom)
+    monkeypatch.setitem(serve_web._site_state, "status", "idle")
+
+    serve_web.post_site_generate(serve_web.SiteRequest())
+    for thread in threading.enumerate():
+        if thread.name == "site-generator":
+            thread.join(timeout=5)
+
+    try:
+        assert serve_web._site_state["status"] == "error"
+        assert "gsk_abc123" not in serve_web._site_state["error"]
+        assert "Users" not in serve_web._site_state["error"]
+    finally:
+        serve_web._site_state.update(status="idle", error=None)

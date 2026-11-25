@@ -5,7 +5,7 @@
 | Service | Host port | Container port | Purpose |
 |---|---|---|---|
 | `streamlit` | 8506 | 8501 | Key-free dashboard, reads the data baked into the image |
-| `api` | 8006 | 8000 | FastAPI + React UI + generated site; needs LLM keys in `.env` |
+| `api` | 8006 | 8000 | FastAPI + React UI + generated site; needs LLM keys in `.env`, and `API_TOKEN` if the port is reachable from other machines |
 | `dashboard` | 8606 | 8080 | Health monitor, profile `monitoring` (opt-in) |
 
 ## Run

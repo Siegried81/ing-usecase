@@ -22,6 +22,39 @@ async function json<T>(response: Response): Promise<T> {
   return response.json() as Promise<T>;
 }
 
+const TOKEN_KEY = "ing-api-token";
+
+/**
+ * POST to a route that spends LLM credit.
+ *
+ * The server only checks X-API-Token when API_TOKEN is set on its side, so in
+ * local development no token exists and nothing is asked. On a 401 the user is
+ * asked once; the answer is kept in sessionStorage (gone when the tab closes)
+ * and the call is retried a single time. A wrong token is dropped so the next
+ * click asks again instead of failing forever.
+ */
+async function postWithToken(url: string, body: unknown): Promise<Response> {
+  const send = (token: string | null) =>
+    fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(token ? { "X-API-Token": token } : {}),
+      },
+      body: JSON.stringify(body),
+    });
+
+  let response = await send(sessionStorage.getItem(TOKEN_KEY));
+  if (response.status !== 401) return response;
+
+  const entered = window.prompt("This server needs an access token to call the model.");
+  if (!entered) return response;
+  response = await send(entered);
+  if (response.ok) sessionStorage.setItem(TOKEN_KEY, entered);
+  else if (response.status === 401) sessionStorage.removeItem(TOKEN_KEY);
+  return response;
+}
+
 export async function fetchRecommendations(): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(await fetch("/api/recommendations"));
 }
@@ -30,11 +63,7 @@ export async function generateRecommendations(
   includeReputation = false,
 ): Promise<RecommendationPayload> {
   return json<RecommendationPayload>(
-    await fetch("/api/recommendations/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ include_reputation: includeReputation }),
-    }),
+    await postWithToken("/api/recommendations/generate", { include_reputation: includeReputation }),
   );
 }
 
@@ -44,10 +73,10 @@ export async function generateSite(
   explain = false,
 ): Promise<{ status: string; total: number }> {
   return json(
-    await fetch("/api/site/generate", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recommendation_ids: recommendationIds, language, explain }),
+    await postWithToken("/api/site/generate", {
+      recommendation_ids: recommendationIds,
+      language,
+      explain,
     }),
   );
 }

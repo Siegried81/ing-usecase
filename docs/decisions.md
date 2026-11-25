@@ -209,3 +209,31 @@ Ghostscript today; the allowlist keeps it that way if one ever does. A hero imag
 in any other format now gets null colours, as an undecodable one already did.
 Screenshot measurements are not affected: they open our own PNG captures.
 Revisit if a bank serves its hero image in a format outside the list.
+
+## 2026-11-25: Kizo scan findings: token on the model routes, generic errors, privacy notice
+
+A Kizo scan (GDPR, AI Act, ePrivacy) on 2026-11-25 listed 14 findings to review.
+
+- The two POST routes of `serve_web.py` that call the model need an
+  `X-API-Token` header once `API_TOKEN` is set. Unset, they stay open, so local
+  development is unchanged. Compose publishes the API on every interface (8006),
+  so anyone on the network could spend LLM credit before.
+- A failed model call is logged in full and the browser gets a generic message.
+  The raw provider error used to reach the UI, and it can carry URLs, key
+  prefixes or paths.
+- `PRIVACY.md` lists what is collected and every outside service that receives
+  data. `tests/test_privacy.py` fails if an LLM provider is added to the code
+  without a line there. Provider locations and transfer terms are not checked
+  against contracts; the notice says so.
+- Streamlit's visitor usage statistics are off (`.streamlit/config.toml`). They
+  were on by default on the public Render dashboard. Kizo did not flag this.
+- `vite` 6.4.3 to 6.4.6 through `npm audit fix`: 0 advisories left.
+- Pillow stays at 12.3.0 although 13.0.0 clears its advisories: every streamlit
+  release up to 1.59.2 requires `pillow<13`, and the image and CI install both
+  requirement files together. Accepted risk until streamlit lifts the cap. The
+  format allowlist from the entry above limits decoding to JPEG, PNG, WEBP, GIF
+  and AVIF, which removes the EPS, TIFF, PDF and FPX advisories, not the JPEG,
+  PNG and GIF ones.
+- Not changed: the five "no timeout" findings are false positives (each call
+  passes a timeout, through a parameter or `get_checked`), and the plaintext
+  endpoint in `services/health_dashboard.py` is the internal compose network.
