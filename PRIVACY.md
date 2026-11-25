@@ -6,8 +6,8 @@ personal data.
 
 ## Who is responsible
 
-The project's authors. Contact them by opening an issue on
-[the repository](https://github.com/Siegried81/ing-usecase/issues).
+The controller is the project's authors. To contact them, use the repository's
+contact form: [open an issue](https://github.com/Siegried81/ing-usecase/issues/new).
 
 ## What it collects
 
@@ -33,7 +33,7 @@ bank. Headlines can name public figures. They're kept as theme counts plus up to
   `sessionStorage`. It's gone when you close the tab.
 - A search on the Research tab sends your query to Semantic Scholar.
 
-## Why, and on what basis
+## Purposes of processing and legal basis
 
 The page captures and headlines are there to compare how banks communicate.
 The access logs are there to keep the site running and fix errors. Both rest on
@@ -71,9 +71,11 @@ current contract. That check hasn't been done.
 
 ## Your rights
 
-You can ask to see what we hold about you, have it corrected or deleted, limit
-how it's used, get a copy, or object to its use. Open an issue on the
-repository. We hold nothing about visitors beyond the host's logs.
+You can ask to see what we hold about you (right of access), have it corrected
+(right to rectification) or deleted (right to erasure), limit how it's used
+(right to restriction), get a copy you can take elsewhere
+(right to data portability), or object to its use (right to object). Open an
+issue on the repository. We hold nothing about visitors beyond the host's logs.
 
 If you think your data was handled wrongly, please open an issue first. You can
 also complain to the Belgian Data Protection Authority (APD/GBA,
