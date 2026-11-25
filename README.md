@@ -40,6 +40,10 @@ docker compose up --build              # Streamlit UI 8506, API + React UI 8006
 docker compose --profile monitoring up # adds the health dashboard on 8606
 ```
 
+Render: `render.yaml` deploys the Streamlit UI from the `Dockerfile` (free plan,
+Frankfurt). In the Render dashboard, New, Blueprint, then pick this repository.
+No key is set there, so pages that need one say they are unavailable.
+
 ## Structure
 
 ```
