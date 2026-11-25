@@ -26,6 +26,13 @@ from comparator.collection.compliance import USER_AGENT, assert_can_fetch, get_c
 
 REQUEST_TIMEOUT_S = 15
 
+# The only decoders tried on an image fetched from the web: the raster formats
+# a page serves in an <img>. Pillow otherwise tries every format it knows, and
+# for EPS it shells out to Ghostscript when one is installed, so a crafted file
+# behind an image URL could reach it. Anything else fails to open and the row
+# gets null colours, like any undecodable image.
+WEB_IMAGE_FORMATS = ("JPEG", "PNG", "WEBP", "GIF", "AVIF")
+
 # Must match fixtures.py's ARCHETYPES "brand" hex per bank -
 # duplicated rather than imported because fixtures.py mixes in a lot of
 # synthetic-only fields this module has no business depending on.
@@ -113,7 +120,7 @@ def extract_colours(image_url: str | None, *, bank: str | None = None, n_colours
         response = get_checked(image_url, gate=assert_can_fetch, headers={"User-Agent": USER_AGENT},
                                timeout=REQUEST_TIMEOUT_S)
         response.raise_for_status()
-        img = Image.open(io.BytesIO(response.content)).convert("RGB")
+        img = Image.open(io.BytesIO(response.content), formats=WEB_IMAGE_FORMATS).convert("RGB")
     except Exception:  # noqa: BLE001 - best-effort feature, never fatal (incl. robots disallow)
         return empty
 

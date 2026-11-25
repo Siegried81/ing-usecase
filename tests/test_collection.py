@@ -400,6 +400,25 @@ def test_extract_colours_on_a_solid_image():
     assert 0 <= result["background_luminance"] <= 1
 
 
+def test_a_postscript_image_is_never_handed_to_the_eps_decoder():
+    """A web image is decoded only as a raster format a page actually serves.
+
+    Pillow reads EPS by calling Ghostscript when it is installed, so a crafted
+    EPS behind an <img> URL would run through Ghostscript (CVE-2026-125396,
+    "Upload2Shell"). The EPS decoder must not even be tried, and the row gets
+    the same nulls as any undecodable image.
+    """
+    from PIL import EpsImagePlugin
+
+    eps = Mock(content=b"%!PS-Adobe-3.0 EPSF-3.0\n%%BoundingBox: 0 0 10 10\n", raise_for_status=Mock())
+    with patch("comparator.collection.visual_features.assert_can_fetch"), \
+         patch("comparator.collection.visual_features.requests.get", return_value=eps), \
+         patch.object(EpsImagePlugin.EpsImageFile, "_open", side_effect=AssertionError("EPS decoder reached")) as eps_open:
+        result = extract_colours("https://example.com/hero.eps", bank="ing")
+    eps_open.assert_not_called()
+    assert result["dominant_colour_hex"] is None
+
+
 def test_brand_colour_share_is_none_without_a_known_bank():
     solid_orange = Image.new("RGB", (100, 100), color=(255, 98, 0))
     with patch("comparator.collection.visual_features.assert_can_fetch"), \
